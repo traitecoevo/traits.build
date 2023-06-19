@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
   warning = FALSE
 )
 
-library(austraits.build)
+library(traits.build)
 
 my_kable_styling <- util_kable_styling_html
 ```
@@ -63,7 +63,7 @@ The `metadata` file also includes all metadata associated with the study:
 
 ### Error checking
 
-* The AusTraits data curator runs a series of **tests** on each data set, detailed in the [adding data vignette](http://traitecoevo.github.io/austraits.build/articles/adding_data.html)
+* The AusTraits data curator runs a series of **tests** on each data set, detailed in the [adding data vignette](http://traitecoevo.github.io/traits.build/articles/adding_data.html)
 * These tests identify **misaligned units**, **unrecognised taxon names**, and **unsupported categorical trait values**
 * These tests also identify and eliminate *most* **duplicate data** - instances where the same numeric trait data is submitted by multiple people
 * Each dataset is then compiled into a **report** which summarises metadata and plots/charts trait values in comparison to other measurements of that trait in AusTraits. The report is reviewed by the data contributor to ensure metadata is complete and data values are as expected.
@@ -73,10 +73,10 @@ The `metadata` file also includes all metadata associated with the study:
 ## Detailed vignettes
 A series of more detailed vignettes delve into specific aspects in greater detail:  
 
-* **[austraits.build repo file structure](http://traitecoevo.github.io/austraits.build/articles/austraits_file_structure.html)**  
-* **[austraits.build database structure](http://traitecoevo.github.io/austraits.build/articles/austraits_database_structure.html)**  
-* **[how to build AusTraits](http://traitecoevo.github.io/austraits.build/articles/austraits.build.html)**  
-* **[AusTraits definitions file](http://traitecoevo.github.io/austraits.build/articles/trait_definitions.html)**  
+* **[traits.build repo file structure](http://traitecoevo.github.io/traits.build/articles/file_structure.html)**  
+* **[traits.build database structure](http://traitecoevo.github.io/traits.build/articles/database_structure.html)**  
+* **[how to build AusTraits](http://traitecoevo.github.io/traits.build/articles/traits.build.html)**  
+* **[AusTraits definitions file](http://traitecoevo.github.io/traits.build/articles/trait_definitions.html)**  
   
-* **[how to contribute datasets to AusTraits](http://traitecoevo.github.io/austraits.build/articles/contributing_data.html)**  
-* **[protocol for adding new datasets to AusTraits](http://traitecoevo.github.io/austraits.build/articles/adding_data.html)**  
+* **[how to contribute datasets to AusTraits](http://traitecoevo.github.io/traits.build/articles/contributing_data.html)**  
+* **[protocol for adding new datasets to AusTraits](http://traitecoevo.github.io/traits.build/articles/adding_data.html)**  

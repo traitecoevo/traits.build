@@ -1,9 +1,9 @@
 ---
-title: Getting started with austraits.build
+title: Getting started with traits.build
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting started with austraits.build}
+  %\VignetteIndexEntry{Getting started with traits.build}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options:
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
   warning = FALSE
 )
 
-library(austraits.build)
+library(traits.build)
 
 my_kable_styling <- util_kable_styling_html
 ```
@@ -57,24 +57,24 @@ We envision AusTraits as an ongoing collaborative community resource that:
 
 Below are some of the ways you can contribute. 
 
-*Please note that the AusTraits project is released with a [Contributor Code of Conduct](http://traitecoevo.github.io/austraits.build/CODE_OF_CONDUCT.html). By contributing to this project you agree to abide by its terms.
+*Please note that the AusTraits project is released with a [Contributor Code of Conduct](http://traitecoevo.github.io/traits.build/CODE_OF_CONDUCT.html). By contributing to this project you agree to abide by its terms.
 
 ## Contributing new data
 
 We gladly accept new data contributions to AusTraits. If you would like to contribute data, the requirements are:
 
 - Data was collected for Australian plant species growing in Australia
-- You collected data on one of the traits listed in the [trait definitions table](http://traitecoevo.github.io/austraits.build/articles/trait_definitions.html)
+- You collected data on one of the traits listed in the [trait definitions table](http://traitecoevo.github.io/traits.build/articles/trait_definitions.html)
 - You are willing to release the data under an open license for reuse by the scientific community
 - You make it is as easy as possible for us to incorporate your data by following the instructions.
 
-If you want to contribute data, please review the instructions [here on how to contribute data](http://traitecoevo.github.io/austraits.build/articles/contributing_data.html).
+If you want to contribute data, please review the instructions [here on how to contribute data](http://traitecoevo.github.io/traits.build/articles/contributing_data.html).
 
 ## Reporting errors and improving documentation
 
 Data contributors and data users who are less familiar with the AusTraits format and code than the custodians may determine that important descriptions or steps are omitted from this documentation file. We welcome additions and edits that make using the existing data or adding new data easier for the community.
 
-If you notice a possible error in AusTraits, please [post an issue on GitHub](https://github.com/traitecoevo/austraits.build/issues). If you can, please provide code illustrating the problem.
+If you notice a possible error in AusTraits, please [post an issue on GitHub](https://github.com/traitecoevo/traits.build/issues). If you can, please provide code illustrating the problem.
 
 If you would like to value-add to AusTraits in some other way, please get in contact with an idea or offer of time.
 
@@ -91,7 +91,7 @@ If you are interested in contributing expertise to the revision of a given trait
 
 In this section, we describe how to build the harmonised dataset. By "compiling" we mean transforming data from all the different studies into a harmonised common format. As described above, and depicted in Figure 1, AusTraits is built so that the database can be rebuilt from its parts at any time. This means that decisions made along the way (in how data is transformed or encoded) can be inspected and modified, and new data can be easily incorporated.
 
-The first step to compile AusTraits is to download a copy of the [austraits.build](https://github.com/traitecoevo/austraits.build/) repository from Github. Then open the Rstudio project, or open R into the right repo directory.
+The first step to compile AusTraits is to download a copy of the [traits.build](https://github.com/traitecoevo/traits.build/) repository from Github. Then open the Rstudio project, or open R into the right repo directory.
 
 ## Dependencies
 
@@ -107,7 +107,7 @@ devtools::install(quick=TRUE)
 To successfully compile AusTraits you need to load the package
 
 ```{r, eval=FALSE, echo=TRUE}
-library("austraits.build")
+library("traits.build")
 ```
 
 and source some custom functions written explicitly for this database:
@@ -136,6 +136,6 @@ austraits <- remake::make("austraits")
 
 For those working with AusTraits code base or data, you may want to read about
 
-- the [structure of the compiled AusTraits database](http://traitecoevo.github.io/austraits.build/articles/austraits_database_structure.html), and
-- the [structure of the raw data files](http://traitecoevo.github.io/austraits.build/articles/austraits_file_structure.html),
-- the [list of trait definitions](http://traitecoevo.github.io/austraits.build/articles/trait_definitions.html)
+- the [structure of the compiled AusTraits database](http://traitecoevo.github.io/traits.build/articles/database_structure.html), and
+- the [structure of the raw data files](http://traitecoevo.github.io/traits.build/articles/file_structure.html),
+- the [list of trait definitions](http://traitecoevo.github.io/traits.build/articles/trait_definitions.html)

@@ -2,16 +2,16 @@
 # `traits.build`
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/traitecoevo/austraits.build/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/traitecoevo/austraits.build/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/traitecoevo/austraits.build/branch/develop/graph/badge.svg)](https://app.codecov.io/gh/traitecoevo/austraits.build?branch=develop)
+[![R-CMD-check](https://github.com/traitecoevo/traits.build/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/traitecoevo/traits.build/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/traitecoevo/traits.build/branch/develop/graph/badge.svg)](https://app.codecov.io/gh/traitecoevo/traits.build?branch=develop)
 <!-- badges: end -->
 
 The `traits.build` package provides a workflow for harmonising data from 
-disconnected primary sources and arises from the AusTraits project [austraits.org](https://austraits.org). In 2023 this package was spun out as a separate package from the `austraits.build` repository.
+disconnected primary sources and arises from the AusTraits project [austraits.org](https://austraits.org). In 2023 this package was spun out as a separate package from the `traits.build` repository.
 
 ## Goal
 
-This repository (`austraits.build`) contains the raw data and code used to compile AusTraits from diverse, original sources.
+This repository (`traits.build`) contains the raw data and code used to compile AusTraits from diverse, original sources.
 
 To handle the harmonising of diverse data sources, we use a reproducible
 workflow to implement the various changes required for each source to

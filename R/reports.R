@@ -17,7 +17,7 @@
 #' @export
 dataset_report <- function(dataset_id, austraits, overwrite=FALSE, 
                                     output_path = "export/reports", 
-                                    input_file = system.file("support", "report_dataset.Rmd", package = "austraits.build"),
+                                    input_file = system.file("support", "report_dataset.Rmd", package = "traits.build"),
                                     quiet=TRUE, keep =FALSE) {
   
   for(d in dataset_id)
@@ -34,7 +34,7 @@ dataset_report <- function(dataset_id, austraits, overwrite=FALSE,
 
 dataset_report_worker <- function(dataset_id, austraits, overwrite=FALSE, 
                                            output_path = "export/reports", 
-                                           input_file = system.file("support", "report_dataset.Rmd", package = "austraits.build"),
+                                           input_file = system.file("support", "report_dataset.Rmd", package = "traits.build"),
                                            quiet=TRUE, keep=FALSE) {
   
   if(!file.exists(output_path)) {

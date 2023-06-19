@@ -463,7 +463,7 @@ dataset_test_worker <-
                                     c(schema$metadata$elements$traits$elements %>% names(), unique(contexts$var_in)),
                                     info = paste0(f, "-traits"))
         expect_silent(
-          traits <- austraits.build::util_list_to_df2(metadata[["traits"]])
+          traits <- traits.build::util_list_to_df2(metadata[["traits"]])
           )
         expect_true(is.data.frame(traits))
         

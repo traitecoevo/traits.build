@@ -753,7 +753,7 @@ metadata_find_taxonomic_change <- function(find, replace=NULL, studies = NULL){
 #' @return Updated remake.yml file 
 #' @export
 build_setup_pipeline <- function(
-  template = readLines(system.file("support", "remake.yml.whisker", package = "austraits.build")),
+  template = readLines(system.file("support", "remake.yml.whisker", package = "traits.build")),
   path="data",
   dataset_ids = dir(path)) {
 

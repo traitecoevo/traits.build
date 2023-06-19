@@ -1,5 +1,5 @@
 
-#' Load schema for an austraits.build data compilation (excluding traits)
+#' Load schema for an traits.build data compilation (excluding traits)
 #'
 #' @param path path to schema file. By default loads version included with the package
 #' @param subsection section to load
@@ -11,7 +11,7 @@
 #' 
 #' schema <- get_schema()
 #' }
-get_schema <- function(path=system.file("support", "austraits.build_schema.yml", package = "austraits.build"), subsection=NULL){
+get_schema <- function(path=system.file("support", "traits.build_schema.yml", package = "traits.build"), subsection=NULL){
   
   schema <- yaml::read_yaml(path)
   

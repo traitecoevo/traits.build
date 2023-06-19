@@ -67,7 +67,7 @@ dataset_configure <- function(
 #'
 #' @param filename_data_raw raw data.csv file for any given study
 #' @param config_for_dataset config settings generated from `dataset_configure()`
-#' @param schema schema for austraits.build
+#' @param schema schema for traits.build
 #' @param filter_missing_values default filters missing values from the excluded data table. 
 #' Change to false to see the rows with missing values.
 #'

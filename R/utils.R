@@ -60,7 +60,7 @@ util_replace_null <- function(x, val=NA){
 #' 
 #' @return a dataframe
 #' 
-#' @examples lapply(austraits.build:::util_df_convert_character(iris), class) 
+#' @examples lapply(traits.build:::util_df_convert_character(iris), class) 
 util_df_convert_character <- function(df) {
   dplyr::mutate(df, dplyr::across(dplyr::everything(), as.character))
 }
