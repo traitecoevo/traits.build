@@ -2,9 +2,9 @@
 
 # load packages needed for generating reports
 suppressWarnings({
-  library(austraits)
-  library(knitr)
-  library(kableExtra)
+#  library(austraits)
+#  library(knitr)
+#  library(kableExtra)
 })
 
 test_that("metadata_create_template is working",{

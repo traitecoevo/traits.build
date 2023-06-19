@@ -45,7 +45,6 @@ Suggests:
     bench,
     devtools,
     markdown,
-#    rprojroot,
     pkgdown,
     rcrossref,
     zip,
