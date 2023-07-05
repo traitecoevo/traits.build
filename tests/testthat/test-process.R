@@ -2,17 +2,17 @@
 Test_data <- "data/Test_2022/data.csv"
 
 schema <- get_schema()
-resource_metadata <- get_schema("config/metadata.yml",  "metadata")
-traits_definitions <- get_schema("config/traits.yml", I("traits"))
+resource_metadata <- get_schema("config/metadata.yml", "metadata")
+traits_definitions <- get_schema("config/traits.yml", "traits")
 unit_conversions <- get_unit_conversions("config/unit_conversions.csv")
 Test_config <- dataset_configure("data/Test_2022/test-metadata.yml",
                              traits_definitions,
                              unit_conversions)
 
-test_that("test dataset_configure is working",{
-  expect_equal(class(dataset_configure("data/Test_2022/test-metadata.yml",
+test_that("test dataset_configure is working", {
+  expect_class(dataset_configure("data/Test_2022/test-metadata.yml",
                 yaml::read_yaml("config/traits.yml"),
-                get_unit_conversions("config/unit_conversions.csv"))), "list")
+                get_unit_conversions("config/unit_conversions.csv")), "list")
   expect_length(dataset_configure("data/Test_2022/test-metadata.yml",
                 yaml::read_yaml("config/traits.yml"),
                 get_unit_conversions("config/unit_conversions.csv")), 4)
@@ -26,7 +26,7 @@ test_that("test dataset_process is working",{
   austraits_names <- schema$austraits$elements %>% names()
   
   expect_no_error(  x <- dataset_process(Test_data, Test_config, schema,resource_metadata))
-  expect_equal(class(x), "list")
+  expect_class(x, "list")
   expect_length(x, 13)
   expect_named(x, austraits_names)
   expect_equal(nrow(x$excluded_data), 0)
