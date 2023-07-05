@@ -1,6 +1,6 @@
 
 
-# load packages needed for generating reports
+# Load packages needed for generating reports
 suppressWarnings({
 #  library(austraits)
 #  library(knitr)
@@ -8,28 +8,28 @@ suppressWarnings({
 })
 
 test_that("metadata_create_template is working", {
+  # Not sure whether the below line does anything
   unlink("data/Test_2022/metadata.yml")
-
   expect_silent(schema <- get_schema())
-
+  # Whether or not skip_manual is TRUE or FALSE, this test passes -- is that intended?
   expect_invisible(metadata_create_template(dataset_id = "Test_2022",
                                             path = file.path("data", "Test_2022"),
                                             skip_manual = TRUE))
-  test_metadata <- read_metadata("data/Test_2022/metadata.yml")
-
+  expect_no_error(test_metadata <- read_metadata("data/Test_2022/metadata.yml"))
   metadata_names <- c("source", "contributors", "dataset", "locations", "contexts", "traits",
                       "substitutions", "taxonomic_updates", "exclude_observations",
                       "questions")
-
   collectors_names <- c("last_name", "given_name", "ORCID", "affiliation")
-  ## Test metadata exists with correct names
+  # Test names exist
   expect_named(test_metadata)
-  expect_equal(names(test_metadata), metadata_names)
-  expect_equal(length(test_metadata$source$primary), 10)
+  # Test metadata exists with correct names
+  expect_named(test_metadata, metadata_names)
+  expect_length(test_metadata$source$primary, 10)
   expect_isin(names(test_metadata$dataset), schema$metadata$elements$dataset$values %>% names())
   expect_type(test_metadata$contributors$data_collectors, "list")
-  expect_equal(test_metadata$contributors$data_collectors %>% length(), 1L)
-  expect_equal(names(test_metadata$contributors$data_collectors[[1]]), collectors_names)
+  expect_length(test_metadata$contributors$data_collectors, 1L)
+  expect_named(test_metadata$contributors$data_collectors[[1]], collectors_names)
+  # Test that metadata_create_template puts all data collector fields as "unknown" by default
   expect_equal((test_metadata$contributors$data_collectors[[1]] %>% unique)[[1]], "unknown")
  })
 
