@@ -1,5 +1,5 @@
 
-
+# Should these packages be commented out?
 # Load packages needed for generating reports
 suppressWarnings({
 #  library(austraits)
@@ -8,7 +8,7 @@ suppressWarnings({
 })
 
 test_that("metadata_create_template is working", {
-  # Not sure whether the below line does anything
+  # Remove the metadata file if it exists before testing `metadata_create_template`
   unlink("data/Test_2022/metadata.yml")
   expect_silent(schema <- get_schema())
   # Whether or not skip_manual is TRUE or FALSE, this test passes -- is that intended?
@@ -36,12 +36,12 @@ test_that("metadata_create_template is working", {
 test_that("metadata_path_dataset_id is working", {
   expect_silent(metadata_path_dataset_id("Test_2022"))
   expect_equal(metadata_path_dataset_id("Test_2022"), "data/Test_2022/metadata.yml")
-  expect_equal(class(metadata_path_dataset_id("Test_2022")), "character")
+  expect_type(metadata_path_dataset_id("Test_2022"), "character")
 })
 
 test_that("read_metadata_dataset is working", {
   expect_silent(read_metadata_dataset("Test_2022"))
-  expect_equal(class(read_metadata_dataset("Test_2022")), "list")
+  expect_type(read_metadata_dataset("Test_2022"), "list")
 })
 
 test_that("write_metadata_dataset is working", {
@@ -54,7 +54,7 @@ test_that("write_metadata_dataset is working", {
   expect_true(file.exists("data/Test_2022/metadata.yml"))
 
   expect_silent(read_metadata_dataset("Test_2022"))
-  expect_equal(class(read_metadata_dataset("Test_2022")), "list")
+  expect_type(read_metadata_dataset("Test_2022"), "list")
 })
 
 
@@ -64,38 +64,44 @@ test_that("metadata_add_source_doi is working", {
   doi2 <- "https://doi.org/10.1111/j.0022-0477.2005.00992.x"
 
   expect_equal(doi, util_standardise_doi(doi))
+  # This line does the exact same as the above, right?
   expect_equal(doi, util_standardise_doi("https://doi.org/10.3389/fmars.2021.671145"))
   expect_equal(doi, util_standardise_doi("http://doi.org/10.3389/fmars.2021.671145"))
   expect_equal(doi, util_standardise_doi("doi.org/10.3389/fmars.2021.671145"))
   expect_equal(doi, util_standardise_doi("10.3389/fmars.2021.671145"))
 
   # We won't actually test querying of rcrossref, to avoid unnecessary fails
-  # passing in bib avoids calling corssref
+  # Passing in .bib files avoids calling crossref
 
   # Create and load test data
+  # I believe rcrossref::cr_cn prefers doi to be in this format "10.3389/fmars.2021.671145" otherwise
+  # it throws out a warning (see this issue: https://github.com/ropensci/rcrossref/issues/226)
   # bib <- rcrossref::cr_cn(doi)
+  # The working directory of the other tests is in "tests/testthat" so should this also be in the same
+  # working directory?
   # writeLines(bib, "tests/testthat/data/test.bib")
   # bib2 <- rcrossref::cr_cn(doi2)
   # writeLines(bib2, "tests/testthat/data/test2.bib")
   bib <- readLines("data/test.bib") %>% paste(collapse = "\n")
   bib2 <- readLines("data/test2.bib") %>% paste(collapse = "\n")
-
+  # I noticed that because the bib information has authors in all caps, it's entered into AusTraits that way
+  # Should we add some code to standardise capitalisation?
+  # Also the key is "Test_2022" for both primary and secondary sources
   expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib))
   expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi2, bib = bib2, type = "secondary"))
 
-  ret <- read_metadata("data/Test_2022/metadata.yml")
-  expect_equal(ret$source$primary$journal, "Frontiers in Marine Science")
-  expect_equal(ret$source$primary$year, "2021")
-  expect_equal(paste0("https://doi.org/", ret$source$primary$doi), doi)
+  test_metadata <- read_metadata("data/Test_2022/metadata.yml")
+  expect_equal(test_metadata$source$primary$journal, "Frontiers in Marine Science")
+  expect_equal(test_metadata$source$primary$year, "2021")
+  expect_equal(paste0("https://doi.org/", test_metadata$source$primary$doi), doi)
 
-  expect_equal(ret$source$secondary$journal, "Journal of Ecology")
-  expect_equal(ret$source$secondary$year, "2005")
-  expect_equal(paste0("https://doi.org/", ret$source$secondary$doi), doi2)
+  expect_equal(test_metadata$source$secondary$journal, "Journal of Ecology")
+  expect_equal(test_metadata$source$secondary$year, "2005")
+  expect_equal(paste0("https://doi.org/", test_metadata$source$secondary$doi), doi2)
 })
 
-
 test_that("metadata_check_custom_R_code is working", {
-  expect_equal(class(metadata_check_custom_R_code("Test_2022")), c("spec_tbl_df", "tbl_df", "tbl", "data.frame"))
+  expect_type(metadata_check_custom_R_code("Test_2022"), c("spec_tbl_df", "tbl_df", "tbl", "data.frame"))
   expect_equal(ncol(metadata_check_custom_R_code("Test_2022")), 13)
   expect_equal(nrow(metadata_check_custom_R_code("Test_2022")), 45)
 
