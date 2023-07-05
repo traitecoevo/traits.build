@@ -9,7 +9,7 @@ test_config <- dataset_configure("data/Test_2022/test-metadata.yml",
                                   traits_definitions,
                                   unit_conversions)
 
-test_that("test dataset_configure is working", {
+test_that("dataset_configure is working", {
   expect_no_error(
     test_config <- dataset_configure("data/Test_2022/test-metadata.yml",
                                       traits_definitions,
@@ -20,7 +20,7 @@ test_that("test dataset_configure is working", {
                c("dataset_id", "metadata", "definitions", "unit_conversion_functions"))
 })
 
-test_that("test dataset_process is working", {
+test_that("dataset_process is working", {
   expect_no_error(austraits_names <- schema$austraits$elements %>% names())
   expect_no_error(x <- dataset_process(test_data, test_config, schema, resource_metadata))
   expect_type(x, "list")
@@ -42,7 +42,7 @@ test_that("test dataset_process is working", {
   44)
 })
 
-test_that("test process_custom_code is working", {
+test_that("process_custom_code is working", {
   expect_no_error(metadata <- test_config$metadata)
   expect_no_error(
     data <- readr::read_csv(test_data, col_types = cols(),
@@ -56,10 +56,10 @@ test_that("test process_custom_code is working", {
 })
 
 # The below functions are not working
-#test_that("test process_flag_unsupported_traits is working", {
+#test_that("process_flag_unsupported_traits is working", {
 #  process_flag_unsupported_traits(data, definitions)
 #})
 
-#test_that("test process_flag_excluded_observations is working", {
+#test_that("process_flag_excluded_observations is working", {
 #  process_flag_excluded_observations
 #})

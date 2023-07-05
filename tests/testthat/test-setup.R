@@ -155,11 +155,11 @@ test_that("metadata_remove_taxonomic_change is working", {
   expect_invisible(metadata_remove_taxonomic_change("Test_2022", "flower"))
 })
 
-test_that("test dataset_test is working", {
+test_that("dataset_test is working", {
   expect_error(dataset_test())
 })
 
-test_that("test build_setup_pipeline is working", {
+test_that("build_setup_pipeline is working", {
 
 
   unlink("remake.yml")
@@ -212,7 +212,7 @@ test_that("test build_setup_pipeline is working", {
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
 })
 
-test_that("reports and plots produced", {
+test_that("reports and plots are produced", {
 
   expect_no_error(austraits <- remake::make("austraits"))
 
@@ -227,7 +227,7 @@ test_that("reports and plots produced", {
   )
 })
 
-testthat::test_that("Is test_data working", {
+testthat::test_that("test_data is working", {
 
   expect_silent(
     out <- dataset_test("Test_2022", reporter = testthat::SilentReporter)
@@ -239,7 +239,7 @@ testthat::test_that("Is test_data working", {
 
 })
 
-testthat::test_that("test metadata_add_substitutions_table", {
+testthat::test_that("metadata_add_substitutions_table is working", {
   substitutions_df <- tibble::tibble(
     dataset_id = "Test_2022",
     trait_name = "Tree",

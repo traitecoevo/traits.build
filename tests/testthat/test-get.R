@@ -1,5 +1,5 @@
 
-test_that("test get_schema", {
+test_that("get_schema is working", {
   expect_silent(x <- get_schema())
   expect_type(x, "list")
   expect_length(x, 6)
