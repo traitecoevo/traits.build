@@ -57,10 +57,10 @@ util_replace_null <- function(x, val=NA){
 #' Convert all columns in data frame to character
 
 #' @param df a dataframe
-#' 
+#'
 #' @return a dataframe
-#' 
-#' @examples lapply(traits.build:::util_df_convert_character(iris), class) 
+#'
+#' @examples lapply(traits.build:::util_df_convert_character(iris), class)
 util_df_convert_character <- function(df) {
   dplyr::mutate(df, dplyr::across(dplyr::everything(), as.character))
 }
@@ -113,7 +113,7 @@ util_separate_and_sort <- function(x, sep=" ") {
 #'
 #' @param df a dataframe
 #' @return a (yaml) list
-#' @export 
+#' @export
 #' @examples util_df_to_list(iris)
 util_df_to_list <- function(df) {
   attr(df, "out.attrs") <- NULL
@@ -237,7 +237,7 @@ read_metadata_dataset <- function(dataset_id) {
 
 
 #' Write metadata.yml for a study
-#' 
+#'
 #' write metadata.yml file with custom R code formatted to allow line breaks
 #'
 #' @param data austraits metadata object (a list)
@@ -258,25 +258,25 @@ write_metadata <- function(data, path, style_code=FALSE) {
 
   y <- data
   y$dataset$custom_R_code <- NA
-  
+
   txt <- yaml::as.yaml(y, column.major = FALSE, indent=2) %>%
     gsub(": ~",":", ., fixed=TRUE)
-  
+
   #reinsert custom R code
   if(!is.na(data$dataset$custom_R_code)) {
-    
+
     code <- data$dataset$custom_R_code
-    
+
     if(style_code)
       code <- code %>% suppressWarnings(styler::style_text(transformers = .data$tidyverse_style(strict = TRUE)))
-    
+
     txt <- gsub("custom_R_code: .na", code %>% paste(collapse = "\n") %>%
                   paste0("custom_R_code:", .), txt, fixed = TRUE)
   }
-  
+
   if(!stringr::str_sub(txt, nchar(txt)) == "\n")
     txt <- c(txt, "\n")
-  
+
   file <- file(path, "w", encoding = "UTF-8")
   on.exit(close(file))
   cat(txt, file=file)
@@ -319,14 +319,14 @@ create_tree_branch <- function(x, title, prefix = "") {
 }
 
 #' Strip scientific names of formatting and abbreviations
-#' 
-#' Enables better fuzzy matching of scientific names by 
+#'
+#' Enables better fuzzy matching of scientific names by
 #' reducing the number of characters that could differ
-#' 
+#'
 #' @param x vector of names to clean
 #' @return vector of cleaned names
 #' @importFrom stringr fixed
-#' @export 
+#' @export
 #' @examples c("Bankisa_serrata", "bankisa  serrata", "Banksia Seratta") %>% util_strip_taxon_names()
 util_strip_taxon_names <- function(x) {
   x %>%
