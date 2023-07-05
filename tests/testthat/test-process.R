@@ -10,22 +10,15 @@ test_config <- dataset_configure("data/Test_2022/test-metadata.yml",
                                   unit_conversions)
 
 test_that("test dataset_configure is working", {
-  expect_type(dataset_configure("data/Test_2022/test-metadata.yml",
-                yaml::read_yaml("config/traits.yml"),
-                get_unit_conversions("config/unit_conversions.csv")), "list")
-  expect_length(dataset_configure("data/Test_2022/test-metadata.yml",
-                yaml::read_yaml("config/traits.yml"),
-                get_unit_conversions("config/unit_conversions.csv")), 4)
-  expect_named(dataset_configure("data/Test_2022/test-metadata.yml",
-                             yaml::read_yaml("config/traits.yml"),
-                             get_unit_conversions("config/unit_conversions.csv")),
+  expect_type(test_config, "list")
+  expect_length(test_config, 4)
+  expect_named(test_config,
                c("dataset_id", "metadata", "definitions", "unit_conversion_functions"))
 })
 
 test_that("test dataset_process is working",{
   austraits_names <- schema$austraits$elements %>% names()
-
-  expect_no_error(  x <- dataset_process(test_data, test_config, schema,resource_metadata))
+  expect_no_error(x <- dataset_process(test_data, test_config, schema,resource_metadata))
   expect_class(x, "list")
   expect_length(x, 13)
   expect_named(x, austraits_names)
