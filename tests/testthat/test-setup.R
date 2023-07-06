@@ -1,5 +1,5 @@
 
-# Should these packages be commented out?
+# Should these packages be commented out or removed entirely?
 # Load packages needed for generating reports
 suppressWarnings({
 #  library(austraits)
@@ -182,16 +182,17 @@ test_that("build_setup_pipeline is working", {
 
   unlink("remake.yml")
   unlink("config/taxon_list.csv")
-
   unlink(".git", recursive = TRUE)
   expect_false(file.exists("remake.yml"))
   expect_false(file.exists("config/taxon_list.csv"))
   expect_true(file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml", overwrite = TRUE))
 
+  # This zip file doesn't exist, so test fails
   expect_no_error(zip::unzip("config/testgit.zip"))
   expect_no_error(sha <- git2r::sha(git2r::last_commit()))
+  # Expect error if path name is wrong
   expect_error(build_setup_pipeline(path = "Datas"))
-
+  # Should we add to build_setup_pipeline documentation that it also makes taxon_list.csv?
   expect_silent(build_setup_pipeline())
   expect_true(file.exists("remake.yml"))
   expect_silent(yaml::read_yaml("remake.yml"))
@@ -204,7 +205,6 @@ test_that("build_setup_pipeline is working", {
     "taxon_name", "taxon_id", "scientific_name_authorship", "taxon_rank",
     "taxonomic_status", "family", "taxon_distribution", "establishment_means",
     "scientific_name", "scientific_name_id")
-
   expect_named(taxa1, vars)
   expect_length(taxa1, 15)
   expect_true(nrow(taxa1) == 0)
@@ -215,14 +215,23 @@ test_that("build_setup_pipeline is working", {
   expect_true(nrow(taxa2) == 7)
 
   unlink(".remake", recursive = TRUE)
+  # The below line throws a warning
+  # Warning in .remake_add_targets_implied(obj) :
+  #   Creating implicit target for nonexistant files
+  #  - .git/index: (in git_SHA)
   expect_no_error(austraits_raw <- remake::make("austraits_raw"))
+  # The below line throws an error
+  # Error in target_build(target, obj$store, obj$verbose$quiet_target) :
+  #   Can't build implicit target .git/index
   expect_no_error(austraits <- remake::make("austraits"))
 
+  # austraits_raw has no version number or git_SHA, austraits does
   expect_null(austraits_raw$build_info$version)
   expect_null(austraits_raw$build_info$git_SHA)
   expect_equal(austraits$build_info$version, "4.0.0")
   expect_true(is.character(austraits$build_info$git_SHA))
   expect_equal(austraits$build_info$git_SHA, sha)
+  # Won't the SHA change after every commit?
   expect_equal(austraits$build_info$git_SHA, "6c73238d8d048781d9a4f5239a03813be313f0dd")
 
   expect_length(austraits_raw$taxa, 14)
@@ -231,30 +240,23 @@ test_that("build_setup_pipeline is working", {
 })
 
 test_that("reports and plots are produced", {
-
   expect_no_error(austraits <- remake::make("austraits"))
-
   expect_no_error(
-   p <- 1
-   #austraits::plot_trait_distribution_beeswarm(
-   #  austraits, "huber_value", "dataset_id", highlight = "Test_2022", hide_ids = TRUE)
+    # What's this for?
+    p <- 1
+    #austraits::plot_trait_distribution_beeswarm(
+      #austraits, "huber_value", "dataset_id", highlight = "Test_2022", hide_ids = TRUE)
   )
-
   expect_no_error(
     dataset_report(dataset_id = "Test_2022", austraits = austraits, overwrite = TRUE)
   )
 })
 
 testthat::test_that("test_data is working", {
-
   expect_silent(
-    out <- dataset_test("Test_2022", reporter = testthat::SilentReporter)
-  )
-
-  expect_true(
-    all(c("SilentReporter", "Reporter", "R6") %in% class(out))
-  )
-
+    out <- dataset_test("Test_2022", reporter = testthat::SilentReporter))
+  expect_in(
+    c("SilentReporter", "Reporter", "R6"), class(out))
 })
 
 testthat::test_that("metadata_add_substitutions_table is working", {
@@ -266,7 +268,6 @@ testthat::test_that("metadata_add_substitutions_table is working", {
   )
 
   path_metadata <- "data/Test_2022/metadata.yml"
-
   metadata_create_template(
     dataset_id = "Test_2022",
     path = "data",
@@ -276,6 +277,9 @@ testthat::test_that("metadata_add_substitutions_table is working", {
   metadata <- read_metadata(path_metadata)
   metadata$substitutions <- NA
   write_metadata(metadata, path_metadata)
+  # I think the arguments after the first one are unnecessary, it works without putting them in
+  # Also you can add substitutions twice with no errors, but the third time it throws an uninformative error
   expect_invisible(metadata_add_substitutions_table(substitutions_df, "Test_2022", "trait_name", "find", "replace"))
+  # Test if any of the substitutions contain "Tree" in any fields
   expect_equal(read_metadata(path_metadata)$substitutions %>% sapply(`%in%`, x = "Tree") %>% any(), TRUE)
 })
