@@ -57,7 +57,6 @@ test_that("write_metadata_dataset is working", {
   expect_type(read_metadata_dataset("Test_2022"), "list")
 })
 
-
 test_that("metadata_add_source_doi is working", {
 
   doi <- "https://doi.org/10.3389/fmars.2021.671145"
@@ -215,23 +214,16 @@ test_that("build_setup_pipeline is working", {
   expect_true(nrow(taxa2) == 7)
 
   unlink(".remake", recursive = TRUE)
-  # The below line throws a warning
-  # Warning in .remake_add_targets_implied(obj) :
-  #   Creating implicit target for nonexistant files
-  #  - .git/index: (in git_SHA)
   expect_no_error(austraits_raw <- remake::make("austraits_raw"))
-  # The below line throws an error
-  # Error in target_build(target, obj$store, obj$verbose$quiet_target) :
-  #   Can't build implicit target .git/index
   expect_no_error(austraits <- remake::make("austraits"))
 
   # austraits_raw has no version number or git_SHA, austraits does
   expect_null(austraits_raw$build_info$version)
   expect_null(austraits_raw$build_info$git_SHA)
+  # Test that austraits has version and git_SHA from testgit folder
   expect_equal(austraits$build_info$version, "4.0.0")
-  expect_true(is.character(austraits$build_info$git_SHA))
+  expect_type(austraits$build_info$git_SHA, "character")
   expect_equal(austraits$build_info$git_SHA, sha)
-  # Won't the SHA change after every commit?
   expect_equal(austraits$build_info$git_SHA, "6c73238d8d048781d9a4f5239a03813be313f0dd")
 
   expect_length(austraits_raw$taxa, 14)
@@ -242,11 +234,14 @@ test_that("build_setup_pipeline is working", {
 test_that("reports and plots are produced", {
   expect_no_error(austraits <- remake::make("austraits"))
   expect_no_error(
-    # What's this for?
+    # What's this p for?
     p <- 1
     #austraits::plot_trait_distribution_beeswarm(
       #austraits, "huber_value", "dataset_id", highlight = "Test_2022", hide_ids = TRUE)
   )
+  # I get this error and I have no idea how to update pandoc:
+  # Error : pandoc version 1.12.3 or higher is required and was not found (see the help page ?rmarkdown::pandoc_available).
+  # rmarkdown::pandoc_available says I have no pandoc available
   expect_no_error(
     dataset_report(dataset_id = "Test_2022", austraits = austraits, overwrite = TRUE)
   )
@@ -268,6 +263,7 @@ testthat::test_that("metadata_add_substitutions_table is working", {
   )
 
   path_metadata <- "data/Test_2022/metadata.yml"
+  # I think this creates it in the wrong directory? It creates a metadata file in "data/", not "data/Test_2022/"
   metadata_create_template(
     dataset_id = "Test_2022",
     path = "data",
