@@ -8,6 +8,7 @@ test_that("util_df_to_list is working", {
   expect_type(util_df_to_list(ggplot2::mpg), "list")
 })
 
+# There's no test for util_list_to_df1, should we add one?
 test_that("util_list_to_df2 is working", {
   expect_equal(util_list_to_df2(NULL), NA)
   expect_equal(util_list_to_df2(NA), NA)
