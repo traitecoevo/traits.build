@@ -4,26 +4,16 @@ test_that("util_replace_null returns NA", {
   expect_equal(util_replace_null(1), 1)
 })
 
-test_that("util_extract_list_element returns an element in character", {
-  test_list <- util_df_to_list(iris)
-  names(test_list) <- paste("row", seq_len(nrow(iris)))
-
-  expect_type(util_extract_list_element(1, test_list, "Sepal.Length"), "double")
-  expect_equal(util_extract_list_element(1, test_list,  "Sepal.Length"), 5.1)
-  expect_equal(util_extract_list_element("row 2", test_list,  "Sepal.Length"), 4.9)
-  expect_error(util_extract_list_element((length(test_list) + 1), test_list, "units"), "subscript out of bounds")
-})
-
-test_that("util_separate_and_sort returns alphabetically sorted characters", {
-  expect_type(util_separate_and_sort("z y x"), "character")
-  expect_match(util_separate_and_sort("z y x"), "x y z")
-  expect_match(util_separate_and_sort("300 200 100 1 2 3"), "1 100 2 200 3 300")
+test_that("util_append_to_list is working", {
+  my_list <- as.list(iris)
+  expect_equal(util_append_to_list(my_list, NULL), my_list)
+  expect_length((util_append_to_list(my_list, NA)), 6)
+  expect_gt(length(util_append_to_list(my_list, NA)), length(my_list))
+  expect_error(util_append_to_list(my_list), 'argument "to_append" is missing, with no default')
 })
 
 test_that("util_df_to_list is working", {
-  expect_match(class(util_df_to_list(iris)), "list")
   expect_type(util_df_to_list(iris), "list")
-
   expect_match(class(util_append_to_list(as.list(iris)[c(1, 2)], as.list(iris)[c(3)])), "list")
   expect_equal(length(util_append_to_list(as.list(iris)[c(1, 2)], as.list(iris)[c(3)])), 3)
 })
@@ -39,12 +29,20 @@ test_that("util_list_to_df2 is working", {
   expect_equal(util_list_to_df2(my_list), NA)
 })
 
-test_that("util_append_to_list is working", {
-  my_list <- as.list(iris)
-  expect_equal(util_append_to_list(my_list, NULL), my_list)
-  expect_length((util_append_to_list(my_list, NA)), 6)
-  expect_gt(length(util_append_to_list(my_list, NA)), length(my_list))
-  expect_error(util_append_to_list(my_list), 'argument "to_append" is missing, with no default')
+test_that("util_extract_list_element returns an element in character", {
+  test_list <- util_df_to_list(ggplot2::mpg)
+  names(test_list) <- paste("row", seq_len(nrow(ggplot2::mpg)))
+
+  expect_type(util_extract_list_element(1, test_list, "displ"), "double")
+  expect_equal(util_extract_list_element(1, test_list,  "displ"), 1.8)
+  expect_equal(util_extract_list_element("row 2", test_list, "displ"), 1.8)
+  expect_error(util_extract_list_element((length(test_list) + 1), test_list, "displ"), "subscript out of bounds")
+})
+
+test_that("util_separate_and_sort returns alphabetically sorted characters", {
+  expect_type(util_separate_and_sort("z y x"), "character")
+  expect_match(util_separate_and_sort("z y x"), "x y z")
+  expect_match(util_separate_and_sort("300 200 100 1 2 3"), "1 100 2 200 3 300")
 })
 
 test_that("util_strip_taxon_names is working", {
