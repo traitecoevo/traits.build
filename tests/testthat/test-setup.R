@@ -101,10 +101,10 @@ test_that("metadata_add_source_doi is working", {
 })
 
 test_that("metadata_check_custom_R_code is working", {
-  expect_type(metadata_check_custom_R_code("Test_2022"), c("spec_tbl_df", "tbl_df", "tbl", "data.frame"))
+  # Check that the `custom_R_code` produces a tibble class object
+  expect_equal(class(metadata_check_custom_R_code("Test_2022")), c("spec_tbl_df", "tbl_df", "tbl", "data.frame"))
   expect_equal(ncol(metadata_check_custom_R_code("Test_2022")), 13)
   expect_equal(nrow(metadata_check_custom_R_code("Test_2022")), 45)
-
   expect_visible(metadata_check_custom_R_code("Test_2022"))
 })
 
@@ -114,18 +114,22 @@ test_that("metadata_add_source_bibtex is working", {
 })
 
 test_that("metadata_add_substitution is working", {
-  expect_silent(suppressMessages(metadata_add_substitution("Test_2022", "leaf_mass_per_area",
-                                                           "leaf_area", "leaf_mass_per_area")))
+  expect_silent(
+    suppressMessages(
+      metadata_add_substitution("Test_2022", "leaf_mass_per_area", "leaf_area", "leaf_mass_per_area")
+    ))
 
   x <- read_metadata("data/Test_2022/metadata.yml")$substitutions[[1]]
-
-  expect_equal(length(x), 3)
+  expect_length(x, 3)
   expect_equal(x$trait_name, "leaf_mass_per_area")
   expect_equal(x$find, "leaf_area")
   expect_equal(x$replace, "leaf_mass_per_area")
 })
 
 test_that("metadata_add_taxonomic_change is working", {
+  # If the taxonomic substitution already exists, this throws an uninformative error
+  # Also if ANY taxonomic substitution already exists, this throws an error I think
+  # Do we want to add in a similar message like with `metadata_add_substitution`?
   expect_output(metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "Tissue"))
 
   x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[1]]
@@ -136,37 +140,45 @@ test_that("metadata_add_taxonomic_change is working", {
 })
 
 test_that("metadata_exclude_observations is working", {
+  # If the observation is already excluded, this throws an uninformative error
+  # Do we want to add in a similar message like with `metadata_add_substitution`?
   expect_output(metadata_exclude_observations("Test_2022", "stem", "branch", "test"))
 
-  x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[1]]
-
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[1]]$variable, "stem")
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[1]]$find, "branch")
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[1]]$reason, "test")
+  x <- read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[1]]
+  expect_equal(x$variable, "stem")
+  expect_equal(x$find, "branch")
+  expect_equal(x$reason, "test")
 })
 
 test_that("metadata_update_taxonomic_change is working", {
+  # Test that `metadata_update_taxonomic_change` throws an error if the substitution does not exist
+  # Can we add a more informative error message?
   expect_error(metadata_update_taxonomic_change("Test_2022", "grass", "bark", "soil", "Substrate"))
   expect_invisible(
     suppressMessages(
       metadata_update_taxonomic_change("Test_2022", "flower", "bark", "soil", "Substrate")
     ))
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[1]]$find, "flower")
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[1]]$replace, "bark")
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[1]]$reason, "soil")
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[1]]$taxonomic_resolution, "Substrate")
+
+  x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[1]]
+  expect_equal(x$find, "flower")
+  expect_equal(x$replace, "bark")
+  expect_equal(x$reason, "soil")
+  expect_equal(x$taxonomic_resolution, "Substrate")
 })
 
 test_that("metadata_remove_taxonomic_change is working", {
+  # Can we add an informative error message here too if there's no substitution to remove?
+  # Also this replaces the taxonomic_updates section with an empty list, preventing you from using
+  # metadata_add_taxonomic_change() again
   expect_invisible(metadata_remove_taxonomic_change("Test_2022", "flower"))
 })
 
 test_that("dataset_test is working", {
+  # Expect error if no dataset_ids argument is input
   expect_error(dataset_test())
 })
 
 test_that("build_setup_pipeline is working", {
-
 
   unlink("remake.yml")
   unlink("config/taxon_list.csv")
