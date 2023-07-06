@@ -9,6 +9,7 @@ testthat::test_that("test datasets", {
 
   examples_dir <- "examples"
 
+  # What does the below comment mean?
   # Build example -- this runs a bunch of tests already
 
   # Example 1 - Test for basis_of_record and life_stage at the dataset level
@@ -21,6 +22,7 @@ testthat::test_that("test datasets", {
 
   expect_equal(ex1$traits$basis_of_record %>% unique, "field")
   expect_equal(ex1$traits$life_stage %>% unique, "adult")
+  # Are these tests necessary? We know from the above tests that the number of rows will be 406
   expect_equal(ex1$traits %>% filter(basis_of_record == "field") %>% nrow(), 406)
   expect_equal(ex1$traits %>% filter(life_stage == "adult") %>% nrow(), 406)
   expect_equal(nrow(ex1$excluded_data), 0)
