@@ -32,8 +32,8 @@ NULL
 #'
 #' @return tibble
 #' @export
-read_csv_char <- function(...){
-  readr::read_csv(..., col_types = cols(.default = "c"), progress=FALSE)
+read_csv_char <- function(...) {
+  readr::read_csv(..., col_types = cols(.default = "c"), progress = FALSE)
 }
 
 #' Convert NULL values to a different value
@@ -48,8 +48,8 @@ read_csv_char <- function(...){
 #' @examples \dontrun{
 #' util_replace_null(NULL)
 #' }
-util_replace_null <- function(x, val=NA){
-  if(is.null(x)) return(val)
+util_replace_null <- function(x, val = NA) {
+  if (is.null(x)) return(val)
   x
 }
 
@@ -95,14 +95,14 @@ util_extract_list_element <- function(i, my_list, var) {
 #' @return a vector of alphabetically sorted records
 #'
 #' @examples \dontrun{util_separate_and_sort("z y x")}
-util_separate_and_sort <- function(x, sep=" ") {
+util_separate_and_sort <- function(x, sep = " ") {
 
   # find cells with multiple values, indicated by presence of sep
   i <- grep(sep, x)
   # for those cells, split, sort then combine
   x[i] <- x[i] %>%
       stringr::str_split(" ") %>%
-      lapply(function(xi) xi %>% sort() %>% paste(collapse=" ")) %>%
+      lapply(function(xi) xi %>% sort() %>% paste(collapse = " ")) %>%
       unlist()
   x
 }
@@ -130,12 +130,12 @@ util_df_to_list <- function(df) {
 #'
 #' @export
 #' @examples util_list_to_df2(util_df_to_list(iris))
-util_list_to_df2 <- function(my_list, as_character= TRUE, on_empty=NA) {
+util_list_to_df2 <- function(my_list, as_character = TRUE, on_empty = NA) {
 
-  if(is.null(my_list) || any(is.na(my_list)) || length(my_list) ==0)
+  if (is.null(my_list) || any(is.na(my_list)) || length(my_list) == 0)
     return(on_empty)
 
-  if(as_character)
+  if (as_character)
     my_list <- lapply(my_list, lapply, as.character)
 
   dplyr::bind_rows(lapply(my_list, tibble::as_tibble))
@@ -151,8 +151,8 @@ util_list_to_df2 <- function(my_list, as_character= TRUE, on_empty=NA) {
 #' }
 util_list_to_df1 <- function(my_list) {
 
-  for(f in names(my_list)) {
-    if(is.null(my_list[[f]]))
+  for (f in names(my_list)) {
+    if (is.null(my_list[[f]]))
       my_list[[f]] <- NA
   }
 
@@ -190,7 +190,7 @@ util_bib_to_list <- function(bib) {
 #' util_append_to_list(as.list(iris)[c(1,2)], as.list(iris)[c(3,4)])
 #' }
 util_append_to_list <- function(my_list, to_append) {
-  my_list[[length(my_list)+1]] <-  to_append
+  my_list[[length(my_list) + 1]] <-  to_append
   my_list
 }
 
@@ -206,13 +206,13 @@ read_metadata <- function(path) {
 
   # We want to preserve formatting in custom R code
   # but read_yaml looses it. So read in as text, if not empty
-  if(!is.na(data$dataset$custom_R_code)) {
+  if (!is.na(data$dataset$custom_R_code)) {
     # Read in again, extracting custom R code
 
     data2 <- readLines(path)
 
     code_start <- grep("  custom_R_code:", data2, fixed = TRUE)
-    code_end <- grep("  collection_date:", data2, fixed=TRUE)-1
+    code_end <- grep("  collection_date:", data2, fixed = TRUE) - 1
 
     data$dataset$custom_R_code <-
       data2[code_start:code_end] %>%
@@ -254,32 +254,32 @@ read_metadata_dataset <- function(dataset_id) {
 #' data <- read_metadata(f)
 #' write_metadata(data, f)
 #' }
-write_metadata <- function(data, path, style_code=FALSE) {
+write_metadata <- function(data, path, style_code = FALSE) {
 
   y <- data
   y$dataset$custom_R_code <- NA
 
-  txt <- yaml::as.yaml(y, column.major = FALSE, indent=2) %>%
-    gsub(": ~",":", ., fixed=TRUE)
+  txt <- yaml::as.yaml(y, column.major = FALSE, indent = 2) %>%
+    gsub(": ~", ":", ., fixed = TRUE)
 
   #reinsert custom R code
-  if(!is.na(data$dataset$custom_R_code)) {
+  if (!is.na(data$dataset$custom_R_code)) {
 
     code <- data$dataset$custom_R_code
 
-    if(style_code)
+    if (style_code)
       code <- code %>% suppressWarnings(styler::style_text(transformers = .data$tidyverse_style(strict = TRUE)))
 
     txt <- gsub("custom_R_code: .na", code %>% paste(collapse = "\n") %>%
                   paste0("custom_R_code:", .), txt, fixed = TRUE)
   }
 
-  if(!stringr::str_sub(txt, nchar(txt)) == "\n")
+  if (!stringr::str_sub(txt, nchar(txt)) == "\n")
     txt <- c(txt, "\n")
 
   file <- file(path, "w", encoding = "UTF-8")
   on.exit(close(file))
-  cat(txt, file=file)
+  cat(txt, file = file)
 }
 
 
