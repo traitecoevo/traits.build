@@ -697,7 +697,7 @@ process_flag_excluded_observations <- function(data, metadata) {
 #' @param sep amount of space separating values to be split, default = " " (a single space)
 #'
 #' @return vector of logical values
-util_check_all_values_in <- function(x, y, sep = " "){
+util_check_all_values_in <- function(x, y, sep = " ") {
   x %>% stringr::str_split(sep) %>% sapply(function(xi) all(xi %in% y))
 }
 
@@ -710,7 +710,7 @@ util_check_all_values_in <- function(x, y, sep = " "){
 #'
 #' @importFrom rlang .data
 #' @return character string of formatted reference
-bib_print <- function(bib, .opts = list(first.inits = TRUE, max.names = 1000, style = "markdown") ) {
+bib_print <- function(bib, .opts = list(first.inits = TRUE, max.names = 1000, style = "markdown")) {
 
   format.BibEntry <- utils::getFromNamespace("format.BibEntry", "RefManageR")
   # set format
@@ -745,7 +745,7 @@ util_list_to_bib <- function(ref) {
 
   # Ensures capitalisation of title retained as is
   if (!is.null(ref$title))
-    ref$title = sprintf("{%s}", ref$title)
+    ref$title <- sprintf("{%s}", ref$title)
 
   RefManageR::as.BibEntry(ref)
 }
@@ -1158,7 +1158,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
   # Now process any name changes as per metadata[["traits"]]
   out[["unit"]] <- NA_character_
   i <- match(out[["trait_name"]], traits_table[["var_in"]])
-  if(length(i) > 0) {
+  if (length(i) > 0) {
     j <- !is.na(i)
     out[["unit"]][j] <- traits_table[["unit_in"]][i[j]]
     out[["trait_name"]][j] <- traits_table[["trait_name"]][i[j]]
@@ -1395,7 +1395,7 @@ process_taxonomic_updates <- function(data, metadata) {
   for (i in seq_len(nrow(substitutions_table))) {
 
     j <- which(out[["taxon_name"]] == substitutions_table[["find"]][i])
-    if (length(j) > 0){
+    if (length(j) > 0) {
       out[["taxon_name"]][j] <- substitutions_table[["replace"]][i]
       out[["taxonomic_resolution"]][j] <- substitutions_table[["taxonomic_resolution"]][i]
       to_update[j] <- FALSE
