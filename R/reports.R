@@ -64,13 +64,13 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
         output_file = output_html,
         quiet = quiet,
         params = list(
-                  dataset_id = dataset_id,
-                  austraits = austraits
-          )
+          dataset_id = dataset_id,
+          austraits = austraits
+        )
       )
     )
 
-    # remove temporary Rmd
+    # Remove temporary Rmd
     if (!keep)
       unlink(input_Rmd)
     cat(" -> ", output_html, "\n")

@@ -36,7 +36,7 @@ $(document).ready(function() {
 
 ```{r setup, echo=FALSE, message=FALSE, warning=FALSE, results="hide"}
 # knitr defaults
-knitr::opts_chunk$set(echo=FALSE, cache=FALSE)
+knitr::opts_chunk$set(echo = FALSE, cache = FALSE)
 
 # default for table format
 options(knitr.table.format = "html")
@@ -107,8 +107,9 @@ schema <- austraits$schema
 questions <-  traits.build:::notetaker_start()
 
 new_question <- function(txt) {
-  x <- questions( traits.build:::notetaker_add_note,  traits.build:::notetaker_as_note(txt)) %>%  traits.build:::notetaker_print_notes(as_anchor=TRUE)
-  writeLines(sprintf("<font color='orange'>**Question:** %s</font>\n\n", paste0(x, collape="")))
+  x <- questions(traits.build:::notetaker_add_note, traits.build:::notetaker_as_note(txt)) %>%
+    traits.build:::notetaker_print_notes(as_anchor = TRUE)
+  writeLines(sprintf("<font color='orange'>**Question:** %s</font>\n\n", paste0(x, collape = "")))
 }
 
 # Variable to record when definitions have been specified
@@ -155,11 +156,11 @@ To aid your review, we have attached the following files:
 
 - `r dataset_id`/data.csv` and ` `r dataset_id`/metadata.yml`: The raw inputs for your study.
 
-### Send feedback by 
+### Send feedback by
 
-1. **Copying and pasting the questions at the end of the report into an email and answering as many as possible.** 
+1. **Copying and pasting the questions at the end of the report into an email and answering as many as possible.**
 
-    The majority of the questions are automatically generated prompts to look at the pertinent metadata or data plot (or table) and confirm it matches your expectations - for these simply answer "yes". There are often a few questions targeted to your study, written by an AusTraits data curator as they merged in your study. Please consider these carefully, as they usually indicate missing metadata or some source of ambiguity (e.g. units not provided, uncertainty about trait value substitutions).    
+    The majority of the questions are automatically generated prompts to look at the pertinent metadata or data plot (or table) and confirm it matches your expectations - for these simply answer "yes". There are often a few questions targeted to your study, written by an AusTraits data curator as they merged in your study. Please consider these carefully, as they usually indicate missing metadata or some source of ambiguity (e.g. units not provided, uncertainty about trait value substitutions).
 2. If appropriate, send a new spreadsheet to replace the existing `data.csv` file.
 3. You may edit the `metadata.yml` file associated with your study yourself, but most contributors prefer to answer the flagged questions and have an AusTraits data curator make the changes to the file.
 4. Sending back your responses and any edited files.
@@ -168,16 +169,15 @@ To aid your review, we have attached the following files:
 ```{r, results='asis', echo=FALSE}
 # Any additional questions from metadata
 
-if(!is.null(metadata$questions) & !is.na(metadata$questions[1])) {
+if (!is.null(metadata$questions) & !is.na(metadata$questions[1])) {
 
-  x <- names(metadata$questions)[ !(names(metadata$questions) %in% c(
-                                      "additional_traits", "austraits") 
-                                ) ]
-  
-  if(length(x) > 0)                            
+  x <-
+    names(metadata$questions)[!(names(metadata$questions) %in% c("additional_traits", "austraits"))]
+
+  if (length(x) > 0)
     writeLines("# Major questions\n\n")
 
-  for(i in seq_along(x))
+  for (i in seq_along(x))
     new_question(sprintf("(section `general`) %s", metadata$questions[[i]]))
 }
 ```
@@ -198,7 +198,7 @@ metadata$contributors$data_collectors %>%
 ```
 
 If a current affiliation isn't known, provide the last known institution. We also require an email address for all people. People involved in the study who cannot be tracked down, need to be designated as assistants.
-In addition, the following people are included as 
+In addition, the following people are included as
 
 - assistants: `r ifelse(is.null(metadata$contributors$assistants), "none", paste(metadata$contributors$assistants, collapse=", "))`
 - data curator(s):  `r metadata$contributors$austraits_curators`
@@ -221,13 +221,13 @@ metadata$source$primary %>%
 
 ```{r, results='asis', echo=FALSE}
 n <- length(metadata$source)
-if(n > 1) {
+if (n > 1) {
   writeLines("Secondary citations:")
 
-  for(i in 2:n) {
+  for (i in 2:n) {
     metadata$source[[i]] %>%
     util_list_to_df1() %>%
-    my_kable_styling() %>% 
+    my_kable_styling() %>%
     cat()
     writeLines("\n\n")
   }
@@ -259,7 +259,7 @@ missing <- metadata$dataset %>%
  filter(value == "unknown") %>%
  pull(key)
 
-for(v in missing) {
+for (v in missing) {
   sprintf("(section `dataset`) Can you provide missing details for the variable `%s`?\n", v) %>%
     new_question()
   sprintf("The variable `%s` captures *'%s'*\n", v, schema$metadata$elements$dataset$values[[v]]) %>%
@@ -274,15 +274,15 @@ Data were collected at the following sites and locations. As a minimum, we are a
 
 ```{r, results='asis', echo=FALSE, warning=FALSE}
 
-create_if_missing <- function(df, var, type=rep(NA_character_, nrow(df))) {
-  if(is.null(df[[var]]))
+create_if_missing <- function(df, var, type = rep(NA_character_, nrow(df))) {
+  if (is.null(df[[var]]))
     df[[var]] <- type
   df
 }
 
-location_main <- c("location_name", "longitude (deg)","latitude (deg)", "description")
+location_main <- c("location_name", "longitude (deg)", "latitude (deg)", "description")
 locations <-
-  full_join(by="location_id",
+  full_join(by = "location_id",
             # count of records by location
             data_study$traits %>%
               mutate(location_id = ifelse(is.na(location_id), "unknown", location_id)) %>%
@@ -307,9 +307,9 @@ locations <-
 
  locations %>%
    my_kable_styling()
-         
 
-if( any(tolower(locations$location_name) %in% c(NA, "unknown") ) ) {
+
+if (any(tolower(locations$location_name) %in% c(NA, "unknown"))) {
   new_question("(section `locations`) **Location data incomplete or unknown!** Can you provide location details where your data were sampled? If data are from a National Park, biological reserve, or other location with a name, but not linked to a specific site within the park, the site name should be that national park (or similar), and we will use the park's headquarters as the GPS coordinates. If the data are from herbarium specimens or a taxa monograph it is appropriate to leave this information blank.")
 }
 
@@ -319,13 +319,13 @@ if( any(tolower(locations$location_name) %in% c(NA, "unknown") ) ) {
 
 # Make a map of study locations using leaflet
 locations <- locations %>% filter(!is.na(`latitude (deg)`) & !is.na(`longitude (deg)`))
-if(nrow(locations) > 0 ) {
+if (nrow(locations) > 0) {
   leaflet::leaflet() %>%
   leaflet::addTiles() %>%
   leaflet::addScaleBar() %>%
-  leaflet::addMiniMap(zoomLevelFixed=2) %>%
+  leaflet::addMiniMap(zoomLevelFixed = 2) %>%
   leaflet::addMarkers(lng = locations$`longitude (deg)`, lat = locations$`latitude (deg)`,
-             label = locations$location_name)	
+             label = locations$location_name)
 }
 ```
 
@@ -344,13 +344,13 @@ data_study$locations %>%
   select(-dataset_id) %>%
   spread(location_property, value) -> locations_extra
 
-if(nrow(locations_extra) > 0 ) {
+if (nrow(locations_extra) > 0) {
   locations_extra %>%
     my_kable_styling() %>%
     writeLines()
 
   new_question("(section `locations`) Do the additional site details look complete?")
-  } else{
+  } else {
   writeLines("There is currently no additional site data associated with this dataset.")
 }
 
@@ -359,7 +359,7 @@ if(nrow(locations_extra) > 0 ) {
 ## Contexts
 
 
-The following contexts have been recorded for the measurements included in this study. 
+The following contexts have been recorded for the measurements included in this study.
 
 ```{r, results='asis', echo=FALSE}
 data_study$contexts %>%
@@ -367,11 +367,11 @@ data_study$contexts %>%
   group_by(context_property) %>%
   group_split() -> context_properties
 
-if(length(context_properties) > 0 ) {
-    for (i in seq_along(context_properties)) { 
+if (length(context_properties) > 0) {
+    for (i in seq_along(context_properties)) {
       var_in <- context_properties[[i]][["var_in"]][1]
 
-      writeLines(paste0("**", context_properties[[i]]$context_property[1], "**:", ifelse(is.null(var_in), "Added ",         
+      writeLines(paste0("**", context_properties[[i]]$context_property[1], "**:", ifelse(is.null(var_in), "Added ",
         paste0("Mapped from the column titled **", var_in, "** in your dataset ")), "with the category *", context_properties[[i]]$category[1], "*."))
 
       writeLines("\n\nThe following values exist for this context:\n")
@@ -403,7 +403,7 @@ n_records <- data_study$traits %>%
     summarise(
         taxa = length(unique(taxon_name)),
         records = length(value)) %>%
-   mutate(records_per_taxa = round(records / taxa, digits=2) )
+   mutate(records_per_taxa = round(records / taxa, digits = 2))
 
 n_records %>%
   my_kable_styling()
@@ -413,7 +413,7 @@ n_records %>%
 ```{r, results='asis', echo=FALSE}
 new_question("(section `traits`) Does this study include other trait data we may have missed?")
 
-if(median(n_records$records_per_taxa) < 2) {
+if (median(n_records$records_per_taxa) < 2) {
   new_question("(section `traits`) It appears as though we mostly have means for each taxa. Can you provide individual-level measurements?")
 }
 
@@ -427,9 +427,9 @@ writeLines(ifelse(nrow(subset(data_study$excluded_data, error != "Missing value"
         "All data passed quality control so nothing was excluded in this study. (Yay!)",
         "We excluded some records in your dataset as they did not pass the quality control. A summary of the number of points and reasons for exclusion are as follows:"))
 
-if(nrow(subset(data_study$excluded_data,error!="Missing value")) > 0 ) {
+if (nrow(subset(data_study$excluded_data, error! = "Missing value")) > 0) {
   data_study$excluded_data %>%
-    filter(error!="Missing value") %>%
+    filter(error != "Missing value") %>%
     group_by(trait_name, error) %>%
     summarise(`points excluded` = n()) %>%
     ungroup() %>%
@@ -437,7 +437,7 @@ if(nrow(subset(data_study$excluded_data,error!="Missing value")) > 0 ) {
     writeLines()
 
   writeLines(ifelse(nrow(subset(data_study$excluded_data, error == "Unsupported trait value")) > 0,
-    "In particular, the following data points were excluded because the supplied trait value could not be aligned with the allowable values in AusTraits (error = `Unsupported trait value`). The allowable values for each trait are listed in the [definitions file](http://traitecoevo.github.io/traits.build/articles/trait_definitions.html) and lower in this report.",""))
+    "In particular, the following data points were excluded because the supplied trait value could not be aligned with the allowable values in AusTraits (error = `Unsupported trait value`). The allowable values for each trait are listed in the [definitions file](http://traitecoevo.github.io/traits.build/articles/trait_definitions.html) and lower in this report.", ""))
 
 
   if(nrow(subset(data_study$excluded_data,error == "Unsupported trait value")) > 0 ) {
@@ -452,10 +452,10 @@ if(nrow(subset(data_study$excluded_data,error!="Missing value")) > 0 ) {
   }
 
   writeLines(ifelse(nrow(subset(data_study$excluded_data, error == "Observation excluded in metadata")) > 0 ,
-      "The following observations were explicitly excluded (error = `Observation excluded in metadata`). This decision was most likely made by the data curators because the study included non-native, not naturalised taxa or taxa that aren't vascular plants.",""))
+      "The following observations were explicitly excluded (error = `Observation excluded in metadata`). This decision was most likely made by the data curators because the study included non-native, not naturalised taxa or taxa that aren't vascular plants.", ""))
 "  "
 
-  if(nrow(subset(data_study$excluded_data,error == "Observation excluded in metadata")) > 0) { 
+  if(nrow(subset(data_study$excluded_data,error == "Observation excluded in metadata")) > 0) {
     metadata$exclude_observations %>%
       util_list_to_df2() %>%
       my_kable_styling() %>%
@@ -469,7 +469,7 @@ if(nrow(subset(data_study$excluded_data,error!="Missing value")) > 0 ) {
 ```
 
 ```{r, echo=FALSE, message=FALSE}
-tmp <- data_study$traits %>% filter(!trait_name %in% c("flowering_time", "fruiting_time", "recruitment_time")) 
+tmp <- data_study$traits %>% filter(!trait_name %in% c("flowering_time", "fruiting_time", "recruitment_time"))
 traits <- tmp$trait_name %>% unique() %>% sort()
 traits_numeric <- traits[util_extract_list_element(traits, definitions, "type") == "numeric"]
 traits_categorical <- traits[util_extract_list_element(traits, definitions, "type") != "numeric"]
@@ -493,7 +493,7 @@ define_variable <- function(var, schema) {
 
   sprintf("The variable `%s` is *'%s'*.", v, description) %>%
      writeLines()
-  
+
   if(var == "value_type") {
     writeLines("Possible values are:")
 
@@ -530,13 +530,17 @@ for(trait in traits_numeric) {
   c("", "",
     sprintf("### %s", trait),
     "",
-    sprintf("We aligned the contributed variable called `%s` in the data you supplied with the trait `%s` in the AusTraits database, with value_types `%s`.\n\nThe original variable was supplied with units `%s`; these were converted to our standard `%s`.\n\nThe data has the following properties:", transforms$var_in %>% paste0(collapse=", "), trait, transforms$value_type %>% paste0(collapse=", "), transforms$unit_in[1], elements$units),
+    sprintf("We aligned the contributed variable called `%s` in the data you supplied with the trait `%s` in the AusTraits database, with value_types `%s`.\n\nThe original variable was supplied with units `%s`; these were converted to our standard `%s`.\n\nThe data has the following properties:",
+            transforms$var_in %>% paste0(collapse=", "), trait,
+            transforms$value_type %>% paste0(collapse=", "),
+            transforms$unit_in[1], elements$units),
     "",
     sprintf("- **standardised name**: %s", trait ),
     sprintf("- **standardised description**: %s", elements$description ),
     sprintf("- **label**: %s", elements$label ),
     sprintf("- **units**: %s", units ),
-    sprintf("- **records**: %s in this study (of %s in AusTraits)", data_trait_study %>% nrow(), data_trait_all %>% nrow() ),
+    sprintf("- **records**: %s in this study (of %s in AusTraits)",
+            data_trait_study %>% nrow(), data_trait_all %>% nrow()),
     sprintf("- **allowable range**: %s - %s %s", elements$allowed_values_min,
             elements$allowed_values_max, units),
     sprintf("- **observed range in this study**: %s - %s %s", data_trait_study %>% dplyr::pull(value) %>% min(),
@@ -551,8 +555,10 @@ for(trait in traits_numeric) {
 
   writeLines("  ")
 
-  writeLines(ifelse(nrow(filter(data_study$excluded_data, error == "Value out of allowable range" & trait_name == trait)) > 0,
-    "The following data points were excluded because the values were outside the allowable range (error = `Value out of allowable range`). Our ranges of allowable values are sufficiently generous, that most excluded data are well outside the expected range for the trait, but if you believe these data are valid, accurate measurements that will be useful to future AusTraits users, let us know.",""))
+  writeLines(
+    ifelse(nrow(filter(data_study$excluded_data, error == "Value out of allowable range" & trait_name == trait)) > 0,
+    "The following data points were excluded because the values were outside the allowable range (error = `Value out of allowable range`). Our ranges of allowable values are sufficiently generous, that most excluded data are well outside the expected range for the trait, but if you believe these data are valid, accurate measurements that will be useful to future AusTraits users, let us know.", "")
+  )
 
 if(nrow(filter(data_study$excluded_data, error == "Value out of allowable range" & trait_name == trait)) > 0 ) {
   data_study$excluded_data %>% filter(error == "Value out of allowable range" & trait_name == trait) %>%
@@ -573,9 +579,12 @@ if(nrow(filter(data_study$excluded_data, error == "Value out of allowable range"
 
   # check for outliers
   if(nrow(outliers) > 0 ) {
-    writeLines(sprintf("OUTLIERS: %s of points in your dataset lie in either the bottom or top 2.5 percent of data\n", nrow(outliers)))
+    writeLines(
+      sprintf("OUTLIERS: %s of points in your dataset lie in either the bottom or top 2.5 percent of data\n",
+      nrow(outliers))
+    )
     percent_outliers <- nrow(outliers)/nrow(data_trait_study)*100
-    if(percent_outliers > 10) {
+    if (percent_outliers > 10) {
       new_question(paste0("(section `traits`) More than 10% of your data points for the trait `", trait, "` are outliers, does this seem reasonable, given what you know about the biology of these taxa and overall distribution of values in AusTraits?"))
     } else {
       new_question(
@@ -613,7 +622,7 @@ writeLines(
     "We have recorded the following traits with categorical values in this dataset. Tables are shown comparing the distribution of values in your study to others in the dataset"))
 
 for(trait in traits_categorical) {
- 
+
   transforms <- metadata$traits %>% util_list_to_df2() %>% filter(trait_name == trait)
   if(is.na(metadata$substitutions[1])) {
     substitutions_for_trait <- tibble
@@ -640,7 +649,7 @@ for(trait in traits_categorical) {
     sprintf("- **standardised description**: %s", elements$description ),
     sprintf("- **label**: %s", elements$label ),
     sprintf("- **records**: %s in this study (of %s in AusTraits)", data_trait_study %>% nrow(), data_trait_all %>% nrow() ),
-    "", 
+    "",
     "Data for this trait in this study were collected using the following methods:", "",
     sprintf("- **value_type**: %s", transforms$value_type),
     sprintf("- **replicates**: %s", transforms$replicates),
@@ -648,15 +657,23 @@ for(trait in traits_categorical) {
     "",
     "The allowable values for this trait in AusTraits are:",
     "",
-    elements$allowed_values_levels %>% unlist() %>% as.data.frame() %>% tibble::rownames_to_column() %>% rename(trait_value = "rowname", definition = ".") %>% arrange(trait_value) %>% my_kable_styling(),
+    elements$allowed_values_levels %>%
+      unlist() %>% as.data.frame() %>% tibble::rownames_to_column() %>%
+      rename(trait_value = "rowname", definition = ".") %>% arrange(trait_value) %>%
+      my_kable_styling(),
     "",
-    ifelse(nrow(substitutions_for_trait)>0,
-    "The following substitutions have been implemented to align categorical trait values in the submitted data table with allowable trait values specified in the AusTraits traits_definitions file.",
-    "No substitutions were required to align the data for this trait with AusTraits allowed trait values."),
-    ifelse(nrow(substitutions_for_trait)>0,
-    substitutions_for_trait %>% rename("value in contributed data table"=find,"AusTraits aligned value"=replace)%>% my_kable_styling(),""),
+    ifelse(nrow(substitutions_for_trait) > 0,
+      "The following substitutions have been implemented to align categorical trait values in the submitted data table with allowable trait values specified in the AusTraits traits_definitions file.",
+      "No substitutions were required to align the data for this trait with AusTraits allowed trait values."),
+    ifelse(nrow(substitutions_for_trait) > 0,
+      substitutions_for_trait %>%
+        rename("value in contributed data table" = find, "AusTraits aligned value" = replace) %>%
+        my_kable_styling(),
+      ""
+    ),
     "The following table shows distribution of recorded values in your study and AusTraits as a whole. Note that space-delimited strings of values, indicate when multiple trait values were recorded for a single `observation` (taxon or individual-level) within a single study.",
-    "") %>%
+    ""
+  ) %>%
   writeLines()
 
   right_join(
@@ -667,7 +684,7 @@ for(trait in traits_categorical) {
   mutate(
     study = ifelse(is.na(study), 0, study),
     `% study` = round(study/sum(study)*100),
-    `% total` = round(total/sum(total)*100) 
+    `% total` = round(total/sum(total)*100)
   ) %>%
   arrange(-`study`,-`total`) %>%
   my_kable_styling() %>%
@@ -703,7 +720,7 @@ for(trait in traits_categorical) {
 
 # Taxon list
 
-We have records on the following taxa from your study. We have attempted to align taxon names in this study with the Australian Plant Census (APC) or Australian Plant Names Index (APNI). 
+We have records on the following taxa from your study. We have attempted to align taxon names in this study with the Australian Plant Census (APC) or Australian Plant Names Index (APNI).
 
 ## Full taxa list
 
@@ -730,32 +747,36 @@ if(nrow(tmp) < 10000 ){
 } else{
   cat(crayon:red("\t\tTable too large to dsiplay\n"))
   tmp %>%
-  mutate_all(replace_na, "") %>% 
+  mutate_all(replace_na, "") %>%
   write_csv(paste0(dataset_id,"_taxa.csv"))
 }
 ```
 
 
-To create the list of aligned taxa, we needed to make some taxonomic changes. This involved two stages. 
+To create the list of aligned taxa, we needed to make some taxonomic changes. This involved two stages.
 
-* **Stage 1**: Where possible (i.e. there was no or only a few characters difference), the name you supplied was matched automatically with a known name in APC or APNI. In other cases we may have aligned the taxa by searching for an appropriate match. Such changes are documented in the study metadata file.  The variable `cleaned_name` shows the updated name. The variable `d1` shows the number of characters difference between the `original_name` and `cleaned_name`. 
-* **Stage 2**: Once aligned with a known name, we used the APC to update the `cleaned_name` to an accepted name. The taxonomic status of the cleaned name is indicated in column `status cleaned name`. If accepted, no change was made. If it is a synonym or otherwise, the name was changed according to the recommendation given in the APC. Where they existed, we preferred to take the accepted status of an `cleaned_name`, if it existed. Alternative status values are indicated in brackets. This indicate if alternative uses of the name were ever applied. 
+* **Stage 1**: Where possible (i.e. there was no or only a few characters difference), the name you supplied was matched automatically with a known name in APC or APNI. In other cases we may have aligned the taxa by searching for an appropriate match. Such changes are documented in the study metadata file.  The variable `cleaned_name` shows the updated name. The variable `d1` shows the number of characters difference between the `original_name` and `cleaned_name`.
+* **Stage 2**: Once aligned with a known name, we used the APC to update the `cleaned_name` to an accepted name. The taxonomic status of the cleaned name is indicated in column `status cleaned name`. If accepted, no change was made. If it is a synonym or otherwise, the name was changed according to the recommendation given in the APC. Where they existed, we preferred to take the accepted status of an `cleaned_name`, if it existed. Alternative status values are indicated in brackets. This indicate if alternative uses of the name were ever applied.
 
 Links on `cleaned_name` and `taxon_name` take you to the APC or APNI record for that name.
 
 ```{r}
-data_study$taxonomic_updates %>% select(-dataset_id) %>% 
-  filter(original_name !=taxon_name) %>% 
+data_study$taxonomic_updates %>% select(-dataset_id) %>%
+  filter(original_name !=taxon_name) %>%
   mutate(
     d1 = purrr::map2_dbl(original_name, cleaned_name, ~adist(.x, .y)) %>% as.character() %>% str_replace("0", ""),
     d2 = purrr::map2_dbl(taxon_name, cleaned_name, ~adist(.x, .y)) %>% as.character() %>% str_replace("0", ""),
     cleaned_name = as_link(cleaned_scientific_name_id, cleaned_name),
     taxon_name = as_link(taxon_id, taxon_name),
     cleaned_name_alternative_taxonomic_status = replace_na(cleaned_name_alternative_taxonomic_status, ""),
-    `status cleaned name` = sprintf("%s %s", cleaned_name_taxonomic_status, ifelse(cleaned_name_alternative_taxonomic_status=="", "", paste("(", cleaned_name_alternative_taxonomic_status, ")")))
-    ) %>% 
+    `status cleaned name` = sprintf(
+      "%s %s", cleaned_name_taxonomic_status,
+      ifelse(cleaned_name_alternative_taxonomic_status == "",
+      "", paste("(", cleaned_name_alternative_taxonomic_status, ")"))
+    )
+  ) %>%
   select(original_name, d1, cleaned_name, d2, taxon_name, `status cleaned name`) %>%
-  mutate_all(replace_na, "") %>% 
+  mutate_all(replace_na, "") %>%
   my_kable_styling()
 ```
 
