@@ -284,11 +284,10 @@ process_create_observation_id <- function(data) {
   # their purpose is to allow `population_level` measurements to be
   # easily mapped to individuals within the given population
     if (
-      # Warning: conditional expressions require scalar logical operators (&& and ||)
-      !all(is.na(data[["location_name"]])) |
-      !all(is.na(data[["plot_id"]])) |
+      !all(is.na(data[["location_name"]])) ||
+      !all(is.na(data[["plot_id"]])) ||
       !all(is.na(data[["treatment_id"]]))
-        ) {
+    ) {
       data <- data %>%
         dplyr::mutate(
           population_id = paste(.data$location_name, .data$plot_id, .data$treatment_id, sep = "")
@@ -614,7 +613,7 @@ process_format_locations <- function(my_list, dataset_id, schema) {
     ) %>%
     dplyr::group_by(dataset_id) %>%
     dplyr::mutate(
-      location_id = process_generate_id(location_name, "", sort = TRUE)
+      location_id = process_generate_id(.data$location_name, "", sort = TRUE)
     ) %>%
     dplyr::ungroup() %>%
     # reorder so type, description come first, if present
@@ -1017,7 +1016,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
         df <- df %>%
                   dplyr::mutate(
                           row_numbers = dplyr::row_number(),
-                          parsing_id = process_generate_id(row_numbers, dataset_id)
+                          parsing_id = process_generate_id(.data$row_numbers, dataset_id)
                         )
       }
 
@@ -1038,8 +1037,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
 
     df <- df %>%
       dplyr::mutate(
-        # Warning: no visible binding for global variable 'parsing_id_tmp'
-        parsing_id = parsing_id_tmp %>% as.character() %>% process_generate_id(prefix)
+        parsing_id = .data$parsing_id_tmp %>% as.character() %>% process_generate_id(prefix)
         ) %>%
         dplyr::select(-dplyr::all_of(c("parsing_id_tmp")))
   }
@@ -1060,8 +1058,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
   # check that the trait names as specified in config actually exist in data
   # if not then we need to stop and fix this problem
   # NOTE - only need to do this step for wide (non-vertical) data
-  # Warning: Conditional expressions require scalar logical operators (&& and ||)
-  if (data_is_long_format == FALSE & any(!traits_table[["var_in"]] %in% colnames(data))) {
+  if (data_is_long_format == FALSE && any(!traits_table[["var_in"]] %in% colnames(data))) {
     stop(paste(dataset_id, ": missing traits: ", setdiff(traits_table[["var_in"]], colnames(data))))
   }
 
@@ -1468,9 +1465,7 @@ build_combine <- function(..., d = list(...)) {
               methods = combine("methods", d),
               excluded_data = combine("excluded_data", d),
               taxonomic_updates = taxonomic_updates,
-              # Warning: no visible binding for global variable 'taxon_name'
-              # A few more of these warnings in the rest of the code
-              taxa = combine("taxa", d) %>% dplyr::distinct() %>% dplyr::arrange(taxon_name),
+              taxa = combine("taxa", d) %>% dplyr::distinct() %>% dplyr::arrange(.data$taxon_name),
               contributors = contributors,
               sources = sources,
               definitions = definitions,
@@ -1522,7 +1517,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
 
   austraits_raw$traits <-
     austraits_raw$traits %>%
-    dplyr::rename(cleaned_name = taxon_name) %>%
+    dplyr::rename(cleaned_name = .data$taxon_name) %>%
     dplyr::left_join(by = "cleaned_name",
               taxa %>% dplyr::select(dplyr::all_of(c("cleaned_name", "taxon_name", "taxon_rank")))
               ) %>%
@@ -1538,8 +1533,11 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::filter(.data$taxon_rank %in% c("Genus", "genus")) %>%
     dplyr::select(dplyr::all_of(c("taxon_name", "family", "taxonomic_reference", "taxon_id",
                   "scientific_name_id", "taxonomic_status"))) %>%
-    dplyr::rename(name_to_match_to = taxon_name, taxonomic_reference_genus = taxonomic_reference, taxon_id_genus = taxon_id,
-                  scientific_name_id_genus = scientific_name_id, taxonomic_status_genus = taxonomic_status) %>%
+    dplyr::rename(
+      name_to_match_to = .data$taxon_name, taxonomic_reference_genus = .data$taxonomic_reference,
+      taxon_id_genus = .data$taxon_id, scientific_name_id_genus = .data$scientific_name_id,
+      taxonomic_status_genus = .data$taxonomic_status
+    ) %>%
     dplyr::distinct()
 
 # names, identifiers for all families in APC
@@ -1547,8 +1545,9 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::filter(.data$taxon_rank %in% c("Familia", "family")) %>%
     dplyr::select(
       dplyr::all_of(
-        c(name_to_match_to = "taxon_name", taxonomic_reference_family = "taxonomic_reference", taxon_id_family = "taxon_id",
-          scientific_name_id_family = "scientific_name_id", taxonomic_status_family = "taxonomic_status")
+        c(name_to_match_to = "taxon_name", taxonomic_reference_family = "taxonomic_reference",
+          taxon_id_family = "taxon_id", scientific_name_id_family = "scientific_name_id",
+          taxonomic_status_family = "taxonomic_status")
       )) %>%
     dplyr::distinct()
 
@@ -1569,15 +1568,20 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
 
   species_tmp <- species_tmp %>%
     dplyr::mutate(
-      # If no taxonomic resolution is specified, then the name's taxonomic resolution is the taxon_rank for the taxon name
-      taxonomic_resolution = ifelse(.data$taxon_name %in% taxa$cleaned_name, taxa$taxon_rank[match(.data$taxon_name, taxa$cleaned_name)], taxonomic_resolution),
+      # If no taxonomic resolution is specified, then the name's taxonomic resolution
+      # is the taxon_rank for the taxon name
+      taxonomic_resolution = ifelse(
+        .data$taxon_name %in% taxa$cleaned_name,
+        taxa$taxon_rank[match(.data$taxon_name, taxa$cleaned_name)],
+        .data$taxonomic_resolution),
       taxon_rank = ifelse(!is.na(.data$taxon_rank), .data$taxonomic_resolution, .data$taxon_rank),
       # Field trinomial is only filled in if taxonomic resolution is an infraspecific name
       trinomial = ifelse(.data$taxon_rank %in% c("Subspecies", "Forma", "Varietas"),
                         stringr::str_split_fixed(.data$taxon_name, "\\[", 2)[,1] %>% stringr::str_trim(), NA),
       # Field binomial is filled in if taxonomic resolution is an infraspecific name or a binomial
-      # All taxon names that have "extra" information (beyond the actual name) have been formatted to have that information in square brackets '[]',
-      # so these can be used as a delimitor to extract the actual name
+      # All taxon names that have "extra" information (beyond the actual name) have been formatted
+      # to have that information in square brackets '[]', so these can be used as a delimitor to
+      # extract the actual name
       binomial = ifelse(.data$taxon_rank %in% c("Species"),
                         stringr::str_split_fixed(.data$taxon_name, "\\[", 2)[,1] %>% stringr::str_trim(), NA),
       binomial = ifelse(.data$taxon_rank %in% c("Subspecies", "Forma", "Varietas", "Series"),

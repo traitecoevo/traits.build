@@ -83,7 +83,7 @@ metadata_create_template <- function(dataset_id,
       }
       # Some of these warnings throughout:
       # Conditional expressions require scalar logical operators (&& and ||)
-      if (v == "collection_date" & is.na(tmp)) {
+      if (v == "collection_date" && is.na(tmp)) {
         collection_date <- readline(prompt = "Enter collection_date range in format '2007/2009': ")
         out[["dataset"]][[v]] <- collection_date
       }
@@ -310,7 +310,7 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE) {
   n_existing <- 0
 
   # check for existing info
-  if (!overwrite & !is.na(metadata$contexts[1])) {
+  if (!overwrite && !is.na(metadata$contexts[1])) {
     contexts <- metadata$contexts
     n_existing <- length(metadata$contexts)
 
@@ -385,7 +385,7 @@ metadata_add_source_bibtex <- function(dataset_id, file, type = "primary", key =
     for (v in drop)
       bib[[v]] <- NULL
 
-    if (!is.null(bib$url) & !is.null(bib$doi))
+    if (!is.null(bib$url) && !is.null(bib$doi))
       bib[["url"]] <- NULL
 
     if (tolower(bib$bibtype) == "article")
@@ -547,9 +547,10 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
 metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset_id, trait_name, find, replace) {
 
   # split dataframe of substitutions by row
-  dataframe_of_substitutions %>%
+  dataframe_of_substitutions <-
+    dataframe_of_substitutions %>%
     dplyr::mutate(rows = dplyr::row_number()) %>%
-    dplyr::group_split(.$rows) -> dataframe_of_substitutions
+    dplyr::group_split(.$rows)
 
   set_name <- "substitutions"
 

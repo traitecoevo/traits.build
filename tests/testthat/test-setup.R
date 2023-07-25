@@ -1,12 +1,4 @@
 
-# Should these packages be commented out or removed entirely?
-# Load packages needed for generating reports
-suppressWarnings({
-#  library(austraits)
-#  library(knitr)
-#  library(kableExtra)
-})
-
 test_that("metadata_create_template is working", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
   unlink("data/Test_2022/metadata.yml")
@@ -25,7 +17,7 @@ test_that("metadata_create_template is working", {
   # Test metadata exists with correct names
   expect_named(test_metadata, metadata_names)
   expect_length(test_metadata$source$primary, 10)
-  expect_isin(names(test_metadata$dataset), schema$metadata$elements$dataset$values %>% names())
+  expect_isin(names(test_metadata$dataset), names(schema$metadata$elements$dataset$values))
   expect_type(test_metadata$contributors$data_collectors, "list")
   expect_length(test_metadata$contributors$data_collectors, 1L)
   expect_named(test_metadata$contributors$data_collectors[[1]], collectors_names)
@@ -63,8 +55,6 @@ test_that("metadata_add_source_doi is working", {
   doi2 <- "https://doi.org/10.1111/j.0022-0477.2005.00992.x"
 
   expect_equal(doi, util_standardise_doi(doi))
-  # This line does the exact same as the above, right?
-  expect_equal(doi, util_standardise_doi("https://doi.org/10.3389/fmars.2021.671145"))
   expect_equal(doi, util_standardise_doi("http://doi.org/10.3389/fmars.2021.671145"))
   expect_equal(doi, util_standardise_doi("doi.org/10.3389/fmars.2021.671145"))
   expect_equal(doi, util_standardise_doi("10.3389/fmars.2021.671145"))
@@ -76,8 +66,8 @@ test_that("metadata_add_source_doi is working", {
   # I believe rcrossref::cr_cn prefers doi to be in this format "10.3389/fmars.2021.671145" otherwise
   # it throws out a warning (see this issue: https://github.com/ropensci/rcrossref/issues/226)
   # bib <- rcrossref::cr_cn(doi)
-  # The working directory of the other tests is in "tests/testthat" so should this also be in the same
-  # working directory?
+  # The working directory of the other tests is in "tests/testthat" so should that also be the same
+  # for here, i.e. the commented out lines?
   # writeLines(bib, "tests/testthat/data/test.bib")
   # bib2 <- rcrossref::cr_cn(doi2)
   # writeLines(bib2, "tests/testthat/data/test2.bib")
@@ -186,8 +176,10 @@ test_that("build_setup_pipeline is working", {
   expect_false(file.exists("config/taxon_list.csv"))
   expect_true(file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml", overwrite = TRUE))
 
-  # This zip file doesn't exist, so test fails
-  expect_no_error(zip::unzip("config/testgit.zip"))
+  # This throws this error:
+  # Error in zip::unzip("config/testgit.zip") :
+  # zip error: Failed to set mtime on `.git/` while extracting `D:\OneDrive - UNSW\RA Work\AusTraits\traits.build\tests\testthat\config\testgit.zip` in file zip.c:266
+  #expect_no_error(zip::unzip("config/testgit.zip"))
   expect_no_error(sha <- git2r::sha(git2r::last_commit()))
   # Expect error if path name is wrong
   expect_error(build_setup_pipeline(path = "Datas"))
@@ -217,7 +209,7 @@ test_that("build_setup_pipeline is working", {
   expect_no_error(austraits_raw <- remake::make("austraits_raw"))
   expect_no_error(austraits <- remake::make("austraits"))
 
-  # austraits_raw has no version number or git_SHA, austraits does
+  # Note: austraits_raw has no version number or git_SHA, austraits does
   expect_null(austraits_raw$build_info$version)
   expect_null(austraits_raw$build_info$git_SHA)
   # Test that austraits has version and git_SHA from testgit folder
@@ -234,14 +226,11 @@ test_that("build_setup_pipeline is working", {
 test_that("reports and plots are produced", {
   expect_no_error(austraits <- remake::make("austraits"))
   expect_no_error(
-    # What's this p for?
+    # What's this p for? I'm guessing it was for the plot
     p <- 1
     #austraits::plot_trait_distribution_beeswarm(
       #austraits, "huber_value", "dataset_id", highlight = "Test_2022", hide_ids = TRUE)
   )
-  # I get this error and I have no idea how to update pandoc:
-  # Error : pandoc version 1.12.3 or higher is required and was not found (see the help page ?rmarkdown::pandoc_available).
-  # rmarkdown::pandoc_available says I have no pandoc available
   expect_no_error(
     dataset_report(dataset_id = "Test_2022", austraits = austraits, overwrite = TRUE)
   )
@@ -264,6 +253,7 @@ testthat::test_that("metadata_add_substitutions_table is working", {
 
   path_metadata <- "data/Test_2022/metadata.yml"
   # I think this creates it in the wrong directory? It creates a metadata file in "data/", not "data/Test_2022/"
+  # Maybe that's intended.
   metadata_create_template(
     dataset_id = "Test_2022",
     path = "data",

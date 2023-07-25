@@ -45,7 +45,7 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
   input_Rmd <- sprintf("tmp_%s_report.Rmd", dataset_id)
   output_html <- sprintf("%s/%s.html", output_path, dataset_id)
 
-  if (overwrite | !file.exists(output_html)) {
+  if (overwrite || !file.exists(output_html)) {
 
     cat(sprintf("Building report for %s ", dataset_id))
 

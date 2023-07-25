@@ -51,8 +51,7 @@ test_that("process_custom_code is working", {
   )
   expect_equal(ncol(data), 13)
   expect_equal(ncol(process_custom_code(metadata[["dataset"]][["custom_R_code"]])(data)), 14)
-  # Should this be NA instead of NULL? I think custom_R_code cannot be entered as null
-  expect_silent(process_custom_code(NULL))
+  expect_silent(process_custom_code(NA))
 })
 
 # The below functions are not working
