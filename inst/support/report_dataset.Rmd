@@ -169,7 +169,7 @@ To aid your review, we have attached the following files:
 ```{r, results='asis', echo=FALSE}
 # Any additional questions from metadata
 
-if (!is.null(metadata$questions) & !is.na(metadata$questions[1])) {
+if (!is.null(metadata$questions) && !is.na(metadata$questions[1])) {
 
   x <-
     names(metadata$questions)[!(names(metadata$questions) %in% c("additional_traits", "austraits"))]
@@ -491,7 +491,7 @@ define_variable <- function(var, schema) {
                         methods = schema$austraits$elements$methods$elements$methods
                         )
 
-  sprintf("The variable `%s` is *'%s'*.", v, description) %>%
+  sprintf("The variable `%s` is *'%s'*.", var, description) %>%
      writeLines()
 
   if (var == "value_type") {
