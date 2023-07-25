@@ -339,10 +339,10 @@ The following variables have been recorded for the locations included in the stu
 
 ```{r, results='asis', echo=FALSE}
 
-data_study$locations %>%
+locations_extra <- data_study$locations %>%
   filter(!(location_property %in% location_main)) %>%
   select(-dataset_id) %>%
-  spread(location_property, value) -> locations_extra
+  spread(location_property, value)
 
 if (nrow(locations_extra) > 0) {
   locations_extra %>%
@@ -362,10 +362,10 @@ if (nrow(locations_extra) > 0) {
 The following contexts have been recorded for the measurements included in this study.
 
 ```{r, results='asis', echo=FALSE}
-data_study$contexts %>%
+context_properties <- data_study$contexts %>%
   select(-dataset_id) %>%
   group_by(context_property) %>%
-  group_split() -> context_properties
+  group_split()
 
 if (length(context_properties) > 0) {
     for (i in seq_along(context_properties)) {
@@ -427,7 +427,7 @@ writeLines(ifelse(nrow(subset(data_study$excluded_data, error != "Missing value"
         "All data passed quality control so nothing was excluded in this study. (Yay!)",
         "We excluded some records in your dataset as they did not pass the quality control. A summary of the number of points and reasons for exclusion are as follows:"))
 
-if (nrow(subset(data_study$excluded_data, error! = "Missing value")) > 0) {
+if (nrow(subset(data_study$excluded_data, error != "Missing value")) > 0) {
   data_study$excluded_data %>%
     filter(error != "Missing value") %>%
     group_by(trait_name, error) %>%
@@ -440,10 +440,10 @@ if (nrow(subset(data_study$excluded_data, error! = "Missing value")) > 0) {
     "In particular, the following data points were excluded because the supplied trait value could not be aligned with the allowable values in AusTraits (error = `Unsupported trait value`). The allowable values for each trait are listed in the [definitions file](http://traitecoevo.github.io/traits.build/articles/trait_definitions.html) and lower in this report.", ""))
 
 
-  if(nrow(subset(data_study$excluded_data,error == "Unsupported trait value")) > 0 ) {
+  if (nrow(subset(data_study$excluded_data, error == "Unsupported trait value")) > 0) {
     data_study$excluded_data %>%
-      filter(error=="Unsupported trait value") %>%
-      select(trait_name,value) %>%
+      filter(error == "Unsupported trait value") %>%
+      select(trait_name, value) %>%
       rename(`value that is unaligned` = value) %>%
       distinct() %>%
       arrange(trait_name, `value that is unaligned`) %>%
@@ -451,11 +451,11 @@ if (nrow(subset(data_study$excluded_data, error! = "Missing value")) > 0) {
       writeLines()
   }
 
-  writeLines(ifelse(nrow(subset(data_study$excluded_data, error == "Observation excluded in metadata")) > 0 ,
+  writeLines(ifelse(nrow(subset(data_study$excluded_data, error == "Observation excluded in metadata")) > 0,
       "The following observations were explicitly excluded (error = `Observation excluded in metadata`). This decision was most likely made by the data curators because the study included non-native, not naturalised taxa or taxa that aren't vascular plants.", ""))
 "  "
 
-  if(nrow(subset(data_study$excluded_data,error == "Observation excluded in metadata")) > 0) {
+  if (nrow(subset(data_study$excluded_data, error == "Observation excluded in metadata")) > 0) {
     metadata$exclude_observations %>%
       util_list_to_df2() %>%
       my_kable_styling() %>%
@@ -494,7 +494,7 @@ define_variable <- function(var, schema) {
   sprintf("The variable `%s` is *'%s'*.", v, description) %>%
      writeLines()
 
-  if(var == "value_type") {
+  if (var == "value_type") {
     writeLines("Possible values are:")
 
     schema$value_type$values %>%
@@ -510,7 +510,7 @@ writeLines(ifelse(length(traits_numeric) == 0,
         "No numerical traits data are currently available in this dataset",
         "We have recorded the following traits with continuous numerical values in this dataset. Plots are shown comparing the distribution of values in your study (blue) to those in other datasets within AusTraits (red, green). For each trait, please eyeball the information provided and let us know of any issues or updates where appropriate."))
 
-for(trait in traits_numeric) {
+for (trait in traits_numeric) {
 
 
   data_trait_study <- data_study$traits %>%
@@ -531,14 +531,14 @@ for(trait in traits_numeric) {
     sprintf("### %s", trait),
     "",
     sprintf("We aligned the contributed variable called `%s` in the data you supplied with the trait `%s` in the AusTraits database, with value_types `%s`.\n\nThe original variable was supplied with units `%s`; these were converted to our standard `%s`.\n\nThe data has the following properties:",
-            transforms$var_in %>% paste0(collapse=", "), trait,
-            transforms$value_type %>% paste0(collapse=", "),
+            transforms$var_in %>% paste0(collapse = ", "), trait,
+            transforms$value_type %>% paste0(collapse = ", "),
             transforms$unit_in[1], elements$units),
     "",
-    sprintf("- **standardised name**: %s", trait ),
-    sprintf("- **standardised description**: %s", elements$description ),
-    sprintf("- **label**: %s", elements$label ),
-    sprintf("- **units**: %s", units ),
+    sprintf("- **standardised name**: %s", trait),
+    sprintf("- **standardised description**: %s", elements$description),
+    sprintf("- **label**: %s", elements$label),
+    sprintf("- **units**: %s", units),
     sprintf("- **records**: %s in this study (of %s in AusTraits)",
             data_trait_study %>% nrow(), data_trait_all %>% nrow()),
     sprintf("- **allowable range**: %s - %s %s", elements$allowed_values_min,
@@ -547,10 +547,10 @@ for(trait in traits_numeric) {
             data_trait_study %>% dplyr::pull(value) %>% max(), units),
     "", "",
     "Data for this trait in this study were collected using the following methods:", "",
-    sprintf("- **value_type**: %s", transforms$value_type %>% paste0(collapse=", ")),
-    sprintf("- **replicates**: %s", transforms$replicates %>% paste0(collapse=", ")),
+    sprintf("- **value_type**: %s", transforms$value_type %>% paste0(collapse = ", ")),
+    sprintf("- **replicates**: %s", transforms$replicates %>% paste0(collapse = ", ")),
     sprintf("- **methods**: %s", transforms$methods[1]),
-    "","") %>%
+    "", "") %>%
   writeLines()
 
   writeLines("  ")
@@ -560,30 +560,30 @@ for(trait in traits_numeric) {
     "The following data points were excluded because the values were outside the allowable range (error = `Value out of allowable range`). Our ranges of allowable values are sufficiently generous, that most excluded data are well outside the expected range for the trait, but if you believe these data are valid, accurate measurements that will be useful to future AusTraits users, let us know.", "")
   )
 
-if(nrow(filter(data_study$excluded_data, error == "Value out of allowable range" & trait_name == trait)) > 0 ) {
+if (nrow(filter(data_study$excluded_data, error == "Value out of allowable range" & trait_name == trait)) > 0) {
   data_study$excluded_data %>% filter(error == "Value out of allowable range" & trait_name == trait) %>%
     select(observation_id, taxon_name, location_id, value, unit) %>%
     my_kable_styling() %>%
     writeLines()
 }
 
- austraits::plot_trait_distribution_beeswarm(austraits, trait, "dataset_id", highlight=dataset_id, hide_ids = TRUE)
+ austraits::plot_trait_distribution_beeswarm(austraits, trait, "dataset_id", highlight = dataset_id, hide_ids = TRUE)
 
   writeLines(c(""))
 
   outliers <- data_trait_all %>%
     arrange(value) %>%
-    mutate(per = seq_len(n())/n()*100) %>%
+    mutate(per = seq_len(n()) / n() * 100) %>%
     filter(dataset_id %in% unique(data_trait_study$dataset_id),
            per < 2.5 | per > 97.5)
 
   # check for outliers
-  if(nrow(outliers) > 0 ) {
+  if (nrow(outliers) > 0) {
     writeLines(
       sprintf("OUTLIERS: %s of points in your dataset lie in either the bottom or top 2.5 percent of data\n",
       nrow(outliers))
     )
-    percent_outliers <- nrow(outliers)/nrow(data_trait_study)*100
+    percent_outliers <- nrow(outliers) / nrow(data_trait_study) * 100
     if (percent_outliers > 10) {
       new_question(paste0("(section `traits`) More than 10% of your data points for the trait `", trait, "` are outliers, does this seem reasonable, given what you know about the biology of these taxa and overall distribution of values in AusTraits?"))
     } else {
@@ -597,12 +597,12 @@ if(nrow(filter(data_study$excluded_data, error == "Value out of allowable range"
   methods_missing <- transforms[1,] %in% c("unknown")
   names_missing <-  names(transforms)[methods_missing]
 
-  for(v in c("value_type", "replicates", "methods")) {
+  for (v in c("value_type", "replicates", "methods")) {
 
-    if(v %in% names_missing ) {
+    if (v %in% names_missing) {
       question_x(v, trait)
 
-      if(!(v %in% structures_already_defined)) {
+      if (!(v %in% structures_already_defined)) {
         define_variable(v, schema)
         structures_already_defined <- c(v, structures_already_defined)
       }
@@ -621,10 +621,10 @@ writeLines(
     "No categorical traits data are currently available in this dataset.",
     "We have recorded the following traits with categorical values in this dataset. Tables are shown comparing the distribution of values in your study to others in the dataset"))
 
-for(trait in traits_categorical) {
+for (trait in traits_categorical) {
 
   transforms <- metadata$traits %>% util_list_to_df2() %>% filter(trait_name == trait)
-  if(is.na(metadata$substitutions[1])) {
+  if (is.na(metadata$substitutions[1])) {
     substitutions_for_trait <- tibble
   } else {
     substitutions_for_trait <- metadata$substitutions %>% util_list_to_df2() %>% filter(trait_name == trait)
@@ -645,10 +645,10 @@ for(trait in traits_categorical) {
     "",
     sprintf("We aligned the variable called `%s`in the data you supplied with the trait `%s` in the AusTraits database.\n\nThe contributed data has the following properties:", transforms$var_in, trait),
     "",
-    sprintf("- **standardised name**: %s", trait ),
-    sprintf("- **standardised description**: %s", elements$description ),
-    sprintf("- **label**: %s", elements$label ),
-    sprintf("- **records**: %s in this study (of %s in AusTraits)", data_trait_study %>% nrow(), data_trait_all %>% nrow() ),
+    sprintf("- **standardised name**: %s", trait),
+    sprintf("- **standardised description**: %s", elements$description),
+    sprintf("- **label**: %s", elements$label),
+    sprintf("- **records**: %s in this study (of %s in AusTraits)", data_trait_study %>% nrow(), data_trait_all %>% nrow()),
     "",
     "Data for this trait in this study were collected using the following methods:", "",
     sprintf("- **value_type**: %s", transforms$value_type),
@@ -679,14 +679,14 @@ for(trait in traits_categorical) {
   right_join(
     data_trait_study %>% group_by(value) %>% summarise(study = n()),
     data_trait_all %>% group_by(value) %>% summarise(total = n()),
-    by= "value"
+    by = "value"
     ) %>%
   mutate(
     study = ifelse(is.na(study), 0, study),
-    `% study` = round(study/sum(study)*100),
-    `% total` = round(total/sum(total)*100)
+    `% study` = round(study / sum(study) * 100),
+    `% total` = round(total / sum(total) * 100)
   ) %>%
-  arrange(-`study`,-`total`) %>%
+  arrange(-`study`, -`total`) %>%
   my_kable_styling() %>%
   add_header_above(c(" ", "Counts" = 2, "Percent" = 2)) %>%
   column_spec(1, border_right = TRUE) %>%
@@ -703,12 +703,12 @@ for(trait in traits_categorical) {
   methods_missing <- transforms[1,] %in% c("unknown")
   names_missing <-  names(transforms)[methods_missing]
 
-  for(v in c("value_type", "replicates", "methods")) {
+  for (v in c("value_type", "replicates", "methods")) {
 
-    if(v %in% names_missing ) {
+    if (v %in% names_missing) {
       question_x(v, trait)
 
-      if(!(v %in% structures_already_defined)) {
+      if (!(v %in% structures_already_defined)) {
         define_variable(v, schema)
         structures_already_defined <- c(v, structures_already_defined)
       }
@@ -735,20 +735,20 @@ schema$austraits$elements$taxa$elements %>%
 Clicking on the name will take you to the relevant taxonomic record in the APC or APNI, where known:
 
 ```{r taxon_list2, results='asis', echo=FALSE}
-data_study$taxa %>%
-  select(one_of(names(schema$austraits$elements$taxa$elements))) -> tmp
+tmp <- data_study$taxa %>%
+  select(one_of(names(schema$austraits$elements$taxa$elements)))
 
-if(nrow(tmp) < 10000 ){
+if (nrow(tmp) < 10000) {
   tmp %>%
   mutate(
     taxon_name = as_link(taxon_id, taxon_name)) %>%
   mutate_all(replace_na, "") %>%
   my_kable_styling()
-} else{
+} else {
   cat(crayon:red("\t\tTable too large to dsiplay\n"))
   tmp %>%
   mutate_all(replace_na, "") %>%
-  write_csv(paste0(dataset_id,"_taxa.csv"))
+  write_csv(paste0(dataset_id, "_taxa.csv"))
 }
 ```
 
@@ -762,7 +762,7 @@ Links on `cleaned_name` and `taxon_name` take you to the APC or APNI record for 
 
 ```{r}
 data_study$taxonomic_updates %>% select(-dataset_id) %>%
-  filter(original_name !=taxon_name) %>%
+  filter(original_name != taxon_name) %>%
   mutate(
     d1 = purrr::map2_dbl(original_name, cleaned_name, ~adist(.x, .y)) %>% as.character() %>% str_replace("0", ""),
     d2 = purrr::map2_dbl(taxon_name, cleaned_name, ~adist(.x, .y)) %>% as.character() %>% str_replace("0", ""),
