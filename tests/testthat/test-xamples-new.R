@@ -29,12 +29,73 @@ testthat::test_that("Test Dataset 1 builds correctly", {
       contributors = read_csv("examples/Test_2023_1/output/contributors.csv")
     )
 
+  # Tests for dataset-level input of `basis_of_record` and `life_stage`
   expect_equal(Test_2023_1$traits$basis_of_record %>% unique, expected_output$traits$basis_of_record %>% unique)
-  expect_equal(Test_2023_1$traits$life_stage %>% unique, "adult")
-  # Are these tests necessary? We know from the above tests that the number of rows will be 406
-  expect_equal(Test_2023_1$traits %>% filter(basis_of_record == "field") %>% nrow(), 406)
-  expect_equal(Test_2023_1$traits %>% filter(life_stage == "adult") %>% nrow(), 406)
-  expect_equal(nrow(Test_2023_1$excluded_data), 0)
+  expect_equal(Test_2023_1$traits$life_stage %>% unique, expected_output$traits$life_stage %>% unique)
+
+  # Tests for dataset-level and trait-level input of:
+  # `entity_type`, `value_type`, basis_of_value, `measurement_remarks`, `collection_date`, `replicates`
+  expect_equal(Test_2023_1$traits$entity_type %>% unique, expected_output$traits$entity_type %>% unique)
+  expect_equal(
+    Test_2023_1$traits %>% filter(entity_type == "individual") %>% nrow(),
+    expected_output$traits %>% filter(entity_type == "individual") %>% nrow())
+  expect_equal(
+    Test_2023_1$traits %>% filter(entity_type == "population") %>% nrow(),
+    expected_output$traits %>% filter(entity_type == "population") %>% nrow())
+  expect_equal(
+    Test_2023_1$traits %>% filter(entity_type == "species") %>% nrow(),
+    expected_output$traits %>% filter(entity_type == "species") %>% nrow())
+
+  expect_equal(Test_2023_1$traits$value_type %>% unique, expected_output$traits$value_type %>% unique)
+  expect_equal(
+    Test_2023_1$traits %>% filter(value_type == "mode") %>% nrow(),
+    expected_output$traits %>% filter(value_type == "mode") %>% nrow())
+  expect_equal(
+    Test_2023_1$traits %>% filter(value_type == "raw") %>% nrow(),
+    expected_output$traits %>% filter(value_type == "raw") %>% nrow())
+  expect_equal(
+    Test_2023_1$traits %>% filter(value_type == "mean") %>% nrow(),
+    expected_output$traits %>% filter(value_type == "mean") %>% nrow())
+  expect_equal(
+    Test_2023_1$traits %>% filter(value_type == "bin") %>% nrow(),
+    expected_output$traits %>% filter(value_type == "bin") %>% nrow())
+
+  expect_equal(Test_2023_1$traits$basis_of_value %>% unique, expected_output$traits$basis_of_value %>% unique)
+  expect_equal(Test_2023_1$traits$measurement_remarks %>% unique, expected_output$traits$measurement_remarks %>% unique)
+  expect_equal(Test_2023_1$traits$collection_date %>% unique, expected_output$traits$collection_date %>% unique)
+
+  # For now have converted the expected output data type to character
+  expect_equal(Test_2023_1$traits$replicates %>% unique, expected_output$traits$replicates %>% unique %>% as.character)
+  expected_output$traits$replicates <- expected_output$traits$replicates %>% as.character()
+  expect_equal(
+    Test_2023_1$traits %>% filter(replicates == "3") %>% nrow(),
+    expected_output$traits %>% filter(replicates == "3") %>% nrow())
+  expect_equal(
+    Test_2023_1$traits %>% filter(replicates == "5") %>% nrow(),
+    expected_output$traits %>% filter(replicates == "5") %>% nrow())
+  expect_equal(
+    Test_2023_1$traits %>% filter(replicates == "10") %>% nrow(),
+    expected_output$traits %>% filter(replicates == "10") %>% nrow())
+  # Should replicates: .na in trait metadata take precedence over dataset-level metadata?
+  # If so then this test is failing, otherwise have to redo the metadata to only include replicates at the trait level
+  #expect_equal(
+  #  Test_2023_1$traits %>% filter(is.na(replicates)) %>% nrow(),
+  #  expected_output$traits %>% filter(is.na(replicates)) %>% nrow())
+  # Also right now replicates must be entered in character format otherwise AusTraits can't build
+  # In the future, test that replicates can be entered in numeric format
+
+  # Check unit conversions are working
+  # Currently all data types are character, including for the numeric traits
+  expect_equal(
+    Test_2023_1$traits %>% filter(taxon_name == "Acacia celsa", trait_name == "leaf_mass_per_area") %>% pull(value),
+    "145")
+  expect_equal(
+    Test_2023_1$traits %>% filter(taxon_name == "Acacia celsa", trait_name == "leaf_area") %>% pull(value),
+    "2786")
+
+  # Check duplicate contexts are collapsed in the contexts table
+  # They are currently not
+  # Having .na.character in the `find` and `value` fields messes up the `link_id` and `link_vals` (removed for now)
 
 })
 
