@@ -10,7 +10,7 @@ This dataset is for testing the following, for wide datasets:
 - Locations (latitude and longitude missing)
 - `trait_name` is NA
 - Types of trait data -- numeric (entered as either true numeric type or character type), categorical, time (e.g. `flowering_time`)
-- Excluded values, such as out of allowable range, invalid categorical values, invalid time values, and that excluded values table are filled in with correct error types
+- Excluded values (automatic and manual), such as out of allowable range, invalid categorical values, invalid time values, and that excluded values table are filled in with correct error types
 - Substitutions work for categorical, numeric (e.g. ranges) and time traits, with NA find or replace values
 - Combinations of multiple categorical values per row, including if there are duplicate trait values within
 - Taxonomic updates for different taxonomic resolutions
@@ -26,6 +26,7 @@ Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - Added a categorical trait, `plant_growth_form`, and time trait, `flowering_time`
 - Changed a numeric column `wood_density` to character type with `custom_R_code`
 - Duplicated `flowering_time` value for Acacia celsa
+- Excluded observation 0.17 for `leaf_mass_per_area`
 
 
 See output/

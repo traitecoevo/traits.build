@@ -681,7 +681,9 @@ process_flag_excluded_observations <- function(data, metadata) {
 
   for (v in names(fix))
     data <- data %>%
-      dplyr::mutate(error = ifelse(data[[v]] %in% fix[[v]]$find, "Observation excluded in metadata", .data$error))
+      dplyr::mutate(
+        error = ifelse(.data$trait_name == v & .data$value %in% fix[[v]]$find,
+        "Observation excluded in metadata", .data$error))
 
   data
 }
