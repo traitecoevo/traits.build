@@ -1008,7 +1008,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
                                 process_generate_id(prefix)
                   )
 
-      # If an `individual_id` column  IS NOT read in through metadata$dataset, row_numbers are assumed to represent unique `entities`
+      # If an `individual_id` column IS NOT read in through metadata$dataset, row_numbers are assumed to represent unique `entities`
       # and `parsing_id` values are based on row numbers
 
       } else {
@@ -1100,6 +1100,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
         }
       }
     }
+
     out <- dplyr::bind_rows(out)
   } else {
 
