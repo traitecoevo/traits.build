@@ -1,8 +1,8 @@
 dataset_id,context_property,category,value,description,link_id,link_vals
-Test_2023_1,plant sex,entity_context,female,female plant,NA,NA
-Test_2023_1,plant sex,entity_context,male,male plant,NA,NA
-Test_2023_1,plant sex,entity_context,female,female plant,NA,NA
-Test_2023_1,plant sex,entity_context,NA,NA,entity_context_id,"04, 06, 05, NA, 02, 01, 03"
+Test_2023_1,plant sex,entity_context,female,female plant,,
+Test_2023_1,plant sex,entity_context,male,male plant,,
+Test_2023_1,plant sex,entity_context,female,female plant,,
+Test_2023_1,plant sex,entity_context,,,entity_context_id,"04, 06, 05, NA, 02, 01, 03"
 Test_2023_1,slope position,plot,bottom slope,bottom slope,plot_id,01
 Test_2023_1,slope position,plot,dune crest,dune crest,plot_id,02
 Test_2023_1,slope position,plot,mid-slope,mid-slope,plot_id,03
@@ -10,17 +10,17 @@ Test_2023_1,nutrient treatment,treatment,control,control treatment,treatment_id,
 Test_2023_1,nutrient treatment,treatment,high nutrient,high nutrient treatment,treatment_id,02
 Test_2023_1,nutrient treatment,treatment,low nutrient,low nutrient treatment,treatment_id,03
 Test_2023_1,nutrient treatment,treatment,control,control treatment,treatment_id,01
-Test_2023_1,sampling time of day,temporal,17:00:00,NA,temporal_id,02
-Test_2023_1,sampling time of day,temporal,9:00:00,NA,NA,NA
+Test_2023_1,sampling time of day,temporal,17:00:00,,temporal_id,02
+Test_2023_1,sampling time of day,temporal,9:00:00,,,
 Test_2023_1,instrument used,method,instrument 1,instrument 1,method_id,"04, 02, 03, 01"
 Test_2023_1,instrument used,method,instrument 2,instrument 2,method_id,"08, 06, 07, 05"
 Test_2023_1,instrument used,method,instrument 3,instrument 3,method_id,"12, 10, 11, 09"
-Test_2023_1,tree height,entity_context,3,NA,entity_context_id,04
-Test_2023_1,tree height,entity_context,5,NA,entity_context_id,06
-Test_2023_1,tree height,entity_context,4,NA,entity_context_id,05
-Test_2023_1,tree height,entity_context,10,NA,entity_context_id,02
-Test_2023_1,tree height,entity_context,1,NA,entity_context_id,01
-Test_2023_1,tree height,entity_context,2,NA,entity_context_id,03
+Test_2023_1,tree height,entity_context,3,,entity_context_id,04
+Test_2023_1,tree height,entity_context,5,,entity_context_id,06
+Test_2023_1,tree height,entity_context,4,,entity_context_id,05
+Test_2023_1,tree height,entity_context,10,,entity_context_id,02
+Test_2023_1,tree height,entity_context,1,,entity_context_id,01
+Test_2023_1,tree height,entity_context,2,,entity_context_id,03
 Test_2023_1,branch length,method,250 mm branch,Measured on a 250 mm branch segment,method_id,"02, 18, 06, 14, 10"
 Test_2023_1,branch length,method,50 mm branch,Measured on a 50 mm branch segment,method_id,"03, 19, 07, 15, 11"
 Test_2023_1,branch length,method,1000 mm branch,Measured on a 1000 mm branch segment,method_id,"01, 17, 05, 13, 09"

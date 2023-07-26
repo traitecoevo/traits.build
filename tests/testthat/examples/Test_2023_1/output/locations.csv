@@ -5,7 +5,7 @@ Test_2023_1,01,Atherton,longitude (deg),145.65
 Test_2023_1,01,Atherton,elevation (m),800
 Test_2023_1,01,Atherton,rainfall (mm),2000
 Test_2023_1,02,Cape Tribulation,description,Complex mesophyll vine forest in tropical rain forest.
-Test_2023_1,02,Cape Tribulation,latitude (deg),NA
-Test_2023_1,02,Cape Tribulation,longitude (deg),NA
+Test_2023_1,02,Cape Tribulation,latitude (deg),
+Test_2023_1,02,Cape Tribulation,longitude (deg),
 Test_2023_1,02,Cape Tribulation,elevation (m),25
 Test_2023_1,02,Cape Tribulation,rainfall (mm),3500
