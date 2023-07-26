@@ -2,7 +2,7 @@
 # Test Dataset 1: `Test_2023_1`
 
 This dataset is for testing the following, for wide datasets:
-- Dataset-level and trait-level input of `basis_of_record`, `life_stage`, `entity_type`, `value_type` (does not work at dataset level currently, please fix), `basis_of_value`, `measurement_remarks`, `collection_date` and `replicates`
+- Dataset-level and trait-level input of `basis_of_record`, `life_stage`, `entity_type`, `value_type`, `basis_of_value`, `measurement_remarks`, `collection_date` and `replicates`
 - `replicates` in numeric format
 - Units are correctly converted to the accepted units
 - Contexts (correct `link_ids` and `link_vals`; duplicates get collapsed), with and without `find` and `description` values (or NA values), or entered at the trait level as a fixed value or a column (don't think this is possible right now)
