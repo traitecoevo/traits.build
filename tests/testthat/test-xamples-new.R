@@ -1,29 +1,42 @@
-testthat::test_that("example datasets build correctly"), {
+schema <- get_schema()
+resource_metadata <- get_schema("config/metadata.yml",  "metadata")
+definitions <- get_schema("config/traits.yml", "traits")
+unit_conversions <- traits.build:::get_unit_conversions("config/unit_conversions.csv")
+taxon_list <- read_csv_char("config/taxon_list.csv")
+examples_dir <- "examples"
 
-  schema <- get_schema()
-  resource_metadata <- get_schema("config/metadata.yml",  "metadata")
-  definitions <- get_schema("config/traits.yml", "traits")
-  unit_conversions <- traits.build:::get_unit_conversions("config/unit_conversions.csv")
-  taxon_list <- read_csv_char("config/taxon_list.csv")
-  examples_dir <- "examples"
+testthat::test_that("Test Dataset 1 builds correctly", {
 
   # Test Dataset 1: Test_2023_1
   # See README.md in examples/Test_2023_1 for details
 
+  # Build dataset
   Test_2023_1 <- test_build_dataset(
     file.path(examples_dir, "Test_2023_1/metadata.yml"),
     file.path(examples_dir, "Test_2023_1/data.csv"),
     "Test Dataset 1", definitions, unit_conversions, schema, resource_metadata, taxon_list
     )
 
-  expect_equal(Test_2023_1$traits$basis_of_record %>% unique, "field")
+  # Expected output
+  expected_output <-
+    list(
+      traits = read_csv("examples/Test_2023_1/output/traits.csv"),
+      locations = read_csv("examples/Test_2023_1/output/locations.csv"),
+      contexts = read_csv("examples/Test_2023_1/output/contexts.csv"),
+      methods = read_csv("examples/Test_2023_1/output/methods.csv"),
+      excluded_data = read_csv("examples/Test_2023_1/output/excluded_data.csv"),
+      taxonomic_updates = read_csv("examples/Test_2023_1/output/taxonomic_updates.csv"),
+      contributors = read_csv("examples/Test_2023_1/output/contributors.csv")
+    )
+
+  expect_equal(Test_2023_1$traits$basis_of_record %>% unique, expected_output$traits$basis_of_record %>% unique)
   expect_equal(Test_2023_1$traits$life_stage %>% unique, "adult")
   # Are these tests necessary? We know from the above tests that the number of rows will be 406
   expect_equal(Test_2023_1$traits %>% filter(basis_of_record == "field") %>% nrow(), 406)
   expect_equal(Test_2023_1$traits %>% filter(life_stage == "adult") %>% nrow(), 406)
   expect_equal(nrow(Test_2023_1$excluded_data), 0)
 
-}
+})
 
 
 
