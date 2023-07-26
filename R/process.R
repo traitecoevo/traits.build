@@ -1706,6 +1706,6 @@ write_plaintext <- function(austraits, path) {
 
   # Save tables
   for (v in c("traits", "locations", "contexts", "methods", "excluded_data", "taxonomic_updates", "taxa", "contributors")) {
-    readr::write_csv(austraits[[v]], sprintf("%s/%s.csv", path, v))
+    readr::write_csv(austraits[[v]], sprintf("%s/%s.csv", path, v), na = "")
   }
 }
