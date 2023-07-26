@@ -77,9 +77,6 @@ contexts:
   - find: female2
     value: female
     description: female plant
-  - find: .na.character
-    value: .na.character
-    description: .na.character
 - context_property: slope position
   category: plot
   var_in: slope position
@@ -120,8 +117,9 @@ contexts:
     description: instrument 1
   - value: instrument 2
     description: instrument 2
-  - value: instrument 3
-    description: instrument 3
+  - find: instrument 3
+    value: .na.character
+    description: .na.character
 - context_property: tree height
   category: entity_context
   var_in: tree height
