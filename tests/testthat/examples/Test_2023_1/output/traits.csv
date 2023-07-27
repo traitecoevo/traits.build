@@ -43,7 +43,7 @@ Test_2023_1,Alphitonia petriei,013,leaf_area,6820,mm2,population,mean,measuremen
 Test_2023_1,Alphitonia petriei,013,leaf_mass_per_area,149,g/m2,population,mean,measurement,3,field,adult,06,,02,,01,05,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
 Test_2023_1,Alphitonia petriei,013,seed_dry_mass,27.2,mg,population,mean,measurement,3,field,adult,06,,02,,01,05,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
 Test_2023_1,Alphitonia petriei,013,wood_density,0.413,mg/mm3,population,mean,measurement,3,field,adult,06,,02,,01,05,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
-Test_2023_1,Alphitonia petriei,014,plant_growth_form,mallee mallee shrub tree tree,,species,mode,expert_score,,field,adult,,,02,,01,05,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
+Test_2023_1,Alphitonia petriei,014,plant_growth_form,mallee shrub tree,,species,mode,expert_score,,field,adult,,,02,,01,05,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
 Test_2023_1,Alstonia scholaris,015,huber_value,0.000254323499491353,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,12,01,,,02,07,,,2002/2002,made-up measurement remarks,17,Alstonia scholaris
 Test_2023_1,Alstonia scholaris,016,huber_value,0.000539374325782093,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,07,,,2004/2004,from Falster_2005_1,18,Alstonia scholaris
 Test_2023_1,Alstonia scholaris,016,huber_value,0.000594530321046373,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,07,,,2004/2004,from Falster_2005_1,19,Alstonia scholaris

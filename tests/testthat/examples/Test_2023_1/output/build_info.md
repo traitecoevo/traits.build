@@ -21,11 +21,11 @@ other attached packages:
 loaded via a namespace (and not attached):
  [1] remotes_2.4.2     rematch2_2.1.2    rlang_1.1.1       magrittr_2.0.3    git2r_0.32.0      compiler_4.3.1    systemfonts_1.0.4 callr_3.7.3       vctrs_0.6.3       rvest_1.0.3       profvis_0.3.8    
 [12] pkgconfig_2.0.3   crayon_1.5.2      fastmap_1.1.1     backports_1.4.1   ellipsis_0.3.2    utf8_1.2.3        promises_1.2.0.1  rmarkdown_2.23    sessioninfo_1.2.2 tzdb_0.4.0        ps_1.7.5         
-[23] purrr_1.0.1       bit_4.0.5         waldo_0.5.1       xfun_0.39         cachem_1.0.8      jsonlite_1.8.5    RefManageR_1.4.0  later_1.3.1       styler_1.10.1     parallel_4.3.1    prettyunits_1.1.1
+[23] waldo_0.5.1       purrr_1.0.1       bit_4.0.5         xfun_0.39         cachem_1.0.8      jsonlite_1.8.5    RefManageR_1.4.0  later_1.3.1       styler_1.10.1     parallel_4.3.1    prettyunits_1.1.1
 [34] R6_2.5.1          stringi_1.7.12    pkgload_1.3.2     brio_1.1.3        Rcpp_1.0.10       knitr_1.43        usethis_2.2.1     R.utils_2.12.2    httpuv_1.6.11     R.cache_0.16.0    timechange_0.2.0 
-[45] tidyselect_1.2.0  rstudioapi_0.14   yaml_2.3.7        miniUI_0.1.1.1    processx_3.8.1    pkgbuild_1.4.2    tibble_3.2.1      plyr_1.8.8        shiny_1.7.4       withr_2.5.0       evaluate_0.21    
-[56] desc_1.4.2        urlchecker_1.0.1  xml2_1.3.4        pillar_1.9.0      whisker_0.4.1     rex_1.2.1         generics_0.1.3    vroom_1.6.3       rprojroot_2.0.3   hms_1.1.3         munsell_0.5.0    
-[67] scales_1.2.1      storr_1.2.5       xtable_1.8-4      glue_1.6.2        lazyeval_0.2.2    tools_4.3.1       diffobj_0.3.5     webshot_0.5.5     fs_1.6.2          cyclocomp_1.1.0   bibtex_0.5.1     
-[78] lintr_3.0.2       devtools_2.4.5    colorspace_2.1-0  cli_3.6.1         kableExtra_1.3.4  fansi_1.0.4       viridisLite_0.4.2 svglite_2.1.1     R.methodsS3_1.8.2 digest_0.6.32     htmlwidgets_1.6.2
-[89] memoise_2.0.1     htmltools_0.5.5   R.oo_1.25.0       lifecycle_1.0.3   httr_1.4.6        mime_0.12         bit64_4.0.5       remake_0.3.0     
+[45] tidyselect_1.2.0  rstudioapi_0.14   yaml_2.3.7        miniUI_0.1.1.1    processx_3.8.1    austraits_2.1.2   pkgbuild_1.4.2    tibble_3.2.1      plyr_1.8.8        shiny_1.7.4       withr_2.5.0      
+[56] evaluate_0.21     desc_1.4.2        urlchecker_1.0.1  xml2_1.3.4        pillar_1.9.0      whisker_0.4.1     generics_0.1.3    vroom_1.6.3       rprojroot_2.0.3   hms_1.1.3         munsell_0.5.0    
+[67] scales_1.2.1      storr_1.2.5       xtable_1.8-4      glue_1.6.2        tools_4.3.1       diffobj_0.3.5     webshot_0.5.5     fs_1.6.2          bibtex_0.5.1      devtools_2.4.5    colorspace_2.1-0 
+[78] cli_3.6.1         kableExtra_1.3.4  fansi_1.0.4       viridisLite_0.4.2 svglite_2.1.1     R.methodsS3_1.8.2 digest_0.6.32     htmlwidgets_1.6.2 memoise_2.0.1     htmltools_0.5.5   R.oo_1.25.0      
+[89] lifecycle_1.0.3   httr_1.4.6        mime_0.12         bit64_4.0.5       remake_0.3.0     
 
