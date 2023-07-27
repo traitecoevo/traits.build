@@ -8,26 +8,28 @@ examples_dir <- "examples"
 testthat::test_that("Test Dataset 1 builds correctly", {
 
   # Test Dataset 1: Test_2023_1
-  # See README.md in examples/Test_2023_1 for details
+  # See README.md in examples/Test_2023_1 for details about this dataset
 
   # Build dataset
-  Test_2023_1 <- test_build_dataset(
-    file.path(examples_dir, "Test_2023_1/metadata.yml"),
-    file.path(examples_dir, "Test_2023_1/data.csv"),
-    "Test Dataset 1", definitions, unit_conversions, schema, resource_metadata, taxon_list
-    )
+  expect_no_error(
+    Test_2023_1 <- test_build_dataset(
+      file.path(examples_dir, "Test_2023_1/metadata.yml"),
+      file.path(examples_dir, "Test_2023_1/data.csv"),
+      "Test Dataset 1", definitions, unit_conversions, schema, resource_metadata, taxon_list
+    ))
 
   # Expected output
-  expected_output <-
-    list(
-      traits = read_csv("examples/Test_2023_1/output/traits.csv"),
-      locations = read_csv("examples/Test_2023_1/output/locations.csv"),
-      contexts = read_csv("examples/Test_2023_1/output/contexts.csv"),
-      methods = read_csv("examples/Test_2023_1/output/methods.csv"),
-      excluded_data = read_csv("examples/Test_2023_1/output/excluded_data.csv"),
-      taxonomic_updates = read_csv("examples/Test_2023_1/output/taxonomic_updates.csv"),
-      contributors = read_csv("examples/Test_2023_1/output/contributors.csv")
-    )
+  expect_no_error(
+    expected_output <-
+      list(
+        traits = read_csv("examples/Test_2023_1/output/traits.csv"),
+        locations = read_csv("examples/Test_2023_1/output/locations.csv"),
+        contexts = read_csv("examples/Test_2023_1/output/contexts.csv"),
+        methods = read_csv("examples/Test_2023_1/output/methods.csv"),
+        excluded_data = read_csv("examples/Test_2023_1/output/excluded_data.csv"),
+        taxonomic_updates = read_csv("examples/Test_2023_1/output/taxonomic_updates.csv"),
+        contributors = read_csv("examples/Test_2023_1/output/contributors.csv")
+      ))
 
   # Tests for dataset-level input of `basis_of_record` and `life_stage`
   expect_equal(Test_2023_1$traits$basis_of_record %>% unique, expected_output$traits$basis_of_record %>% unique)
@@ -37,28 +39,28 @@ testthat::test_that("Test Dataset 1 builds correctly", {
   # `entity_type`, `value_type`, basis_of_value, `measurement_remarks`, `collection_date`, `replicates`
   expect_equal(Test_2023_1$traits$entity_type %>% unique, expected_output$traits$entity_type %>% unique)
   expect_equal(
-    Test_2023_1$traits %>% filter(entity_type == "individual") %>% nrow(),
-    expected_output$traits %>% filter(entity_type == "individual") %>% nrow())
+    Test_2023_1$traits %>% filter(entity_type == "individual") %>% nrow,
+    expected_output$traits %>% filter(entity_type == "individual") %>% nrow)
   expect_equal(
-    Test_2023_1$traits %>% filter(entity_type == "population") %>% nrow(),
-    expected_output$traits %>% filter(entity_type == "population") %>% nrow())
+    Test_2023_1$traits %>% filter(entity_type == "population") %>% nrow,
+    expected_output$traits %>% filter(entity_type == "population") %>% nrow)
   expect_equal(
-    Test_2023_1$traits %>% filter(entity_type == "species") %>% nrow(),
-    expected_output$traits %>% filter(entity_type == "species") %>% nrow())
+    Test_2023_1$traits %>% filter(entity_type == "species") %>% nrow,
+    expected_output$traits %>% filter(entity_type == "species") %>% nrow)
 
   expect_equal(Test_2023_1$traits$value_type %>% unique, expected_output$traits$value_type %>% unique)
   expect_equal(
-    Test_2023_1$traits %>% filter(value_type == "mode") %>% nrow(),
-    expected_output$traits %>% filter(value_type == "mode") %>% nrow())
+    Test_2023_1$traits %>% filter(value_type == "mode") %>% nrow,
+    expected_output$traits %>% filter(value_type == "mode") %>% nrow)
   expect_equal(
-    Test_2023_1$traits %>% filter(value_type == "raw") %>% nrow(),
-    expected_output$traits %>% filter(value_type == "raw") %>% nrow())
+    Test_2023_1$traits %>% filter(value_type == "raw") %>% nrow,
+    expected_output$traits %>% filter(value_type == "raw") %>% nrow)
   expect_equal(
-    Test_2023_1$traits %>% filter(value_type == "mean") %>% nrow(),
-    expected_output$traits %>% filter(value_type == "mean") %>% nrow())
+    Test_2023_1$traits %>% filter(value_type == "mean") %>% nrow,
+    expected_output$traits %>% filter(value_type == "mean") %>% nrow)
   expect_equal(
-    Test_2023_1$traits %>% filter(value_type == "bin") %>% nrow(),
-    expected_output$traits %>% filter(value_type == "bin") %>% nrow())
+    Test_2023_1$traits %>% filter(value_type == "bin") %>% nrow,
+    expected_output$traits %>% filter(value_type == "bin") %>% nrow)
 
   expect_equal(Test_2023_1$traits$basis_of_value %>% unique, expected_output$traits$basis_of_value %>% unique)
   expect_equal(Test_2023_1$traits$measurement_remarks %>% unique, expected_output$traits$measurement_remarks %>% unique)
@@ -68,19 +70,19 @@ testthat::test_that("Test Dataset 1 builds correctly", {
   expect_equal(Test_2023_1$traits$replicates %>% unique, expected_output$traits$replicates %>% unique %>% as.character)
   expected_output$traits$replicates <- expected_output$traits$replicates %>% as.character()
   expect_equal(
-    Test_2023_1$traits %>% filter(replicates == "3") %>% nrow(),
-    expected_output$traits %>% filter(replicates == "3") %>% nrow())
+    Test_2023_1$traits %>% filter(replicates == "3") %>% nrow,
+    expected_output$traits %>% filter(replicates == "3") %>% nrow)
   expect_equal(
-    Test_2023_1$traits %>% filter(replicates == "5") %>% nrow(),
-    expected_output$traits %>% filter(replicates == "5") %>% nrow())
+    Test_2023_1$traits %>% filter(replicates == "5") %>% nrow,
+    expected_output$traits %>% filter(replicates == "5") %>% nrow)
   expect_equal(
-    Test_2023_1$traits %>% filter(replicates == "10") %>% nrow(),
-    expected_output$traits %>% filter(replicates == "10") %>% nrow())
+    Test_2023_1$traits %>% filter(replicates == "10") %>% nrow,
+    expected_output$traits %>% filter(replicates == "10") %>% nrow)
   # Should replicates: .na in trait metadata take precedence over dataset-level metadata?
   # If so then this test is failing, otherwise have to redo the metadata to only include replicates at the trait level
-  #expect_equal(
-  #  Test_2023_1$traits %>% filter(is.na(replicates)) %>% nrow(),
-  #  expected_output$traits %>% filter(is.na(replicates)) %>% nrow())
+  expect_equal(
+    Test_2023_1$traits %>% filter(is.na(replicates)) %>% nrow,
+    expected_output$traits %>% filter(is.na(replicates)) %>% nrow)
   # Also right now replicates must be entered in character format otherwise AusTraits can't build
   # In the future, test that replicates can be entered in numeric format
 
@@ -97,7 +99,91 @@ testthat::test_that("Test Dataset 1 builds correctly", {
   # They are currently not
   # Having .na.character in the `find` and `value` fields messes up the `link_id` and `link_vals` (removed for now)
   # NA values in the value column should probably not have any `link_vals`
+  # Currently this test will fail
+  # link_vals in expected output may not be the same or correct
+  expect_equal(Test_2023_1$contexts %>% nrow, expected_output$contexts %>% nrow)
+  expect_equal(
+    Test_2023_1$contexts %>% filter(context_property == "plant sex") %>% nrow,
+    expected_output$contexts %>% filter(context_property == "plant sex") %>% nrow
+  )
+  expect_equal(
+    Test_2023_1$contexts %>% filter(context_property == "nutrient treatment") %>% nrow,
+    expected_output$contexts %>% filter(context_property == "nutrient treatment") %>% nrow
+  )
+  # Check NA context values are removed
+  expect_equal(
+    Test_2023_1$contexts %>% filter(context_property == "instrument used") %>% nrow,
+    expected_output$contexts %>% filter(context_property == "instrument used") %>% nrow
+  )
+  # Check `link_vals` and `link_id` are generated
+  expect_not_NA(Test_2023_1$contexts$link_vals)
+  expect_not_NA(Test_2023_1$contexts$link_id)
 
+  # Check methods
+  # Add `method_id` to methods table in the future
+  # Need to figure out how to join methods table to traits table without creating unnecessary duplicates
+  # `value_type` should not be all mean in methods table
+  expect_equal(Test_2023_1$methods$value_type %>% unique, Test_2023_1$traits$value_type %>% unique)
+  expect_equal(Test_2023_1$methods$value_type %>% unique, expected_output$methods$value_type %>% unique)
+  expect_equal(Test_2023_1$methods %>% nrow, expected_output$methods %>% nrow)
+  expect_not_NA(
+    Test_2023_1$methods %>% select(
+      dataset_id, trait_name, methods, description, value_type, sampling_strategy, source_primary_key,
+      source_primary_citation, data_collectors, austraits_curators)
+  )
+
+  # Check locations
+  expect_equal(Test_2023_1$locations %>% nrow, expected_output$locations %>% nrow)
+  expect_equal(Test_2023_1$locations$location_id %>% unique, expected_output$locations$location_id %>% unique)
+  expect_equal(Test_2023_1$locations$location_id %>% unique, Test_2023_1$traits$location_id %>% unique)
+
+  # Check numeric trait
+  expect_equal(
+    Test_2023_1$traits %>% filter(trait_name == "leaf_area") %>% nrow,
+    expected_output$traits %>% filter(trait_name == "leaf_area") %>% nrow)
+  expect_equal(Test_2023_1$traits %>% filter(trait_name == "leaf_area") %>% nrow, 45)
+  expect_gte(
+    Test_2023_1$traits %>% filter(trait_name == "leaf_area") %>% pull(value) %>% as.numeric %>% min,
+    0.1)
+  expect_lte(
+    Test_2023_1$traits %>% filter(trait_name == "leaf_area") %>% pull(value) %>% as.numeric %>% max,
+    1.0e+07)
+  expect_equal(
+    Test_2023_1$traits %>% filter(trait_name == "leaf_area") %>% pull(unit) %>% unique,
+    "mm2")
+  expect_equal(
+    Test_2023_1$traits %>% filter(trait_name == "leaf_mass_per_area") %>% pull(unit) %>% unique,
+    "g/m2")
+
+  # Check categorical trait
+  expect_equal(
+    Test_2023_1$traits %>% filter(trait_name == "plant_growth_form") %>% nrow,
+    expected_output$traits %>% filter(trait_name == "plant_growth_form") %>% nrow)
+  expect_equal(Test_2023_1$traits %>% filter(trait_name == "plant_growth_form") %>% nrow, 12)
+  # Test all values are supported in the trait dictionary (I think this is already built in to our process though)
+  expect_true(
+    all(util_check_all_values_in(
+      Test_2023_1$traits %>% filter(trait_name == "plant_growth_form") %>% pull(value) %>% unique,
+      definitions[["elements"]][["plant_growth_form"]][["allowed_values_levels"]] %>% names
+    ))
+  )
+  # Test duplicate values in value combinations are collapsed
+  expect_equal(
+    Test_2023_1$traits %>% filter(trait_name == "plant_growth_form") %>% pull(value) %>% unique,
+    expected_output$traits %>% filter(trait_name == "plant_growth_form") %>% pull(value) %>% unique
+  )
+
+  # Check time trait
+
+
+  # Check overall traits table
+  # Check manually excluded observation
+  # Check automatically excluded observations
+  # Check substitutions
+  # Check combination of multiple categorical values
+  # Check taxonomic updates
+  # Check `observation_id`
+  # Check duplicate trait values
 
 })
 
