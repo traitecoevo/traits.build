@@ -477,8 +477,8 @@ process_create_context_ids <- function(data, contexts) {
       xxx <- stats::setNames(xx$value, xx$find)
       ## use named vector for find and value
       context_cols[[v]] <- xxx[context_cols[[v]]]
+    }
   }
-
   # group_by category and create ids
   tmp <-
     contexts %>%
