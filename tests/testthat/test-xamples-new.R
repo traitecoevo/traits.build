@@ -96,6 +96,8 @@ testthat::test_that("Test Dataset 1 builds correctly", {
   # Check duplicate contexts are collapsed in the contexts table
   # They are currently not
   # Having .na.character in the `find` and `value` fields messes up the `link_id` and `link_vals` (removed for now)
+  # NA values in the value column should probably not have any `link_vals`
+
 
 })
 
