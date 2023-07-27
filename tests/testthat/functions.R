@@ -1,5 +1,6 @@
 
-# I think the functions aren't printing any error messages for some reason
+# I think the functions aren't printing any error messages
+# Because info and label arguments are NULL, not sure what they're supposed to be
 # Also are these functions supposed to be the same as those in testdata.R?
 
 # I think this function already exists in the package
@@ -44,6 +45,7 @@ expect_isin <- function(object, expected, ..., info = NULL, label = NULL,
 
 
 expect_not_NA <- function(object, info = NULL, label = NULL) {
+
   i <- !is.na(object)
   comp <- compare(all(i), TRUE)
   expect(comp$equal,

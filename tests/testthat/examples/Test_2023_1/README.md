@@ -8,7 +8,7 @@ This dataset is for testing the following, for wide datasets:
 - Contexts (correct `link_ids` and `link_vals`; duplicates get collapsed), with and without `find` and `description` values (or NA values), or entered at the trait level as a fixed value or a column (don't think this is possible right now)
 - Methods (methods are unique), including method contexts
 - Locations (latitude and longitude missing)
-- `trait_name` is NA
+- `trait_name` is NA (don't think this needs a test)
 - Types of trait data -- numeric (entered as either true numeric type or character type), categorical, time (e.g. `flowering_time`)
 - Excluded values (automatic and manual), such as out of allowable range, invalid categorical values, invalid time values, and that excluded values table are filled in with correct error types
 - Substitutions work for categorical, numeric (e.g. ranges) and time traits, with NA find or replace values
@@ -31,3 +31,4 @@ Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 
 See output/
 
+See `making_expected_output.r` for changes made to the expected output files.
