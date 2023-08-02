@@ -1103,6 +1103,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
       }
     }
 
+    out <- out %>% purrr::map(~mutate(.x, across(replicates, ~as.character(.x))))
     out <- dplyr::bind_rows(out)
   } else {
 
