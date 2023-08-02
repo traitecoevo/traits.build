@@ -88,6 +88,8 @@ test_dataframe_valid <- function(data, info) {
 
 
 test_dataframe_named <- function(data, expected_colnames, info) {
+  # I think the ordering of naming currently matters, maybe we don't want that?
+  # Affected by what order fields are entered into the metadata
   test_dataframe_valid(data, info)
   expect_named(data, expected_colnames, info = info)
 }
@@ -114,7 +116,6 @@ test_build_dataset <- function(
   build_dataset
 }
 
-# This is not used in any code
 test_structure <- function(
   data, info, schema, definitions, single_dataset = TRUE) {
 
@@ -135,7 +136,7 @@ test_structure <- function(
 
     comparison <- schema$austraits$elements[[v]]$elements %>% names()
 
-    test_dataframe_named(data[[v]], comparison, info = paste(info, " - structure of ", v))
+    test_dataframe_named(data[[v]], comparison, info = paste(info, "- structure of", v))
   }
 
   # Contains allowed traits
