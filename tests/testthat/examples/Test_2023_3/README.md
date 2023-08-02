@@ -3,7 +3,7 @@
 
 This dataset is for testing the following, for long datasets:
 - Dataset-level and trait-level input of `basis_of_record`, `life_stage`, `entity_type`, `value_type`, `basis_of_value`, `measurement_remarks`, `collection_date` and `replicates`
-- `replicates` in numeric format
+- `replicates` in character format
 - Units are correctly converted to the accepted units
 - Contexts (correct `link_ids` and `link_vals`; duplicates get collapsed), with and without `find` and `description` values (the latter especially relevant for numeric contexts), or entered at the trait level
 - Methods (methods are unique), including method contexts
