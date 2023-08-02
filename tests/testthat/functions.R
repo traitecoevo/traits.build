@@ -49,7 +49,7 @@ expect_not_NA <- function(object, info = NULL, label = NULL) {
   i <- !is.na(object)
   comp <- compare(all(i), TRUE)
   expect(comp$equal,
-         sprintf("%s - contains NAs: %s", info, label))
+         sprintf("%s - object contains NAs", info))
   invisible(object)
 }
 
@@ -99,15 +99,15 @@ test_build_dataset <- function(
   # Test it builds with no errors
   expect_no_error({
     build_config <- dataset_configure(path_metadata, definitions, unit_conversions)
-  }, info = paste(info, " config"))
+  }, info = paste(info, "config"))
 
   expect_no_error({
     build_dataset_raw <- dataset_process(path_data, build_config, schema, resource_metadata)
-  }, info = paste(info, " dataset_process"))
+  }, info = paste(info, "dataset_process"))
 
   expect_no_error({
     build_dataset <- build_update_taxonomy(build_dataset_raw, taxon_list)
-  }, info = paste(info, " update taxonomy"))
+  }, info = paste(info, "update taxonomy"))
 
   test_structure(build_dataset, info, schema, definitions, single_dataset = TRUE)
 
@@ -124,8 +124,6 @@ test_structure <- function(
   vars_tables <-
     vars_austraits %>%
     subset(., !(. %in% c("dataset_id", "definitions", "schema", "sources", "metadata", "build_info")))
-  # Getting a warning: no visible binding for global variable "."
-  # Can be fixed by adding utils::globalVariables(c(".")) somewhere in the package, maybe "R/globals.R"
 
   # Test lists have the right objects
   comparison <- vars_austraits
