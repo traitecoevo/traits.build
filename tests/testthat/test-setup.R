@@ -179,7 +179,7 @@ test_that("build_setup_pipeline is working", {
   # This throws this error:
   # Error in zip::unzip("config/testgit.zip") :
   # zip error: Failed to set mtime on `.git/` while extracting `D:\OneDrive - UNSW\RA Work\AusTraits\traits.build\tests\testthat\config\testgit.zip` in file zip.c:266
-  #expect_no_error(zip::unzip("config/testgit.zip"))
+  expect_no_error(zip::unzip("config/testgit.zip"))
   expect_no_error(sha <- git2r::sha(git2r::last_commit()))
   # Expect error if path name is wrong
   expect_error(build_setup_pipeline(path = "Datas"))

@@ -989,7 +989,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
 
     if (!data_is_long_format) {
 
-  # If an `individual_id` column  IS read in through metadata$dataset,
+  # If an `individual_id` column IS read in through metadata$dataset,
   # it is used to correctly cluster and identify individuals.
 
   # For a file where `individual_id` is specified in the metadata,
