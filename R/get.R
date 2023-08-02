@@ -8,17 +8,19 @@
 #' @export
 #'
 #' @examples{
-#' 
+#'
 #' schema <- get_schema()
 #' }
-get_schema <- function(path=system.file("support", "traits.build_schema.yml", package = "traits.build"), subsection=NULL){
-  
+get_schema <-
+  function(path = system.file("support", "traits.build_schema.yml", package = "traits.build"),
+           subsection = NULL) {
+
   schema <- yaml::read_yaml(path)
-  
-  if(!is.null(subsection)) {
+
+  if (!is.null(subsection)) {
     schema <-  schema[[subsection]]
   }
-  
+
   schema
 }
 

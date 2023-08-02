@@ -54,41 +54,44 @@
 
 # A random string of letters -- useful for defining unique hyperlinks
 #' Create a string of random letters
-#' 
-#' Creates a string of random letters with 8 characters as the default,
-#' useful for defining unique hyperlinks 
 #'
-#' @param n numerical integer, default is 8 
+#' Creates a string of random letters with 8 characters as the default,
+#' useful for defining unique hyperlinks
+#'
+#' @param n numerical integer, default is 8
 #'
 #' @return character string with 8 letters
-notes_random_string <- function(n=8) {
-  base::sample(LETTERS, n, TRUE) %>% paste0(collapse="")
+notes_random_string <- function(n = 8) {
+  base::sample(LETTERS, n, TRUE) %>% paste0(collapse = "")
 }
 
 # Store a txt note in a tibble with two columns
 #' Create a tibble with two columns with note and link
-#' 
-#' Creates a tibble with two columns with one column consisting 
+#'
+#' Creates a tibble with two columns with one column consisting
 #' of a randomly generated string of letters
 #'
-#' @param note character string 
-#' @param link character string, default is NA_character_ which generates a random string 
+#' @param note character string
+#' @param link character string, default is NA_character_ which generates a random string
 #'
 #' @return a tibble with two columns named note and link
-notetaker_as_note <- function(note, link=NA_character_) {
-  tibble::tibble(note = note, link = ifelse(is.na(link), notes_random_string(), link)) %>% dplyr::mutate_all(as.character)
+notetaker_as_note <- function(note, link = NA_character_) {
+  tibble::tibble(
+    note = note, link = ifelse(is.na(link), notes_random_string(), link)
+  ) %>%
+  dplyr::mutate_all(as.character)
 }
 
 # start note recorder
 #' Start note recorder (needs review?)
-#' 
+#'
 #' Note recorder used in report_study.Rmd file to initiate note recorder
-#' 
+#'
 #' @return A tibble where notes are recorded
 notetaker_start <- function() {
   ret <- notetaker_as_note(character(), character())
 
-  function(f = function(x) x, ...){
+  function(f = function(x) x, ...) {
     ret <<- f(ret, ...)
   }
 }
@@ -111,15 +114,15 @@ notetaker_add_note <- function(notes, new_note) {
 #' @param link_text character string, default is "link"
 #'
 #' @return character string containing the notes
-notetaker_print_note <- function(note, as_anchor=FALSE, anchor_text = "", link_text = "link") {
-  if(as_anchor)
-    sprintf('%s <a name="%s"> %s </a>', note$note, note$link, anchor_text )
+notetaker_print_note <- function(note, as_anchor = FALSE, anchor_text = "", link_text = "link") {
+  if (as_anchor)
+    sprintf("%s <a name='%s'> %s </a>", note$note, note$link, anchor_text)
   else
-    sprintf('%s [%s](#%s)', note$note, link_text, note$link)
+    sprintf("%s [%s](#%s)", note$note, link_text, note$link)
 }
 
 #' Print a specific row from notes
-#' 
+#'
 #' Prints a specific row from notes specified by i
 #'
 #' @param notes object containing the report notes
@@ -127,7 +130,7 @@ notetaker_print_note <- function(note, as_anchor=FALSE, anchor_text = "", link_t
 #' @param ... arguments passed to notetaker_print_note()
 #'
 #' @return character string containing the notes
-notetaker_print_notes <- function(notes, i=nrow(notes), ...) {
+notetaker_print_notes <- function(notes, i = nrow(notes), ...) {
   notes %>%
     notetaker_get_note(i) %>%
     notetaker_print_note(...)
@@ -140,21 +143,21 @@ notetaker_print_notes <- function(notes, i=nrow(notes), ...) {
 #' @param numbered logical default is TRUE
 #'
 #' @return character string containing the notes
-notetaker_print_all <- function(notes, ..., numbered=TRUE) {
+notetaker_print_all <- function(notes, ..., numbered = TRUE) {
   i <- seq_len(nrow(notes))
-  x <- notetaker_print_notes(notes, i =i)
+  x <- notetaker_print_notes(notes, i = i)
   sprintf("%d. %s", i, x)
 }
 
 #' Return a specific row from notes
-#' 
-#' Returns a specific row from notes specified by i. Default is nrow(notes) which 
+#'
+#' Returns a specific row from notes specified by i. Default is nrow(notes) which
 #' returns the last note
 #'
 #' @param notes object containing the report notes
 #' @param i numerical; row number for corresponding note, default is nrow(notes)
 #'
 #' @return a single row from a tibble
-notetaker_get_note <- function(notes, i=nrow(notes)) {
+notetaker_get_note <- function(notes, i = nrow(notes)) {
   notes[i,]
 }
