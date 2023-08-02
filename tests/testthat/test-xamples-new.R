@@ -24,28 +24,24 @@ testthat::test_that("Test Dataset 1 builds correctly", {
               "taxonomic_updates", "taxa", "contributors")
   expect_no_error(
     expected_output <-
-      purrr::map(tables, ~read_csv(sprintf("examples/Test_2023_1/output/%s.csv", .x), col_types = "cc")),
+      purrr::map(
+        tables, ~read_csv(sprintf("examples/Test_2023_1/output/%s.csv", .x), col_types = "cccccccccccccccccccccccc")),
     info = "Reading in expected output tables"
   )
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
 
   # Temporary modifications to get these tests to pass
-  expected_output$traits <- expected_output$traits %>% mutate(across(everything(), as.character))
   expected_output$traits <-
     expected_output$traits %>%
     mutate(across(c(temporal_id, entity_context_id, plot_id, treatment_id, method_id), ~if_else(is.na(.x), "NA", .x)))
   names(expected_output$locations$value) <- expected_output$locations$location_property
   expected_output$methods <-
     expected_output$methods %>%
-    mutate(across(everything(), as.character)) %>%
     mutate(across(c(source_secondary_key, source_original_dataset_key), ~""))
   expected_output$excluded_data <-
     expected_output$excluded_data %>%
-    mutate(across(everything(), as.character)) %>%
     mutate(across(c(temporal_id, entity_context_id, plot_id, treatment_id, method_id), ~if_else(is.na(.x), "NA", .x)))
-  expected_output$taxonomic_updates <- expected_output$taxonomic_updates %>% mutate(across(everything(), as.character))
-  expected_output$taxa <- expected_output$taxa %>% mutate(across(everything(), as.character))
   # Check all tables are equal to expected output tables
   for (v in tables) {
     expect_equal(Test_2023_1[[v]], expected_output[[v]])
