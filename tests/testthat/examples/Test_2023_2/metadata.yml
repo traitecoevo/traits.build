@@ -28,15 +28,15 @@ dataset:
   data_is_long_format: no
   custom_R_code: .na
   collection_date: 2004/2004
-  taxon_name: Species
+  taxon_name: species
   location_name: site
   source_id: source_id
   entity_type: species
   replicates: replicates
   basis_of_value: basis_of_value
-  value_type: mean
   description: Investigation into trait values correlated with plant height along
     light availability and successional gradients for far north Queensland species.
+  value_type: mean
   basis_of_record: field
   life_stage: adult
   sampling_strategy: Nineteen species, ranging from early to late successional status,
