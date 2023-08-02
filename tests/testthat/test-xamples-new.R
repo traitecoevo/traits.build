@@ -5,6 +5,9 @@ unit_conversions <- traits.build:::get_unit_conversions("config/unit_conversions
 taxon_list <- read_csv_char("config/taxon_list.csv")
 examples_dir <- "examples"
 
+# Not sure why but running the tests line by line generates different ids than when you
+# run the whole `test_that` function... It means that I have to use the `test_that` function to
+# generate the expected output.
 
 testthat::test_that("Test Dataset 1 builds correctly", {
 
