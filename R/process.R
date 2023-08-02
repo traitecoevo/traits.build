@@ -222,7 +222,7 @@ dataset_process <- function(filename_data_raw,
   list(
        traits     = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error"))),
        locations  = locations,
-       contexts   = context_ids$contexts %>% dplyr::select(-c("var_in", "find")),
+       contexts   = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in", "find"))),
        methods    = methods,
        excluded_data = traits %>% dplyr::filter(!is.na(.data$error)) %>%
               dplyr::select(dplyr::all_of(c("error")), everything()),
@@ -548,7 +548,7 @@ process_create_context_ids <- function(data, contexts) {
     for (v in vars) {
       id_link[[v]] <-
         xxx %>%
-        dplyr::rename(c(find = v)) %>%
+        dplyr::rename(dplyr::all_of(c(find = v))) %>%
         dplyr::select(dplyr::all_of(c("find", "id"))) %>%
         dplyr::filter(!is.na(.data$id)) %>%
         dplyr::distinct() %>%
@@ -672,7 +672,7 @@ process_flag_excluded_observations <- function(data, metadata) {
   fix <-
     metadata$exclude_observations %>%
     util_list_to_df2() %>%
-    tidyr::separate_rows(.data$find, sep = ", ") %>%
+    tidyr::separate_rows(find, sep = ", ") %>%
     dplyr::mutate(find = str_squish(.data$find))
 
   if (nrow(fix) == 0) return(data)
@@ -1521,7 +1521,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
 
   austraits_raw$traits <-
     austraits_raw$traits %>%
-    dplyr::rename(cleaned_name = .data$taxon_name) %>%
+    dplyr::rename(cleaned_name = taxon_name) %>%
     dplyr::left_join(by = "cleaned_name",
               taxa %>% dplyr::select(dplyr::all_of(c("cleaned_name", "taxon_name", "taxon_rank")))
               ) %>%
@@ -1538,9 +1538,9 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::select(dplyr::all_of(c("taxon_name", "family", "taxonomic_reference", "taxon_id",
                   "scientific_name_id", "taxonomic_status"))) %>%
     dplyr::rename(
-      name_to_match_to = .data$taxon_name, taxonomic_reference_genus = .data$taxonomic_reference,
-      taxon_id_genus = .data$taxon_id, scientific_name_id_genus = .data$scientific_name_id,
-      taxonomic_status_genus = .data$taxonomic_status
+      name_to_match_to = taxon_name, taxonomic_reference_genus = taxonomic_reference,
+      taxon_id_genus = taxon_id, scientific_name_id_genus = scientific_name_id,
+      taxonomic_status_genus = taxonomic_status
     ) %>%
     dplyr::distinct()
 
