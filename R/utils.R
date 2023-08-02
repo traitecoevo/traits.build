@@ -212,7 +212,7 @@ read_metadata <- function(path) {
     data2 <- readLines(path)
 
     code_start <- grep("  custom_R_code:", data2, fixed = TRUE)
-    code_end <- grep("  collection_date:", data2, fixed = TRUE) - 1
+    code_end <- grep("  collection_date:", data2, fixed = TRUE)[1] - 1
 
     data$dataset$custom_R_code <-
       data2[code_start:code_end] %>%
