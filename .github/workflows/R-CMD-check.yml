@@ -6,7 +6,7 @@
 # See https://github.com/r-lib/actions/tree/master/examples#readme for
 # additional example workflows available for the R community.
 
-name: R
+name: R-CMD-check
 
 on:
   push:
@@ -26,10 +26,13 @@ jobs:
       matrix:
         config:
           - {os: macOS-latest,   r: 'release'}
+          - {os: windows-latest, r: 'release'}
+          - {os: ubuntu-latest, r: 'release'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
 
     steps:
       - uses: actions/checkout@v3
@@ -44,7 +47,8 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: local::., any::rcmdcheck, any::remotes, any::covr
+          cache-version: 3
+          extra-packages: local::., any::rcmdcheck, any::remotes
           needs: check
 
       - name: Check
@@ -53,21 +57,4 @@ jobs:
           args: 'c("--no-manual", "--as-cran")'
           error-on: '"error"'
           check-dir: '"check"'
-
-      - name: Show testthat output
-        if: always()
-        run: find check -name 'testthat.Rout*' -exec cat '{}' \; || true
-        shell: bash
-
-      - name: Upload check results
-        if: failure()
-        uses: actions/upload-artifact@main
-        with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: check
-
-      - name: Test coverage
-        run: |
-          library(traits.build)
-          covr::codecov(quiet=FALSE, type = "all")
-        shell: Rscript {0}
+          upload-snapshots: true
