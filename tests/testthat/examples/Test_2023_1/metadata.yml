@@ -71,8 +71,7 @@ contexts:
   values:
   - value: female
     description: female plant
-  - find: male
-    value: male
+  - value: male
     description: male plant
   - find: female2
     value: female
