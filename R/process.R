@@ -551,8 +551,8 @@ process_create_context_ids <- function(data, contexts) {
     for (v in vars) {
       id_link[[v]] <-
         xxx %>%
-        dplyr::rename(dplyr::all_ofc(value = v)) %>%
-        dplyr::select(dplyr::all_of(c("find", "id"))) %>%
+        dplyr::rename(dplyr::all_of(c(value = v))) %>%
+        dplyr::select(dplyr::all_of(c("value", "id"))) %>%
         dplyr::filter(!is.na(.data$id)) %>%
         dplyr::distinct() %>%
         util_df_convert_character() %>%
