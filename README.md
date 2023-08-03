@@ -2,7 +2,7 @@
 # `traits.build`
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/traitecoevo/traits.build/actions/workflows/r.yml/badge.svg)](https://github.com/traitecoevo/traits.build/actions/workflows/r.yml)
+[![R-CMD-check](https://github.com/traitecoevo/traits.build/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/traitecoevo/traits.build/actions/workflows/R-CMD-check.yml)
 [![Codecov test coverage](https://codecov.io/gh/traitecoevo/traits.build/branch/develop/graph/badge.svg)](https://app.codecov.io/gh/traitecoevo/traits.build?branch=develop)
 <!-- badges: end -->
 
