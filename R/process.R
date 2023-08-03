@@ -1169,6 +1169,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
   }
 
   # Implement any value changes as per substitutions
+  # I think this breaks if substitutions is .na in the metadata?
   if (!is.na(metadata[["substitutions"]][1])) {
     substitutions_table <-  util_list_to_df2(metadata[["substitutions"]]) %>%
       dplyr::mutate(
