@@ -438,6 +438,7 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
 #' process_format_contexts(read_metadata("data/Apgaua_2017/metadata.yml")$context)
 #' }
 process_format_contexts <- function(my_list, dataset_id) {
+
   f <- function(x) {
     tibble::tibble(
     context_property = x$context_property,
@@ -1142,7 +1143,6 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
       dplyr::mutate(
         context_property = NA_character_,
         category = NA_character_,
-        find = NA_character_,
         value = NA_character_,
         description = NA_character_,
         link_id = NA_character_,
