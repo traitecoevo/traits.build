@@ -36,16 +36,23 @@ testthat::test_that("Test Dataset 1 builds correctly", {
   names(expected_output) <- tables
 
   # Temporary modifications to get these tests to pass
-  expected_output$traits <-
-    expected_output$traits %>%
-    mutate(across(c(temporal_id, entity_context_id, plot_id, treatment_id, method_id), ~if_else(is.na(.x), "NA", .x)))
-  names(expected_output$locations$value) <- expected_output$locations$location_property
-  expected_output$methods <-
-    expected_output$methods %>%
-    mutate(across(c(source_secondary_key, source_original_dataset_key), ~""))
-  expected_output$excluded_data <-
-    expected_output$excluded_data %>%
-    mutate(across(c(temporal_id, entity_context_id, plot_id, treatment_id, method_id), ~if_else(is.na(.x), "NA", .x)))
+  Test_2023_1$traits <-
+    Test_2023_1$traits %>%
+    mutate(across(
+      c(temporal_id, entity_context_id, plot_id, treatment_id, method_id),
+      ~if_else(.x == "NA", NA_character_, .x)
+    ))
+  names(Test_2023_1$locations$value) <- NULL
+  Test_2023_1$methods <-
+    Test_2023_1$methods %>%
+    mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
+  Test_2023_1$excluded_data <-
+    Test_2023_1$excluded_data %>%
+    mutate(across(
+      c(temporal_id, entity_context_id, plot_id, treatment_id, method_id),
+      ~if_else(.x == "NA", NA_character_, .x)
+    ))
+
   # Check all tables are equal to expected output tables
   for (v in tables) {
     expect_equal(Test_2023_1[[v]], expected_output[[v]])
@@ -83,18 +90,16 @@ testthat::test_that("Test Dataset 2 builds correctly", {
   # Temporary modifications to get these tests to pass
   columns <- c("basis_of_value", "replicates", "life_stage", "collection_date", "measurement_remarks")
 
-  for (col in columns) {
-    names(expected_output[["traits"]][[col]]) <- rep("", length(expected_output[["traits"]][[col]]))
-  }
-
-  names(expected_output$locations$value) <- expected_output$locations$location_property
-  expected_output$methods <-
-    expected_output$methods %>%
-    mutate(across(c(source_secondary_key, source_original_dataset_key), ~""))
-
-  for (col in columns) {
-    names(expected_output[["excluded_data"]][[col]]) <- character(0)
-  }
+  Test_2023_2$traits <-
+    Test_2023_2$traits %>%
+    mutate(across(dplyr::all_of(columns), as.character))
+  names(Test_2023_2$locations$value) <- NULL
+  Test_2023_2$methods <-
+    Test_2023_2$methods %>%
+    mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
+  Test_2023_2$excluded_data <-
+    Test_2023_2$excluded_data %>%
+    mutate(across(dplyr::all_of(columns), as.character))
 
   # Check all tables are equal to expected output tables
   for (v in tables) {
