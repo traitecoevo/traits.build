@@ -48,10 +48,13 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           cache-version: 3
-          extra-packages: local::., any::rcmdcheck, any::remotes, any::covr
+          extra-packages: local::., any::rcmdcheck, any::remotes
           needs: check
 
       - name: Check
         uses: r-lib/actions/check-r-package@v2
         with:
+          args: 'c("--no-manual", "--as-cran")'
+          error-on: '"error"'
+          check-dir: '"check"'
           upload-snapshots: true
