@@ -573,7 +573,7 @@ process_create_context_ids <- function(data, contexts) {
       id_link %>% dplyr::bind_rows(),
       by = c("context_property", "category", "value")
     ) %>%
-    distinct(across(-.data$find))
+    distinct(across(-dplyr::any_of("find")))
 
   list(
     contexts = contexts_finished %>% util_df_convert_character(),
