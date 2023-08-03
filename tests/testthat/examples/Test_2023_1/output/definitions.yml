@@ -1,0 +1,177 @@
+leaf_N_per_dry_mass:
+  label: Leaf nitrogen (N) content per unit leaf dry mass
+  description: The ratio [PATO:0001470] of the mass [PATO:0000125] of nitrogen [CHEBI:25555]
+    in a leaf [PO:0025034] to leaf dry mass [TO:0001014].
+  comments: Includes measurements on leaf analogs, including cladodes and phylloclades.
+  type: numeric
+  units: mg/g
+  allowed_values_min: 0.5
+  allowed_values_max: 100.0
+  entity_URI: https://w3id.org/APD/traits/trait_0000038
+leaf_area:
+  label: Leaf area
+  description: A leaf area trait [TO:0000540] which is the 2-D [PATO:0001709] area
+    [PATO:0001323] of the leaf lamina [PO:0020039] and petiole [PO:0020038]. For some
+    species the area of a leaf analogue is reported, possibly a leaflet [PO:0020049],
+    cladode [PO:0025354], or phyllode [PO:0025335].;The 2-dimensional projected (scanned)
+    area of the surface of a leaf or a leaf analogue (leaflet, cladode, phyllode).
+  comments: This trait includes measurements of leaves and leaf analogues, including
+    leaflets, cladodes, and phyllodes. When a measurement is made on a leaf analogue,
+    the tissue measured should be documented as part of the methods or noted as a
+    `context` or under `measurement_remarks`. Leaflet area can alternatively be mapped
+    to the trait `leaflet_area`. It is most common for leaf area measurements to include
+    the petiole; the measurement methods should indicate if the petiole is included
+    in or excluded from the leaf area measurements. For terete leaves, leaf area should
+    still be recorded as the 2-dimensional projected area.
+  type: numeric
+  units: mm2
+  allowed_values_min: 0.1
+  allowed_values_max: 1.0e+07
+  entity_URI: https://w3id.org/APD/traits/trait_0011211
+leaf_mass_per_area:
+  label: Leaf mass per area
+  description: A leaf morphology trait [TO:0000748] which is the ratio [PATO:0001470]
+    of the leaf dry [PATO:0001824] mass [PATO:0000125] to the leaf [PO:0025034] area
+    [PATO:0001323], measured on an entire leaf, including the entire leaf lamina [PO:0020039]
+    and the petiole [PO:0020038].;The ratio of leaf dry mass to leaf area, measured
+    on an entire leaf including the petiole; LMA. (The inverse of specific leaf area,
+    SLA.)
+  comments: Leaf mass per area includes measurements submitted as `specific_leaf_area`
+    (SLA); they are simply inverted. Leaf mass per area is explicitly measured on
+    an entire leaf, including the petiole. Measurements made on a piece of the leaf
+    lamina, excluding petiole and midrib, are a separate trait `leaf_lamina_mass_per_area`.
+    If measurements are made on the entire leaf lamina, but the petiole is excluded,
+    this should be noted in the methods or under `measurement_remarks`.
+  type: numeric
+  units: g/m2
+  allowed_values_min: 1.0
+  allowed_values_max: 3000.0
+  entity_URI: https://w3id.org/APD/traits/trait_0011230
+wood_density:
+  label: Wood density
+  description: A stem morphology trait [TO:0000361] which is the ratio [PATO:0001470]
+    of the mass [PATO:0000125] of a unit of wood [NCIT:C93062] from a stem [PO:0009047]
+    assessed after drying to its volume [PATO:0000918] assessed without drying.;The
+    ratio of wood dry mass to wood fresh volume, measured on a stem segment without
+    bark.
+  type: numeric
+  units: mg/mm3
+  allowed_values_min: 0.05
+  allowed_values_max: 1.4
+  entity_URI: https://w3id.org/APD/traits/trait_0011815
+huber_value:
+  label: Huber value
+  description: A stem morphology trait [TO:0000361] which is the ratio [PATO:0001470]
+    of sapwood [PO:0004513] area [PATO:0001323] to the total distal [PATO:0001234]
+    leaf [PO:0025034] area.;For a single branch, the ratio of sapwood cross-sectional
+    area at the base of the branch to the branch's total leaf area.
+  type: numeric
+  units: mm2{sapwood}/mm2{leaf}
+  allowed_values_min: 1.0e-06
+  allowed_values_max: 0.2
+  entity_URI: https://w3id.org/APD/traits/trait_0011911
+seed_dry_mass:
+  label: Seed dry mass
+  description: A seed morphology trait [TO:0000184] which is the dry [PATO:0001824]
+    mass [PATO:0000125] of a mature [PATO:0001701] seed [PO:0009010].;Dry mass of
+    a mature seed, including both oven dried and air-dried samples.
+  comments: Standard methods people will have used to dry seeds include, 'fresh' (at
+    dispersal, mature); 'air dried' (at local ambient conditions); 'seed bank air
+    dried' (to 15% relative humidity); and 'oven dried' (>100 deg C for a set number
+    of hours; e.g. seed bank standard is 103 deg C for 17 hours). It is expected that
+    some observations in AusTraits mapped onto â€˜seed_dry_mass' will actually include
+    both the seed and some dispersal tissue, if the two cannot easily be separated;
+    these should be mapped to 'diaspore_dry_mass'.
+  type: numeric
+  units: mg
+  allowed_values_min: 1.0e-05
+  allowed_values_max: 1000000.0
+  entity_URI: https://w3id.org/APD/traits/trait_0012610
+plant_growth_form:
+  label: Plant growth form
+  description: A whole plant [PO:0000003] phenotype [NCIT:C16977] trait that summarises
+    different components of a whole plant's shape [PATO:0000052] and structure [PATO:0000141]
+    into general groups [NCIT:C43359]. Characters that contribute to the plant form
+    categories include the height [PATO:0000119] of the vegetative shoot system [PO:0025607],
+    the distribution of leaves [PO:0025034] along the plant stem [PO:0009047], and
+    the position [PATO:0000140] and count [NCIT:C25463] of stems and/or leaves relative
+    to the ground surface.;The form of a plant, capturing a general sense of plant
+    height and shape, which parts of a plant are woody versus herbaceous, the number
+    of stems arising at ground level, and the distribution of leaves relative to the
+    main stem.
+  comments: This definition of plant growth form is narrower than what is used by
+    many other references. Here, information pertaining to where a plant grows is
+    captured by `plant_growth_substrate`. Terminology about the shape and length of
+    stems and distribution of leaves is included in `stem_growth_habit`. An indication
+    of whether a plant is parasitic is presented in `parasitic`. Included in the list
+    of plant growth forms are two terms that are exclusively used to describe Australian
+    plants, mallee and hummock, and one, tussock, that is an important growth form
+    of Australian grasses, but globally used less frequently.
+  type: categorical
+  allowed_values_levels:
+    basal_large: A plant whose leaves form a distinctly large basal tuft or rosette,
+      including large acaulescent monocots and cycads.
+    climber: Plant that climbs up another plant's stem or branches, rather than being
+      able to support itself. Term used only if datasets do not specify if a climbing
+      plant is herbaceous (a vine) or woody (a liana).
+    climber_herbaceous: Herbaceous plant that climbs up another plant's stem or branches,
+      rather than being able to support itself. This is usually synonymous with `vine`.
+      Types of climbers (scrambling, twining) are captured under the trait `plant_climbing_mechanism`.
+      (Synonyms, vine)
+    climber_woody: Woody or thick-stemmed (>2 cm) plant that climbs up another plant's
+      stem or branches, rather than being able to support itself. This is usually
+      synonymous with `liana`. Woody climbers generally use hooks, tendrils, and/or
+      adventitious roots to climb; the climbing mechanisms used by a taxon are captured
+      under the trait `plant_climbing_mechanism`. (Synonyms, liana)
+    fern: A taxonomic grouping; ferns are vascular plants that reproduce via spores.
+    geophyte: Subcategory of herb, specifically referring to plants that survive the
+      winter/dry season as an organ (rhizome, bulb, corm, or tuber) buried in dry
+      soil, with all leaves dying back each year.
+    graminoid: Herbaceous plant with a grass-like morphology that is within the order
+      Poales. Taxa both with and without a tussock form are mapped to this term. This
+      term is most frequently applied to three large monocot families, Poaceae, Cyperaceae,
+      and Juncaceae, but the term could apply to other taxa within Poales with a grass-like
+      morphology, including narrow, linear leaves and non-showy flowers, including
+      Restionaceae, Centrolepidaceae, Anarthriaceae, and Ecdeiocoleaceae. Taxa outside
+      Poales with a grass-like morphology should be designated as `herbs` and also
+      have the term `tufted` mapped to the trait `stem_growth_habit`.
+    graminoid_not_tussock: A subcategory of graminoid, indicating a plant which explicitly
+      lacks a tussock morphology, with the leaves not growing in tufts.
+    herb: A seed-bearing plant which does not have a woody above-ground stem; when
+      available this term has been divided into more detailed terms. (Synonyms, forb)
+    hummock: Plant that grows as a dense mound up to 1 metre in height. The term generally
+      applies only to species within the genera Triodia that form such mounds and
+      these are considered a distinctive and uniquely Australian growth form.
+    lycophyte: A taxonomic grouping that includes quillworts, clubmosses, and selaginella.
+    mallee: Refers to Eucalyptus species which are small trees that form a large lignotuber.
+      They have multiple stems arising at or near ground level and regenerate from
+      the lignotuber following fire.
+    palmoid: Plant that bears a rosette-like canopy of typically large, often compound
+      leaves atop a usually thick (pachycaulous), columnar, unbranched or little-branched
+      stem. Palms, tree ferns, trunked cycads, trunked grass-trees, and Pandanus are
+      mapped to this term. (Synonyms, rosette-tree, palm, grass-tree)
+    shrub: A woody plant that is distinguished by NOT being a tree, due to one of
+      more of the following characteristics, 1) they are less than 8 metres in height;
+      2) if a plant community includes trees, the shrubs are shorter than the surrounding
+      trees and not part of the canopy; 3) in comparison to trees, the leaves are
+      more distributed along the entire trunk; 4) the plant has multiple relatively
+      narrow stems arising at or near ground level. The definition of `shrub` is complex,
+      as there are many single-stemmed shrubs within Australia and many taxa that
+      are described in the taxonomic literature as a shrub or small tree.
+    subshrub: A plant that is only woody at the base, with the remainder of the stems
+      regenerating yearly. This term is not meant to encompass short-lived plants
+      that are only borderline woody. (Synonyms, suffrutescent)
+    tree: A tall, woody, perennial plant, usually with a single main trunk, and its
+      leaves predominantly elevated above the ground surface.
+    tussock: A subcategory of graminoid, which is a plant where many shoots from the
+      basal meristem form prominent tufts.
+  entity_URI: https://w3id.org/APD/traits/trait_0030010
+flowering_time:
+  label: Flowering time, by month
+  description: The months [UO:0000035] during which a plant [PO:0000003] has open
+    (anthetic) flowers [PO:0009046] and is therefore at the whole plant flowering
+    stage [PO:0007016].;Months during which taxon has open (anthetic) flowers.
+  comments: Trait keyed as a sequences of 12 Ns (not flowering) and Ys (flowering),
+    representing the 12 months, starting with January.
+  type: categorical
+  entity_URI: https://w3id.org/APD/traits/trait_0030214
