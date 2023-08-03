@@ -438,42 +438,46 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
 #' process_format_contexts(read_metadata("data/Apgaua_2017/metadata.yml")$context)
 #' }
 process_format_contexts <- function(my_list, dataset_id) {
-   f <- function(x) {
-     tibble::tibble(
-      context_property = x$context_property,
-      category = x$category,
-      var_in = x$var_in,
-      util_list_to_df2(x$values))
-   }
+  f <- function(x) {
+    tibble::tibble(
+    context_property = x$context_property,
+    category = x$category,
+    var_in = x$var_in,
+    util_list_to_df2(x$values))
+  }
 
-   if (!is.na(my_list[1])) {
-     contexts <-
-       my_list %>%
-       purrr::map_df(f) %>%
-       dplyr::mutate(dataset_id = dataset_id) %>%
-       dplyr::select(dplyr::any_of(
-         c("dataset_id", "context_property", "category", "var_in",
-         "find", "value", "description"))
-         )
+  if (!is.na(my_list[1])) {
+    contexts <-
+      my_list %>%
+      purrr::map_df(f) %>%
+      dplyr::mutate(dataset_id = dataset_id) %>%
+      dplyr::select(dplyr::any_of(
+        c("dataset_id", "context_property", "category", "var_in",
+        "find", "value", "description"))
+        )
 
-     if (is.null(contexts[["description"]])) {
-      contexts[["description"]] <- NA_character_
-     }
-     # keep values from find column if a replacement isn't specified
-     if (is.null(contexts[["find"]])) {
-       contexts[["find"]] <- NA_character_
-     } else {
-       contexts[["find"]] <- ifelse(is.na(contexts$find), contexts$value, contexts$find)
-     }
-   } else {
-     contexts <-
-       tibble::tibble(dataset_id = character(), var_in = character())
-   }
+    if (is.null(contexts[["description"]])) {
+    contexts[["description"]] <- NA_character_
+    }
+
+    # keep values from find column if a replacement isn't specified
+    if (is.null(contexts[["find"]])) {
+      contexts[["find"]] <- NA_character_
+    } else {
+      contexts[["find"]] <- ifelse(is.na(contexts$find), contexts$value, contexts$find)
+      # I think if there are any find values at all across the contexts this will paste the value values in the find
+      # column (maybe not what we want since it defeats the purpose of if (nrow(xx) > 0))
+    }
+  } else {
+    contexts <-
+      tibble::tibble(dataset_id = character(), var_in = character())
+  }
 
   contexts
 }
 
 process_create_context_ids <- function(data, contexts) {
+
   # select context_cols
   tmp <- contexts %>%
     dplyr::select(dplyr::all_of(c("context_property", "var_in"))) %>%
