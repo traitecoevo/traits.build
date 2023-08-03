@@ -176,9 +176,6 @@ test_that("build_setup_pipeline is working", {
   expect_false(file.exists("config/taxon_list.csv"))
   expect_true(file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml", overwrite = TRUE))
 
-  # This throws this error:
-  # Error in zip::unzip("config/testgit.zip") :
-  # zip error: Failed to set mtime on `.git/` while extracting `D:\OneDrive - UNSW\RA Work\AusTraits\traits.build\tests\testthat\config\testgit.zip` in file zip.c:266
   expect_no_error(zip::unzip("config/testgit.zip"))
   expect_no_error(sha <- git2r::sha(git2r::last_commit()))
   # Expect error if path name is wrong
