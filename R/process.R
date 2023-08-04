@@ -1112,8 +1112,8 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
         }
       }
     }
-
-    out <- out %>% purrr::map(~mutate(.x, across(replicates, ~as.character(.x))))
+    # Convert replicates column to character type to allow `bind_rows`
+    out <- out %>% purrr::map(~mutate(.x, across(dplyr::any_of("replicates"), ~as.character(.x))))
     out <- dplyr::bind_rows(out)
   } else {
 
