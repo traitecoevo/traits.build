@@ -468,14 +468,13 @@ process_format_contexts <- function(my_list, dataset_id) {
     # contexts[["find"]] <- ifelse(is.na(contexts$value), contexts$find, contexts$value)
     # But I think there should not be a case where there is a `find` value and no `value` value
     # `dataset_test` should pick this up
-    browser()
+
     if (is.null(contexts[["find"]])) {
       contexts[["find"]] <- NA_character_
     } else {
+      # Where `find` column is NA, replace with `value` column, so that on Line 510 and 512
+      # `value` values are replaced by identical `find` values (otherwise they will be NA)
       contexts[["find"]] <- ifelse(is.na(contexts$find), contexts$value, contexts$find)
-
-      # I think if there are any find values at all across the contexts this will paste the value values in the find
-      # column (maybe not what we want since it defeats the purpose of if (nrow(xx) > 0))
     }
   } else {
     contexts <-
