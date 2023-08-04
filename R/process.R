@@ -462,10 +462,18 @@ process_format_contexts <- function(my_list, dataset_id) {
     }
 
     # keep values from find column if a replacement isn't specified
+    # This doesn't do what the comment says
+    # Is the comment talking about if someone input a `find` field but no `value` field?
+    # In that case it should be
+    # contexts[["find"]] <- ifelse(is.na(contexts$value), contexts$find, contexts$value)
+    # But I think there should not be a case where there is a `find` value and no `value` value
+    # `dataset_test` should pick this up
+    browser()
     if (is.null(contexts[["find"]])) {
       contexts[["find"]] <- NA_character_
     } else {
       contexts[["find"]] <- ifelse(is.na(contexts$find), contexts$value, contexts$find)
+
       # I think if there are any find values at all across the contexts this will paste the value values in the find
       # column (maybe not what we want since it defeats the purpose of if (nrow(xx) > 0))
     }
@@ -1172,9 +1180,9 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
   if (!is.na(metadata[["substitutions"]][1])) {
     substitutions_table <-  util_list_to_df2(metadata[["substitutions"]]) %>%
       dplyr::mutate(
-             find = tolower(.data$find),
-             replace = tolower(.data$replace)
-             )
+        find = tolower(.data$find),
+        replace = tolower(.data$replace)
+      )
 
     for (i in seq_len(nrow(substitutions_table))) {
       j <- which(out[["trait_name"]] == substitutions_table[["trait_name"]][i] &
