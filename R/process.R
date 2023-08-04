@@ -509,7 +509,6 @@ process_create_context_ids <- function(data, contexts) {
   # group_by category and create ids
   tmp <-
     contexts %>%
-    #  dplyr::filter(category == v) %>%
     dplyr::select(dplyr::all_of(c("context_property", "category", "value"))) %>%
     dplyr::distinct()
 
