@@ -102,6 +102,17 @@ test_that("metadata_add_source_bibtex is working", {
   expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$primary$journal, "Journal of Ecology")
 })
 
+test_that("metadata_add_locations is working", {
+  locations <- tibble(
+    site_name = c("site 1", "site 2"),
+    latitude = c("-16", "-17"),
+    longitude = c("145", "146"),
+    elevation = c("100", "150"))
+  # Check that metadata_add_locations returns names(location) if within a `test_that` chunk
+  # Only works within the chunk, not line-by-line
+  expect_equal(metadata_add_locations("Test_2022", locations), names(locations))
+})
+
 test_that("metadata_add_substitution is working", {
   expect_silent(
     suppressMessages(
