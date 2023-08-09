@@ -108,19 +108,42 @@ test_that("metadata_add_locations is working", {
     latitude = c("-16", "-17"),
     longitude = c("145", "146"),
     elevation = c("100", "150"))
-  # Check that metadata_add_locations returns names(location) if within a `test_that` chunk
-  # If not in a `test_that` chunk, it will run interactively (require user input)
-  # Hence only works when run within the chunk, not line-by-line
+
   expect_no_error(
     suppressMessages(
-    x <- metadata_add_locations("Test_2022", locations, 
-      # gives responses for user input, for testing
-       user_responses = list(location_name = "site_name", keep = c("latitude", "longitude", "elevation"))
+      x <- metadata_add_locations("Test_2022", locations,
+        # Gives responses for user input, for testing
+        user_responses = list(location_name = "site_name", keep = c("latitude", "longitude", "elevation"))
       )
     )
   )
-  expect_equal(names(x$locations) , locations$site_name)
+  expect_equal(names(x$locations), locations$site_name)
+  # Add more tests
+  expect_equal(lapply(x$locations, "[[", "latitude") %>% unlist() %>% as.character(), locations$latitude)
 })
+
+test_that("metadata_add_contexts is working", {
+
+})
+
+test_that("metadata_add_traits is working", {
+  metadata <- read_metadata_dataset("Test_2022")
+  metadata$traits <- NA
+  write_metadata_dataset(metadata, "Test_2022")
+  var_in <- c("LMA (mg mm-2)", "Leaf nitrogen (mg mg-1)")
+  expect_no_error(
+    suppressMessages(
+    x <- metadata_add_traits("Test_2022",
+      # Gives responses for user input, for testing
+      user_responses = list(var_in = var_in)
+      )
+    )
+  )
+  expect_equal(lapply(x$traits, "[[", "var_in") %>% unlist(), var_in)
+  expect_equal(lapply(x$traits, "[[", "unit_in") %>% unlist() %>% unique(), "unknown")
+})
+
+test_that()
 
 test_that("metadata_add_substitution is working", {
   expect_silent(

@@ -149,7 +149,7 @@ metadata_user_select_names <- function(title, vars) {
     if (all(i %in% seq_len(length(vars)))) {
       success <- TRUE
     } else {
-      cat("Invalid selection, please try again\n\n")
+      message("Invalid selection, please try again\n\n")
     }
   }
   vars[i]
@@ -187,13 +187,13 @@ metadata_check_custom_R_code <- function(dataset_id) {
 #'
 #' @importFrom rlang .data
 #' @export
-metadata_add_traits <- function(dataset_id) {
+metadata_add_traits <- function(dataset_id, user_responses = NULL) {
 
-  # read metadata
+  # Read metadata
   metadata <- read_metadata_dataset(dataset_id)
 
-  # load and clean trait data
-  data <- readr::read_csv(file.path("data", dataset_id,  "data.csv"), col_types = cols()) %>%
+  # Load and clean trait data
+  data <- readr::read_csv(file.path("data", dataset_id, "data.csv"), col_types = cols()) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
 
   # Get list of potential traits
@@ -203,25 +203,32 @@ metadata_add_traits <- function(dataset_id) {
     v <- unique(data[[metadata$dataset$trait_name]])
   }
 
-  var_in <- metadata_user_select_names(
-    paste("Indicate all columns you wish to keep as distinct traits in ", dataset_id), v
-  )
+  # Check if user_responses have been inputted
+  if (is.null(user_responses)) {
+    var_in <-
+      metadata_user_select_names(
+        paste("Indicate all columns you wish to keep as distinct traits in", dataset_id), v
+      )
+  } else {
+    var_in <- user_responses$var_in
+  }
 
-  cat(
+  message(
     sprintf(
       "Following traits added to metadata for %s: %s.\n \tPlease complete information in %s.\n\n",
       dataset_id, crayon::red(paste(var_in, collapse = ", ")), dataset_id %>% metadata_path_dataset_id()
     )
   )
 
-  traits <- tibble::tibble(var_in = var_in,
-                            unit_in = "unknown",
-                            trait_name = "unknown",
-                            entity_type = "unknown",
-                            value_type = "unknown",
-                            basis_of_value = "unknown",
-                            replicates = "unknown",
-                            methods = "unknown")
+  traits <- tibble::tibble(
+    var_in = var_in,
+    unit_in = "unknown",
+    trait_name = "unknown",
+    entity_type = "unknown",
+    value_type = "unknown",
+    basis_of_value = "unknown",
+    replicates = "unknown",
+    methods = "unknown")
 
   # Check if existing content, if so append
   if (!all(is.null(metadata$traits)) && !is.na(metadata$traits)) {
@@ -232,6 +239,7 @@ metadata_add_traits <- function(dataset_id) {
   metadata$traits <- traits %>% util_df_to_list()
 
   write_metadata_dataset(metadata, dataset_id)
+  return(invisible(metadata))
 }
 
 #' For specified `dataset_id` import location data from a dataframe
@@ -260,7 +268,7 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
   # Read metadata
   metadata <- read_metadata_dataset(dataset_id)
 
-  # Check if called in testthat or interactive
+  # Check if user_responses have been inputted
   if (is.null(user_responses)) {
     # Choose column for location_name
     location_name <- metadata_user_select_column("location_name", vars)
@@ -621,13 +629,13 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
   # Check if find record already exists for that trait
   data <- util_list_to_df2(metadata[[set_name]])
   if (!is.na(data) && nrow(data) > 0 && length(which(find %in% data$find)) > 0) {
-    cat(sprintf("\tSubstitution already exists for %s\n", crayon::red(find)))
+    message(sprintf("\tSubstitution already exists for %s\n", crayon::red(find)))
     return(invisible(TRUE))
   }
 
   metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
 
-  cat(
+  message(
     sprintf("%s %s: %s -> %s (%s)\n", "\tAdding taxonomic change in",
     dataset_id, crayon::blue(find), crayon::green(replace), reason)
   )
@@ -685,13 +693,13 @@ metadata_exclude_observations <- function(dataset_id, variable, find, reason) {
   # Check if find record already exists for that trait
   data <-  util_list_to_df2(metadata[[set_name]])
   if (!is.na(data) && nrow(data) > 0 && length(which(find == data$find & variable == data$variable & reason == data$reason)) > 0) {
-    cat(sprintf("Exclusion already exists for %s\n", crayon::red(find)))
+    message(sprintf("Exclusion already exists for %s\n", crayon::red(find)))
     return(invisible(TRUE))
   }
 
   metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
 
-  cat(sprintf("%s - excluding %s: %s (%s)\n", dataset_id, crayon::blue(variable), crayon::blue(find), reason))
+  message(sprintf("%s - excluding %s: %s (%s)\n", dataset_id, crayon::blue(variable), crayon::blue(find), reason))
   write_metadata_dataset(metadata, dataset_id)
 
   return(invisible(TRUE))
