@@ -233,7 +233,7 @@ test_that("reports and plots are produced", {
   )
 })
 
-testthat::test_that("test_data is working", {
+testthat::test_that("dataset_test is working", {
   expect_silent(
     out <- dataset_test("Test_2022", reporter = testthat::SilentReporter))
   expect_in(

@@ -254,27 +254,33 @@ metadata_add_traits <- function(dataset_id) {
 #' }
 metadata_add_locations <- function(dataset_id, location_data) {
 
+  vars <- names(location_data)
+
   # read metadata
   metadata <- read_metadata_dataset(dataset_id)
 
   # Choose column for location_name
-  location_name <- metadata_user_select_column("location_name", names(location_data))
+  location_name <- metadata_user_select_column("location_name", vars)
 
   # From remaining variables, choose those to keep
-  location_sub <- dplyr::select(dplyr::all_of(c("location_data"), -!!location_name))
   keep <- metadata_user_select_names(
     paste("Indicate all columns you wish to keep as distinct location_properties in ",
-    dataset_id), names(location_sub)
+    dataset_id), vars[vars != location_name]
   )
 
   # Save and notify
-  metadata$locations <- dplyr::select(dplyr::all_of(c("location_data"), tidyr::one_of(keep))) %>%
-            split(location_data[[location_name]]) %>% lapply(as.list)
+  metadata$locations <- location_data %>%
+    dplyr::select(dplyr::all_of(keep)) %>%
+    split(location_data[[location_name]]) %>%
+    lapply(as.list)
 
   cat(
     sprintf("Following locations added to metadata for %s: %s\n\twith variables %s.\n\tPlease complete information in %s.\n\n",
-    dataset_id, crayon::red(paste(names(metadata$locations), collapse = ", ")),
-    crayon::red(paste(keep, collapse = ", ")), dataset_id %>% metadata_path_dataset_id())
+      dataset_id,
+      crayon::red(paste(names(metadata$locations), collapse = ", ")),
+      crayon::red(paste(keep, collapse = ", ")),
+      dataset_id %>% metadata_path_dataset_id()
+    )
   )
 
   write_metadata_dataset(metadata, dataset_id)
