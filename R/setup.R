@@ -276,8 +276,11 @@ metadata_add_locations <- function(dataset_id, location_data) {
 
   cat(
     sprintf("Following locations added to metadata for %s: %s\n\twith variables %s.\n\tPlease complete information in %s.\n\n",
-    dataset_id, crayon::red(paste(names(metadata$locations), collapse = ", ")),
-    crayon::red(paste(keep, collapse = ", ")), dataset_id %>% metadata_path_dataset_id())
+      dataset_id,
+      crayon::red(paste(names(metadata$locations), collapse = ", ")),
+      crayon::red(paste(keep, collapse = ", ")),
+      dataset_id %>% metadata_path_dataset_id()
+    )
   )
 
   write_metadata_dataset(metadata, dataset_id)
