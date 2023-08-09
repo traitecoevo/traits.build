@@ -254,17 +254,18 @@ metadata_add_traits <- function(dataset_id) {
 #' }
 metadata_add_locations <- function(dataset_id, location_data) {
 
+  vars <- names(location_data)
+
   # read metadata
   metadata <- read_metadata_dataset(dataset_id)
 
   # Choose column for location_name
-  location_name <- metadata_user_select_column("location_name", names(location_data))
+  location_name <- metadata_user_select_column("location_name", vars)
 
   # From remaining variables, choose those to keep
-  location_sub <- location_data %>% dplyr::select(-dplyr::all_of(c(location_name)))
   keep <- metadata_user_select_names(
     paste("Indicate all columns you wish to keep as distinct location_properties in ",
-    dataset_id), names(location_sub)
+    dataset_id), vars[vars != location_name]
   )
 
   # Save and notify
