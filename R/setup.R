@@ -243,6 +243,7 @@ metadata_add_traits <- function(dataset_id) {
 #'
 #' @inheritParams metadata_path_dataset_id
 #' @param location_data A dataframe of site variables
+#' @param user_responses extra arguments passed in for testing
 #'
 #' @importFrom rlang .data
 #' @export
@@ -252,19 +253,15 @@ metadata_add_traits <- function(dataset_id) {
 #' select(-dataset_id) %>% spread(location_property, value) %>% type_convert()-> location_data
 #' metadata_add_locations("Falster_2005_1", location_data)
 #' }
-metadata_add_locations <- function(dataset_id, location_data) {
+metadata_add_locations <- function(dataset_id, location_data, user_responses = NULL) {
 
   vars <- names(location_data)
 
   # Read metadata
   metadata <- read_metadata_dataset(dataset_id)
 
-  # Calling scope
-  tb <- .traceback(x = 0)
-
   # Check if called in testthat or interactive
-  if (!any(unlist(lapply(tb, function(x) any(grepl("test_env", x))))) && interactive()) {
-
+  if (is.null(user_responses)) {
     # Choose column for location_name
     location_name <- metadata_user_select_column("location_name", vars)
 
@@ -273,27 +270,29 @@ metadata_add_locations <- function(dataset_id, location_data) {
       paste("Indicate all columns you wish to keep as distinct location_properties in",
       dataset_id), vars[vars != location_name]
     )
-
-    # Save and notify
-    metadata$locations <- location_data %>%
-      dplyr::select(dplyr::all_of(keep)) %>%
-      split(location_data[[location_name]]) %>%
-      lapply(as.list)
-
-    cat(
-      sprintf("Following locations added to metadata for %s: %s\n\twith variables %s.\n\tPlease complete information in %s.\n\n",
-        dataset_id,
-        crayon::red(paste(names(metadata$locations), collapse = ", ")),
-        crayon::red(paste(keep, collapse = ", ")),
-        dataset_id %>% metadata_path_dataset_id()
-      )
-    )
-
-    write_metadata_dataset(metadata, dataset_id)
-
   } else {
-    return(vars)
+    location_name <- user_responses$location_name
+    keep <- user_responses$keep
   }
+
+  # Save and notify
+  metadata$locations <- location_data %>%
+    dplyr::select(dplyr::all_of(keep)) %>%
+    split(location_data[[location_name]]) %>%
+    lapply(as.list)
+
+  message(
+    sprintf("Following locations added to metadata for %s: %s\n\twith variables %s.\n\tPlease complete information in %s.\n\n",
+      dataset_id,
+      crayon::red(paste(names(metadata$locations), collapse = ", ")),
+      crayon::red(paste(keep, collapse = ", ")),
+      dataset_id %>% metadata_path_dataset_id()
+    )
+  )
+
+  write_metadata_dataset(metadata, dataset_id)
+
+  return(invisible(metadata))
 }
 
 

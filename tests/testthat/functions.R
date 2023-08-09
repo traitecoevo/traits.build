@@ -142,3 +142,16 @@ test_structure <- function(
   # Contains allowed traits
   expect_isin(data$traits$trait_name %>% unique(), definitions$elements %>% names(), info = paste("traits ", v))
 }
+
+## a helper function to determine if this is being run as part of a test
+is_testing_env <- function() {
+  # Calling scope
+  tb <- .traceback(x = 0)
+
+  # Check if called in testthat or interactive
+  if (any(unlist(lapply(tb, function(x) any(grepl("test_env", x)))))) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}

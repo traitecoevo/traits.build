@@ -60,3 +60,8 @@ test_that("util_strip_taxon_names is working", {
   expect_true(all(v2 == v1[1]))
   expect_equal(length(v1), length(v2))
 })
+
+test_that("testing env is working", {
+  expect_true(is_testing_env())
+})
+
