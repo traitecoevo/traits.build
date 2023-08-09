@@ -261,15 +261,17 @@ metadata_add_locations <- function(dataset_id, location_data) {
   location_name <- metadata_user_select_column("location_name", names(location_data))
 
   # From remaining variables, choose those to keep
-  location_sub <- dplyr::select(dplyr::all_of(c("location_data"), -!!location_name))
+  location_sub <- location_data %>% dplyr::select(-dplyr::all_of(c(location_name)))
   keep <- metadata_user_select_names(
     paste("Indicate all columns you wish to keep as distinct location_properties in ",
     dataset_id), names(location_sub)
   )
 
   # Save and notify
-  metadata$locations <- dplyr::select(dplyr::all_of(c("location_data"), tidyr::one_of(keep))) %>%
-            split(location_data[[location_name]]) %>% lapply(as.list)
+  metadata$locations <- location_data %>%
+    dplyr::select(dplyr::all_of(keep)) %>%
+    split(location_data[[location_name]]) %>%
+    lapply(as.list)
 
   cat(
     sprintf("Following locations added to metadata for %s: %s\n\twith variables %s.\n\tPlease complete information in %s.\n\n",
