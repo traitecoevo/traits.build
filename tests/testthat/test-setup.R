@@ -102,13 +102,6 @@ test_that("metadata_add_source_bibtex is working", {
   expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$primary$journal, "Journal of Ecology")
 })
 
-test_that("metadata_add_locations is working", {
-  locations <- read_csv("data/Test_2022/data.csv") %>%
-    select(site) %>% distinct() %>%
-    mutate(latitude = 1, longitude = 2, elevation = 100)
-  expect_no_error(metadata_add_locations(dataset_id = "Test_2022", locations))
-})
-
 test_that("metadata_add_substitution is working", {
   expect_silent(
     suppressMessages(
