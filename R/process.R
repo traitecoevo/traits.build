@@ -222,7 +222,7 @@ dataset_process <- function(filename_data_raw,
   list(
        traits     = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error"))),
        locations  = locations,
-       contexts   = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in", "find"))),
+       contexts   = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
        methods    = methods,
        excluded_data = traits %>% dplyr::filter(!is.na(.data$error)) %>%
               dplyr::select(dplyr::all_of(c("error")), everything()),
@@ -438,49 +438,63 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
 #' process_format_contexts(read_metadata("data/Apgaua_2017/metadata.yml")$context)
 #' }
 process_format_contexts <- function(my_list, dataset_id) {
-   f <- function(x) {
-     tibble::tibble(
-      context_property = x$context_property,
-      category = x$category,
-      var_in = x$var_in,
-      util_list_to_df2(x$values))
-   }
 
-   if (!is.na(my_list[1])) {
-     contexts <-
-       my_list %>%
-       purrr::map_df(f) %>%
-       dplyr::mutate(dataset_id = dataset_id) %>%
-       dplyr::select(dplyr::any_of(
-         c("dataset_id", "context_property", "category", "var_in",
-         "find", "value", "description"))
-         )
+  f <- function(x) {
+    tibble::tibble(
+    context_property = x$context_property,
+    category = x$category,
+    var_in = x$var_in,
+    util_list_to_df2(x$values))
+  }
 
-     if (is.null(contexts[["description"]])) {
-      contexts[["description"]] <- NA_character_
-     }
-     # keep values from find column if a replacement isn't specified
-     if (is.null(contexts[["find"]])) {
-       contexts[["find"]] <- NA_character_
-     } else {
-       contexts[["find"]] <- ifelse(is.na(contexts$find), contexts$value, contexts$find)
-     }
-   } else {
-     contexts <-
-       tibble::tibble(dataset_id = character(), var_in = character())
-   }
+  if (!is.na(my_list[1])) {
+    contexts <-
+      my_list %>%
+      purrr::map_df(f) %>%
+      dplyr::mutate(dataset_id = dataset_id) %>%
+      dplyr::select(dplyr::any_of(
+        c("dataset_id", "context_property", "category", "var_in",
+        "find", "value", "description"))
+        )
+
+    if (is.null(contexts[["description"]])) {
+    contexts[["description"]] <- NA_character_
+    }
+
+    # keep values from find column if a replacement isn't specified
+    # This doesn't do what the comment says
+    # Is the comment talking about if someone input a `find` field but no `value` field?
+    # In that case it should be
+    # contexts[["find"]] <- ifelse(is.na(contexts$value), contexts$find, contexts$value)
+    # But I think there should not be a case where there is a `find` value and no `value` value
+    # `dataset_test` should pick this up
+
+    if (is.null(contexts[["find"]])) {
+      contexts[["find"]] <- NA_character_
+    } else {
+      # Where `find` column is NA, replace with `value` column, so that on Line 510 and 512
+      # `value` values are replaced by identical `find` values (otherwise they will be NA)
+      contexts[["find"]] <- ifelse(is.na(contexts$find), contexts$value, contexts$find)
+    }
+  } else {
+    contexts <-
+      tibble::tibble(dataset_id = character(), var_in = character())
+  }
 
   contexts
 }
 
 process_create_context_ids <- function(data, contexts) {
+
   # select context_cols
   tmp <- contexts %>%
     dplyr::select(dplyr::all_of(c("context_property", "var_in"))) %>%
     dplyr::distinct()
 
   # Extract context columns
-  context_cols <- data %>% dplyr::select(dplyr::all_of(c(tmp$var_in)))
+  context_cols <- data %>%
+    dplyr::select(tmp$var_in) %>%
+    dplyr::mutate(across(everything(), as.character))
   names(context_cols) <- tmp$context_property
 
   # Find and replace values for each context property
@@ -490,22 +504,18 @@ process_create_context_ids <- function(data, contexts) {
     xx <- contexts %>%
       dplyr::filter(.data$context_property == v)
 
-    ## only do if find column is present and has non NA values
-    if (!is.null(xx[["find"]])) {
-      xx <- dplyr::filter(xx, is.na(.data$find))
-      if (nrow(xx) > 0) {
-        ## create named vector
-        xxx <- stats::setNames(xx$value, xx$value)
-        ## use named vector for find and value
-        context_cols[[v]] <- xxx[context_cols[[v]]]
-      }
+    ## only do if find column has non NA values
+    xx <- dplyr::filter(xx, !is.na(.data$find))
+    if (nrow(xx) > 0) {
+      ## create named vector
+      xxx <- stats::setNames(xx$value, xx$find)
+      ## use named vector for find and value
+      context_cols[[v]] <- xxx[context_cols[[v]]]
     }
   }
-
   # group_by category and create ids
   tmp <-
     contexts %>%
-    #  dplyr::filter(category == v) %>%
     dplyr::select(dplyr::all_of(c("context_property", "category", "value"))) %>%
     dplyr::distinct()
 
@@ -536,8 +546,8 @@ process_create_context_ids <- function(data, contexts) {
       tidyr::unite("combined", remove = FALSE) %>%
       dplyr::mutate(
         combined = ifelse(.data$combined == NAs, NA, .data$combined),
-        id = .data$combined %>%
-          as.factor() %>% as.integer() %>% make_id()
+        id = ifelse(!is.na(.data$combined), .data$combined %>%
+          as.factor() %>% as.integer() %>% make_id(), NA)
       ) %>%
       dplyr::select(-dplyr::all_of(c("combined")))
 
@@ -548,12 +558,12 @@ process_create_context_ids <- function(data, contexts) {
     for (v in vars) {
       id_link[[v]] <-
         xxx %>%
-        dplyr::rename(dplyr::all_of(c(find = v))) %>%
-        dplyr::select(dplyr::all_of(c("find", "id"))) %>%
+        dplyr::rename(dplyr::all_of(c(value = v))) %>%
+        dplyr::select(dplyr::all_of(c("value", "id"))) %>%
         dplyr::filter(!is.na(.data$id)) %>%
         dplyr::distinct() %>%
         util_df_convert_character() %>%
-        dplyr::group_by(.data$find) %>%
+        dplyr::group_by(.data$value) %>%
         dplyr::summarise(
           context_property = v,
           category = w,
@@ -565,11 +575,11 @@ process_create_context_ids <- function(data, contexts) {
 
   contexts_finished <-
     contexts %>%
-    dplyr::mutate(find = ifelse(is.na(.data$find), as.character(.data$value), as.character(.data$find))) %>%
     dplyr::left_join(
       id_link %>% dplyr::bind_rows(),
-      by = c("context_property", "category", "find")
-    )
+      by = c("context_property", "category", "value")
+    ) %>%
+    distinct(across(-dplyr::any_of("find")))
 
   list(
     contexts = contexts_finished %>% util_df_convert_character(),
@@ -1102,7 +1112,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
         }
       }
     }
-
+    # Convert replicates column to character type to allow `bind_rows`
     out <- out %>% purrr::map(~mutate(.x, across(dplyr::any_of("replicates"), ~as.character(.x))))
     out <- dplyr::bind_rows(out)
   } else {
@@ -1139,7 +1149,6 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
       dplyr::mutate(
         context_property = NA_character_,
         category = NA_character_,
-        find = NA_character_,
         value = NA_character_,
         description = NA_character_,
         link_id = NA_character_,
@@ -1169,9 +1178,9 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
   if (!is.na(metadata[["substitutions"]][1])) {
     substitutions_table <-  util_list_to_df2(metadata[["substitutions"]]) %>%
       dplyr::mutate(
-             find = tolower(.data$find),
-             replace = tolower(.data$replace)
-             )
+        find = tolower(.data$find),
+        replace = tolower(.data$replace)
+      )
 
     for (i in seq_len(nrow(substitutions_table))) {
       j <- which(out[["trait_name"]] == substitutions_table[["trait_name"]][i] &
