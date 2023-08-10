@@ -4,10 +4,11 @@ test_that("metadata_create_template is working", {
   unlink("data/Test_2022/metadata.yml")
   expect_silent(schema <- get_schema())
   # Whether or not skip_manual is TRUE or FALSE, this test passes -- is that intended?
-  expect_invisible(metadata_create_template(dataset_id = "Test_2022",
-                                            path = file.path("data", "Test_2022"),
-                                            skip_manual = TRUE))
-  expect_no_error(test_metadata <- read_metadata("data/Test_2022/metadata.yml"))
+  expect_invisible(
+    test_metadata <- metadata_create_template(
+      dataset_id = "Test_2022",
+      path = file.path("data", "Test_2022"),
+      skip_manual = TRUE))
   metadata_names <- c("source", "contributors", "dataset", "locations", "contexts", "traits",
                       "substitutions", "taxonomic_updates", "exclude_observations",
                       "questions")
@@ -25,30 +26,69 @@ test_that("metadata_create_template is working", {
   expect_equal((test_metadata$contributors$data_collectors[[1]] %>% unique)[[1]], "unknown")
  })
 
+
 test_that("metadata_create_template is working with simulated user input", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
   unlink("data/Test_2022/metadata.yml")
+  expect_silent(schema <- get_schema())
+
   # Check long format
-  expect_no_error(
-    x <- metadata_create_template(
-      "Test_2022",
-      user_responses = list(
-        data_is_long_format = TRUE,
-        taxon_name = "Species", trait_name = "trait_name", value = "value",
-        location_name = NA, individual_id = "id", collection_date = "2008/2009"
-    ))
+  user_responses <- list(
+    data_is_long_format = TRUE,
+    taxon_name = "Species", trait_name = "trait_name", value = "value",
+    location_name = NA, individual_id = "id", collection_date = "2008/2009"
   )
+  expect_no_error(
+    test_metadata <- metadata_create_template(
+      "Test_2022",
+      user_responses = user_responses)
+  )
+
+  metadata_names <- c("source", "contributors", "dataset", "locations", "contexts", "traits",
+                      "substitutions", "taxonomic_updates", "exclude_observations",
+                      "questions")
+  # Test metadata exists with correct names
+  expect_named(test_metadata, metadata_names)
+  expect_isin(names(test_metadata$dataset), names(schema$metadata$elements$dataset$values))
+
+  expect_true(test_metadata$dataset$data_is_long_format)
+  # Test metadata fields are equal to inputs in `user_responses`
+  fields <- c("taxon_name", "trait_name", "value", "location_name", "individual_id", "collection_date")
+  for (f in fields) {
+    if (f == "location_name") {
+      expect_equal(test_metadata[["dataset"]][[f]], "unknown")
+    } else {
+      expect_equal(test_metadata[["dataset"]][[f]], user_responses[[f]])
+    }
+  }
+
   # Check wide format
-  expect_no_error(
-    x <- metadata_create_template(
-      "Test_2022",
-      user_responses = list(
-        data_is_long_format = FALSE,
-        taxon_name = "Species",
-        location_name = NA, individual_id = "id", collection_date = "2008/2009"
-    ))
+  user_responses <- list(
+    data_is_long_format = FALSE,
+    taxon_name = "Species",
+    location_name = NA, individual_id = "id", collection_date = "2008/2009"
   )
-  # Run more tests (see ideas from above)
+  expect_no_error(
+    test_metadata <- metadata_create_template(
+      "Test_2022",
+      user_responses = user_responses)
+  )
+
+  # Test metadata exists with correct names
+  expect_named(test_metadata, metadata_names)
+  expect_isin(names(test_metadata$dataset), names(schema$metadata$elements$dataset$values))
+
+  expect_false(test_metadata$dataset$data_is_long_format)
+  # Test metadata fields are equal to inputs in `user_responses`
+  fields <- c("taxon_name", "location_name", "individual_id", "collection_date")
+  for (f in fields) {
+    if (f == "location_name") {
+      expect_equal(test_metadata[["dataset"]][[f]], "unknown")
+    } else {
+      expect_equal(test_metadata[["dataset"]][[f]], user_responses[[f]])
+    }
+  }
+
  })
 
 
