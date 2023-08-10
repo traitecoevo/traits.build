@@ -262,7 +262,7 @@ write_metadata <- function(data, path, style_code = FALSE) {
   txt <- yaml::as.yaml(y, column.major = FALSE, indent = 2) %>%
     gsub(": ~", ":", ., fixed = TRUE)
 
-  #reinsert custom R code
+  # Reinsert custom R code
   if (!is.na(data$dataset$custom_R_code)) {
 
     code <- data$dataset$custom_R_code

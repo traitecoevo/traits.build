@@ -21,7 +21,8 @@ metadata_path_dataset_id <- function(dataset_id) {
 #' @export
 metadata_create_template <- function(dataset_id,
                                      path = file.path("data", dataset_id),
-                                     skip_manual = FALSE
+                                     skip_manual = FALSE,
+                                     user_responses = NULL
                                      ) {
 
   `%notin%` <- Negate(`%in%`)
@@ -54,38 +55,67 @@ metadata_create_template <- function(dataset_id,
 
   if (skip_manual == FALSE) {
 
-    # Check format of data
-    tmp <- menu(c("Long", "Wide"), title = "Is the data long or wide format?")
-    data_is_long_format <- ifelse(tmp == 1, TRUE, FALSE)
+    if (is.null(user_responses)) {
 
-    out$dataset$data_is_long_format <- data_is_long_format
+      # Check format of data
+      tmp <- menu(c("Long", "Wide"), title = "Is the data long or wide format?")
+      data_is_long_format <- ifelse(tmp == 1, TRUE, FALSE)
 
-    data <- readr::read_csv(paste0(path, "/data.csv"), col_types = cols())
+      out$dataset$data_is_long_format <- data_is_long_format
 
-    # Setup config and select columns as appropriate
-    if (data_is_long_format) {
-      v1 <- c("taxon_name", "trait_name", "value")
-    } else {
-      out$dataset[c("trait_name", "value")] <- NULL
-      v1 <- c("taxon_name")
-    }
+      data <- readr::read_csv(paste0(path, "/data.csv"), col_types = cols())
 
-    for (v in v1) {
-      out[["dataset"]][[v]] <- metadata_user_select_column(v, names(data))
-    }
-
-     v2 <- c("location_name", "individual_id", "collection_date")
-
-    for (v in v2) {
-      tmp <- metadata_user_select_column(v, c(NA, names(data)))
-      if (!is.na(tmp)) {
-        out[["dataset"]][[v]] <- tmp
+      # Setup config and select columns as appropriate
+      if (data_is_long_format) {
+        v1 <- c("taxon_name", "trait_name", "value")
+      } else {
+        out$dataset[c("trait_name", "value")] <- NULL
+        v1 <- c("taxon_name")
       }
-      # Some of these warnings throughout:
-      # Conditional expressions require scalar logical operators (&& and ||)
-      if (v == "collection_date" && is.na(tmp)) {
-        collection_date <- readline(prompt = "Enter collection_date range in format '2007/2009': ")
-        out[["dataset"]][[v]] <- collection_date
+
+      for (v in v1) {
+        out[["dataset"]][[v]] <- metadata_user_select_column(v, names(data))
+      }
+
+      v2 <- c("location_name", "individual_id", "collection_date")
+
+      for (v in v2) {
+        tmp <- metadata_user_select_column(v, c(NA, names(data)))
+        if (!is.na(tmp)) {
+          out[["dataset"]][[v]] <- tmp
+        }
+        if (v == "collection_date" && is.na(tmp)) {
+          collection_date <- readline(prompt = "Enter collection_date range in format '2007/2009': ")
+          out[["dataset"]][[v]] <- collection_date
+        }
+      }
+
+    } else {
+
+      data_is_long_format <- user_responses$data_is_long_format
+      out$dataset$data_is_long_format <- data_is_long_format
+
+      data <- readr::read_csv(paste0(path, "/data.csv"), col_types = cols())
+
+      # Setup config and select columns as appropriate
+      if (data_is_long_format) {
+        v1 <- c("taxon_name", "trait_name", "value")
+      } else {
+        out$dataset[c("trait_name", "value")] <- NULL
+        v1 <- c("taxon_name")
+      }
+
+      for (v in v1) {
+        out[["dataset"]][[v]] <- user_responses[[v]]
+      }
+
+      v2 <- c("location_name", "individual_id", "collection_date")
+
+      for (v in v2) {
+        tmp <- user_responses[[v]]
+        if (!is.na(tmp)) {
+          out[["dataset"]][[v]] <- tmp
+        }
       }
     }
   }
@@ -96,10 +126,10 @@ metadata_create_template <- function(dataset_id,
              "sampling_strategy", "original_file", "notes")
 
   order <- order[which(order %in% names(out[["dataset"]]))]
-
   out[["dataset"]] <- out[["dataset"]][order]
 
   write_metadata(out, paste0(path, "/metadata.yml"))
+  return(invisible(out))
 
 }
 
@@ -695,15 +725,15 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
 #' @export
 metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
 
-  # read metadata
+  # Read metadata
   metadata <- read_metadata_dataset(dataset_id)
 
-  #read in dataframe of taxonomic changes, split into single-row lists, and add to metadata file
+  # Read in dataframe of taxonomic changes, split into single-row lists, and add to metadata file
   metadata$taxonomic_updates <-
     taxonomic_updates %>%
     dplyr::group_split(.data$find) %>% lapply(as.list)
 
-  # write metadata
+  # Write metadata
   write_metadata_dataset(metadata, dataset_id)
 
 }

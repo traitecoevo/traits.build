@@ -25,6 +25,32 @@ test_that("metadata_create_template is working", {
   expect_equal((test_metadata$contributors$data_collectors[[1]] %>% unique)[[1]], "unknown")
  })
 
+test_that("metadata_create_template is working with simulated user input", {
+  # Remove the metadata file if it exists before testing `metadata_create_template`
+  unlink("data/Test_2022/metadata.yml")
+  # Check long format
+  expect_no_error(
+    x <- metadata_create_template(
+      "Test_2022",
+      user_responses = list(
+        data_is_long_format = TRUE,
+        taxon_name = "Species", trait_name = "trait_name", value = "value",
+        location_name = NA, individual_id = "id", collection_date = "2008/2009"
+    ))
+  )
+  # Check wide format
+  expect_no_error(
+    x <- metadata_create_template(
+      "Test_2022",
+      user_responses = list(
+        data_is_long_format = FALSE,
+        taxon_name = "Species",
+        location_name = NA, individual_id = "id", collection_date = "2008/2009"
+    ))
+  )
+  # Run more tests (see ideas from above)
+ })
+
 test_that("metadata_path_dataset_id is working", {
   expect_silent(metadata_path_dataset_id("Test_2022"))
   expect_equal(metadata_path_dataset_id("Test_2022"), "data/Test_2022/metadata.yml")
