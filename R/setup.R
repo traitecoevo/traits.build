@@ -88,11 +88,6 @@ metadata_create_template <- function(dataset_id,
         out[["dataset"]][[v]] <- collection_date
       }
     }
-    # Empty if statement?
-    if (data_is_long_format) {
-
-    }
-
   }
 
   # Reorder elements in dataset
@@ -321,7 +316,7 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
 #'
 #' @importFrom rlang .data
 #' @export
-metadata_add_contexts <- function(dataset_id, overwrite = FALSE) {
+metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses = NULL) {
 
   # Read metadata
   metadata <- read_metadata_dataset(dataset_id)
@@ -348,45 +343,77 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE) {
     )
   }
 
-  var_in <- metadata_user_select_names(
-    paste("Indicate all columns that contain additional contextual data for ", dataset_id), v
-  )
+  if (is.null(user_responses)) {
 
-  categories <- c("treatment", "plot", "temporal", "method", "entity_context")
+    var_in <- metadata_user_select_names(
+      paste("Indicate all columns that contain additional contextual data for ", dataset_id), v)
+    categories <- c("treatment", "plot", "temporal", "method", "entity_context")
 
-  for (i in seq_along(var_in)) {
+    for (i in seq_along(var_in)) {
 
-    ii <- n_existing + i
+      ii <- n_existing + i
+      category <- metadata_user_select_names(
+        paste("What category does context", var_in[i], "fit in?"), categories)
+      context_values <- data[[var_in[i]]] %>% unique()
 
-    category <- metadata_user_select_names(
-      paste("What category does context", var_in[i], "fit in?"), categories)
+      message(sprintf("\tThe following values exist for this context: %s.", context_values %>% paste(collapse = ", ")))
 
-    context_values <- data[[var_in[i]]] %>% unique()
+      replace_needed <- readline(prompt = "Are replacement values required? (y/n) ")
 
-    message(sprintf("\tThe following values exist for this context: %s.", context_values %>% paste(collapse = ", ")))
-
-    replace_needed <- readline(prompt = "Are replacement values required? (y/n) ")
-
-    contexts[[ii]] <-
-      list(
-      context_property = "unknown",
-      category = category,
-      var_in = var_in[i],
-      values = tibble::tibble(
-        find = context_values,
-        value = context_values,
-        description = "unknown"
+      contexts[[ii]] <-
+        list(
+          context_property = "unknown",
+          category = category,
+          var_in = var_in[i],
+          values = tibble::tibble(
+            find = context_values,
+            value = context_values,
+            description = "unknown"
+          )
         )
 
-    if (tolower(replace_needed) == "y") {
-      contexts[[ii]][["values"]][["value"]] <- "unknown"
-    } else {
-      contexts[[ii]][["values"]][["find"]] <- NULL
+      if (tolower(replace_needed) == "y") {
+        contexts[[ii]][["values"]][["value"]] <- "unknown"
+      } else {
+        contexts[[ii]][["values"]][["find"]] <- NULL
+      }
+    }
+  } else {
+
+    var_in <- user_responses$var_in
+    categories <- user_responses$categories
+    replace_needed <- user_responses$replace_needed
+
+    for (i in seq_along(var_in)) {
+
+      ii <- n_existing + i
+      category <- categories[i]
+      context_values <- data[[var_in[i]]] %>% unique()
+
+      contexts[[ii]] <-
+        list(
+          context_property = "unknown",
+          category = category,
+          var_in = var_in[i],
+          values = tibble::tibble(
+            find = context_values,
+            value = context_values,
+            description = "unknown"
+          )
+        )
+
+      if (tolower(replace_needed[i]) == "y") {
+        contexts[[ii]][["values"]][["value"]] <- "unknown"
+      } else {
+        contexts[[ii]][["values"]][["find"]] <- NULL
+      }
     }
   }
 
   metadata$contexts <- contexts
   write_metadata_dataset(metadata, dataset_id)
+  return(invisible(metadata))
+
 }
 
 #' Adds citation details to a metadata file for given study

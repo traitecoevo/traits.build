@@ -123,7 +123,17 @@ test_that("metadata_add_locations is working", {
 })
 
 test_that("metadata_add_contexts is working", {
-
+  expect_true(file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml", overwrite = TRUE))
+  expect_no_error(
+    suppressMessages(
+      x <- metadata_add_contexts(
+        "Test_2022",
+        user_responses = list(
+          var_in = c("test_context_1", "test_context_2"),
+          categories = c("treatment", "entity_context"),
+          replace_needed = c("y", "n")
+      ))
+    ))
 })
 
 test_that("metadata_add_traits is working", {
@@ -136,14 +146,12 @@ test_that("metadata_add_traits is working", {
     x <- metadata_add_traits("Test_2022",
       # Gives responses for user input, for testing
       user_responses = list(var_in = var_in)
-      )
-    )
+    ))
   )
   expect_equal(lapply(x$traits, "[[", "var_in") %>% unlist(), var_in)
   expect_equal(lapply(x$traits, "[[", "unit_in") %>% unlist() %>% unique(), "unknown")
 })
 
-test_that()
 
 test_that("metadata_add_substitution is working", {
   expect_silent(
