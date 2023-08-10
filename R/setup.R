@@ -105,6 +105,7 @@ metadata_create_template <- function(dataset_id,
   out[["dataset"]] <- out[["dataset"]][order]
 
   write_metadata(out, paste0(path, "/metadata.yml"))
+
 }
 
 #' Select column by user
@@ -152,7 +153,9 @@ metadata_user_select_names <- function(title, vars) {
       message("Invalid selection, please try again\n\n")
     }
   }
+
   vars[i]
+
 }
 
 #' Check the output of running `custom_R_code` specified in
@@ -174,6 +177,7 @@ metadata_check_custom_R_code <- function(dataset_id) {
   # load and clean trait data
   readr::read_csv(file.path("data", dataset_id,  "data.csv"), col_types = cols(), guess_max = 100000) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
+
 }
 
 #' For specified `dataset_id`, populate columns for traits into metadata
@@ -237,9 +241,9 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
   }
 
   metadata$traits <- traits %>% util_df_to_list()
-
   write_metadata_dataset(metadata, dataset_id)
   return(invisible(metadata))
+
 }
 
 #' For specified `dataset_id` import location data from a dataframe
@@ -301,6 +305,7 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
   write_metadata_dataset(metadata, dataset_id)
 
   return(invisible(metadata))
+
 }
 
 
@@ -372,7 +377,6 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE) {
         value = context_values,
         description = "unknown"
         )
-      )
 
     if (tolower(replace_needed) == "y") {
       contexts[[ii]][["values"]][["value"]] <- "unknown"
@@ -382,7 +386,6 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE) {
   }
 
   metadata$contexts <- contexts
-
   write_metadata_dataset(metadata, dataset_id)
 }
 
@@ -399,31 +402,32 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE) {
 #'
 metadata_add_source_bibtex <- function(dataset_id, file, type = "primary", key = dataset_id, drop = c("dateobj", "month")) {
 
-    # Read in file, convert to list, set key
-    bib <- RefManageR::ReadBib(file) %>%
-      util_bib_to_list()
+  # Read in file, convert to list, set key
+  bib <- RefManageR::ReadBib(file) %>%
+    util_bib_to_list()
 
-    bib$key <- key
+  bib$key <- key
 
-    for (v in drop)
-      bib[[v]] <- NULL
+  for (v in drop)
+    bib[[v]] <- NULL
 
-    if (!is.null(bib$url) && !is.null(bib$doi))
-      bib[["url"]] <- NULL
+  if (!is.null(bib$url) && !is.null(bib$doi))
+    bib[["url"]] <- NULL
 
-    if (tolower(bib$bibtype) == "article")
-      bib[["publisher"]] <- NULL
+  if (tolower(bib$bibtype) == "article")
+    bib[["publisher"]] <- NULL
 
-    # Somewhat sensible ordering of elements
-    order <- c("key", "bibtype", "year", "author", "journal", "title", "volume", "number",
-               "pages", "doi", "publisher", "place")
-    v <-  c(order, names(bib)) %>% unique()
-    v <- v[v %in% names(bib)]
+  # Somewhat sensible ordering of elements
+  order <- c("key", "bibtype", "year", "author", "journal", "title", "volume", "number",
+              "pages", "doi", "publisher", "place")
+  v <-  c(order, names(bib)) %>% unique()
+  v <- v[v %in% names(bib)]
 
-    # save to metadata
-    metadata <- read_metadata_dataset(dataset_id)
-    metadata$source[[type]] <- bib[v]
-    write_metadata_dataset(metadata, dataset_id)
+  # Save to metadata
+  metadata <- read_metadata_dataset(dataset_id)
+  metadata$source[[type]] <- bib[v]
+  write_metadata_dataset(metadata, dataset_id)
+
 }
 
 #' Standarise doi into form https://doi.org/XXX
@@ -441,6 +445,7 @@ util_standardise_doi <- function(doi) {
     return(paste0("https://", doi))
 
   return(paste0("https://doi.org/", doi))
+
 }
 
 #' Adds citation details from a doi to a metadata file for a dataset_id.
@@ -472,6 +477,7 @@ metadata_add_source_doi <- function(..., doi, bib = NULL) {
   writeLines(bib, file)
 
   metadata_add_source_bibtex(file = file, ...)
+
 }
 
 #' Add a categorical trait value substitution into a metadata file for a dataset_id
@@ -519,6 +525,7 @@ metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
     crayon::red(dataset_id), trait_name, find, replace)
   )
   write_metadata_dataset(metadata, dataset_id)
+
 }
 
 #' Add a dataframe of trait value substitutions into a metadata file for a dataset_id
@@ -542,6 +549,7 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
 
   #write metadata
   write_metadata_dataset(metadata, dataset_id)
+
 }
 
 
@@ -579,6 +587,7 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
 
   # add substitutions to metadata files
   for (i in 1:max(dataframe_of_substitutions)$rows) {
+
     metadata <- read_metadata_dataset(dataframe_of_substitutions[[i]]$dataset_id)
 
     to_add <- list(
@@ -596,6 +605,7 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
     metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
 
     write_metadata_dataset(metadata, dataframe_of_substitutions[[i]]$dataset_id)
+
   }
 }
 
@@ -642,6 +652,7 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
   write_metadata_dataset(metadata, dataset_id)
 
   return(invisible(TRUE))
+
 }
 
 #' Add a list of taxonomic updates into a metadata file for a dataset_id
@@ -667,6 +678,7 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
 
   # write metadata
   write_metadata_dataset(metadata, dataset_id)
+
 }
 
 #' Exclude observations in a yaml file for a dataset_id
@@ -701,8 +713,8 @@ metadata_exclude_observations <- function(dataset_id, variable, find, reason) {
 
   message(sprintf("%s - excluding %s: %s (%s)\n", dataset_id, crayon::blue(variable), crayon::blue(find), reason))
   write_metadata_dataset(metadata, dataset_id)
-
   return(invisible(TRUE))
+
 }
 
 #' Update a taxonomic change into a yaml file for a dataset_id
@@ -739,6 +751,7 @@ metadata_update_taxonomic_change <- function(dataset_id, find, replace, reason, 
   )
 
   write_metadata_dataset(metadata, dataset_id)
+
 }
 
 #' Remove a taxonomic change from a yaml file for a dataset_id
@@ -779,6 +792,7 @@ metadata_remove_taxonomic_change <- function(dataset_id, find, replace = NULL) {
   }
 
   write_metadata_dataset(metadata, dataset_id)
+
 }
 
 
@@ -806,6 +820,7 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
   i <- sapply(contents, function(s) any(grepl(txt, s, fixed = TRUE)))
 
   studies[i]
+
 }
 
 #' Update the remake.yml file with new studies
