@@ -120,42 +120,44 @@ test_that("write_metadata_dataset is working", {
 
 test_that("metadata_add_source_doi is working", {
 
-  doi <- "https://doi.org/10.3389/fmars.2021.671145"
-  doi2 <- "https://doi.org/10.1111/j.0022-0477.2005.00992.x"
+  expected_doi <- "https://doi.org/10.3389/fmars.2021.671145"
+  expected_doi2 <- "https://doi.org/10.1111/j.0022-0477.2005.00992.x"
+  doi <- "10.3389/fmars.2021.671145"
+  doi2 <- "10.1111/j.0022-0477.2005.00992.x"
 
-  expect_equal(doi, util_standardise_doi(doi))
-  expect_equal(doi, util_standardise_doi("http://doi.org/10.3389/fmars.2021.671145"))
-  expect_equal(doi, util_standardise_doi("doi.org/10.3389/fmars.2021.671145"))
-  expect_equal(doi, util_standardise_doi("10.3389/fmars.2021.671145"))
+  expect_equal(util_standardise_doi(expected_doi), expected_doi)
+  expect_equal(util_standardise_doi(doi), expected_doi)
+  expect_equal(util_standardise_doi("doi.org/10.3389/fmars.2021.671145"), expected_doi)
+  expect_equal(util_standardise_doi("http://doi.org/10.3389/fmars.2021.671145"), expected_doi) # http not https
 
   # We won't actually test querying of rcrossref, to avoid unnecessary fails
   # Passing in .bib files avoids calling crossref
 
   # Create and load test data
-  # I believe rcrossref::cr_cn prefers doi to be in this format "10.3389/fmars.2021.671145" otherwise
-  # it throws out a warning (see this issue: https://github.com/ropensci/rcrossref/issues/226)
-  # bib <- rcrossref::cr_cn(doi)
-  # The working directory of the other tests is in "tests/testthat" so should that also be the same
-  # for here, i.e. the commented out lines?
-  # writeLines(bib, "tests/testthat/data/test.bib")
-  # bib2 <- rcrossref::cr_cn(doi2)
-  # writeLines(bib2, "tests/testthat/data/test2.bib")
+  # rcrossref::cr_cn prefers doi to be in this format "10.3389/fmars.2021.671145"
+  #bib <- rcrossref::cr_cn(doi)
+  #writeLines(bib, "data/test.bib")
+  #bib2 <- rcrossref::cr_cn(doi2)
+  #writeLines(bib2, "data/test2.bib")
   bib <- readLines("data/test.bib") %>% paste(collapse = "\n")
   bib2 <- readLines("data/test2.bib") %>% paste(collapse = "\n")
-  # I noticed that because the bib information has authors in all caps, it's entered into AusTraits that way
-  # Should we add some code to standardise capitalisation?
-  # Also the key is "Test_2022" for both primary and secondary sources
   expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib))
   expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi2, bib = bib2, type = "secondary"))
 
   test_metadata <- read_metadata("data/Test_2022/metadata.yml")
   expect_equal(test_metadata$source$primary$journal, "Frontiers in Marine Science")
   expect_equal(test_metadata$source$primary$year, "2021")
-  expect_equal(paste0("https://doi.org/", test_metadata$source$primary$doi), doi)
+  expect_equal(paste0("https://doi.org/", test_metadata$source$primary$doi), expected_doi)
+  # Test standardised capitalisation of authors
+  expect_equal(test_metadata$source$primary$author, "Gary Truong and Tracey L. Rogers")
 
   expect_equal(test_metadata$source$secondary$journal, "Journal of Ecology")
   expect_equal(test_metadata$source$secondary$year, "2005")
-  expect_equal(paste0("https://doi.org/", test_metadata$source$secondary$doi), doi2)
+  expect_equal(paste0("https://doi.org/", test_metadata$source$secondary$doi), expected_doi2)
+  # Test standardised capitalisation of authors and key
+  expect_equal(test_metadata$source$secondary$author, "Daniel S. Falster and Mark Westoby")
+  expect_equal(test_metadata$source$secondary$key, "Falster_2005")
+
 })
 
 
