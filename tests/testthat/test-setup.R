@@ -124,16 +124,27 @@ test_that("metadata_add_locations is working", {
 
 test_that("metadata_add_contexts is working", {
   expect_true(file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml", overwrite = TRUE))
+  var_in <- c("test_context_1", "test_context_2")
+  categories <- c("treatment", "entity_context")
+
   expect_no_error(
     suppressMessages(
       x <- metadata_add_contexts(
         "Test_2022",
         user_responses = list(
-          var_in = c("test_context_1", "test_context_2"),
-          categories = c("treatment", "entity_context"),
+          var_in = var_in,
+          categories = categories,
           replace_needed = c("y", "n")
       ))
     ))
+
+  expect_equal(lapply(x$contexts, "[[", "context_property") %>% unlist() %>% unique, "unknown")
+  expect_equal(lapply(x$contexts, "[[", "category") %>% unlist(), categories)
+  expect_equal(lapply(x$contexts, "[[", "var_in") %>% unlist(), var_in)
+  # Expect `find` column for context variable where replacements are needed
+  expect_no_error(x$contexts[[1]][["values"]] %>% pull("find"))
+  # Expect no `find` column for context variable where replacements are not needed
+  expect_error(x$contexts[[2]][["values"]] %>% pull("find"))
 })
 
 test_that("metadata_add_traits is working", {
