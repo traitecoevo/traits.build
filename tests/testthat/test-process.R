@@ -44,13 +44,9 @@ test_that("dataset_process is working", {
 
 test_that("process_custom_code is working", {
   expect_no_error(metadata <- test_config$metadata)
-  expect_no_error(
-    data <- readr::read_csv(test_data, col_types = cols(),
-                            guess_max = 100000,
-                            progress = FALSE)
-  )
+  expect_no_error(data <- readr::read_csv(test_data, col_types = cols(), guess_max = 100000, progress = FALSE))
   expect_equal(ncol(data), 13)
-  expect_equal(ncol(process_custom_code(metadata[["dataset"]][["custom_R_code"]])(data)), 14)
+  expect_equal(ncol(process_custom_code(metadata[["dataset"]][["custom_R_code"]])(data)), 16)
   expect_silent(process_custom_code(NA))
 })
 

@@ -250,10 +250,13 @@ test_that("metadata_add_substitution is working", {
 
 
 test_that("metadata_add_taxonomic_change is working", {
+  metadata <- read_metadata_dataset("Test_2022")
+  metadata$taxonomic_updates <- NA
+  write_metadata_dataset(metadata, "Test_2022")
   # If the taxonomic substitution already exists, this throws an uninformative error
   # Also if ANY taxonomic substitution already exists, this throws an error I think
   # Do we want to add in a similar message like with `metadata_add_substitution`?
-  expect_output(metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "Tissue"))
+  expect_message(metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "Tissue"))
 
   x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[1]]
   expect_equal(x$find, "flower")
@@ -266,7 +269,7 @@ test_that("metadata_add_taxonomic_change is working", {
 test_that("metadata_exclude_observations is working", {
   # If the observation is already excluded, this throws an uninformative error
   # Do we want to add in a similar message like with `metadata_add_substitution`?
-  expect_output(metadata_exclude_observations("Test_2022", "stem", "branch", "test"))
+  expect_message(metadata_exclude_observations("Test_2022", "stem", "branch", "test"))
 
   x <- read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[1]]
   expect_equal(x$variable, "stem")
