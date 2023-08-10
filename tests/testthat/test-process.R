@@ -9,6 +9,7 @@ test_config <- dataset_configure("data/Test_2022/test-metadata.yml",
                                   traits_definitions,
                                   unit_conversions)
 
+
 test_that("dataset_configure is working", {
   expect_no_error(
     test_config <- dataset_configure("data/Test_2022/test-metadata.yml",
@@ -19,6 +20,7 @@ test_that("dataset_configure is working", {
   expect_named(test_config,
                c("dataset_id", "metadata", "definitions", "unit_conversion_functions"))
 })
+
 
 test_that("dataset_process is working", {
   expect_no_error(austraits_names <- schema$austraits$elements %>% names())
@@ -42,6 +44,7 @@ test_that("dataset_process is working", {
   44)
 })
 
+
 test_that("process_custom_code is working", {
   expect_no_error(metadata <- test_config$metadata)
   expect_no_error(data <- readr::read_csv(test_data, col_types = cols(), guess_max = 100000, progress = FALSE))
@@ -49,6 +52,7 @@ test_that("process_custom_code is working", {
   expect_equal(ncol(process_custom_code(metadata[["dataset"]][["custom_R_code"]])(data)), 16)
   expect_silent(process_custom_code(NA))
 })
+
 
 # The below functions are not working
 #test_that("process_flag_unsupported_traits is working", {

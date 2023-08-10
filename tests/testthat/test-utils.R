@@ -64,4 +64,3 @@ test_that("util_strip_taxon_names is working", {
 test_that("testing env is working", {
   expect_true(is_testing_env())
 })
-

@@ -3,7 +3,6 @@ test_that("metadata_create_template is working", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
   unlink("data/Test_2022/metadata.yml")
   expect_silent(schema <- get_schema())
-  # Whether or not skip_manual is TRUE or FALSE, this test passes -- is that intended?
   expect_invisible(
     test_metadata <- metadata_create_template(
       dataset_id = "Test_2022",
@@ -159,6 +158,7 @@ test_that("metadata_add_source_doi is working", {
   expect_equal(paste0("https://doi.org/", test_metadata$source$secondary$doi), doi2)
 })
 
+
 test_that("metadata_check_custom_R_code is working", {
   # Check that the `custom_R_code` produces a tibble class object
   expect_equal(class(metadata_check_custom_R_code("Test_2022")), c("spec_tbl_df", "tbl_df", "tbl", "data.frame"))
@@ -167,10 +167,12 @@ test_that("metadata_check_custom_R_code is working", {
   expect_visible(metadata_check_custom_R_code("Test_2022"))
 })
 
+
 test_that("metadata_add_source_bibtex is working", {
   expect_silent(metadata_add_source_bibtex(dataset_id = "Test_2022", file = "data/test2.bib"))
   expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$primary$journal, "Journal of Ecology")
 })
+
 
 test_that("metadata_add_locations is working", {
   locations <- tibble(
@@ -191,6 +193,7 @@ test_that("metadata_add_locations is working", {
   # Add more tests
   expect_equal(lapply(x$locations, "[[", "latitude") %>% unlist() %>% as.character(), locations$latitude)
 })
+
 
 test_that("metadata_add_contexts is working", {
   expect_true(file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml", overwrite = TRUE))
