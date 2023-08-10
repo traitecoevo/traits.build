@@ -88,7 +88,7 @@ metadata_create_template <- function(dataset_id,
         out[["dataset"]][[v]] <- collection_date
       }
     }
-
+    # Empty if statement?
     if (data_is_long_format) {
 
     }
@@ -318,10 +318,10 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
 #' @export
 metadata_add_contexts <- function(dataset_id, overwrite = FALSE) {
 
-  # read metadata
+  # Read metadata
   metadata <- read_metadata_dataset(dataset_id)
 
-  # load and clean trait data
+  # Load and clean trait data
   data <-
     readr::read_csv(file.path("data", dataset_id,  "data.csv"), col_types = cols()) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
@@ -332,7 +332,7 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE) {
   contexts <- list()
   n_existing <- 0
 
-  # check for existing info
+  # Check for existing info
   if (!overwrite && !is.na(metadata$contexts[1])) {
     contexts <- metadata$contexts
     n_existing <- length(metadata$contexts)
