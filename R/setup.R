@@ -457,13 +457,17 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 #' @return yml file with citation details added
 #' @export
 #'
-metadata_add_source_bibtex <- function(dataset_id, file, type = "primary", key = dataset_id, drop = c("dateobj", "month")) {
+metadata_add_source_bibtex <- function(dataset_id, file,
+                                       type = "primary",
+                                       key = dataset_id,
+                                       drop = c("dateobj", "month")) {
 
   # Read in file, convert to list, set key
-  bib <- RefManageR::ReadBib(file) %>%
-    util_bib_to_list()
+  bib <- RefManageR::ReadBib(file) %>% util_bib_to_list()
 
-  bib$key <- key
+  if (type == "primary") {
+    bib$key <- key
+  }
 
   for (v in drop)
     bib[[v]] <- NULL
@@ -473,6 +477,22 @@ metadata_add_source_bibtex <- function(dataset_id, file, type = "primary", key =
 
   if (tolower(bib$bibtype) == "article")
     bib[["publisher"]] <- NULL
+
+  # Standardise author names capitalisation
+  bib[["author"]] <-
+    strsplit(bib[["author"]], split = " ") %>%
+    purrr::map(
+      ~ifelse(
+        # If the word is 'and', make lowercase, otherwise make every word title case
+        .x != "and",
+        stringr::str_to_title(.x),
+        stringr::str_to_lower(.x)
+    )) %>% unlist %>% paste(collapse = " ")
+
+  # Standardise key capitalisation
+  bib[["key"]] <- word(bib[["key"]], 1L, sep = "_") %>%
+    stringr::str_to_title() %>%
+    paste(word(bib[["key"]], 2, sep = "_"), sep = "_")
 
   # Somewhat sensible ordering of elements
   order <- c("key", "bibtype", "year", "author", "journal", "title", "volume", "number",
