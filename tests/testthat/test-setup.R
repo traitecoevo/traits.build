@@ -51,16 +51,19 @@ test_that("metadata_create_template is working with simulated user input", {
   # Run more tests (see ideas from above)
  })
 
+
 test_that("metadata_path_dataset_id is working", {
   expect_silent(metadata_path_dataset_id("Test_2022"))
   expect_equal(metadata_path_dataset_id("Test_2022"), "data/Test_2022/metadata.yml")
   expect_type(metadata_path_dataset_id("Test_2022"), "character")
 })
 
+
 test_that("read_metadata_dataset is working", {
   expect_silent(read_metadata_dataset("Test_2022"))
   expect_type(read_metadata_dataset("Test_2022"), "list")
 })
+
 
 test_that("write_metadata_dataset is working", {
   metadata <- read_metadata_dataset("Test_2022")
@@ -74,6 +77,7 @@ test_that("write_metadata_dataset is working", {
   expect_silent(read_metadata_dataset("Test_2022"))
   expect_type(read_metadata_dataset("Test_2022"), "list")
 })
+
 
 test_that("metadata_add_source_doi is working", {
 
@@ -173,6 +177,7 @@ test_that("metadata_add_contexts is working", {
   expect_error(x$contexts[[2]][["values"]] %>% pull("find"))
 })
 
+
 test_that("metadata_add_traits is working", {
   metadata <- read_metadata_dataset("Test_2022")
   metadata$traits <- NA
@@ -203,6 +208,7 @@ test_that("metadata_add_substitution is working", {
   expect_equal(x$replace, "leaf_mass_per_area")
 })
 
+
 test_that("metadata_add_taxonomic_change is working", {
   # If the taxonomic substitution already exists, this throws an uninformative error
   # Also if ANY taxonomic substitution already exists, this throws an error I think
@@ -216,6 +222,7 @@ test_that("metadata_add_taxonomic_change is working", {
   expect_equal(x$taxonomic_resolution, "Tissue")
 })
 
+
 test_that("metadata_exclude_observations is working", {
   # If the observation is already excluded, this throws an uninformative error
   # Do we want to add in a similar message like with `metadata_add_substitution`?
@@ -226,6 +233,7 @@ test_that("metadata_exclude_observations is working", {
   expect_equal(x$find, "branch")
   expect_equal(x$reason, "test")
 })
+
 
 test_that("metadata_update_taxonomic_change is working", {
   # Test that `metadata_update_taxonomic_change` throws an error if the substitution does not exist
@@ -243,6 +251,7 @@ test_that("metadata_update_taxonomic_change is working", {
   expect_equal(x$taxonomic_resolution, "Substrate")
 })
 
+
 test_that("metadata_remove_taxonomic_change is working", {
   # Can we add an informative error message here too if there's no substitution to remove?
   # Also this replaces the taxonomic_updates section with an empty list, preventing you from using
@@ -250,10 +259,12 @@ test_that("metadata_remove_taxonomic_change is working", {
   expect_invisible(metadata_remove_taxonomic_change("Test_2022", "flower"))
 })
 
+
 test_that("dataset_test is working", {
   # Expect error if no dataset_ids argument is input
   expect_error(dataset_test())
 })
+
 
 test_that("build_setup_pipeline is working", {
 
@@ -308,6 +319,7 @@ test_that("build_setup_pipeline is working", {
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
 })
 
+
 test_that("reports and plots are produced", {
   expect_no_error(austraits <- remake::make("austraits"))
   expect_no_error(
@@ -321,12 +333,14 @@ test_that("reports and plots are produced", {
   )
 })
 
+
 testthat::test_that("dataset_test is working", {
   expect_silent(
     out <- dataset_test("Test_2022", reporter = testthat::SilentReporter))
   expect_in(
     c("SilentReporter", "Reporter", "R6"), class(out))
 })
+
 
 testthat::test_that("metadata_add_substitutions_table is working", {
   substitutions_df <- tibble::tibble(
