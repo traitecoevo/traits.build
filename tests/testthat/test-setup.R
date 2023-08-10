@@ -9,6 +9,7 @@
 # Remove may be assigned but not used warnings
 # Add more clear punctuation to sprintf messages ('' or ``)
 # Remove unnecessary `is.null`'s
+# Check comments in setup.R
 
 test_that("metadata_create_template is working", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
@@ -203,7 +204,6 @@ test_that("metadata_add_locations is working", {
     )
   )
   expect_equal(names(x$locations), locations$site_name)
-  # Add more tests
   expect_equal(lapply(x$locations, "[[", "latitude") %>% unlist() %>% as.character(), locations$latitude)
 })
 
@@ -297,7 +297,7 @@ test_that("metadata_add_taxonomic_change is working", {
   expect_equal(x$find, "flower")
   expect_equal(x$replace, "tree")
   expect_equal(x$reason, "leaves")
-  expect_equal(x$taxonomic_resolution, "Tissue")
+  expect_equal(x$taxonomic_resolution, "test resolution")
 
   # Test if taxonomic substitution already exists
   expect_message(metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution"))
@@ -310,25 +310,37 @@ test_that("metadata_add_taxonomic_change is working", {
   expect_no_error(x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[2]])
   expect_length(x, 4)
   expect_equal(x$find, "test")
+
 })
 
 
 test_that("metadata_exclude_observations is working", {
   # If the observation is already excluded, this throws an uninformative error
   # Do we want to add in a similar message like with `metadata_add_substitution`?
-  expect_message(metadata_exclude_observations("Test_2022", "stem", "branch", "test"))
+  expect_message(metadata_exclude_observations("Test_2022", "test", "stem", "reason"))
 
   x <- read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[1]]
-  expect_equal(x$variable, "stem")
-  expect_equal(x$find, "branch")
-  expect_equal(x$reason, "test")
+  expect_equal(x$variable, "test")
+  expect_equal(x$find, "stem")
+  expect_equal(x$reason, "reason")
+
+  # Test if observation is already excluded
+  expect_message(metadata_exclude_observations("Test_2022", "test", "stem", "reason2"))
+  # Expect that second excluded observation should not exist
+  expect_error(read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[2]])
+
+  # Test if substitution is appended
+  expect_message(metadata_exclude_observations("Test_2022", "test", "branch", "reason"))
+  # Expect that second excluded observation exists
+  expect_no_error(read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[2]])
+
 })
 
-
+# FIX THESE TESTS
 test_that("metadata_update_taxonomic_change is working", {
   # Test that `metadata_update_taxonomic_change` throws an error if the substitution does not exist
   # Can we add a more informative error message?
-  expect_error(metadata_update_taxonomic_change("Test_2022", "grass", "bark", "soil", "Substrate"))
+  expect_error(metadata_update_taxonomic_change("Test_2022", "test species", "new species", "new name", "genus"))
   expect_invisible(
     suppressMessages(
       metadata_update_taxonomic_change("Test_2022", "flower", "bark", "soil", "Substrate")
@@ -341,13 +353,14 @@ test_that("metadata_update_taxonomic_change is working", {
   expect_equal(x$taxonomic_resolution, "Substrate")
 })
 
-
+# FIX THIS
 test_that("metadata_remove_taxonomic_change is working", {
   # Can we add an informative error message here too if there's no substitution to remove?
   # Also this replaces the taxonomic_updates section with an empty list, preventing you from using
   # metadata_add_taxonomic_change() again
   expect_invisible(metadata_remove_taxonomic_change("Test_2022", "flower"))
 })
+
 
 test_that("build_setup_pipeline is working", {
 

@@ -770,16 +770,17 @@ metadata_exclude_observations <- function(dataset_id, variable, find, reason) {
 
   to_add <- list(variable = variable, find = find, reason = reason)
 
-  # add `set_name` category if it doesn't yet exist
-  if (is.null(metadata[[set_name]]) || is.na(metadata[[set_name]])) {
+  # Add `set_name` category if it doesn't yet exist
+  if (all(is.na(metadata[[set_name]]))) {
     metadata[[set_name]] <- list()
-  }
+  } else {
+    # Check if find record already exists for that trait
+    data <- util_list_to_df2(metadata[[set_name]])
 
-  # Check if find record already exists for that trait
-  data <-  util_list_to_df2(metadata[[set_name]])
-  if (!is.na(data) && nrow(data) > 0 && length(which(find == data$find & variable == data$variable & reason == data$reason)) > 0) {
-    message(sprintf("Exclusion already exists for %s\n", crayon::red(find)))
-    return(invisible(TRUE))
+    if (nrow(data[data$find == find & data$variable == variable, ]) > 0) {
+      message(sprintf("Exclusion already exists for %s\n", crayon::red(find)))
+      return(invisible(TRUE))
+    }
   }
 
   metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
@@ -804,14 +805,16 @@ metadata_update_taxonomic_change <- function(dataset_id, find, replace, reason, 
   set_name <- "taxonomic_updates"
   metadata <- read_metadata_dataset(dataset_id)
 
-  if (!is.na(metadata[[set_name]])) {
+  if (!all(is.na(metadata[[set_name]]))) {
     data <- util_list_to_df2(metadata[[set_name]])
   }
 
-  # Add `set_name` category if it doesn't yet exist
-  if (all(is.na(metadata[[set_name]])) || length(i) == 0) {
-    stop(sprintf("Substitution for %s in %s does not exist", find, metadata))
+  # Check if `taxonomic_updates` doesn't exist or if substitution does not exist
+  if (all(is.na(metadata[[set_name]])) || !find %in% data$find) {
+    stop(sprintf("Substitution for %s in %s does not exist", find, dataset_id))
   }
+
+  i <- match(find, data$find)
 
   metadata[[set_name]][[i]][["replace"]] <- replace
   metadata[[set_name]][[i]][["reason"]] <- reason
