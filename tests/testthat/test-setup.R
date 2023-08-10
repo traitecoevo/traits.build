@@ -1,3 +1,10 @@
+# Todo:
+# For `metadata_create_template`, if template already exists, show message
+# If source details already exist, show message, for `metadata_add_source_doi`
+# Show message if locations, contexts or traits, substitutions, taxonomic_updates already exist
+# Check that `metadata_add_substitutions_table` works
+# Test `metadata_add_substitutions_list`
+# `expect_no_error` and other functions not showing error messages
 
 test_that("metadata_create_template is working", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
@@ -241,16 +248,32 @@ test_that("metadata_add_traits is working", {
 
 
 test_that("metadata_add_substitution is working", {
-  expect_silent(
-    suppressMessages(
+  expect_no_error(
+    expect_message(
       metadata_add_substitution("Test_2022", "leaf_mass_per_area", "leaf_area", "leaf_mass_per_area")
     ))
-
   x <- read_metadata("data/Test_2022/metadata.yml")$substitutions[[1]]
   expect_length(x, 3)
   expect_equal(x$trait_name, "leaf_mass_per_area")
   expect_equal(x$find, "leaf_area")
   expect_equal(x$replace, "leaf_mass_per_area")
+
+  # Test if substitution already exists
+  expect_message(
+    metadata_add_substitution("Test_2022", "leaf_mass_per_area", "leaf_area", "leaf_mass_per_area")
+  )
+  # Expect that second substitution should not exist
+  expect_error(read_metadata("data/Test_2022/metadata.yml")$substitutions[[2]])
+
+  # Test that a new substitution is appended
+  expect_message(
+    metadata_add_substitution("Test_2022", "leaf_length", "small", "large")
+  )
+  # Second substitution should now exist
+  expect_no_error(x <- read_metadata("data/Test_2022/metadata.yml")$substitutions[[2]])
+  expect_length(x, 3)
+  expect_equal(x$trait_name, "leaf_length")
+
 })
 
 
@@ -258,16 +281,25 @@ test_that("metadata_add_taxonomic_change is working", {
   metadata <- read_metadata_dataset("Test_2022")
   metadata$taxonomic_updates <- NA
   write_metadata_dataset(metadata, "Test_2022")
-  # If the taxonomic substitution already exists, this throws an uninformative error
-  # Also if ANY taxonomic substitution already exists, this throws an error I think
-  # Do we want to add in a similar message like with `metadata_add_substitution`?
-  expect_message(metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "Tissue"))
+  expect_message(metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution"))
 
   x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[1]]
   expect_equal(x$find, "flower")
   expect_equal(x$replace, "tree")
   expect_equal(x$reason, "leaves")
   expect_equal(x$taxonomic_resolution, "Tissue")
+
+  # Test if taxonomic substitution already exists
+  expect_message(metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution"))
+  # Expect that second substitution should not exist
+  expect_error(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[2]])
+
+  # Test that a new taxonomic substitution is appended
+  expect_message(metadata_add_taxonomic_change("Test_2022", "test", "replacement", "test reason", "test resolution"))
+  # Second substitution should now exist
+  expect_no_error(x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[2]])
+  expect_length(x, 4)
+  expect_equal(x$find, "test")
 })
 
 
@@ -306,13 +338,6 @@ test_that("metadata_remove_taxonomic_change is working", {
   # metadata_add_taxonomic_change() again
   expect_invisible(metadata_remove_taxonomic_change("Test_2022", "flower"))
 })
-
-
-test_that("dataset_test is working", {
-  # Expect error if no dataset_ids argument is input
-  expect_error(dataset_test())
-})
-
 
 test_that("build_setup_pipeline is working", {
 
@@ -353,7 +378,7 @@ test_that("build_setup_pipeline is working", {
   expect_no_error(austraits_raw <- remake::make("austraits_raw"))
   expect_no_error(austraits <- remake::make("austraits"))
 
-  # Note: austraits_raw has no version number or git_SHA, austraits does
+  # Test that austraits_raw has no version number or git_SHA
   expect_null(austraits_raw$build_info$version)
   expect_null(austraits_raw$build_info$git_SHA)
   # Test that austraits has version and git_SHA from testgit folder
@@ -383,6 +408,8 @@ test_that("reports and plots are produced", {
 
 
 testthat::test_that("dataset_test is working", {
+  # Expect error if no dataset_ids argument is input
+  expect_error(dataset_test())
   expect_silent(
     out <- dataset_test("Test_2022", reporter = testthat::SilentReporter))
   expect_in(
@@ -391,6 +418,7 @@ testthat::test_that("dataset_test is working", {
 
 
 testthat::test_that("metadata_add_substitutions_table is working", {
+  # Was failing for Barrett_2009, check it works if substitutions already exist
   substitutions_df <- tibble::tibble(
     dataset_id = "Test_2022",
     trait_name = "Tree",

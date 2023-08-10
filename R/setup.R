@@ -578,8 +578,8 @@ metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
 
   to_add <- list(trait_name = trait_name, find = find, replace = replace)
 
-  # add `set_name` category if it doesn't yet exist
-  if (is.null(metadata[[set_name]]) || is.na(metadata[[set_name]])) {
+  # Add `set_name` category if it doesn't yet exist
+  if (all(is.na(metadata[[set_name]]))) {
     metadata[[set_name]] <- list()
   }
 
@@ -588,10 +588,9 @@ metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
   if (length(metadata[[set_name]]) > 0)
     if (length(which(trait_name %in% data$trait_name & find %in% data$find)) > 0) {
     message(paste(
-        crayon::red(sprintf("Substitution exists for %s, %s", trait_name, find))
-        ,
-        sprintf("-> please review manually in %s",  metadata_path_dataset_id(dataset_id))
-        ))
+      crayon::red(sprintf("Substitution exists for %s, %s", trait_name, find)),
+      sprintf("-> please review manually in %s",  metadata_path_dataset_id(dataset_id))
+    ))
     return(invisible())
   }
 
@@ -701,23 +700,23 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
 metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, taxonomic_resolution) {
 
   if (length(replace) > 1) {
-    stop(sprintf("Cannot replace with two names!! (for %s -> %s)\n", crayon::red(find), crayon::red(replace)))
+    stop(sprintf("Cannot replace with two names! (for %s -> %s)\n", crayon::red(find), crayon::red(replace)))
   }
   set_name <- "taxonomic_updates"
   metadata <- read_metadata_dataset(dataset_id)
 
   to_add <- list(find = find, replace = replace, reason = reason, taxonomic_resolution = taxonomic_resolution)
 
-  # add `set_name` category if it doesn't yet exist
-  if (is.null(metadata[[set_name]]) || is.na(metadata[[set_name]])) {
+  # Add `set_name` category if it doesn't yet exist
+  if (all(is.na(metadata[[set_name]]))) {
     metadata[[set_name]] <- list()
-  }
-
-  # Check if find record already exists for that trait
-  data <- util_list_to_df2(metadata[[set_name]])
-  if (!is.na(data) && nrow(data) > 0 && length(which(find %in% data$find)) > 0) {
-    message(sprintf("\tSubstitution already exists for %s\n", crayon::red(find)))
-    return(invisible(TRUE))
+  } else {
+    # Check if find record already exists for that trait
+    data <- util_list_to_df2(metadata[[set_name]])
+    if (find %in% data$find) {
+      message(sprintf("\tSubstitution already exists for %s\n", crayon::red(find)))
+      return(invisible(TRUE))
+    }
   }
 
   metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
@@ -726,8 +725,8 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
     sprintf("%s %s: %s -> %s (%s)\n", "\tAdding taxonomic change in",
     dataset_id, crayon::blue(find), crayon::green(replace), reason)
   )
-  write_metadata_dataset(metadata, dataset_id)
 
+  write_metadata_dataset(metadata, dataset_id)
   return(invisible(TRUE))
 
 }
