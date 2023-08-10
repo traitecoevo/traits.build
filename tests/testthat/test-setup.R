@@ -3,8 +3,12 @@
 # If source details already exist, show message, for `metadata_add_source_doi`
 # Show message if locations, contexts or traits, substitutions, taxonomic_updates already exist
 # Check that `metadata_add_substitutions_table` works
-# Test `metadata_add_substitutions_list`
+# Test `metadata_add_substitutions_list` and `metadata_add_taxonomic_changes_list`
+# Check if any other functions need testing
 # `expect_no_error` and other functions not showing error messages
+# Remove may be assigned but not used warnings
+# Add more clear punctuation to sprintf messages ('' or ``)
+# Remove unnecessary `is.null`'s
 
 test_that("metadata_create_template is working", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
@@ -259,20 +263,26 @@ test_that("metadata_add_substitution is working", {
   expect_equal(x$replace, "leaf_mass_per_area")
 
   # Test if substitution already exists
-  expect_message(
-    metadata_add_substitution("Test_2022", "leaf_mass_per_area", "leaf_area", "leaf_mass_per_area")
-  )
+  expect_message(metadata_add_substitution("Test_2022", "leaf_mass_per_area", "leaf_area", "leaf_mass_per_area"))
   # Expect that second substitution should not exist
   expect_error(read_metadata("data/Test_2022/metadata.yml")$substitutions[[2]])
 
   # Test that a new substitution is appended
-  expect_message(
-    metadata_add_substitution("Test_2022", "leaf_length", "small", "large")
-  )
+  expect_message(metadata_add_substitution("Test_2022", "leaf_length", "small", "large"))
   # Second substitution should now exist
   expect_no_error(x <- read_metadata("data/Test_2022/metadata.yml")$substitutions[[2]])
   expect_length(x, 3)
   expect_equal(x$trait_name, "leaf_length")
+
+  # Third substitution should not exist yet
+  expect_error(x <- read_metadata("data/Test_2022/metadata.yml")$substitutions[[3]])
+  # Test if substitution is appended if there is the same `find` value as before but
+  # for a different `trait_name` that already exists in substitutions
+  expect_message(metadata_add_substitution("Test_2022", "leaf_mass_per_area", "small", "large"))
+  # Third substitution should now exist
+  expect_no_error(x <- read_metadata("data/Test_2022/metadata.yml")$substitutions[[3]])
+  expect_length(x, 3)
+  expect_equal(x$trait_name, "leaf_mass_per_area")
 
 })
 

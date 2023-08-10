@@ -573,29 +573,26 @@ metadata_add_source_doi <- function(..., doi, bib = NULL) {
 metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
 
   set_name <- "substitutions"
-
   metadata <- read_metadata_dataset(dataset_id)
-
   to_add <- list(trait_name = trait_name, find = find, replace = replace)
 
   # Add `set_name` category if it doesn't yet exist
   if (all(is.na(metadata[[set_name]]))) {
     metadata[[set_name]] <- list()
-  }
-
-  # Check if find record already exists for that trait
-  data <-  util_list_to_df2(metadata[[set_name]])
-  if (length(metadata[[set_name]]) > 0)
-    if (length(which(trait_name %in% data$trait_name & find %in% data$find)) > 0) {
-    message(paste(
-      crayon::red(sprintf("Substitution exists for %s, %s", trait_name, find)),
-      sprintf("-> please review manually in %s",  metadata_path_dataset_id(dataset_id))
-    ))
-    return(invisible())
+  } else {
+    # Check if find record already exists for that trait
+    data <- util_list_to_df2(metadata[[set_name]])
+    # Has to be rowwise (both conditions have to be true for a given row)
+    if (nrow(data[data$trait_name == trait_name & data$find == find, ]) > 0) {
+      message(paste(
+        crayon::red(sprintf("Substitution exists for %s, %s", trait_name, find)),
+        sprintf("-> please review manually in %s",  metadata_path_dataset_id(dataset_id))
+      ))
+      return(invisible())
+    }
   }
 
   metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
-
   message(
     sprintf("%s %s for trait %s : %s -> %s", crayon::red("Adding substitution in"),
     crayon::red(dataset_id), trait_name, find, replace)
@@ -805,16 +802,15 @@ metadata_exclude_observations <- function(dataset_id, variable, find, reason) {
 metadata_update_taxonomic_change <- function(dataset_id, find, replace, reason, taxonomic_resolution) {
 
   set_name <- "taxonomic_updates"
-
   metadata <- read_metadata_dataset(dataset_id)
-  # May be assigned but not used
-  to_add <- list(find = find, replace = replace, reason = reason, taxonomic_resolution = taxonomic_resolution)
 
-  data <-  util_list_to_df2(metadata[[set_name]])
-  i <- match(find, data$find)
-  # add `set_name` category if it doesn't yet exist
-  if (is.null(metadata[[set_name]]) || is.na(metadata[[set_name]]) || nrow(data) == 0 || length(i) == 0) {
-    stop(sprintf("Substitution for %s in %s  does not exist", find, metadata))
+  if (!is.na(metadata[[set_name]])) {
+    data <- util_list_to_df2(metadata[[set_name]])
+  }
+
+  # Add `set_name` category if it doesn't yet exist
+  if (all(is.na(metadata[[set_name]])) || length(i) == 0) {
+    stop(sprintf("Substitution for %s in %s does not exist", find, metadata))
   }
 
   metadata[[set_name]][[i]][["replace"]] <- replace
