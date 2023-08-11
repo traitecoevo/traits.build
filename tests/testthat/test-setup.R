@@ -38,7 +38,7 @@ test_that("metadata_create_template is working", {
  })
 
 
-test_that("metadata_create_template is working with simulated user input", {
+test_that("`metadata_create_template` is working with simulated user input", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
   unlink("data/Test_2022/metadata.yml")
   expect_silent(schema <- get_schema())
@@ -103,20 +103,20 @@ test_that("metadata_create_template is working with simulated user input", {
  })
 
 
-test_that("metadata_path_dataset_id is working", {
+test_that("`metadata_path_dataset_id` is working", {
   expect_silent(metadata_path_dataset_id("Test_2022"))
   expect_equal(metadata_path_dataset_id("Test_2022"), "data/Test_2022/metadata.yml")
   expect_type(metadata_path_dataset_id("Test_2022"), "character")
 })
 
 
-test_that("read_metadata_dataset is working", {
+test_that("`read_metadata_dataset` is working", {
   expect_silent(read_metadata_dataset("Test_2022"))
   expect_type(read_metadata_dataset("Test_2022"), "list")
 })
 
 
-test_that("write_metadata_dataset is working", {
+test_that("`write_metadata_dataset` is working", {
   metadata <- read_metadata_dataset("Test_2022")
 
   unlink("data/Test_2022/metadata.yml")
@@ -130,7 +130,7 @@ test_that("write_metadata_dataset is working", {
 })
 
 
-test_that("metadata_add_source_doi is working", {
+test_that("`metadata_add_source_doi` is working", {
 
   expected_doi <- "https://doi.org/10.3389/fmars.2021.671145"
   expected_doi2 <- "https://doi.org/10.1111/j.0022-0477.2005.00992.x"
@@ -173,7 +173,7 @@ test_that("metadata_add_source_doi is working", {
 })
 
 
-test_that("metadata_check_custom_R_code is working", {
+test_that("`metadata_check_custom_R_code` is working", {
   # Check that the `custom_R_code` produces a tibble class object
   expect_equal(class(metadata_check_custom_R_code("Test_2022")), c("spec_tbl_df", "tbl_df", "tbl", "data.frame"))
   expect_equal(ncol(metadata_check_custom_R_code("Test_2022")), 13)
@@ -182,13 +182,13 @@ test_that("metadata_check_custom_R_code is working", {
 })
 
 
-test_that("metadata_add_source_bibtex is working", {
+test_that("`metadata_add_source_bibtex` is working", {
   expect_silent(metadata_add_source_bibtex(dataset_id = "Test_2022", file = "data/test2.bib"))
   expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$primary$journal, "Journal of Ecology")
 })
 
 
-test_that("metadata_add_locations is working", {
+test_that("`metadata_add_locations` is working", {
   locations <- tibble(
     site_name = c("site 1", "site 2"),
     latitude = c("-16", "-17"),
@@ -208,7 +208,7 @@ test_that("metadata_add_locations is working", {
 })
 
 
-test_that("metadata_add_contexts is working", {
+test_that("`metadata_add_contexts` is working", {
   expect_true(file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml", overwrite = TRUE))
   var_in <- c("test_context_1", "test_context_2")
   categories <- c("treatment", "entity_context")
@@ -234,7 +234,7 @@ test_that("metadata_add_contexts is working", {
 })
 
 
-test_that("metadata_add_traits is working", {
+test_that("`metadata_add_traits` is working", {
   metadata <- read_metadata_dataset("Test_2022")
   metadata$traits <- NA
   write_metadata_dataset(metadata, "Test_2022")
@@ -251,7 +251,7 @@ test_that("metadata_add_traits is working", {
 })
 
 
-test_that("metadata_add_substitution is working", {
+test_that("`metadata_add_substitution` is working", {
   expect_no_error(
     expect_message(
       metadata_add_substitution("Test_2022", "leaf_mass_per_area", "leaf_area", "leaf_mass_per_area")
@@ -362,7 +362,7 @@ test_that("metadata_remove_taxonomic_change is working", {
 })
 
 
-test_that("build_setup_pipeline is working", {
+test_that("`build_setup_pipeline` is working", {
 
   unlink("remake.yml")
   unlink("config/taxon_list.csv")
@@ -430,8 +430,8 @@ test_that("reports and plots are produced", {
 })
 
 
-testthat::test_that("dataset_test is working", {
-  # Expect error if no dataset_ids argument is input
+testthat::test_that("`dataset_test` is working", {
+  # Expect error if no `dataset_ids` argument is input
   expect_error(dataset_test())
   expect_silent(
     out <- dataset_test("Test_2022", reporter = testthat::SilentReporter))

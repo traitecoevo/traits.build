@@ -10,7 +10,7 @@ test_config <- dataset_configure("data/Test_2022/test-metadata.yml",
                                   unit_conversions)
 
 
-test_that("dataset_configure is working", {
+test_that("`dataset_configure` is working", {
   expect_no_error(
     test_config <- dataset_configure("data/Test_2022/test-metadata.yml",
                                       traits_definitions,
@@ -22,7 +22,7 @@ test_that("dataset_configure is working", {
 })
 
 
-test_that("dataset_process is working", {
+test_that("`dataset_process` is working", {
   expect_no_error(austraits_names <- schema$austraits$elements %>% names())
   expect_no_error(x <- dataset_process(test_data, test_config, schema, resource_metadata))
   expect_type(x, "list")
@@ -45,7 +45,7 @@ test_that("dataset_process is working", {
 })
 
 
-test_that("process_custom_code is working", {
+test_that("`process_custom_code` is working", {
   expect_no_error(metadata <- test_config$metadata)
   expect_no_error(data <- readr::read_csv(test_data, col_types = cols(), guess_max = 100000, progress = FALSE))
   expect_equal(ncol(data), 13)

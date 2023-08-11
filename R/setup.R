@@ -196,10 +196,10 @@ metadata_user_select_names <- function(title, vars) {
 #' @export
 metadata_check_custom_R_code <- function(dataset_id) {
 
-  # read metadata
+  # Read metadata
   metadata <- read_metadata_dataset(dataset_id)
 
-  # load and clean trait data
+  # Load and clean trait data
   readr::read_csv(file.path("data", dataset_id,  "data.csv"), col_types = cols(), guess_max = 100000) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
 
@@ -547,7 +547,7 @@ metadata_add_source_doi <- function(..., doi, bib = NULL) {
 
   if (is.null(bib)) {
     message("DOI not available in Crossref database, please fill record manually")
-    return(invisible(FALSE))
+    return(invisible())
   }
 
   file <- tempfile()
@@ -612,15 +612,15 @@ metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
 #' @export
 metadata_add_substitutions_list <- function(dataset_id, substitutions) {
 
-  #read metadata
+  # Read metadata
   metadata <- read_metadata_dataset(dataset_id)
 
-  #read in dataframe of substitutions, split into single-row lists, and add to metadata file
+  # Read in dataframe of substitutions, split into single-row lists, and add to metadata file
   metadata$substitutions <-
     substitutions %>%
     dplyr::group_split(.data$trait_name, .data$find) %>% lapply(as.list)
 
-  #write metadata
+  # Write metadata
   write_metadata_dataset(metadata, dataset_id)
 
 }
@@ -650,7 +650,7 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
 #' }
 metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset_id, trait_name, find, replace) {
 
-  # split dataframe of substitutions by row
+  # Split dataframe of substitutions by row
   dataframe_of_substitutions <-
     dataframe_of_substitutions %>%
     dplyr::mutate(rows = dplyr::row_number()) %>%
@@ -658,7 +658,7 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
 
   set_name <- "substitutions"
 
-  # add substitutions to metadata files
+  # Add substitutions to metadata files
   for (i in 1:max(dataframe_of_substitutions)$rows) {
 
     metadata <- read_metadata_dataset(dataframe_of_substitutions[[i]]$dataset_id)
@@ -712,7 +712,7 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
     data <- util_list_to_df2(metadata[[set_name]])
     if (find %in% data$find) {
       message(sprintf("\tSubstitution already exists for %s\n", crayon::red(find)))
-      return(invisible(TRUE))
+      return(invisible())
     }
   }
 
@@ -724,7 +724,6 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
   )
 
   write_metadata_dataset(metadata, dataset_id)
-  return(invisible(TRUE))
 
 }
 
@@ -779,7 +778,7 @@ metadata_exclude_observations <- function(dataset_id, variable, find, reason) {
 
     if (nrow(data[data$find == find & data$variable == variable, ]) > 0) {
       message(sprintf("Exclusion already exists for %s\n", crayon::red(find)))
-      return(invisible(TRUE))
+      return(invisible())
     }
   }
 
@@ -787,7 +786,6 @@ metadata_exclude_observations <- function(dataset_id, variable, find, reason) {
 
   message(sprintf("%s - excluding %s: %s (%s)\n", dataset_id, crayon::blue(variable), crayon::blue(find), reason))
   write_metadata_dataset(metadata, dataset_id)
-  return(invisible(TRUE))
 
 }
 
@@ -811,7 +809,8 @@ metadata_update_taxonomic_change <- function(dataset_id, find, replace, reason, 
 
   # Check if `taxonomic_updates` doesn't exist or if substitution does not exist
   if (all(is.na(metadata[[set_name]])) || !find %in% data$find) {
-    stop(sprintf("Substitution for %s in %s does not exist", find, dataset_id))
+    message(sprintf("Substitution for %s in %s does not exist", find, dataset_id))
+    return(invisible())
   }
 
   i <- match(find, data$find)
@@ -837,35 +836,37 @@ metadata_update_taxonomic_change <- function(dataset_id, find, replace, reason, 
 #'
 #' @return yml file with a taxonomic change removed
 #' @export
-metadata_remove_taxonomic_change <- function(dataset_id, find, replace = NULL) {
+metadata_remove_taxonomic_change <- function(dataset_id, find) {
 
   set_name <- "taxonomic_updates"
   metadata <- read_metadata_dataset(dataset_id)
 
-  # If it doesn't yet exist - > done
-  if (is.null(metadata[[set_name]]) || is.na(metadata[[set_name]])) {
-    message(sprintf("Taxonomic change in %s: %s -> %s %s", dataset_id, find, replace, crayon::green("does not exist")))
-    return()
+  # If `taxonomic_updates` section is empty
+  if (all(is.na(metadata[[set_name]]))) {
+    message(sprintf("No taxonomic changes in %s to remove", dataset_id))
+    return(invisible())
+  } else {
+    # Check if taxonomic change does not exist
+    data <- util_list_to_df2(metadata[[set_name]])
+    if (!find %in% data$find) {
+      message(
+        sprintf(
+          "Taxonomic change in %s for %s %s",
+          dataset_id, find, crayon::green("does not exist")
+        ))
+      return(invisible())
+    }
   }
 
-  # Check if find record already exists for that trait
-  data <-  util_list_to_df2(metadata[[set_name]])
-  if (nrow(data) == 0) {
-    message(sprintf("Taxonomic change in %s: %s -> %s %s", dataset_id, find, replace, crayon::green("does not exist")))
-    return()
+  i <- data$find == find
+  metadata[[set_name]][which(i)] <- NULL
+
+  # If no more taxonomic changes exist, change `taxonomic_updates` section to NA
+  if (length(metadata[[set_name]]) == 0) {
+    metadata[[set_name]] <- NA
   }
 
-  if (is.null(replace))
-    i <- data$find == find
-  else
-    i <- data$find == find & data$replace == replace
-
-
-  if (any(i)) {
-    metadata[[set_name]][which(i)] <- NULL
-    message(sprintf("Taxonomic change in %s: %s -> %s %s", dataset_id, find, replace, crayon::red("removed")))
-  }
-
+  message(sprintf("Taxonomic change in %s for %s %s", dataset_id, find, crayon::red("removed")))
   write_metadata_dataset(metadata, dataset_id)
 
 }
@@ -918,12 +919,12 @@ build_setup_pipeline <- function(
     stop("cannot find data directory: ", path)
   }
 
-  # check directories have both files
+  # Check directories have both files
   has_both_files <-
-  sapply(
-    dataset_ids,
-    function(id) sprintf("%s/%s/%s", path, id, c("data.csv", "metadata.yml")) %>% file.exists() %>% all()
-  )
+    sapply(
+      dataset_ids,
+      function(id) sprintf("%s/%s/%s", path, id, c("data.csv", "metadata.yml")) %>% file.exists() %>% all()
+    )
 
   dataset_ids <- dataset_ids[has_both_files]
 
@@ -955,7 +956,7 @@ build_setup_pipeline <- function(
       establishment_means = character(),
       scientific_name = character(),
       scientific_name_id = character()
-    ) %>%  readr::write_csv(filename)
+    ) %>% readr::write_csv(filename)
   }
 }
 
