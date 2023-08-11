@@ -8,10 +8,12 @@
 # `expect_no_error` and other functions not showing error messages
 # Remove may be assigned but not used warnings
 # Add more clear punctuation to sprintf messages ('' or ``)
+# Make clearer messages
 # Remove unnecessary `is.null`'s
 # Check comments in setup.R
+# Add some expected messages in test-setup.R
 
-test_that("metadata_create_template is working", {
+test_that("`metadata_create_template` is working", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
   unlink("data/Test_2022/metadata.yml")
   expect_silent(schema <- get_schema())
@@ -283,11 +285,77 @@ test_that("`metadata_add_substitution` is working", {
   expect_no_error(x <- read_metadata("data/Test_2022/metadata.yml")$substitutions[[3]])
   expect_length(x, 3)
   expect_equal(x$trait_name, "leaf_mass_per_area")
+})
+
+# FIX THIS
+testthat::test_that("`metadata_add_substitutions_table` is working", {
+
+  # Test if error is thrown if column doesn't exist in substitutions table
+  substitutions_df <- tibble::tibble(
+    dataset_id = c("Test_2022", "Test_2022", "Test_2022"),
+    trait_name = c("fruit_colour", "plant_growth_form", "plant_growth_form"),
+    find = c("red", "shrubby", "palm"),
+    replace = c("black", "shrub", "tree")
+  )
+  expect_error(
+    metadata_add_substitutions_table(substitutions_df, "dataset", "trait_name", "find", "replace"),
+    "'dataset' is not a column in the substitutions table."
+  )
+
+  # Was failing for Barrett_2009, check it works if substitutions already exist
+  substitutions_df <- tibble::tibble(
+    dataset_id = c("Test_2022", "Test_2022", "Test_2022"),
+    trait_name = c("fruit_colour", "plant_growth_form", "plant_growth_form"),
+    find = c("red", "shrubby", "palm"),
+    replace = c("black", "shrub", "tree")
+  )
+
+  # Overwrite `substitutions` section to NA
+  path_metadata <- "data/Test_2022/metadata.yml"
+  metadata <- read_metadata(path_metadata)
+  metadata$substitutions <- NA
+  write_metadata(metadata, path_metadata)
+
+
+  # Also you can add substitutions twice with no errors, but the third time it throws an uninformative error
+  expect_invisible(metadata_add_substitutions_table(substitutions_df, "Test_2022", "trait_name", "find", "replace"))
+  # Test if any of the substitutions contain "Tree" in any fields
+  expect_equal(read_metadata(path_metadata)$substitutions %>% sapply(`%in%`, x = "Tree") %>% any(), TRUE)
+
+  # Test if none of the arguments except the first are input
+
+  # Test if alternate naming of columns in substitutions table works
+  substitutions_df <- tibble::tibble(
+    dataset = c("Test_2022", "Test_2022", "Test_2022"),
+    trait = c("fruit_colour", "plant_growth_form", "plant_growth_form"),
+    find = c("red", "shrubby", "palm"),
+    replace = c("black", "shrub", "tree")
+  )
 
 })
 
 
-test_that("metadata_add_taxonomic_change is working", {
+test_that("`metadata_exclude_observations` is working", {
+  expect_message(metadata_exclude_observations("Test_2022", "test", "stem", "reason"))
+
+  x <- read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[1]]
+  expect_equal(x$variable, "test")
+  expect_equal(x$find, "stem")
+  expect_equal(x$reason, "reason")
+
+  # Test if observation is already excluded
+  expect_message(metadata_exclude_observations("Test_2022", "test", "stem", "reason2"))
+  # Expect that second excluded observation should not exist
+  expect_error(read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[2]])
+
+  # Test if substitution is appended
+  expect_message(metadata_exclude_observations("Test_2022", "test", "branch", "reason"))
+  # Expect that second excluded observation exists
+  expect_no_error(read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[2]])
+})
+
+
+test_that("`metadata_add_taxonomic_change` is working", {
   metadata <- read_metadata_dataset("Test_2022")
   metadata$taxonomic_updates <- NA
   write_metadata_dataset(metadata, "Test_2022")
@@ -310,55 +378,53 @@ test_that("metadata_add_taxonomic_change is working", {
   expect_no_error(x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[2]])
   expect_length(x, 4)
   expect_equal(x$find, "test")
-
 })
 
 
-test_that("metadata_exclude_observations is working", {
-  # If the observation is already excluded, this throws an uninformative error
-  # Do we want to add in a similar message like with `metadata_add_substitution`?
-  expect_message(metadata_exclude_observations("Test_2022", "test", "stem", "reason"))
+test_that("`metadata_update_taxonomic_change` is working", {
+  # Test that `metadata_update_taxonomic_change` gives a message if the substitution does not exist
+  expect_message(metadata_update_taxonomic_change("Test_2022", "test species", "new species", "new name", "genus"))
 
-  x <- read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[1]]
-  expect_equal(x$variable, "test")
-  expect_equal(x$find, "stem")
-  expect_equal(x$reason, "reason")
+  expect_message(metadata_update_taxonomic_change("Test_2022", "test", "new name", "update", "subspecies"))
 
-  # Test if observation is already excluded
-  expect_message(metadata_exclude_observations("Test_2022", "test", "stem", "reason2"))
-  # Expect that second excluded observation should not exist
-  expect_error(read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[2]])
+  x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates
+  # Find existing taxonomic change where `find` == test
+  y <- x[x %>% lapply("[[", "find") %>% lapply("==", "test") %>% unlist()][[1]]
+  expect_equal(y$find, "test")
+  expect_equal(y$replace, "new name")
+  expect_equal(y$reason, "update")
+  expect_equal(y$taxonomic_resolution, "subspecies")
 
-  # Test if substitution is appended
-  expect_message(metadata_exclude_observations("Test_2022", "test", "branch", "reason"))
-  # Expect that second excluded observation exists
-  expect_no_error(read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[2]])
-
+  # Test if `taxonomic_updates` is empty
+  metadata <- read_metadata_dataset("Test_2022")
+  metadata$taxonomic_updates <- NA
+  write_metadata_dataset(metadata, "Test_2022")
+  expect_message(
+    metadata_update_taxonomic_change("Test_2022", "test species", "new species", "new name", "genus"),
+    "Substitution for test species in Test_2022 does not exist"
+  )
 })
 
-# FIX THESE TESTS
-test_that("metadata_update_taxonomic_change is working", {
-  # Test that `metadata_update_taxonomic_change` throws an error if the substitution does not exist
-  # Can we add a more informative error message?
-  expect_error(metadata_update_taxonomic_change("Test_2022", "test species", "new species", "new name", "genus"))
-  expect_invisible(
-    suppressMessages(
-      metadata_update_taxonomic_change("Test_2022", "flower", "bark", "soil", "Substrate")
-    ))
 
-  x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[1]]
+test_that("`metadata_remove_taxonomic_change` is working", {
+
+  # Test if `taxonomic_updates` is empty
+  expect_message(
+    metadata_remove_taxonomic_change("Test_2022", "test species"),
+    "No taxonomic changes in Test_2022 to remove"
+  )
+
+  expect_message(metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution"))
+
+  # Test if taxonomic change does not exist
+  expect_message(metadata_remove_taxonomic_change("Test_2022", "species to remove"))
+  # Test that existing taxonomic change is not removed
+  expect_no_error(x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[1]])
   expect_equal(x$find, "flower")
-  expect_equal(x$replace, "bark")
-  expect_equal(x$reason, "soil")
-  expect_equal(x$taxonomic_resolution, "Substrate")
-})
 
-# FIX THIS
-test_that("metadata_remove_taxonomic_change is working", {
-  # Can we add an informative error message here too if there's no substitution to remove?
-  # Also this replaces the taxonomic_updates section with an empty list, preventing you from using
-  # metadata_add_taxonomic_change() again
-  expect_invisible(metadata_remove_taxonomic_change("Test_2022", "flower"))
+  expect_message(metadata_remove_taxonomic_change("Test_2022", "flower"))
+  # Test that `taxonomic_updates` is now NA
+  expect_equal(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates, NA)
 })
 
 
@@ -375,7 +441,6 @@ test_that("`build_setup_pipeline` is working", {
   expect_no_error(sha <- git2r::sha(git2r::last_commit()))
   # Expect error if path name is wrong
   expect_error(build_setup_pipeline(path = "Datas"))
-  # Should we add to build_setup_pipeline documentation that it also makes taxon_list.csv?
   expect_silent(build_setup_pipeline())
   expect_true(file.exists("remake.yml"))
   expect_silent(yaml::read_yaml("remake.yml"))
@@ -418,12 +483,12 @@ test_that("`build_setup_pipeline` is working", {
 
 test_that("reports and plots are produced", {
   expect_no_error(austraits <- remake::make("austraits"))
-  expect_no_error(
-    # What's this p for? I'm guessing it was for the plot
-    p <- 1
-    #austraits::plot_trait_distribution_beeswarm(
-      #austraits, "huber_value", "dataset_id", highlight = "Test_2022", hide_ids = TRUE)
-  )
+  # Not testing right now
+  #expect_no_error(
+    #p <-
+      #austraits::plot_trait_distribution_beeswarm(
+        #austraits, "huber_value", "dataset_id", highlight = "Test_2022", hide_ids = TRUE)
+  #)
   expect_no_error(
     dataset_report(dataset_id = "Test_2022", austraits = austraits, overwrite = TRUE)
   )
@@ -436,34 +501,5 @@ testthat::test_that("`dataset_test` is working", {
   expect_silent(
     out <- dataset_test("Test_2022", reporter = testthat::SilentReporter))
   expect_in(
-    c("SilentReporter", "Reporter", "R6"), class(out))
-})
-
-
-testthat::test_that("metadata_add_substitutions_table is working", {
-  # Was failing for Barrett_2009, check it works if substitutions already exist
-  substitutions_df <- tibble::tibble(
-    dataset_id = "Test_2022",
-    trait_name = "Tree",
-    find = "Root",
-    replace = "Branch"
-  )
-
-  path_metadata <- "data/Test_2022/metadata.yml"
-  # I think this creates it in the wrong directory? It creates a metadata file in "data/", not "data/Test_2022/"
-  # Maybe that's intended.
-  metadata_create_template(
-    dataset_id = "Test_2022",
-    path = "data",
-    skip_manual = TRUE
-  )
-
-  metadata <- read_metadata(path_metadata)
-  metadata$substitutions <- NA
-  write_metadata(metadata, path_metadata)
-  # I think the arguments after the first one are unnecessary, it works without putting them in
-  # Also you can add substitutions twice with no errors, but the third time it throws an uninformative error
-  expect_invisible(metadata_add_substitutions_table(substitutions_df, "Test_2022", "trait_name", "find", "replace"))
-  # Test if any of the substitutions contain "Tree" in any fields
-  expect_equal(read_metadata(path_metadata)$substitutions %>% sapply(`%in%`, x = "Tree") %>% any(), TRUE)
+    class(out), c("SilentReporter", "Reporter", "R6"))
 })

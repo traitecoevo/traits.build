@@ -585,7 +585,7 @@ metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
     # Has to be rowwise (both conditions have to be true for a given row)
     if (nrow(data[data$trait_name == trait_name & data$find == find, ]) > 0) {
       message(paste(
-        crayon::red(sprintf("Substitution exists for %s, %s", trait_name, find)),
+        crayon::red(sprintf("Substitution already exists for %s, %s", trait_name, find)),
         sprintf("-> please review manually in %s",  metadata_path_dataset_id(dataset_id))
       ))
       return(invisible())
@@ -632,10 +632,10 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
 #' This function will be used to quickly re-align/re-assign trait values across all AusTraits studies.
 #'
 #' @param dataframe_of_substitutions dataframe with columns indicating dataset_id, trait_name, original trait values (find), and AusTraits aligned trait value (replace)
-#' @param dataset_id study's dataset_id in AusTraits
-#' @param trait_name trait name for which a trait value replacement needs to be made
-#' @param find trait value submitted by the contributor for a data observation
-#' @param replace AusTraits aligned trait value
+#' @param dataset_id name of column containing study dataset_id(s) in AusTraits
+#' @param trait_name name of column containing trait name(s) for which a trait value replacement needs to be made
+#' @param find name of column containing trait values submitted by the contributor for a data observation
+#' @param replace name of column containing AusTraits aligned trait values
 #'
 #' @importFrom rlang .data
 #'
@@ -650,15 +650,26 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
 #' }
 metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset_id, trait_name, find, replace) {
 
+  # Throw error if the column doesn't exist in the dataframe
+  for (col in c(dataset_id, trait_name, find, replace)) {
+    if (!col %in% names(dataframe_of_substitutions)) {
+      stop(sprintf("'%s' is not a column in the substitutions table.", col))
+    }
+  }
+
   # Split dataframe of substitutions by row
   dataframe_of_substitutions <-
     dataframe_of_substitutions %>%
     dplyr::mutate(rows = dplyr::row_number()) %>%
-    dplyr::group_split(.$rows)
+    dplyr::group_split(.$rows) # What does this do?
 
   set_name <- "substitutions"
 
+  empty_substitutions <- list()
+  existing_substitutions <- list()
+
   # Add substitutions to metadata files
+  # Should this bracket be before the dollar operator? This for loop doesn't go past the first index
   for (i in 1:max(dataframe_of_substitutions)$rows) {
 
     metadata <- read_metadata_dataset(dataframe_of_substitutions[[i]]$dataset_id)
@@ -668,18 +679,38 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
       find = dataframe_of_substitutions[[i]]$find,
       replace = dataframe_of_substitutions[[i]]$replace
     )
+    # If `substitutions` is empty, make new list
+    if (all(is.na(metadata[[set_name]]))) {
 
-    if (is.null(metadata[[set_name]]) || is.na(metadata[[set_name]])) {
       metadata[[set_name]] <- list()
+      empty_substitutions <- append(empty_substitutions, dataframe_of_substitutions[[i]]$dataset_id)
+
+    } else {
+
+      data <- util_list_to_df2(metadata[[set_name]])
+      existing_substitutions <- append(existing_substitutions, dataframe_of_substitutions[[i]]$dataset_id)
+      # Check whether the same `find` value for a given `trait_name` already exists
+      if (nrow(data[data$trait_name == to_add$trait_name & data$find == to_add$find, ]) > 0) {
+        message(
+          sprintf(
+            "Substitution in %s for trait `%s`: %s already exists, but new substitution has been added.\nPlease review manually.",
+            dataframe_of_substitutions[[i]]$dataset_id, to_add$trait_name, to_add$find
+          ))
+      }
+
     }
-    # May be assigned but not used
-    data <- util_list_to_df2(metadata[[set_name]])
 
     metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
-
     write_metadata_dataset(metadata, dataframe_of_substitutions[[i]]$dataset_id)
 
   }
+
+  message(
+    sprintf(
+      "Substitutions have been added for %s.\nSubstitutions were appended to existing substitutions in %s.",
+      paste(empty_substitutions, collapse = ", "), paste(existing_substitutions, collapse = ", ")
+    ))
+
 }
 
 
