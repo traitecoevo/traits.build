@@ -8,10 +8,11 @@
 # `expect_no_error` and other functions not showing error messages
 # Remove may be assigned but not used warnings
 # Add more clear punctuation to sprintf messages ('' or ``)
-# Make clearer messages
+# Make clearer messages with nice colours
 # Remove unnecessary `is.null`'s
 # Check comments in setup.R
 # Add some expected messages in test-setup.R
+# Fix expect_no_error maybe on another branch
 
 test_that("`metadata_create_template` is working", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
@@ -302,29 +303,26 @@ testthat::test_that("`metadata_add_substitutions_table` is working", {
     "'dataset' is not a column in the substitutions table."
   )
 
-  # Was failing for Barrett_2009, check it works if substitutions already exist
-  substitutions_df <- tibble::tibble(
-    dataset_id = c("Test_2022", "Test_2022", "Test_2022"),
-    trait_name = c("fruit_colour", "plant_growth_form", "plant_growth_form"),
-    find = c("red", "shrubby", "palm"),
-    replace = c("black", "shrub", "tree")
-  )
-
   # Overwrite `substitutions` section to NA
   path_metadata <- "data/Test_2022/metadata.yml"
   metadata <- read_metadata(path_metadata)
   metadata$substitutions <- NA
   write_metadata(metadata, path_metadata)
 
-
+  # Check adding substitutions from table
   # Also you can add substitutions twice with no errors, but the third time it throws an uninformative error
-  expect_invisible(metadata_add_substitutions_table(substitutions_df, "Test_2022", "trait_name", "find", "replace"))
-  # Test if any of the substitutions contain "Tree" in any fields
-  expect_equal(read_metadata(path_metadata)$substitutions %>% sapply(`%in%`, x = "Tree") %>% any(), TRUE)
+  expect_silent(
+    suppressMessages(
+      metadata_add_substitutions_table(substitutions_df, "dataset_id", "trait_name", "find", "replace"))
+  )
 
-  # Test if none of the arguments except the first are input
+  # Test if any of the substitutions contain "shrubby" in the `find` fields
+  expect_true(
+    read_metadata(path_metadata)$substitutions %>% lapply("[[", "find") %>% lapply("==", "shrubby") %>% unlist %>% any
+  )
 
   # Test if alternate naming of columns in substitutions table works
+  # Also test if it works if substitutions already exist
   substitutions_df <- tibble::tibble(
     dataset = c("Test_2022", "Test_2022", "Test_2022"),
     trait = c("fruit_colour", "plant_growth_form", "plant_growth_form"),
@@ -332,6 +330,29 @@ testthat::test_that("`metadata_add_substitutions_table` is working", {
     replace = c("black", "shrub", "tree")
   )
 
+  # Test that a message about duplicate find values was outputted
+  expect_true(
+    metadata_add_substitutions_table(substitutions_df, "dataset", "trait", "find", "replace") %>%
+    utils::capture.output(type = "message") %>%
+    paste(collapse = "\n") %>%
+    str_detect("d*(?=already exists, but new substitution has been added)")
+  )
+  # Expect that two substitutions contain "shrubby" in the `find` fields
+  expect_equal(
+    read_metadata(path_metadata)$substitutions %>%
+    lapply("[[", "find") %>% lapply("==", "shrubby") %>% unlist %>% sum, 2
+  )
+
+  # Also test if substitutions can be added a third time
+  expect_silent(
+    suppressMessages(
+      metadata_add_substitutions_table(substitutions_df, "dataset", "trait", "find", "replace"))
+  )
+  # Expect that three substitutions contain "shrubby" in the `find` fields
+  expect_equal(
+    read_metadata(path_metadata)$substitutions %>%
+    lapply("[[", "find") %>% lapply("==", "shrubby") %>% unlist %>% sum, 3
+  )
 })
 
 
@@ -463,8 +484,8 @@ test_that("`build_setup_pipeline` is working", {
   expect_true(nrow(taxa2) == 7)
 
   unlink(".remake", recursive = TRUE)
-  expect_no_error(austraits_raw <- remake::make("austraits_raw"))
-  expect_no_error(austraits <- remake::make("austraits"))
+  expect_silent(suppressMessages(austraits_raw <- remake::make("austraits_raw")))
+  expect_silent(suppressMessages(austraits <- remake::make("austraits")))
 
   # Test that austraits_raw has no version number or git_SHA
   expect_null(austraits_raw$build_info$version)
@@ -482,16 +503,17 @@ test_that("`build_setup_pipeline` is working", {
 
 
 test_that("reports and plots are produced", {
-  expect_no_error(austraits <- remake::make("austraits"))
+  expect_silent(suppressMessages(austraits <- remake::make("austraits")))
   # Not testing right now
   #expect_no_error(
     #p <-
       #austraits::plot_trait_distribution_beeswarm(
         #austraits, "huber_value", "dataset_id", highlight = "Test_2022", hide_ids = TRUE)
   #)
-  expect_no_error(
-    dataset_report(dataset_id = "Test_2022", austraits = austraits, overwrite = TRUE)
-  )
+  expect_silent(
+    suppressMessages(
+      dataset_report(dataset_id = "Test_2022", austraits = austraits, overwrite = TRUE)
+    ))
 })
 
 

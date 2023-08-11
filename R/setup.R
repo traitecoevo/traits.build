@@ -616,9 +616,7 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
   metadata <- read_metadata_dataset(dataset_id)
 
   # Read in dataframe of substitutions, split into single-row lists, and add to metadata file
-  metadata$substitutions <-
-    substitutions %>%
-    dplyr::group_split(.data$trait_name, .data$find) %>% lapply(as.list)
+  metadata$substitutions <- substitutions %>% dplyr::group_split(.data$trait_name, .data$find) %>% lapply(as.list)
 
   # Write metadata
   write_metadata_dataset(metadata, dataset_id)
@@ -672,44 +670,49 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
   # Should this bracket be before the dollar operator? This for loop doesn't go past the first index
   for (i in 1:max(dataframe_of_substitutions)$rows) {
 
-    metadata <- read_metadata_dataset(dataframe_of_substitutions[[i]]$dataset_id)
+    metadata <- read_metadata_dataset(dataframe_of_substitutions[[i]][[dataset_id]])
 
     to_add <- list(
-      trait_name = dataframe_of_substitutions[[i]]$trait_name,
-      find = dataframe_of_substitutions[[i]]$find,
-      replace = dataframe_of_substitutions[[i]]$replace
+      trait_name = dataframe_of_substitutions[[i]][[trait_name]],
+      find = dataframe_of_substitutions[[i]][[find]],
+      replace = dataframe_of_substitutions[[i]][[replace]]
     )
     # If `substitutions` is empty, make new list
     if (all(is.na(metadata[[set_name]]))) {
 
       metadata[[set_name]] <- list()
-      empty_substitutions <- append(empty_substitutions, dataframe_of_substitutions[[i]]$dataset_id)
+      empty_substitutions <- append(empty_substitutions, dataframe_of_substitutions[[i]][[dataset_id]])
 
     } else {
 
       data <- util_list_to_df2(metadata[[set_name]])
-      existing_substitutions <- append(existing_substitutions, dataframe_of_substitutions[[i]]$dataset_id)
+      existing_substitutions <- append(existing_substitutions, dataframe_of_substitutions[[i]][[dataset_id]])
       # Check whether the same `find` value for a given `trait_name` already exists
       if (nrow(data[data$trait_name == to_add$trait_name & data$find == to_add$find, ]) > 0) {
         message(
           sprintf(
             "Substitution in %s for trait `%s`: %s already exists, but new substitution has been added.\nPlease review manually.",
-            dataframe_of_substitutions[[i]]$dataset_id, to_add$trait_name, to_add$find
+            dataframe_of_substitutions[[i]][[dataset_id]], to_add$trait_name, to_add$find
           ))
       }
 
     }
 
     metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
-    write_metadata_dataset(metadata, dataframe_of_substitutions[[i]]$dataset_id)
+    write_metadata_dataset(metadata, dataframe_of_substitutions[[i]][[dataset_id]])
 
   }
 
-  message(
-    sprintf(
-      "Substitutions have been added for %s.\nSubstitutions were appended to existing substitutions in %s.",
-      paste(empty_substitutions, collapse = ", "), paste(existing_substitutions, collapse = ", ")
+  if (length(empty_substitutions) > 0) {
+    message(sprintf("Substitutions have been added for %s.\n", paste(empty_substitutions %>% unique, collapse = ", ")))
+  }
+
+  if (length(existing_substitutions) > 0) {
+    message(sprintf(
+      "Substitutions were appended to existing substitutions in %s.",
+      paste(existing_substitutions %>% unique, collapse = ", ")
     ))
+  }
 
 }
 
@@ -775,9 +778,7 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
   metadata <- read_metadata_dataset(dataset_id)
 
   # Read in dataframe of taxonomic changes, split into single-row lists, and add to metadata file
-  metadata$taxonomic_updates <-
-    taxonomic_updates %>%
-    dplyr::group_split(.data$find) %>% lapply(as.list)
+  metadata$taxonomic_updates <- taxonomic_updates %>% dplyr::group_split(.data$find) %>% lapply(as.list)
 
   # Write metadata
   write_metadata_dataset(metadata, dataset_id)
