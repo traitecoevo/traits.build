@@ -260,6 +260,7 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
     methods = "unknown")
 
   # Check if existing content, if so append
+  # Double check this is.null
   if (!all(is.null(metadata$traits)) && !is.na(metadata$traits)) {
     traits <- dplyr::bind_rows(metadata$traits %>% util_list_to_df2(), traits) %>%
       dplyr::filter(!duplicated(var_in))

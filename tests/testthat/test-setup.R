@@ -2,17 +2,15 @@
 # For `metadata_create_template`, if template already exists, show message
 # If source details already exist, show message, for `metadata_add_source_doi`
 # Show message if locations, contexts or traits, substitutions, taxonomic_updates already exist
-# Check that `metadata_add_substitutions_table` works
 # Test `metadata_add_substitutions_list` and `metadata_add_taxonomic_changes_list`
 # Check if any other functions need testing
-# `expect_no_error` and other functions not showing error messages
 # Remove may be assigned but not used warnings
 # Add more clear punctuation to sprintf messages ('' or ``)
 # Make clearer messages with nice colours
 # Remove unnecessary `is.null`'s
-# Check comments in setup.R
+# Check comments in setup.R do what they say they do
 # Add some expected messages in test-setup.R
-# Fix expect_no_error maybe on another branch
+# Fix expect_no_error and other functions not showing any error messages maybe on another branch
 
 test_that("`metadata_create_template` is working", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
