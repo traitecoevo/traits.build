@@ -1,0 +1,132 @@
+source:
+  primary:
+    key: Falster_2005_1
+    bibtype: Article
+    author: Daniel S. Falster, Mark Westoby
+    year: 2005
+    title: Alternative height strategies among 45 dicot rain forest species from tropical
+      Queensland, Australia
+    journal: Journal of Ecology
+    volume: 93
+    pages: 521--535
+    publisher: Wiley-Blackwell
+    doi: 10.1111/j.0022-0477.2005.00992.x
+contributors:
+  data_collectors:
+  - last_name: Falster
+    given_name: Daniel
+    ORCID: 0000-0002-9814-092X
+    affiliation: Evolution & Ecology Research Centre, School of Biological, Earth,
+      and Environmental Sciences, UNSW Sydney, Australia
+    additional_role: contact
+  - last_name: Westoby
+    given_name: Mark
+    ORCID: 0000-0001-7690-4530
+    affiliation: Department of Biological Sciences, Macquarie University, Australia
+  austraits_curators: Elizabeth Wenk
+dataset:
+  data_is_long_format: no
+  custom_R_code:                                                                 'data %>% mutate(Test_col = NA, test_context_1 = "categorical context", test_context_2 = 2)'
+  collection_date: 2004/2004
+  taxon_name: Species
+  location_name: site
+  description: Investigation into trait values correlated with plant height along
+    light availability and successional gradients for far north Queensland species.
+  basis_of_record: field
+  life_stage: adult
+  sampling_strategy: Nineteen species, ranging from early to late successional status,
+    were selected using published sources (Hopkins & Graham 1987; Osunkoya 1996; Hyland
+    et al. 1999). Species selected to represent the light gradient establish and mature
+    in closed forest, where successional species are assumed absent. For inclusion
+    in this set we required that a species was known to establish and persist at low
+    light levels, as indicated either by published sources (Hyland et al. 1999; Osunkoya
+    1996) or by scientists familiar with the vegetation (A Graham, J Wells, CSIRO
+    Atherton; R Jensen). Twenty-six species, experiencing a range of light levels
+    at maturity, from high (canopy trees) to low light (understorey shrubs), were
+    included.
+  original_file: Falster & Westoby 2005 J Ecol appendix.doc
+  notes: none
+locations:
+  Atherton:
+    description: Tropical rain forest vegetation.
+    elevation (m): 800
+    latitude (deg): -17.1166667
+    longitude (deg): 145.65
+    rainfall (mm): 2000
+  Cape Tribulation:
+    description: Complex mesophyll vine forest in tropical rain forest.
+    elevation (m): 25
+    latitude (deg): -16.1
+    longitude (deg): 145.45
+    rainfall (mm): 3500
+contexts:
+- context_property: unknown
+  category: treatment
+  var_in: test_context_1
+  values:
+  - find: categorical context
+    value: unknown
+    description: unknown
+- context_property: unknown
+  category: entity_context
+  var_in: test_context_2
+  values:
+  - value: 2.0
+    description: unknown
+- context_property: unknown
+  category: treatment
+  var_in: test_context_1
+  values:
+  - find: categorical context
+    value: unknown
+    description: unknown
+traits:
+- var_in: LMA (mg mm-2)
+  unit_in: unknown
+  trait_name: unknown
+  entity_type: unknown
+  value_type: unknown
+  basis_of_value: unknown
+  replicates: unknown
+  methods: unknown
+- var_in: Leaf nitrogen (mg mg-1)
+  unit_in: unknown
+  trait_name: unknown
+  entity_type: unknown
+  value_type: unknown
+  basis_of_value: unknown
+  replicates: unknown
+  methods: unknown
+- var_in: LASA1000
+  unit_in: unknown
+  trait_name: unknown
+  entity_type: unknown
+  value_type: unknown
+  basis_of_value: unknown
+  replicates: unknown
+  methods: unknown
+substitutions:
+- trait_name: fruit_colour
+  find: red
+  replace: black
+- trait_name: plant_growth_form
+  find: palm
+  replace: tree
+- trait_name: plant_growth_form
+  find: shrubby
+  replace: shrub
+taxonomic_updates:
+- find: species 1
+  replace: new 1
+  reason: test reason 1
+  taxonomic_resolution: species
+- find: species 2
+  replace: new 2
+  reason: test reason 2
+  taxonomic_resolution: variety
+- find: species 3
+  replace: new 3
+  reason: test reason 3
+  taxonomic_resolution: subspecies
+exclude_observations: .na
+questions: .na

@@ -1,10 +1,8 @@
 # Todo:
-# Show message if traits, substitutions, taxonomic_updates already exist
 # Test `metadata_add_substitutions_list` and `metadata_add_taxonomic_changes_list`
 # Check if any other functions need testing
 # Add more clear punctuation to sprintf messages ('' or ``)
 # Make clearer messages with nice colours
-# Remove unnecessary `is.null`'s
 # Add documentation for `user_responses`
 # Check documentation of functions
 # Check comments in setup.R do what they say they do
@@ -81,10 +79,11 @@ test_that("`metadata_create_template` is working with simulated user input", {
     location_name = NA, individual_id = "id", collection_date = "2008/2009"
   )
   expect_no_error(
-    test_metadata <- metadata_create_template(
+    suppressMessages(
+      test_metadata <- metadata_create_template(
       "Test_2022",
       user_responses = user_responses)
-  )
+    ))
 
   # Test metadata exists with correct names
   expect_named(test_metadata, metadata_names)
@@ -150,6 +149,7 @@ test_that("`metadata_add_source_doi` is working", {
   doi <- "10.3389/fmars.2021.671145"
   doi2 <- "10.1111/j.0022-0477.2005.00992.x"
 
+  # Test `util_standardise_doi`
   expect_equal(util_standardise_doi(expected_doi), expected_doi)
   expect_equal(util_standardise_doi(doi), expected_doi)
   expect_equal(util_standardise_doi("doi.org/10.3389/fmars.2021.671145"), expected_doi)
@@ -293,12 +293,13 @@ test_that("`metadata_add_traits` is working", {
   expect_equal(lapply(x$traits, "[[", "unit_in") %>% unlist() %>% unique(), "unknown")
 
   # Check if traits get appended, not overwritten and that duplicate traits are not added
-  expect_message(
-    x <- metadata_add_traits("Test_2022",
-      # Gives responses for user input, for testing
-      user_responses = list(var_in = c("LMA (mg mm-2)", "Leaf nitrogen (mg mg-1)", "LASA1000"))),
-    ".*(?=Following traits already exist in the metadata).*", perl = TRUE
-  )
+  suppressMessages(
+    expect_message(
+      x <- metadata_add_traits("Test_2022",
+        # Gives responses for user input, for testing
+        user_responses = list(var_in = c("LMA (mg mm-2)", "Leaf nitrogen (mg mg-1)", "LASA1000"))),
+      ".*(?=Following traits already exist in the metadata).*", perl = TRUE
+    ))
   expect_equal(x$traits[[3]]$var_in, "LASA1000")
   expect_error(x$traits[[4]])
 })
@@ -338,7 +339,7 @@ test_that("`metadata_add_substitution` is working", {
   expect_equal(x$trait_name, "leaf_mass_per_area")
 })
 
-# FIX THIS
+
 testthat::test_that("`metadata_add_substitutions_table` is working", {
 
   # Test if error is thrown if column doesn't exist in substitutions table
@@ -360,7 +361,6 @@ testthat::test_that("`metadata_add_substitutions_table` is working", {
   write_metadata(metadata, path_metadata)
 
   # Check adding substitutions from table
-  # Also you can add substitutions twice with no errors, but the third time it throws an uninformative error
   expect_silent(
     suppressMessages(
       metadata_add_substitutions_table(substitutions_df, "dataset_id", "trait_name", "find", "replace"))
@@ -381,12 +381,10 @@ testthat::test_that("`metadata_add_substitutions_table` is working", {
   )
 
   # Test that a message about duplicate find values was outputted
-  expect_true(
-    metadata_add_substitutions_table(substitutions_df, "dataset", "trait", "find", "replace") %>%
-    utils::capture.output(type = "message") %>%
-    paste(collapse = "\n") %>%
-    str_detect("d*(?=already exists, but new substitution has been added)")
-  )
+  suppressMessages(expect_message(
+    metadata_add_substitutions_table(substitutions_df, "dataset", "trait", "find", "replace"),
+    "d*(?=already exists, but new substitution has been added)", perl = TRUE
+  ))
   # Expect that two substitutions contain "shrubby" in the `find` fields
   expect_equal(
     read_metadata(path_metadata)$substitutions %>%
@@ -403,6 +401,21 @@ testthat::test_that("`metadata_add_substitutions_table` is working", {
     read_metadata(path_metadata)$substitutions %>%
     lapply("[[", "find") %>% lapply("==", "shrubby") %>% unlist %>% sum, 3
   )
+})
+
+
+testthat::test_that("`metadata_add_substitutions_list` is working", {
+  substitutions_df <- tibble::tibble(
+    trait_name = c("fruit_colour", "plant_growth_form", "plant_growth_form"),
+    find = c("red", "shrubby", "palm"),
+    replace = c("black", "shrub", "tree")
+  )
+  expect_message(
+    metadata_add_substitutions_list("Test_2022", substitutions_df),
+    "Existing substitutions have been overwritten."
+  )
+  # Expect that this function overwrites existing substitutions, so fourth substitutions should not exist
+  expect_error(read_metadata("data/Test_2022/metadata.yml")$substitutions[[4]])
 })
 
 
@@ -499,6 +512,42 @@ test_that("`metadata_remove_taxonomic_change` is working", {
 })
 
 
+testthat::test_that("`metadata_add_taxonomic_changes_list` is working", {
+  taxonomic_changes <- tibble::tibble(
+    find = c("species 1", "species 2", "species 3"),
+    replace = c("new 1", "new 2", "new 3"),
+    reason = c("test reason 1", "test reason 2", "test reason 3"),
+    taxonomic_resolution = c("species", "variety", "subspecies")
+  )
+  expect_silent(metadata_add_taxonomic_changes_list("Test_2022", taxonomic_changes))
+  expect_message(
+    metadata_add_taxonomic_changes_list("Test_2022", taxonomic_changes),
+    "Existing taxonomic updates have been overwritten."
+  )
+  # Expect that this function overwrites existing substitutions, so fourth substitutions should not exist
+  expect_error(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[4]])
+})
+
+testthat::test_that("`metadata_find_taxonomic_change` is working", {
+  expect_message(
+    metadata_find_taxonomic_change(find = "species 1", studies = c("Test_2022", "Test_2022_2")),
+    "The following studies contain 'find: species 1': Test_2022, Test_2022_2"
+  )
+  expect_message(
+    metadata_find_taxonomic_change(find = "species 2", replace = "new 2", studies = c("Test_2022", "Test_2022_2")),
+    "The following studies contain 'find: species 2' and 'replace: new 2': Test_2022, Test_2022_2"
+  )
+  expect_message(
+    metadata_find_taxonomic_change(find = "species 10", studies = c("Test_2022", "Test_2022_2")),
+    "No studies contain 'find: species 10'"
+  )
+    expect_message(
+    metadata_find_taxonomic_change(find = "species 10", replace = "new 10", studies = c("Test_2022", "Test_2022_2")),
+    "No studies contain 'find: species 10' and 'replace: new 10"
+  )
+})
+
+
 test_that("`build_setup_pipeline` is working", {
 
   unlink("remake.yml")
@@ -549,6 +598,13 @@ test_that("`build_setup_pipeline` is working", {
   expect_length(austraits_raw$taxa, 14)
   expect_length(austraits$taxa, 14)
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
+})
+
+
+testthat::test_that("`build_find_taxon` is working", {
+  expect_silent(suppressMessages(austraits <- remake::make("austraits")))
+  taxon <- c("Acacia celsa", "Acronychia acidula", "Aleurites rockinghamensis", "Syzygium sayeri")
+  build_find_taxon(taxon, austraits)
 })
 
 

@@ -135,6 +135,7 @@ metadata_create_template <- function(dataset_id,
 
 }
 
+
 #' Select column by user
 #'
 #' `metadata_user_select_column` is used to select which columns in a dataframe/ tibble
@@ -151,6 +152,7 @@ metadata_user_select_column <- function(column, choices) {
 
   choices[tmp]
 }
+
 
 #' Select variable names by user
 #'
@@ -185,6 +187,7 @@ metadata_user_select_names <- function(title, vars) {
 
 }
 
+
 #' Check the output of running `custom_R_code` specified in
 #' the metadata for specified `dataset_id`
 #'
@@ -206,6 +209,7 @@ metadata_check_custom_R_code <- function(dataset_id) {
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
 
 }
+
 
 #' For specified `dataset_id`, populate columns for traits into metadata
 #'
@@ -266,17 +270,16 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
     # Append new traits if not already in metadata
     traits <- dplyr::bind_rows(metadata$traits %>% util_list_to_df2(), traits) %>%
       dplyr::filter(!duplicated(var_in))
-  }
 
-  if (length(var_in[!var_in %in% existing_var_in]) > 0) {
-    message(
-      sprintf(
-        "Following traits added to metadata for %s: %s.\n \tPlease complete information in %s.\n\n",
-        dataset_id,
-        crayon::red(paste(var_in[!var_in %in% existing_var_in], collapse = ", ")),
-        dataset_id %>% metadata_path_dataset_id()
-      )
-    )
+    if (length(var_in[!var_in %in% existing_var_in]) > 0) {
+      message(
+        sprintf(
+          "Following traits added to metadata for %s: %s.\n \tPlease complete information in %s.\n\n",
+          dataset_id,
+          crayon::red(paste(var_in[!var_in %in% existing_var_in], collapse = ", ")),
+          dataset_id %>% metadata_path_dataset_id()
+        ))
+    }
   }
 
   metadata$traits <- traits %>% util_df_to_list()
@@ -284,6 +287,7 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
   return(invisible(metadata))
 
 }
+
 
 #' For specified `dataset_id` import location data from a dataframe
 #'
@@ -464,6 +468,7 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
 }
 
+
 #' Adds citation details to a metadata file for given study
 #'
 #' @inheritParams metadata_path_dataset_id
@@ -533,6 +538,7 @@ metadata_add_source_bibtex <- function(dataset_id, file,
 
 }
 
+
 #' Standarise doi into form https://doi.org/XXX
 #'
 #' @param doi doi of reference to add
@@ -550,6 +556,7 @@ util_standardise_doi <- function(doi) {
   return(paste0("https://doi.org/", doi))
 
 }
+
 
 #' Adds citation details from a doi to a metadata file for a dataset_id.
 #'
@@ -582,6 +589,7 @@ metadata_add_source_doi <- function(..., doi, bib = NULL) {
   metadata_add_source_bibtex(file = file, ...)
 
 }
+
 
 #' Add a categorical trait value substitution into a metadata file for a dataset_id
 #'
@@ -627,6 +635,7 @@ metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
 
 }
 
+
 #' Add a dataframe of trait value substitutions into a metadata file for a dataset_id
 #'
 #' @param dataset_id identifier for a particular study in the AusTraits database
@@ -641,6 +650,9 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
   # Read metadata
   metadata <- read_metadata_dataset(dataset_id)
 
+  if (!all(is.na(metadata[["substitutions"]]))) {
+    message("Existing substitutions have been overwritten.")
+  }
   # Read in dataframe of substitutions, split into single-row lists, and add to metadata file
   metadata$substitutions <- substitutions %>% dplyr::group_split(.data$trait_name, .data$find) %>% lapply(as.list)
 
@@ -648,7 +660,6 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
   write_metadata_dataset(metadata, dataset_id)
 
 }
-
 
 
 #' Substitutions from csv
@@ -685,7 +696,7 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
   dataframe_of_substitutions <-
     dataframe_of_substitutions %>%
     dplyr::mutate(rows = dplyr::row_number()) %>%
-    dplyr::group_split(.$rows) # What does this do?
+    dplyr::group_split(rows)
 
   set_name <- "substitutions"
 
@@ -693,7 +704,6 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
   existing_substitutions <- list()
 
   # Add substitutions to metadata files
-  # Should this bracket be before the dollar operator? This for loop doesn't go past the first index
   for (i in 1:max(dataframe_of_substitutions)$rows) {
 
     metadata <- read_metadata_dataset(dataframe_of_substitutions[[i]][[dataset_id]])
@@ -787,6 +797,7 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
 
 }
 
+
 #' Add a list of taxonomic updates into a metadata file for a dataset_id
 #'
 #' Add multiple taxonomic changes to the metadata yaml file using a dataframe
@@ -803,6 +814,9 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
   # Read metadata
   metadata <- read_metadata_dataset(dataset_id)
 
+  if (!all(is.na(metadata[["taxonomic_updates"]]))) {
+    message("Existing taxonomic updates have been overwritten.")
+  }
   # Read in dataframe of taxonomic changes, split into single-row lists, and add to metadata file
   metadata$taxonomic_updates <- taxonomic_updates %>% dplyr::group_split(.data$find) %>% lapply(as.list)
 
@@ -810,6 +824,7 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
   write_metadata_dataset(metadata, dataset_id)
 
 }
+
 
 #' Exclude observations in a yaml file for a dataset_id
 #'
@@ -846,6 +861,7 @@ metadata_exclude_observations <- function(dataset_id, variable, find, reason) {
   write_metadata_dataset(metadata, dataset_id)
 
 }
+
 
 #' Update a taxonomic change into a yaml file for a dataset_id
 #'
@@ -885,6 +901,7 @@ metadata_update_taxonomic_change <- function(dataset_id, find, replace, reason, 
   write_metadata_dataset(metadata, dataset_id)
 
 }
+
 
 #' Remove a taxonomic change from a yaml file for a dataset_id
 #'
@@ -948,14 +965,36 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
   contents <- lapply(f, function(x) paste0(readLines(x), collapse = "\n"))
 
   if (!is.null(replace))
-      txt <- sprintf("- find: %s\nreplace: %s", find, replace)
+    txt <- sprintf("- find: %s\n  replace: %s", find, replace)
   else
     txt <- sprintf("- find: %s\n", find)
   i <- sapply(contents, function(s) any(grepl(txt, s, fixed = TRUE)))
 
-  studies[i]
+  if (length(studies[i]) > 0) {
+    if (!is.null(replace))
+      message(
+        sprintf("The following studies contain 'find: %s' and 'replace: %s': %s",
+        find, replace, paste(studies[i], collapse = ", "))
+      )
+    else
+      message(
+        sprintf("The following studies contain 'find: %s': %s",
+        find, paste(studies[i], collapse = ", "))
+      )
+  } else {
+    if (!is.null(replace))
+      message(
+        sprintf("No studies contain 'find: %s' and 'replace: %s'", find, replace)
+      )
+    else
+      message(
+        sprintf("No studies contain 'find: %s'", find)
+      )
+  }
+
 
 }
+
 
 #' Update the remake.yml file with new studies
 #'
@@ -1018,6 +1057,7 @@ build_setup_pipeline <- function(
   }
 }
 
+
 #' Find list of all unique taxa within compilation
 #'
 #' @param taxon_name name of column which contains the cleaned species names
@@ -1033,12 +1073,12 @@ build_find_taxon <- function(taxon_name, austraits, original_name = FALSE) {
 
   if (!original_name) {
     data <- data %>%
-      dplyr::select(dplyr::all_of("taxon_name", "dataset_id")) %>%
+      dplyr::select(dplyr::all_of(c("taxon_name", "dataset_id"))) %>%
       dplyr::rename(name = taxon_name) %>%
       dplyr::distinct()
   } else {
     data <- data %>%
-      dplyr::select(dplyr::all_of("original_name", "dataset_id")) %>%
+      dplyr::select(dplyr::all_of(c("original_name", "dataset_id"))) %>%
       dplyr::rename(name = original_name) %>%
       dplyr::distinct()
   }
