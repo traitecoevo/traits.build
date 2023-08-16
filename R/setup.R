@@ -25,10 +25,12 @@ metadata_create_template <- function(dataset_id,
                                      user_responses = NULL
                                      ) {
 
+  if (file.exists(paste0(path, "/metadata.yml"))) {
+    message(sprintf("Metadata for %s already exists and will be overwritten", dataset_id))
+  }
+
   `%notin%` <- Negate(`%in%`)
   fields <- c("source", "contributors", "dataset")
-  # Warning: exclude assigned but may not be used
-  exclude <- c("description", "type")
   articles <- c("key", "bibtype", "year", "author", "title", "journal", "volume", "number", "pages", "doi")
 
   out <- get_schema()$metadata$elements
@@ -242,13 +244,6 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
     var_in <- user_responses$var_in
   }
 
-  message(
-    sprintf(
-      "Following traits added to metadata for %s: %s.\n \tPlease complete information in %s.\n\n",
-      dataset_id, crayon::red(paste(var_in, collapse = ", ")), dataset_id %>% metadata_path_dataset_id()
-    )
-  )
-
   traits <- tibble::tibble(
     var_in = var_in,
     unit_in = "unknown",
@@ -260,10 +255,28 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
     methods = "unknown")
 
   # Check if existing content, if so append
-  # Double check this is.null
-  if (!all(is.null(metadata$traits)) && !is.na(metadata$traits)) {
+  if (!all(is.na(metadata$traits))) {
+
+    existing_var_in <- metadata$traits %>% util_list_to_df2 %>% pull("var_in")
+    if (any(var_in %in% existing_var_in)) {
+      message(sprintf("Following traits already exist in the metadata and will be skipped: %s.",
+        paste(var_in[var_in %in% existing_var_in], collapse = ", ")))
+    }
+
+    # Append new traits if not already in metadata
     traits <- dplyr::bind_rows(metadata$traits %>% util_list_to_df2(), traits) %>%
       dplyr::filter(!duplicated(var_in))
+  }
+
+  if (length(var_in[!var_in %in% existing_var_in]) > 0) {
+    message(
+      sprintf(
+        "Following traits added to metadata for %s: %s.\n \tPlease complete information in %s.\n\n",
+        dataset_id,
+        crayon::red(paste(var_in[!var_in %in% existing_var_in], collapse = ", ")),
+        dataset_id %>% metadata_path_dataset_id()
+      )
+    )
   }
 
   metadata$traits <- traits %>% util_df_to_list()
@@ -297,6 +310,10 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
 
   # Read metadata
   metadata <- read_metadata_dataset(dataset_id)
+
+  if (!all(is.na(metadata[["locations"]]))) {
+    message(sprintf("Location metadata for %s already exists and will be overwritten.", dataset_id))
+  }
 
   # Check if user_responses have been inputted
   if (is.null(user_responses)) {
@@ -354,7 +371,7 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
   # Load and clean trait data
   data <-
-    readr::read_csv(file.path("data", dataset_id,  "data.csv"), col_types = cols()) %>%
+    readr::read_csv(file.path("data", dataset_id, "data.csv"), col_types = cols()) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
 
   # Get list of potential columns
@@ -451,7 +468,8 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 #'
 #' @inheritParams metadata_path_dataset_id
 #' @param file Name of file where reference is saved
-#' @param type Type of references: `primary` or `secondary`
+#' @param type Type of references: `primary`, `secondary` or `original`
+#' (or `original_01`, `original_02`, etc., for multiple sources)
 #' @param key The bibtex key to be used. By default set to `dataset_id`
 #' @param drop Variables to ignore
 #'
@@ -501,8 +519,15 @@ metadata_add_source_bibtex <- function(dataset_id, file,
   v <-  c(order, names(bib)) %>% unique()
   v <- v[v %in% names(bib)]
 
-  # Save to metadata
+  # Output message if source metadata already exists
   metadata <- read_metadata_dataset(dataset_id)
+  if (type == "primary" && any(metadata[["source"]][["primary"]][c("year", "author", "journal", "title", "volume", "doi")] != "unknown")) {
+      message(sprintf("Primary source metadata for %s already exists and is being overwritten", dataset_id))
+  }
+  if (type != "primary" && length(metadata[["source"]][[type]]) > 0)
+    message(sprintf("Source metadata of type '%s' for %s already exists and is being overwritten", type, bib$key))
+
+  # Save to metadata
   metadata$source[[type]] <- bib[v]
   write_metadata_dataset(metadata, dataset_id)
 
@@ -531,7 +556,7 @@ util_standardise_doi <- function(doi) {
 #' Uses rcrossref package to access publication details from the crossref
 #' database
 #'
-#' @param bib (Only use for testing purposes). Result of calling `bib rcrossref::cr_cn(doi)`
+#' @param bib (Only use for testing purposes) Result of calling `bib rcrossref::cr_cn(doi)`
 #' @inheritParams metadata_path_dataset_id
 #' @inheritParams util_standardise_doi
 #' @param ... arguments passed from metadata_add_source_bibtex()

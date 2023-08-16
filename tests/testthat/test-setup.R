@@ -1,26 +1,28 @@
 # Todo:
-# For `metadata_create_template`, if template already exists, show message
-# If source details already exist, show message, for `metadata_add_source_doi`
-# Show message if locations, contexts or traits, substitutions, taxonomic_updates already exist
+# Show message if traits, substitutions, taxonomic_updates already exist
 # Test `metadata_add_substitutions_list` and `metadata_add_taxonomic_changes_list`
 # Check if any other functions need testing
-# Remove may be assigned but not used warnings
 # Add more clear punctuation to sprintf messages ('' or ``)
 # Make clearer messages with nice colours
 # Remove unnecessary `is.null`'s
+# Add documentation for `user_responses`
+# Check documentation of functions
 # Check comments in setup.R do what they say they do
 # Add some expected messages in test-setup.R
-# Fix expect_no_error and other functions not showing any error messages maybe on another branch
+# Fix `expect_no_error` and other functions not showing any error messages maybe on another branch
 
 test_that("`metadata_create_template` is working", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
   unlink("data/Test_2022/metadata.yml")
   expect_silent(schema <- get_schema())
-  expect_invisible(
-    test_metadata <- metadata_create_template(
-      dataset_id = "Test_2022",
-      path = file.path("data", "Test_2022"),
-      skip_manual = TRUE))
+  expect_silent(
+    expect_invisible(
+      test_metadata <- metadata_create_template(
+        dataset_id = "Test_2022",
+        path = file.path("data", "Test_2022"),
+        skip_manual = TRUE)
+    ))
+
   metadata_names <- c("source", "contributors", "dataset", "locations", "contexts", "traits",
                       "substitutions", "taxonomic_updates", "exclude_observations",
                       "questions")
@@ -40,8 +42,7 @@ test_that("`metadata_create_template` is working", {
 
 
 test_that("`metadata_create_template` is working with simulated user input", {
-  # Remove the metadata file if it exists before testing `metadata_create_template`
-  unlink("data/Test_2022/metadata.yml")
+  # Test that a message is shown if metadata already exists
   expect_silent(schema <- get_schema())
 
   # Check long format
@@ -50,10 +51,9 @@ test_that("`metadata_create_template` is working with simulated user input", {
     taxon_name = "Species", trait_name = "trait_name", value = "value",
     location_name = NA, individual_id = "id", collection_date = "2008/2009"
   )
-  expect_no_error(
-    test_metadata <- metadata_create_template(
-      "Test_2022",
-      user_responses = user_responses)
+  expect_message(
+    test_metadata <- metadata_create_template("Test_2022", user_responses = user_responses),
+    "Metadata for Test_2022 already exists and will be overwritten"
   )
 
   metadata_names <- c("source", "contributors", "dataset", "locations", "contexts", "traits",
@@ -131,8 +131,20 @@ test_that("`write_metadata_dataset` is working", {
 })
 
 
-test_that("`metadata_add_source_doi` is working", {
+test_that("`metadata_add_source_bibtex` is working", {
+  expect_silent(metadata_add_source_bibtex(dataset_id = "Test_2022", file = "data/test2.bib"))
+  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$primary$journal, "Journal of Ecology")
+})
 
+
+test_that("`metadata_add_source_doi` is working", {
+  expect_no_error(
+    suppressMessages(
+      test_metadata <- metadata_create_template(
+        dataset_id = "Test_2022",
+        path = file.path("data", "Test_2022"),
+        skip_manual = TRUE)
+    ))
   expected_doi <- "https://doi.org/10.3389/fmars.2021.671145"
   expected_doi2 <- "https://doi.org/10.1111/j.0022-0477.2005.00992.x"
   doi <- "10.3389/fmars.2021.671145"
@@ -163,13 +175,25 @@ test_that("`metadata_add_source_doi` is working", {
   expect_equal(paste0("https://doi.org/", test_metadata$source$primary$doi), expected_doi)
   # Test standardised capitalisation of authors
   expect_equal(test_metadata$source$primary$author, "Gary Truong and Tracey L. Rogers")
-
   expect_equal(test_metadata$source$secondary$journal, "Journal of Ecology")
   expect_equal(test_metadata$source$secondary$year, "2005")
   expect_equal(paste0("https://doi.org/", test_metadata$source$secondary$doi), expected_doi2)
   # Test standardised capitalisation of authors and key
   expect_equal(test_metadata$source$secondary$author, "Daniel S. Falster and Mark Westoby")
   expect_equal(test_metadata$source$secondary$key, "Falster_2005")
+
+  # Test that adding a primary source overwrites the existing source and sends a message
+  expect_message(
+    metadata_add_source_doi(dataset_id = "Test_2022", doi = doi2, bib = bib2),
+    "Primary source metadata for Test_2022 already exists and is being overwritten"
+  )
+  # Test if adding a secondary source overwrites existing source and sends a message
+  expect_message(
+    metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary"),
+    "Source metadata of type 'secondary' for Truong_2021 already exists and is being overwritten"
+  )
+  # Test if adding secondary_02 works
+  expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary_02"))
 
 })
 
@@ -180,12 +204,6 @@ test_that("`metadata_check_custom_R_code` is working", {
   expect_equal(ncol(metadata_check_custom_R_code("Test_2022")), 13)
   expect_equal(nrow(metadata_check_custom_R_code("Test_2022")), 45)
   expect_visible(metadata_check_custom_R_code("Test_2022"))
-})
-
-
-test_that("`metadata_add_source_bibtex` is working", {
-  expect_silent(metadata_add_source_bibtex(dataset_id = "Test_2022", file = "data/test2.bib"))
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$primary$journal, "Journal of Ecology")
 })
 
 
@@ -206,6 +224,16 @@ test_that("`metadata_add_locations` is working", {
   )
   expect_equal(names(x$locations), locations$site_name)
   expect_equal(lapply(x$locations, "[[", "latitude") %>% unlist() %>% as.character(), locations$latitude)
+
+  # Check message if locations already exist
+  suppressMessages(
+    expect_message(
+      x <- metadata_add_locations("Test_2022", locations,
+      # Gives responses for user input, for testing
+      user_responses = list(location_name = "site_name", keep = c("latitude", "longitude", "elevation"))),
+      ".*(?=Location metadata for Test_2022 already exists).*", perl = TRUE
+    )
+  )
 })
 
 
@@ -232,6 +260,20 @@ test_that("`metadata_add_contexts` is working", {
   expect_no_error(x$contexts[[1]][["values"]] %>% pull("find"))
   # Expect no `find` column for context variable where replacements are not needed
   expect_error(x$contexts[[2]][["values"]] %>% pull("find"))
+
+  # Check if contexts get appended, not overwritten
+  expect_error(x$contexts[[3]])
+  expect_message(
+    x <- metadata_add_contexts(
+        "Test_2022",
+        user_responses = list(
+          var_in = "test_context_1",
+          categories = "treatment",
+          replace_needed = c("y")
+      )),
+    "Existing context information detected, from the following columns in the dataset: test_context_1, test_context_2."
+  )
+  expect_no_error(x$contexts[[3]])
 })
 
 
@@ -249,6 +291,16 @@ test_that("`metadata_add_traits` is working", {
   )
   expect_equal(lapply(x$traits, "[[", "var_in") %>% unlist(), var_in)
   expect_equal(lapply(x$traits, "[[", "unit_in") %>% unlist() %>% unique(), "unknown")
+
+  # Check if traits get appended, not overwritten and that duplicate traits are not added
+  expect_message(
+    x <- metadata_add_traits("Test_2022",
+      # Gives responses for user input, for testing
+      user_responses = list(var_in = c("LMA (mg mm-2)", "Leaf nitrogen (mg mg-1)", "LASA1000"))),
+    ".*(?=Following traits already exist in the metadata).*", perl = TRUE
+  )
+  expect_equal(x$traits[[3]]$var_in, "LASA1000")
+  expect_error(x$traits[[4]])
 })
 
 
