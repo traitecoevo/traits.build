@@ -2,20 +2,21 @@
 % Please edit documentation in R/setup.R
 \name{build_find_taxon}
 \alias{build_find_taxon}
-\title{Find list of all unique taxa within compilation}
+\title{Find list of unique datasets within compilation containing specified taxa}
 \usage{
-build_find_taxon(taxon_name, austraits, original_name = FALSE)
+build_find_taxon(taxa, austraits, original_name = FALSE)
 }
 \arguments{
-\item{taxon_name}{name of column which contains the cleaned species names}
+\item{austraits}{AusTraits compilation}
 
-\item{austraits}{austraits compilation}
+\item{original_name}{Logical; if TRUE use column in compilation which contains original
+species names, default = FALSE}
 
-\item{original_name}{name of column which contains original species names, default = FALSE}
+\item{taxon_name}{A vector which contains species names}
 }
 \value{
-list of all unique and distinct species names
+List of unique datasets within compilation containing each taxon
 }
 \description{
-Find list of all unique taxa within compilation
+Find list of unique datasets within compilation containing specified taxa
 }

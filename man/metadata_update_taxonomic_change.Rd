@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{metadata_update_taxonomic_change}
 \alias{metadata_update_taxonomic_change}
-\title{Update a taxonomic change into a yaml file for a dataset_id}
+\title{Update a taxonomic change into a yaml file for a `dataset_id`}
 \usage{
 metadata_update_taxonomic_change(
   dataset_id,
@@ -13,17 +13,20 @@ metadata_update_taxonomic_change(
 )
 }
 \arguments{
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the database}
 
-\item{find}{original taxonomic name}
+\item{find}{Original taxonomic name}
 
-\item{replace}{updated taxonomic name to replace original taxonomic name}
+\item{replace}{Updated taxonomic name to replace original taxonomic name}
 
-\item{reason}{reason for change}
+\item{reason}{Reason for change}
+
+\item{taxonomic_resolution}{The rank of the most specific taxon name (or scientific name)
+to which a submitted orignal name resolves}
 }
 \value{
-yml file with added substitution
+`metadata.yml` file with added substitution
 }
 \description{
-Update a taxonomic change into a yaml file for a dataset_id
+Update a taxonomic change into a yaml file for a `dataset_id`
 }

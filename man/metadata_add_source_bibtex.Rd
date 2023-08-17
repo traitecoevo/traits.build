@@ -8,23 +8,21 @@ metadata_add_source_bibtex(
   dataset_id,
   file,
   type = "primary",
-  key = dataset_id,
   drop = c("dateobj", "month")
 )
 }
 \arguments{
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the database}
 
 \item{file}{Name of file where reference is saved}
 
-\item{type}{Type of references: `primary` or `secondary`}
+\item{type}{Type of reference: `primary`, `secondary` or `original`
+(or `original_01`, `original_02`, etc., for multiple sources)}
 
-\item{key}{The bibtex key to be used. By default set to `dataset_id`}
-
-\item{drop}{Variables to ignore}
+\item{drop}{Variables in bibtex to ignore}
 }
 \value{
-yml file with citation details added
+`metadata.yml` file with citation details added
 }
 \description{
 Adds citation details to a metadata file for given study

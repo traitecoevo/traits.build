@@ -19,7 +19,7 @@ dataset_process(
 
 \item{schema}{schema for traits.build}
 
-\item{filter_missing_values}{default filters missing values from the excluded data table. 
+\item{filter_missing_values}{default filters missing values from the excluded data table.
 Change to false to see the rows with missing values.}
 }
 \value{

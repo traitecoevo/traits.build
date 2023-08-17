@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{metadata_add_substitutions_table}
 \alias{metadata_add_substitutions_table}
-\title{Substitutions from csv}
+\title{Substitutions from a dataframe}
 \usage{
 metadata_add_substitutions_table(
   dataframe_of_substitutions,
@@ -13,22 +13,24 @@ metadata_add_substitutions_table(
 )
 }
 \arguments{
-\item{dataframe_of_substitutions}{dataframe with columns indicating dataset_id, trait_name, original trait values (find), and AusTraits aligned trait value (replace)}
+\item{dataframe_of_substitutions}{Dataframe with columns indicating `dataset_id`, `trait_name`,
+original trait values (`find`), and database aligned trait value (`replace`)}
 
-\item{dataset_id}{study's dataset_id in AusTraits}
+\item{dataset_id}{Name of column containing study `dataset_id`(s) in database}
 
-\item{trait_name}{trait name for which a trait value replacement needs to be made}
+\item{trait_name}{Name of column containing trait name(s) for which a trait value replacement needs to be made}
 
-\item{find}{trait value submitted by the contributor for a data observation}
+\item{find}{Name of column containing trait values submitted by the contributor for a data observation}
 
-\item{replace}{AusTraits aligned trait value}
+\item{replace}{Name of column containing database aligned trait values}
 }
 \value{
-modified metadata files with trait value replacements
+Modified metadata files with trait value replacements
 }
 \description{
-Function that simultaneously adds many trait value replacements, potentially across many trait_names and dataset_ids, to the respective metadata.yml files.
-This function will be used to quickly re-align/re-assign trait values across all AusTraits studies.
+Function that simultaneously adds many trait value replacements, potentially
+across many `trait_name`'s and `dataset_id`'s, to the respective `metadata.yml` files.
+This function will be used to quickly re-align/re-assign trait values across all studies.
 }
 \examples{
 \dontrun{

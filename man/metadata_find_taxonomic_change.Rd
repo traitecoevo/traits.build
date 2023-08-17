@@ -2,17 +2,17 @@
 % Please edit documentation in R/setup.R
 \name{metadata_find_taxonomic_change}
 \alias{metadata_find_taxonomic_change}
-\title{Find taxonomic changes within the metadata yml files}
+\title{Find `dataset_id`'s with a given taxonomic change}
 \usage{
 metadata_find_taxonomic_change(find, replace = NULL, studies = NULL)
 }
 \arguments{
-\item{find}{name of original species}
+\item{find}{Name of original species}
 
-\item{replace}{name of replacement species, default = NULL}
+\item{replace}{Name of replacement species, default = NULL}
 
-\item{studies}{name of studies, default = NULL}
+\item{studies}{Name of studies to look through, default = NULL}
 }
 \description{
-Find taxonomic changes within the metadata yml files
+Find `dataset_id`'s with a given taxonomic change
 }

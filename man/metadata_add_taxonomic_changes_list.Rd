@@ -2,19 +2,19 @@
 % Please edit documentation in R/setup.R
 \name{metadata_add_taxonomic_changes_list}
 \alias{metadata_add_taxonomic_changes_list}
-\title{Add a list of taxonomic updates into a metadata file for a dataset_id}
+\title{Add a list of taxonomic updates into a metadata file for a `dataset_id`}
 \usage{
 metadata_add_taxonomic_changes_list(dataset_id, taxonomic_updates)
 }
 \arguments{
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the database}
 
-\item{taxonomic_updates}{dataframe of taxonomic updates}
+\item{taxonomic_updates}{Dataframe of taxonomic updates}
 }
 \value{
-yml file with multiple taxonmic updates added
+`metadata.yml` file with multiple taxonomic updates added
 }
 \description{
-Add multiple taxonomic changes to the metadata yaml file using a dataframe 
+Add multiple taxonomic changes to the `metadata.yml` file using a dataframe
 containing the taxonomic changes to be made.
 }

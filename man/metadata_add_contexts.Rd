@@ -4,16 +4,19 @@
 \alias{metadata_add_contexts}
 \title{For specified `dataset_id` import context data from a dataframe}
 \usage{
-metadata_add_contexts(dataset_id, overwrite = FALSE)
+metadata_add_contexts(dataset_id, overwrite = FALSE, user_responses = NULL)
 }
 \arguments{
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the database}
 
 \item{overwrite}{Overwrite existing information}
+
+\item{user_responses}{Named list containing simulated user input for manual selection
+of variables, mainly for testing purposes}
 }
 \description{
 This functions asks users which columns in the dataframe they would like to keep
-and records this appropriately in the metadata. The input data is assumed to be 
+and records this appropriately in the metadata. The input data is assumed to be
 in wide format.
 The output may require additional manual editing.
 }
