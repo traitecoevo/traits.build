@@ -129,10 +129,7 @@ test_that("`metadata_add_source_bibtex` is working", {
 
 
 test_that("`metadata_add_source_doi` is working", {
-  expect_no_error(
-    suppressMessages(
-      test_metadata <- metadata_create_template("Test_2022", skip_manual = TRUE)
-    ))
+  expect_no_error(suppressMessages(test_metadata <- metadata_create_template("Test_2022", skip_manual = TRUE)))
   test_doi <- "https://doi.org/10.3389/fmars.2021.671145"
   test_doi2 <- "https://doi.org/10.1111/j.0022-0477.2005.00992.x"
   doi <- "10.3389/fmars.2021.671145"
@@ -257,9 +254,8 @@ test_that("`metadata_add_contexts` is working", {
         user_responses = list(
           var_in = "test_context_1",
           categories = "treatment",
-          replace_needed = c("y")
-      )),
-    ".*(?=Existing context information detected)", perl = TRUE
+          replace_needed = c("y"))),
+    ".*(?=Existing context information detected, from the following columns)", perl = TRUE
   )
   expect_no_error(x$contexts[[3]])
 })
@@ -312,7 +308,10 @@ test_that("`metadata_add_substitution` is working", {
   expect_error(read_metadata("data/Test_2022/metadata.yml")$substitutions[[2]])
 
   # Test that a new substitution is appended
-  expect_message(metadata_add_substitution("Test_2022", "leaf_length", "small", "large"))
+  expect_message(
+    metadata_add_substitution("Test_2022", "leaf_length", "small", "large"),
+    ".*(?=Adding substitution in)", perl = TRUE
+  )
   # Second substitution should now exist
   expect_no_error(x <- read_metadata("data/Test_2022/metadata.yml")$substitutions[[2]])
   expect_length(x, 3)

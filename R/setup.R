@@ -290,18 +290,18 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
     if (length(var_in[!var_in %in% existing_var_in]) > 0) {
       message(
         sprintf(
-          red("Following traits added to metadata for %s") %+% red(": ") %+% green("'%s") %+% red("'\n\tPlease complete information in %s"),
+          red("Following traits added to metadata for %s") %+% red(": ") %+% green("'%s'") %+% red("\n\tPlease complete information in %s"),
           blue(dataset_id),
-          green(paste(var_in[!var_in %in% existing_var_in], collapse = "', '")),
+          paste(var_in[!var_in %in% existing_var_in], collapse = "', '"),
           blue(dataset_id %>% metadata_path_dataset_id())
         ))
     }
   } else {
     message(
       sprintf(
-        red("Following traits added to metadata for %s") %+% red(": ") %+% green("'%s") %+% red("'\n\tPlease complete information in %s"),
+        red("Following traits added to metadata for %s") %+% red(": ") %+% green("'%s'") %+% red("\n\tPlease complete information in %s"),
         blue(dataset_id),
-        green(paste(var_in, collapse = "', '")),
+        paste(var_in, collapse = "', '"),
         blue(dataset_id %>% metadata_path_dataset_id())
       ))
   }
@@ -661,7 +661,7 @@ metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
   metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
   message(
     sprintf(red("Adding substitution in %s") %+% red(" for trait ") %+% blue("`%s`") %+% red(": ") %+%
-      green("'%s'") %+% red("-> ") %+% green("'%s'"),
+      green("'%s'") %+% red(" -> ") %+% green("'%s'"),
     blue(dataset_id), trait_name, find, replace)
   )
   write_metadata_dataset(metadata, dataset_id)
@@ -946,7 +946,7 @@ metadata_update_taxonomic_change <- function(dataset_id, find, replace, reason, 
   # Check if `taxonomic_updates` doesn't exist or if substitution does not exist
   if (all(is.na(metadata[[set_name]])) || !find %in% data$find) {
     message(
-      sprintf(red("Substitution for ") %+% green("'%s'") %+% red("in %s") %+% red(" does not exist"),
+      sprintf(red("Substitution for ") %+% green("'%s'") %+% red(" in %s") %+% red(" does not exist"),
       find, blue(dataset_id)))
     return(invisible())
   }
