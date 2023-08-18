@@ -1123,7 +1123,7 @@ build_setup_pipeline <- function(template = readLines(system.file("support", "re
 
 #' Find list of unique datasets within compilation containing specified taxa
 #'
-#' @param taxon_name A vector which contains species names
+#' @param taxa A vector which contains species names
 #' @param austraits AusTraits compilation
 #' @param original_name Logical; if TRUE use column in compilation which contains original
 #' species names, default = FALSE
