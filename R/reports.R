@@ -75,7 +75,7 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
       unlink(input_Rmd)
     message(" -> ", output_html, "\n")
   } else {
-    message(sprintf("Report for %s already exists -> %s\n", dataset_id, output_html))
+    message(sprintf(red("Report for %s") %+% red(" already exists -> %s\n"), blue(dataset_id), blue(output_html)))
   }
 
 }
