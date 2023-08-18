@@ -290,7 +290,7 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
     if (length(var_in[!var_in %in% existing_var_in]) > 0) {
       message(
         sprintf(
-          red("Following traits added to metadata for %s: ") %+% green("'%s'\n\t") %+% red("Please complete information in %s"),
+          red("Following traits added to metadata for %s") %+% red(": ") %+% green("'%s") %+% red("'\n\tPlease complete information in %s"),
           blue(dataset_id),
           green(paste(var_in[!var_in %in% existing_var_in], collapse = "', '")),
           blue(dataset_id %>% metadata_path_dataset_id())
@@ -299,9 +299,9 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
   } else {
     message(
       sprintf(
-        red("Following traits added to metadata for %s: ") %+% green("'%s'\n\t") %+% red("Please complete information in %s"),
+        red("Following traits added to metadata for %s") %+% red(": ") %+% green("'%s") %+% red("'\n\tPlease complete information in %s"),
         blue(dataset_id),
-        green(paste(var_in[!var_in %in% existing_var_in], collapse = "', '")),
+        green(paste(var_in, collapse = "', '")),
         blue(dataset_id %>% metadata_path_dataset_id())
       ))
   }
@@ -367,11 +367,11 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
 
   message(
     sprintf(
-      red("Following locations added to metadata for %s: ") %+% green("'%s'\n\t") %+%
+      red("Following locations added to metadata for %s") %+% red(": ") %+% green("'%s'\n\t") %+%
         red("with variables ") %+% green("'%s'\n\t") %+% red("Please complete information in %s"),
       blue(dataset_id),
       paste(names(metadata$locations), collapse = "', '"),
-      paste(keep, collapse = ", "),
+      paste(keep, collapse = "', '"),
       blue(dataset_id %>% metadata_path_dataset_id())
     )
   )
@@ -650,9 +650,9 @@ metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
     if (nrow(data[data$trait_name == trait_name & data$find == find, ]) > 0) {
       message(
         sprintf(
-          red("Substitution already exists for ") %+% blue("`%s`") %+% red(", ") %+%
-            green("'%s'") %+% red("-> please review manually in %s"),
-          trait_name, find, blue(metadata_path_dataset_id(dataset_id))
+          red("Substitution already exists for ") %+% green("'%s'") %+% red(" from trait ") %+% blue("`%s`") %+%
+            red(" -> please review manually in %s"),
+          find, trait_name, blue(metadata_path_dataset_id(dataset_id))
         ))
       return(invisible())
     }
@@ -660,9 +660,9 @@ metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
 
   metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
   message(
-    sprintf(red("Adding substitution in %s for trait " %+% blue("`%s`") %+% red(": ") %+%
+    sprintf(red("Adding substitution in %s") %+% red(" for trait ") %+% blue("`%s`") %+% red(": ") %+%
       green("'%s'") %+% red("-> ") %+% green("'%s'"),
-    blue(dataset_id), trait_name, find, replace))
+    blue(dataset_id), trait_name, find, replace)
   )
   write_metadata_dataset(metadata, dataset_id)
 
@@ -723,8 +723,25 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
   # Throw error if the column doesn't exist in the dataframe
   for (col in c(dataset_id, trait_name, find, replace)) {
     if (!col %in% names(dataframe_of_substitutions)) {
-      stop(sprintf("'%s' is not a column in the substitutions table.", col))
+      stop(sprintf(green("'%s'") %+% red(" is not a column in the substitutions table"), col))
     }
+  }
+
+  set_name <- "substitutions"
+
+  # Detect studies with no substitutions versus existing substitutions
+  empty_substitutions <- list()
+  existing_substitutions <- list()
+
+  for (dataset in unique(dataframe_of_substitutions[[dataset_id]])) {
+
+    metadata <- read_metadata_dataset(dataset)
+    if (all(is.na(metadata[[set_name]]))) {
+      empty_substitutions <- append(empty_substitutions, dataset)
+    } else {
+      existing_substitutions <- append(existing_substitutions, dataset)
+    }
+
   }
 
   # Split dataframe of substitutions by row
@@ -733,10 +750,8 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
     dplyr::mutate(rows = dplyr::row_number()) %>%
     dplyr::group_split(rows)
 
-  set_name <- "substitutions"
 
-  empty_substitutions <- list()
-  existing_substitutions <- list()
+
 
   # Add substitutions to metadata files
   for (i in 1:max(dataframe_of_substitutions)$rows) {
@@ -752,17 +767,15 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
     if (all(is.na(metadata[[set_name]]))) {
 
       metadata[[set_name]] <- list()
-      empty_substitutions <- append(empty_substitutions, dataframe_of_substitutions[[i]][[dataset_id]])
 
     } else {
 
       data <- util_list_to_df2(metadata[[set_name]])
-      existing_substitutions <- append(existing_substitutions, dataframe_of_substitutions[[i]][[dataset_id]])
       # Check whether the same `find` value for a given `trait_name` already exists
       if (nrow(data[data$trait_name == to_add$trait_name & data$find == to_add$find, ]) > 0) {
         message(
           sprintf(
-            red("Substitution in %s for trait ") %+% blue("`%s`") %+% red(": ") %+% green("'%s'") %+%
+            red("Substitution in %s") %+% red(" for trait ") %+% blue("`%s`") %+% red(": ") %+% green("'%s'") %+%
               red(" already exists, but new substitution has been added\n\tPlease review manually"),
             blue(dataframe_of_substitutions[[i]][[dataset_id]]), to_add$trait_name, to_add$find
           ))
@@ -832,7 +845,7 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
   metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
 
   message(
-    sprintf(red("\tAdding taxonomic change in %s: ") %+% green("'%s'") %+% red(" -> ") %+%
+    sprintf(red("\tAdding taxonomic change in %s") %+% red(": ") %+% green("'%s'") %+% red(" -> ") %+%
       green("'%s'") %+% red("(%s)"),
     blue(dataset_id), find, replace, reason)
   )
@@ -902,8 +915,8 @@ metadata_exclude_observations <- function(dataset_id, variable, find, reason) {
   metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
 
   message(
-    sprintf(red("%s - excluding ") %+% blue("`%s`") %+% red(": ") %+% green("'%s'") %+% red(" (%s)"),
-    blue(dataset_id), variable, find, reason)
+    sprintf(blue("%s") %+% red(" - excluding ") %+% blue("`%s`") %+% red(": ") %+% green("'%s'") %+% red(" (%s)"),
+    dataset_id, variable, find, reason)
   )
   write_metadata_dataset(metadata, dataset_id)
 
@@ -932,7 +945,9 @@ metadata_update_taxonomic_change <- function(dataset_id, find, replace, reason, 
 
   # Check if `taxonomic_updates` doesn't exist or if substitution does not exist
   if (all(is.na(metadata[[set_name]])) || !find %in% data$find) {
-    message(sprintf(red("Substitution for ") %+% green("'%s'") %+% red("in %s does not exist"), find, blue(dataset_id)))
+    message(
+      sprintf(red("Substitution for ") %+% green("'%s'") %+% red("in %s") %+% red(" does not exist"),
+      find, blue(dataset_id)))
     return(invisible())
   }
 
@@ -942,7 +957,7 @@ metadata_update_taxonomic_change <- function(dataset_id, find, replace, reason, 
   metadata[[set_name]][[i]][["reason"]] <- reason
   metadata[[set_name]][[i]][["taxonomic_resolution"]] <- taxonomic_resolution
   message(
-    sprintf(red("Updating taxonomic change in %s: ") %+% green("'%s'") %+% red(" -> ") %+%
+    sprintf(red("Updating taxonomic change in %s") %+% red(": ") %+% green("'%s'") %+% red(" -> ") %+%
       green("'%s'") %+% red(" (%s)"),
     blue(dataset_id), find, replace, reason)
   )
@@ -966,7 +981,7 @@ metadata_remove_taxonomic_change <- function(dataset_id, find) {
 
   # If `taxonomic_updates` section is empty
   if (all(is.na(metadata[[set_name]]))) {
-    message(sprintf(red("No taxonomic changes in %s to remove"), blue(dataset_id)))
+    message(sprintf(red("No taxonomic changes in %s") %+% red(" to remove"), blue(dataset_id)))
     return(invisible())
   } else {
     # Check if taxonomic change does not exist
@@ -974,7 +989,7 @@ metadata_remove_taxonomic_change <- function(dataset_id, find) {
     if (!find %in% data$find) {
       message(
         sprintf(
-          red("Taxonomic change in %s for ") %+% green("'%s'") %+% red(" does not exist"),
+          red("Taxonomic change in %s") %+% red(" for ") %+% green("'%s'") %+% red(" does not exist"),
           blue(dataset_id), find
         ))
       return(invisible())
@@ -989,7 +1004,7 @@ metadata_remove_taxonomic_change <- function(dataset_id, find) {
     metadata[[set_name]] <- NA
   }
 
-  message(sprintf(red("Taxonomic change in %s for ") %+% green("'%s'") %+% red(" removed"), blue(dataset_id), find))
+  message(sprintf(red("Taxonomic change in %s") %+% red(" for ") %+% green("'%s'") %+% red(" removed"), blue(dataset_id), find))
   write_metadata_dataset(metadata, dataset_id)
 
 }

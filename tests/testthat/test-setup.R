@@ -1,8 +1,4 @@
 # Todo:
-# Add more clear punctuation to sprintf messages ('' or ``)
-# Make clearer messages with nice colours
-# Add some expected messages in test-setup.R
-#   - I'm up to checking metadata_add_traits
 # Fix `expect_no_error` and other functions not showing any error messages maybe on another branch
 
 test_that("`metadata_create_template` is working", {
@@ -133,6 +129,10 @@ test_that("`metadata_add_source_bibtex` is working", {
 
 
 test_that("`metadata_add_source_doi` is working", {
+  expect_no_error(
+    suppressMessages(
+      test_metadata <- metadata_create_template("Test_2022", skip_manual = TRUE)
+    ))
   test_doi <- "https://doi.org/10.3389/fmars.2021.671145"
   test_doi2 <- "https://doi.org/10.1111/j.0022-0477.2005.00992.x"
   doi <- "10.3389/fmars.2021.671145"
@@ -176,14 +176,16 @@ test_that("`metadata_add_source_doi` is working", {
     metadata_add_source_doi(dataset_id = "Test_2022", doi = doi2, bib = bib2),
     ".*(?=already exists and is being overwritten)", perl = TRUE
   )
+  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$primary$journal, "Journal of Ecology")
   # Test if adding a secondary source overwrites existing source and sends a message
   expect_message(
     metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary"),
     ".*(?=already exists and is being overwritten)", perl = TRUE
   )
+  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$secondary$journal, "Frontiers in Marine Science")
   # Test if adding secondary_02 works
   expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary_02"))
-
+  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$secondary_02$journal, "Frontiers in Marine Science")
 })
 
 
@@ -205,10 +207,10 @@ test_that("`metadata_add_locations` is working", {
 
   suppressMessages(
     expect_message(
-    x <- metadata_add_locations("Test_2022", locations,
-      # Gives responses for user input, for testing
-      user_responses = list(location_name = "site_name", keep = c("latitude", "longitude", "elevation"))),
-    "Following locations added to metadata for", perl = TRUE
+      x <- metadata_add_locations("Test_2022", locations,
+        # Gives responses for user input, for testing
+        user_responses = list(location_name = "site_name", keep = c("latitude", "longitude", "elevation"))),
+      "Following locations added to metadata for", perl = TRUE
     ))
   expect_equal(names(x$locations), locations$site_name)
   expect_equal(lapply(x$locations, "[[", "latitude") %>% unlist() %>% as.character(), locations$latitude)
@@ -268,12 +270,11 @@ test_that("`metadata_add_traits` is working", {
   metadata$traits <- NA
   write_metadata_dataset(metadata, "Test_2022")
   var_in <- c("LMA (mg mm-2)", "Leaf nitrogen (mg mg-1)")
-  expect_no_error(
-    suppressMessages(
+  expect_message(
     x <- metadata_add_traits("Test_2022",
       # Gives responses for user input, for testing
-      user_responses = list(var_in = var_in)
-    ))
+      user_responses = list(var_in = var_in)),
+    ".*(?=Following traits added to metadata)", perl = TRUE
   )
   expect_equal(lapply(x$traits, "[[", "var_in") %>% unlist(), var_in)
   expect_equal(lapply(x$traits, "[[", "unit_in") %>% unlist() %>% unique(), "unknown")
@@ -292,10 +293,10 @@ test_that("`metadata_add_traits` is working", {
 
 
 test_that("`metadata_add_substitution` is working", {
-  expect_no_error(
-    expect_message(
-      metadata_add_substitution("Test_2022", "leaf_mass_per_area", "leaf_area", "leaf_mass_per_area")
-    ))
+  expect_message(
+    metadata_add_substitution("Test_2022", "leaf_mass_per_area", "leaf_area", "leaf_mass_per_area"),
+    ".*(?=Adding substitution in)", perl = TRUE
+  )
   x <- read_metadata("data/Test_2022/metadata.yml")$substitutions[[1]]
   expect_length(x, 3)
   expect_equal(x$trait_name, "leaf_mass_per_area")
@@ -303,7 +304,10 @@ test_that("`metadata_add_substitution` is working", {
   expect_equal(x$replace, "leaf_mass_per_area")
 
   # Test if substitution already exists
-  expect_message(metadata_add_substitution("Test_2022", "leaf_mass_per_area", "leaf_area", "leaf_mass_per_area"))
+  expect_message(
+    metadata_add_substitution("Test_2022", "leaf_mass_per_area", "leaf_area", "leaf_mass_per_area"),
+    ".*(?=Substitution already exists for)", perl = TRUE
+  )
   # Expect that second substitution should not exist
   expect_error(read_metadata("data/Test_2022/metadata.yml")$substitutions[[2]])
 
@@ -318,7 +322,10 @@ test_that("`metadata_add_substitution` is working", {
   expect_error(x <- read_metadata("data/Test_2022/metadata.yml")$substitutions[[3]])
   # Test if substitution is appended if there is the same `find` value as before but
   # for a different `trait_name` that already exists in substitutions
-  expect_message(metadata_add_substitution("Test_2022", "leaf_mass_per_area", "small", "large"))
+  expect_message(
+    metadata_add_substitution("Test_2022", "leaf_mass_per_area", "small", "large"),
+    ".*(?=Adding substitution in)", perl = TRUE
+  )
   # Third substitution should now exist
   expect_no_error(x <- read_metadata("data/Test_2022/metadata.yml")$substitutions[[3]])
   expect_length(x, 3)
@@ -337,7 +344,7 @@ testthat::test_that("`metadata_add_substitutions_table` is working", {
   )
   expect_error(
     metadata_add_substitutions_table(substitutions_df, "dataset", "trait_name", "find", "replace"),
-    "'dataset' is not a column in the substitutions table."
+    ".*(?=is not a column in the substitutions table)", perl = TRUE
   )
 
   # Overwrite `substitutions` section to NA
@@ -347,9 +354,9 @@ testthat::test_that("`metadata_add_substitutions_table` is working", {
   write_metadata(metadata, path_metadata)
 
   # Check adding substitutions from table
-  expect_silent(
-    suppressMessages(
-      metadata_add_substitutions_table(substitutions_df, "dataset_id", "trait_name", "find", "replace"))
+  expect_message(
+    metadata_add_substitutions_table(substitutions_df, "dataset_id", "trait_name", "find", "replace"),
+    ".*(?=Substitutions have been added for)", perl = TRUE
   )
 
   # Test if any of the substitutions contain "shrubby" in the `find` fields
@@ -406,7 +413,10 @@ testthat::test_that("`metadata_add_substitutions_list` is working", {
 
 
 test_that("`metadata_exclude_observations` is working", {
-  expect_message(metadata_exclude_observations("Test_2022", "test", "stem", "reason"))
+  expect_message(
+    metadata_exclude_observations("Test_2022", "test", "stem", "reason"),
+    ".*(?=excluding)", perl = TRUE
+  )
 
   x <- read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[1]]
   expect_equal(x$variable, "test")
@@ -414,12 +424,18 @@ test_that("`metadata_exclude_observations` is working", {
   expect_equal(x$reason, "reason")
 
   # Test if observation is already excluded
-  expect_message(metadata_exclude_observations("Test_2022", "test", "stem", "reason2"))
+  expect_message(
+    metadata_exclude_observations("Test_2022", "test", "stem", "reason2"),
+    ".*(?=Exclusion already exists for)", perl = TRUE
+  )
   # Expect that second excluded observation should not exist
   expect_error(read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[2]])
 
   # Test if substitution is appended
-  expect_message(metadata_exclude_observations("Test_2022", "test", "branch", "reason"))
+  expect_message(
+    metadata_exclude_observations("Test_2022", "test", "branch", "reason"),
+    ".*(?=excluding)", perl = TRUE
+  )
   # Expect that second excluded observation exists
   expect_no_error(read_metadata("data/Test_2022/metadata.yml")$exclude_observations[[2]])
 })
@@ -429,7 +445,10 @@ test_that("`metadata_add_taxonomic_change` is working", {
   metadata <- read_metadata_dataset("Test_2022")
   metadata$taxonomic_updates <- NA
   write_metadata_dataset(metadata, "Test_2022")
-  expect_message(metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution"))
+  expect_message(
+    metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution"),
+    ".*(?=Adding taxonomic change in )", perl = TRUE
+  )
 
   x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[1]]
   expect_equal(x$find, "flower")
@@ -438,12 +457,18 @@ test_that("`metadata_add_taxonomic_change` is working", {
   expect_equal(x$taxonomic_resolution, "test resolution")
 
   # Test if taxonomic substitution already exists
-  expect_message(metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution"))
+  expect_message(
+    metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution"),
+    ".*(?=Substitution already exists for )", perl = TRUE
+  )
   # Expect that second substitution should not exist
   expect_error(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[2]])
 
   # Test that a new taxonomic substitution is appended
-  expect_message(metadata_add_taxonomic_change("Test_2022", "test", "replacement", "test reason", "test resolution"))
+  expect_message(
+    metadata_add_taxonomic_change("Test_2022", "test", "replacement", "test reason", "test resolution"),
+    ".*(?=Adding taxonomic change in)", perl = TRUE
+  )
   # Second substitution should now exist
   expect_no_error(x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[2]])
   expect_length(x, 4)
@@ -453,9 +478,15 @@ test_that("`metadata_add_taxonomic_change` is working", {
 
 test_that("`metadata_update_taxonomic_change` is working", {
   # Test that `metadata_update_taxonomic_change` gives a message if the substitution does not exist
-  expect_message(metadata_update_taxonomic_change("Test_2022", "test species", "new species", "new name", "genus"))
+  expect_message(
+    metadata_update_taxonomic_change("Test_2022", "test species", "new species", "new name", "genus"),
+    ".*(?=does not exist)", perl = TRUE
+  )
 
-  expect_message(metadata_update_taxonomic_change("Test_2022", "test", "new name", "update", "subspecies"))
+  expect_message(
+    metadata_update_taxonomic_change("Test_2022", "test", "new name", "update", "subspecies"),
+    ".*(?=Updating taxonomic change in )", perl = TRUE
+  )
 
   x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates
   # Find existing taxonomic change where `find` == test
@@ -471,7 +502,7 @@ test_that("`metadata_update_taxonomic_change` is working", {
   write_metadata_dataset(metadata, "Test_2022")
   expect_message(
     metadata_update_taxonomic_change("Test_2022", "test species", "new species", "new name", "genus"),
-    "Substitution for test species in Test_2022 does not exist"
+    " does not exist"
   )
 })
 
@@ -481,13 +512,19 @@ test_that("`metadata_remove_taxonomic_change` is working", {
   # Test if `taxonomic_updates` is empty
   expect_message(
     metadata_remove_taxonomic_change("Test_2022", "test species"),
-    "No taxonomic changes in Test_2022 to remove"
+    ".*(?=to remove)", perl = TRUE
   )
 
-  expect_message(metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution"))
+  expect_no_error(
+    suppressMessages(
+      metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution")
+  ))
 
   # Test if taxonomic change does not exist
-  expect_message(metadata_remove_taxonomic_change("Test_2022", "species to remove"))
+  expect_message(
+    metadata_remove_taxonomic_change("Test_2022", "species to remove"),
+    ".*(?=does not exist)", perl = TRUE
+  )
   # Test that existing taxonomic change is not removed
   expect_no_error(x <- read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[1]])
   expect_equal(x$find, "flower")
@@ -508,7 +545,7 @@ testthat::test_that("`metadata_add_taxonomic_changes_list` is working", {
   expect_silent(metadata_add_taxonomic_changes_list("Test_2022", taxonomic_changes))
   expect_message(
     metadata_add_taxonomic_changes_list("Test_2022", taxonomic_changes),
-    "Existing taxonomic updates have been overwritten."
+    "Existing taxonomic updates have been overwritten"
   )
   # Expect that this function overwrites existing substitutions, so fourth substitutions should not exist
   expect_error(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[4]])
@@ -517,19 +554,19 @@ testthat::test_that("`metadata_add_taxonomic_changes_list` is working", {
 testthat::test_that("`metadata_find_taxonomic_change` is working", {
   expect_message(
     metadata_find_taxonomic_change(find = "species 1", studies = c("Test_2022", "Test_2022_2")),
-    "The following studies contain 'find: species 1': Test_2022, Test_2022_2"
+    ".*(?=The following studies contain )", perl = TRUE
   )
   expect_message(
     metadata_find_taxonomic_change(find = "species 2", replace = "new 2", studies = c("Test_2022", "Test_2022_2")),
-    "The following studies contain 'find: species 2' and 'replace: new 2': Test_2022, Test_2022_2"
+    ".*(?=The following studies contain )", perl = TRUE
   )
   expect_message(
     metadata_find_taxonomic_change(find = "species 10", studies = c("Test_2022", "Test_2022_2")),
-    "No studies contain 'find: species 10'"
+    ".*(?=No studies contain)", perl = TRUE
   )
     expect_message(
     metadata_find_taxonomic_change(find = "species 10", replace = "new 10", studies = c("Test_2022", "Test_2022_2")),
-    "No studies contain 'find: species 10' and 'replace: new 10"
+    ".*(?=No studies contain)", perl = TRUE
   )
 })
 
@@ -613,7 +650,7 @@ test_that("reports and plots are produced", {
 
 testthat::test_that("`dataset_test` is working", {
   # Expect error if no `dataset_ids` argument is input
-  expect_error(dataset_test())
+  expect_output(expect_error(dataset_test()))
   expect_silent(
     out <- dataset_test("Test_2022", reporter = testthat::SilentReporter))
   expect_in(
