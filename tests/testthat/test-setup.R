@@ -22,7 +22,7 @@ test_that("`metadata_create_template` is working", {
   # Test metadata exists with correct names
   expect_named(test_metadata, metadata_names)
   expect_length(test_metadata$source$primary, 10)
-  expect_isin(names(test_metadata$dataset), names(schema$metadata$elements$dataset$values))
+  expect_in(names(test_metadata$dataset), names(schema$metadata$elements$dataset$values))
   expect_type(test_metadata$contributors$data_collectors, "list")
   expect_length(test_metadata$contributors$data_collectors, 1L)
   expect_named(test_metadata$contributors$data_collectors[[1]], collectors_names)
@@ -51,7 +51,7 @@ test_that("`metadata_create_template` is working with simulated user input", {
                       "questions")
   # Test metadata exists with correct names
   expect_named(test_metadata, metadata_names)
-  expect_isin(names(test_metadata$dataset), names(schema$metadata$elements$dataset$values))
+  expect_in(names(test_metadata$dataset), names(schema$metadata$elements$dataset$values))
 
   expect_true(test_metadata$dataset$data_is_long_format)
   # Test metadata fields are equal to inputs in `user_responses`
@@ -74,12 +74,13 @@ test_that("`metadata_create_template` is working with simulated user input", {
   expect_no_error(
     test_metadata <- metadata_create_template(
     "Test_2022",
-    user_responses = user_responses)
+    user_responses = user_responses),
+    label = "`metadata_create_template`"
   )
 
   # Test metadata exists with correct names
   expect_named(test_metadata, metadata_names)
-  expect_isin(names(test_metadata$dataset), names(schema$metadata$elements$dataset$values))
+  expect_in(names(test_metadata$dataset), names(schema$metadata$elements$dataset$values))
 
   expect_false(test_metadata$dataset$data_is_long_format)
   # Test metadata fields are equal to inputs in `user_responses`
@@ -235,7 +236,8 @@ test_that("`metadata_add_contexts` is working", {
       user_responses = list(
         var_in = var_in,
         categories = categories,
-        replace_needed = c("y", "n")))
+        replace_needed = c("y", "n"))),
+    label = "`metadata_add_contexts`"
   )
 
   expect_equal(lapply(x$contexts, "[[", "context_property") %>% unlist() %>% unique, "unknown")
@@ -626,7 +628,7 @@ test_that("`build_setup_pipeline` is working", {
 testthat::test_that("`build_find_taxon` is working", {
   expect_silent(suppressMessages(austraits <- remake::make("austraits")))
   taxon <- c("Acacia celsa", "Acronychia acidula", "Aleurites rockinghamensis", "Syzygium sayeri")
-  expect_no_error(x <- build_find_taxon(taxon, austraits))
+  expect_no_error(x <- build_find_taxon(taxon, austraits), label = "`build_find_taxon`")
   expect_equal(unname(x[[4]]), "Test_2022")
   expect_equal(names(x[[4]]), "Syzygium sayeri")
 })
