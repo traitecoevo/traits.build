@@ -14,7 +14,7 @@ expect_no_error <- function(object, regexp = NULL, ..., info = NULL, label = NUL
     e
   })
   if (is.null(label))
-    expect(is.null(error), sprintf("An error occurred: %s", paste(error$message, collapse = ", ")), info = info)
+    expect(is.null(error), sprintf("%s", paste(error$message, collapse = ", ")), info = info)
   else
     expect(is.null(error), sprintf("%s threw an error: %s", label, paste(error$message, collapse = ", ")), info = info)
   invisible(NULL)
