@@ -19,7 +19,7 @@ dataset_test <-
     requireNamespace("testthat", quietly = TRUE)
 
     # clean up when done
-    Sys.setenv('TESTTHAT_MAX_FAILS' = Inf)
+    Sys.setenv("TESTTHAT_MAX_FAILS" = Inf)
 
     testthat::with_reporter(
       reporter,
@@ -52,7 +52,7 @@ dataset_test_worker <-
            definitions =
              get_schema(file.path(path_config, "traits.yml"), I("traits"))
            ) {
-    
+
     # We're using 2nd edition of test that, which has "context" field
     # https://cran.r-project.org/web/packages/testthat/vignettes/third-edition.html
     local_edition(2)
@@ -113,9 +113,7 @@ dataset_test_worker <-
       invisible(object)
     }
 
-    expect_not_NA <- function (object,
-                               info = NULL,
-                               label = NULL) {
+    expect_not_NA <- function(object, info = NULL, label = NULL) {
       i <- !is.na(object)
       comp <- compare(all(i), TRUE)
       expect(comp$equal,
@@ -123,18 +121,14 @@ dataset_test_worker <-
       invisible(object)
     }
 
-    expect_length_zero <- function (object,
-                                    info = NULL,
-                                    label = NULL) {
+    expect_length_zero <- function(object, info = NULL, label = NULL) {
       comp <- compare(length(object), 0)
       expect(comp$equal,
              sprintf("%s: %s", info, label))
       invisible(object)
     }
 
-    expect_unique <- function (object,
-                               info = NULL,
-                               label = NULL) {
+    expect_unique <- function(object, info = NULL, label = NULL) {
       x <- table(unlist(object))
       i <- x == 1
       comp <- compare(all(i), TRUE)
@@ -195,12 +189,7 @@ dataset_test_worker <-
 
     # Better than expect_silent as contains `info` and allows for complete failures
     expect_no_error <-
-      function (object,
-                regexp = NULL,
-                ...,
-                info = NULL,
-                label = NULL)
-      {
+      function(object, regexp = NULL, ..., info = NULL, label = NULL) {
         error <- tryCatch({
           object
           NULL
@@ -238,6 +227,7 @@ dataset_test_worker <-
       expect_true(is.data.frame(data), info = info)
     }
 
+    # Function is assigned but not used
     test_dataframe_named <- function(data, expected_colnames, info) {
       test_dataframe_valid(data, info)
       expect_named(data, expected_colnames, info = info)
@@ -271,6 +261,7 @@ dataset_test_worker <-
       expect_allowed(names(data), allowed_names, info = info)
     }
 
+    # Function is assigned but not used
     test_list_named_contains <- function(data, expected_names, info) {
       test_list_names_valid(data, info)
       expect_named(data)
@@ -281,9 +272,9 @@ dataset_test_worker <-
 
     for (dataset_id in test_dataset_ids) {
       s <- file.path(path_data, dataset_id)
-      
+
       test_that(dataset_id, {
-        
+
         context(sprintf("%s", dataset_id))
 
         # Exists
@@ -382,11 +373,11 @@ dataset_test_worker <-
         )
 
         # data_collectors
-        if(!is.na(metadata[["contributors"]][["data_collectors"]][1])){
-          test_list(metadata[["contributors"]][["data_collectors"]], info=f)
+        if (!is.na(metadata[["contributors"]][["data_collectors"]][1])) {
+          test_list(metadata[["contributors"]][["data_collectors"]], info = f)
 
           vars <- schema$metadata$elements$contributors$elements$data_collectors$elements %>% names()
-          for(i in seq_along(metadata[["contributors"]][["data_collectors"]])){
+          for (i in seq_along(metadata[["contributors"]][["data_collectors"]])) {
             test_list_named_allowed(
               metadata[["contributors"]][["data_collectors"]][[i]],
               vars, info = paste(f, "data_collector", i)
@@ -400,14 +391,14 @@ dataset_test_worker <-
         expect_type(metadata[["contributors"]][["austraits_curators"]], "character")
 
         # assistants
-        if(!is.null(metadata[["contributors"]][["assistants"]][1]))
+        if (!is.null(metadata[["contributors"]][["assistants"]][1]))
           expect_type(metadata[["contributors"]][["assistants"]], "character")
 
         # dataset
 
         test_list_named_allowed(metadata[["dataset"]],
                                 schema$metadata$elements$dataset$values %>% names(),
-                                info = paste0(f,"-dataset"))
+                                info = paste0(f, "-dataset"))
 
         expect_type(metadata[["dataset"]][["data_is_long_format"]], "logical")
         expect_type(metadata[["dataset"]], "list")
@@ -447,7 +438,7 @@ dataset_test_worker <-
         )
 
         ## check context details load
-        if(nrow(contexts > 0)) {
+        if (nrow(contexts > 0)) {
 
           test_dataframe_names_contain(
             contexts,
@@ -484,13 +475,12 @@ dataset_test_worker <-
 
 
           for (j in unique(contexts[["var_in"]])) {
-            
             contextsub <-
               contexts %>% filter(var_in == j)
 
             unique2 <- function(x) {unique(x[!is.na(x)])}
             # Context values align either with a column of data or a column of traits table
-            if(is.null(data[[j]])) {
+            if (is.null(data[[j]])) {
               v <- traits[[j]] %>% unique2()
             } else {
               v <- data[[j]] %>% unique2()
@@ -531,8 +521,8 @@ dataset_test_worker <-
           info = paste0(f, "-value types")
         )
 
-        if(length(value_type_cols) > 0){
-          for(v in value_type_cols)
+        if (length(value_type_cols) > 0) {
+          for (v in value_type_cols)
             expect_isin(
               data[[v]] %>% unique(),
               schema$value_type$values %>% names,
@@ -559,8 +549,8 @@ dataset_test_worker <-
           )
 
           # check for allowable values of categorical variables
-          expect_no_error(x <-
-                            metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name))
+          expect_no_error(
+            x <- metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name))
 
           for (trait in names(x)) {
             if (!is.null(definitions$elements[[trait]]) &&
@@ -640,7 +630,7 @@ dataset_test_worker <-
           i <- names(metadata$locations) %in% v
           expect_true(all(i),
                       info = paste0(
-                        f ,
+                        f,
                         "-site names from metadata not present in data file: ",
                         names(metadata$locations)[!i]
                       ))
