@@ -473,13 +473,13 @@ dataset_test_worker <-
             info = files[2]
           )
 
-
           for (j in unique(contexts[["var_in"]])) {
             contextsub <-
               contexts %>% filter(var_in == j)
 
             unique2 <- function(x) {unique(x[!is.na(x)])}
             # Context values align either with a column of data or a column of traits table
+            # Sophie - Not sure how context values can align with the latter?
             if (is.null(data[[j]])) {
               v <- traits[[j]] %>% unique2()
             } else {
@@ -493,6 +493,7 @@ dataset_test_worker <-
             if (all(!is.na(contextsub[["find"]]))) {
               i <- v %in% contextsub[["find"]]
             } else {
+              # process.R will replace NA `find` values with `value`, so maybe we should be looking in the `find` column first
               i <- v %in% contextsub[["value"]]
             }
 
