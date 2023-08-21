@@ -473,7 +473,7 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
       ii <- n_existing + i
       category <- categories[i]
-      context_values <- data[[var_in[i]]] %>% unique()
+      context_values <- data[[var_in[i]]] %>% unique() %>% na.omit()
 
       contexts[[ii]] <-
         list(
