@@ -1,7 +1,5 @@
 
-# I think the functions aren't printing any error messages
-# Because info and label arguments are NULL, not sure what they're supposed to be
-# Also are these functions supposed to be the same as those in testdata.R?
+# Are these functions supposed to be the same as those in testdata.R?
 
 # I think this function already exists in the package
 # Better than expect_silent as contains `info` and allows for complete failures
