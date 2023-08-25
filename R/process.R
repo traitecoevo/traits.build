@@ -574,6 +574,7 @@ process_create_context_ids <- function(data, contexts) {
 
   contexts_finished <-
     contexts %>%
+    filter(!is.na(value)) %>%
     dplyr::left_join(
       id_link %>% dplyr::bind_rows(),
       by = c("context_property", "category", "value")
