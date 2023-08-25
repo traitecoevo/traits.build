@@ -99,9 +99,6 @@ contexts:
   - find: low nutrient
     value: low nutrient
     description: low nutrient treatment
-  - find: .na.character
-    value: control
-    description: control treatment
 - context_property: sampling time of day
   category: temporal
   var_in: sampling time of day
