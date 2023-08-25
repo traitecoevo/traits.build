@@ -11,7 +11,6 @@ Test_2023_1,sampling time of day,temporal,17:00:00,,temporal_id,01
 Test_2023_1,sampling time of day,temporal,9:00:00,,,
 Test_2023_1,instrument used,method,instrument 1,instrument 1,method_id,"07, 05, 06, 04"
 Test_2023_1,instrument used,method,instrument 2,instrument 2,method_id,"11, 09, 10, 08"
-Test_2023_1,instrument used,method,,,method_id,"02, 03, 01"
 Test_2023_1,tree height,entity_context,3,,entity_context_id,03
 Test_2023_1,tree height,entity_context,5,,entity_context_id,09
 Test_2023_1,tree height,entity_context,4,,entity_context_id,"04, 08"
