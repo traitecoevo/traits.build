@@ -499,20 +499,20 @@ process_create_context_ids <- function(data, contexts) {
   # Find and replace values for each context property
   for (v in unique(contexts$context_property)) {
 
-    ## first filter to each property
+    ## First filter to each property
     xx <- contexts %>%
       dplyr::filter(.data$context_property == v)
 
-    ## only do if find column has non NA values
+    ## Only do if find column has non-NA values
     xx <- dplyr::filter(xx, !is.na(.data$find))
     if (nrow(xx) > 0) {
-      ## create named vector
+      ## Create named vector
       xxx <- stats::setNames(xx$value, xx$find)
-      ## use named vector for find and value
+      ## Use named vector for find and value
       context_cols[[v]] <- xxx[context_cols[[v]]]
     }
   }
-  # group_by category and create ids
+  # `group_by` category and create ids
   tmp <-
     contexts %>%
     dplyr::select(dplyr::all_of(c("context_property", "category", "value"))) %>%
@@ -550,10 +550,10 @@ process_create_context_ids <- function(data, contexts) {
       ) %>%
       dplyr::select(-dplyr::all_of(c("combined")))
 
-    ## store ids
+    ## Store ids
     ids[[paste0(w, "_id")]] <- xxx[["id"]]
 
-    ## create link values
+    ## Create link values
     for (v in vars) {
       id_link[[v]] <-
         xxx %>%
