@@ -90,14 +90,11 @@ contexts:
   category: treatment
   var_in: nutrient treatment
   values:
-  - find: control
-    value: control
+  - value: control
     description: control treatment
-  - find: high nutrient
-    value: high nutrient
+  - value: high nutrient
     description: high nutrient treatment
-  - find: low nutrient
-    value: low nutrient
+  - value: low nutrient
     description: low nutrient treatment
 - context_property: sampling time of day
   category: temporal
