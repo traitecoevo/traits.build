@@ -271,6 +271,7 @@ dataset_test_worker <-
     # Now run tests for each dataset
 
     for (dataset_id in test_dataset_ids) {
+
       s <- file.path(path_data, dataset_id)
 
       test_that(dataset_id, {
@@ -436,23 +437,71 @@ dataset_test_worker <-
             metadata$contexts %>%
             process_format_contexts(dataset_id)
         )
-        browser()
+
         ## Check context details load
-        if (nrow(contexts > 0)) {
+        if (nrow(contexts) > 0) {
 
           test_dataframe_names_contain(
             contexts,
             schema$metadata$elements$contexts$elements %>% names(),
             info = paste0(f, "-contexts")
           )
+
+          for (i in seq_along(metadata$contexts)) {
+
+            vals <- metadata$contexts[[i]][["values"]]
+
+            for (s in seq_along(vals)) {
+
+              # Check that no `find` values are NA
+              if (!is.null(vals[[s]][["find"]])) {
+                expect_false(
+                  is.na(vals[[s]][["find"]]),
+                  info = paste0(
+                    f,
+                    sprintf("\tcontexts: `find` value in the `context_property` '%s' should not be NA\n\tReplace NAs with desired value using `custom_R_code`",
+                    metadata$contexts[[i]][["context_property"]]))
+                )
+              }
+
+              # Check that there are no `find` fields with no accompanying `value` fields
+              expect_false(
+                !is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
+                info = paste0(
+                  f,
+                  sprintf(
+                    "\tcontexts: `find: %s` in the `context_property` '%s' is not accompanied by a `value` field",
+                    vals[[s]][["find"]], metadata$contexts[[i]][["context_property"]]
+                ))
+              )
+
+              # Check that there are no `description` fields with NA `value` fields
+              if (!is.null(vals[[s]][["value"]]) && !is.null(vals[[s]][["description"]])) {
+                expect_false(
+                  !is.na(vals[[s]][["description"]]) && is.na(vals[[s]][["value"]]),
+                  info = paste0(
+                    f,
+                    sprintf(
+                      "\tcontexts: `description: %s` in the `context_property` '%s' should not be accompanied by an NA `value` field",
+                      vals[[s]][["description"]], metadata$contexts[[i]][["context_property"]]
+                  ))
+                )
+              }
+
+              # Check that there are no `description` fields with no accompanying `find` and `value` fields
+              expect_false(
+                !is.null(vals[[s]][["description"]]) && is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
+                info = paste0(
+                  f,
+                  sprintf(
+                    "\tcontexts: `description: %s` in the `context_property` '%s' is not accompanied by `find` and `value` fields",
+                    vals[[s]][["description"]], metadata$contexts[[i]][["context_property"]]
+                  )
+                )
+              )
+            }
+          }
         }
-
-        ## Todo: Check that no `find` values are NA
-
-        ## Todo: Check that there are no `find` fields with no `value` fields
-
-        ## For a given context property, check that `find` values are either
-        # all present or not present at all
 
         # Traits
         expect_list_elements_contains_names(metadata[["traits"]],
@@ -556,7 +605,7 @@ dataset_test_worker <-
             info = paste0(f, "-substitutions-trait_name")
           )
 
-          # check for allowable values of categorical variables
+          # Check for allowable values of categorical variables
           expect_no_error(
             x <- metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name))
 
@@ -615,7 +664,7 @@ dataset_test_worker <-
 
         ## For numeric trait data, check it looks reasonable & converts properly
 
-        ## check location_names are in locations dataset
+        ## check `location_name`'s are in locations dataset
 
         if (length(unlist(metadata[["locations"]])) > 1) {
           expect_true(
