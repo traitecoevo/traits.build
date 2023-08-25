@@ -447,7 +447,9 @@ dataset_test_worker <-
           )
         }
 
-        ## Check that no `find` values are NA
+        ## Todo: Check that no `find` values are NA
+
+        ## Todo: Check that there are no `find` fields with no `value` fields
 
         ## For a given context property, check that `find` values are either
         # all present or not present at all
