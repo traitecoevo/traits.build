@@ -457,16 +457,8 @@ process_format_contexts <- function(my_list, dataset_id) {
         )
 
     if (is.null(contexts[["description"]])) {
-    contexts[["description"]] <- NA_character_
+      contexts[["description"]] <- NA_character_
     }
-
-    # keep values from find column if a replacement isn't specified
-    # This doesn't do what the comment says
-    # Is the comment talking about if someone input a `find` field but no `value` field?
-    # In that case it should be
-    # contexts[["find"]] <- ifelse(is.na(contexts$value), contexts$find, contexts$value)
-    # But I think there should not be a case where there is a `find` value and no `value` value
-    # `dataset_test` should pick this up
 
     if (is.null(contexts[["find"]])) {
       contexts[["find"]] <- NA_character_
@@ -504,6 +496,7 @@ process_create_context_ids <- function(data, contexts) {
       dplyr::filter(.data$context_property == v)
 
     ## Only do if find column has non-NA values
+    # I think find column might never have non-NA values
     xx <- dplyr::filter(xx, !is.na(.data$find))
     if (nrow(xx) > 0) {
       ## Create named vector
