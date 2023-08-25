@@ -494,16 +494,11 @@ process_create_context_ids <- function(data, contexts) {
     ## First filter to each property
     xx <- contexts %>%
       dplyr::filter(.data$context_property == v)
+    ## Create named vector
+    xxx <- stats::setNames(xx$value, xx$find)
+    ## Use named vector for find and value
+    context_cols[[v]] <- xxx[context_cols[[v]]]
 
-    ## Only do if find column has non-NA values
-    # I think find column might never have non-NA values
-    xx <- dplyr::filter(xx, !is.na(.data$find))
-    if (nrow(xx) > 0) {
-      ## Create named vector
-      xxx <- stats::setNames(xx$value, xx$find)
-      ## Use named vector for find and value
-      context_cols[[v]] <- xxx[context_cols[[v]]]
-    }
   }
   # `group_by` category and create ids
   tmp <-
