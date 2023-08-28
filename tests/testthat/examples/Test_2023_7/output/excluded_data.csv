@@ -1,0 +1,6 @@
+error,dataset_id,taxon_name,observation_id,trait_name,value,unit,entity_type,value_type,basis_of_value,replicates,basis_of_record,life_stage,population_id,individual_id,temporal_id,source_id,location_id,entity_context_id,plot_id,treatment_id,collection_date,measurement_remarks,method_id,original_name
+Value out of allowable range,Test_2023_1,Acronychia acidula,008,leaf_N_per_dry_mass,1e+05,mg/g,population,mean,measurement,3,field,adult,04,,01,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
+Unsupported trait value,Test_2023_1,Castanospermum australe,031,plant_growth_form,unknown,,species,mode,expert_score,3,field,adult,,,,,02,02,,03,2004/2004,from Falster_2005_1,,Castanospermum australe
+Times must be length 12,Test_2023_1,Polyscias australiana,085,flowering_time,nnnnnyyyynnnnnnnnnn,,individual,mode,expert_score,3,field,adult,05,01,,,01,05,02,,2004/2004,from Falster_2005_1,,Polyscias australiana
+Unsupported trait value,Test_2023_1,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),092,plant_growth_form,trees,,species,mode,expert_score,3,field,adult,,,,,01,01,02,,2004/2004,from Falster_2005_1,,Psychotria sp Utchee Creek
+Observation excluded in metadata,Test_2023_1,Syzygium gustavioides,101,leaf_mass_per_area,0.167,mg/mm2,population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Syzygium gustavioides
