@@ -291,6 +291,7 @@ dataset_test_worker <-
 
         # `data.csv`
         f <- files[1]
+        # Time columns get reformatted
         expect_silent(data <-
                         read_csv(
                           f,
@@ -464,7 +465,7 @@ dataset_test_worker <-
                 )
               }
 
-              # Check that there are no `find` fields with no accompanying `value` fields
+              # Check that there are no `find` fields without accompanying `value` fields
               expect_false(
                 !is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
                 info = paste0(
@@ -488,7 +489,7 @@ dataset_test_worker <-
                 )
               }
 
-              # Check that there are no `description` fields with no accompanying `find` and `value` fields
+              # Check that there are no `description` fields without accompanying `find` and `value` fields
               expect_false(
                 !is.null(vals[[s]][["description"]]) && is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
                 info = paste0(
@@ -541,17 +542,10 @@ dataset_test_worker <-
             } else {
               v <- data[[j]] %>% unique2()
             }
-            # This is a bug I think
-            # Sometimes .na is entered in `find` and/or `value` (I think it might
-            # be entered as a default when you run metadata_add_contexts), so the
-            # first if statement will not be true in these cases
-            # I think the NAs should be removed from the final contexts table as well
-            if (all(!is.na(contextsub[["find"]]))) {
-              i <- v %in% contextsub[["find"]]
-            } else {
-              # process.R will replace NA `find` values with `value`, so maybe we should be looking in the `find` column first
-              i <- v %in% contextsub[["value"]]
-            }
+
+            # `find` will always be non-NA unless both `find` and `value` fields are missing
+            # Look for context values in `find` column since `process_format_contexts` replaces NA `find` with `value`
+            i <- v %in% contextsub[["find"]]
 
             expect_true(all(i),
               info = paste0(
