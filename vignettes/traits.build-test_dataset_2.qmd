@@ -1,0 +1,214 @@
+---
+title: "Test dataset 2"
+author: "Elizabeth Wenk, Sophie Yang"
+format: html
+editor: visual
+---
+
+### Background
+
+This is the second of five tutorials on adding datasets to your traits.build database. It introduces you to XXX.
+
+Before you begin this tutorial, ensure you have installed traits.build, cloned the traits.build-template repository, and have successfully build a database from the datasets in `traits.build-template` . Instructions are available at \[XX\]{xx}
+
+##### goals:
+
+-   Learn how to add substitutions for categorical trait values.
+
+-   Learn how to merge in location data from a standalone spreadsheet.
+
+-   Learn how to add custom R code to the metadata file.
+
+-   Learn how to exclude observations.
+
+##### new functions introduced:
+
+-   metadata_add_substitution
+
+-   metadata_add_substitutions_list
+
+-   metadata_check_custom_R_code
+
+-   metadata_exclude_observations
+
+### Create a folder for the dataset
+
+Begin by creating a folder for the dataset within the data folder.
+
+Place the appropriate data.csv file in the folder.
+
+Ancillary files, including the `locations.csv` and `notes.txt` must be inside the `raw` folder.
+
+### Use functions to create a metadata.yml file
+
+#### Create a Metadata Template
+
+To create the metadata template, run:
+
+```{r eval=FALSE}
+metadata_create_template("test_dataset_2")
+```
+
+As with `test_dataset_1` this function leads you through a series of menus requiring user input. Ensure you select:
+
+data format: [**wide**]{style="color:red;"}\
+taxon_name column: [**name_original**]{style="color:red;"}\
+location_name column: [**site_TEXT**]{style="color:red;"}\
+individual_id column: [**NA**]{style="color:red;"}\
+collection_date column: [**NA**]{style="color:red;"}\
+
+*Navigate to the dataset's folder and open the metadata.yml file in Visual Studio Code, to ensure information is added to the expected sections as you work through the tutorial.*
+
+#### Propagate source information into the metadata.yml file
+
+This dataset is from a published source and therefore the source information can be added with a single line of code:
+
+```{r eval=FALSE}
+metadata_add_source_doi(dataset_id = "test_dataset_2", doi = "10.1046/j.1365-2745.2000.00506.x")
+```
+
+confirm:
+
+1.  the authors' names are formatted as `first name last name` or `first initial last name`\
+2.  the article title is in sentence case\
+3.  the page numbers are filled in as a range, separated by a double dash\
+
+#### Add location details into the metadata.yml file
+
+For this dataset, location data is provided as a standalone spreadsheet that should be archived in the raw data folder, 'test_dataset_2\raw\locations.csv'
+
+```{r eval=FALSE}
+locations <-
+  read_csv("data/test_dataset_2/raw/location_data.csv")
+```
+
+traits.build requires three fields to use a specific syntax: - `latitude` must be in decimal degrees and the field name (column header) must be `latitude (deg)` - `longitude` must be in decimal degrees and the field name (column header) must be `longitude (deg)` - A general site description is document in the field `description`
+
+traits.build does not require that the names for other location properties align across datasets, but it is best practice to use a controlled vocabulary, so database users can easily search across all datasets for information on a specific climate variable or soil nutrient content. The names used are up to you.
+
+To confirm you are using the correct syntax, check the terms already in use:
+
+```{r eval=FALSE}
+locations_properties <-
+  traits.build_database$sites %>%
+    distinct(location_property) %>%
+    View()
+```
+
+Then rename your columns to match those in use:
+
+```{r eval=FALSE}
+locations <-
+  locations %>%
+    rename(
+      `longitude (deg)` = long,
+      `latitude (deg)` = lat,
+      `description` = vegetation,
+      `elevation (m)` = elevation,
+      `precipitation, MAP (mm)` = MAP,
+      `soil P, total (mg/kg)` = `soil P`,
+      `soil N, total (ppm)` = `soil N`,
+      `geology (parent material)` = `parent material`
+      )
+```
+
+Now add the location information into the metadata file:
+
+```{r eval=FALSE}
+metadata_add_locations(dataset_id = "test_dataset_2", location_data = locations)
+```
+
+Ensure you select:
+
+location_name: [**location**]{style="color:red;"}\
+location_property columns: [**1 2 3 4 5 6 7 8**]{style="color:red;"}\
+
+*Check the metadata.yml file to ensure the location information has been added as expected. If there is a problem, rerun the necessary code; this will overwrite what is present. You can also manually add additional properties if something is forgotten.*
+
+#### Add traits to the metadata.yml file
+
+To select columns in the `data.csv` file that include trait data, run:
+
+```{r eval=FALSE}
+metadata_add_traits(dataset_id = "test_dataset_2")
+```
+
+Select columns [**3 4 5 6**]{style="color:red;"}, as these contain trait data.
+
+After confirming that the skeletal traits section has been added to `metadata.yml` file, you must fill in all the `unknown` fields. 
+
+### Manual filling in of metadata
+
+*For this dataset, you will later use functions to add substitutions and exclude unwanted observations, but it is best to first fill in the information for contributors, the dataset, and the traits.*
+
+*Now begin filling in the remaining metadata.yml fields manually.*
+
+*These are all fields that contain the word `unknown`.*
+
+*These include:*\
+*the `contributors` section*\
+*the `description`, `basis_of_record`, `life_stage`, `sampling_strategy`, `original_file`, and `notes` under the `dataset` section*\
+*details for each trait, including `unit_in`, `trait_name`, `entity_type`, `value_type`, `basis_of_record`, `replicates` and `methods`*
+
+#### Adding contributors
+
+*The file "data/test_dataset_1/raw/test_dataset_1_notes.txt" indicates the main data_contributor for this study.*
+
+*Fill in the remaining contributor information as described in the `test_dataset_1` [tutorial](https://XXX).*
+
+#### Filling in the missing dataset fields
+
+*The file "data/test_dataset_1/raw/test_dataset_1_notes.txt" indicates how to fill in the `unknown` dataset fields for this study.*
+
+#### Filling in the missing details for each trait.
+
+*The file "data/test_dataset_1/raw/test_dataset_1_notes.txt" indicates how to fill in the `unknown` trait fields for this study, but see below as well.*
+
+##### trait_name
+
+*Remember, the `trait_name` must match a `trait_name` within the [traits dictionary](https://github.com/traitecoevo/traits.build-template/blob/master/config/traits.yml). For this example:*
+
+`TRAIT Growth Form CATEGORICAL EP epiphyte (mistletoe) F fern G grass H herb S shrub T tree V vine` is plant_growth_form\
+`TRAIT SLA UNITS mm2/g` is leaf_mass_per_area\
+`TRAIT Leaf Size UNITS mm2` is leaf_area\
+`TRAIT Leaf Dry Mass UNITS g` is leaf_dry_mass\
+
+*You may notice that the second trait is provided by the author as `specific leaf area`, the inverse of `leaf mass per area`. The unit conversions algorithm inverts data read in as specific leaf area, converting it to leaf mass per area.*
+
+*The convention for filling in the remaining metadata fields is different for numeric versus categorical traits.*
+
+*For the three numeric traits, fill in:*
+
+unit_in: (use the units in column header)\
+entity_type: population\
+value_type: mean\
+basis_of_value: measurement\
+replicates: 5\
+
+*For the categorical trait, fill in:*
+
+unit_in: .na\
+entity_type: species\
+value_type: mode\
+basis_of_value: expert_score\
+replicates: .na\
+
+- Categorical traits do not have units or replicates, so these fields become `.na`.
+- The traits.build convention is that categorical trait `value_s_types` are `modes`, the most common observed trait value.
+- For most observations of categorical traits, the traits.build convention is that the `basis_of_value` is determined by an expert examining an individual, population or species, and is therefore an `expert_score`.
+
+#### Additional steps
+
+*At this point the metadata file is sufficiently complete that you should check for errors in the `metadata.yml` file:*
+```{r eval=FALSE}
+dataset_test("test_dataset_2")
+```
+
+You should have three items fail:
+1. There are unknown trait values for `plant_growth_form`
+2. There are values out of range for `leaf_dry_mass`
+3. There are duplicate entries detected for 
+
+*At this point the metadata file is sufficiently complete that you should add this study to the remake file:
+
+
