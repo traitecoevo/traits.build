@@ -1184,11 +1184,13 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
 
     for (i in seq_len(nrow(substitutions_table))) {
       j <- which(out[["trait_name"]] == substitutions_table[["trait_name"]][i] &
-                  out[["value"]] == substitutions_table[["find"]][i])
+                  stringr::str_detect(out[["value"]], paste0("(^|\\s)", substitutions_table[["find"]][i], "(\\s|$)")))
+
       if (length(j) > 0) {
-        out[["value"]][j] <- substitutions_table[["replace"]][i]
+        out[["value"]][j] <- stringr::str_replace_all(out[["value"]][j], substitutions_table[["find"]][i], substitutions_table[["replace"]][i]) %>% stringr::str_squish()
       }
     }
+
   }
 
   list(
