@@ -460,7 +460,7 @@ dataset_test_worker <-
                   is.na(vals[[s]][["find"]]),
                   info = paste0(
                     f,
-                    sprintf("\tcontexts: `find` value in the `context_property` '%s' should not be NA\n\tReplace NAs with desired value using `custom_R_code`",
+                    sprintf("\tcontexts: `find` value in the `context_property` '%s' should not be NA\n\tPlease replace NAs with desired value using `custom_R_code`",
                     metadata$contexts[[i]][["context_property"]]))
                 )
               }
@@ -483,7 +483,7 @@ dataset_test_worker <-
                   info = paste0(
                     f,
                     sprintf(
-                      "\tcontexts: `description: %s` in the `context_property` '%s' should not be accompanied by an NA `value` field",
+                      "\tcontexts: `description: %s` in the `context_property` '%s' should not be accompanied by an NA `value` field\n\tPlease use `custom_R_code` to assign a proper value to NA fields",
                       vals[[s]][["description"]], metadata$contexts[[i]][["context_property"]]
                   ))
                 )
@@ -544,7 +544,8 @@ dataset_test_worker <-
             }
 
             # `find` will always be non-NA unless both `find` and `value` fields are missing
-            # Look for context values in `find` column since `process_format_contexts` replaces NA `find` with `value`
+            # since `process_format_contexts` replaces NA `find` with `value`
+            # Look for context values in `find` column
             i <- v %in% contextsub[["find"]]
 
             expect_true(all(i),
