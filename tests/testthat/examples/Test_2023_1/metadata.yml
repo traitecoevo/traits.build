@@ -101,7 +101,7 @@ contexts:
   var_in: sampling time of day
   values:
   - value: '17:00:00'
-  - value: '9:00:00'
+  - value: '09:00:00'
 - context_property: instrument used
   category: method
   var_in: instrument used

@@ -1,17 +1,17 @@
 dataset_id,taxon_name,observation_id,trait_name,value,unit,entity_type,value_type,basis_of_value,replicates,basis_of_record,life_stage,population_id,individual_id,temporal_id,source_id,location_id,entity_context_id,plot_id,treatment_id,collection_date,measurement_remarks,method_id,original_name
-Test_2023_1,Acacia celsa,001,flowering_time,nyynnnnnnnnn,,individual,mode,expert_score,3,field,adult,01,01,01,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
-Test_2023_1,Acacia celsa,001,huber_value,0.000146541617819461,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,01,01,01,,01,03,01,01,2002/2002,made-up measurement remarks,04,Acacia celsa
-Test_2023_1,Acacia celsa,002,flowering_time,nyynnnnnnnnn,,individual,mode,expert_score,3,field,adult,01,02,01,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
-Test_2023_1,Acacia celsa,003,huber_value,0.000335908632851864,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,01,,01,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
-Test_2023_1,Acacia celsa,003,huber_value,0.000137741046831956,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,01,,01,,01,03,01,01,2004/2004,from Falster_2005_1,05,Acacia celsa
-Test_2023_1,Acacia celsa,003,huber_value,0.000268672756582483,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,01,,01,,01,03,01,01,2004/2004,from Falster_2005_1,06,Acacia celsa
-Test_2023_1,Acacia celsa,003,leaf_N_per_dry_mass,21.4,mg/g,population,mean,measurement,3,field,adult,01,,01,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
-Test_2023_1,Acacia celsa,003,leaf_area,2786,mm2,population,mean,measurement,3,field,adult,01,,01,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
-Test_2023_1,Acacia celsa,003,leaf_mass_per_area,145,g/m2,population,mean,measurement,3,field,adult,01,,01,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
-Test_2023_1,Acacia celsa,003,seed_dry_mass,10.3,mg,population,mean,measurement,3,field,adult,01,,01,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
-Test_2023_1,Acacia celsa,003,seed_dry_mass,10--20,mg,population,bin,measurement,10,field,adult,01,,01,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
-Test_2023_1,Acacia celsa,003,wood_density,0.498,mg/mm3,population,mean,measurement,3,field,adult,01,,01,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
-Test_2023_1,Acacia celsa,004,plant_growth_form,herb,,species,mode,expert_score,3,field,adult,,,01,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
+Test_2023_1,Acacia celsa,001,flowering_time,nyynnnnnnnnn,,individual,mode,expert_score,3,field,adult,01,01,02,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
+Test_2023_1,Acacia celsa,001,huber_value,0.000146541617819461,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,01,01,02,,01,03,01,01,2002/2002,made-up measurement remarks,04,Acacia celsa
+Test_2023_1,Acacia celsa,002,flowering_time,nyynnnnnnnnn,,individual,mode,expert_score,3,field,adult,01,02,02,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
+Test_2023_1,Acacia celsa,003,huber_value,0.000335908632851864,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,01,,02,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
+Test_2023_1,Acacia celsa,003,huber_value,0.000137741046831956,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,01,,02,,01,03,01,01,2004/2004,from Falster_2005_1,05,Acacia celsa
+Test_2023_1,Acacia celsa,003,huber_value,0.000268672756582483,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,01,,02,,01,03,01,01,2004/2004,from Falster_2005_1,06,Acacia celsa
+Test_2023_1,Acacia celsa,003,leaf_N_per_dry_mass,21.4,mg/g,population,mean,measurement,3,field,adult,01,,02,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
+Test_2023_1,Acacia celsa,003,leaf_area,2786,mm2,population,mean,measurement,3,field,adult,01,,02,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
+Test_2023_1,Acacia celsa,003,leaf_mass_per_area,145,g/m2,population,mean,measurement,3,field,adult,01,,02,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
+Test_2023_1,Acacia celsa,003,seed_dry_mass,10.3,mg,population,mean,measurement,3,field,adult,01,,02,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
+Test_2023_1,Acacia celsa,003,seed_dry_mass,10--20,mg,population,bin,measurement,10,field,adult,01,,02,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
+Test_2023_1,Acacia celsa,003,wood_density,0.498,mg/mm3,population,mean,measurement,3,field,adult,01,,02,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
+Test_2023_1,Acacia celsa,004,plant_growth_form,herb,,species,mode,expert_score,3,field,adult,,,02,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
 Test_2023_1,Acmena graveolens,005,huber_value,0.000139742873113471,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,12,01,,,02,06,,,2002/2002,made-up measurement remarks,01,Acmena graveolens
 Test_2023_1,Acmena graveolens,006,huber_value,0.000327118089630357,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,02,Acmena graveolens
 Test_2023_1,Acmena graveolens,006,huber_value,0.000374953130858643,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,03,Acmena graveolens
@@ -19,14 +19,14 @@ Test_2023_1,Acmena graveolens,006,leaf_N_per_dry_mass,15.5,mg/g,population,mean,
 Test_2023_1,Acmena graveolens,006,leaf_area,5246,mm2,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Acmena graveolens
 Test_2023_1,Acmena graveolens,006,leaf_mass_per_area,151,g/m2,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Acmena graveolens
 Test_2023_1,Acmena graveolens,006,wood_density,0.599,mg/mm3,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Acmena graveolens
-Test_2023_1,Acronychia acidula,007,flowering_time,nnnnnnnnnyyy,,individual,mode,expert_score,3,field,adult,04,01,01,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
-Test_2023_1,Acronychia acidula,007,huber_value,0.000105485232067511,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,01,,01,09,02,01,2002/2002,made-up measurement remarks,04,Acronychia acidula
-Test_2023_1,Acronychia acidula,008,huber_value,0.000132275132275132,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,01,,01,09,02,01,2004/2004,from Falster_2005_1,05,Acronychia acidula
-Test_2023_1,Acronychia acidula,008,huber_value,0.000180472838837755,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,01,,01,09,02,01,2004/2004,from Falster_2005_1,06,Acronychia acidula
-Test_2023_1,Acronychia acidula,008,leaf_area,14302,mm2,population,mean,measurement,3,field,adult,04,,01,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
-Test_2023_1,Acronychia acidula,008,leaf_mass_per_area,85,g/m2,population,mean,measurement,3,field,adult,04,,01,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
-Test_2023_1,Acronychia acidula,008,wood_density,0.525,mg/mm3,population,mean,measurement,3,field,adult,04,,01,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
-Test_2023_1,Acronychia acidula,009,plant_growth_form,shrub,,species,mode,expert_score,3,field,adult,,,01,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
+Test_2023_1,Acronychia acidula,007,flowering_time,nnnnnnnnnyyy,,individual,mode,expert_score,3,field,adult,04,01,02,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
+Test_2023_1,Acronychia acidula,007,huber_value,0.000105485232067511,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,02,,01,09,02,01,2002/2002,made-up measurement remarks,04,Acronychia acidula
+Test_2023_1,Acronychia acidula,008,huber_value,0.000132275132275132,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,02,,01,09,02,01,2004/2004,from Falster_2005_1,05,Acronychia acidula
+Test_2023_1,Acronychia acidula,008,huber_value,0.000180472838837755,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,02,,01,09,02,01,2004/2004,from Falster_2005_1,06,Acronychia acidula
+Test_2023_1,Acronychia acidula,008,leaf_area,14302,mm2,population,mean,measurement,3,field,adult,04,,02,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
+Test_2023_1,Acronychia acidula,008,leaf_mass_per_area,85,g/m2,population,mean,measurement,3,field,adult,04,,02,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
+Test_2023_1,Acronychia acidula,008,wood_density,0.525,mg/mm3,population,mean,measurement,3,field,adult,04,,02,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
+Test_2023_1,Acronychia acidula,009,plant_growth_form,shrub,,species,mode,expert_score,3,field,adult,,,02,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
 Test_2023_1,Aleurites rockinghamensis,010,huber_value,0.000161056530842326,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,12,01,,,02,06,,,2002/2002,made-up measurement remarks,01,Aleurites rockinghamensis
 Test_2023_1,Aleurites rockinghamensis,011,huber_value,0.000238435860753457,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,02,Aleurites rockinghamensis
 Test_2023_1,Aleurites rockinghamensis,011,leaf_N_per_dry_mass,18.4,mg/g,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
@@ -34,16 +34,16 @@ Test_2023_1,Aleurites rockinghamensis,011,leaf_area,73984,mm2,population,mean,me
 Test_2023_1,Aleurites rockinghamensis,011,leaf_mass_per_area,113,g/m2,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
 Test_2023_1,Aleurites rockinghamensis,011,seed_dry_mass,7077,mg,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
 Test_2023_1,Aleurites rockinghamensis,011,wood_density,0.28,mg/mm3,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
-Test_2023_1,Alphitonia petriei,012,flowering_time,nnnnyyynnnnn,,individual,mode,expert_score,3,field,adult,06,01,01,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
-Test_2023_1,Alphitonia petriei,012,huber_value,0.000230680507497116,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,06,01,01,,01,04,03,02,2002/2002,made-up measurement remarks,01,Alphitonia petriei
-Test_2023_1,Alphitonia petriei,013,huber_value,0.000230414746543779,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,06,,01,,01,04,03,02,2004/2004,from Falster_2005_1,02,Alphitonia petriei
-Test_2023_1,Alphitonia petriei,013,huber_value,0.000301841231512225,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,06,,01,,01,04,03,02,2004/2004,from Falster_2005_1,03,Alphitonia petriei
-Test_2023_1,Alphitonia petriei,013,leaf_N_per_dry_mass,16.3,mg/g,population,mean,measurement,3,field,adult,06,,01,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
-Test_2023_1,Alphitonia petriei,013,leaf_area,6820,mm2,population,mean,measurement,3,field,adult,06,,01,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
-Test_2023_1,Alphitonia petriei,013,leaf_mass_per_area,149,g/m2,population,mean,measurement,3,field,adult,06,,01,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
-Test_2023_1,Alphitonia petriei,013,seed_dry_mass,27.2,mg,population,mean,measurement,3,field,adult,06,,01,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
-Test_2023_1,Alphitonia petriei,013,wood_density,0.413,mg/mm3,population,mean,measurement,3,field,adult,06,,01,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
-Test_2023_1,Alphitonia petriei,014,plant_growth_form,mallee mallee shrub tree tree,,species,mode,expert_score,3,field,adult,,,01,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
+Test_2023_1,Alphitonia petriei,012,flowering_time,nnnnyyynnnnn,,individual,mode,expert_score,3,field,adult,06,01,02,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
+Test_2023_1,Alphitonia petriei,012,huber_value,0.000230680507497116,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,06,01,02,,01,04,03,02,2002/2002,made-up measurement remarks,01,Alphitonia petriei
+Test_2023_1,Alphitonia petriei,013,huber_value,0.000230414746543779,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,06,,02,,01,04,03,02,2004/2004,from Falster_2005_1,02,Alphitonia petriei
+Test_2023_1,Alphitonia petriei,013,huber_value,0.000301841231512225,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,06,,02,,01,04,03,02,2004/2004,from Falster_2005_1,03,Alphitonia petriei
+Test_2023_1,Alphitonia petriei,013,leaf_N_per_dry_mass,16.3,mg/g,population,mean,measurement,3,field,adult,06,,02,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
+Test_2023_1,Alphitonia petriei,013,leaf_area,6820,mm2,population,mean,measurement,3,field,adult,06,,02,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
+Test_2023_1,Alphitonia petriei,013,leaf_mass_per_area,149,g/m2,population,mean,measurement,3,field,adult,06,,02,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
+Test_2023_1,Alphitonia petriei,013,seed_dry_mass,27.2,mg,population,mean,measurement,3,field,adult,06,,02,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
+Test_2023_1,Alphitonia petriei,013,wood_density,0.413,mg/mm3,population,mean,measurement,3,field,adult,06,,02,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
+Test_2023_1,Alphitonia petriei,014,plant_growth_form,mallee mallee shrub tree tree,,species,mode,expert_score,3,field,adult,,,02,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
 Test_2023_1,Alstonia scholaris,015,huber_value,0.000254323499491353,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,12,01,,,02,06,,,2002/2002,made-up measurement remarks,01,Alstonia scholaris
 Test_2023_1,Alstonia scholaris,016,huber_value,0.000539374325782093,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,02,Alstonia scholaris
 Test_2023_1,Alstonia scholaris,016,huber_value,0.000594530321046373,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,03,Alstonia scholaris
@@ -198,16 +198,16 @@ Test_2023_1,Hernandia albiflora,057,leaf_N_per_dry_mass,19.5,mg/g,population,mea
 Test_2023_1,Hernandia albiflora,057,leaf_area,3806,mm2,population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Hernandia albiflora
 Test_2023_1,Hernandia albiflora,057,leaf_mass_per_area,69,g/m2,population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Hernandia albiflora
 Test_2023_1,Hernandia albiflora,057,wood_density,0.447,mg/mm3,population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Hernandia albiflora
-Test_2023_1,Homalanthus novo-guineensis,058,flowering_time,yyyyyyyyyyyy,,individual,mode,expert_score,3,field,adult,02,01,,,01,08,01,03,2004/2004,from Falster_2005_1,,Homalanthus novoguineensis
-Test_2023_1,Homalanthus novo-guineensis,058,huber_value,0.000302388872089507,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,02,01,,,01,08,01,03,2002/2002,made-up measurement remarks,01,Homalanthus novoguineensis
-Test_2023_1,Homalanthus novo-guineensis,059,huber_value,0.000468164794007491,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,02,Homalanthus novoguineensis
-Test_2023_1,Homalanthus novo-guineensis,059,huber_value,0.00046339202965709,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,03,Homalanthus novoguineensis
-Test_2023_1,Homalanthus novo-guineensis,059,leaf_N_per_dry_mass,22,mg/g,population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,,Homalanthus novoguineensis
-Test_2023_1,Homalanthus novo-guineensis,059,leaf_area,10682,mm2,population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,,Homalanthus novoguineensis
-Test_2023_1,Homalanthus novo-guineensis,059,leaf_mass_per_area,82,g/m2,population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,,Homalanthus novoguineensis
-Test_2023_1,Homalanthus novo-guineensis,059,seed_dry_mass,7,mg,population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,,Homalanthus novoguineensis
-Test_2023_1,Homalanthus novo-guineensis,059,wood_density,0.319,mg/mm3,population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,,Homalanthus novoguineensis
-Test_2023_1,Homalanthus novo-guineensis,060,plant_growth_form,climber,,species,mode,expert_score,3,field,adult,,,,,01,08,01,03,2004/2004,from Falster_2005_1,,Homalanthus novoguineensis
+Test_2023_1,Homalanthus novo-guineensis,058,flowering_time,yyyyyyyyyyyy,,individual,mode,expert_score,3,field,adult,02,01,,,01,08,01,03,2004/2004,from Falster_2005_1,11,Homalanthus novoguineensis
+Test_2023_1,Homalanthus novo-guineensis,058,huber_value,0.000302388872089507,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,02,01,,,01,08,01,03,2002/2002,made-up measurement remarks,08,Homalanthus novoguineensis
+Test_2023_1,Homalanthus novo-guineensis,059,huber_value,0.000468164794007491,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,09,Homalanthus novoguineensis
+Test_2023_1,Homalanthus novo-guineensis,059,huber_value,0.00046339202965709,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,10,Homalanthus novoguineensis
+Test_2023_1,Homalanthus novo-guineensis,059,leaf_N_per_dry_mass,22,mg/g,population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,11,Homalanthus novoguineensis
+Test_2023_1,Homalanthus novo-guineensis,059,leaf_area,10682,mm2,population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,11,Homalanthus novoguineensis
+Test_2023_1,Homalanthus novo-guineensis,059,leaf_mass_per_area,82,g/m2,population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,11,Homalanthus novoguineensis
+Test_2023_1,Homalanthus novo-guineensis,059,seed_dry_mass,7,mg,population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,11,Homalanthus novoguineensis
+Test_2023_1,Homalanthus novo-guineensis,059,wood_density,0.319,mg/mm3,population,mean,measurement,3,field,adult,02,,,,01,08,01,03,2004/2004,from Falster_2005_1,11,Homalanthus novoguineensis
+Test_2023_1,Homalanthus novo-guineensis,060,plant_growth_form,climber,,species,mode,expert_score,3,field,adult,,,,,01,08,01,03,2004/2004,from Falster_2005_1,11,Homalanthus novoguineensis
 Test_2023_1,Ixora biflora,061,huber_value,0.000123548307388189,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,12,01,,,02,,,,2002/2002,made-up measurement remarks,01,Ixora biflora
 Test_2023_1,Ixora biflora,062,huber_value,0.0001906941266209,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Ixora biflora
 Test_2023_1,Ixora biflora,062,huber_value,0.00025693730729702,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,02,Ixora biflora
@@ -267,16 +267,16 @@ Test_2023_1,Melastoma cyanoides,074,leaf_area,4009,mm2,population,mean,measureme
 Test_2023_1,Melastoma cyanoides,074,leaf_mass_per_area,46,g/m2,population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Melastoma cyanoides
 Test_2023_1,Melastoma cyanoides,074,seed_dry_mass,0.07,mg,population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Melastoma cyanoides
 Test_2023_1,Melastoma cyanoides,074,wood_density,0.381,mg/mm3,population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Melastoma cyanoides
-Test_2023_1,Melicope elleryana,075,flowering_time,nnnnnyyyynnn,,individual,mode,expert_score,3,field,adult,02,01,,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
-Test_2023_1,Melicope elleryana,075,huber_value,0.000163425396306586,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,02,01,,,01,,01,03,2002/2002,made-up measurement remarks,01,Melicope elleryana
-Test_2023_1,Melicope elleryana,076,huber_value,0.000238038562247084,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,02,,,,01,,01,03,2004/2004,from Falster_2005_1,02,Melicope elleryana
-Test_2023_1,Melicope elleryana,076,huber_value,0.00034965034965035,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,02,,,,01,,01,03,2004/2004,from Falster_2005_1,03,Melicope elleryana
-Test_2023_1,Melicope elleryana,076,leaf_N_per_dry_mass,26.8,mg/g,population,mean,measurement,3,field,adult,02,,,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
-Test_2023_1,Melicope elleryana,076,leaf_area,6955,mm2,population,mean,measurement,3,field,adult,02,,,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
-Test_2023_1,Melicope elleryana,076,leaf_mass_per_area,75,g/m2,population,mean,measurement,3,field,adult,02,,,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
-Test_2023_1,Melicope elleryana,076,seed_dry_mass,1.61,mg,population,mean,measurement,3,field,adult,02,,,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
-Test_2023_1,Melicope elleryana,076,wood_density,0.346,mg/mm3,population,mean,measurement,3,field,adult,02,,,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
-Test_2023_1,Melicope elleryana,077,plant_growth_form,geophyte,,species,mode,expert_score,3,field,adult,,,,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
+Test_2023_1,Melicope elleryana,075,flowering_time,nnnnnyyyynnn,,individual,mode,expert_score,3,field,adult,02,01,01,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
+Test_2023_1,Melicope elleryana,075,huber_value,0.000163425396306586,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,02,01,01,,01,,01,03,2002/2002,made-up measurement remarks,01,Melicope elleryana
+Test_2023_1,Melicope elleryana,076,huber_value,0.000238038562247084,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,02,,01,,01,,01,03,2004/2004,from Falster_2005_1,02,Melicope elleryana
+Test_2023_1,Melicope elleryana,076,huber_value,0.00034965034965035,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,02,,01,,01,,01,03,2004/2004,from Falster_2005_1,03,Melicope elleryana
+Test_2023_1,Melicope elleryana,076,leaf_N_per_dry_mass,26.8,mg/g,population,mean,measurement,3,field,adult,02,,01,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
+Test_2023_1,Melicope elleryana,076,leaf_area,6955,mm2,population,mean,measurement,3,field,adult,02,,01,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
+Test_2023_1,Melicope elleryana,076,leaf_mass_per_area,75,g/m2,population,mean,measurement,3,field,adult,02,,01,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
+Test_2023_1,Melicope elleryana,076,seed_dry_mass,1.61,mg,population,mean,measurement,3,field,adult,02,,01,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
+Test_2023_1,Melicope elleryana,076,wood_density,0.346,mg/mm3,population,mean,measurement,3,field,adult,02,,01,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
+Test_2023_1,Melicope elleryana,077,plant_growth_form,geophyte,,species,mode,expert_score,3,field,adult,,,01,,01,,01,03,2004/2004,from Falster_2005_1,,Melicope elleryana
 Test_2023_1,Myristica insipida,078,huber_value,0.000107839965491211,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,12,01,,,02,,,,2002/2002,made-up measurement remarks,01,Myristica insipida
 Test_2023_1,Myristica insipida,079,huber_value,0.000144320969836917,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,02,Myristica insipida
 Test_2023_1,Myristica insipida,079,huber_value,0.000206100577081616,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,03,Myristica insipida
@@ -285,16 +285,16 @@ Test_2023_1,Myristica insipida,079,leaf_area,8379,mm2,population,mean,measuremen
 Test_2023_1,Myristica insipida,079,leaf_mass_per_area,106,g/m2,population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Myristica insipida
 Test_2023_1,Myristica insipida,079,seed_dry_mass,1612,mg,population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Myristica insipida
 Test_2023_1,Myristica insipida,079,wood_density,0.433,mg/mm3,population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Myristica insipida
-Test_2023_1,Neolitsea dealbata,080,huber_value,0.000133262260127932,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,03,01,,,01,,01,,2002/2002,made-up measurement remarks,01,Neolitsea dealbata
-Test_2023_1,Neolitsea dealbata,081,huber_value,0.000593119810201661,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,03,,,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
-Test_2023_1,Neolitsea dealbata,081,huber_value,0.000364033491081179,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,03,,,,01,,01,,2004/2004,from Falster_2005_1,02,Neolitsea dealbata
-Test_2023_1,Neolitsea dealbata,081,huber_value,0.00032797638570023,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,03,,,,01,,01,,2004/2004,from Falster_2005_1,03,Neolitsea dealbata
-Test_2023_1,Neolitsea dealbata,081,leaf_N_per_dry_mass,16.4,mg/g,population,mean,measurement,3,field,adult,03,,,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
-Test_2023_1,Neolitsea dealbata,081,leaf_area,5228,mm2,population,mean,measurement,3,field,adult,03,,,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
-Test_2023_1,Neolitsea dealbata,081,leaf_mass_per_area,93,g/m2,population,mean,measurement,3,field,adult,03,,,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
-Test_2023_1,Neolitsea dealbata,081,seed_dry_mass,176.1,mg,population,mean,measurement,3,field,adult,03,,,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
-Test_2023_1,Neolitsea dealbata,081,wood_density,0.352,mg/mm3,population,mean,measurement,3,field,adult,03,,,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
-Test_2023_1,Neolitsea dealbata,082,plant_growth_form,geophyte,,species,mode,expert_score,3,field,adult,,,,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
+Test_2023_1,Neolitsea dealbata,080,huber_value,0.000133262260127932,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,03,01,01,,01,,01,,2002/2002,made-up measurement remarks,01,Neolitsea dealbata
+Test_2023_1,Neolitsea dealbata,081,huber_value,0.000593119810201661,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,03,,01,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
+Test_2023_1,Neolitsea dealbata,081,huber_value,0.000364033491081179,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,03,,01,,01,,01,,2004/2004,from Falster_2005_1,02,Neolitsea dealbata
+Test_2023_1,Neolitsea dealbata,081,huber_value,0.00032797638570023,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,03,,01,,01,,01,,2004/2004,from Falster_2005_1,03,Neolitsea dealbata
+Test_2023_1,Neolitsea dealbata,081,leaf_N_per_dry_mass,16.4,mg/g,population,mean,measurement,3,field,adult,03,,01,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
+Test_2023_1,Neolitsea dealbata,081,leaf_area,5228,mm2,population,mean,measurement,3,field,adult,03,,01,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
+Test_2023_1,Neolitsea dealbata,081,leaf_mass_per_area,93,g/m2,population,mean,measurement,3,field,adult,03,,01,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
+Test_2023_1,Neolitsea dealbata,081,seed_dry_mass,176.1,mg,population,mean,measurement,3,field,adult,03,,01,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
+Test_2023_1,Neolitsea dealbata,081,wood_density,0.352,mg/mm3,population,mean,measurement,3,field,adult,03,,01,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
+Test_2023_1,Neolitsea dealbata,082,plant_growth_form,geophyte,,species,mode,expert_score,3,field,adult,,,01,,01,,01,,2004/2004,from Falster_2005_1,,Neolitsea dealbata
 Test_2023_1,Pittosporum rubiginosum,083,huber_value,0.00015271838729383,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,12,01,,,02,,,,2002/2002,made-up measurement remarks,01,Pittosporum rubiginosum
 Test_2023_1,Pittosporum rubiginosum,084,huber_value,0.000134625740441572,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Pittosporum rubiginosum
 Test_2023_1,Pittosporum rubiginosum,084,huber_value,0.000134066228716986,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,02,Pittosporum rubiginosum
@@ -304,14 +304,14 @@ Test_2023_1,Pittosporum rubiginosum,084,leaf_area,9931,mm2,population,mean,measu
 Test_2023_1,Pittosporum rubiginosum,084,leaf_mass_per_area,65,g/m2,population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Pittosporum rubiginosum
 Test_2023_1,Pittosporum rubiginosum,084,seed_dry_mass,27.94,mg,population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Pittosporum rubiginosum
 Test_2023_1,Pittosporum rubiginosum,084,wood_density,0.728,mg/mm3,population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Pittosporum rubiginosum
-Test_2023_1,Polyscias australiana,085,huber_value,0.000149253731343284,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,05,01,,,01,05,02,,2002/2002,made-up measurement remarks,01,Polyscias australiana
-Test_2023_1,Polyscias australiana,086,huber_value,0.000166444740346205,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,05,,,,01,05,02,,2004/2004,from Falster_2005_1,02,Polyscias australiana
-Test_2023_1,Polyscias australiana,086,leaf_N_per_dry_mass,15.4,mg/g,population,mean,measurement,3,field,adult,05,,,,01,05,02,,2004/2004,from Falster_2005_1,,Polyscias australiana
-Test_2023_1,Polyscias australiana,086,leaf_area,6806,mm2,population,mean,measurement,3,field,adult,05,,,,01,05,02,,2004/2004,from Falster_2005_1,,Polyscias australiana
-Test_2023_1,Polyscias australiana,086,leaf_mass_per_area,79,g/m2,population,mean,measurement,3,field,adult,05,,,,01,05,02,,2004/2004,from Falster_2005_1,,Polyscias australiana
-Test_2023_1,Polyscias australiana,086,seed_dry_mass,8.35,mg,population,mean,measurement,3,field,adult,05,,,,01,05,02,,2004/2004,from Falster_2005_1,,Polyscias australiana
-Test_2023_1,Polyscias australiana,086,wood_density,0.397,mg/mm3,population,mean,measurement,3,field,adult,05,,,,01,05,02,,2004/2004,from Falster_2005_1,,Polyscias australiana
-Test_2023_1,Polyscias australiana,087,plant_growth_form,tree,,species,mode,expert_score,3,field,adult,,,,,01,05,02,,2004/2004,from Falster_2005_1,,Polyscias australiana
+Test_2023_1,Polyscias australiana,085,huber_value,0.000149253731343284,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,05,01,01,,01,05,02,,2002/2002,made-up measurement remarks,01,Polyscias australiana
+Test_2023_1,Polyscias australiana,086,huber_value,0.000166444740346205,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,05,,01,,01,05,02,,2004/2004,from Falster_2005_1,02,Polyscias australiana
+Test_2023_1,Polyscias australiana,086,leaf_N_per_dry_mass,15.4,mg/g,population,mean,measurement,3,field,adult,05,,01,,01,05,02,,2004/2004,from Falster_2005_1,,Polyscias australiana
+Test_2023_1,Polyscias australiana,086,leaf_area,6806,mm2,population,mean,measurement,3,field,adult,05,,01,,01,05,02,,2004/2004,from Falster_2005_1,,Polyscias australiana
+Test_2023_1,Polyscias australiana,086,leaf_mass_per_area,79,g/m2,population,mean,measurement,3,field,adult,05,,01,,01,05,02,,2004/2004,from Falster_2005_1,,Polyscias australiana
+Test_2023_1,Polyscias australiana,086,seed_dry_mass,8.35,mg,population,mean,measurement,3,field,adult,05,,01,,01,05,02,,2004/2004,from Falster_2005_1,,Polyscias australiana
+Test_2023_1,Polyscias australiana,086,wood_density,0.397,mg/mm3,population,mean,measurement,3,field,adult,05,,01,,01,05,02,,2004/2004,from Falster_2005_1,,Polyscias australiana
+Test_2023_1,Polyscias australiana,087,plant_growth_form,tree,,species,mode,expert_score,3,field,adult,,,01,,01,05,02,,2004/2004,from Falster_2005_1,,Polyscias australiana
 Test_2023_1,Psychotria dallachiana,088,huber_value,0.000210039907582441,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,12,01,,,02,,,,2002/2002,made-up measurement remarks,01,Psychotria dallachiana
 Test_2023_1,Psychotria dallachiana,089,huber_value,0.000233100233100233,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,,Psychotria dallachiana
 Test_2023_1,Psychotria dallachiana,089,huber_value,0.000176491351923756,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,,,,2004/2004,from Falster_2005_1,02,Psychotria dallachiana
