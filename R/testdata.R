@@ -374,7 +374,7 @@ dataset_test_worker <-
           info = f
         )
 
-        # `data_collectors`
+        # Data collectors
         if (!is.na(metadata[["contributors"]][["data_collectors"]][1])) {
           test_list(metadata[["contributors"]][["data_collectors"]], info = f)
 
@@ -388,15 +388,15 @@ dataset_test_worker <-
           }
         }
 
-        # `austraits_curators`
+        # Dataset curators
         expect_true(!is.null(metadata[["contributors"]][["austraits_curators"]]))
         expect_type(metadata[["contributors"]][["austraits_curators"]], "character")
 
-        # `assistants`
+        # Assistants
         if (!is.null(metadata[["contributors"]][["assistants"]][1]))
           expect_type(metadata[["contributors"]][["assistants"]], "character")
 
-        # `dataset`
+        # Dataset
 
         test_list_named_allowed(metadata[["dataset"]],
                                 schema$metadata$elements$dataset$values %>% names(),
