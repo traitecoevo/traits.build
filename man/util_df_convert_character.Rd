@@ -16,5 +16,5 @@ a dataframe
 Convert all columns in data frame to character
 }
 \examples{
-lapply(traits.build:::util_df_convert_character(iris), class) 
+lapply(traits.build:::util_df_convert_character(iris), class)
 }

@@ -7,7 +7,7 @@
 read_metadata_dataset(dataset_id)
 }
 \arguments{
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the database}
 }
 \value{
 A list with contents of metadata for specified `dataset_id`

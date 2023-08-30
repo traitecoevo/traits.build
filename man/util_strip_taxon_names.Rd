@@ -13,7 +13,7 @@ util_strip_taxon_names(x)
 vector of cleaned names
 }
 \description{
-Enables better fuzzy matching of scientific names by 
+Enables better fuzzy matching of scientific names by
 reducing the number of characters that could differ
 }
 \examples{

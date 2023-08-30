@@ -16,6 +16,6 @@ tibble with flagged values outside of allowable range, unsupported categorical
 trait values or missing values
 }
 \description{
-Flags any values that are outside the allowable range defined in the 
+Flags any values that are outside the allowable range defined in the
 traits.yml file. NA values are flagged as errors.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{build_setup_pipeline}
 \alias{build_setup_pipeline}
-\title{Update the remake.yml file with new studies}
+\title{Update the `remake.yml` file with new studies}
 \usage{
 build_setup_pipeline(
   template = readLines(system.file("support", "remake.yml.whisker", package =
@@ -12,16 +12,16 @@ build_setup_pipeline(
 )
 }
 \arguments{
-\item{template}{template used to build}
+\item{template}{Template used to build}
 
-\item{path}{path to folder with data}
+\item{path}{Path to folder with data}
 
-\item{dataset_ids}{dataset_ids to icnlude. By default includes all.}
+\item{dataset_ids}{`dataset_id`'s to include; by default includes all}
 }
 \value{
-Updated remake.yml file
+Updated `remake.yml` file
 }
 \description{
-`build_setup_pipeline` rewrites the remake.yml file to include new
-studies
+`build_setup_pipeline` rewrites the `remake.yml` file to include new
+studies.
 }

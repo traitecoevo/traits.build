@@ -7,7 +7,7 @@
 metadata_path_dataset_id(dataset_id)
 }
 \arguments{
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the database}
 }
 \value{
 A string

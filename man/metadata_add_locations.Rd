@@ -4,23 +4,26 @@
 \alias{metadata_add_locations}
 \title{For specified `dataset_id` import location data from a dataframe}
 \usage{
-metadata_add_locations(dataset_id, location_data)
+metadata_add_locations(dataset_id, location_data, user_responses = NULL)
 }
 \arguments{
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the database}
 
 \item{location_data}{A dataframe of site variables}
+
+\item{user_responses}{Named list containing simulated user input for manual selection
+of variables, mainly for testing purposes}
 }
 \description{
 This functions asks users which columns in the dataframe they would like to keep
-and records this appropriately in the metadata. The input data is assumed to be 
+and records this appropriately in the metadata. The input data is assumed to be
 in wide format.
 The output may require additional manual editing.
 }
 \examples{
 \dontrun{
-austraits$locations \%>\% dplyr::filter(dataset_id == "Falster_2005_1") \%>\% 
-select(-dataset_id) \%>\% spread(location_property, value) \%>\% type_convert()-> location_data
+austraits$locations \%>\% dplyr::filter(dataset_id == "Falster_2005_1") \%>\%
+select(-dataset_id) \%>\% spread(location_property, value) \%>\% type_convert() -> location_data
 metadata_add_locations("Falster_2005_1", location_data)
 }
 }
