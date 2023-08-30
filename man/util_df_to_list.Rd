@@ -7,14 +7,14 @@
 util_df_to_list(df)
 }
 \arguments{
-\item{df}{a dataframe}
+\item{df}{A dataframe}
 }
 \value{
-a (yaml) list
+A (yaml) list
 }
 \description{
-Convert a dataframe to a named list, useful when converting to yaml
+Convert a dataframe to a named list, useful when converting to yaml.
 }
 \examples{
-util_df_to_list(iris)
+util_df_to_list(dplyr::starwars)
 }

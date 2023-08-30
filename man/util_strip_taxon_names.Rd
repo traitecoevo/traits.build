@@ -7,14 +7,14 @@
 util_strip_taxon_names(x)
 }
 \arguments{
-\item{x}{vector of names to clean}
+\item{x}{Vector of names to clean}
 }
 \value{
-vector of cleaned names
+Vector of cleaned names
 }
 \description{
 Enables better fuzzy matching of scientific names by
-reducing the number of characters that could differ
+reducing the number of characters that could differ.
 }
 \examples{
 c("Bankisa_serrata", "bankisa  serrata", "Banksia Seratta") \%>\% util_strip_taxon_names()

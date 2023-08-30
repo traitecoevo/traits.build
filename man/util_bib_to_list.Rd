@@ -10,7 +10,7 @@ util_bib_to_list(bib)
 \item{bib}{BibEntry object}
 }
 \value{
-list
+List
 }
 \description{
 Convert BibEntry object to a list

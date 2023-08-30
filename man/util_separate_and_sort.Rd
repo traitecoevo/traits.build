@@ -7,16 +7,16 @@
 util_separate_and_sort(x, sep = " ")
 }
 \arguments{
-\item{x}{an individual cell with multiple values}
+\item{x}{An individual cell with multiple values}
 
-\item{sep}{a separator, a whitespace is the default}
+\item{sep}{A separator, a whitespace is the default}
 }
 \value{
-a vector of alphabetically sorted records
+A vector of alphabetically sorted records
 }
 \description{
-util_separate_and_sort: For a vector x in which individual cell may have
- multiple values (separated by 'sep'), sort records within each cell alphabetically
+`util_separate_and_sort`: For a vector x in which individual cell may have
+ multiple values (separated by 'sep'), sort records within each cell alphabetically.
 }
 \examples{
 \dontrun{util_separate_and_sort("z y x")}

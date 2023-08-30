@@ -12,10 +12,10 @@ bib_print(
 \arguments{
 \item{bib}{BibEntry object}
 
-\item{.opts}{list of parameters for formatting style}
+\item{.opts}{List of parameters for formatting style}
 }
 \value{
-character string of formatted reference
+Character string of formatted reference
 }
 \description{
 Format BibEntry object according to desired style using RefManageR

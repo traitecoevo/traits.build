@@ -7,16 +7,16 @@
 util_list_to_df1(my_list)
 }
 \arguments{
-\item{my_list}{a list with single entries}
+\item{my_list}{A list with single entries}
 }
 \value{
-a tibble with two columns
+A tibble with two columns
 }
 \description{
 Convert a list with single entries to dataframe
 }
 \examples{
 \dontrun{
-util_list_to_df1(as.list(iris)[2])
+util_list_to_df1(as.list(dplyr::starwars)[2])
 }
 }

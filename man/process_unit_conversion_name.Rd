@@ -7,14 +7,14 @@
 process_unit_conversion_name(from, to)
 }
 \arguments{
-\item{from}{character of original units}
+\item{from}{Character of original units}
 
-\item{to}{character of units to be converted to}
+\item{to}{Character of units to be converted to}
 }
 \value{
-character string containing the name what units are being converted to
+Character string containing the name what units are being converted to
 }
 \description{
-creates the unit conversion name based on the original units and the units to
-converted to
+Creates the unit conversion name based on the original units and the units to be
+converted to.
 }

@@ -9,11 +9,11 @@ build_update_taxonomy(austraits_raw, taxa)
 \arguments{
 \item{austraits_raw}{AusTraits compiled data as a large list without taxonomic updates applied}
 
-\item{taxa}{taxon list}
+\item{taxa}{Taxon list}
 }
 \value{
-list AusTraits compiled data with taxonomic updates applied
+List of AusTraits compiled data with taxonomic updates applied
 }
 \description{
-Applies taxonomic updates to austraits_raw
+Applies taxonomic updates to austraits_raw.
 }

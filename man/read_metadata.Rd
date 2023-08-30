@@ -2,13 +2,13 @@
 % Please edit documentation in R/utils.R
 \name{read_metadata}
 \alias{read_metadata}
-\title{Read in a metadata.yml file for a study}
+\title{Read in a `metadata.yml` file for a study}
 \usage{
 read_metadata(path)
 }
 \arguments{
-\item{path}{location of the metadata file}
+\item{path}{Location of the metadata file}
 }
 \description{
-Read in a metadata.yml file for a study
+Read in a `metadata.yml` file for a study
 }
