@@ -295,7 +295,7 @@ dataset_test_worker <-
         expect_silent(data <-
                         read_csv(
                           f,
-                          col_types = cols(.default = "c"),
+                          col_types = cols(),
                           guess_max = 1e5,
                           progress = FALSE
                         ))

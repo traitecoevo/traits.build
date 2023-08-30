@@ -104,7 +104,7 @@ dataset_process <- function(filename_data_raw,
   # Load and clean trait data
   traits <-
     # Read all columns as character type to prevent time data types from being reformatted
-    readr::read_csv(filename_data_raw, col_types = cols(.default = "c"), guess_max = 100000, progress = FALSE) %>%
+    readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
     process_parse_data(dataset_id, metadata, contexts)
 
