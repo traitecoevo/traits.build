@@ -13,7 +13,7 @@ process_create_observation_id(data)
 character string
 }
 \description{
-Creates 3-part entity id codes that combine a segment for species, population, 
+Creates 3-part entity id codes that combine a segment for species, population,
 and, when applicable, individual
 This depends upon a parsing_id being established when the data.csv file is first read in
 }

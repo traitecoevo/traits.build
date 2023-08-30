@@ -15,6 +15,6 @@ notetaker_as_note(note, link = NA_character_)
 a tibble with two columns named note and link
 }
 \description{
-Creates a tibble with two columns with one column consisting 
+Creates a tibble with two columns with one column consisting
 of a randomly generated string of letters
 }

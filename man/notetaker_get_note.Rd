@@ -15,6 +15,6 @@ notetaker_get_note(notes, i = nrow(notes))
 a single row from a tibble
 }
 \description{
-Returns a specific row from notes specified by i. Default is nrow(notes) which 
+Returns a specific row from notes specified by i. Default is nrow(notes) which
 returns the last note
 }
