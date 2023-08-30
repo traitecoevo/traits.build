@@ -437,7 +437,7 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
       ii <- n_existing + i
       category <- metadata_user_select_names(
         paste("What category does context", var_in[i], "fit in?"), categories)
-      context_values <- data[[var_in[i]]] %>% unique()
+      context_values <- data[[var_in[i]]] %>% unique() %>% na.omit()
 
       message(sprintf("\tThe following values exist for this context: %s", context_values %>% paste(collapse = ", ")))
 
