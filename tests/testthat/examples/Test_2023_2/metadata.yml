@@ -74,7 +74,6 @@ traits:
   unit_in: mg/mm2
   trait_name: leaf_mass_per_area
   entity_type: population
-  value_type: value_type
   basis_of_value: measurement
   methods: LMA was calculated as the leaf dry mass (oven-dried for 48 hours at 65
     deg C) divided by leaf size. It was measured on the first five fully expanded
@@ -124,7 +123,7 @@ traits:
   value_type: value_type
   replicates: unknown
   basis_of_record: literature
-  life_stage: seedling
+  life_stage: life_stage
   methods: Mean oven-dried seed mass (including seed coat but excluding seed accessories)
     was estimated for all species with available field material. In total, collections
     for 17 of 47 species were made. Data for an additional 12 species were drawn from
