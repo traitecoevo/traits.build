@@ -274,7 +274,7 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
   # Check if existing content, if so append
   if (!all(is.na(metadata$traits))) {
 
-    existing_var_in <- metadata$traits %>% util_list_to_df2 %>% pull("var_in")
+    existing_var_in <- metadata$traits %>% util_list_to_df2 %>% dplyr::pull("var_in")
     if (any(var_in %in% existing_var_in)) {
       message(
         sprintf(red("Following traits already exist in the metadata and will be skipped: ") %+%
@@ -437,7 +437,7 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
       ii <- n_existing + i
       category <- metadata_user_select_names(
         paste("What category does context", var_in[i], "fit in?"), categories)
-      context_values <- data[[var_in[i]]] %>% unique()
+      context_values <- data[[var_in[i]]] %>% unique() %>% na.omit()
 
       message(sprintf("\tThe following values exist for this context: %s", context_values %>% paste(collapse = ", ")))
 
@@ -544,9 +544,9 @@ metadata_add_source_bibtex <- function(dataset_id, file,
     )) %>% unlist %>% paste(collapse = " ")
 
   # Standardise key capitalisation
-  bib[["key"]] <- word(bib[["key"]], 1L, sep = "_") %>%
+  bib[["key"]] <- stringr::word(bib[["key"]], 1L, sep = "_") %>%
     stringr::str_to_title() %>%
-    paste(word(bib[["key"]], 2, sep = "_"), sep = "_")
+    paste(stringr::word(bib[["key"]], 2, sep = "_"), sep = "_")
 
   # Somewhat sensible ordering of elements
   order <- c("key", "bibtype", "year", "author", "journal", "title", "volume", "number",
@@ -748,10 +748,7 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
   dataframe_of_substitutions <-
     dataframe_of_substitutions %>%
     dplyr::mutate(rows = dplyr::row_number()) %>%
-    dplyr::group_split(rows)
-
-
-
+    dplyr::group_split(.data$rows)
 
   # Add substitutions to metadata files
   for (i in 1:max(dataframe_of_substitutions)$rows) {
@@ -1138,7 +1135,7 @@ build_find_taxon <- function(taxa, austraits, original_name = FALSE) {
   if (!original_name) {
     data <- data %>%
       dplyr::select(dplyr::all_of(c("taxon_name", "dataset_id"))) %>%
-      dplyr::rename(name = taxon_name) %>%
+      dplyr::rename(name = .data$taxon_name) %>%
       dplyr::distinct()
   } else {
     data <- data %>%

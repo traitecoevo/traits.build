@@ -7,18 +7,18 @@
 create_tree_branch(x, title, prefix = "")
 }
 \arguments{
-\item{x}{vector of terms}
+\item{x}{Vector of terms}
 
-\item{title}{name of branch}
+\item{title}{Name of branch}
 
-\item{prefix}{specifies the amount of indentation}
+\item{prefix}{Specifies the amount of indentation}
 }
 \value{
-vector of character strings for the tree structure
+Vector of character strings for the tree structure
 }
 \description{
 `create_tree_branch()` is used to create a tree structure to show how things
 are related. In AusTraits, this is used in the vignettes to show the file
 structure of the repository and also to show the different components of the
-AusTraits database
+AusTraits database.
 }

@@ -80,7 +80,7 @@ contexts:
   category: plot
   var_in: slope position
   values:
-  - value: bottom slope
+  - find: bottom slope
     description: bottom slope
   - value: dune crest
     description: dune crest
@@ -96,12 +96,15 @@ contexts:
     description: high nutrient treatment
   - value: low nutrient
     description: low nutrient treatment
+  - find: .na.character
+    value: .na.character
+    description: .na.character
 - context_property: sampling time of day
   category: temporal
   var_in: sampling time of day
   values:
   - value: '17:00:00'
-  - value: '09:00:00'
+  - value: '9:00:00'
 - context_property: instrument used
   category: method
   var_in: instrument used
@@ -112,6 +115,9 @@ contexts:
     description: instrument 2
   - find: instrument 3
     value: .na.character
+    description: .na.character
+  - find: .na.character
+    value: instrument 4
     description: .na.character
 - context_property: tree height
   category: entity_context
@@ -129,9 +135,8 @@ contexts:
   values:
   - value: 250 mm branch
     description: Measured on a 250 mm branch segment
-  - value: 50 mm branch
-    description: Measured on a 50 mm branch segment
-  - value: 1000 mm branch
+  - description: Measured on a 50 mm branch segment
+  - value: .na.character
     description: Measured on a 1000 mm branch segment
 traits:
 - var_in: LMA (mg mm-2)

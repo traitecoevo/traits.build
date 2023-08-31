@@ -7,17 +7,17 @@
 process_format_locations(my_list, dataset_id, schema)
 }
 \arguments{
-\item{my_list}{list of input information}
+\item{my_list}{List of input information}
 
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the AusTraits database}
 
-\item{schema}{XXX}
+\item{schema}{Schema for traits.build}
 }
 \value{
-tibble with location details if available
+Tibble with location details if available
 }
 \description{
-Format location data read in from the metadata.yml file. Converts from list to tibble.
+Format location data read in from the `metadata.yml` file. Converts from list to tibble.
 }
 \examples{
 \dontrun{

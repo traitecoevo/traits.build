@@ -7,12 +7,12 @@
 build_find_taxon(taxa, austraits, original_name = FALSE)
 }
 \arguments{
+\item{taxa}{A vector which contains species names}
+
 \item{austraits}{AusTraits compilation}
 
 \item{original_name}{Logical; if TRUE use column in compilation which contains original
 species names, default = FALSE}
-
-\item{taxon_name}{A vector which contains species names}
 }
 \value{
 List of unique datasets within compilation containing each taxon

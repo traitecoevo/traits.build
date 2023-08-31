@@ -7,16 +7,16 @@
 process_parse_data(data, dataset_id, metadata, contexts)
 }
 \arguments{
-\item{data}{tibble or dataframe containing the study data}
+\item{data}{Tibble or dataframe containing the study data}
 
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the AusTraits database}
 
-\item{metadata}{yaml file with metadata}
+\item{metadata}{Yaml file with metadata}
 
-\item{contexts}{dataframe of contexts for this study}
+\item{contexts}{Dataframe of contexts for this study}
 }
 \value{
-tibble in long format with AusTraits formatted trait names, trait
+Tibble in long format with AusTraits formatted trait names, trait
 substitutions and unique observation id added
 }
 \description{

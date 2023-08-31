@@ -7,22 +7,22 @@
 dataset_configure(filename_metadata, definitions, unit_conversion_functions)
 }
 \arguments{
-\item{filename_metadata}{metadata yaml file for a given study}
+\item{filename_metadata}{Metadata yaml file for a given study}
 
-\item{definitions}{definitions read in from the traits.yml}
+\item{definitions}{Definitions read in from the `traits.yml`}
 
-\item{unit_conversion_functions}{unit_conversion.csv file read in from the config folder}
+\item{unit_conversion_functions}{`unit_conversion.csv` file read in from the config folder}
 }
 \value{
-list with dataset_id, metadata, definitions and unit_conversion_functions
+List with `dataset_id`, `metadata`, `definitions` and `unit_conversion_functions`
 }
 \description{
 Creates the config object which gets passed onto `dataset_process`. The config list contains
 the subset of definitions and unit conversions for those traits for a each study.
-`dataset_configure` is used in the remake::make process to configure individual studies mapping the
+`dataset_configure` is used in the `remake::make` process to configure individual studies mapping the
 individual traits found in that study along with any relevant unit conversions
 and definitions. `dataset_configure` and `dataset_process` are applied to every study
-in the remake.yml file
+in the `remake.yml` file.
 }
 \examples{
 \dontrun{
