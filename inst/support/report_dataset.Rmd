@@ -659,7 +659,7 @@ for (trait in traits_categorical) {
     "",
     elements$allowed_values_levels %>%
       unlist() %>% as.data.frame() %>% tibble::rownames_to_column() %>%
-      rename(c("trait_value" = "rowname", "definition" = ".")) %>% arrange(trait_value) %>%
+      rename(all_of(c("trait_value" = "rowname", "definition" = "."))) %>% arrange(trait_value) %>%
       my_kable_styling(),
     "",
     ifelse(nrow(substitutions_for_trait) > 0,
@@ -667,7 +667,7 @@ for (trait in traits_categorical) {
       "No substitutions were required to align the data for this trait with AusTraits allowed trait values."),
     ifelse(nrow(substitutions_for_trait) > 0,
       substitutions_for_trait %>%
-        rename("value in contributed data table" = find, "AusTraits aligned value" = replace) %>%
+        rename(all_of("value in contributed data table" = find, "AusTraits aligned value" = replace)) %>%
         my_kable_styling(),
       ""
     ),
