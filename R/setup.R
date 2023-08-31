@@ -360,10 +360,18 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
   }
 
   # Save and notify
-
   location_data <-  location_data %>%
     dplyr::select(dplyr::all_of(c(location_name, keep))) %>%
     distinct()
+
+  if (is.na(keep[1])) {
+    location_data <-  location_data %>%
+    dplyr::mutate(
+      `latitude (deg)` = NA_character_,
+      `longitude (deg)` = NA_character_,
+      `desscription` = NA_character_,
+      )
+  }
   
   metadata$locations <- location_data %>%
     dplyr::select(-location_name) %>%  
@@ -376,7 +384,7 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
         red("with variables ") %+% green("'%s'\n\t") %+% red("Please complete information in %s"),
       blue(dataset_id),
       paste(names(metadata$locations), collapse = "', '"),
-      paste(keep, collapse = "', '"),
+      ifelse(is.na(keep[1]),"latitude (deg)', 'longitude (deg)', 'description",paste(keep, collapse = "', '")),
       blue(dataset_id %>% metadata_path_dataset_id())
     )
   )
