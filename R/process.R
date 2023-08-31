@@ -391,7 +391,7 @@ process_create_observation_id <- function(data) {
     dplyr::group_by(.data$dataset_id) %>%
     dplyr::mutate(
       observation_id =
-        paste(.data$taxon_name, .data$population_id, .data$individual_id, .data$temporal_id, .data$entity_type, sep = "-") %>%
+        paste(.data$taxon_name, .data$population_id, .data$individual_id, .data$temporal_id, .data$entity_type, .data$life_stage, sep = "-") %>%
         process_generate_id("", sort = TRUE)
     ) %>%
     dplyr::ungroup()
@@ -1156,7 +1156,6 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
       )
 
 # XXXX Why doesn't this work? process_add_all_columns(names(schema[["austraits"]][["elements"]][["contexts"]][["elements"]]))
-
   } else {
     context_ids <- process_create_context_ids(out, contexts)
 
@@ -1184,10 +1183,10 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
 
     for (i in seq_len(nrow(substitutions_table))) {
       j <- which(out[["trait_name"]] == substitutions_table[["trait_name"]][i] &
-                  stringr::str_detect(out[["value"]], paste0("(^|\\s)", substitutions_table[["find"]][i], "(\\s|$)")))
+                  stringr::str_detect(out[["value"]], paste0("(^|\\s)", fixed(substitutions_table[["find"]][i]), "(\\s|$)")))
 
       if (length(j) > 0) {
-        out[["value"]][j] <- stringr::str_replace_all(out[["value"]][j], substitutions_table[["find"]][i], substitutions_table[["replace"]][i]) %>% stringr::str_squish()
+        out[["value"]][j] <- stringr::str_replace_all(out[["value"]][j], fixed(substitutions_table[["find"]][i]), substitutions_table[["replace"]][i]) %>% stringr::str_squish()
       }
     }
 
