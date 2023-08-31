@@ -443,8 +443,8 @@ if (nrow(subset(data_study$excluded_data, error != "Missing value")) > 0) {
   if (nrow(subset(data_study$excluded_data, error == "Unsupported trait value")) > 0) {
     data_study$excluded_data %>%
       filter(error == "Unsupported trait value") %>%
-      select(trait_name, value) %>%
-      rename(`value that is unaligned` = value) %>%
+      select(all_of("trait_name", "value")) %>%
+      rename("value that is unaligned" = "value") %>%
       distinct() %>%
       arrange(trait_name, `value that is unaligned`) %>%
       my_kable_styling() %>%
@@ -659,7 +659,7 @@ for (trait in traits_categorical) {
     "",
     elements$allowed_values_levels %>%
       unlist() %>% as.data.frame() %>% tibble::rownames_to_column() %>%
-      rename(trait_value = "rowname", definition = ".") %>% arrange(trait_value) %>%
+      rename(c("trait_value" = "rowname", "definition" = ".")) %>% arrange(trait_value) %>%
       my_kable_styling(),
     "",
     ifelse(nrow(substitutions_for_trait) > 0,
