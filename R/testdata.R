@@ -41,7 +41,7 @@ dataset_test <-
 #' @inheritParams dataset_test
 #' @param schema Data schema
 #' @param definitions Trait defininitons
-#' @importFrom testthat local_edition compare expect expect_true expect_named test_that context expect_silent expect_type
+#' @importFrom testthat local_edition compare expect expect_true expect_false expect_named test_that context expect_silent expect_type
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
 dataset_test_worker <-

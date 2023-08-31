@@ -486,7 +486,7 @@ process_create_context_ids <- function(data, contexts) {
   # Extract context columns
   context_cols <- data %>%
     dplyr::select(tmp$var_in) %>%
-    dplyr::mutate(across(everything(), as.character))
+    dplyr::mutate(dplyr::across(everything(), as.character))
   names(context_cols) <- tmp$context_property
 
   # Find and replace values for each context property
@@ -563,12 +563,12 @@ process_create_context_ids <- function(data, contexts) {
 
   contexts_finished <-
     contexts %>%
-    filter(!is.na(value)) %>%
+    filter(!is.na(.data$value)) %>%
     dplyr::left_join(
       id_link %>% dplyr::bind_rows(),
       by = c("context_property", "category", "value")
     ) %>%
-    distinct(across(-dplyr::any_of("find")))
+    distinct(dplyr::across(-dplyr::any_of("find")))
 
   list(
     contexts = contexts_finished %>% util_df_convert_character(),
@@ -671,7 +671,7 @@ process_flag_excluded_observations <- function(data, metadata) {
   fix <-
     metadata$exclude_observations %>%
     util_list_to_df2() %>%
-    tidyr::separate_rows(find, sep = ", ") %>%
+    tidyr::separate_rows(.data$find, sep = ", ") %>%
     dplyr::mutate(find = str_squish(.data$find))
 
   if (nrow(fix) == 0) return(data)
@@ -1103,7 +1103,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
       }
     }
     # Convert replicates column to character type to allow `bind_rows`
-    out <- out %>% purrr::map(~mutate(.x, across(dplyr::any_of("replicates"), ~as.character(.x))))
+    out <- out %>% purrr::map(~mutate(.x, dplyr::across(dplyr::any_of("replicates"), ~as.character(.x))))
     out <- dplyr::bind_rows(out)
   } else {
 
@@ -1520,7 +1520,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
 
   austraits_raw$traits <-
     austraits_raw$traits %>%
-    dplyr::rename(cleaned_name = taxon_name) %>%
+    dplyr::rename(cleaned_name = .data$taxon_name) %>%
     dplyr::left_join(by = "cleaned_name",
               taxa %>% dplyr::select(dplyr::all_of(c("cleaned_name", "taxon_name", "taxon_rank")))
               ) %>%
@@ -1537,9 +1537,9 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::select(dplyr::all_of(c("taxon_name", "family", "taxonomic_reference", "taxon_id",
                   "scientific_name_id", "taxonomic_status"))) %>%
     dplyr::rename(
-      name_to_match_to = taxon_name, taxonomic_reference_genus = taxonomic_reference,
-      taxon_id_genus = taxon_id, scientific_name_id_genus = scientific_name_id,
-      taxonomic_status_genus = taxonomic_status
+      name_to_match_to = .data$taxon_name, taxonomic_reference_genus = .data$taxonomic_reference,
+      taxon_id_genus = .data$taxon_id, scientific_name_id_genus = .data$scientific_name_id,
+      taxonomic_status_genus = .data$taxonomic_status
     ) %>%
     dplyr::distinct()
 
@@ -1615,7 +1615,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
       ) %>%
       # Remove family, taxon_rank; they are about to be merged back in, but matches will now be possible to more rows
       select(-dplyr::all_of(c("taxon_rank", "taxonomic_resolution"))) %>%
-      dplyr::rename(family_tmp = family) %>%
+      dplyr::rename(family_tmp = .data$family) %>%
       util_df_convert_character() %>%
       # Merge in all data from taxa
       dplyr::left_join(by = c("name_to_match_to" = "taxon_name"),
