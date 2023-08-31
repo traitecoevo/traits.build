@@ -742,12 +742,12 @@ if (nrow(tmp) < 10000) {
   tmp %>%
   mutate(
     taxon_name = as_link(taxon_id, taxon_name)) %>%
-  mutate_all(replace_na, "") %>%
+  mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   my_kable_styling()
 } else {
   cat(crayon:red("\t\tTable too large to dsiplay\n"))
   tmp %>%
-  mutate_all(replace_na, "") %>%
+  mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   write_csv(paste0(dataset_id, "_taxa.csv"))
 }
 ```
@@ -776,7 +776,7 @@ data_study$taxonomic_updates %>% select(-dataset_id) %>%
     )
   ) %>%
   select(original_name, d1, cleaned_name, d2, taxon_name, `status cleaned name`) %>%
-  mutate_all(replace_na, "") %>%
+  mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   my_kable_styling()
 ```
 
@@ -789,7 +789,7 @@ data_study$taxa %>%
   filter(is.na(taxon_id)) %>%
   select(one_of(names(schema$austraits$elements$taxa$elements))) %>%
   select(-taxon_id, -scientific_name_id, -taxon_distribution, -establishment_means) %>%
-  mutate_all(replace_na, "") %>%
+  mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   my_kable_styling()
 ```
 
