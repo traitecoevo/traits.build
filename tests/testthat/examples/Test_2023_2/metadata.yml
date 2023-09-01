@@ -56,7 +56,6 @@ locations:
     description: Tropical rain forest vegetation.
     elevation (m): 800
     rainfall (mm): 2000
-    basis_of_value: measurement
     collection_date: '2002/2003'
   Cape Tribulation:
     description: Complex mesophyll vine forest in tropical rain forest.

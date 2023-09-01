@@ -3,7 +3,7 @@ Acacia celsa,acacel,Atherton,0.145,0.0214,2786,0.498,0.67,10.3,2977,7260,3722,68
 Acronychia acidula,acraci,Atherton,0.085,0.0243,14302,0.525,0.48,,,7560,5541,9480,1,measurement,raw,adult,Test_2022
 Alphitonia petriei,alppet,Atherton,0.149,0.0163,6820,0.413,0.42,27.2,,4340,3313,4335,1,measurement,raw,adult,Test_2022
 Glochidion hylandii,glohyl,Atherton,0.106,0.0137,3209,0.566,0.41,10.41,1993,5075,5455,8664,3,measurement,mean,adult,Test_2002
-Homalanthus novoguineensis,omanov,Atherton,0.082,0.022,10682,0.319,0.47,7,,2136,2158,3307,3,model_derived,mean,adult,Test_2002
+Homalanthus novoguineensis,omanov,Atherton,0.082,0.022,10682,0.319,0.47,7,,2136,2158,3307,3,model_derived,mean,seedling,Test_2002
 Melicope elleryana,melell,Atherton,0.075,0.0268,6955,0.346,0.58,1.61,,4201,2860,6119,3,unknown,mean,juvenile,Test_2002
 Neolitsea dealbata,neodea,Atherton,0.093,0.0164,5228,0.352,0.58,176.1,1686,2747,3049,7504,2,,mean,juvenile,Test_2002
 Polyscias australiana,polaus,Atherton,0.079,0.0154,6806,0.397,0.42,8.35,,6008,,6700,2,,mean,,Test_2002
@@ -17,12 +17,12 @@ Atractocarpus hirtus,atrhir,Cape Tribulation,0.072,0.0157,11374,0.804,0.28,,,714
 Brombya platynema,bropla,Cape Tribulation,0.106,0.0188,8218,0.603,0.33,,,4261,3531,5377,1,measurement,,juvenile,Test_2002
 Cardwellia sublimis,carsub,Cape Tribulation,0.127,0.0128,4352,0.603,0.56,582.3,,6315,4880,8282,1,model_derived,,juvenile,Test_2022
 Castanospermum australe,casaus,Cape Tribulation,0.117,0.0237,2765,0.587,0.37,14851,,7329,,8869,3,model_derived,,juvenile,Test_2022
-Cleistanthus myrianthus,clemyr,Cape Tribulation,0.078,0.0228,4828,0.588,0.56,,3720,6084,5233,8559,3,measurement,raw,juvenile,Test_2022
-Cryptocarya laevigata,crylae,Cape Tribulation,0.087,0.0156,2682,0.64,0.65,1281,1391,3297,4680,7588,3,measurement,maximum,juvenile,Test_2022
-Cryptocarya mackinnoniana,crymac,Cape Tribulation,0.204,0.0152,10458,0.655,0.61,204,,3277,2325,8657,3,measurement,mean,juvenile,Test_2022
-Cryptocarya murrayi,crymur,Cape Tribulation,0.155,0.0167,9960,0.674,0.39,,2693,5543,4298,5451,,measurement,mean,juvenile,Test_2022
-Dendrocnide moroides,denmor,Cape Tribulation,0.052,0.0312,26454,0.23,0.46,0.71,,2372,,2090,,measurement,mean,juvenile,Test_2022
-Elaeocarpus grandis,elaang,Cape Tribulation,0.122,0.0187,2762,0.499,0.47,3699,,2598,1748,4635,2,measurement,mean,juvenile,Test_2022
+Cleistanthus myrianthus,clemyr,Cape Tribulation,0.078,0.0228,4828,0.588,0.56,,3720,6084,5233,8559,3,measurement,raw,seedling,Test_2022
+Cryptocarya laevigata,crylae,Cape Tribulation,0.087,0.0156,2682,0.64,0.65,1281,1391,3297,4680,7588,3,measurement,maximum,seedling,Test_2022
+Cryptocarya mackinnoniana,crymac,Cape Tribulation,0.204,0.0152,10458,0.655,0.61,204,,3277,2325,8657,3,measurement,mean,seedling,Test_2022
+Cryptocarya murrayi,crymur,Cape Tribulation,0.155,0.0167,9960,0.674,0.39,,2693,5543,4298,5451,,measurement,mean,seedling,Test_2022
+Dendrocnide moroides,denmor,Cape Tribulation,0.052,0.0312,26454,0.23,0.46,0.71,,2372,,2090,,measurement,mean,seedling,Test_2022
+Elaeocarpus grandis,elaang,Cape Tribulation,0.122,0.0187,2762,0.499,0.47,3699,,2598,1748,4635,2,measurement,mean,seedling,Test_2022
 Endiandra leptodendron,endlep,Cape Tribulation,0.106,0.018,3987,0.611,0.68,,1492,2412,2783,7477,2,model_derived,mean,,Test_2022
 Endiandra microneura,endmic,Cape Tribulation,0.151,0.0177,3377,0.623,0.61,,3573,6344,3354,6235,2,unknown,mean,,Test_2022
 Gillbeea adenopetala,gilade,Cape Tribulation,0.126,0.0096,3678,0.43,0.46,15,,2863,3160,6549,2,unknown,mean,,Test_2022
