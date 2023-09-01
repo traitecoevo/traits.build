@@ -105,7 +105,7 @@ dataset_process <- function(filename_data_raw,
   traits <-
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
-    process_parse_data(dataset_id, metadata, contexts)
+    process_parse_data(dataset_id, metadata, contexts, schema)
 
   # context ids needed to continue processing
   context_ids <- traits$context_ids
@@ -961,7 +961,7 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' substitutions and unique observation id added
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
 #' @importFrom rlang .data
-process_parse_data <- function(data, dataset_id, metadata, contexts) {
+process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
   # get config data for dataset
   data_is_long_format <- metadata[["dataset"]][["data_is_long_format"]]
@@ -970,11 +970,11 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
   var_in <- unlist(metadata[["dataset"]])
   i <- var_in %in% names(data)
 
+  v <- setNames(nm=c("entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_id"))
+
   df <- data %>%
         # next step selects and renames columns based on named vector
-        dplyr::select(
-          any_of(c(var_in[i], "entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_id", contexts$var_in))
-        ) %>%
+        dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in))) %>%
         dplyr::mutate(dataset_id = dataset_id)
 
   # Step 1b. import any values that aren't columns of data
@@ -1076,6 +1076,10 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
 
   vars_traits <- c(vars, contexts$var_in)
 
+  not_allowed <- c(
+    schema[["entity_type"]][["values"]] %>% names(),
+    schema[["value_type"]][["values"]] %>% names()
+  )
   ## if needed, change from wide to long format
   if (!data_is_long_format) {
 
@@ -1104,7 +1108,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
         # Question: Why can't `entity_type`, `basis_of_value` come in as column of data?
 
         if (!is.na(value)) {
-          if (!is.null(data[[value]]) && !(v %in% c("entity_type", "basis_of_value"))) {
+          if (!is.null(data[[value]]) & !(value %in% not_allowed)) {
             out[[i]][[v]] <- data[[value]] %>% as.character()
           } else {
             out[[i]][[v]] <- value %>% as.character()
