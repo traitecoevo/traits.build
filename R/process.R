@@ -305,11 +305,11 @@ process_create_observation_id <- function(data) {
         (!is.na(.data$location_name) |
          !is.na(.data$treatment_id) |
          !is.na(.data$plot_id)) &
-         .data$entity_type %in% c("individual", "population"),
+         .data$entity_type %in% c("individual", "population", "metapopulation"),
          process_generate_id(.data$population_id, "", sort = TRUE),
          NA),
       pop_id_segment = ifelse(is.na(.data$pop_id_segment) &
-                              .data$entity_type %in% c("individual", "population"),
+                              .data$entity_type %in% c("individual", "population", "metapopulation"),
                               "pop_unk", .data$pop_id_segment),
       population_id = .data$pop_id_segment
     )
