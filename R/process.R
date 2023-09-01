@@ -113,7 +113,7 @@ dataset_process <- function(filename_data_raw,
   locations <-
     metadata$locations %>%
     process_format_locations(dataset_id, schema)
-
+  
   traits <-
     traits$traits %>%
     process_add_all_columns(
@@ -199,17 +199,35 @@ dataset_process <- function(filename_data_raw,
     ) %>%
     dplyr::distinct() %>%
     dplyr::arrange(.data$cleaned_name)
-
+  
+  # a temporary dataframe created to generate and bind method_id, 
+  # for instances where the same trait is measured twice using different methods
+  
+  tmp_bind <-
+    metadata[["traits"]] %>%
+    util_list_to_df2() %>%
+    dplyr::filter(!is.na(.data$trait_name)) %>%
+    dplyr::group_by(.data$trait_name, .data$value_type) %>%
+    dplyr::mutate(method_id = dplyr::row_number()) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(.data$trait_name, .data$methods, .data$method_id)
+  
   # ensure correct order of columns in traits table
   # at this point, need to retain `taxonomic_resolution`, because taxa table & taxonomic_updates not yet assembled.
+  
   traits <-
     traits %>%
+    dplyr::select(-.data$method_id) %>% #need to remove blank column to bind in real one; blank exists because method_id in schema
+    dplyr::left_join(
+      by = c("trait_name", "methods"),
+      tmp_bind
+    ) %>%
     dplyr::select(
       dplyr::all_of(c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
       "error", "taxonomic_resolution"))
     )
 
-  # Remove missing values is specified
+    # Remove missing values is specified
   if (filter_missing_values == TRUE) {
     traits <-
       traits %>% dplyr::filter(!(!is.na(.data$error) & (.data$error == "Missing value")))
@@ -621,7 +639,7 @@ process_format_locations <- function(my_list, dataset_id, schema) {
       names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]),
       add_error_column = FALSE
     ) %>%
-    dplyr::group_by(dataset_id) %>%
+    dplyr::group_by(.data$dataset_id) %>%
     dplyr::mutate(
       location_id = process_generate_id(.data$location_name, "", sort = TRUE)
     ) %>%
@@ -981,7 +999,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   vars <- c("entity_type", "value_type", "basis_of_value",
             "replicates", "collection_date",
             "basis_of_record", "life_stage",
-            "measurement_remarks", "source_id")
+            "measurement_remarks", "source_id", "methods")
 
   df <-
     df %>%
@@ -1065,10 +1083,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   traits_table <-
     metadata[["traits"]] %>%
     util_list_to_df2() %>%
-    dplyr::filter(!is.na(.data$trait_name)) %>% # remove any rows without a matching trait record
-    group_by(trait_name, value_type) %>%
-      dplyr::mutate(method_id = row_number()) %>% #if the same trait has been measured twice using different methods, add a method_id to avoid duplication
-    ungroup()
+    dplyr::filter(!is.na(.data$trait_name))
 
   # check that the trait names as specified in config actually exist in data
   # if not then we need to stop and fix this problem
@@ -1284,11 +1299,11 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
         util_list_to_df2() %>%
         dplyr::filter(!is.na(.data$trait_name)) %>%
         dplyr::mutate(dataset_id = dataset_id) %>%
-        dplyr::select(dplyr::all_of(c("dataset_id", "trait_name", "methods", "value_type"))) %>%
-        group_by(trait_name, value_type) %>%
-          dplyr::mutate(method_id = row_number()) %>%
-        ungroup() %>%
-        dplyr::select(-value_type)
+        dplyr::select(.data$dataset_id, .data$trait_name, .data$methods, .data$value_type) %>%
+        dplyr::group_by(.data$trait_name, .data$value_type) %>%
+          dplyr::mutate(method_id = dplyr::row_number()) %>%
+        dplyr::ungroup() %>%
+        dplyr::select(-.data$value_type)
       ,
       # study methods
       metadata$dataset %>%
