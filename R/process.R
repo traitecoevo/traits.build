@@ -519,7 +519,7 @@ process_create_context_ids <- function(data, contexts) {
     dplyr::select(dplyr::all_of(c("context_property", "category", "value"))) %>%
     dplyr::distinct()
 
-  categories <- c("plot", "treatment", "entity_context", "temporal", "method") %>% subset(., . %in% tmp$category)
+  categories <- c("plot", "treatment", "entity_context", "temporal", "method_context") %>% subset(., . %in% tmp$category)
 
   ids <- dplyr::tibble(.rows = nrow(context_cols))
 
@@ -970,7 +970,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   var_in <- unlist(metadata[["dataset"]])
   i <- var_in %in% names(data)
 
-  v <- setNames(nm=c("entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_id"))
+  v <- setNames(nm=c("entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_context_id"))
 
   df <- data %>%
         # next step selects and renames columns based on named vector

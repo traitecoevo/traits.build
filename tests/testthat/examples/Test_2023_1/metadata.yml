@@ -109,7 +109,7 @@ contexts:
   - value: '17:00:00'
   - value: '9:00:00'
 - context_property: instrument used
-  category: method
+  category: method_id
   var_in: instrument used
   values:
   - value: instrument 1
@@ -130,7 +130,7 @@ contexts:
   - value: 1.0
   - value: 2.0
 - context_property: branch length
-  category: method
+  category: method_id
   var_in: method_context
   values:
   - value: 250 mm branch

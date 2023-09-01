@@ -1,4 +1,4 @@
-dataset_id,taxon_name,observation_id,trait_name,value,unit,entity_type,value_type,basis_of_value,replicates,basis_of_record,life_stage,population_id,individual_id,temporal_id,source_id,location_id,entity_context_id,plot_id,treatment_id,collection_date,measurement_remarks,method_id,original_name
+dataset_id,taxon_name,observation_id,trait_name,value,unit,entity_type,value_type,basis_of_value,replicates,basis_of_record,life_stage,population_id,individual_id,temporal_id,source_id,location_id,entity_context_id,plot_id,treatment_id,collection_date,measurement_remarks,method_context_id,original_name
 Test_2023_2,Acacia celsa,01,branch_mass_fraction,0.67,mg/mg,population,raw,measurement,1,field,adult,01,,,Test_2022,01,,,,2002/2003,,,Acacia celsa
 Test_2023_2,Acacia celsa,01,huber_value,0.000335908632851864,mm2{sapwood}/mm2{leaf},population,raw,measurement,7,field,adult,01,,,Test_2022,01,,,,2002/2003,,,Acacia celsa
 Test_2023_2,Acacia celsa,01,huber_value,0.000137741046831956,mm2{sapwood}/mm2{leaf},population,raw,measurement,1,field,adult,01,,,Test_2022,01,,,,2002/2003,,,Acacia celsa

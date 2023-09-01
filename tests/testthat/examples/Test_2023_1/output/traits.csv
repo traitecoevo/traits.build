@@ -1,4 +1,4 @@
-dataset_id,taxon_name,observation_id,trait_name,value,unit,entity_type,value_type,basis_of_value,replicates,basis_of_record,life_stage,population_id,individual_id,temporal_id,source_id,location_id,entity_context_id,plot_id,treatment_id,collection_date,measurement_remarks,method_id,original_name
+dataset_id,taxon_name,observation_id,trait_name,value,unit,entity_type,value_type,basis_of_value,replicates,basis_of_record,life_stage,population_id,individual_id,temporal_id,source_id,location_id,entity_context_id,plot_id,treatment_id,collection_date,measurement_remarks,method_context_id,original_name
 Test_2023_1,Acacia celsa,001,flowering_time,nyynnnnnnnnn,,individual,mode,expert_score,3,field,adult,01,01,01,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
 Test_2023_1,Acacia celsa,001,huber_value,0.000146541617819461,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,01,01,01,,01,03,01,01,2002/2002,made-up measurement remarks,04,Acacia celsa
 Test_2023_1,Acacia celsa,002,flowering_time,nyynnnnnnnnn,,individual,mode,expert_score,3,field,adult,01,02,01,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa

@@ -742,7 +742,7 @@ If there are additional context properties that were designated in the traits se
     value: 640 ppm
     description: Plants grown at elevated CO2 (640 ppm); 240 ppm above ambient.
 - context_property: measurement temperature
-  category: method
+  category: method_id
   var_in: method_context          #this field would be included in the relevant traits
   values:
   - value: 20°C                   # this value would be keyed in through the relevant traits
@@ -1010,13 +1010,13 @@ A taxonomic update that aligns a name to the most similar taxon_name within a ta
 ## Check if AusTraits pivots wider
 AusTraits users want to be able to "pivot" between long and wide formats. 
 Each row of data should have a unique combination of the following fields:
-  `trait_name`, `dataset_id`, `observation_id`, `source_id`, `taxon_name`, `population_id`, `individual_id`, `temporal_id`, `method_id`, `value_type`, and `original_name`
+  `trait_name`, `dataset_id`, `observation_id`, `source_id`, `taxon_name`, `population_id`, `individual_id`, `temporal_id`, `method_context_id`, `value_type`, and `original_name`
 
 Therefore, the dataset should be able to pivot wider and the following code should have a `1` in every cell.
 
 ```{r, eval=FALSE, echo=TRUE}
 austraits$traits %>%
-  select(dataset_id, trait_name, value, observation_id, source_id, taxon_name, population_id, individual_id, temporal_id, method_id, value_type, original_name) %>%
+  select(dataset_id, trait_name, value, observation_id, source_id, taxon_name, population_id, individual_id, temporal_id, method_context_id, value_type, original_name) %>%
   pivot_wider(names_from = trait_name, values_from = value, values_fn = length) %>% View()
 ```
 

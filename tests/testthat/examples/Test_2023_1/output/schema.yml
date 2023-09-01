@@ -130,7 +130,7 @@ austraits:
           range for the study can be indicating, with the starting and ending sample
           date sepatated by a `/`, as in 2010-10/2011-03
         measurement_remarks: Brief comments or notes accompanying the trait measurement.
-        method_id: A unique integer identifier indicating a trait is measured multiple
+        method_context_id: A unique integer identifier indicating a trait is measured multiple
           times on the same entity, with different methods used for each entry. This
           field is only used if a single trait is measured using multiple methods
           within the same dataset. The identifier links to specific information in
@@ -297,7 +297,7 @@ austraits:
           range for the study can be indicating, with the starting and ending sample
           date sepatated by a `/`, as in 2010-10/2011-03
         measurement_remarks: Brief comments or notes accompanying the trait measurement.
-        method_id: A unique integer identifier indicating a trait is measured multiple
+        method_context_id: A unique integer identifier indicating a trait is measured multiple
           times on the same entity, with different methods used for each entry. This
           field is only used if a single trait is measured using multiple methods
           within the same dataset. The identifier links to specific information in

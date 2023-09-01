@@ -39,7 +39,7 @@ testthat::test_that("Test Dataset 1 builds correctly", {
   Test_2023_1$traits <-
     Test_2023_1$traits %>%
     mutate(across(
-      c(temporal_id, entity_context_id, plot_id, treatment_id, method_id),
+      c(temporal_id, entity_context_id, plot_id, treatment_id, method_context_id),
       ~if_else(.x == "NA", NA_character_, .x)
     ))
   names(Test_2023_1$locations$value) <- NULL
@@ -49,7 +49,7 @@ testthat::test_that("Test Dataset 1 builds correctly", {
   Test_2023_1$excluded_data <-
     Test_2023_1$excluded_data %>%
     mutate(across(
-      c(temporal_id, entity_context_id, plot_id, treatment_id, method_id),
+      c(temporal_id, entity_context_id, plot_id, treatment_id, method_context_id),
       ~if_else(.x == "NA", NA_character_, .x)
     ))
 
