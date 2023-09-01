@@ -1065,7 +1065,10 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   traits_table <-
     metadata[["traits"]] %>%
     util_list_to_df2() %>%
-    dplyr::filter(!is.na(.data$trait_name))  # remove any rows without a matching trait record
+    dplyr::filter(!is.na(.data$trait_name)) %>% # remove any rows without a matching trait record
+    group_by(trait_name, value_type) %>%
+      dplyr::mutate(method_id = row_number()) %>% #if the same trait has been measured twice using different methods, add a method_id to avoid duplication
+    ungroup()
 
   # check that the trait names as specified in config actually exist in data
   # if not then we need to stop and fix this problem
@@ -1281,7 +1284,11 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
         util_list_to_df2() %>%
         dplyr::filter(!is.na(.data$trait_name)) %>%
         dplyr::mutate(dataset_id = dataset_id) %>%
-        dplyr::select(dplyr::all_of(c("dataset_id", "trait_name", "methods")))
+        dplyr::select(dplyr::all_of(c("dataset_id", "trait_name", "methods", "value_type"))) %>%
+        group_by(trait_name, value_type) %>%
+          dplyr::mutate(method_id = row_number()) %>%
+        ungroup() %>%
+        dplyr::select(-value_type)
       ,
       # study methods
       metadata$dataset %>%
