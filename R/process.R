@@ -1064,6 +1064,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
     stop(paste(dataset_id, ": missing traits: ", setdiff(traits_table[["var_in"]], colnames(data))))
   }
 
+  # I'm confused why contexts$var_in is added in here, instead of just vars
   vars_traits <- c(vars, contexts$var_in)
 
   ## If needed, change from wide to long format
