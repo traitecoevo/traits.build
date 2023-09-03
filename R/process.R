@@ -466,23 +466,13 @@ process_format_contexts <- function(my_list, dataset_id, traits_tmp) {
     contexts <- contexts %>%    
       split(contexts$var_in)
     
-    #browser()
     for (i in 1:length(contexts)) {
       
-      if (is.null(my_list[i]$values$description)) {
+      if (is.null(my_list[i][[1]]$values[[1]]$description)) {
         contexts[[i]]$description <- NA_character_
       }
       
-      
-      if (is.null(my_list[i]$values$find)) {
-        contexts[[i]]$find <- NA_character_
-      } else {
-        # Where `find` column is NA, replace with `value` column, so that on Line 510 and 512
-        # `value` values are replaced by identical `find` values (otherwise they will be NA)
-        contexts[[i]]$find <- ifelse(is.na(contexts[[i]]$find), contexts[[i]]$value, contexts[[i]]$find)
-      }
-      
-      if (is.null(my_list[i]$values$find)) {
+      if (is.null(my_list[i][[1]]$values[[1]]$find)) {
         to_join <- unique(traits_tmp[[contexts[[i]]$var_in[1]]]) %>%
           as.data.frame() %>%
           rename(find = 1) %>%
@@ -495,7 +485,13 @@ process_format_contexts <- function(my_list, dataset_id, traits_tmp) {
                     to_join) %>%
           mutate(find = as.character(find))
       }
-    } 
+      
+      if (is.null(my_list[i][[1]]$values[[1]]$value)) {
+        #contexts[[i]]$find <- NA_character_
+        contexts[[i]]$value <- contexts[[i]]$find
+      }
+    }
+    
   contexts <- bind_rows(contexts)  
     
   } else {
