@@ -460,46 +460,48 @@ process_format_contexts <- function(my_list, dataset_id, traits_tmp) {
       dplyr::mutate(dataset_id = dataset_id) %>%
       dplyr::select(dplyr::any_of(
         c("dataset_id", "context_property", "category", "var_in",
-        "find", "value", "description"))
-        )
-
-  contexts <- contexts %>%    
-      split(contexts$var_in)
-  
-  browser()
-  for (i in 1:length(contexts)) {
-      
-    if (is.null(my_list[i]$values$description)) {
-      contexts[[i]]$description <- NA_character_
-    }
+          "find", "value", "description"))
+      )
     
-
-    if (is.null(my_list[i]$values$find)) {
-      contexts[[i]]$find <- NA_character_
+    contexts <- contexts %>%    
+      split(contexts$var_in)
+    
+    #browser()
+    for (i in 1:length(contexts)) {
+      
+      if (is.null(my_list[i]$values$description)) {
+        contexts[[i]]$description <- NA_character_
+      }
+      
+      
+      if (is.null(my_list[i]$values$find)) {
+        contexts[[i]]$find <- NA_character_
       } else {
         # Where `find` column is NA, replace with `value` column, so that on Line 510 and 512
         # `value` values are replaced by identical `find` values (otherwise they will be NA)
         contexts[[i]]$find <- ifelse(is.na(contexts[[i]]$find), contexts[[i]]$value, contexts[[i]]$find)
       }
-    } else {
-      contexts <-
-        tibble::tibble(dataset_id = character(), var_in = character())
-    }
-  
-    if (is.null(my_list[i]$values$find)) {
-      to_join <- unique(traits_tmp[[contexts[[i]]$var_in[1]]]) %>%
-        as.data.frame() %>%
-        rename(find = 1) %>%
-        mutate(var_in = contexts[[i]]$var_in[1]) %>%
-        filter(!is.na(find))
       
-      contexts[[i]] <- contexts[[i]] %>%
-        select(-find) %>%
-        left_join(by = "var_in",
-                  to_join)
+      if (is.null(my_list[i]$values$find)) {
+        to_join <- unique(traits_tmp[[contexts[[i]]$var_in[1]]]) %>%
+          as.data.frame() %>%
+          rename(find = 1) %>%
+          mutate(var_in = contexts[[i]]$var_in[1]) %>%
+          filter(!is.na(find))
+        
+        contexts[[i]] <- contexts[[i]] %>%
+          select(-find) %>%
+          left_join(by = "var_in",
+                    to_join) %>%
+          mutate(find = as.character(find))
+      }
+    } 
+  contexts <- bind_rows(contexts)  
+    
+  } else {
+    contexts <-
+      tibble::tibble(dataset_id = character(), var_in = character())
   }
-  
- }
 
   contexts
 }
