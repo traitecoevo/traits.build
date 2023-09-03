@@ -96,22 +96,20 @@ dataset_process <- function(filename_data_raw,
 
   unit_conversion_functions <- config_for_dataset$unit_conversion_functions
 
-  # Load and process contextual data
-  traits_tmp <-
+  # Load trait data
+  traits <-
     # Read all columns as character type to prevent time data types from being reformatted
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
   
+  # Load and process contextual data
   contexts <-
     metadata$contexts %>%
-    process_format_contexts(dataset_id, traits_tmp)
+    process_format_contexts(dataset_id, traits)
 
   # Load and clean trait data
   traits <-
-    # Read all columns as character type to prevent time data types from being reformatted
-    #readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
-    #process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
-    traits_tmp %>%
+    traits %>%
     process_parse_data(dataset_id, metadata, contexts)
 
   # Context ids needed to continue processing
@@ -443,28 +441,31 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
 #' \dontrun{
 #' process_format_contexts(read_metadata("data/Apgaua_2017/metadata.yml")$context)
 #' }
-process_format_contexts <- function(my_list, dataset_id, traits_tmp) {
+process_format_contexts <- function(my_list, dataset_id, traits) {
 
-  f <- function(x) {
+  f <- function(x, id) {
     tibble::tibble(
     context_property = x$context_property,
     category = x$category,
     var_in = x$var_in,
-    util_list_to_df2(x$values))
-  }
-
-  if (!is.na(my_list[1])) {
-    contexts <-
-      my_list %>%
-      purrr::map_df(f) %>%
-      dplyr::mutate(dataset_id = dataset_id) %>%
-      dplyr::select(dplyr::any_of(
+    util_list_to_df2(x$values)
+    )  %>%
+    dplyr::mutate(dataset_id = dataset_id) %>%
+    dplyr::select(dplyr::any_of(
         c("dataset_id", "context_property", "category", "var_in",
           "find", "value", "description"))
       )
+  }
+
+  
+  ## xxx need to create list here instead of making one dataframe and then splitting, 
+  ## because the sequence of contexts in the split table is different to the sequence of contexts in metadata[["contexts"]]
+  
+  if (!is.na(my_list[1])) {
     
-    contexts <- contexts %>%    
-      split(contexts$var_in)
+      contexts <-
+      my_list %>%
+      purrr::map(f, dataset_id)
     
     for (i in 1:length(contexts)) {
       
@@ -473,21 +474,20 @@ process_format_contexts <- function(my_list, dataset_id, traits_tmp) {
       }
       
       if (is.null(my_list[i][[1]]$values[[1]]$find)) {
-        to_join <- unique(traits_tmp[[contexts[[i]]$var_in[1]]]) %>%
+        to_join <- unique(traits[[contexts[[i]]$var_in[1]]]) %>%
           as.data.frame() %>%
           rename(find = 1) %>%
           mutate(var_in = contexts[[i]]$var_in[1]) %>%
           filter(!is.na(find))
         
         contexts[[i]] <- contexts[[i]] %>%
-          select(-find) %>%
+          select(-any_of(c("find"))) %>%
           left_join(by = "var_in",
                     to_join) %>%
           mutate(find = as.character(find))
       }
       
       if (is.null(my_list[i][[1]]$values[[1]]$value)) {
-        #contexts[[i]]$find <- NA_character_
         contexts[[i]]$value <- contexts[[i]]$find
       }
     }
