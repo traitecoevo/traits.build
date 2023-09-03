@@ -200,15 +200,29 @@ dataset_process <- function(filename_data_raw,
     dplyr::distinct() %>%
     dplyr::arrange(.data$cleaned_name)
   
-  # a temporary dataframe created to generate and bind method_id, 
-  # for instances where the same trait is measured twice using different methods
+  ## a temporary dataframe created to generate and bind method_id, 
+  ## for instances where the same trait is measured twice using different methods
+
+  ## XXX generating the `vars_to_group` variable is a clunky (hopefully temporary) solution to not being able to use `any_of` with `group_by`
+  
+  vars_to_group <- metadata[["traits"]] %>%
+    util_list_to_df2() %>%
+    names() %>% 
+    as.data.frame() %>%
+    dplyr::filter(. %in% c("trait_name", "value_type")) %>% 
+    as.vector()  
   
   tmp_bind <-
     metadata[["traits"]] %>%
     util_list_to_df2() %>%
     dplyr::filter(!is.na(.data$trait_name)) %>%
+    dplyr::mutate(
+      dataset_id = dataset_id,
+      value_type = ifelse("value_type" %in% vars_to_group, .data$value_type, NA)
+    ) %>%
+    dplyr::distinct(.data$dataset_id, .data$trait_name, .data$methods, .data$value_type) %>%
     dplyr::group_by(.data$trait_name, .data$value_type) %>%
-    dplyr::mutate(method_id = dplyr::row_number()) %>%
+      dplyr::mutate(method_id = dplyr::row_number()) %>%
     dplyr::ungroup() %>%
     dplyr::select(.data$trait_name, .data$methods, .data$method_id)
   
@@ -238,7 +252,7 @@ dataset_process <- function(filename_data_raw,
 
   # combine for final output
   list(
-       traits     = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error"))),
+       traits     = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "methods"))),
        locations  = locations,
        contexts   = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
        methods    = methods,
@@ -478,6 +492,7 @@ process_format_contexts <- function(my_list, dataset_id) {
     if (is.null(contexts[["description"]])) {
     contexts[["description"]] <- NA_character_
     }
+    
 
     # keep values from find column if a replacement isn't specified
     # This doesn't do what the comment says
@@ -1292,18 +1307,33 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
                           paste0(" (", contributors$additional_role, ")"),
                           ""))  %>% paste(collapse = ", ")
 
+## XXX Can't figure out how to make grouping flexible based on available columns `any_of` doesn't work with `group_by`
+## the group_by below should include value_type when available, but can't get that to work
+
+## XXX I also can't get group_by to work with any sort of vector of values - i.e. vars_to_group, hence this clunky solution
+  
+vars_to_group <- metadata[["traits"]] %>%
+    util_list_to_df2() %>%
+    names() %>% 
+    as.data.frame() %>%
+    dplyr::filter(. %in% c("trait_name", "value_type")) %>% 
+    as.vector()
+
   methods <-
     dplyr::full_join(by = "dataset_id",
       # methods used to collect each trait
       metadata[["traits"]] %>%
         util_list_to_df2() %>%
         dplyr::filter(!is.na(.data$trait_name)) %>%
-        dplyr::mutate(dataset_id = dataset_id) %>%
+        dplyr::mutate(
+          dataset_id = dataset_id,
+          value_type = ifelse("value_type" %in% vars_to_group, .data$value_type, NA)
+        ) %>%
         dplyr::select(.data$dataset_id, .data$trait_name, .data$methods, .data$value_type) %>%
+        dplyr::distinct() %>%
         dplyr::group_by(.data$trait_name, .data$value_type) %>%
           dplyr::mutate(method_id = dplyr::row_number()) %>%
-        dplyr::ungroup() %>%
-        dplyr::select(-.data$value_type)
+        dplyr::ungroup()
       ,
       # study methods
       metadata$dataset %>%
