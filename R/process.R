@@ -97,15 +97,21 @@ dataset_process <- function(filename_data_raw,
   unit_conversion_functions <- config_for_dataset$unit_conversion_functions
 
   # Load and process contextual data
+  traits_tmp <-
+    # Read all columns as character type to prevent time data types from being reformatted
+    readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
+    process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
+  
   contexts <-
     metadata$contexts %>%
-    process_format_contexts(dataset_id)
+    process_format_contexts(dataset_id, traits_tmp)
 
   # Load and clean trait data
   traits <-
     # Read all columns as character type to prevent time data types from being reformatted
-    readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
-    process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
+    #readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
+    #process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
+    traits_tmp %>%
     process_parse_data(dataset_id, metadata, contexts)
 
   # Context ids needed to continue processing
@@ -437,7 +443,7 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
 #' \dontrun{
 #' process_format_contexts(read_metadata("data/Apgaua_2017/metadata.yml")$context)
 #' }
-process_format_contexts <- function(my_list, dataset_id) {
+process_format_contexts <- function(my_list, dataset_id, traits_tmp) {
 
   f <- function(x) {
     tibble::tibble(
@@ -457,21 +463,43 @@ process_format_contexts <- function(my_list, dataset_id) {
         "find", "value", "description"))
         )
 
-    if (is.null(contexts[["description"]])) {
-      contexts[["description"]] <- NA_character_
+  contexts <- contexts %>%    
+      split(contexts$var_in)
+  
+  browser()
+  for (i in 1:length(contexts)) {
+      
+    if (is.null(my_list[i]$values$description)) {
+      contexts[[i]]$description <- NA_character_
     }
+    
 
-    if (is.null(contexts[["find"]])) {
-      contexts[["find"]] <- NA_character_
+    if (is.null(my_list[i]$values$find)) {
+      contexts[[i]]$find <- NA_character_
+      } else {
+        # Where `find` column is NA, replace with `value` column, so that on Line 510 and 512
+        # `value` values are replaced by identical `find` values (otherwise they will be NA)
+        contexts[[i]]$find <- ifelse(is.na(contexts[[i]]$find), contexts[[i]]$value, contexts[[i]]$find)
+      }
     } else {
-      # Where `find` column is NA, replace with `value` column, so that on Line 510 and 512
-      # `value` values are replaced by identical `find` values (otherwise they will be NA)
-      contexts[["find"]] <- ifelse(is.na(contexts$find), contexts$value, contexts$find)
+      contexts <-
+        tibble::tibble(dataset_id = character(), var_in = character())
     }
-  } else {
-    contexts <-
-      tibble::tibble(dataset_id = character(), var_in = character())
+  
+    if (is.null(my_list[i]$values$find)) {
+      to_join <- unique(traits_tmp[[contexts[[i]]$var_in[1]]]) %>%
+        as.data.frame() %>%
+        rename(find = 1) %>%
+        mutate(var_in = contexts[[i]]$var_in[1]) %>%
+        filter(!is.na(find))
+      
+      contexts[[i]] <- contexts[[i]] %>%
+        select(-find) %>%
+        left_join(by = "var_in",
+                  to_join)
   }
+  
+ }
 
   contexts
 }
