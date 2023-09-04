@@ -948,7 +948,7 @@ austraits$excluded_data %>%
     error == "Unsupported trait value"
   ) %>%
   distinct(dataset_id, trait_name, value) %>%
-  rename(c("find" = "value")) %>%
+  rename("find" = "value") %>%
   select(-dataset_id) %>%
   write_csv("data/dataset_id/raw/substitutions_required.csv")
 ```
