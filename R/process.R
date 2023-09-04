@@ -1131,7 +1131,14 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
       for (v in vars_to_check) {
         value <- traits_table[i, v, drop = TRUE]
         if (!is.na(value)) {
-          out[[v]][out$trait_name == traits_table[["var_in"]][i]] <- value
+          if (!is.null(data[[value]]) && !(value %in% not_allowed)) {
+            out[[v]][out$trait_name == traits_table[["var_in"]][i]] <-
+              # Subset column to where `trait_name` in the data table equals the current trait in the loop
+              data[[value]][data[[metadata[["dataset"]][["trait_name"]]]] == traits_table[["var_in"]][i]] %>%
+              as.character()
+          } else {
+            out[[v]][out$trait_name == traits_table[["var_in"]][i]] <- value %>% as.character()
+          }
         }
       }
     }
