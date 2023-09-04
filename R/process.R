@@ -434,12 +434,13 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
 #'
 #' @param my_list List of input information
 #' @param dataset_id Identifier for a particular study in the AusTraits database
+#' @param traits Table of trait data (for this function, just the data.csv file with custom_R_code applied)
 #' @return Tibble with context details if available
 #' @importFrom rlang .data
 #'
 #' @examples
 #' \dontrun{
-#' process_format_contexts(read_metadata("data/Apgaua_2017/metadata.yml")$context)
+#' process_format_contexts(read_metadata("data/Apgaua_2017/metadata.yml")$context, dataset_id, traits)
 #' }
 process_format_contexts <- function(my_list, dataset_id, traits) {
 
@@ -456,10 +457,6 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
           "find", "value", "description"))
       )
   }
-
-  
-  ## xxx need to create list here instead of making one dataframe and then splitting, 
-  ## because the sequence of contexts in the split table is different to the sequence of contexts in metadata[["contexts"]]
   
   if (!is.na(my_list[1])) {
     
@@ -469,27 +466,43 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
     
     for (i in 1:length(contexts)) {
       
-      if (is.null(my_list[i][[1]]$values[[1]]$description)) {
+      ## if the field `description` is missing from metadata[["contexts"]] for the specific context property, create a column now 
+      if (!"description" %in% names(contexts[[i]])) {
         contexts[[i]]$description <- NA_character_
       }
       
-      if (is.null(my_list[i][[1]]$values[[1]]$value) & is.null(my_list[i][[1]]$values[[1]]$find)) {
+      ## if the fields `find` and `value` are both missing from metadata[["contexts"]] for the specific context property create them
+      ## they are both the unique set of values in the column in the data.csv file.
+      if(!"find" %in% names(contexts[[i]]) & 
+         !"value" %in% names(contexts[[i]])) {
         to_join <- unique(traits[[contexts[[i]]$var_in[1]]]) %>%
           as.data.frame() %>%
-          rename(find = 1) %>%
-          mutate(var_in = contexts[[i]]$var_in[1]) %>%
-          filter(!is.na(find))
+          rename(value = 1) %>%
+          mutate(
+            var_in = contexts[[i]]$var_in[1]
+            ) %>%
+          filter(!is.na(value))
         
         contexts[[i]] <- contexts[[i]] %>%
-          select(-any_of(c("find"))) %>%
+          select(-any_of(c("value"))) %>%
           left_join(by = "var_in",
                     to_join) %>%
-          mutate(find = as.character(find))
+          mutate(find = value)
       }
       
-      if (is.null(my_list[i][[1]]$values[[1]]$value)) {
-        contexts[[i]]$value <- contexts[[i]]$find
+      if ("find" %in% names(contexts[[i]])) {
+      contexts[[i]]$find = ifelse(is.na(contexts[[i]]$find), contexts[[i]]$value, contexts[[i]]$find)
+      } else {
+        contexts[[i]] <- contexts[[i]] %>%
+            mutate(find = value)
       }
+      
+      contexts[[i]] <- contexts[[i]] %>%
+        mutate(
+          find = as.character(find),
+          value = as.character(value)
+        )
+      
     }
     
   contexts <- bind_rows(contexts)  
