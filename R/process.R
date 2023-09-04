@@ -473,7 +473,7 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
         contexts[[i]]$description <- NA_character_
       }
       
-      if (is.null(my_list[i][[1]]$values[[1]]$find)) {
+      if (is.null(my_list[i][[1]]$values[[1]]$value) & is.null(my_list[i][[1]]$values[[1]]$find)) {
         to_join <- unique(traits[[contexts[[i]]$var_in[1]]]) %>%
           as.data.frame() %>%
           rename(find = 1) %>%
