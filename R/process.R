@@ -106,7 +106,7 @@ dataset_process <- function(filename_data_raw,
     # Read all columns as character type to prevent time data types from being reformatted
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
-    process_parse_data(dataset_id, metadata, contexts)
+    process_parse_data(dataset_id, metadata, contexts, schema)
 
   # Context ids needed to continue processing
   context_ids <- traits$context_ids
@@ -950,7 +950,7 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' substitutions and unique observation id added
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
 #' @importFrom rlang .data
-process_parse_data <- function(data, dataset_id, metadata, contexts) {
+process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
   # Get config data for dataset
   data_is_long_format <- metadata[["dataset"]][["data_is_long_format"]]
@@ -959,11 +959,11 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
   var_in <- unlist(metadata[["dataset"]])
   i <- var_in %in% names(data)
 
+  v <- setNames(nm = c("entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_id"))
+
   df <- data %>%
         # Next step selects and renames columns based on named vector
-        dplyr::select(
-          any_of(c(var_in[i], "entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_id", contexts$var_in))
-        ) %>%
+        dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in))) %>% # Why select v? When would those ids ever be in the data?
         dplyr::mutate(dataset_id = dataset_id)
 
   # Step 1b. Import any values that aren't columns of data
@@ -986,7 +986,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
   # It is required here to correctly connect rows of data as being collected
   # on the same individual or are part of the same observation
 
-    if (!data_is_long_format) {
+  if (!data_is_long_format) {
 
   # If an `individual_id` column IS read in through metadata$dataset,
   # it is used to correctly cluster and identify individuals
@@ -1064,8 +1064,14 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
     stop(paste(dataset_id, ": missing traits: ", setdiff(traits_table[["var_in"]], colnames(data))))
   }
 
-  # I'm confused why contexts$var_in is added in here, instead of just vars
+  # I'm confused why contexts$var_in is added in here (also should be unique()?), instead of just vars
   vars_traits <- c(vars, contexts$var_in)
+
+  not_allowed <- c(
+    schema[["entity_type"]][["values"]] %>% names(),
+     # Why value_type? Is it often that a column would be named as one of the values?
+    schema[["value_type"]][["values"]] %>% names()
+  )
 
   ## If needed, change from wide to long format
   if (!data_is_long_format) {
@@ -1082,20 +1088,21 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
       out[[i]][["trait_name"]] <- traits_table[["var_in"]][i]
       out[[i]][["value"]] <- data[[traits_table[["var_in"]][i]]] %>% as.character()
 
-      # Pull in additional information for each trait as specified in traits part of metadata, here represented as traits_table
+      # Pull in additional information for each trait as specified in traits part of metadata,
+      # here represented as `traits_table`
       # Values in table can specify a column in the original data OR a value to use
 
       vars_to_check <- vars_traits[vars_traits %in% names(traits_table)]
+
       # For each column in traits_table
       for (v in vars_to_check) {
+
         # Get value
         value <- traits_table[i, v, drop = TRUE]
+
         # Check if it is a column in data or not and process accordingly
-
-        # Question: Why can't `entity_type`, `basis_of_value` come in as column of data?
-
         if (!is.na(value)) {
-          if (!is.null(data[[value]]) && !(v %in% c("entity_type", "basis_of_value"))) {
+          if (!is.null(data[[value]]) && !(value %in% not_allowed)) {
             out[[i]][[v]] <- data[[value]] %>% as.character()
           } else {
             out[[i]][[v]] <- value %>% as.character()
@@ -1103,19 +1110,22 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
         }
       }
     }
+
     # Convert replicates column to character type to allow `bind_rows`
     out <- out %>% purrr::map(~mutate(.x, dplyr::across(dplyr::any_of("replicates"), ~as.character(.x))))
     out <- dplyr::bind_rows(out)
+
   } else {
 
     out <- df %>% dplyr::filter(.data$trait_name %in% traits_table$var_in)
-    out[["value"]] <- out[["value"]] %>%  as.character()
+    out[["value"]] <- out[["value"]] %>% as.character()
 
     # Pull in additional information for each trait as specified in traits part of metadata,
     # here represented as traits_table
     # (column option not implemented) Values in table can specify a column in the original data OR a value to use
 
     vars_to_check <- vars_traits[vars_traits %in% names(traits_table)]
+
     # For each column in traits_table
     for (i in seq_len(nrow(traits_table))) {
       for (v in vars_to_check) {
