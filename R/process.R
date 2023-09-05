@@ -37,17 +37,7 @@ dataset_configure <- function(
   trait_mapping <-
     metadata[["traits"]] %>%
     util_list_to_df2() %>%
-    dplyr::filter(!is.na(.data$trait_name)) %>%
-    # Determine unit conversions
-    dplyr::mutate(
-      i = match(.data$trait_name, names(definitions$elements)),
-      to = purrr::map_chr(.data$i, ~util_extract_list_element(.x, definitions$elements, "units")),
-      conversion = process_unit_conversion_name(.data$unit_in, .data$to)
-    )
-
-  unit_conversion_functions_sub <-
-    unit_conversion_functions[trait_mapping %>%
-    dplyr::filter(.data$unit_in != .data$to) %>% dplyr::pull(.data$conversion) %>% unique()]
+    dplyr::filter(!is.na(.data$trait_name))
 
   # Subset of definitions
   definitions <-
@@ -55,8 +45,7 @@ dataset_configure <- function(
 
   list(dataset_id = dataset_id,
        metadata = metadata,
-       definitions = definitions,
-       unit_conversion_functions = unit_conversion_functions_sub)
+       definitions = definitions)
 }
 
 #' Load Dataset
@@ -102,25 +91,45 @@ dataset_process <- function(filename_data_raw,
     process_format_contexts(dataset_id)
 
   # Load and clean trait data
+  
   traits <-
     # Read all columns as character type to prevent time data types from being reformatted
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
-    process_parse_data(dataset_id, metadata, contexts)
-
+    process_parse_data(dataset_id, metadata, contexts) 
+  
   # Context ids needed to continue processing
   context_ids <- traits$context_ids
 
   locations <-
     metadata$locations %>%
     process_format_locations(dataset_id, schema)
-
+  
   traits <-
     traits$traits %>%
     process_add_all_columns(
       c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
         "parsing_id", "location_name", "taxonomic_resolution")
-    ) %>%
+    ) %>% 
+    rename(unit_in = .data$unit) %>%
+    # Determine unit conversions
+    dplyr::mutate(
+      i = match(.data$trait_name, names(definitions)))
+  
+    traits <- traits %>%
+      mutate(
+       to = purrr::map_chr(traits$i, ~util_extract_list_element(.x, definitions, "units")),
+        conversion = process_unit_conversion_name(.data$unit_in, .data$to)
+      )
+        
+    unit_conversion_functions <- get_unit_conversions("config/unit_conversions.csv")
+    
+    unit_conversion_functions_sub <-
+      unit_conversion_functions[traits %>%
+                                dplyr::filter(.data$unit_in != .data$to) %>% dplyr::pull(.data$conversion) %>% unique()]
+    browser()
+  traits <- traits %>%
+    mutate(unit = to) %>%
     process_flag_unsupported_traits(definitions) %>%
     process_flag_excluded_observations(metadata) %>%
     process_convert_units(definitions, unit_conversion_functions) %>%
