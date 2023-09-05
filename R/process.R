@@ -105,7 +105,7 @@ dataset_process <- function(filename_data_raw,
     metadata$locations %>%
     process_format_locations(dataset_id, schema)
   
-  #unit_conversion_functions <- get_unit_conversions("config/unit_conversions.csv")
+  unit_conversion_functions <- get_unit_conversions("config/unit_conversions.csv")
   
   traits <-
     traits$traits %>%
@@ -881,8 +881,9 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
         data[["to_convert"]] & !data[["ucn"]] %in% names(unit_conversion_functions)
 
   data <- data %>%
-    dplyr::mutate(error = ifelse(j, "Missing unit conversion", .data$error),
-                  to_convert = ifelse(j, FALSE, .data$to_convert))
+    dplyr::mutate(
+      error = ifelse(j, "Missing unit conversion", .data$error),
+      to_convert = ifelse(j, FALSE, .data$to_convert))
 
   f <- function(value, name) {
     as.character(unit_conversion_functions[[name]](as.numeric(value)))
@@ -894,7 +895,7 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
     dplyr::mutate(
       value = ifelse(.data$to_convert, f(.data$value, .data$ucn[1]), .data$value),
       unit = ifelse(.data$to_convert, .data$to, .data$unit)) %>%
-    dplyr::ungroup() %>%
+    dplyr::ungroup()  %>%
     dplyr::select(dplyr::any_of(vars))
 }
 
