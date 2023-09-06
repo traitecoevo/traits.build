@@ -464,7 +464,11 @@ process_format_contexts <- function(my_list, dataset_id) {
     }
 
     if (is.null(contexts[["find"]])) {
+      # Add a `find` column
       contexts[["find"]] <- NA_character_
+      # Replace NAs with `value` values (does not affect later code but is important for Line 549 in testdata.R
+      # so that `find` column isn't all NA)
+      contexts[["find"]] <- ifelse(is.na(contexts$find), contexts$value, contexts$find)
     } else {
       # Where `find` column is NA, replace with `value` column, so that on Line 510 and 512
       # `value` values are replaced by identical `find` values (otherwise they will be NA)
