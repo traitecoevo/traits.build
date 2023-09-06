@@ -1221,13 +1221,9 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
     for (i in seq_len(nrow(substitutions_table))) {
       j <- which(out[["trait_name"]] == substitutions_table[["trait_name"]][i] &
              out[["value"]] == substitutions_table[["find"]][i])
-      # eventually replace above line with this, but right now causing problems
-      #            stringr::str_detect(out[["value"]], paste0("(^|\\s)", fixed(substitutions_table[["find"]][i]), "(\\s|$)")))
 
       if (length(j) > 0) {
                       out[["value"]][j] <- substitutions_table[["replace"]][i]
-        # eventually replace above line with this, but right now causing problems
-        #  out[["value"]][j] <- stringr::str_replace_all(out[["value"]][j], fixed(substitutions_table[["find"]][i]), substitutions_table[["replace"]][i]) %>% stringr::str_squish()
    }
     }
 
