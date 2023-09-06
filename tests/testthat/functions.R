@@ -93,7 +93,7 @@ test_dataframe_named <- function(data, expected_colnames, info) {
   # I think the ordering of naming currently matters, maybe we don't want that?
   # Affected by what order fields are entered into the metadata
   test_dataframe_valid(data, info)
-  expect_named(data, expected_colnames, info = info)
+  expect_named(data, expected_colnames, ignore.order = TRUE, info = info)
 }
 
 
