@@ -18,8 +18,8 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] kableExtra_1.3.4   knitr_1.43         austraits_2.1.2    RefManageR_1.4.0  
- [5] traits.build_0.9.0 testthat_3.1.9     tidyr_1.3.0        stringr_1.5.0     
+ [1] traits.build_0.9.0 kableExtra_1.3.4   knitr_1.43         austraits_2.1.2   
+ [5] RefManageR_1.4.0   testthat_3.1.9     tidyr_1.3.0        stringr_1.5.0     
  [9] readr_2.1.4        lubridate_1.9.2    dplyr_1.1.2       
 
 loaded via a namespace (and not attached):

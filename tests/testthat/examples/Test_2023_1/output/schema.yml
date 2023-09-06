@@ -194,6 +194,8 @@ austraits:
           source. Methods can include descriptions such as 'measured on botanical
           collections', 'data from the literature', or a detailed description of the
           field or lab methods used to collect the data.
+        value_type: Temporarily added to schema as it is in the methods table for
+          some reason.
         description: A 1-2 sentence description of the purpose of the study.
         sampling_strategy: A written description of how study locations were selected
           and how study individuals were selected. When available, this information
