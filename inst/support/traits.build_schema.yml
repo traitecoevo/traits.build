@@ -108,7 +108,6 @@ austraits:
         trait_name: *trait_name
         methods: &methods A textual description of the methods used to collect the trait data. Whenever available, methods are taken near-verbatim from the referenced source. Methods can include descriptions such as 'measured on botanical collections', 'data from the literature', or a detailed description of the field or lab methods used to collect the data.
         description: &description A 1-2 sentence description of the purpose of the study.
-        value_type: Temporarily added to schema as it is in the methods table for some reason.
         sampling_strategy: &sampling_strategy A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript. For preserved specimens, this field ideally indicates which records were 'sampled' to measure a specific trait.
         source_primary_key: Citation key for the primary source in `sources`. The key is typically formatted as `Surname_year`.
         source_primary_citation: Citation for the primary source. This detail is generated from the primary source in the metadata.
