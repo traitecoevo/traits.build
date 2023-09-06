@@ -250,7 +250,8 @@ dataset_process <- function(filename_data_raw,
 #' @return character text containing custom_R_code if custom_R_code is not empty,
 #' otherwise no changes are made
 process_custom_code <- function(txt) {
-  if (!is.null(txt) && !is.na(txt)  && nchar(txt) > 0) {
+
+  if (!is.null(txt) && !is.na(txt) && nchar(txt) > 0) {
 
     txt2 <-
       # Trim white space, quotes, new line from front and back
@@ -1290,7 +1291,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
         dplyr::mutate(dataset_id = dataset_id) %>%
         dplyr::select(-dplyr::any_of(c("original_file", "notes", "data_is_long_format", "taxon_name",
                                          "trait_name", "population_id", "individual_id",
-                                         "location_name", "source_id", "value", "entity_type",
+                                         "location_name", "source_id", "value", "entity_type", "value_type",
                                          "collection_date", "custom_R_code", "replicates", "measurement_remarks",
                                          "taxon_name", "basis_of_value", "basis_of_record", "life_stage")))
       )  %>%
