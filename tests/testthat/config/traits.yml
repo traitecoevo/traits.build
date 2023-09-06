@@ -87,6 +87,43 @@ traits:
       allowed_values_min: 0.0
       allowed_values_max: 1.0
       entity_URI: https://w3id.org/APD/traits/trait_0011914
+    fruit_length:
+      label: Fruit length
+      description: A fruit morphology trait [TO:0002629] which is the length [PATO:0000122]
+        of a fresh [EnvThes:21976] fruit [PO:0009001] from the fruit proximal end
+        [PO:0008002] (base) to the fruit distal end [PO:0008001] (apex).;Linear dimension
+        from the base to the apex of a fresh fruit, even if this is not the longest
+        dimension.
+      type: numeric
+      units: mm
+      allowed_values_min: 0.01
+      allowed_values_max: 2000.0
+      entity_URI: https://w3id.org/APD/traits/trait_0012512
+    fruit_width:
+      label: Fruit width
+      description: A fruit morphology trait [TO:0002629] which is the width [PATO:0000921]
+        of a fresh [EnvThes:21976] fruit [PO:0009001], where width is the greatest
+        linear dimension [PATO:0001708] perpendicular to [PATO:0002434] to the fruit
+        length [PATO:0000122] and fruit height [PATO:0000119].;Greatest linear width
+        dimension of a fresh fruit, sometimes referred to as 'diameter' in fruits
+        where the width and height are identical; orthogonal to the fruit length,
+        the base-to-apex dimension.
+      type: numeric
+      units: mm
+      allowed_values_min: 0.01
+      allowed_values_max: 2000.0
+      entity_URI: https://w3id.org/APD/traits/trait_0012513
+    fruit_dehiscence:
+      label: Fruit dehiscence
+      description: A fruit morphology trait [TO:0002629] which indicates whether mature
+        [PATO:0001701] fruits [PO:0009001] are dehiscent [GO:0009900].;Binary variable,
+        dividing fruits into 'dehiscent' versus 'indehiscent' based on whether the
+        individual fruit units are dehiscent when mature.
+      type: categorical
+      allowed_values_levels:
+        dehiscent: Fruits are dehiscent when mature.
+        indehiscent: Fruits are indehiscent when mature.
+      entity_URI: https://w3id.org/APD/traits/trait_0012518
     fruit_colour:
       label: Fruit colour
       description: A fruit morphology trait [TO:0002629] which is the primary [NCIT:C25251]
