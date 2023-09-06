@@ -221,20 +221,21 @@ dataset_process <- function(filename_data_raw,
 
   # Combine for final output
   list(
-       traits     = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error"))),
-       locations  = locations,
-       contexts   = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
-       methods    = methods,
-       excluded_data = traits %>% dplyr::filter(!is.na(.data$error)) %>%
-              dplyr::select(dplyr::all_of(c("error")), everything()),
-       taxonomic_updates = taxonomic_updates,
-       taxa       = taxonomic_updates %>% dplyr::select(dplyr::all_of(c(taxon_name = "cleaned_name"))) %>% dplyr::distinct(),
-       contributors = contributors,
-       sources    = sources,
-       definitions = definitions,
-       schema = schema,
-       metadata = resource_metadata,
-       build_info = list(session_info = utils::sessionInfo())
+    traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error"))),
+    locations = locations,
+    contexts = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
+    methods = methods,
+    excluded_data = traits %>% dplyr::filter(!is.na(.data$error)) %>%
+      dplyr::select(dplyr::all_of(c("error")), everything()),
+    taxonomic_updates = taxonomic_updates,
+    taxa = taxonomic_updates %>% dplyr::select(dplyr::all_of(c(taxon_name = "cleaned_name"))) %>%
+      dplyr::distinct(),
+    contributors = contributors,
+    sources = sources,
+    definitions = definitions,
+    schema = schema,
+    metadata = resource_metadata,
+    build_info = list(session_info = utils::sessionInfo())
   )
 }
 
