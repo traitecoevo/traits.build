@@ -142,6 +142,10 @@ testthat::test_that("Test Dataset 4 builds correctly", {
     Test_2023_4$traits %>%
     mutate(across(dplyr::all_of(columns), as.character))
   names(Test_2023_4$locations$value) <- NULL
+  names(Test_2023_4$traits$entity_type) <- NULL
+  names(Test_2023_4$traits$value_type) <- NULL
+  names(Test_2023_4$excluded_data$entity_type) <- NULL
+  names(Test_2023_4$excluded_data$value_type) <- NULL
   Test_2023_4$methods <-
     Test_2023_4$methods %>%
     mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
