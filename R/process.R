@@ -887,8 +887,11 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
         data[["to_convert"]] & !data[["ucn"]] %in% names(unit_conversion_functions)
 
   data <- data %>%
-    dplyr::mutate(error = ifelse(j, "Missing unit conversion", .data$error),
-                  to_convert = ifelse(j, FALSE, .data$to_convert))
+    dplyr::mutate(
+      error = ifelse(j & trait_name %in% names(definitions), "Missing unit conversion", .data$error),
+      error = ifelse(j & !trait_name %in% names(definitions), "Trait name not in trait dictionary", .data$error),
+      to_convert = ifelse(j, FALSE, .data$to_convert)
+      )
 
   f <- function(value, name) {
     as.character(unit_conversion_functions[[name]](as.numeric(value)))
