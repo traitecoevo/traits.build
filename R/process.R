@@ -1068,12 +1068,6 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   # I'm confused why contexts$var_in is added in here (also should be unique()?), instead of just vars
   vars_traits <- c(vars, contexts$var_in)
 
-  not_allowed <- c(
-    schema[["entity_type"]][["values"]] %>% names(),
-     # Why value_type? Is it often that a column would be named as one of the values?
-    schema[["value_type"]][["values"]] %>% names()
-  )
-
   ## If needed, change from wide to long format
   if (!data_is_long_format) {
 
@@ -1097,6 +1091,8 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
       # For each column in traits_table
       for (v in vars_to_check) {
+
+        not_allowed <- schema[[v]][["values"]] %>% names()
 
         # Get value
         value <- traits_table[i, v, drop = TRUE]
@@ -1129,8 +1125,12 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
     # For each column in traits_table
     for (i in seq_len(nrow(traits_table))) {
+
       for (v in vars_to_check) {
+
+        not_allowed <- schema[[v]][["values"]] %>% names()
         value <- traits_table[i, v, drop = TRUE]
+
         if (!is.na(value)) {
           if (!is.null(data[[value]]) && !(value %in% not_allowed)) {
             out[[v]][out$trait_name == traits_table[["var_in"]][i]] <-
