@@ -1,9 +1,9 @@
 taxon_name,taxonomic_reference,taxon_rank,trinomial,binomial,genus,family,taxon_distribution,establishment_means,taxonomic_status,scientific_name,scientific_name_authorship,taxon_id,scientific_name_id
-Acacia celsa,,,,,Acacia,,,,,,,,
+Acacia celsa,APC,Species,,Acacia celsa,Acacia,Fabaceae,Qld,native,accepted,Acacia celsa Tindale,Tindale,https://id.biodiversity.org.au/taxon/apni/51436506,https://id.biodiversity.org.au/name/apni/154988
 Acmena graveolens,,,,,Acmena,,,,,,,,
-Acronychia acidula,,,,,Acronychia,,,,,,,,
+Acronychia acidula,APC,Species,,Acronychia acidula,Acronychia,Rutaceae,Qld,native,accepted,Acronychia acidula F.Muell.,F.Muell.,https://id.biodiversity.org.au/node/apni/2913200,https://id.biodiversity.org.au/name/apni/73794
 Aleurites rockinghamensis,,,,,Aleurites,,,,,,,,
-Alphitonia petriei,,,,,Alphitonia,,,,,,,,
+Alphitonia petriei,APC,Species,,Alphitonia petriei,Alphitonia,Rhamnaceae,"Qld, NSW",native,accepted,Alphitonia petriei Braid & C.T.White,Braid & C.T.White,https://id.biodiversity.org.au/node/apni/2887911,https://id.biodiversity.org.au/name/apni/82935
 Alstonia scholaris,,,,,Alstonia,,,,,,,,
 Argyrodendron peralatum,,,,,Argyrodendron,,,,,,,,
 Atractocarpus hirtus,,,,,Atractocarpus,,,,,,,,
@@ -19,7 +19,7 @@ Elaeocarpus grandis,,,,,Elaeocarpus,,,,,,,,
 Endiandra leptodendron,,,,,Endiandra,,,,,,,,
 Endiandra microneura,,,,,Endiandra,,,,,,,,
 Gillbeea adenopetala,,,,,Gillbeea,,,,,,,,
-Glochidion hylandii,,,,,Glochidion,,,,,,,,
+Glochidion hylandii,APC,Species,,Glochidion hylandii,Glochidion,Phyllanthaceae,Qld,native,accepted,Glochidion hylandii Airy Shaw,Airy Shaw,https://id.biodiversity.org.au/node/apni/2889113,https://id.biodiversity.org.au/name/apni/78303
 Haplostichanthus submontanus,,,,,Haplostichanthus,,,,,,,,
 Harpullia rhyticarpa,,,,,Harpullia,,,,,,,,
 Hernandia albiflora,,,,,Hernandia,,,,,,,,
@@ -31,7 +31,7 @@ Macaranga tanarius,,,,,Macaranga,,,,,,,,
 Mallotus mollissimus,,,,,Mallotus,,,,,,,,
 Medicosma sessiliflora,,,,,Medicosma,,,,,,,,
 Melastoma cyanoides,,,,,Melastoma,,,,,,,,
-Melicope elleryana,,,,,Melicope,,,,,,,,
+Melicope elleryana,APC,Species,,Melicope elleryana,Melicope,Rutaceae,"WA, NT, Qld, NSW",native,accepted,Melicope elleryana (F.Muell.) T.G.Hartley,(F.Muell.) T.G.Hartley,https://id.biodiversity.org.au/node/apni/2913641,https://id.biodiversity.org.au/name/apni/118560
 Myristica insipida,,,,,Myristica,,,,,,,,
 Neolitsea dealbata,,,,,Neolitsea,,,,,,,,
 Pittosporum rubiginosum,,,,,Pittosporum,,,,,,,,

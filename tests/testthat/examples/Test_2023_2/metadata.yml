@@ -66,7 +66,7 @@ locations:
     longitude (deg): .na
     rainfall (mm): 3500
     replicates: 10
-    basis_of_value: field_experiment
+    basis_of_value: expert_score
     life_stage: juvenile
     measurement_remarks: Made-up measurement remarks for Cape Tribulation
 contexts: .na
