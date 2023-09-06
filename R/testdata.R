@@ -505,24 +505,27 @@ dataset_test_worker <-
 
         # XXXX To do -- also check for entity type, basis of value and any other columns
 
-        i <- (traits$value_type %in% names(data))
-
-        value_type_fixed <- traits$value_type[!i] %>% unique()
-        value_type_cols <- traits$value_type[i] %>% unique()
-
-        expect_isin(
-          value_type_fixed,
-          schema$value_type$values %>% names,
-          info = paste0(f, "-value types")
-        )
-
-        if (length(value_type_cols) > 0) {
-          for (v in value_type_cols)
-            expect_isin(
-              data[[v]] %>% unique(),
-              schema$value_type$values %>% names,
-              info = paste(f, v, "- value types columns")
-            )
+        if ("value_type" %in% names(traits)) {
+          i <- (traits$value_type %in% names(data))
+          
+          value_type_fixed <- traits$value_type[!i] %>% unique()
+          value_type_cols <- traits$value_type[i] %>% unique()
+          
+          
+          expect_isin(
+            value_type_fixed,
+            schema$value_type$values %>% names,
+            info = paste0(f, "-value types")
+          )
+          
+          if (length(value_type_cols) > 0) {
+            for (v in value_type_cols)
+              expect_isin(
+                data[[v]] %>% unique(),
+                schema$value_type$values %>% names,
+                info = paste(f, v, "- value types columns")
+              )
+          }
         }
 
         # Substitutions

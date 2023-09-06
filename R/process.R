@@ -1329,7 +1329,8 @@ vars_to_group <- metadata[["traits"]] %>%
         dplyr::distinct() %>%
         dplyr::group_by(.data$trait_name, .data$value_type) %>%
           dplyr::mutate(method_id = dplyr::row_number()) %>%
-        dplyr::ungroup()
+        dplyr::ungroup() %>%
+        dplyr::select(-.data$value_type)
       ,
       # study methods
       metadata$dataset %>%
@@ -1341,7 +1342,7 @@ vars_to_group <- metadata[["traits"]] %>%
                                          "trait_name", "population_id", "individual_id",
                                          "location_name", "source_id", "value", "entity_type",
                                          "collection_date", "custom_R_code", "replicates", "measurement_remarks",
-                                         "taxon_name", "basis_of_value", "basis_of_record", "life_stage")))
+                                         "taxon_name", "basis_of_value", "basis_of_record", "life_stage", "value_type")))
       )  %>%
       full_join(by = "dataset_id",
       # references
