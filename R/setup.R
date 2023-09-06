@@ -369,7 +369,7 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
     dplyr::mutate(
       `latitude (deg)` = NA_character_,
       `longitude (deg)` = NA_character_,
-      `desscription` = NA_character_,
+      `description` = NA_character_,
       )
   }
   
