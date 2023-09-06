@@ -1,9 +1,9 @@
 dataset_id,original_name,cleaned_name,taxonomic_resolution,cleaned_scientific_name_id,cleaned_name_taxonomic_status,cleaned_name_alternative_taxonomic_status,taxon_id,taxon_name
-Test_2023_1,Acacia celsa,Acacia celsa,,,,,,
+Test_2023_1,Acacia celsa,Acacia celsa,Species,https://id.biodiversity.org.au/name/apni/154988,accepted,,https://id.biodiversity.org.au/taxon/apni/51436506,Acacia celsa
 Test_2023_1,Acmena graveolens,Acmena graveolens,,,,,,
-Test_2023_1,Acronychia acidula,Acronychia acidula,,,,,,
+Test_2023_1,Acronychia acidula,Acronychia acidula,Species,https://id.biodiversity.org.au/name/apni/73794,accepted,,https://id.biodiversity.org.au/node/apni/2913200,Acronychia acidula
 Test_2023_1,Aleurites rockinghamensis,Aleurites rockinghamensis,,,,,,
-Test_2023_1,Alphitonia petriei,Alphitonia petriei,,,,,,
+Test_2023_1,Alphitonia petriei,Alphitonia petriei,Species,https://id.biodiversity.org.au/name/apni/82935,accepted,,https://id.biodiversity.org.au/node/apni/2887911,Alphitonia petriei
 Test_2023_1,Alstonia scholaris,Alstonia scholaris,,,,,,
 Test_2023_1,Argyrodendron peralatum,Argyrodendron peralatum,,,,,,
 Test_2023_1,Atractocarpus hirtus,Atractocarpus hirtus,,,,,,
@@ -19,7 +19,7 @@ Test_2023_1,Elaeocarpus grandis,Elaeocarpus grandis,,,,,,
 Test_2023_1,Endiandra leptodendron,Endiandra leptodendron,,,,,,
 Test_2023_1,Endiandra microneura,Endiandra microneura,,,,,,
 Test_2023_1,Gillbeea adenopetala,Gillbeea adenopetala,,,,,,
-Test_2023_1,Glochidion hylandii,Glochidion hylandii,,,,,,
+Test_2023_1,Glochidion hylandii,Glochidion hylandii,Species,https://id.biodiversity.org.au/name/apni/78303,accepted,,https://id.biodiversity.org.au/node/apni/2889113,Glochidion hylandii
 Test_2023_1,Haplostichanthus sp Coop. Ck,Haplostichanthus submontanus,,,,,,
 Test_2023_1,Harpullia rhyticarpa,Harpullia rhyticarpa,,,,,,
 Test_2023_1,Hernandia albiflora,Hernandia albiflora,,,,,,
@@ -31,7 +31,7 @@ Test_2023_1,Macaranga tanarius,Macaranga tanarius,,,,,,
 Test_2023_1,Mallotus mollissimus,Mallotus mollissimus,,,,,,
 Test_2023_1,Medicosma sessiliflora,Medicosma sessiliflora,,,,,,
 Test_2023_1,Melastoma cyanoides,Melastoma cyanoides,,,,,,
-Test_2023_1,Melicope elleryana,Melicope elleryana,,,,,,
+Test_2023_1,Melicope elleryana,Melicope elleryana,Species,https://id.biodiversity.org.au/name/apni/118560,accepted,,https://id.biodiversity.org.au/node/apni/2913641,Melicope elleryana
 Test_2023_1,Myristica insipida,Myristica insipida,,,,,,
 Test_2023_1,Neolitsea dealbata,Neolitsea dealbata,,,,,,
 Test_2023_1,Pittosporum rubiginosum,Pittosporum rubiginosum,,,,,,
