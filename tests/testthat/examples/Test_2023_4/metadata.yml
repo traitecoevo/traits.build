@@ -95,6 +95,7 @@ dataset:
   taxon_name: taxon_name
   trait_name: trait_name
   value: trait_value
+  location_name: test_location
   value_type: value_type
   entity_type: test_entity_type
   basis_of_value: unknown
