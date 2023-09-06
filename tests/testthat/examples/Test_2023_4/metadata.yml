@@ -226,7 +226,6 @@ traits:
   methods: The term used to describe the fruit width was stored  as a measurement
     remark for greater clarity e.g. fruit, achene, capsule. Fruits which were spherical
     or round in shape were inferred as possessing the same dimensions in other planes.
-  basis_of_record: test_basis_of_record
 substitutions: .na
 taxonomic_updates:
 - find: Acaena anserovina
