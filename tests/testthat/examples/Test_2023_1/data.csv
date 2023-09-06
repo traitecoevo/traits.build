@@ -10,8 +10,8 @@ Neolitsea dealbata,neodea,Atherton,0.093,0.0164,5228,0.352,0.58,176.1,1686,2747,
 Polyscias australiana,polaus,Atherton,0.079,0.0154,6806,0.397,0.42,8.35,,6008,,6700,,nnnnnyyyynnnnnnnnnn,tree,female,dune crest,,9:00:00,instrument 3,
 Psychotria sp Utchee Creek,psyspp,Atherton,0.108,0.0179,11157,0.582,0,23.09,,4977,2302,2037,,,trees,female,dune crest,,,,10
 Rhodomyrtus trineura,rhotri,Atherton,0.129,0.0111,3401,0.763,0.34,,4321,3803,6088,6877,,,tree,male,,,,,
-Acmena graveolens,acmgra,Cape Tribulation,0.151,0.0155,5246,0.599,0.67,,,3057,2667,7156,,,,male,,,,,1
-Aleurites rockinghamensis,aleroc,Cape Tribulation,0.113,0.0184,73984,0.28,0.02,7077,,4194,,6209,,,,male,,,,,1
+Acmena graveolens,acmgra,,0.151,0.0155,5246,0.599,0.67,,,3057,2667,7156,,,,male,,,,,1
+Aleurites rockinghamensis,aleroc,,0.113,0.0184,73984,0.28,0.02,7077,,4194,,6209,,,,male,,,,,1
 Alstonia scholaris,alssch,Cape Tribulation,0.107,0.0223,6182,0.361,0.46,1.53,,1854,1682,3932,,,herbs,male,,,,,1
 Argyrodendron peralatum,argper,Cape Tribulation,0.244,0.0119,3201,0.726,0.71,433,,3832,1689,6718,,,,male,,control,,,1
 Atractocarpus hirtus,atrhir,Cape Tribulation,0.072,0.0157,11374,0.804,0.28,,,7143,6727,6103,,,tree,male,,control,,,2

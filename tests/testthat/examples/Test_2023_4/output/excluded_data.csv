@@ -1,0 +1,166 @@
+error,dataset_id,taxon_name,observation_id,trait_name,value,unit,entity_type,value_type,basis_of_value,replicates,basis_of_record,life_stage,population_id,individual_id,temporal_id,source_id,location_id,entity_context_id,plot_id,treatment_id,collection_date,measurement_remarks,method_id,original_name
+Missing unit conversion,Test_2023_4,Abildgaardia ovata,001,fruit_width,1.2,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Abildgaardia ovata
+Missing unit conversion,Test_2023_4,Acacia alpina,002,fruit_width,3,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Acacia alpina
+Missing unit conversion,Test_2023_4,Acacia beadleana,003,fruit_width,10.5,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Acacia beadleana
+Missing unit conversion,Test_2023_4,Acacia bulgaensis,004,fruit_length,95,mm,species,mode,measurement,1,literature,seedling,,,,,,,,,,Part of Test Dataset 4,,Acacia bulgaensis
+Missing unit conversion,Test_2023_4,Acacia caroleae,005,fruit_width,2,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Acacia caroleae
+Missing unit conversion,Test_2023_4,Acacia crassa,006,fruit_length,40,mm,species,mode,expert_score,1,field,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Acacia crassa
+Missing unit conversion,Test_2023_4,Acacia flexifolia,007,fruit_width,2,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Acacia flexifolia
+Missing unit conversion,Test_2023_4,Acacia gladiiformis,008,fruit_length,150,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Acacia gladiiformis
+Missing unit conversion,Test_2023_4,Acacia havilandiorum,009,fruit_width,2,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Acacia havilandiorum
+Missing unit conversion,Test_2023_4,Acacia leiocalyx subsp. leiocalyx,010,fruit_width,4,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Acacia leiocalyx subsp. leiocalyx
+Missing unit conversion,Test_2023_4,Acacia myrtifolia,011,fruit_width,5,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Acacia myrtifolia
+Missing unit conversion,Test_2023_4,Acacia ramulosa var. ramulosa,012,fruit_length,20,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Acacia ramulosa var. ramulosa
+Missing unit conversion,Test_2023_4,Acacia spectabilis,013,fruit_length,170,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Acacia spectabilis
+Missing unit conversion,Test_2023_4,Acacia terminalis subsp. Glabrous form (M.Hancock 94),014,fruit_width,14,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Acacia terminalis subsp. Glabrous form (M.Hancock 94)
+Missing unit conversion,Test_2023_4,Acronychia littoralis,015,fruit_width,20,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Acronychia littoralis
+Missing unit conversion,Test_2023_4,Adriana tomentosa,016,fruit_width,12,mm,,maximum,unknown,1,literature,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Adriana tomentosa
+Missing unit conversion,Test_2023_4,Alectryon coriaceus,017,fruit_length,7,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Alectryon coriaceus
+Missing unit conversion,Test_2023_4,Alectryon oleifolius,018,fruit_width,10,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Alectryon oleifolius
+Missing unit conversion,Test_2023_4,Alectryon subdentatus,019,fruit_length,8,mm,species,mode,measurement,1,,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Alectryon subdentatus
+Missing unit conversion,Test_2023_4,Angophora leiocarpa,021,fruit_width,11,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Angophora leiocarpa
+Missing unit conversion,Test_2023_4,Australina pusilla,024,fruit_length,1,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Australina pusilla
+Missing unit conversion,Test_2023_4,Burmannia disticha,025,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Burmannia disticha
+Missing unit conversion,Test_2023_4,Bursaria spinosa subsp. spinosa,026,fruit_width,9,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Bursaria spinosa subsp. spinosa
+Missing unit conversion,Test_2023_4,Calendula arvensis,027,fruit_length,15,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Calendula arvensis
+Missing unit conversion,Test_2023_4,Callistemon purpurascens,028,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Callistemon purpurascens
+Missing unit conversion,Test_2023_4,Carex cephalotes,029,fruit_length,2.5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Carex cephalotes
+Missing unit conversion,Test_2023_4,Carex cephalotes,029,fruit_width,1,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Carex cephalotes
+Missing unit conversion,Test_2023_4,Carex leporina,030,fruit_length,3.5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Carex leporina
+Missing unit conversion,Test_2023_4,Carex raleighii,031,fruit_length,2.5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Carex raleighii
+Missing unit conversion,Test_2023_4,Carmichaelia exsul,032,fruit_length,10,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Carmichaelia exsul
+Missing unit conversion,Test_2023_4,Cassinia compacta,033,fruit_length,0.5,mm,species,mode,,1,literature,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Cassinia compacta
+Missing unit conversion,Test_2023_4,Castanospermum australe,034,fruit_length,100,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Castanospermum australe
+Missing unit conversion,Test_2023_4,Centaurium tenuiflorum,035,fruit_length,6,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Centaurium tenuiflorum
+Missing unit conversion,Test_2023_4,Cestrum nocturnum,036,fruit_width,8,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Cestrum nocturnum
+Missing unit conversion,Test_2023_4,Chthonocephalus pseudevax,037,fruit_length,0.5,mm,species,mode,,1,,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Chthonocephalus pseudevax
+Missing unit conversion,Test_2023_4,Claoxylon australe,038,fruit_width,5,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Claoxylon australe
+Missing unit conversion,Test_2023_4,Commersonia amystia,039,fruit_width,13,mm,species,maximum,unknown,1,field,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Commersonia amystia
+Missing unit conversion,Test_2023_4,Commersonia salviifolia,040,fruit_width,5,mm,species,minimum,unknown,1,,seedling,,,,Test_2000,,,,,,Part of Test Dataset 4,,Commersonia salviifolia
+Missing unit conversion,Test_2023_4,Convolvulus farinosus,041,fruit_width,6,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Convolvulus farinosus
+Missing unit conversion,Test_2023_4,Correa alba,044,fruit_length,5,mm,species,mode,,1,,seedling,,,,Test_2000,,,,,,Part of Test Dataset 4,,Correa alba
+Missing unit conversion,Test_2023_4,Corymbia citriodora,045,fruit_length,15,mm,species,mode,measurement,1,literature,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Corymbia citriodora
+Missing unit conversion,Test_2023_4,Corymbia eximia,046,fruit_length,13,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Corymbia eximia
+Missing unit conversion,Test_2023_4,Crassula decumbens,047,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,Test_2003,,,,,,Part of Test Dataset 4,,Crassula decumbens
+Missing unit conversion,Test_2023_4,Crassula peduncularis,048,fruit_dehiscence,dehiscent,,population,mode,unknown,3,literature,adult,pop_unk,,,Test_2003,,,,,,Part of Test Dataset 4,,Crassula peduncularis
+Missing unit conversion,Test_2023_4,Crotalaria brevis,049,fruit_length,6,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Crotalaria brevis
+Missing unit conversion,Test_2023_4,Crotalaria grahamiana,050,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Crotalaria grahamiana
+Missing unit conversion,Test_2023_4,Crotalaria lanceolata,051,fruit_length,20,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Crotalaria lanceolata
+Missing unit conversion,Test_2023_4,Cylindropuntia kleiniae,052,fruit_length,20,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Cylindropuntia kleiniae
+Missing unit conversion,Test_2023_4,Cyperus betchei,054,fruit_width,0.4,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Cyperus betchei
+Missing unit conversion,Test_2023_4,Cyperus laevigatus,056,fruit_width,1.2,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Cyperus laevigatus
+Missing unit conversion,Test_2023_4,Cyperus sculptus,057,fruit_length,1,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Cyperus sculptus
+Missing unit conversion,Test_2023_4,Davidsonia johnsonii,059,fruit_length,30,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Davidsonia johnsonii
+Missing unit conversion,Test_2023_4,Daviesia arenaria,060,fruit_length,7,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Daviesia arenaria
+Missing unit conversion,Test_2023_4,Derris involuta,061,fruit_dehiscence,indehiscent,,population,mode,unknown,3,literature,adult,pop_unk,,,Test_2003,,,,,,Part of Test Dataset 4,,Derris involuta
+Missing unit conversion,Test_2023_4,Dichromochlamys dentatifolia,062,fruit_length,1.8,mm,species,mode,,1,field_experiment,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Dichromochlamys dentatifolia
+Missing unit conversion,Test_2023_4,Dillwynia cinerascens,063,fruit_length,5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Dillwynia cinerascens
+Missing unit conversion,Test_2023_4,Dillwynia floribunda,064,fruit_length,4,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Dillwynia floribunda
+Missing unit conversion,Test_2023_4,Dinosperma erythrococcum,065,fruit_length,5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Dinosperma erythrococcum
+Missing unit conversion,Test_2023_4,Dodonaea petiolaris,066,fruit_length,16,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Dodonaea petiolaris
+Missing unit conversion,Test_2023_4,Dodonaea truncatiales,067,fruit_width,17,mm,metapopulation,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Dodonaea truncatiales
+Missing unit conversion,Test_2023_4,Elaeocarpus grandis,069,fruit_width,20,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Elaeocarpus grandis
+Missing unit conversion,Test_2023_4,Eleocharis pallens,070,fruit_length,1.4,mm,species,mode,,1,literature,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Eleocharis pallens
+Missing unit conversion,Test_2023_4,Endiandra globosa,071,fruit_width,50,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Endiandra globosa
+Missing unit conversion,Test_2023_4,Epilobium gunnianum,073,fruit_length,75,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Epilobium gunnianum
+Missing unit conversion,Test_2023_4,Eremophila oppositifolia,075,fruit_length,4,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Eremophila oppositifolia
+Missing unit conversion,Test_2023_4,Erigeron conyzoides,076,fruit_length,2.5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Erigeron conyzoides
+Missing unit conversion,Test_2023_4,Erythroxylum australe,077,fruit_width,4,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Erythroxylum australe
+Missing unit conversion,Test_2023_4,Escallonia bifida,078,fruit_length,3,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Escallonia bifida
+Missing unit conversion,Test_2023_4,Eucalyptus badjensis,079,fruit_length,5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus badjensis
+Missing unit conversion,Test_2023_4,Eucalyptus camphora,080,fruit_length,4,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus camphora
+Missing unit conversion,Test_2023_4,Eucalyptus dorrigoensis,081,fruit_length,5,mm,species,mode,measurement,1,field_experiment,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Eucalyptus dorrigoensis
+Missing unit conversion,Test_2023_4,Eucalyptus leucoxylon subsp. pruinosa,082,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus leucoxylon subsp. pruinosa
+Missing unit conversion,Test_2023_4,Eucalyptus muelleriana,083,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus muelleriana
+Missing unit conversion,Test_2023_4,Eucalyptus nandewarica,084,fruit_length,3,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus nandewarica
+Missing unit conversion,Test_2023_4,Eucalyptus oblonga,085,fruit_length,8,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus oblonga
+Missing unit conversion,Test_2023_4,Eucalyptus olida,086,fruit_length,5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus olida
+Missing unit conversion,Test_2023_4,Eucalyptus pulverulenta,087,fruit_width,6,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus pulverulenta
+Missing unit conversion,Test_2023_4,Eucalyptus recurva,088,fruit_length,4,mm,species,mode,,1,,seedling,,,,Test_2000,,,,,,Part of Test Dataset 4,,Eucalyptus recurva
+Missing unit conversion,Test_2023_4,Eucalyptus rossii,089,fruit_width,6,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus rossii
+Missing unit conversion,Test_2023_4,Eucalyptus scias,090,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus scias
+Missing unit conversion,Test_2023_4,Eucalyptus viminalis,091,fruit_width,4,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus viminalis
+Missing unit conversion,Test_2023_4,Eucalyptus yangoura,092,fruit_width,6,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus yangoura
+Missing unit conversion,Test_2023_4,Eucalyptus youmanii,093,fruit_length,12,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus youmanii
+Missing unit conversion,Test_2023_4,Eucalyptus youmanii,093,fruit_width,9,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Eucalyptus youmanii
+Missing unit conversion,Test_2023_4,Euphorbia inappendiculata var. queenslandica,094,fruit_length,1.5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Euphorbia inappendiculata var. queenslandica
+Missing unit conversion,Test_2023_4,Exocarpos homalocladus,095,fruit_width,8,mm,species,maximum,unknown,1,,seedling,,,,Test_2000,,,,,,Part of Test Dataset 4,,Exocarpos homalocladus
+Missing unit conversion,Test_2023_4,Exocarpos sparteus,096,fruit_length,5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Exocarpos sparteus
+Missing unit conversion,Test_2023_4,Ficus henneana,097,fruit_length,15,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Ficus henneana
+Missing unit conversion,Test_2023_4,Freesia laxa,099,fruit_length,12,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Freesia laxa
+Missing unit conversion,Test_2023_4,Geijera salicifolia,100,fruit_width,6,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Geijera salicifolia
+Missing unit conversion,Test_2023_4,Gentiana wingecarribiensis,101,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Gentiana wingecarribiensis
+Missing unit conversion,Test_2023_4,Geranium obtusisepalum,103,fruit_length,17,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Geranium obtusisepalum
+Missing unit conversion,Test_2023_4,Geranium purpureum subsp. purpureum,104,fruit_length,12,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Geranium purpureum subsp. purpureum
+Missing unit conversion,Test_2023_4,Gompholobium grandiflorum,105,fruit_length,15,mm,species,mode,,1,,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Gompholobium grandiflorum
+Missing unit conversion,Test_2023_4,Goodenia varia,106,fruit_length,10,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Goodenia varia
+Missing unit conversion,Test_2023_4,Hakea macraeana,109,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Hakea macraeana
+Missing unit conversion,Test_2023_4,Hemisteptia lyrata,110,fruit_length,2,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Hemisteptia lyrata
+Missing unit conversion,Test_2023_4,Hibbertia crinita,111,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Hibbertia crinita
+Missing unit conversion,Test_2023_4,Hibiscus brachysiphonius,112,fruit_length,15,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Hibiscus brachysiphonius
+Missing unit conversion,Test_2023_4,Hibiscus sturtii,113,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Hibiscus sturtii
+Missing unit conversion,Test_2023_4,Hypericum elodes,114,fruit_length,4,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Hypericum elodes
+Missing unit conversion,Test_2023_4,Hypoxis glabella var. glabella,115,fruit_dehiscence,dehiscent,,population,mode,unknown,3,literature,adult,pop_unk,,,Test_2003,,,,,,Part of Test Dataset 4,,Hypoxis glabella var. glabella
+Missing unit conversion,Test_2023_4,Imperata cylindrica,116,fruit_length,1,mm,species,mode,measurement,1,literature,seedling,,,,Test_2000,,,,,,Part of Test Dataset 4,,Imperata cylindrica
+Missing unit conversion,Test_2023_4,Indigofera triflora,117,fruit_length,30,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Indigofera triflora
+Missing unit conversion,Test_2023_4,Ipomoea cairica,118,fruit_length,11,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Ipomoea cairica
+Missing unit conversion,Test_2023_4,Isolepis montivaga,119,fruit_length,0.9,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Isolepis montivaga
+Missing unit conversion,Test_2023_4,Isotoma axillaris,120,fruit_length,7,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Isotoma axillaris
+Missing unit conversion,Test_2023_4,Isotoma fluviatilis subsp. fluviatilis,121,fruit_width,3,mm,,maximum,unknown,1,literature,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Isotoma fluviatilis subsp. fluviatilis
+Missing unit conversion,Test_2023_4,Juncus acutus subsp. acutus,122,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Juncus acutus subsp. acutus
+Missing unit conversion,Test_2023_4,Lepidium africanum,125,fruit_width,2,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Lepidium africanum
+Missing unit conversion,Test_2023_4,Lepidium foliosum,126,fruit_length,4,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Lepidium foliosum
+Missing unit conversion,Test_2023_4,Lepidium oxytrichum,127,fruit_length,5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Lepidium oxytrichum
+Missing unit conversion,Test_2023_4,Lepidosperma gladiatum,128,fruit_length,3,mm,species,mode,measurement,1,literature,seedling,,,,Test_2000,,,,,,Part of Test Dataset 4,,Lepidosperma gladiatum
+Missing unit conversion,Test_2023_4,Leptomeria drupacea,129,fruit_length,6,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Leptomeria drupacea
+Missing unit conversion,Test_2023_4,Leptospermum continentale,130,fruit_length,6,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Leptospermum continentale
+Missing unit conversion,Test_2023_4,Leptospermum obovatum,131,fruit_width,8,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Leptospermum obovatum
+Missing unit conversion,Test_2023_4,Leucopogon amplexicaulis,132,fruit_length,3.5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Leucopogon amplexicaulis
+Missing unit conversion,Test_2023_4,Lobelia pedunculata,133,fruit_length,4,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Lobelia pedunculata
+Missing unit conversion,Test_2023_4,Lobelia trigonocaulis,134,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Lobelia trigonocaulis
+Missing unit conversion,Test_2023_4,Lotononis bainesii,135,fruit_length,8,mm,species,mode,,1,,seedling,,,,Test_2000,,,,,,Part of Test Dataset 4,,Lotononis bainesii
+Missing unit conversion,Test_2023_4,Lotus corniculatus,136,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Lotus corniculatus
+Missing unit conversion,Test_2023_4,Lupinus polyphyllus,137,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Lupinus polyphyllus
+Missing unit conversion,Test_2023_4,Medicago orbicularis,138,fruit_length,7,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Medicago orbicularis
+Missing unit conversion,Test_2023_4,Melichrus procumbens,139,fruit_length,4,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Melichrus procumbens
+Missing unit conversion,Test_2023_4,Mischocarpus australis,140,fruit_width,8,mm,,maximum,unknown,1,literature,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Mischocarpus australis
+Missing unit conversion,Test_2023_4,Myoporum boninense subsp. australe,142,fruit_length,10,mm,species,mode,measurement,1,literature,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Myoporum boninense subsp. australe
+Missing unit conversion,Test_2023_4,Nicotiana glauca,143,fruit_length,13,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Nicotiana glauca
+Missing unit conversion,Test_2023_4,Nicotiana goodspeedii,144,fruit_length,5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Nicotiana goodspeedii
+Missing unit conversion,Test_2023_4,Oxalis corniculata,145,fruit_width,1.5,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Oxalis corniculata
+Missing unit conversion,Test_2023_4,Pandorea pandorana subsp. austrocaledonica,146,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Pandorea pandorana subsp. austrocaledonica
+Missing unit conversion,Test_2023_4,Paraserianthes lophantha,147,fruit_width,25,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Paraserianthes lophantha
+Missing unit conversion,Test_2023_4,Parentucellia latifolia,148,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Parentucellia latifolia
+Missing unit conversion,Test_2023_4,Phlegmatospermum cochlearinum,149,fruit_length,10,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Phlegmatospermum cochlearinum
+Missing unit conversion,Test_2023_4,Phyla nodiflora,150,fruit_width,2,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Phyla nodiflora
+Missing unit conversion,Test_2023_4,Picris barbarorum,151,fruit_length,7.5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Picris barbarorum
+Missing unit conversion,Test_2023_4,Pisum sativum var. arvense,154,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Pisum sativum var. arvense
+Missing unit conversion,Test_2023_4,Pittosporum erioloma,155,fruit_dehiscence,dehiscent,,,mode,unknown,3,literature,adult,,,,Test_2003,,,,,,Part of Test Dataset 4,,Pittosporum erioloma
+Missing unit conversion,Test_2023_4,Plantago turrifera,156,fruit_length,3,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Plantago turrifera
+Missing unit conversion,Test_2023_4,Polycarpon tetraphyllum,157,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Polycarpon tetraphyllum
+Missing unit conversion,Test_2023_4,Potamogeton australiensis,158,fruit_length,4,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Potamogeton australiensis
+Missing unit conversion,Test_2023_4,Psoralea pinnata,159,fruit_width,2.5,mm,metapopulation,minimum,unknown,1,field,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Psoralea pinnata
+Missing unit conversion,Test_2023_4,Pultenaea ferruginea,160,fruit_length,6,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Pultenaea ferruginea
+Missing unit conversion,Test_2023_4,Rhodamnia argentea,161,fruit_length,6,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Rhodamnia argentea
+Missing unit conversion,Test_2023_4,Rorippa gigantea,162,fruit_length,15,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Rorippa gigantea
+Missing unit conversion,Test_2023_4,Salix alba,164,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Salix alba
+Missing unit conversion,Test_2023_4,Schenkia australis,165,fruit_length,10,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Schenkia australis
+Missing unit conversion,Test_2023_4,Schoenus brevifolius,167,fruit_width,0.7,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Schoenus brevifolius
+Missing unit conversion,Test_2023_4,Schoenus lepidosperma,168,fruit_width,2.5,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Schoenus lepidosperma
+Missing unit conversion,Test_2023_4,Scleria rugosa,170,fruit_length,3,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Scleria rugosa
+Missing unit conversion,Test_2023_4,Senecio longipilus,171,fruit_length,2.5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Senecio longipilus
+Missing unit conversion,Test_2023_4,Sida goniocarpa,172,fruit_width,7,mm,species,minimum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Sida goniocarpa
+Missing unit conversion,Test_2023_4,Sigesbeckia orientalis,173,fruit_length,3,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Sigesbeckia orientalis
+Missing unit conversion,Test_2023_4,Sisymbrium irio,174,fruit_length,25,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Sisymbrium irio
+Missing unit conversion,Test_2023_4,Spergularia diandra,176,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Spergularia diandra
+Missing unit conversion,Test_2023_4,Sphaeromorphaea littoralis,177,fruit_length,1.3,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Sphaeromorphaea littoralis
+Missing unit conversion,Test_2023_4,Stellaria angustifolia subsp. angustifolia,178,fruit_length,8.5,mm,species,mode,measurement,1,literature,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Stellaria angustifolia subsp. angustifolia
+Missing unit conversion,Test_2023_4,Styphelia viridis,179,fruit_length,10,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Styphelia viridis
+Missing unit conversion,Test_2023_4,Swainsona cadellii,180,fruit_length,25,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Swainsona cadellii
+Missing unit conversion,Test_2023_4,Teucrium puberulum,181,fruit_width,4,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Teucrium puberulum
+Missing unit conversion,Test_2023_4,Thelymitra kangaloonica,182,fruit_length,12,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Thelymitra kangaloonica
+Missing unit conversion,Test_2023_4,Thesium australe,183,fruit_width,2.5,mm,species,maximum,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Thesium australe
+Missing unit conversion,Test_2023_4,Trifolium dubium,184,fruit_length,2,mm,species,mode,measurement,1,literature,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Trifolium dubium
+Missing unit conversion,Test_2023_4,Veronica catenata,185,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,,,,,,,Part of Test Dataset 4,,Veronica catenata
+Missing unit conversion,Test_2023_4,Veronica derwentiana,186,fruit_length,2.8,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Veronica derwentiana
+Missing unit conversion,Test_2023_4,Wahlenbergia luteola,187,fruit_length,5,mm,species,mode,,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Wahlenbergia luteola

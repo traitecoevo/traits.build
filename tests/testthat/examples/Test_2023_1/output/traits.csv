@@ -12,13 +12,13 @@ Test_2023_1,Acacia celsa,003,seed_dry_mass,10.3,mg,population,mean,measurement,3
 Test_2023_1,Acacia celsa,003,seed_dry_mass,10--20,mg,population,bin,measurement,10,field,adult,01,,02,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
 Test_2023_1,Acacia celsa,003,wood_density,0.498,mg/mm3,population,mean,measurement,3,field,adult,01,,02,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
 Test_2023_1,Acacia celsa,004,plant_growth_form,herb,,species,mode,expert_score,3,field,adult,,,02,,01,03,01,01,2004/2004,from Falster_2005_1,07,Acacia celsa
-Test_2023_1,Acmena graveolens,005,huber_value,0.000139742873113471,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,12,01,,,02,06,,,2002/2002,made-up measurement remarks,01,Acmena graveolens
-Test_2023_1,Acmena graveolens,006,huber_value,0.000327118089630357,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,02,Acmena graveolens
-Test_2023_1,Acmena graveolens,006,huber_value,0.000374953130858643,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,03,Acmena graveolens
-Test_2023_1,Acmena graveolens,006,leaf_N_per_dry_mass,15.5,mg/g,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Acmena graveolens
-Test_2023_1,Acmena graveolens,006,leaf_area,5246,mm2,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Acmena graveolens
-Test_2023_1,Acmena graveolens,006,leaf_mass_per_area,151,g/m2,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Acmena graveolens
-Test_2023_1,Acmena graveolens,006,wood_density,0.599,mg/mm3,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Acmena graveolens
+Test_2023_1,Acmena graveolens,005,huber_value,0.000139742873113471,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,pop_unk,01,,,,06,,,2002/2002,made-up measurement remarks,01,Acmena graveolens
+Test_2023_1,Acmena graveolens,006,huber_value,0.000327118089630357,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,pop_unk,,,,,06,,,2004/2004,from Falster_2005_1,02,Acmena graveolens
+Test_2023_1,Acmena graveolens,006,huber_value,0.000374953130858643,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,pop_unk,,,,,06,,,2004/2004,from Falster_2005_1,03,Acmena graveolens
+Test_2023_1,Acmena graveolens,006,leaf_N_per_dry_mass,15.5,mg/g,population,mean,measurement,3,field,adult,pop_unk,,,,,06,,,2004/2004,from Falster_2005_1,,Acmena graveolens
+Test_2023_1,Acmena graveolens,006,leaf_area,5246,mm2,population,mean,measurement,3,field,adult,pop_unk,,,,,06,,,2004/2004,from Falster_2005_1,,Acmena graveolens
+Test_2023_1,Acmena graveolens,006,leaf_mass_per_area,151,g/m2,population,mean,measurement,3,field,adult,pop_unk,,,,,06,,,2004/2004,from Falster_2005_1,,Acmena graveolens
+Test_2023_1,Acmena graveolens,006,wood_density,0.599,mg/mm3,population,mean,measurement,3,field,adult,pop_unk,,,,,06,,,2004/2004,from Falster_2005_1,,Acmena graveolens
 Test_2023_1,Acronychia acidula,007,flowering_time,nnnnnnnnnyyy,,individual,mode,expert_score,3,field,adult,04,01,02,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
 Test_2023_1,Acronychia acidula,007,huber_value,0.000105485232067511,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,02,,01,09,02,01,2002/2002,made-up measurement remarks,04,Acronychia acidula
 Test_2023_1,Acronychia acidula,008,huber_value,0.000132275132275132,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,02,,01,09,02,01,2004/2004,from Falster_2005_1,05,Acronychia acidula
@@ -27,13 +27,13 @@ Test_2023_1,Acronychia acidula,008,leaf_area,14302,mm2,population,mean,measureme
 Test_2023_1,Acronychia acidula,008,leaf_mass_per_area,85,g/m2,population,mean,measurement,3,field,adult,04,,02,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
 Test_2023_1,Acronychia acidula,008,wood_density,0.525,mg/mm3,population,mean,measurement,3,field,adult,04,,02,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
 Test_2023_1,Acronychia acidula,009,plant_growth_form,shrub,,species,mode,expert_score,3,field,adult,,,02,,01,09,02,01,2004/2004,from Falster_2005_1,07,Acronychia acidula
-Test_2023_1,Aleurites rockinghamensis,010,huber_value,0.000161056530842326,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,12,01,,,02,06,,,2002/2002,made-up measurement remarks,01,Aleurites rockinghamensis
-Test_2023_1,Aleurites rockinghamensis,011,huber_value,0.000238435860753457,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,02,Aleurites rockinghamensis
-Test_2023_1,Aleurites rockinghamensis,011,leaf_N_per_dry_mass,18.4,mg/g,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
-Test_2023_1,Aleurites rockinghamensis,011,leaf_area,73984,mm2,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
-Test_2023_1,Aleurites rockinghamensis,011,leaf_mass_per_area,113,g/m2,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
-Test_2023_1,Aleurites rockinghamensis,011,seed_dry_mass,7077,mg,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
-Test_2023_1,Aleurites rockinghamensis,011,wood_density,0.28,mg/mm3,population,mean,measurement,3,field,adult,12,,,,02,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
+Test_2023_1,Aleurites rockinghamensis,010,huber_value,0.000161056530842326,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,pop_unk,01,,,,06,,,2002/2002,made-up measurement remarks,01,Aleurites rockinghamensis
+Test_2023_1,Aleurites rockinghamensis,011,huber_value,0.000238435860753457,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,pop_unk,,,,,06,,,2004/2004,from Falster_2005_1,02,Aleurites rockinghamensis
+Test_2023_1,Aleurites rockinghamensis,011,leaf_N_per_dry_mass,18.4,mg/g,population,mean,measurement,3,field,adult,pop_unk,,,,,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
+Test_2023_1,Aleurites rockinghamensis,011,leaf_area,73984,mm2,population,mean,measurement,3,field,adult,pop_unk,,,,,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
+Test_2023_1,Aleurites rockinghamensis,011,leaf_mass_per_area,113,g/m2,population,mean,measurement,3,field,adult,pop_unk,,,,,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
+Test_2023_1,Aleurites rockinghamensis,011,seed_dry_mass,7077,mg,population,mean,measurement,3,field,adult,pop_unk,,,,,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
+Test_2023_1,Aleurites rockinghamensis,011,wood_density,0.28,mg/mm3,population,mean,measurement,3,field,adult,pop_unk,,,,,06,,,2004/2004,from Falster_2005_1,,Aleurites rockinghamensis
 Test_2023_1,Alphitonia petriei,012,flowering_time,nnnnyyynnnnn,,individual,mode,expert_score,3,field,adult,06,01,02,,01,04,03,02,2004/2004,from Falster_2005_1,,Alphitonia petriei
 Test_2023_1,Alphitonia petriei,012,huber_value,0.000230680507497116,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,06,01,02,,01,04,03,02,2002/2002,made-up measurement remarks,01,Alphitonia petriei
 Test_2023_1,Alphitonia petriei,013,huber_value,0.000230414746543779,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,06,,02,,01,04,03,02,2004/2004,from Falster_2005_1,02,Alphitonia petriei

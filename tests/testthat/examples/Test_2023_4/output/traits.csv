@@ -1,0 +1,27 @@
+dataset_id,taxon_name,observation_id,trait_name,value,unit,entity_type,value_type,basis_of_value,replicates,basis_of_record,life_stage,population_id,individual_id,temporal_id,source_id,location_id,entity_context_id,plot_id,treatment_id,collection_date,measurement_remarks,method_id,original_name
+Test_2023_4,Amyema preissii,020,fruit_colour,pink white,,,mode,unknown,1,,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Amyema preissii
+Test_2023_4,Apophyllum anomalum,022,fruit_colour,purple,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Apophyllum anomalum
+Test_2023_4,Arbutus unedo,023,fruit_colour,red,,metapopulation,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Arbutus unedo
+Test_2023_4,Coprosma niphophila,042,fruit_colour,orange red,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Coprosma niphophila
+Test_2023_4,Coprosma nivalis,043,fruit_colour,grey purple,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Coprosma nivalis
+Test_2023_4,Crotalaria brevis,049,fruit_colour,brown,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Crotalaria brevis
+Test_2023_4,Cyperus albostriatus,053,fruit_colour,black brown,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Cyperus albostriatus
+Test_2023_4,Cyperus bulbosus,055,fruit_colour,grey,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Cyperus bulbosus
+Test_2023_4,Dampiera fusca,058,fruit_colour,brown,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Dampiera fusca
+Test_2023_4,Dovyalis caffra,068,fruit_colour,orange yellow,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Dovyalis caffra
+Test_2023_4,Endiandra muelleri,072,fruit_colour,black,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Endiandra muelleri
+Test_2023_4,Eremophila deserti,074,fruit_colour,black yellow,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Eremophila deserti
+Test_2023_4,Freesia hybrid,098,fruit_colour,green,,metapopulation,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Freesia hybrid
+Test_2023_4,Gentianella barringtonensis,102,fruit_colour,brown,,species,mode,unknown,1,literature,seedling,,,,,,,,,,Part of Test Dataset 4,,Gentianella barringtonensis
+Test_2023_4,Gossia bidwillii,107,fruit_colour,black,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Gossia bidwillii
+Test_2023_4,Grevillea scortechinii,108,fruit_colour,brown red,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Grevillea scortechinii
+Test_2023_4,Juncus kraussii,123,fruit_colour,black brown red yellow,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Juncus kraussii
+Test_2023_4,Lantana montevidensis,124,fruit_colour,black purple,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Lantana montevidensis
+Test_2023_4,Muehlenbeckia adpressa,141,fruit_colour,black brown,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Muehlenbeckia adpressa
+Test_2023_4,Pimelea ligustrina subsp. ligustrina,152,fruit_colour,green,,metapopulation,mode,unknown,1,literature,seedling,,,,Test_2003,,,,,,Part of Test Dataset 4,,Pimelea ligustrina subsp. ligustrina
+Test_2023_4,Pinus pinea,153,fruit_colour,brown,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Pinus pinea
+Test_2023_4,Rhodamnia argentea,161,fruit_colour,black,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Rhodamnia argentea
+Test_2023_4,Rubus parvifolius,163,fruit_colour,red,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Rubus parvifolius
+Test_2023_4,Schoenus apogon,166,fruit_colour,white,,species,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Schoenus apogon
+Test_2023_4,Schoenus vaginatus,169,fruit_colour,brown red yellow,,metapopulation,mode,unknown,1,,seedling,,,,,,,,,,Part of Test Dataset 4,,Schoenus vaginatus
+Test_2023_4,Sparaxis bulbifera,175,fruit_colour,green,,metapopulation,mode,unknown,1,field,seedling,,,,,,,,,,Part of Test Dataset 4,,Sparaxis bulbifera

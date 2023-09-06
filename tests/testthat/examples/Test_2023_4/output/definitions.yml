@@ -1,0 +1,22 @@
+fruit_colour:
+  label: Fruit colour
+  description: A fruit morphology trait [TO:0002629] which is the primary [NCIT:C25251]
+    colour [PATO:0000014] of the exocarp [PO:0009085] of a mature [PATO:0001701] fruit
+    [PO:0009001].;Human visible dominant colour of a fresh fruit's exocarp (outermost
+    layer) at maturity.
+  comments: If a fruit is multiple colours, they are listed as a space-delimited string.
+  type: categorical
+  allowed_values_levels:
+    black: Fruit's exocarp is black.
+    blue: Fruit's exocarp is blue.
+    brown: Fruit's exocarp is brown.
+    cream: Fruit's exocarp is cream.
+    green: Fruit's exocarp is green.
+    grey: Fruit's exocarp is grey.
+    orange: Fruit's exocarp is orange.
+    pink: Fruit's exocarp is pink.
+    purple: Fruit's exocarp is purple.
+    red: Fruit's exocarp is red.
+    white: Fruit's exocarp is white.
+    yellow: Fruit's exocarp is yellow.
+  entity_URI: https://w3id.org/APD/traits/trait_0012519
