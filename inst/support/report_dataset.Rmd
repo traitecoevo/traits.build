@@ -443,8 +443,8 @@ if (nrow(subset(data_study$excluded_data, error != "Missing value")) > 0) {
   if (nrow(subset(data_study$excluded_data, error == "Unsupported trait value")) > 0) {
     data_study$excluded_data %>%
       filter(error == "Unsupported trait value") %>%
-      select(trait_name, value) %>%
-      rename(`value that is unaligned` = value) %>%
+      select(all_of("trait_name", "value")) %>%
+      rename("value that is unaligned" = "value") %>%
       distinct() %>%
       arrange(trait_name, `value that is unaligned`) %>%
       my_kable_styling() %>%
@@ -659,7 +659,7 @@ for (trait in traits_categorical) {
     "",
     elements$allowed_values_levels %>%
       unlist() %>% as.data.frame() %>% tibble::rownames_to_column() %>%
-      rename(trait_value = "rowname", definition = ".") %>% arrange(trait_value) %>%
+      rename(all_of(c("trait_value" = "rowname", "definition" = "."))) %>% arrange(trait_value) %>%
       my_kable_styling(),
     "",
     ifelse(nrow(substitutions_for_trait) > 0,
@@ -667,7 +667,7 @@ for (trait in traits_categorical) {
       "No substitutions were required to align the data for this trait with AusTraits allowed trait values."),
     ifelse(nrow(substitutions_for_trait) > 0,
       substitutions_for_trait %>%
-        rename("value in contributed data table" = find, "AusTraits aligned value" = replace) %>%
+        rename(all_of("value in contributed data table" = find, "AusTraits aligned value" = replace)) %>%
         my_kable_styling(),
       ""
     ),
@@ -742,12 +742,12 @@ if (nrow(tmp) < 10000) {
   tmp %>%
   mutate(
     taxon_name = as_link(taxon_id, taxon_name)) %>%
-  mutate_all(replace_na, "") %>%
+  mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   my_kable_styling()
 } else {
   cat(crayon:red("\t\tTable too large to dsiplay\n"))
   tmp %>%
-  mutate_all(replace_na, "") %>%
+  mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   write_csv(paste0(dataset_id, "_taxa.csv"))
 }
 ```
@@ -776,7 +776,7 @@ data_study$taxonomic_updates %>% select(-dataset_id) %>%
     )
   ) %>%
   select(original_name, d1, cleaned_name, d2, taxon_name, `status cleaned name`) %>%
-  mutate_all(replace_na, "") %>%
+  mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   my_kable_styling()
 ```
 
@@ -789,7 +789,7 @@ data_study$taxa %>%
   filter(is.na(taxon_id)) %>%
   select(one_of(names(schema$austraits$elements$taxa$elements))) %>%
   select(-taxon_id, -scientific_name_id, -taxon_distribution, -establishment_means) %>%
-  mutate_all(replace_na, "") %>%
+  mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   my_kable_styling()
 ```
 
