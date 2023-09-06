@@ -111,10 +111,11 @@ dataset_process <- function(filename_data_raw,
     traits$traits %>%
     process_add_all_columns(
       c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
-        "parsing_id", "location_name", "taxonomic_resolution")
+        "parsing_id", "location_name", "taxonomic_resolution", "unit_in")
     )
 
   traits <- traits %>%
+    mutate(unit = ifelse(!is.na(unit_in), unit_in, unit)) %>%
     process_flag_unsupported_traits(definitions) %>%
     process_flag_excluded_observations(metadata) %>%
     process_convert_units(definitions, unit_conversion_functions) %>%
@@ -149,7 +150,7 @@ dataset_process <- function(filename_data_raw,
 
   # Where missing, fill variables in traits table with values from locations
   if (nrow(locations) > 0) {
-    vars <- c("basis_of_record", "life_stage", "collection_date", "measurement_remarks", "entity_type",
+    vars <- c("basis_of_record", "life_stage", "collection_date", "measurement_remarks", "unit_in", "entity_type",
               "value_type", "basis_of_value", "replicates", "population_id", "individual_id")
 
     for (v in vars) {
@@ -201,7 +202,7 @@ dataset_process <- function(filename_data_raw,
     traits %>%
     dplyr::select(
       dplyr::all_of(c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
-      "error", "taxonomic_resolution"))
+      "error", "taxonomic_resolution", "unit_in"))
     )
 
   # Remove missing values is specified
@@ -215,7 +216,7 @@ dataset_process <- function(filename_data_raw,
 
   # Combine for final output
   list(
-       traits     = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error"))),
+       traits     = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "unit_in"))),
        locations  = locations,
        contexts   = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
        methods    = methods,
@@ -963,7 +964,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
 
   # Step 1b. Import any values that aren't columns of data
   vars <- c("entity_type", "value_type", "basis_of_value",
-            "replicates", "collection_date",
+            "replicates", "collection_date", "unit_in",
             "basis_of_record", "life_stage",
             "measurement_remarks", "source_id")
 
@@ -1269,7 +1270,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
                                          "trait_name", "population_id", "individual_id",
                                          "location_name", "source_id", "value", "entity_type",
                                          "collection_date", "custom_R_code", "replicates", "measurement_remarks",
-                                         "taxon_name", "basis_of_value", "basis_of_record", "life_stage")))
+                                         "taxon_name", "basis_of_value", "basis_of_record", "life_stage", "unit_in")))
       )  %>%
       full_join(by = "dataset_id",
       # References
