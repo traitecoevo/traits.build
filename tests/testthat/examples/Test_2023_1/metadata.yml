@@ -133,7 +133,7 @@ contexts:
     description: Measured on a 50 mm branch segment
   - value: 1000 mm branch
     description: Measured on a 1000 mm branch segment
-- context_property: unknown
+- context_property: plant diameter
   category: entity_context
   var_in: plant diameter
 traits:
