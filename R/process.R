@@ -904,17 +904,28 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
   }
   
   # Split by unique unit conversions, to allow for as few calls as possible
-  data <- data %>%
+  data <- data %>% 
     dplyr::group_by(.data$ucn, .data$to_convert) %>%
     dplyr::mutate(
-      value = ifelse(.data$to_convert & !value_type %in% c("bin", "range") & !is.na(.data$value), f(.data$value, .data$ucn[1]), .data$value), #exclude bins and ranges, or get a warning
-      split_values_1 = ifelse(.data$to_convert & .data$value_type %in% c("bin", "range") & !is.na(.data$split_values_1), 
-                              f(.data$split_values_1, .data$ucn[1]), .data$split_values_1),
-      split_values_2 = ifelse(.data$to_convert & .data$value_type %in% c("bin", "range") & !is.na(.data$split_values_2), 
-                              f(.data$split_values_2, .data$ucn[1]), .data$split_values_2),
+      value = ifelse(.data$to_convert == TRUE &                     # value requires conversion
+                       !.data$value_type %in% c("bin", "range") &   # value_type not a bin or range; those are converted below (split_values_1; split_values_2)
+                       !is.na(.data$value),                         # value not NA - the full matrix from data.csv file is still in data table
+                     f(.data$value, .data$ucn[1]),                  # convert value to appropriate units
+                     .data$value),                                  # if conditions not met, keep original value
+      split_values_1 = ifelse(.data$to_convert == TRUE  &
+                                .data$value_type %in% c("bin", "range") & 
+                                !is.na(.data$split_values_1), 
+                              f(.data$split_values_1, .data$ucn[1]), 
+                              .data$split_values_1),
+      split_values_2 = ifelse(.data$to_convert == TRUE & 
+                                .data$value_type %in% c("bin", "range") & 
+                                !is.na(.data$split_values_2), 
+                              f(.data$split_values_2, .data$ucn[1]), 
+                              .data$split_values_2),
       unit = ifelse(.data$to_convert, .data$to, .data$unit),
       value = ifelse(!is.na(.data$split_values_1) & !is.na(.data$split_values_2), paste0(.data$split_values_1, "--", .data$split_values_2), .data$value),
-      value = ifelse(!is.na(.data$split_values_1) & is.na(.data$split_values_2), paste0(.data$split_values_1, "--"), .data$value)
+      value = ifelse(!is.na(.data$split_values_1) & is.na(.data$split_values_2), paste0(.data$split_values_1, "--"), .data$value),
+      value = ifelse(is.na(.data$split_values_1) & !is.na(.data$split_values_2), paste0("--", .data$split_values_2), .data$value)
     ) %>%
     dplyr::ungroup()  %>%
     dplyr::select(dplyr::any_of(vars))
