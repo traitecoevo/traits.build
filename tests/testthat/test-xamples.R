@@ -42,7 +42,7 @@ testthat::test_that("Test Dataset 1 builds correctly", {
       c(temporal_id, entity_context_id, plot_id, treatment_id, method_context_id),
       ~if_else(.x == "NA", NA_character_, .x)
     ))
-  names(Test_2023_1$locations$value) <- NULL
+  #names(Test_2023_1$locations$value) <- NULL
   Test_2023_1$methods <-
     Test_2023_1$methods %>%
     mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
