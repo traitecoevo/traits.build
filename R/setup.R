@@ -463,14 +463,15 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
         contexts[[ii]][["values"]][["find"]] <- NULL
       }
 
-          # don't list the description field if no descriptions are required.
+      # Don't list the description field if no descriptions are required
       if (tolower(description_needed) == "y") {
         contexts[[ii]][["values"]][["description"]] <- "unknown"
       } else {
         contexts[[ii]][["values"]][["description"]] <- NULL
       }
-    # if neither replacement values nor descriptions are required, there is no reason to list the values; these will be automatically read in later.
-      if (tolower(replace_needed) == "n" & tolower(description_needed) == "n") {
+    # If neither replacement values nor descriptions are required,
+    # there is no reason to list the values; these will be automatically read in later
+      if (tolower(replace_needed) == "n" && tolower(description_needed) == "n") {
         contexts[[ii]][["values"]] <- NULL
       }
     }
