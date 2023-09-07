@@ -113,7 +113,7 @@ dataset_process <- function(filename_data_raw,
   locations <-
     metadata$locations %>%
     process_format_locations(dataset_id, schema)
-  
+
   traits <-
     traits$traits %>%
     process_add_all_columns(
@@ -199,19 +199,19 @@ dataset_process <- function(filename_data_raw,
     ) %>%
     dplyr::distinct() %>%
     dplyr::arrange(.data$cleaned_name)
-  
-  ## a temporary dataframe created to generate and bind method_id, 
+
+  ## a temporary dataframe created to generate and bind method_id,
   ## for instances where the same trait is measured twice using different methods
 
   ## XXX generating the `vars_to_group` variable is a clunky (hopefully temporary) solution to not being able to use `any_of` with `group_by`
-  
+
   vars_to_group <- metadata[["traits"]] %>%
     util_list_to_df2() %>%
-    names() %>% 
+    names() %>%
     as.data.frame() %>%
-    dplyr::filter(. %in% c("trait_name", "value_type")) %>% 
-    as.vector()  
-  
+    dplyr::filter(. %in% c("trait_name", "value_type")) %>%
+    as.vector()
+
   tmp_bind <-
     metadata[["traits"]] %>%
     util_list_to_df2() %>%
@@ -225,13 +225,13 @@ dataset_process <- function(filename_data_raw,
       dplyr::mutate(method_id = dplyr::row_number()) %>%
     dplyr::ungroup() %>%
     dplyr::select(.data$trait_name, .data$methods, .data$method_id)
-  
+
   # ensure correct order of columns in traits table
   # at this point, need to retain `taxonomic_resolution`, because taxa table & taxonomic_updates not yet assembled.
   
   traits <-
     traits %>%
-    dplyr::select(-.data$method_id) %>% #need to remove blank column to bind in real one; blank exists because method_id in schema
+    dplyr::select(-.data$method_id) %>% # Need to remove blank column to bind in real one; blank exists because method_id in schema
     dplyr::left_join(
       by = c("trait_name", "methods"),
       tmp_bind
@@ -492,7 +492,7 @@ process_format_contexts <- function(my_list, dataset_id) {
     if (is.null(contexts[["description"]])) {
     contexts[["description"]] <- NA_character_
     }
-    
+
 
     # keep values from find column if a replacement isn't specified
     # This doesn't do what the comment says
@@ -1307,12 +1307,12 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
 ## the group_by below should include value_type when available, but can't get that to work
 
 ## XXX I also can't get group_by to work with any sort of vector of values - i.e. vars_to_group, hence this clunky solution
-  
+
 vars_to_group <- metadata[["traits"]] %>%
     util_list_to_df2() %>%
-    names() %>% 
+    names() %>%
     as.data.frame() %>%
-    dplyr::filter(. %in% c("trait_name", "value_type")) %>% 
+    dplyr::filter(. %in% c("trait_name", "value_type")) %>%
     as.vector()
 
   methods <-
