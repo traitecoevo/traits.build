@@ -156,7 +156,7 @@ util_list_to_df1 <- function(my_list) {
       my_list[[f]] <- NA
   }
 
-  tibble::tibble(key = names(my_list), value = unlist(my_list))
+  tibble::tibble(key = names(my_list), value = unname(unlist(my_list)))
 }
 
 
