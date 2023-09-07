@@ -203,35 +203,27 @@ dataset_process <- function(filename_data_raw,
   ## a temporary dataframe created to generate and bind method_id,
   ## for instances where the same trait is measured twice using different methods
 
-  ## XXX generating the `vars_to_group` variable is a clunky (hopefully temporary) solution to not being able to use `any_of` with `group_by`
-
-  vars_to_group <- metadata[["traits"]] %>%
-    util_list_to_df2() %>%
-    names() %>%
-    as.data.frame() %>%
-    dplyr::filter(. %in% c("trait_name", "value_type")) %>%
-    as.vector()
+  # Test ABRS_2023
 
   tmp_bind <-
     metadata[["traits"]] %>%
     util_list_to_df2() %>%
     dplyr::filter(!is.na(.data$trait_name)) %>%
     dplyr::mutate(
-      dataset_id = dataset_id,
-      value_type = ifelse("value_type" %in% vars_to_group, .data$value_type, NA)
+      dataset_id = dataset_id
     ) %>%
-    dplyr::distinct(.data$dataset_id, .data$trait_name, .data$methods, .data$value_type) %>%
-    dplyr::group_by(.data$trait_name, .data$value_type) %>%
-      dplyr::mutate(method_id = dplyr::row_number()) %>%
+    dplyr::distinct(.data$dataset_id, .data$trait_name, .data$methods) %>%
+    dplyr::group_by(.data$trait_name) %>%
+    dplyr::mutate(method_id = process_generate_id(.data$methods, "")) %>%
     dplyr::ungroup() %>%
-    dplyr::select(.data$trait_name, .data$methods, .data$method_id)
+    dplyr::select(dplyr::all_of(c("trait_name", "methods", "method_id")))
 
   # ensure correct order of columns in traits table
   # at this point, need to retain `taxonomic_resolution`, because taxa table & taxonomic_updates not yet assembled.
 
   traits <-
     traits %>%
-    dplyr::select(-.data$method_id) %>% # Need to remove blank column to bind in real one; blank exists because method_id in schema
+    dplyr::select(-.data$method_id) %>% # Need to remove blank column to bind in real one; blank exists because `method_id` in schema
     dplyr::left_join(
       by = c("trait_name", "methods"),
       tmp_bind
@@ -432,7 +424,7 @@ process_create_observation_id <- function(data) {
     dplyr::select(-dplyr::all_of(c("check_for_ind")))
 }
 
-#' Function to generate seuqnece of integer ids from vector of names
+#' Function to generate sequence of integer ids from vector of names
 #' Determines number of 00s needed based on number of records
 #' @param x vector of text to convert
 #' @param prefix text to put before id integer
@@ -1308,13 +1300,6 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
 
 ## XXX I also can't get group_by to work with any sort of vector of values - i.e. vars_to_group, hence this clunky solution
 
-vars_to_group <- metadata[["traits"]] %>%
-    util_list_to_df2() %>%
-    names() %>%
-    as.data.frame() %>%
-    dplyr::filter(. %in% c("trait_name", "value_type")) %>%
-    as.vector()
-
   methods <-
     dplyr::full_join(by = "dataset_id",
       # methods used to collect each trait
@@ -1322,15 +1307,13 @@ vars_to_group <- metadata[["traits"]] %>%
         util_list_to_df2() %>%
         dplyr::filter(!is.na(.data$trait_name)) %>%
         dplyr::mutate(
-          dataset_id = dataset_id,
-          value_type = ifelse("value_type" %in% vars_to_group, .data$value_type, NA)
+          dataset_id = dataset_id
         ) %>%
-        dplyr::select(.data$dataset_id, .data$trait_name, .data$methods, .data$value_type) %>%
+        dplyr::select(.data$dataset_id, .data$trait_name, .data$methods) %>%
         dplyr::distinct() %>%
-        dplyr::group_by(.data$trait_name, .data$value_type) %>%
-          dplyr::mutate(method_id = dplyr::row_number()) %>%
-        dplyr::ungroup() %>%
-        dplyr::select(-.data$value_type)
+        dplyr::group_by(.data$trait_name) %>%
+          dplyr::mutate(method_id = process_generate_id(.data$methods, "")) %>%
+        dplyr::ungroup()
       ,
       # study methods
       metadata$dataset %>%
