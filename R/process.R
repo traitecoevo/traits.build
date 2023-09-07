@@ -118,7 +118,7 @@ dataset_process <- function(filename_data_raw,
     traits$traits %>%
     process_add_all_columns(
       c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
-        "parsing_id", "location_name", "taxonomic_resolution")
+        "parsing_id", "location_name", "taxonomic_resolution", "methods")
     ) %>%
     process_flag_unsupported_traits(definitions) %>%
     process_flag_excluded_observations(metadata) %>%
@@ -228,7 +228,7 @@ dataset_process <- function(filename_data_raw,
 
   # ensure correct order of columns in traits table
   # at this point, need to retain `taxonomic_resolution`, because taxa table & taxonomic_updates not yet assembled.
-  
+
   traits <-
     traits %>%
     dplyr::select(-.data$method_id) %>% # Need to remove blank column to bind in real one; blank exists because method_id in schema
@@ -252,7 +252,7 @@ dataset_process <- function(filename_data_raw,
 
   # combine for final output
   list(
-       traits     = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "methods"))),
+       traits     = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error"))),
        locations  = locations,
        contexts   = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
        methods    = methods,
