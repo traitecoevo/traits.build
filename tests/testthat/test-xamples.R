@@ -105,3 +105,16 @@ testthat::test_that("Test Dataset 2 builds correctly", {
   }
 
 })
+
+
+#testthat::test_that("`dataset_test` works properly for Test Dataset 7", {
+
+  # Test Dataset 7: Test_2023_7
+  # See README.md in examples/Test_2023_7 for details about this dataset
+
+  # Build dataset
+
+  # Expected output
+  #dataset_test("Test_2023_7", path_data = "examples")
+
+#})

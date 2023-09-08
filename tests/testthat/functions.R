@@ -1,18 +1,20 @@
 
-# I think the functions aren't printing any error messages
-# Because info and label arguments are NULL, not sure what they're supposed to be
-# Also are these functions supposed to be the same as those in testdata.R?
+# Are these functions supposed to be the same as those in testdata.R?
 
 # I think this function already exists in the package
 # Better than expect_silent as contains `info` and allows for complete failures
 expect_no_error <- function(object, regexp = NULL, ..., info = NULL, label = NULL) {
+
   error <- tryCatch({
     object
     NULL
   }, error = function(e) {
     e
   })
-  expect(is.null(error), sprintf("%s threw an error: %s", label, paste(error$message, collapse = ",")), info = info)
+  if (is.null(label))
+    expect(is.null(error), sprintf("%s", paste(error$message, collapse = ", ")), info = info)
+  else
+    expect(is.null(error), sprintf("%s threw an error: %s", label, paste(error$message, collapse = ", ")), info = info)
   invisible(NULL)
 }
 
@@ -141,4 +143,17 @@ test_structure <- function(
 
   # Contains allowed traits
   expect_isin(data$traits$trait_name %>% unique(), definitions$elements %>% names(), info = paste("traits ", v))
+}
+
+## a helper function to determine if this is being run as part of a test
+is_testing_env <- function() {
+  # Calling scope
+  tb <- .traceback(x = 0)
+
+  # Check if called in testthat or interactive
+  if (any(unlist(lapply(tb, function(x) any(grepl("test_env", x)))))) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
 }
