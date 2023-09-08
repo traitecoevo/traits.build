@@ -79,7 +79,7 @@ notetaker_as_note <- function(note, link = NA_character_) {
   tibble::tibble(
     note = note, link = ifelse(is.na(link), notes_random_string(), link)
   ) %>%
-  dplyr::mutate_all(as.character)
+  dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
 }
 
 # start note recorder

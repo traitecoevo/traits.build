@@ -1,11 +1,11 @@
-#' Test whether specified dataset_id has the correct setup
+#' Test whether specified `dataset_id` has the correct setup
 #'
-#' Run tests to ensure that specified dataset_id has the correct setup
+#' Run tests to ensure that specified `dataset_id` has the correct setup.
 #'
-#' @param dataset_ids vector of dataset_id for sources to be tested
-#' @param path_config path to folder containing configuration files
-#' @param path_data path to folder containing data files
-#' @param reporter testthat reporter to use to summarise output
+#' @param dataset_ids Vector of `dataset_id` for sources to be tested
+#' @param path_config Path to folder containing configuration files
+#' @param path_data Path to folder containing data files
+#' @param reporter `testthat` reporter to use to summarise output
 #'
 #' @importFrom rlang .data .env
 #' @export
@@ -18,7 +18,7 @@ dataset_test <-
 
     requireNamespace("testthat", quietly = TRUE)
 
-    # clean up when done
+    # Clean up when done
     Sys.setenv("TESTTHAT_MAX_FAILS" = Inf)
 
     testthat::with_reporter(
@@ -33,15 +33,15 @@ dataset_test <-
   }
 
 
-#' Test whether specified dataset_id has the correct setup
+#' Test whether specified `dataset_id` has the correct setup
 #'
-#' Run tests to ensure that specified dataset_id has the correct setup
+#' Run tests to ensure that specified `dataset_id` has the correct setup.
 #'
-#' @param test_dataset_ids vector of dataset_id for sources to be tested
+#' @param test_dataset_ids Vector of `dataset_id` for sources to be tested
 #' @inheritParams dataset_test
-#' @param schema data schema
-#' @param definitions trait defininitons
-#' @importFrom testthat local_edition compare expect expect_true expect_named test_that context expect_silent expect_type
+#' @param schema Data schema
+#' @param definitions Trait defininitons
+#' @importFrom testthat local_edition compare expect expect_true expect_false expect_named test_that context expect_silent expect_type
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
 dataset_test_worker <-
@@ -271,9 +271,11 @@ dataset_test_worker <-
     # Now run tests for each dataset
 
     for (dataset_id in test_dataset_ids) {
+
       s <- file.path(path_data, dataset_id)
 
       test_that(dataset_id, {
+
         context(sprintf("%s", dataset_id))
 
         # Exists
@@ -282,13 +284,14 @@ dataset_test_worker <-
           expect_true(file.exists(f), info = f)
         }
 
-        # check for other files
+        # Check for other files
         vals <- c("data.csv", "metadata.yml", "raw")
         expect_isin(dir(s), vals, info = paste(f, " disallowed files"))
 
 
-        # data.csv
+        # `data.csv`
         f <- files[1]
+        # Time columns get reformatted
         expect_silent(data <-
                         read_csv(
                           f,
@@ -296,11 +299,11 @@ dataset_test_worker <-
                           guess_max = 1e5,
                           progress = FALSE
                         ))
-        # check no issues flagged when parsing file
+        # Check no issues flagged when parsing file
         expect_no_error(
           readr::stop_for_problems(data),
           info = sprintf(
-            "problems present when reading data, run `read_csv(%s)` to investigate",
+            "Problems present when reading data, run `read_csv(%s)` to investigate",
             f
           )
         )
@@ -315,7 +318,7 @@ dataset_test_worker <-
                               schema$metadata$elements %>% names(),
                               info = f)
 
-        # custom R code
+        # Custom R code
         txt <- metadata[["dataset"]][["custom_R_code"]]
         #expect_false(grepl("#", txt), label=paste0(files[3], "-custom_R_code cannot contain comments, except on last line"))
         expect_no_error(process_custom_code(txt)(data),
@@ -324,7 +327,7 @@ dataset_test_worker <-
         # Apply custom manipulations
         data <- process_custom_code(txt)(data)
 
-        # source
+        # Source
         test_list(metadata[["source"]], info = f)
         test_list_names_valid(metadata[["source"]], info = f)
 
@@ -363,7 +366,7 @@ dataset_test_worker <-
           paste(keys, collapse = ", ")
         ))
 
-        # people
+        # People
         test_list(metadata[["contributors"]], info = f)
 
         test_list_named_allowed(metadata[["contributors"]],
@@ -371,7 +374,7 @@ dataset_test_worker <-
           info = f
         )
 
-        # data_collectors
+        # Data collectors
         if (!is.na(metadata[["contributors"]][["data_collectors"]][1])) {
           test_list(metadata[["contributors"]][["data_collectors"]], info = f)
 
@@ -385,15 +388,15 @@ dataset_test_worker <-
           }
         }
 
-        # austraits_curators
+        # Dataset curators
         expect_true(!is.null(metadata[["contributors"]][["austraits_curators"]]))
         expect_type(metadata[["contributors"]][["austraits_curators"]], "character")
 
-        # assistants
+        # Assistants
         if (!is.null(metadata[["contributors"]][["assistants"]][1]))
           expect_type(metadata[["contributors"]][["assistants"]], "character")
 
-        # dataset
+        # Dataset
 
         test_list_named_allowed(metadata[["dataset"]],
                                 schema$metadata$elements$dataset$values %>% names(),
@@ -402,7 +405,7 @@ dataset_test_worker <-
         expect_type(metadata[["dataset"]][["data_is_long_format"]], "logical")
         expect_type(metadata[["dataset"]], "list")
 
-        # locations
+        # Locations
         if (length(unlist(metadata[["locations"]])) > 1) {
           test_list(metadata[["locations"]], info = f)
 
@@ -429,21 +432,76 @@ dataset_test_worker <-
           }
         }
 
-        # contexts
+        # Contexts
         expect_silent(
           contexts <-
             metadata$contexts %>%
             process_format_contexts(dataset_id)
         )
 
-        ## check context details load
-        if (nrow(contexts > 0)) {
+        ## Check context details load
+        if (nrow(contexts) > 0) {
 
           test_dataframe_names_contain(
             contexts,
             schema$metadata$elements$contexts$elements %>% names(),
             info = paste0(f, "-contexts")
           )
+
+          for (i in seq_along(metadata$contexts)) {
+
+            vals <- metadata$contexts[[i]][["values"]]
+
+            for (s in seq_along(vals)) {
+
+              # Check that no `find` values are NA
+              if (!is.null(vals[[s]][["find"]])) {
+                expect_false(
+                  is.na(vals[[s]][["find"]]),
+                  info = paste0(
+                    f,
+                    sprintf("\tcontexts: `find` value in the `context_property` '%s' should not be NA\n\tPlease replace NAs with desired value using `custom_R_code`",
+                    metadata$contexts[[i]][["context_property"]]))
+                )
+              }
+
+              # Check that there are no `find` fields without accompanying `value` fields
+              expect_false(
+                !is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
+                info = paste0(
+                  f,
+                  sprintf(
+                    "\tcontexts: `find: %s` in the `context_property` '%s' is not accompanied by a `value` field",
+                    vals[[s]][["find"]], metadata$contexts[[i]][["context_property"]]
+                ))
+              )
+
+              # Check that there are no `description` fields with NA `value` fields
+              if (!is.null(vals[[s]][["value"]]) && !is.null(vals[[s]][["description"]])) {
+                expect_false(
+                  !is.na(vals[[s]][["description"]]) && is.na(vals[[s]][["value"]]),
+                  info = paste0(
+                    f,
+                    sprintf(
+                      "\tcontexts: `description: %s` in the `context_property` '%s' should not be accompanied by an NA `value` field\n\tPlease use `custom_R_code` to assign a proper value to NA fields",
+                      vals[[s]][["description"]], metadata$contexts[[i]][["context_property"]]
+                  ))
+                )
+              }
+
+              # Check that there are no `description` fields without accompanying `find` and `value` fields
+              expect_false(
+                !is.null(vals[[s]][["description"]]) && is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
+                info = paste0(
+                  f,
+                  sprintf(
+                    "\tcontexts: `description: %s` in the `context_property` '%s' is not accompanied by `find` and `value` fields",
+                    vals[[s]][["description"]], metadata$contexts[[i]][["context_property"]]
+                  )
+                )
+              )
+            }
+          }
         }
 
         # Traits
@@ -472,24 +530,23 @@ dataset_test_worker <-
             info = files[2]
           )
 
-
           for (j in unique(contexts[["var_in"]])) {
             contextsub <-
               contexts %>% filter(var_in == j)
 
             unique2 <- function(x) {unique(x[!is.na(x)])}
             # Context values align either with a column of data or a column of traits table
+            # Sophie - Not sure how context values can align with the latter?
             if (is.null(data[[j]])) {
               v <- traits[[j]] %>% unique2()
             } else {
               v <- data[[j]] %>% unique2()
             }
 
-            if (all(!is.na(contextsub[["find"]]))) {
-              i <- v %in% contextsub[["find"]]
-            } else {
-              i <- v %in% contextsub[["value"]]
-            }
+            # `find` will always be non-NA unless both `find` and `value` fields are missing
+            # since `process_format_contexts` replaces NA `find` with `value`
+            # Look for context values in `find` column
+            i <- v %in% contextsub[["find"]]
 
             expect_true(all(i),
               info = paste0(
@@ -546,7 +603,7 @@ dataset_test_worker <-
             info = paste0(f, "-substitutions-trait_name")
           )
 
-          # check for allowable values of categorical variables
+          # Check for allowable values of categorical variables
           expect_no_error(
             x <- metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name))
 
@@ -605,7 +662,7 @@ dataset_test_worker <-
 
         ## For numeric trait data, check it looks reasonable & converts properly
 
-        ## check location_names are in locations dataset
+        ## check `location_name`'s are in locations dataset
 
         if (length(unlist(metadata[["locations"]])) > 1) {
           expect_true(
@@ -638,6 +695,6 @@ dataset_test_worker <-
       })
     }
 
-    # keep this
+    # Keep this
     context("end")
   }
