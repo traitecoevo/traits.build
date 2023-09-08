@@ -587,7 +587,7 @@ First, load an object called `data`:
 library(readr)
 library(yaml)
 
-data <- read_csv(file.path("data", "Blackman_2010", "data.csv"), col_types = cols(.default = "c"))
+data <- read_csv(file.path("data", "Blackman_2010", "data.csv"), col_types = cols())
 data
 ```
 

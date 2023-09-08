@@ -613,7 +613,7 @@ A few contributors provide a standalone file of all location data. Otherwise, th
 read_csv("data/dataset_id/data.csv") %>%
   distinct(location, .keep_all = TRUE) %>% # the argument `.keep_all` ensures columns aren't dropped
   select(location, rainfall, lat, lon) %>% # list of relevant columns to keep
-  rename(`latitude (deg)` = lat, `longitude (deg)` = long)  # rename columns to how you want them to appear in the metadata file. Faster to do it once here than repeatedly in the metadata file
+  rename(all_of(c("latitude (deg)" = "lat", "longitude (deg)" = "long")))  # rename columns to how you want them to appear in the metadata file. Faster to do it once here than repeatedly in the metadata file
   write_csv("data/dataset_id/raw/location_data.csv")
 ```
 
@@ -948,7 +948,7 @@ austraits$excluded_data %>%
     error == "Unsupported trait value"
   ) %>%
   distinct(dataset_id, trait_name, value) %>%
-  rename(find = value) %>%
+  rename("find" = "value") %>%
   select(-dataset_id) %>%
   write_csv("data/dataset_id/raw/substitutions_required.csv")
 ```
@@ -1126,37 +1126,37 @@ wood_density_duplicates <-
   duplicates_to_filter %>%
   filter(trait_name == "wood_density") %>%
   select(error, original_name) %>%
-  rename(wood_density_duplicate = error)
+  rename("wood_density_duplicate" = "error")
 
 seed_mass_duplicates <-
   duplicates_to_filter %>%
   filter(trait_name == "seed_width") %>%
   select(error, original_name) %>%
-  rename(seed_mass_duplicate = error)
+  rename("seed_mass_duplicate" = "error")
 
 leaf_width_min_duplicates <-
   duplicates_to_filter %>%
   filter(trait_name == "leaf_width", value_type == "expert_min") %>%
   select(error, original_name) %>%
-  rename(leaf_width_min_duplicate = error)
+  rename("leaf_width_min_duplicate" = "error")
 
 leaf_width_max_duplicates <-
   duplicates_to_filter %>%
   filter(trait_name == "leaf_width", value_type == "expert_max") %>%
   select(error, original_name) %>%
-  rename(leaf_width_max_duplicate = error)
+  rename("leaf_width_max_duplicate" = "error")
 
 leaf_length_min_duplicates <-
   duplicates_to_filter %>%
   filter(trait_name == "leaf_length", value_type == "expert_min") %>%
   select(error, original_name) %>%
-  rename(leaf_length_min_duplicate = error)
+  rename("leaf_length_min_duplicate" = "error")
 
 leaf_length_max_duplicates <-
   duplicates_to_filter %>%
   filter(trait_name == "leaf_length", value_type == "expert_max") %>%
   select(error, original_name) %>%
-  rename(leaf_length_max_duplicate = error)
+  rename("leaf_length_max_duplicate" = "error")
 
 read_csv("data/dataset_id/data.csv") %>%
   left_join(wood_density_duplicates, by = c("column_with_taxon_name" = "original_name")) %>%
