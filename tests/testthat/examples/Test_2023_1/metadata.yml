@@ -29,7 +29,11 @@ dataset:
   custom_R_code: '
     data %>%
       mutate(across(`wood density (mg mm-3)`, as.character)) %>%
-      mutate(wrong_trait_name = "test", wood_density_dupe = `wood density (mg mm-3)`)
+      mutate(
+        wrong_trait_name = "test",
+        wood_density_dupe = `wood density (mg mm-3)`,
+        no_unit_conversion = 2
+      )
   '
   collection_date: 2004/2004
   taxon_name: Species
@@ -383,7 +387,15 @@ traits:
   entity_type: species
   value_type: mean
   basis_of_value: measurement
-  methods: Test that a wrong trait name will go to excluded data.
+  methods: Test that NA units will go to excluded data.
+  replicates: unknown
+- var_in: no_unit_conversion
+  unit_in: mass
+  trait_name: seed_dry_mass
+  entity_type: species
+  value_type: mean
+  basis_of_value: measurement
+  methods: Test that a unit without a unit conversion will go to excluded data.
   replicates: unknown
 substitutions:
 - trait_name: plant_growth_form
