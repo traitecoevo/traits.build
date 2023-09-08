@@ -7,15 +7,15 @@
 util_list_to_df2(my_list, as_character = TRUE, on_empty = NA)
 }
 \arguments{
-\item{my_list}{a list of lists to dataframe}
+\item{my_list}{A list of lists to dataframe}
 
-\item{as_character}{logical:  indicating whether the values are read as character}
+\item{as_character}{A logical value, indicating whether the values are read as character}
 
-\item{on_empty}{value to return if my_list is NULL, NA or is length == 0, default = NA}
+\item{on_empty}{Value to return if my_list is NULL, NA or is length == 0, default = NA}
 }
 \description{
-Convert a list of lists to dataframe requires that every list have same named elements
+Convert a list of lists to dataframe; requires that every list have same named elements.
 }
 \examples{
-util_list_to_df2(util_df_to_list(iris))
+util_list_to_df2(util_df_to_list(dplyr::starwars))
 }

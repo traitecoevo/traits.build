@@ -7,15 +7,15 @@
 process_format_contexts(my_list, dataset_id)
 }
 \arguments{
-\item{my_list}{list of input information}
+\item{my_list}{List of input information}
 
-\item{dataset_id}{XXX}
+\item{dataset_id}{Identifier for a particular study in the AusTraits database}
 }
 \value{
-tibble with context details if available
+Tibble with context details if available
 }
 \description{
-Format context data read in from the metadata.yml file. Converts from list to tibble.
+Format context data read in from the `metadata.yml` file. Converts from list to tibble.
 }
 \examples{
 \dontrun{

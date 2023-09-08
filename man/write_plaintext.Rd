@@ -9,7 +9,7 @@ write_plaintext(austraits, path)
 \arguments{
 \item{austraits}{AusTraits database object}
 
-\item{path}{pathway to save file}
+\item{path}{Pathway to save file}
 }
 \value{
 csv files of tibbles containing traits, locations, contexts, methods, excluded_data,

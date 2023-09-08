@@ -7,15 +7,15 @@
 process_flag_unsupported_values(data, definitions)
 }
 \arguments{
-\item{data}{tibble or dataframe containing the study data}
+\item{data}{Tibble or dataframe containing the study data}
 
-\item{definitions}{definitions read in from the traits.yml file in the config folder}
+\item{definitions}{Definitions read in from the `traits.yml` file in the config folder}
 }
 \value{
-tibble with flagged values outside of allowable range, unsupported categorical
+Tibble with flagged values outside of allowable range, unsupported categorical
 trait values or missing values
 }
 \description{
-Flags any values that are outside the allowable range defined in the 
-traits.yml file. NA values are flagged as errors.
+Flags any values that are outside the allowable range defined in the
+`traits.yml` file. NA values are flagged as errors.
 }

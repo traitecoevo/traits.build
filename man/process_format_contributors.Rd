@@ -7,17 +7,17 @@
 process_format_contributors(my_list, dataset_id, schema)
 }
 \arguments{
-\item{my_list}{list of input information}
+\item{my_list}{List of input information}
 
-\item{dataset_id}{XXX}
+\item{dataset_id}{Identifier for a particular study in the AusTraits database}
 
-\item{schema}{XXX}
+\item{schema}{Schema for traits.build}
 }
 \value{
-tibble with details of contributors
+Tibble with details of contributors
 }
 \description{
-Format contributors, read in from the metadata.yml file. Converts from list to tibble.
+Format contributors, read in from the `metadata.yml` file. Converts from list to tibble.
 }
 \examples{
 \dontrun{

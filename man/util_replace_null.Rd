@@ -7,16 +7,16 @@
 util_replace_null(x, val = NA)
 }
 \arguments{
-\item{x}{a vector containing null values}
+\item{x}{A NULL value or a non-NULL object}
 
-\item{val}{specify what the null value should be returned as, default is NA}
+\item{val}{Specify what the null value should be returned as, default is NA}
 }
 \value{
-a vector with null values replaced
+NA or a non-NULL object
 }
 \description{
-util_replace_null converts NULL values in a vector to a different value. Default is
-converting NuLL to NA
+`util_replace_null` converts NULL values a different value. Default is
+converting NULL to NA.
 }
 \examples{
 \dontrun{

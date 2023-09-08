@@ -7,13 +7,13 @@
 process_create_observation_id(data)
 }
 \arguments{
-\item{data}{the traits table at the point where this function is called}
+\item{data}{The traits table at the point where this function is called}
 }
 \value{
-character string
+Character string
 }
 \description{
-Creates 3-part entity id codes that combine a segment for species, population, 
-and, when applicable, individual
-This depends upon a parsing_id being established when the data.csv file is first read in
+Creates 3-part entity id codes that combine a segment for species, population,
+and, when applicable, individual.
+This depends upon a `parsing_id` being established when the `data.csv` file is first read in.
 }

@@ -2,22 +2,22 @@
 % Please edit documentation in R/process.R
 \name{process_generate_id}
 \alias{process_generate_id}
-\title{Function to generate seuqnece of integer ids from vector of names
-Determines number of 00s needed based on number of records}
+\title{Function to generate sequence of integer ids from vector of names
+Determines number of 00s needed based on number of records.}
 \usage{
 process_generate_id(x, prefix, sort = FALSE)
 }
 \arguments{
-\item{x}{vector of text to convert}
+\item{x}{Vector of text to convert}
 
-\item{prefix}{text to put before id integer}
+\item{prefix}{Text to put before id integer}
 
-\item{sort}{logical to indicate whether x should be sorted before ids are generated}
+\item{sort}{Logical to indicate whether x should be sorted before ids are generated}
 }
 \value{
-vector of ids
+Vector of ids
 }
 \description{
-Function to generate seuqnece of integer ids from vector of names
-Determines number of 00s needed based on number of records
+Function to generate sequence of integer ids from vector of names
+Determines number of 00s needed based on number of records.
 }

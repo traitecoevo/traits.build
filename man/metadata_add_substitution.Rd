@@ -2,24 +2,24 @@
 % Please edit documentation in R/setup.R
 \name{metadata_add_substitution}
 \alias{metadata_add_substitution}
-\title{Add a categorical trait value substitution into a metadata file for a dataset_id}
+\title{Add a categorical trait value substitution into a metadata file for a `dataset_id`}
 \usage{
 metadata_add_substitution(dataset_id, trait_name, find, replace)
 }
 \arguments{
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the database}
 
-\item{trait_name}{the AusTraits defined name for a particular trait}
+\item{trait_name}{The database defined name for a particular trait}
 
-\item{find}{trait value in the original data.csv file}
+\item{find}{Trait value in the original data.csv file}
 
-\item{replace}{trait value supported by AusTraits}
+\item{replace}{Trait value supported by database}
 }
 \value{
-yaml file with a substitution added
+`metadata.yml` file with a substitution added
 }
 \description{
 `metadata_add_substitution` is used to align the categorical trait values used
-by a contributor to the categorical values supported by AusTraits. These values
-are defined in the `traits.yml` file
+by a contributor to the categorical values supported by the database. These values
+are defined in the `traits.yml` file.
 }

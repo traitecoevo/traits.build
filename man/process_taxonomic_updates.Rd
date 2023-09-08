@@ -7,13 +7,13 @@
 process_taxonomic_updates(data, metadata)
 }
 \arguments{
-\item{data}{tibble or dataframe containing the study data}
+\item{data}{Tibble or dataframe containing the study data}
 
-\item{metadata}{yaml file containing the metadata}
+\item{metadata}{Yaml file containing the metadata}
 }
 \value{
-tibble with the taxonomic updates applied
+Tibble with the taxonomic updates applied
 }
 \description{
-Applies taxonomic updates to the study data from the metadata.yml file
+Applies taxonomic updates to the study data from the `metadata.yml` file.
 }

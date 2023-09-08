@@ -2,17 +2,17 @@
 % Please edit documentation in R/setup.R
 \name{metadata_check_custom_R_code}
 \alias{metadata_check_custom_R_code}
-\title{Check the output of running `custom_R_code` specified in 
+\title{Check the output of running `custom_R_code` specified in
 the metadata for specified `dataset_id`}
 \usage{
 metadata_check_custom_R_code(dataset_id)
 }
 \arguments{
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the database}
 }
 \description{
-Function to check the output of running `custom_R_code` specified in 
-the `metadata.yml` file for specified `dataset_id`. 
-For the specified `dataset_id`, reads in the file `data.csv` and 
+Function to check the output of running `custom_R_code` specified in
+the `metadata.yml` file for specified `dataset_id`.
+For the specified `dataset_id`, reads in the file `data.csv` and
 applies manipulations as described in the file `metadata.yml`
 }

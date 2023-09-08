@@ -9,7 +9,7 @@ build_add_version(austraits, version, git_sha)
 \arguments{
 \item{austraits}{AusTraits database object}
 
-\item{version}{version number}
+\item{version}{Version number}
 
 \item{git_sha}{Git SHA}
 }

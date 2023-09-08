@@ -7,18 +7,18 @@
 util_append_to_list(my_list, to_append)
 }
 \arguments{
-\item{my_list}{a list}
+\item{my_list}{A list}
 
-\item{to_append}{a list}
+\item{to_append}{A list}
 }
 \value{
-a list merged with an added item at the end
+A list merged with an added item at the end
 }
 \description{
 Add an item to the end of a list
 }
 \examples{
  \dontrun{
-util_append_to_list(as.list(iris)[c(1,2)], as.list(iris)[c(3,4)])
+util_append_to_list(as.list(dplyr::starwars)[c(1,2)], as.list(dplyr::starwars)[c(3,4)])
 }
 }
