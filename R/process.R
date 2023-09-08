@@ -624,7 +624,12 @@ process_format_locations <- function(my_list, dataset_id, schema) {
 
   # Default, if length 1 then it's an "na"
   if (length(unlist(my_list)) == 1) {
-    return(tibble::tibble(dataset_id = character()))
+    empty_locations <- tibble::tibble() %>%
+      process_add_all_columns(
+        names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]),
+        add_error_column = FALSE
+      )
+    return(empty_locations)
   }
 
   out <-
