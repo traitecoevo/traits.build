@@ -201,8 +201,8 @@ dataset_process <- function(filename_data_raw,
     dplyr::distinct() %>%
     dplyr::arrange(.data$cleaned_name)
 
-<<<<<<< HEAD
-  ## a temporary dataframe created to generate and bind method_id,
+
+  ## A temporary dataframe created to generate and bind method_id,
   ## for instances where the same trait is measured twice using different methods
 
   # Test ABRS_2023
@@ -220,13 +220,9 @@ dataset_process <- function(filename_data_raw,
     dplyr::ungroup() %>%
     dplyr::select(dplyr::all_of(c("trait_name", "methods", "method_id")))
 
-  # ensure correct order of columns in traits table
-  # at this point, need to retain `taxonomic_resolution`, because taxa table & taxonomic_updates not yet assembled.
-
-=======
   # Ensure correct order of columns in traits table
   # At this point, need to retain `taxonomic_resolution`, because taxa table & taxonomic_updates not yet assembled.
->>>>>>> develop
+
   traits <-
     traits %>%
     dplyr::select(-.data$method_id) %>% # Need to remove blank column to bind in real one; blank exists because `method_id` in schema
@@ -430,19 +426,13 @@ process_create_observation_id <- function(data) {
 }
 
 #' Function to generate sequence of integer ids from vector of names
-<<<<<<< HEAD
+
 #' Determines number of 00s needed based on number of records
 #' @param x vector of text to convert
 #' @param prefix text to put before id integer
 #' @param sort logical to indicate whether x should be sorted before ids are generated
 #' @return vector of ids
-=======
-#' Determines number of 00s needed based on number of records.
-#' @param x Vector of text to convert
-#' @param prefix Text to put before id integer
-#' @param sort Logical to indicate whether x should be sorted before ids are generated
-#' @return Vector of ids
->>>>>>> develop
+
 process_generate_id <- function(x, prefix, sort = FALSE) {
 
   make_id_segment <- function(n, prefix) {
@@ -498,18 +488,6 @@ process_format_contexts <- function(my_list, dataset_id) {
       contexts[["description"]] <- NA_character_
     }
 
-<<<<<<< HEAD
-
-    # keep values from find column if a replacement isn't specified
-    # This doesn't do what the comment says
-    # Is the comment talking about if someone input a `find` field but no `value` field?
-    # In that case it should be
-    # contexts[["find"]] <- ifelse(is.na(contexts$value), contexts$find, contexts$value)
-    # But I think there should not be a case where there is a `find` value and no `value` value
-    # `dataset_test` should pick this up
-
-=======
->>>>>>> develop
     if (is.null(contexts[["find"]])) {
       contexts[["find"]] <- NA_character_
     } else {
@@ -1008,18 +986,11 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   var_in <- unlist(metadata[["dataset"]])
   i <- var_in %in% names(data)
 
-  v <- setNames(nm=c("entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_context_id"))
+  v <- setNames(nm = c("entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_context_id"))
 
   df <- data %>%
-<<<<<<< HEAD
-        # next step selects and renames columns based on named vector
-        dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in))) %>%
-=======
         # Next step selects and renames columns based on named vector
-        dplyr::select(
-          any_of(c(var_in[i], "entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_id", contexts$var_in))
-        ) %>%
->>>>>>> develop
+        dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in))) %>%
         dplyr::mutate(dataset_id = dataset_id)
 
   # Step 1b. Import any values that aren't columns of data
@@ -1111,11 +1082,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   traits_table <-
     metadata[["traits"]] %>%
     util_list_to_df2() %>%
-<<<<<<< HEAD
-    dplyr::filter(!is.na(.data$trait_name))
-=======
     dplyr::filter(!is.na(.data$trait_name))  # Remove any rows without a matching trait record
->>>>>>> develop
 
   # Check that the trait names as specified in config actually exist in data
   # If not then we need to stop and fix this problem
@@ -1126,15 +1093,12 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
   vars_traits <- c(vars, contexts$var_in)
 
-<<<<<<< HEAD
   not_allowed <- c(
     schema[["entity_type"]][["values"]] %>% names(),
     schema[["value_type"]][["values"]] %>% names()
   )
-  ## if needed, change from wide to long format
-=======
   ## If needed, change from wide to long format
->>>>>>> develop
+
   if (!data_is_long_format) {
 
     # If the dataset is `wide` then process each variable in turn, to create the `long` dataset -
@@ -1336,22 +1300,14 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
       metadata[["traits"]] %>%
         util_list_to_df2() %>%
         dplyr::filter(!is.na(.data$trait_name)) %>%
-<<<<<<< HEAD
-        dplyr::mutate(
-          dataset_id = dataset_id
-        ) %>%
-        dplyr::select(.data$dataset_id, .data$trait_name, .data$methods) %>%
+        dplyr::mutate(dataset_id = dataset_id) %>%
+        dplyr::select(dplyr::all_of(c("dataset_id", "trait_name", "methods"))) %>%
         dplyr::distinct() %>%
         dplyr::group_by(.data$trait_name) %>%
           dplyr::mutate(method_id = process_generate_id(.data$methods, "")) %>%
         dplyr::ungroup()
       ,
-      # study methods
-=======
-        dplyr::mutate(dataset_id = dataset_id) %>%
-        dplyr::select(dplyr::all_of(c("dataset_id", "trait_name", "methods"))),
       # Study methods
->>>>>>> develop
       metadata$dataset %>%
         util_list_to_df1() %>%
         tidyr::spread(.data$key, .data$value) %>%
