@@ -1,27 +1,23 @@
 ---
-title: "Test dataset 1"
-format: html
-editor: visual
-------
 title: 'Instructions for adding dataset: test_dataset_1'
 author: "Elizabeth Wenk, Sophie Yang"
 date: "2023-08-28"
 output: html_document
 ---
 
-### Background
+## Overview
 
 This is the first of five tutorials on adding datasets to your traits.build database. This introduces you to the basic functions, the user input required, and the manual manipulations required to complete the dataset's metadata file. The next four tutorials introduce you to progressively more complex datasets, functions, and decisions.
 
 Before you begin this tutorial, ensure you have installed traits.build, cloned the traits.build-template repository, and have successfully build a database from the datasets in `traits.build-template` . Instructions are available at \[XX\]{xx}
 
-##### goals: 
+### Goals
 
 -   Learn how to build a metadata.yml file for a dataset.
 
 -   Learn how to merge a new dataset into a traits.build database.
 
-##### new functions introduced: 
+### New Functions Introduced
 
 -   metadata_create_template
 
@@ -35,17 +31,19 @@ Before you begin this tutorial, ensure you have installed traits.build, cloned t
 
 -   build_setup_pipeline
 
+## Adding test_dataset_1
+
 ### Create a folder for the dataset
 
-Begin by creating a folder for the dataset within the data folder.
+Begin by creating a folder titled `test_dataset_1` within the data folder.
 
-Place the appropriate data.csv file in the folder.
+Place the data.csv file for `test_dataset_1` in the folder.
 
-Any ancillary files, such as a raw data file or notes must be inside a secondary folder, `raw`.
+Any ancillary files, such as a raw data file or notes must be inside a secondary nested folder, `raw`.
 
 ### Use functions to create a metadata.yml file
 
-#### Create a Metadata Template
+#### Create a metadata template
 
 All dataset metadata is documented within a .yml file that also resides within the dataset's folder.
 
@@ -141,9 +139,9 @@ A follow-up question then allows you to manually add the `collection_date` as a 
 
 ------------------------------------------------------------------------
 
-#### Propagate source information into the metadata.yml file
+#### **Propagate source information into the metadata.yml file**
 
-This dataset is from a published source and therefore the source information can be added with a single line of code:
+This dataset is from a published source with a `doi` and therefore the source information can be added with a single line of code:
 
 ```{r eval=FALSE}
 metadata_add_source_doi(dataset_id = "test_dataset_1", doi = "10.1111/j.0022-0477.2005.00992.x")
@@ -151,22 +149,30 @@ metadata_add_source_doi(dataset_id = "test_dataset_1", doi = "10.1111/j.0022-047
 
 The following information is automatically propagated into the source field:
 
-primary:key: Test_1\
-bibtype: Articleyear: '2005'\
-author: Daniel S. Falster and Mark Westoby\
-journal: Journal of Ecologytitle: Alternative height strategies among 45 dicot rain forest species from tropical Queensland, Australia\
-volume: '93'\
-number: '3'\
-pages: 521--535\
-doi: 10.1111/j.0022-0477.2005.00992.x
+```{r eval=FALSE}
+primary: 
+  key: Test_1
+  bibtype: Article
+  year: '2005'
+  author: Daniel S. Falster and Mark Westoby
+  journal: Journal of Ecology
+  title: Alternative height strategies among 45 dicot rain forest species from tropical Queensland, Australia
+  volume: '93'
+  number: '3'
+  pages: 521--535
+  doi: 10.1111/j.0022-0477.2005.00992.x
+```
 
 Once you've run this line of code, look at the metadata file to confirm:
 
 1.  the authors' names are formatted as `first name last name` or `first initial last name` (`Daniel S. Falster` or `D. S. Falster` if first names weren't available)\
-2.  the article title is in sentence case\
-3.  the page numbers are filled in as a range, separated by a double dash (`521--535` is correct)
+2.  sequential author's names are separated by `and`\  
+3.  the article title is in sentence case\
+4.  the page numbers are filled in as a range, separated by a double dash (`521--535` is correct)\  
 
-#### Add location details into the metadata.yml file
+------------------------------------------------------------------------
+
+#### **Add location details into the metadata.yml file**
 
 Location data can be automatically propagated into the metadata file if it is available in tabular format. For instance, for this study:
 
@@ -177,35 +183,42 @@ locations <-
     distinct()
 ```
 
-*You can then add this location information directly into the metadata file by running:*
+**You can then add this location information directly into the metadata file by running:**
 
 ```{r eval=FALSE}
 metadata_add_locations(dataset_id = "test_dataset_1", location_data = locations)
 ```
 
+This leads to the following user prompts:
+
+```{r eval=FALSE}
 Select column for `location_name`
 
-`1: site2: description3: latitude (deg)4: longitude (deg)`
+1: site
+2: description
+3: latitude (deg)
+4: longitude (deg)
+```
 
-`Selection:` **1**
+[Selection:]{style="color:blue;"} [**1**]{style="color:red;"}\  
 
-*Select the same column that you indicated contained `location` names when you created the metadata template.*
+**Select the same column that you indicated contained `location` names when you created the metadata template.**
 
-Indicate all columns you wish to keep as distinct location_properties in test_dataset_1 (by number separated by space; e.g. '1 2 4'):
+[Indicate all columns you wish to keep as distinct location_properties in test_dataset_1 (by number separated by space; e.g. '1 2 4'):]{style="color:blue;"}\
 
-1: description\
-2: latitude (deg)\
-3: longitude (deg)
+[1: description]{style="color:blue;"}\
+[2: latitude (deg)]{style="color:blue;"}\
+[3: longitude (deg)]{style="color:blue;"}\
 
-Selection: **1 2 3**
+[Selection:]{style="color:blue;"} [**1 2 3**]{style="color:red;"}
 
-*Select all columns that include `location properties` that should be documented within the `metadata.yml` file.*
+**Select all columns that include `location properties` that should be documented within the `metadata.yml` file. In this case, it is all three columns.**
 
-Following locations added to metadata for test_dataset_1: 'Atherton', 'Cape Tribulation'\
-with variables 'description', 'latitude (deg)', 'longitude (deg)'\
-Please complete information in data/test_dataset_1/metadata.yml
+[Following locations added to metadata for test_dataset_1: 'Atherton', 'Cape Tribulation']{style="color:blue;"}\
+[with variables 'description', 'latitude (deg)', 'longitude (deg)']{style="color:blue;"}\
+[Please complete information in data/test_dataset_1/metadata.yml]{style="color:blue;"}\
 
-*All available location data has now been automatically added to the `metadata.yml` file.*
+All available location data has now been automatically added to the `metadata.yml` file.
 
 ```{r eval=FALSE}
 locations:
