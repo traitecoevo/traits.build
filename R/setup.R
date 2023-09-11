@@ -364,6 +364,7 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
     dplyr::select(dplyr::all_of(c(location_name, keep))) %>%
     distinct()
 
+  # If user didn't select any variables to keep, so add defaults
   if (is.na(keep[1])) {
     location_data <-  location_data %>%
     dplyr::mutate(
