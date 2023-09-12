@@ -517,14 +517,14 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
 
 process_create_context_ids <- function(data, contexts) {
 
-  # select context_cols
+  # Select context_cols
   tmp <- contexts %>%
     dplyr::select(dplyr::all_of(c("context_property", "var_in"))) %>%
     dplyr::distinct()
 
   # Extract context columns
   context_cols <- data %>%
-    dplyr::select(tmp$var_in) %>%
+    dplyr::select(dplyr::all_of(tmp$var_in)) %>%
     dplyr::mutate(dplyr::across(everything(), as.character))
   names(context_cols) <- tmp$context_property
 
@@ -585,7 +585,7 @@ process_create_context_ids <- function(data, contexts) {
     for (v in vars) {
       id_link[[v]] <-
         xxx %>%
-        dplyr::rename(dplyr::all_of(c(value = v))) %>%
+        dplyr::rename(dplyr::all_of(c("value" = v))) %>%
         dplyr::select(dplyr::all_of(c("value", "id"))) %>%
         dplyr::filter(!is.na(.data$id)) %>%
         dplyr::distinct() %>%
@@ -644,7 +644,7 @@ process_format_locations <- function(my_list, dataset_id, schema) {
     lapply(lapply, as.character) %>%
     purrr::map_df(util_list_to_df1, .id = "name") %>%
     dplyr::mutate(dataset_id = dataset_id) %>%
-    dplyr::rename(location_property = "key", location_name = "name") %>%
+    dplyr::rename(dplyr::all_of(c("location_property" = "key", "location_name" = "name"))) %>%
     process_add_all_columns(
       names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]),
       add_error_column = FALSE
@@ -710,7 +710,7 @@ process_flag_excluded_observations <- function(data, metadata) {
   fix <-
     metadata$exclude_observations %>%
     util_list_to_df2() %>%
-    tidyr::separate_rows(.data$find, sep = ", ") %>%
+    tidyr::separate_longer_delim(find, delim = ", ") %>%
     dplyr::mutate(find = str_squish(.data$find))
 
   if (nrow(fix) == 0) return(data)
@@ -1559,7 +1559,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
 
   austraits_raw$traits <-
     austraits_raw$traits %>%
-    dplyr::rename(cleaned_name = .data$taxon_name) %>%
+    dplyr::rename(dplyr::all_of(c("cleaned_name" = "taxon_name"))) %>%
     dplyr::left_join(by = "cleaned_name",
               taxa %>% dplyr::select(dplyr::all_of(c("cleaned_name", "taxon_name", "taxon_rank")))
               ) %>%
@@ -1575,11 +1575,11 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::filter(.data$taxon_rank %in% c("Genus", "genus")) %>%
     dplyr::select(dplyr::all_of(c("taxon_name", "family", "taxonomic_reference", "taxon_id",
                   "scientific_name_id", "taxonomic_status"))) %>%
-    dplyr::rename(
-      name_to_match_to = .data$taxon_name, taxonomic_reference_genus = .data$taxonomic_reference,
-      taxon_id_genus = .data$taxon_id, scientific_name_id_genus = .data$scientific_name_id,
-      taxonomic_status_genus = .data$taxonomic_status
-    ) %>%
+    dplyr::rename(dplyr::all_of(c(
+      "name_to_match_to" = "taxon_name", "taxonomic_reference_genus" = "taxonomic_reference",
+      "taxon_id_genus" = "taxon_id", "scientific_name_id_genus" = "scientific_name_id",
+      "taxonomic_status_genus" = "taxonomic_status"
+    ))) %>%
     dplyr::distinct()
 
 # Names, identifiers for all families in APC
@@ -1654,7 +1654,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
       ) %>%
       # Remove family, taxon_rank; they are about to be merged back in, but matches will now be possible to more rows
       select(-dplyr::all_of(c("taxon_rank", "taxonomic_resolution"))) %>%
-      dplyr::rename(family_tmp = .data$family) %>%
+      dplyr::rename("family_tmp" = "family") %>%
       util_df_convert_character() %>%
       # Merge in all data from taxa
       dplyr::left_join(by = c("name_to_match_to" = "taxon_name"),
