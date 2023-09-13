@@ -659,7 +659,7 @@ dataset_test_worker <-
 
         ## For numeric trait data, check it looks reasonable & converts properly
 
-        ## check `location_name`'s are in locations dataset
+        ## Check `location_name`'s are in locations dataset
 
         if (length(unlist(metadata[["locations"]])) > 1) {
           expect_true(
@@ -683,12 +683,42 @@ dataset_test_worker <-
           expect_true(all(i),
                       info = paste0(
                         f,
-                        "-site names from metadata not present in data file: ",
+                        "- site names from metadata not present in data file: ",
                         names(metadata$locations)[!i]
                       ))
         }
 
+        ## Check that dataset can pivot wider
+        expect_no_error(dataset <- test_build_dataset(
+          file.path(path_data, dataset_id, "metadata.yml"),
+          file.path(path_data, dataset_id, "data.csv"),
+          dataset_id,
+          get_schema("config/traits.yml", "traits"),
+          get_unit_conversions("config/unit_conversions.csv"),
+          get_schema(),
+          get_schema("config/metadata.yml",  "metadata"),
+          read_csv_char("config/taxon_list.csv")
+        ), info = sprintf(" - cannot build %s", dataset_id))
 
+        expect_equal(
+          dataset$traits %>%
+          select(
+            dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "source_id", "taxon_name",
+            "entity_type", "life_stage", "basis_of_record", "value_type", "population_id", "individual_id",
+            "temporal_id", "method_id", "entity_context_id", "original_name"))
+          ) %>%
+          pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
+          pivot_longer(cols = 15:ncol(.)) %>%
+          rename(all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
+          select(
+            all_of(c("dataset_id", "taxon_name", "trait_name", "number_of_duplicates", "observation_id",
+            "entity_type", "value_type", "population_id")), everything()
+          ) %>%
+          filter(number_of_duplicates > 1) %>%
+          nrow(),
+          0, # Expect nrow() = 0
+          info = sprintf("Duplicate rows in %s detected; AusTraits cannot pivot wider", dataset_id)
+        )
       })
     }
 
