@@ -717,7 +717,7 @@ dataset_test_worker <-
           filter(number_of_duplicates > 1) %>%
           nrow(),
           0, # Expect nrow() = 0
-          info = sprintf("Duplicate rows in %s detected; AusTraits cannot pivot wider", dataset_id)
+          info = sprintf("Duplicate rows in %s detected; `traits` table cannot pivot wider", dataset_id)
         )
       })
     }
