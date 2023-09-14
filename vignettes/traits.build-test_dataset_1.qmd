@@ -37,6 +37,8 @@ Before you begin this tutorial, ensure you have installed traits.build, cloned t
 
 Begin by creating a folder titled `test_dataset_1` within the data folder.
 
+(First create a `data/` folder within the main directory if necessary.)
+
 Place the data.csv file for `test_dataset_1` in the folder.
 
 Any ancillary files, such as a raw data file or notes must be inside a secondary nested folder, `raw`.
