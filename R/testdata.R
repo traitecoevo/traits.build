@@ -332,7 +332,7 @@ dataset_test_worker <-
 
         # Metadata
         f <- files[2]
-        expect_allowed_text(readLines(f), info = f)
+        expect_allowed_text(readLines(f, encoding = "UTF-8"), info = f)
         expect_silent(metadata <- yaml::read_yaml(f))
         test_list_named_exact(metadata,
                               schema$metadata$elements %>% names(),

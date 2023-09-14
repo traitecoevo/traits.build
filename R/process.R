@@ -91,22 +91,21 @@ dataset_process <- function(filename_data_raw,
     process_format_contexts(dataset_id)
 
   # Load and clean trait data
-  
+
   traits <-
-    # Read all columns as character type to prevent time data types from being reformatted
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
-    process_parse_data(dataset_id, metadata, contexts) 
-  
+    process_parse_data(dataset_id, metadata, contexts)
+
   # Context ids needed to continue processing
   context_ids <- traits$context_ids
 
   locations <-
     metadata$locations %>%
     process_format_locations(dataset_id, schema)
-  
-  unit_conversion_functions <- get_unit_conversions("config/unit_conversions.csv")
-  
+
+  unit_conversion_functions <- get_unit_conversions("config/unit_conversions.csv") # Isn't this already read in on line 97? - Sophie
+
   traits <-
     traits$traits %>%
     process_add_all_columns(
@@ -895,16 +894,16 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
   }
 
   # for datasets without bins or ranges, need to create variables
-  if (!"bin" %in% unique(data$value_type) & !"range" %in% unique(data$value_type)) {
+  if (!"bin" %in% unique(data$value_type) && !"range" %in% unique(data$value_type)) {
     data <- data %>%
       mutate(
         split_values_1 = NA,
         split_values_2 = NA
       )
   }
-  
+
   # Split by unique unit conversions, to allow for as few calls as possible
-  data <- data %>% 
+  data <- data %>%
     dplyr::group_by(.data$ucn, .data$to_convert) %>%
     dplyr::mutate(
       value = ifelse(.data$to_convert == TRUE &                     # value requires conversion
@@ -913,21 +912,21 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
                      f(.data$value, .data$ucn[1]),                  # convert value to appropriate units
                      .data$value),                                  # if conditions not met, keep original value
       split_values_1 = ifelse(.data$to_convert == TRUE  &
-                                .data$value_type %in% c("bin", "range") & 
-                                !is.na(.data$split_values_1), 
-                              f(.data$split_values_1, .data$ucn[1]), 
+                                .data$value_type %in% c("bin", "range") &
+                                !is.na(.data$split_values_1),
+                              f(.data$split_values_1, .data$ucn[1]),
                               .data$split_values_1),
-      split_values_2 = ifelse(.data$to_convert == TRUE & 
-                                .data$value_type %in% c("bin", "range") & 
-                                !is.na(.data$split_values_2), 
-                              f(.data$split_values_2, .data$ucn[1]), 
+      split_values_2 = ifelse(.data$to_convert == TRUE &
+                                .data$value_type %in% c("bin", "range") &
+                                !is.na(.data$split_values_2),
+                              f(.data$split_values_2, .data$ucn[1]),
                               .data$split_values_2),
       unit = ifelse(.data$to_convert, .data$to, .data$unit),
       value = ifelse(!is.na(.data$split_values_1) & !is.na(.data$split_values_2), paste0(.data$split_values_1, "--", .data$split_values_2), .data$value),
       value = ifelse(!is.na(.data$split_values_1) & is.na(.data$split_values_2), paste0(.data$split_values_1, "--"), .data$value),
       value = ifelse(is.na(.data$split_values_1) & !is.na(.data$split_values_2), paste0("--", .data$split_values_2), .data$value)
     ) %>%
-    dplyr::ungroup()  %>%
+    dplyr::ungroup() %>%
     dplyr::select(dplyr::any_of(vars))
 }
 

@@ -1022,7 +1022,7 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 
   f <- file.path("data", studies, "metadata.yml")
 
-  contents <- lapply(f, function(x) paste0(readLines(x), collapse = "\n"))
+  contents <- lapply(f, function(x) paste0(readLines(x, encoding = "UTF-8"), collapse = "\n"))
 
   if (!is.null(replace))
     txt <- sprintf("- find: %s\n  replace: %s", find, replace)
