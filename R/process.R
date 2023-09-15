@@ -681,69 +681,6 @@ process_flag_excluded_observations <- function(data, metadata) {
   data
 }
 
-#' Check values in one vector against values in another vector
-#'
-#' `util_check_all_values_in` checks if values in vector x are in y. Values in x may
-#' contain multiple values separated by `sep` so these are split first using `str_split`.
-#'
-#' @param x Vector
-#' @param y Vector
-#' @param sep Amount of space separating values to be split, default = " " (a single space)
-#'
-#' @return Vector of logical values
-util_check_all_values_in <- function(x, y, sep = " ") {
-  x %>% stringr::str_split(sep) %>% sapply(function(xi) all(xi %in% y))
-}
-
-#' Format BibEntry using RefManageR
-#'
-#' Format BibEntry object according to desired style using RefManageR
-#'
-#' @param bib BibEntry object
-#' @param .opts List of parameters for formatting style
-#'
-#' @importFrom rlang .data
-#' @return Character string of formatted reference
-bib_print <- function(bib, .opts = list(first.inits = TRUE, max.names = 1000, style = "markdown")) {
-
-  format.BibEntry <- utils::getFromNamespace("format.BibEntry", "RefManageR")
-  # Set format
-  oldopts <- RefManageR::BibOptions(.opts)
-  on.exit(RefManageR::BibOptions(oldopts))
-
-  bib %>%
-    format.BibEntry(.sort = FALSE) %>%
-    # HACK: remove some of formatting introduced in line above
-    # would be nicer if we could apply csl style
-    gsub("[] ", "", ., fixed = TRUE) %>%
-    gsub("\\n", " ", .) %>%
-    gsub("  ", " ", .) %>%
-    gsub("DOI:", " doi: ", ., fixed = TRUE) %>%
-    gsub("URL:", " url: ", ., fixed = TRUE) %>%
-    ifelse(tolower(bib$bibtype) == "article",  gsub("In:", " ", .), .)
-}
-
-#' Convert a list of elements into a BibEntry object
-#'
-#' @param ref List of elements for a reference
-#'
-#' @return BibEntry object
-util_list_to_bib <- function(ref) {
-  if (is.null(ref)) return(NULL)
-
-  if (is.na(ref[1])) return(NULL)
-
-
-  # Replace ',' with 'and' to get correct handling of authors
-  ref$author <- gsub(",", " and ", ref$author)
-
-  # Ensures capitalisation of title retained as is
-  if (!is.null(ref$title))
-    ref$title <- sprintf("{%s}", ref$title)
-
-  RefManageR::as.BibEntry(ref)
-}
-
 #' Flag values outside of allowable range
 #'
 #' Flags any values that are outside the allowable range defined in the
@@ -815,6 +752,69 @@ process_flag_unsupported_values <- function(data, definitions) {
     }
   }
   data
+}
+
+#' Check values in one vector against values in another vector
+#'
+#' `util_check_all_values_in` checks if values in vector x are in y. Values in x may
+#' contain multiple values separated by `sep` so these are split first using `str_split`.
+#'
+#' @param x Vector
+#' @param y Vector
+#' @param sep Amount of space separating values to be split, default = " " (a single space)
+#'
+#' @return Vector of logical values
+util_check_all_values_in <- function(x, y, sep = " ") {
+  x %>% stringr::str_split(sep) %>% sapply(function(xi) all(xi %in% y))
+}
+
+#' Format BibEntry using RefManageR
+#'
+#' Format BibEntry object according to desired style using RefManageR
+#'
+#' @param bib BibEntry object
+#' @param .opts List of parameters for formatting style
+#'
+#' @importFrom rlang .data
+#' @return Character string of formatted reference
+bib_print <- function(bib, .opts = list(first.inits = TRUE, max.names = 1000, style = "markdown")) {
+
+  format.BibEntry <- utils::getFromNamespace("format.BibEntry", "RefManageR")
+  # Set format
+  oldopts <- RefManageR::BibOptions(.opts)
+  on.exit(RefManageR::BibOptions(oldopts))
+
+  bib %>%
+    format.BibEntry(.sort = FALSE) %>%
+    # HACK: remove some of formatting introduced in line above
+    # would be nicer if we could apply csl style
+    gsub("[] ", "", ., fixed = TRUE) %>%
+    gsub("\\n", " ", .) %>%
+    gsub("  ", " ", .) %>%
+    gsub("DOI:", " doi: ", ., fixed = TRUE) %>%
+    gsub("URL:", " url: ", ., fixed = TRUE) %>%
+    ifelse(tolower(bib$bibtype) == "article",  gsub("In:", " ", .), .)
+}
+
+#' Convert a list of elements into a BibEntry object
+#'
+#' @param ref List of elements for a reference
+#'
+#' @return BibEntry object
+util_list_to_bib <- function(ref) {
+  if (is.null(ref)) return(NULL)
+
+  if (is.na(ref[1])) return(NULL)
+
+
+  # Replace ',' with 'and' to get correct handling of authors
+  ref$author <- gsub(",", " and ", ref$author)
+
+  # Ensures capitalisation of title retained as is
+  if (!is.null(ref$title))
+    ref$title <- sprintf("{%s}", ref$title)
+
+  RefManageR::as.BibEntry(ref)
 }
 
 #' Make unit conversion functions
