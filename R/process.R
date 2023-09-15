@@ -635,6 +635,8 @@ process_format_locations <- function(my_list, dataset_id, schema) {
 process_flag_unsupported_traits <- function(data, definitions) {
 
   # Create error column if not already present
+  # Necessary for this function and not the other `process_flag_...` functions as
+  # this is run first during `dataset_process()`
   if (is.null(data[["error"]]))
     data[["error"]] <- NA_character_
 
@@ -752,6 +754,24 @@ process_flag_unsupported_values <- function(data, definitions) {
     }
   }
   data
+}
+
+#' Flag values with unsupported characters
+#'
+#' Flags any values that contain special unsupported characters that are not ASCII.
+#'
+#' @param data Tibble or dataframe containing the study data
+#'
+#' @importFrom rlang .data
+#' @return Tibble with flagged values containing unsupported characters
+process_flag_unsupported_chars <- function(data) {
+
+  data <- data %>%
+    mutate(
+      error = ifelse(any(!(charToRaw(.data$value) < 0x7F)), "Value contains unsupported characters", .data$error)
+    )
+  data
+
 }
 
 #' Check values in one vector against values in another vector
