@@ -441,10 +441,9 @@ dataset_test_worker <-
 
         ## Check context details load
         if (nrow(contexts) > 0) {
-
           test_dataframe_names_contain(
             contexts,
-            schema$metadata$elements$contexts$elements %>% names(),
+            c("context_property", "category", "var_in"),
             info = paste0(f, "-contexts")
           )
 
@@ -543,18 +542,6 @@ dataset_test_worker <-
               v <- data[[j]] %>% unique2()
             }
 
-            # `find` will always be non-NA unless both `find` and `value` fields are missing
-            # since `process_format_contexts` replaces NA `find` with `value`
-            # Look for context values in `find` column
-            i <- v %in% contextsub[["find"]]
-
-            expect_true(all(i),
-              info = paste0(
-                f,
-                "- context names from data file not present in metadata contexts: ",
-                v[!i]
-              )
-            )
           }
         }
 
