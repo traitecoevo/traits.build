@@ -91,10 +91,18 @@ dataset_process <- function(filename_data_raw,
     process_format_contexts(dataset_id)
 
   # Load and clean trait data
-
   traits <-
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
-    process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
+    process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
+
+  # Load and process contextual data
+  contexts <-
+    metadata$contexts %>%
+    process_format_contexts(dataset_id, traits)
+
+  # Load and clean trait data
+  traits <-
+    traits %>%
     process_parse_data(dataset_id, metadata, contexts)
 
   # Context ids needed to continue processing
@@ -426,44 +434,73 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
 #'
 #' @param my_list List of input information
 #' @param dataset_id Identifier for a particular study in the AusTraits database
+#' @param traits Table of trait data (for this function, just the data.csv file with custom_R_code applied)
 #' @return Tibble with context details if available
 #' @importFrom rlang .data
 #'
 #' @examples
 #' \dontrun{
-#' process_format_contexts(read_metadata("data/Apgaua_2017/metadata.yml")$context)
+#' process_format_contexts(read_metadata("data/Apgaua_2017/metadata.yml")$context, dataset_id, traits)
 #' }
-process_format_contexts <- function(my_list, dataset_id) {
+process_format_contexts <- function(my_list, dataset_id, traits) {
 
-  f <- function(x) {
-    tibble::tibble(
-    context_property = x$context_property,
-    category = x$category,
-    var_in = x$var_in,
-    util_list_to_df2(x$values))
+  process_content_worker <- function(x, id, traits) {
+    
+    vars <- c(
+      "dataset_id", "context_property", "category", "var_in",
+      "find", "value", "description"
+    )
+
+    out <-
+      tibble::tibble(
+        context_property = x$context_property,
+        category = x$category,
+        var_in = x$var_in,
+        util_list_to_df2(x$values)
+      ) %>%
+      dplyr::mutate(dataset_id = dataset_id) %>%
+      dplyr::select(dplyr::any_of(vars))
+
+    ## if the field `description` is missing from metadata[["contexts"]] for the specific context property, create a column now
+    if (!"description" %in% names(out)) {
+      out[["description"]] <- NA_character_
+    }
+
+    ## if the fields `find` and `value` are both missing from metadata[["contexts"]] for the specific context property create them
+    ## they are both the unique set of values in the column in the data.csv file.
+    if (all(!c("find", "value") %in% names(out))) {
+      out <- out %>%
+        # The following line shouldn't be neeeded, as we testsed this was missing for the if statement above
+        dplyr::select(-any_of(c("value"))) %>%
+        dplyr::left_join(
+          by = "var_in",
+          tibble(
+            var_in = out[["var_in"]][1],
+            value = unique(traits[[out$var_in[1]]])
+          ) %>%
+            dplyr::filter(!is.na(value))
+        ) %>%
+        dplyr::mutate(find = value)
+    }
+
+    if ("find" %in% names(out)) {
+      out <- out %>%
+        dplyr::mutate(find = ifelse(is.na(find), value, find))
+    } else {
+      out <- out %>%
+        dplyr::mutate(find = value)
+    }
+    # Ensure character types
+    out %>%
+      dplyr::mutate(dplyr::across(dplyr::all_of(c("find", "value")), as.character))
   }
 
   if (!is.na(my_list[1])) {
+
     contexts <-
       my_list %>%
-      purrr::map_df(f) %>%
-      dplyr::mutate(dataset_id = dataset_id) %>%
-      dplyr::select(dplyr::any_of(
-        c("dataset_id", "context_property", "category", "var_in",
-        "find", "value", "description"))
-        )
+      purrr::map_df(process_content_worker, dataset_id, traits)
 
-    if (is.null(contexts[["description"]])) {
-      contexts[["description"]] <- NA_character_
-    }
-
-    if (is.null(contexts[["find"]])) {
-      contexts[["find"]] <- NA_character_
-    } else {
-      # Where `find` column is NA, replace with `value` column, so that on Line 510 and 512
-      # `value` values are replaced by identical `find` values (otherwise they will be NA)
-      contexts[["find"]] <- ifelse(is.na(contexts$find), contexts$value, contexts$find)
-    }
   } else {
     contexts <-
       tibble::tibble(dataset_id = character(), var_in = character())
@@ -474,14 +511,14 @@ process_format_contexts <- function(my_list, dataset_id) {
 
 process_create_context_ids <- function(data, contexts) {
 
-  # select context_cols
+  # Select context_cols
   tmp <- contexts %>%
     dplyr::select(dplyr::all_of(c("context_property", "var_in"))) %>%
     dplyr::distinct()
 
   # Extract context columns
   context_cols <- data %>%
-    dplyr::select(tmp$var_in) %>%
+    dplyr::select(dplyr::all_of(tmp$var_in)) %>%
     dplyr::mutate(dplyr::across(everything(), as.character))
   names(context_cols) <- tmp$context_property
 
@@ -542,7 +579,7 @@ process_create_context_ids <- function(data, contexts) {
     for (v in vars) {
       id_link[[v]] <-
         xxx %>%
-        dplyr::rename(dplyr::all_of(c(value = v))) %>%
+        dplyr::rename(dplyr::all_of(c("value" = v))) %>%
         dplyr::select(dplyr::all_of(c("value", "id"))) %>%
         dplyr::filter(!is.na(.data$id)) %>%
         dplyr::distinct() %>%
@@ -601,7 +638,7 @@ process_format_locations <- function(my_list, dataset_id, schema) {
     lapply(lapply, as.character) %>%
     purrr::map_df(util_list_to_df1, .id = "name") %>%
     dplyr::mutate(dataset_id = dataset_id) %>%
-    dplyr::rename(location_property = "key", location_name = "name") %>%
+    dplyr::rename(dplyr::all_of(c("location_property" = "key", "location_name" = "name"))) %>%
     process_add_all_columns(
       names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]),
       add_error_column = FALSE
@@ -669,7 +706,7 @@ process_flag_excluded_observations <- function(data, metadata) {
   fix <-
     metadata$exclude_observations %>%
     util_list_to_df2() %>%
-    tidyr::separate_rows(.data$find, sep = ", ") %>%
+    tidyr::separate_longer_delim(find, delim = ", ") %>%
     dplyr::mutate(find = str_squish(.data$find))
 
   if (nrow(fix) == 0) return(data)
@@ -1628,7 +1665,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
 
   austraits_raw$traits <-
     austraits_raw$traits %>%
-    dplyr::rename(cleaned_name = .data$taxon_name) %>%
+    dplyr::rename(dplyr::all_of(c("cleaned_name" = "taxon_name"))) %>%
     dplyr::left_join(by = "cleaned_name",
               taxa %>% dplyr::select(dplyr::all_of(c("cleaned_name", "taxon_name", "taxon_rank")))
               ) %>%
@@ -1644,11 +1681,11 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::filter(.data$taxon_rank %in% c("Genus", "genus")) %>%
     dplyr::select(dplyr::all_of(c("taxon_name", "family", "taxonomic_reference", "taxon_id",
                   "scientific_name_id", "taxonomic_status"))) %>%
-    dplyr::rename(
-      name_to_match_to = .data$taxon_name, taxonomic_reference_genus = .data$taxonomic_reference,
-      taxon_id_genus = .data$taxon_id, scientific_name_id_genus = .data$scientific_name_id,
-      taxonomic_status_genus = .data$taxonomic_status
-    ) %>%
+    dplyr::rename(dplyr::all_of(c(
+      "name_to_match_to" = "taxon_name", "taxonomic_reference_genus" = "taxonomic_reference",
+      "taxon_id_genus" = "taxon_id", "scientific_name_id_genus" = "scientific_name_id",
+      "taxonomic_status_genus" = "taxonomic_status"
+    ))) %>%
     dplyr::distinct()
 
 # Names, identifiers for all families in APC
@@ -1723,7 +1760,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
       ) %>%
       # Remove family, taxon_rank; they are about to be merged back in, but matches will now be possible to more rows
       select(-dplyr::all_of(c("taxon_rank", "taxonomic_resolution"))) %>%
-      dplyr::rename(family_tmp = .data$family) %>%
+      dplyr::rename("family_tmp" = "family") %>%
       util_df_convert_character() %>%
       # Merge in all data from taxa
       dplyr::left_join(by = c("name_to_match_to" = "taxon_name"),

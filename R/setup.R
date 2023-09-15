@@ -360,8 +360,22 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
   }
 
   # Save and notify
+  location_data <-  location_data %>%
+    dplyr::select(dplyr::all_of(c(location_name, keep))) %>%
+    distinct()
+
+  # If user didn't select any variables to keep, so add defaults
+  if (is.na(keep[1])) {
+    location_data <-  location_data %>%
+    dplyr::mutate(
+      `latitude (deg)` = NA_character_,
+      `longitude (deg)` = NA_character_,
+      `description` = NA_character_,
+      )
+  }
+  
   metadata$locations <- location_data %>%
-    dplyr::select(dplyr::all_of(keep)) %>%
+    dplyr::select(-location_name) %>%  
     split(location_data[[location_name]]) %>%
     lapply(as.list)
 
@@ -371,10 +385,22 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
         red("with variables ") %+% green("'%s'\n\t") %+% red("Please complete information in %s"),
       blue(dataset_id),
       paste(names(metadata$locations), collapse = "', '"),
-      paste(keep, collapse = "', '"),
+      ifelse(is.na(keep[1]),"latitude (deg)', 'longitude (deg)', 'description",paste(keep, collapse = "', '")),
       blue(dataset_id %>% metadata_path_dataset_id())
     )
   )
+  
+  if (nrow(location_data) != length(unique(location_data[[location_name]]))) {
+  message(
+    sprintf(
+      red("WARNING: The number of unique location names (%s), is less than the number rows of location data to add (%s). ") %+% 
+        red("Manual editing is REQUIRED in %s to ensure each location has a single value for each location property."),
+      blue(length(unique(location_data[[location_name]]))),
+      blue(nrow(location_data)),
+      blue(dataset_id %>% metadata_path_dataset_id())
+    )
+  )
+  }
 
   write_metadata_dataset(metadata, dataset_id)
   return(invisible(metadata))
@@ -443,6 +469,8 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
       replace_needed <- readline(prompt = "Are replacement values required? (y/n) ")
 
+      description_needed <- readline(prompt = "Are descriptions required? (y/n) ")
+
       contexts[[ii]] <-
         list(
           context_property = "unknown",
@@ -459,6 +487,18 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
         contexts[[ii]][["values"]][["value"]] <- "unknown"
       } else {
         contexts[[ii]][["values"]][["find"]] <- NULL
+      }
+
+      # Don't list the description field if no descriptions are required
+      if (tolower(description_needed) == "y") {
+        contexts[[ii]][["values"]][["description"]] <- "unknown"
+      } else {
+        contexts[[ii]][["values"]][["description"]] <- NULL
+      }
+    # If neither replacement values nor descriptions are required,
+    # there is no reason to list the values; these will be automatically read in later
+      if (tolower(replace_needed) == "n" && tolower(description_needed) == "n") {
+        contexts[[ii]][["values"]] <- NULL
       }
     }
 
@@ -1135,12 +1175,12 @@ build_find_taxon <- function(taxa, austraits, original_name = FALSE) {
   if (!original_name) {
     data <- data %>%
       dplyr::select(dplyr::all_of(c("taxon_name", "dataset_id"))) %>%
-      dplyr::rename(name = .data$taxon_name) %>%
+      dplyr::rename("name" = "taxon_name") %>%
       dplyr::distinct()
   } else {
     data <- data %>%
       dplyr::select(dplyr::all_of(c("original_name", "dataset_id"))) %>%
-      dplyr::rename(name = original_name) %>%
+      dplyr::rename("name" = "original_name") %>%
       dplyr::distinct()
   }
 

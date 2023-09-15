@@ -390,8 +390,8 @@ dataset_test_worker <-
         test_list(metadata[["contributors"]], info = f)
 
         test_list_named_allowed(metadata[["contributors"]],
-          schema$metadata$elements$contributors$elements %>% names(),
-          info = f
+                                schema$metadata$elements$contributors$elements %>% names(),
+                                info = f
         )
 
         # Data collectors
@@ -453,10 +453,17 @@ dataset_test_worker <-
         }
 
         # Contexts
+        filename_data <- paste0("data/", dataset_id, "/data.csv")
+
+        traits <-
+          # Read all columns as character type to prevent time data types from being reformatted
+          readr::read_csv(filename_data, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
+          process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
+
         expect_silent(
           contexts <-
             metadata$contexts %>%
-            process_format_contexts(dataset_id)
+            process_format_contexts(dataset_id, traits)
         )
 
         ## Check context details load
@@ -472,68 +479,71 @@ dataset_test_worker <-
 
             vals <- metadata$contexts[[i]][["values"]]
 
-            for (s in seq_along(vals)) {
+            if (!is.null(vals)) {
 
-              # Check that no `find` values are NA
-              if (!is.null(vals[[s]][["find"]])) {
+              for (s in seq_along(vals)) {
+
+                # Check that no `find` values are NA
+                if (!is.null(vals[[s]][["find"]])) {
+                  expect_false(
+                    is.na(vals[[s]][["find"]]),
+                    info = paste0(
+                      f,
+                      sprintf("\tcontexts: `find` value in the `context_property` '%s' should not be NA\n\tPlease replace NAs with desired value using `custom_R_code`",
+                              metadata$contexts[[i]][["context_property"]]))
+                  )
+                }
+
+                # Check that there are no `find` fields without accompanying `value` fields
                 expect_false(
-                  is.na(vals[[s]][["find"]]),
-                  info = paste0(
-                    f,
-                    sprintf("\tcontexts: `find` value in the `context_property` '%s' should not be NA\n\tPlease replace NAs with desired value using `custom_R_code`",
-                    metadata$contexts[[i]][["context_property"]]))
-                )
-              }
-
-              # Check that there are no `find` fields without accompanying `value` fields
-              expect_false(
-                !is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
-                info = paste0(
-                  f,
-                  sprintf(
-                    "\tcontexts: `find: %s` in the `context_property` '%s' is not accompanied by a `value` field",
-                    vals[[s]][["find"]], metadata$contexts[[i]][["context_property"]]
-                ))
-              )
-
-              # Check that there are no `description` fields with NA `value` fields
-              if (!is.null(vals[[s]][["value"]]) && !is.null(vals[[s]][["description"]])) {
-                expect_false(
-                  !is.na(vals[[s]][["description"]]) && is.na(vals[[s]][["value"]]),
+                  !is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
                   info = paste0(
                     f,
                     sprintf(
-                      "\tcontexts: `description: %s` in the `context_property` '%s' should not be accompanied by an NA `value` field\n\tPlease use `custom_R_code` to assign a proper value to NA fields",
-                      vals[[s]][["description"]], metadata$contexts[[i]][["context_property"]]
-                  ))
+                      "\tcontexts: `find: %s` in the `context_property` '%s' is not accompanied by a `value` field",
+                      vals[[s]][["find"]], metadata$contexts[[i]][["context_property"]]
+                    ))
                 )
-              }
 
-              # Check that there are no `description` fields without accompanying `find` and `value` fields
-              expect_false(
-                !is.null(vals[[s]][["description"]]) && is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
-                info = paste0(
-                  f,
-                  sprintf(
-                    "\tcontexts: `description: %s` in the `context_property` '%s' is not accompanied by `find` and `value` fields",
-                    vals[[s]][["description"]], metadata$contexts[[i]][["context_property"]]
+                # Check that there are no `description` fields with NA `value` fields
+                if (!is.null(vals[[s]][["value"]]) && !is.null(vals[[s]][["description"]])) {
+                  expect_false(
+                    !is.na(vals[[s]][["description"]]) && is.na(vals[[s]][["value"]]),
+                    info = paste0(
+                      f,
+                      sprintf(
+                        "\tcontexts: `description: %s` in the `context_property` '%s' should not be accompanied by an NA `value` field\n\tPlease use `custom_R_code` to assign a proper value to NA fields",
+                        vals[[s]][["description"]], metadata$contexts[[i]][["context_property"]]
+                      ))
+                  )
+                }
+
+                # Check that there are no `description` fields without accompanying `find` and `value` fields
+                expect_false(
+                  !is.null(vals[[s]][["description"]]) && is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
+                  info = paste0(
+                    f,
+                    sprintf(
+                      "\tcontexts: `description: %s` in the `context_property` '%s' is not accompanied by `find` and `value` fields",
+                      vals[[s]][["description"]], metadata$contexts[[i]][["context_property"]]
+                    )
                   )
                 )
-              )
+              }
             }
           }
         }
 
         # Traits
         expect_list_elements_contains_names(metadata[["traits"]],
-                                    schema$metadata$elements$traits$elements[1:3] %>% names(),
-                                    info = paste0(f, "-traits"))
+                                            schema$metadata$elements$traits$elements[1:3] %>% names(),
+                                            info = paste0(f, "-traits"))
         expect_list_elements_allowed_names(metadata[["traits"]],
-                                    c(schema$metadata$elements$traits$elements %>% names(), unique(contexts$var_in)),
-                                    info = paste0(f, "-traits"))
+                                           c(schema$metadata$elements$traits$elements %>% names(), unique(contexts$var_in)),
+                                           info = paste0(f, "-traits"))
         expect_silent(
           traits <- traits.build::util_list_to_df2(metadata[["traits"]])
-          )
+        )
         expect_true(is.data.frame(traits))
 
         expect_isin(traits$trait_name,
@@ -569,11 +579,11 @@ dataset_test_worker <-
             i <- v %in% contextsub[["find"]]
 
             expect_true(all(i),
-              info = paste0(
-                f,
-                "- context names from data file not present in metadata contexts: ",
-                v[!i]
-              )
+                        info = paste0(
+                          f,
+                          "- context names from data file not present in metadata contexts: ",
+                          v[!i]
+                        )
             )
           }
         }
