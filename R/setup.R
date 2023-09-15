@@ -469,6 +469,8 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
       replace_needed <- readline(prompt = "Are replacement values required? (y/n) ")
 
+      description_needed <- readline(prompt = "Are descriptions required? (y/n) ")
+
       contexts[[ii]] <-
         list(
           context_property = "unknown",
@@ -485,6 +487,18 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
         contexts[[ii]][["values"]][["value"]] <- "unknown"
       } else {
         contexts[[ii]][["values"]][["find"]] <- NULL
+      }
+
+      # Don't list the description field if no descriptions are required
+      if (tolower(description_needed) == "y") {
+        contexts[[ii]][["values"]][["description"]] <- "unknown"
+      } else {
+        contexts[[ii]][["values"]][["description"]] <- NULL
+      }
+    # If neither replacement values nor descriptions are required,
+    # there is no reason to list the values; these will be automatically read in later
+      if (tolower(replace_needed) == "n" && tolower(description_needed) == "n") {
+        contexts[[ii]][["values"]] <- NULL
       }
     }
 
