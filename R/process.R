@@ -101,7 +101,7 @@ dataset_process <- function(filename_data_raw,
     # Read all columns as character type to prevent time data types from being reformatted
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
-  
+
   # Load and process contextual data
   contexts <-
     metadata$contexts %>%
@@ -484,23 +484,23 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
     }
 
     if ("find" %in% names(out)) {
-      out <- out %>% 
+      out <- out %>%
         dplyr::mutate(find = ifelse(is.na(find), value, find))
     } else {
-      out <- out %>% 
+      out <- out %>%
         dplyr::mutate(find = value)
     }
     # Ensure character types
-    out %>% 
+    out %>%
       dplyr::mutate(dplyr::across(dplyr::all_of(c("find", "value")), as.character))
   }
-  
+
   if (!is.na(my_list[1])) {
-    
+
     contexts <-
       my_list %>%
       purrr::map_df(process_content_worker, dataset_id, traits)
-    
+
   } else {
     contexts <-
       tibble::tibble(dataset_id = character(), var_in = character())
