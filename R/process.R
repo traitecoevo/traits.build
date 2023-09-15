@@ -794,8 +794,8 @@ util_list_to_bib <- function(ref) {
 #' Flag disallowed trait values and disallowed characters
 #'
 #' Flags any categorical traits values that are not on the list of allowed values defined in the
-#' `traits.yml` file. 
-#' NA values are flagged as errors. 
+#' `traits.yml` file.
+#' NA values are flagged as errors.
 #' Disallowed characters are flagged as errors, including for numeric traits, prior to unit conversions
 #' to avoid their conversion to NA's during the unit conversion process
 #'
@@ -848,13 +848,13 @@ process_flag_unsupported_values <- function(data, definitions) {
 
     # Numerical traits out of range
     if (definitions[[trait]]$type == "numeric") {
-      
+
       x <- suppressWarnings(as.numeric(data[["value"]]))
-      i <- is.na(data[["error"]]) & 
+      i <- is.na(data[["error"]]) &
             data[["trait_name"]] == trait &
-            is.na(x) & 
+            is.na(x) &
             !(
-              data[["value_type"]] %in% c("range", "bin") & 
+              data[["value_type"]] %in% c("range", "bin") &
               !(stringr::str_detect(data[["value"]], "([:digit:]+)//-//-([:digit:]+)"))
             )
 
@@ -878,20 +878,20 @@ process_flag_unsupported_values <- function(data, definitions) {
 #' @return Tibble with flagged values outside of allowable range, unsupported categorical
 #' trait values or missing values
 process_flag_out_of_range_values <- function(data, definitions) {
-  
+
   # Only check traits not already flagged as errors
   traits <- data %>%
     dplyr::filter(is.na(.data$error)) %>% dplyr::pull(.data$trait_name) %>% unique()
-  
+
   for (trait in traits) {
     if (definitions[[trait]]$type == "numeric") {
-      
+
     x <- suppressWarnings(as.numeric(data[["value"]]))
-    i <-  is.na(data[["error"]]) & 
-          data[["trait_name"]] == trait & 
+    i <-  is.na(data[["error"]]) &
+          data[["trait_name"]] == trait &
           !(data[["value_type"]] %in% c("range", "bin")) &
           (x < definitions[[trait]]$allowed_values_min | x > definitions[[trait]]$allowed_values_max)
-    
+
     data <- data %>%
       dplyr::mutate(error = ifelse(i, "Value out of allowable range", .data$error))
     }
