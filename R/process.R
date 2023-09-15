@@ -118,8 +118,9 @@ dataset_process <- function(filename_data_raw,
     process_flag_unsupported_traits(definitions) %>%
     process_flag_excluded_observations(metadata) %>%
     process_flag_unsupported_chars() %>%
-    process_convert_units(definitions, unit_conversion_functions) %>%
     process_flag_unsupported_values(definitions) %>%
+    process_convert_units(definitions, unit_conversion_functions) %>%
+    process_flag_out_of_range_values(definitions) %>%
     process_create_observation_id() %>%
     process_taxonomic_updates(metadata) %>%
     # Sorting of data
@@ -790,10 +791,13 @@ util_list_to_bib <- function(ref) {
   RefManageR::as.BibEntry(ref)
 }
 
-#' Flag values outside of allowable range
+#' Flag disallowed trait values and disallowed characters
 #'
-#' Flags any values that are outside the allowable range defined in the
-#' `traits.yml` file. NA values are flagged as errors.
+#' Flags any categorical traits values that are not on the list of allowed values defined in the
+#' `traits.yml` file. 
+#' NA values are flagged as errors. 
+#' Disallowed characters are flagged as errors, including for numeric traits, prior to unit conversions
+#' to avoid their conversion to NA's during the unit conversion process
 #'
 #' @param data Tibble or dataframe containing the study data
 #' @param definitions Definitions read in from the `traits.yml` file in the config folder
@@ -844,23 +848,55 @@ process_flag_unsupported_values <- function(data, definitions) {
 
     # Numerical traits out of range
     if (definitions[[trait]]$type == "numeric") {
-
+      
       x <- suppressWarnings(as.numeric(data[["value"]]))
-      i <- is.na(
-        data[["error"]]) & data[["trait_name"]] == trait & is.na(x) & !(data[["value_type"]] %in% c("range", "bin")
-        )
+      i <- is.na(data[["error"]]) & 
+            data[["trait_name"]] == trait &
+            is.na(x) & 
+            !(
+              data[["value_type"]] %in% c("range", "bin") & 
+              !(stringr::str_detect(data[["value"]], "([:digit:]+)//-//-([:digit:]+)"))
+            )
 
       data <- data %>%
         dplyr::mutate(error = ifelse(i, "Value does not convert to numeric", .data$error))
 
-      i <-  is.na(data[["error"]]) & data[["trait_name"]] == trait & !(data[["value_type"]] %in% c("range", "bin")) &
-        (x < definitions[[trait]]$allowed_values_min | x > definitions[[trait]]$allowed_values_max)
-
-      data <- data %>%
-        dplyr::mutate(error = ifelse(i, "Value out of allowable range", .data$error))
     }
   }
   data
+}
+
+#' Flag values outside of allowable range
+#'
+#' Flags any numeric values that are outside the allowable range defined in the
+#' `traits.yml` file.
+#'
+#' @param data Tibble or dataframe containing the study data
+#' @param definitions Definitions read in from the `traits.yml` file in the config folder
+#'
+#' @importFrom rlang .data
+#' @return Tibble with flagged values outside of allowable range, unsupported categorical
+#' trait values or missing values
+process_flag_out_of_range_values <- function(data, definitions) {
+  
+  # Only check traits not already flagged as errors
+  traits <- data %>%
+    dplyr::filter(is.na(.data$error)) %>% dplyr::pull(.data$trait_name) %>% unique()
+  
+  for (trait in traits) {
+    if (definitions[[trait]]$type == "numeric") {
+      
+    x <- suppressWarnings(as.numeric(data[["value"]]))
+    i <-  is.na(data[["error"]]) & 
+          data[["trait_name"]] == trait & 
+          !(data[["value_type"]] %in% c("range", "bin")) &
+          (x < definitions[[trait]]$allowed_values_min | x > definitions[[trait]]$allowed_values_max)
+    
+    data <- data %>%
+      dplyr::mutate(error = ifelse(i, "Value out of allowable range", .data$error))
+    }
+  }
+data
 }
 
 #' Make unit conversion functions
