@@ -444,68 +444,62 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
 #' }
 process_format_contexts <- function(my_list, dataset_id, traits) {
 
-  f <- function(x, id) {
-    tibble::tibble(
-    context_property = x$context_property,
-    category = x$category,
-    var_in = x$var_in,
-    util_list_to_df2(x$values)
-    )  %>%
-    dplyr::mutate(dataset_id = dataset_id) %>%
-    dplyr::select(dplyr::any_of(
-        c("dataset_id", "context_property", "category", "var_in",
-          "find", "value", "description"))
-      )
+  process_content_worker <- function(x, id, traits) {
+    
+    vars <- c(
+      "dataset_id", "context_property", "category", "var_in",
+      "find", "value", "description"
+    )
+
+    out <-
+      tibble::tibble(
+        context_property = x$context_property,
+        category = x$category,
+        var_in = x$var_in,
+        util_list_to_df2(x$values)
+      ) %>%
+      dplyr::mutate(dataset_id = dataset_id) %>%
+      dplyr::select(dplyr::any_of(vars))
+
+    ## if the field `description` is missing from metadata[["contexts"]] for the specific context property, create a column now
+    if (!"description" %in% names(out)) {
+      out[["description"]] <- NA_character_
+    }
+
+    ## if the fields `find` and `value` are both missing from metadata[["contexts"]] for the specific context property create them
+    ## they are both the unique set of values in the column in the data.csv file.
+    if (all(!c("find", "value") %in% names(out))) {
+      out <- out %>%
+        # The following line shouldn't be neeeded, as we testsed this was missing for the if statement above
+        dplyr::select(-any_of(c("value"))) %>%
+        dplyr::left_join(
+          by = "var_in",
+          tibble(
+            var_in = out[["var_in"]][1],
+            value = unique(traits[[out$var_in[1]]])
+          ) %>%
+            dplyr::filter(!is.na(value))
+        ) %>%
+        dplyr::mutate(find = value)
+    }
+
+    if ("find" %in% names(out)) {
+      out <- out %>% 
+        dplyr::mutate(find = ifelse(is.na(find), value, find))
+    } else {
+      out <- out %>% 
+        dplyr::mutate(find = value)
+    }
+    # Ensure character types
+    out %>% 
+      dplyr::mutate(dplyr::across(dplyr::all_of(c("find", "value")), as.character))
   }
   
   if (!is.na(my_list[1])) {
     
-      contexts <-
+    contexts <-
       my_list %>%
-      purrr::map(f, dataset_id)
-    
-    for (i in 1:length(contexts)) {
-      
-      ## if the field `description` is missing from metadata[["contexts"]] for the specific context property, create a column now 
-      if (!"description" %in% names(contexts[[i]])) {
-        contexts[[i]]$description <- NA_character_
-      }
-      
-      ## if the fields `find` and `value` are both missing from metadata[["contexts"]] for the specific context property create them
-      ## they are both the unique set of values in the column in the data.csv file.
-      if(!"find" %in% names(contexts[[i]]) & 
-         !"value" %in% names(contexts[[i]])) {
-        to_join <- unique(traits[[contexts[[i]]$var_in[1]]]) %>%
-          as.data.frame() %>%
-          rename(value = 1) %>%
-          mutate(
-            var_in = contexts[[i]]$var_in[1]
-            ) %>%
-          filter(!is.na(value))
-        
-        contexts[[i]] <- contexts[[i]] %>%
-          select(-any_of(c("value"))) %>%
-          left_join(by = "var_in",
-                    to_join) %>%
-          mutate(find = value)
-      }
-      
-      if ("find" %in% names(contexts[[i]])) {
-      contexts[[i]]$find = ifelse(is.na(contexts[[i]]$find), contexts[[i]]$value, contexts[[i]]$find)
-      } else {
-        contexts[[i]] <- contexts[[i]] %>%
-            mutate(find = value)
-      }
-      
-      contexts[[i]] <- contexts[[i]] %>%
-        mutate(
-          find = as.character(find),
-          value = as.character(value)
-        )
-      
-    }
-    
-  contexts <- bind_rows(contexts)  
+      purrr::map_df(process_content_worker, dataset_id, traits)
     
   } else {
     contexts <-
