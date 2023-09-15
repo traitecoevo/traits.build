@@ -721,7 +721,7 @@ process_flag_unsupported_chars <- function(data) {
 
   data <- data %>%
     mutate(
-      error = ifelse(util_check_disallowed_chars(.data$value), "Value contains unsupported characters", .data$error)
+      error = ifelse(is.na(.data$error) & util_check_disallowed_chars(.data$value), "Value contains unsupported characters", .data$error)
     )
   data
 
