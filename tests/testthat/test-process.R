@@ -16,9 +16,9 @@ test_that("`dataset_configure` is working", {
                                       traits_definitions,
                                       unit_conversions))
   expect_type(test_config, "list")
-  expect_length(test_config, 4)
+  expect_length(test_config, 3)
   expect_named(test_config,
-               c("dataset_id", "metadata", "definitions", "unit_conversion_functions"))
+               c("dataset_id", "metadata", "definitions"))
 })
 
 
