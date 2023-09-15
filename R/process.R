@@ -117,6 +117,7 @@ dataset_process <- function(filename_data_raw,
     mutate(unit = ifelse(!is.na(unit_in), unit_in, unit)) %>%
     process_flag_unsupported_traits(definitions) %>%
     process_flag_excluded_observations(metadata) %>%
+    process_flag_unsupported_chars() %>%
     process_convert_units(definitions, unit_conversion_functions) %>%
     process_flag_unsupported_values(definitions) %>%
     process_create_observation_id() %>%
@@ -683,6 +684,49 @@ process_flag_excluded_observations <- function(data, metadata) {
   data
 }
 
+#' Check values in a vector do not contain disallowed characters
+#'
+#' `util_check_disallowed_chars` checks if values in a vector do not contain disallowed characters,
+#' i.e. values outside of ASCII.
+#'
+#' @param object Vector
+#'
+#' @return Vector of logical values
+util_check_disallowed_chars <- function(object) {
+
+  f <- function(x) {
+
+      i <- charToRaw(x)
+      # Allow all ascii text
+      is_ascii <- i < 0x7F
+      !(is_ascii)
+
+  }
+
+  disallowed <- object %>% lapply(f) %>% simplify2array()
+
+  disallowed %>% lapply(any) %>% unlist()
+
+}
+
+#' Flag values with unsupported characters
+#'
+#' Flags any values that contain special unsupported characters that are not ASCII.
+#'
+#' @param data Tibble or dataframe containing the study data
+#'
+#' @importFrom rlang .data
+#' @return Tibble with flagged values containing unsupported characters
+process_flag_unsupported_chars <- function(data) {
+
+  data <- data %>%
+    mutate(
+      error = ifelse(util_check_disallowed_chars(.data$value), "Value contains unsupported characters", .data$error)
+    )
+  data
+
+}
+
 #' Check values in one vector against values in another vector
 #'
 #' `util_check_all_values_in` checks if values in vector x are in y. Values in x may
@@ -817,24 +861,6 @@ process_flag_unsupported_values <- function(data, definitions) {
     }
   }
   data
-}
-
-#' Flag values with unsupported characters
-#'
-#' Flags any values that contain special unsupported characters that are not ASCII.
-#'
-#' @param data Tibble or dataframe containing the study data
-#'
-#' @importFrom rlang .data
-#' @return Tibble with flagged values containing unsupported characters
-process_flag_unsupported_chars <- function(data) {
-
-  data <- data %>%
-    mutate(
-      error = ifelse(any(!(charToRaw(.data$value) < 0x7F)), "Value contains unsupported characters", .data$error)
-    )
-  data
-
 }
 
 #' Make unit conversion functions
