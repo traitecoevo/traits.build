@@ -115,6 +115,13 @@ testthat::test_that("Test Dataset 2 builds correctly", {
   # See README.md in examples/Test_2023_7 for details about this dataset
 
   # Build dataset
+  #expect_no_error(
+  #  Test_2023_7 <- test_build_dataset(
+  #    file.path(examples_dir, "Test_2023_7/metadata.yml"),
+  #    file.path(examples_dir, "Test_2023_7/data.csv"),
+  #    "Test Dataset 7", definitions, unit_conversions, schema, resource_metadata, taxon_list
+  #  ),
+  #  info = "Building Test Dataset 7")
 
   # Expected output
   #dataset_test("Test_2023_7", path_data = "examples")
