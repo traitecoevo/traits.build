@@ -100,9 +100,8 @@ dataset_process <- function(filename_data_raw,
   traits <-
     # Read all columns as character type to prevent time data types from being reformatted
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
-    process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
-    process_parse_data(dataset_id, metadata, contexts, schema)
-
+    process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
+  
   # Load and process contextual data
   contexts <-
     metadata$contexts %>%
@@ -111,7 +110,7 @@ dataset_process <- function(filename_data_raw,
   # Load and clean trait data
   traits <-
     traits %>%
-    process_parse_data(dataset_id, metadata, contexts)
+    process_parse_data(dataset_id, metadata, contexts, schema)
 
   # Context ids needed to continue processing
   context_ids <- traits$context_ids
@@ -230,7 +229,7 @@ dataset_process <- function(filename_data_raw,
 
   traits <-
     traits %>%
-    dplyr::select(-.data$method_id) %>% # Need to remove blank column to bind in real one; blank exists because `method_id` in schema
+    dplyr::select(-method_id) %>% # Need to remove blank column to bind in real one; blank exists because `method_id` in schema
     dplyr::left_join(
       by = c("trait_name", "methods"),
       tmp_bind
