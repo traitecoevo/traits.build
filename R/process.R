@@ -703,7 +703,7 @@ util_check_disallowed_chars <- function(object) {
 
   }
 
-  disallowed <- object %>% lapply(f) %>% simplify2array()
+  disallowed <- object %>% lapply(f)
 
   disallowed %>% lapply(any) %>% unlist()
 
