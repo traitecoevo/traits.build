@@ -129,7 +129,7 @@ dataset_process <- function(filename_data_raw,
     process_flag_excluded_observations(metadata) %>%
     process_convert_units(definitions, unit_conversion_functions) %>%
     process_flag_unsupported_values(definitions) %>%
-    process_create_observation_id() %>%
+    process_create_observation_id(metadata) %>%
     process_taxonomic_updates(metadata) %>%
     # Sorting of data
     dplyr::mutate(
@@ -278,9 +278,9 @@ process_custom_code <- function(txt) {
 #' @param data The traits table at the point where this function is called
 #'
 #' @return Character string
-process_create_observation_id <- function(data) {
+process_create_observation_id <- function(data, metadata) {
 
-  # Create three IDs: population_id, individual_id, observation_id
+  # Create four IDs: population_id, individual_id, observation_id, repeat_measurements_id
 
   # Create population_id
 
@@ -399,6 +399,24 @@ process_create_observation_id <- function(data) {
         process_generate_id("", sort = TRUE)
     ) %>%
     dplyr::ungroup()
+  
+  ## Create repeat_measurement_id  for datasets where there are multiple measurements per observation, such as response curve data
+  #  (where an entity can be an individual, population, or taxon)
+  #   at a single point in time
+  
+  if (metadata$dataset$repeat_measurements == TRUE) {  
+    i <- !is.na(data$value)
+    data[i,] <-
+      data[i,] %>%
+      dplyr::group_by(.data$dataset_id, .data$observation_id) %>%
+      dplyr::mutate(
+        repeat_measurement_id = row_number() %>%
+          process_generate_id("", sort = TRUE)
+      ) %>%
+      dplyr::ungroup()  
+  } else {
+    data$repeat_measurement_id = NA_character_
+  }
 
   data %>%
     dplyr::select(-dplyr::all_of(c("check_for_ind")))
