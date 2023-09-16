@@ -1,8 +1,11 @@
 ---
 title: 'Instructions for adding dataset: test_dataset_1'
 author: "Elizabeth Wenk, Sophie Yang"
-date: "2023-08-28"
-output: html_document
+date: "2023-09-16"
+format: 
+  html:
+    toc: TRUE
+editor: visual
 ---
 
 ## Overview
@@ -31,6 +34,8 @@ Before you begin this tutorial, ensure you have installed traits.build, cloned t
 
 -   build_setup_pipeline
 
+------------------------------------------------------------------------
+
 ## Adding test_dataset_1
 
 ### Create a folder for the dataset
@@ -45,7 +50,7 @@ Any ancillary files, such as a raw data file or notes must be inside a secondary
 
 ### Use functions to create a metadata.yml file
 
-#### Create a metadata template
+#### **Create a metadata template**
 
 All dataset metadata is documented within a .yml file that also resides within the dataset's folder.
 
@@ -68,7 +73,7 @@ The menus are shown below, with the menu in [**blue**]{style="color:blue;"} and 
 
 This dataset is considered `wide`, because the data for each trait is documented in its own column.
 
-[Select column for `taxon_name`]{style="color:blue;"}\
+[Select column for taxon_name]{style="color:blue;"}\
 
 [1: Species]{style="color:blue;"}\
 [2: site]{style="color:blue;"}\
@@ -81,7 +86,7 @@ This dataset is considered `wide`, because the data for each trait is documented
 
 [Selection:]{style="color:blue;"} [**1**]{style="color:red;"}
 
-Taxon names are documented in the column `Species`.
+Select [`1`]{style="color:red;"} since `taxon names` are documented in the column `Species`.
 
 [Select column for location_name]{style="color:blue;"}
 
@@ -97,9 +102,9 @@ Taxon names are documented in the column `Species`.
 
 [Selection:]{style="color:blue;"} [**3**]{style="color:red;"}
 
-Location names are documented in the column `site`.
+Select `3` since `location names` are documented in the column `site`.
 
-[Select column for `individual_id`]{style="color:blue;"}
+[Select column for individual_id]{style="color:blue;"}
 
 [1: NA]{style="color:blue;"}\
 [2: Species]{style="color:blue;"}\
@@ -115,7 +120,7 @@ Location names are documented in the column `site`.
 
 This dataset does not include a column for `individual_id`, so `1: NA` is the appropriate input.
 
-[Select column for `collection_date`]{style="color:blue;"}
+[Select column for collection_date]{style="color:blue;"}
 
 [1: NA]{style="color:blue;"}\
 [2: Species]{style="color:blue;"}\
@@ -131,7 +136,7 @@ This dataset does not include a column for `individual_id`, so `1: NA` is the ap
 
 This dataset does not include a column for `collection_date`, so `1: NA` is the appropriate input.
 
-A follow-up question then allows you to manually add the `collection_date` as a range. The information can be manually updated later.\
+A follow-up question then allows you to add a fixed `collection_date` as a range. The information can be manually updated later.
 
 [Enter collection_date range in format '2007/2009':]{style="color:blue;"} [**2002-11/2002-11**]{style="color:red;"}\
 
@@ -168,13 +173,15 @@ primary:
 Once you've run this line of code, look at the metadata file to confirm:
 
 1.  the authors' names are formatted as `first name last name` or `first initial last name` (`Daniel S. Falster` or `D. S. Falster` if first names weren't available)\
-2.  sequential author's names are separated by `and`\  
+2.  sequential author's names are separated by `and` 
 3.  the article title is in sentence case\
-4.  the page numbers are filled in as a range, separated by a double dash (`521--535` is correct)\  
+4.  the page numbers are filled in as a range, separated by a double dash (`521--535` is correct) 
+
+*Note, there is also a function `metadata_add_source_bibtex` if your source information is in this format.*
 
 ------------------------------------------------------------------------
 
-#### **Add location details into the metadata.yml file**
+#### **Add location details**
 
 Location data can be automatically propagated into the metadata file if it is available in tabular format. For instance, for this study:
 
@@ -185,7 +192,7 @@ locations <-
     distinct()
 ```
 
-**You can then add this location information directly into the metadata file by running:**
+You can then add this location information directly into the metadata file by running:
 
 ```{r eval=FALSE}
 metadata_add_locations(dataset_id = "test_dataset_1", location_data = locations)
@@ -193,18 +200,16 @@ metadata_add_locations(dataset_id = "test_dataset_1", location_data = locations)
 
 This leads to the following user prompts:
 
-```{r eval=FALSE}
-Select column for `location_name`
+[Select column for location_name]{style="color:blue;"} 
 
-1: site
-2: description
-3: latitude (deg)
-4: longitude (deg)
-```
+[1: site]{style="color:blue;"}\
+[2: description]{style="color:blue;"}\
+[3: latitude (deg)]{style="color:blue;"}\
+[4: longitude (deg)]{style="color:blue;"}\
 
-[Selection:]{style="color:blue;"} [**1**]{style="color:red;"}\  
+[Selection:]{style="color:blue;"} [**1**]{style="color:red;"} 
 
-**Select the same column that you indicated contained `location` names when you created the metadata template.**
+Select the same column that you indicated contained `location` names when you created the metadata template.
 
 [Indicate all columns you wish to keep as distinct location_properties in test_dataset_1 (by number separated by space; e.g. '1 2 4'):]{style="color:blue;"}\
 
@@ -214,7 +219,7 @@ Select column for `location_name`
 
 [Selection:]{style="color:blue;"} [**1 2 3**]{style="color:red;"}
 
-**Select all columns that include `location properties` that should be documented within the `metadata.yml` file. In this case, it is all three columns.**
+Select all columns that include `location properties` that should be documented within the `metadata.yml` file. In this case, it is all three columns.
 
 [Following locations added to metadata for test_dataset_1: 'Atherton', 'Cape Tribulation']{style="color:blue;"}\
 [with variables 'description', 'latitude (deg)', 'longitude (deg)']{style="color:blue;"}\
@@ -234,33 +239,39 @@ locations:
     longitude (deg): 145.45
 ```
 
-#### Add traits to the metadata.yml file
+------------------------------------------------------------------------
 
-*The next step is to select which columns in the `data.csv` file have trait information you want to include in the database.*
+#### **Add traits**
+
+The next step is to select which columns in the `data.csv` file have trait information you want to include in the database.
+
+The function `metadata_add_traits` automatically adds the trait-scaffold to `metadata.yml`:
 
 ```{r eval=FALSE}
 metadata_add_traits(dataset_id = "test_dataset_1")
 ```
 
-*The user is asked to select the columns with trait data.*
+The user is prompted to select the columns with trait data.
 
-Indicate all columns you wish to keep as distinct traits in test_dataset_1 (by number separated by space; e.g. '1 2 4'):\
-1: Species\
-2: site\
-3: LMA (mg mm-2)\
-4: Leaf nitrogen (mg mg-1)\
-5: leaf size (mm2)\
-6: latitude (deg)\
-7: longitude (deg)\
-8: description
+[Indicate all columns you wish to keep as distinct traits in test_dataset_1 (by number separated by space; e.g. '1 2 4'):]{style="color:blue;"}\
 
-Selection: **3 4 5**\
-Following traits added to metadata for test_dataset_1: 'LMA (mg mm-2)', 'Leaf nitrogen (mg mg-1)', 'leaf size (mm2)'\
-Please complete information in data/test_dataset_1/metadata.yml
+[1: Species]{style="color:blue;"}\
+[2: site]{style="color:blue;"}\
+[3: LMA (mg mm-2)]{style="color:blue;"}\
+[4: Leaf nitrogen (mg mg-1)]{style="color:blue;"}\
+[5: leaf size (mm2)]{style="color:blue;"}\
+[6: latitude (deg)]{style="color:blue;"}\
+[7: longitude (deg)]{style="color:blue;"}\
+[8: description]{style="color:blue;"}\
 
-*You select columns 3, 4, 5, as these contain trait data.*
+[Selection:]{style="color:blue;"} [**3 4 5**]{style="color:red;"}\
 
-*The metadata.yml file now includes a framework in which to manually fill in details about each trait.*
+You select columns 3, 4, 5, as these contain trait data.
+
+[Following traits added to metadata for test_dataset_1: 'LMA (mg mm-2)', 'Leaf nitrogen (mg mg-1)', 'leaf size (mm2)']{style="color:blue;"}\
+[Please complete information in data/test_dataset_1/metadata.yml]{style="color:blue;"}\
+
+`metadata.yml` now includes a framework in which to manually fill in details about each trait:
 
 ```{r eval=FALSE}
 traits:
@@ -290,112 +301,128 @@ traits:
   methods: unknown  
 ```
 
+------------------------------------------------------------------------
+
 ### Manual filling in of metadata
 
-*The remaining fields within the metadata.yml file must now be filled in manually.*
+The remaining fields within the metadata.yml file must now be filled in manually.
 
-*These are all fields that contain the word `unknown`.*
-
-*These include:*\
+These include:\
 *the `contributors` section*\
 *the `description`, `basis_of_record`, `life_stage`, `sampling_strategy`, `original_file`, and `notes` under the `dataset` section*\
 *details for each trait, including `unit_in`, `trait_name`, `entity_type`, `value_type`, `basis_of_record`, `replicates` and `methods`*
 
-#### Adding contributors
+These are all fields that contain the word `unknown`.
 
-*The contributors first and last names should be available from the source*
+#### **Adding contributors**
 
-*Contributors are identified by their ORCID, available for most active researches at* [**orcid.ord**](https://orcid.org/)
+| Contributor field     | Information to add                                                                                                         |
+|--------------------|----------------------------------------------------|
+| last_name, first_name | The contributors first and last names should be available from the source                                                  |
+| ORCID                 | Contributors are identified by their ORCID, available for most active researches at [orcid.org](https://orcid.org/)        |
+| affiliation           | Available from the source or the orcid.org website. Use the same syntax for the same affiliation throughout your database. |
+| additional_role       | For the lead dataset contributor, add the field: `additional_role: contact`                                                |
 
-*The contributors affiliation should be available from the source or the orcid website. Use the same syntax for the same affiliation throughout your database.*
+-   You can add multiple data collectors by duplicating the relevant 4 lines of code; see the [Adding dataset vignette](http://traitecoevo.github.io/austraits.build/articles/adding_data.html) for protocols on who to add as a data collector.
 
-*You can add multiple data collectors by duplicating the relevant 4 lines of code; see the [Adding dataset vignette](https://github.com/traitecoevo/traits.build/vignettes) for protocols on who to add as a data collector.*
+-   The line `assistants:` can be deleted if there aren't any assistants' names to add.
 
-*For the lead dataset contributor, add the field*: *`additional_role: contact`*
+-   Add yourself as the `dataset_curator`.\
 
-*The line `assistants:` can be deleted if there aren't any assistants' names to add.*
+#### **Dataset fields**
 
-*Add yourself as the `dataset_curator`.*
+-   The file "data/test_dataset_1/raw/test_dataset_1_notes.txt" indicates how to fill in the `unknown` dataset fields for this study.
 
-#### Filling in the missing dataset fields
+-   In general, the information to fill in these fields should be available from the source (article) or obtained directly from the dataset contributor.\
 
-*The file "data/test_dataset_1/raw/test_dataset_1_notes.txt" indicates how to fill in the `unknown` dataset fields for this study.*
+| Dataset field    | Information to add                                                                                                                            |
+|-------------------|-----------------------------------------------------|
+| basis_of_record  | See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms. |
+| life_stage       | See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms. |
+| description      | A 1-2 sentence summary of the dataset. This can generally be formulated by information in the abstract.                                       |
+| sampling_stategy | A description of how sites and sampling protocols were chosen. Can generally be taken verbatim from the methods section of a manuscript.      |
+| original_file    | Name of the file submitted by the data contributor and archived in the raw folder.                                                            |
+| notes            | none (or `.na`) for this study, but any notes added by the data curator about data quality, edits to the data during dataset curation.        |
 
-*In general, the information to fill in these fields should be documented within the source (article) or obtained directly from the dataset contributor.*
+#### **Trait details**
 
-*The fields `basis_of_record` and `life_stage` use a controlled vocabulary. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms.*
+##### **trait_name**
 
-*The information in the fields `description` and `sampling_study` is sourced from the reference.*
-
-*For the fields `original_file` and `notes`, fill in `none` or `NA`.*
-
-#### Filling in the missing details for each trait.
-
-##### trait_name
-
-*The `trait_name` must match a `trait_name` within the [traits dictionary](https://github.com/traitecoevo/traits.build-template/blob/master/config/traits.yml). For this example:*
+The `trait_name` must match a `trait_name` within the [traits dictionary](https://github.com/traitecoevo/traits.build-template/blob/master/config/traits.yml). For this example:
 
 `LMA (mg mm-2)` is leaf_mass_per_area\
 `Leaf nitrogen (mg mg-1)` is leaf_N_per_dry_mass\
 `leaf size (mm2)` is leaf_area
 
-*In general, a dataset curator must be familiar with the likely traits in their discipline to accurately match those in a contributed dataset to traits in the dictionary, and be able to determine if a new trait definition is warranted.*
+A dataset curator must be familiar with the likely traits in their discipline to accurately match those in a contributed dataset to traits in the dictionary, and be able to determine if a new trait definition is warranted.
 
-##### unit_in
+##### **unit_in**
 
-*Units are formatted according to the [UCUM convention](https://ucum.org/ucum), whereby units in the numerator are separated by a '.', while units in the denominator are each preceded by a '/'.*
+Units are formatted according to the [UCUM convention](https://ucum.org/ucum):
 
-*For instance, `mg mm-2` is input as `mg/mm2`.*
+-   units in the numerator are separated by a '.'/
+-   units in the denominator are each preceded by a '/'./
+-   "extra" information that is commonly informally included as part of the units for clarity can be included in curly brackets, {}
 
-*For complicated examples, see the [Adding dataset vignette](https://github.com/traitecoevo/traits.build/vignettes).*
+As examples:
 
-##### entity_type, value_type, basis_of_value
+| units                                            | UCUM format    |
+|--------------------------------------------------|----------------|
+| milligram per square millimetre                  | mg/mm2         |
+| micromole per square metre second                | umol/m2/s      |
+| micromole carbon dioxide per square metre second | umol{CO2}/m2/s |
 
-*The fields `entity_type`, `value_type` and `basis_of_value` use a controlled vocabulary. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms.*
+If the units being read in for a specific trait differ from those defined for the trait in the [traits dictionary](https://github.com/traitecoevo/traits.build-template/blob/master/config/traits.yml) the trait values are converted using the conversion rules specified in [unit_conversions.csv](https://github.com/traitecoevo/traits.build-template/blob/master/config/unit_conversions.csv).
 
-*For this study:*
+##### **entity_type, value_type, basis_of_value, replicates, methods**
 
-entity_type: population\
-value_type: mean\
-basis_of_value: measurement
+| field          | value for this dataset                                                                                                                          | description                                                                                                                                                                                                              |
+|--------------|------------------|----------------------------------------|
+| entity_type    | population                                                                                                                                      | The entity corresponding to the trait value. Uses a controlled vocabulary. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms. |
+| value_type     | mean                                                                                                                                            | The statistical nature of the trait value. Uses a controlled vocabulary. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms.   |
+| basis_of_value | measurement                                                                                                                                     | How the trait value was obtained. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms.                                          |
+| replicates     | 3                                                                                                                                               | The number of replicate measurements that comprise the trait measurement recorded in the spreadsheet.                                                                                                                    |
+| methods        | See the study's [metadata_notes.txt](https://github.com/traitecoevo/traits.build-template/blob/data/test_dataset_1/raw/metadata_notes.txt) file |  A verbatim (free-form) text field documenting the methods used to collect the trait measurements. This is generally available from the reference or directly from the author.                                           |
 
-##### replicates
-
-*The replicates field indicates the number of replicate measurements that comprise the trait measurement recorded in the spreadsheet. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for more details.*
-
-*For this study:*
-
-replicates: 3
-
-##### methods
-
-*The methods fields is a verbatim (free-form) text field documenting the methods used to collect the trait measurements. This is generally available from the reference or directly from the author.*
-
-*For this study, see the study's [metadata_notes.txt](https://github.com/traitecoevo/traits.build-template/blob/data/test_dataset_1/raw/metadata_notes.txt) file.*
+*The values for `entity_type`, `value_type`, `basis_of_value`, and `replicates` can vary by trait -- and indeed by measurement -- but for this study are identical for all traits.*
 
 #### Final steps
 
 ##### double check the metadata.yml file
 
-*You should now have a completed `metadata.yml` file, with no `unknown` fields.*
+You should now have a completed `metadata.yml` file, with no `unknown` fields.
 
-*You'll notice five sections we haven't used, `contexts`, `substitutions`, `taxonomic_updates`, `exclude_observations`, and `questions`.*
+You'll notice five sections we haven't used, `contexts`, `substitutions`, `taxonomic_updates`, `exclude_observations`, and `questions`.
 
-*These should each contain an `.na` (as in `substitutions: .na`). They will be explored in future lessons.*
+These should each contain an `.na` (as in `substitutions: .na`). They will be explored in future lessons.
 
 ##### run tests on the metadata file
 
-*Confirm there are no errors in the `metadata.yml` file:*
+Confirm there are no errors in the `metadata.yml` file:
 
 ```{r eval=FALSE}
 dataset_test("test_dataset_1")
 ```
 
+This *should* result in the following output:
+
+[[ FAIL 0 | WARN 0 | SKIP 0 | PASS 79 ]]{style="color:blue;"}\
+
 ##### add dataset to the database
 
-*Add the dataset_id to the remake file that builds the database and remake the database*
+Next add the dataset_id to the remake file that builds the database and remake the database
 
 ```{r eval=FALSE}
 build_setup_pipeline()
 traits.build_database <- remake::make("austraits")
 ```
+
+##### build dataset report
+
+As a final step, build a report for the study
+
+```{r eval=FALSE}
+dataset_report("test_dataset_1", traits.build_database, overwrite = TRUE)
+```
+
+Have a look at the report, but there reports become much more interesting once there are more datasets in the database.
