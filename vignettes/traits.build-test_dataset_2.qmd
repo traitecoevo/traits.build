@@ -12,19 +12,19 @@ editor: visual
 
 This is the second of five tutorials on adding datasets to your traits.build database.
 
-Before you begin this tutorial, ensure you have installed traits.build, cloned the traits.build-template repository, and have successfully build a database from the datasets in `traits.build-template`. Instructions are available at \[XX\]{xx}
+Before you begin this tutorial, ensure you have installed traits.build, cloned the traits.build-template repository, and have successfully build a database from the datasets in `traits.build-template`. Instructions are available at [XX]https://xx}
 
 ### Goals
 
--   Learn how to merge in location data from a standalone spreadsheet.
+-   Learn how to [merge in location data from a standalone spreadsheet](#locations).
 
--   Learn how to add substitutions for categorical trait values.
+-   Learn how to [add substitutions for categorical trait values](#categorical_substitutions).
 
--   Learn how to add custom R code to the metadata file.
+-   Learn how to [add custom R code](#custom_R_code) to the metadata file.
 
--   Understand the importance of attributing traits to the correct entity_type.
+-   Understand the importance of [attributing traits to the correct entity_type](#correct_entity_type).
 
--   Understand the importance of having the dataset pivot.
+-   Understand the importance of having the [dataset pivot](#dataset_pivot).
 
 ### New Functions Introduced
 
@@ -34,15 +34,13 @@ Before you begin this tutorial, ensure you have installed traits.build, cloned t
 
 -   metadata_check_custom_R_code
 
--   metadata_exclude_observations
-
 ------------------------------------------------------------------------
 
 ## Adding test_dataset_2
 
 ### Ensure the dataset folder contains the correct data files
 
-On the traits.build-template repository, there is a folder titled `test_dataset_2` within the data folder. 
+In the traits.build-template repository, there is a folder titled `test_dataset_2` within the data folder. 
 
 -   Ensure that this folder exists on your computer. 
 
@@ -76,6 +74,7 @@ As with `test_dataset_1` this function leads you through a series of menus requi
 [location_name column:]{style="color:blue;"} [**site_TEXT**]{style="color:red;"}\
 [individual_id column:]{style="color:blue;"} [**NA**]{style="color:red;"}\
 [collection_date column:]{style="color:blue;"} [**NA**]{style="color:red;"}\
+[Enter collection_date range in format '2007/2009':]{style="color:blue;"} [1996/1997]{style="color:red;"}\ 
 
 *Navigate to the dataset's folder and open the metadata.yml file in Visual Studio Code, to ensure information is added to the expected sections as you work through the tutorial.*
 
@@ -97,7 +96,7 @@ confirm:
 
 ------------------------------------------------------------------------
 
-#### **Add location details**
+#### **Add location details** {#locations}
 
 For this dataset, location data is provided as a standalone spreadsheet, located in the raw data folder: `test_dataset_2\raw\locations.csv`
 
@@ -281,7 +280,7 @@ Looking through the output you'll notice that the `Unsupported trait value` erro
 
 The values that triggered the `Value out of allowable range` error are all 0's, a disallowed `leaf_dry_mass` value; the trait dictionary specifies that `leaf_dry_mass` can range from `0.01 - 15000.0 mg`.
 
-##### **Adding trait value substitutions**
+##### **Adding trait value substitutions** {#categorical_substitutions}
 
 For categorical traits, only trait values that are indicated in the trait dictionary are recognised. This is an important harmonisation step, as it ensures the same trait concept value is mapped to the same trait value throughout the database.
 
@@ -303,7 +302,7 @@ Look at the `metadata.yml` file and you'll note that a substitution has been add
 
 You would repeat this step for the remaining unknown trait values.
 
-2.  Map in a table of substitutions using `metadata_add_substitutions_table`:
+2.  Map in a table of substitutions using `metadata_add_substitutions_list`:
 
 * If there are quite a few trait values that require replacements, it is easier to first create a table of the required substitutions, then add a column of substitutions in either R or Excel.
 
@@ -315,7 +314,7 @@ table <-
     dataset_id == "test_dataset_2" &
       error == "Unsupported trait value"
   ) %>%
-  distinct(dataset_id, trait_name, value) %>%
+  distinct(trait_name, value) %>%
   rename(find = value)
 ```
 
@@ -329,7 +328,7 @@ table <- table %>%
 
 ## an alternative is `mutate(replace = c("shrub", "tree", "herb", "epiphyte", "graminoid", "fern", "climber_herbaceous"))` which will result in the epiphyte observations remaining in the excluded data table
 
-metadata_add_substitutions_table(table, dataset_id = dataset_id, trait_name = trait_name, find = find, replace = replace)
+metadata_add_substitutions_list("test_dataset_2", table)
 ```
 
 All required substitutions have been added to the `metadata.yml` file.
@@ -349,6 +348,7 @@ There are three common situations that lead to this error warning:\
 
 This study is likely an example of (3), where `0` is a placeholder symbol. While the 0's can be left in the `excluded_data` table, cluttering the `excluded_data` table with extraneous measurements makes it difficult to scan for true examples of `Value out of allowable range` errors in the future. *(Values that are `NA` are, by default, omitted from the excluded_data table.)*
 
+###### **adding custom R code** {#custom_R_code}
 Instead, you can add R code within the metadata file to replace the placeholder symbol with `NA`.
 
 -   Look at `metadata.yml` in Visual Studio Code.\ 
@@ -375,6 +375,12 @@ custom_R_code: '
 
 This code replaces all 0's in the column with NA's.
 
+You can confirm that the custom R code has made the anticipated change with the function `metadata_check_custom_R_code`. This function reads in the data.csv file, then applies any manipulations from the custom_R_code:\ 
+
+``` {r eval=FALSE}
+metadata_check_custom_R_code("test_dataset_2") %>% View()
+```
+
 Note:\ 
 
 -   use the format with the single quotes; this allows you to manually add line breaks, not otherwise permitted in the metadata.yml format.\ 
@@ -390,7 +396,7 @@ traits.build_database$excluded_data %>%
   View()
 ```
 
-##### **Replacing duplicate values with NA's**
+##### **Replacing duplicate values with NA's** {#correct_entity_type} 
 
 Run the tests again to confirm the errors related to disallowed trait values and values out of range have vanished:\ 
 ```{r eval=FALSE}
@@ -399,7 +405,7 @@ dataset_test("test_dataset_2")
 
 However, there should still be an error indicating that the dataset cannot pivot between `long` and `wide` formats.\  
 
-The ability to pivot is important for 2 reasons:\ 
+The ability to pivot is important for 2 reasons:{#dataset_pivot}\  
 
 1.    Database users may prefer to display data in wide format to readily compare the values of multiple traits collected on the same individual (or population or species).\ 
 2.    The `pivot test` groups together 13 variables that are meant to uniquely identify each row of data (dataset_id, trait_name, observation_id, source_id, taxon_name, entity_type, life_stage, basis_of_record, value_type, population_id, individual_id, temporal_id, method_id, entity_context_id, original_name). An inability to pivot indicates either:\ 

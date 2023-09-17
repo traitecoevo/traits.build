@@ -40,7 +40,7 @@ Before you begin this tutorial, ensure you have installed traits.build, cloned t
 
 ### Ensure the dataset folder contains the correct data files
 
-On the traits.build-template repository, there is a folder titled `test_dataset_1` within the data folder.\  
+In the traits.build-template repository, there is a folder titled `test_dataset_1` within the data folder.\  
 
 -   Ensure that this folder exists on your computer.\  
 
