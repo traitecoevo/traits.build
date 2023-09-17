@@ -386,9 +386,9 @@ If the units being read in for a specific trait differ from those defined for th
 
 *The values for `entity_type`, `value_type`, `basis_of_value`, and `replicates` can vary by trait -- and indeed by measurement -- but for this study are identical for all traits.*
 
-#### Final steps
+#### **Final steps**
 
-##### double check the metadata.yml file
+##### **double check the metadata.yml file**
 
 You should now have a completed `metadata.yml` file, with no `unknown` fields.
 
@@ -396,7 +396,7 @@ You'll notice five sections we haven't used, `contexts`, `substitutions`, `taxon
 
 These should each contain an `.na` (as in `substitutions: .na`). They will be explored in future lessons.
 
-##### run tests on the metadata file
+##### **run tests on the metadata file**
 
 Confirm there are no errors in the `metadata.yml` file:
 
@@ -408,7 +408,7 @@ This *should* result in the following output:
 
 [[ FAIL 0 | WARN 0 | SKIP 0 | PASS 79 ]]{style="color:blue;"}\
 
-##### add dataset to the database
+##### **add dataset to the database**
 
 Next add the dataset_id to the remake file that builds the database and remake the database
 
@@ -417,11 +417,12 @@ build_setup_pipeline()
 traits.build_database <- remake::make("austraits")
 ```
 
-##### build dataset report
+##### **build dataset report**
 
 As a final step, build a report for the study
 
 ```{r eval=FALSE}
+traits.build_database$build_info$version <- "4.0.0"  # a fix because the function was built around specific AusTraits versions
 dataset_report("test_dataset_1", traits.build_database, overwrite = TRUE)
 ```
 

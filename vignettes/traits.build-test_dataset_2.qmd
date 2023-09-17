@@ -1,7 +1,10 @@
 ---
-title: "Test dataset 2"
+title: 'Instructions for adding dataset: test_dataset_2'
 author: "Elizabeth Wenk, Sophie Yang"
-format: html
+date: "2023-09-16"
+format: 
+  html:
+    toc: TRUE
 editor: visual
 ---
 
@@ -9,17 +12,19 @@ editor: visual
 
 This is the second of five tutorials on adding datasets to your traits.build database.
 
-Before you begin this tutorial, ensure you have installed traits.build, cloned the traits.build-template repository, and have successfully build a database from the datasets in `traits.build-template` . Instructions are available at \[XX\]{xx}
+Before you begin this tutorial, ensure you have installed traits.build, cloned the traits.build-template repository, and have successfully build a database from the datasets in `traits.build-template`. Instructions are available at \[XX\]{xx}
 
 ### Goals
 
--   Learn how to add substitutions for categorical trait values.
-
 -   Learn how to merge in location data from a standalone spreadsheet.
+
+-   Learn how to add substitutions for categorical trait values.
 
 -   Learn how to add custom R code to the metadata file.
 
--   Learn how to exclude observations.
+-   Understand the importance of attributing traits to the correct entity_type.
+
+-   Understand the importance of having the dataset pivot.
 
 ### New Functions Introduced
 
@@ -31,19 +36,32 @@ Before you begin this tutorial, ensure you have installed traits.build, cloned t
 
 -   metadata_exclude_observations
 
+------------------------------------------------------------------------
+
 ## Adding test_dataset_2
 
-### Create a folder for the dataset
+### Ensure the dataset folder contains the correct data files
 
-Begin by creating a folder titled `test_dataset_2` within the data folder.
+On the traits.build-template repository, there is a folder titled `test_dataset_2` within the data folder. 
 
-Place the data.csv file for `test_dataset_2` in the folder.
+-   Ensure that this folder exists on your computer. 
 
-Create a folder `raw` within the `test_dataset_2` for the `locations.csv` and `notes.txt` files.
+-   The file `data.csv` exists within the `test_dataset_2` folder. 
+
+-   There is a folder `raw` nested within the `test_dataset_2` folder, that contains two files, `locations.csv` and `notes.txt`. 
+
+### source necessary functions
+
+-   You'll need to both source the traits.build functions and some ancillary functions that are in a file in the scripts folder:
+
+``` {r eval=FALSE}
+library(traits.build)
+source("scripts/custom.R")
+```
 
 ### Use functions to create a metadata.yml file
 
-#### Create a Metadata Template
+#### **Create a metadata template**
 
 To create the metadata template, run:
 
@@ -53,17 +71,19 @@ metadata_create_template("test_dataset_2")
 
 As with `test_dataset_1` this function leads you through a series of menus requiring user input. Ensure you select:
 
-data format: [**wide**]{style="color:red;"}\
-taxon_name column: [**name_original**]{style="color:red;"}\
-location_name column: [**site_TEXT**]{style="color:red;"}\
-individual_id column: [**NA**]{style="color:red;"}\
-collection_date column: [**NA**]{style="color:red;"}\
+[data format:]{style="color:blue;"} [**wide**]{style="color:red;"}\
+[taxon_name column:]{style="color:blue;"} [**name_original**]{style="color:red;"}\
+[location_name column:]{style="color:blue;"} [**site_TEXT**]{style="color:red;"}\
+[individual_id column:]{style="color:blue;"} [**NA**]{style="color:red;"}\
+[collection_date column:]{style="color:blue;"} [**NA**]{style="color:red;"}\
 
 *Navigate to the dataset's folder and open the metadata.yml file in Visual Studio Code, to ensure information is added to the expected sections as you work through the tutorial.*
 
-#### Propagate source information into the metadata.yml file
+------------------------------------------------------------------------
 
-This dataset is from a published source and therefore the source information can be added with a single line of code:
+#### **Propagate source information into the metadata.yml file**
+
+This dataset is from a published source and therefore the source information can be added with the function `metadata_add_source_doi`:
 
 ```{r eval=FALSE}
 metadata_add_source_doi(dataset_id = "test_dataset_2", doi = "10.1046/j.1365-2745.2000.00506.x")
@@ -75,24 +95,26 @@ confirm:
 2.  the article title is in sentence case\
 3.  the page numbers are filled in as a range, separated by a double dash\
 
-#### Add location details into the metadata.yml file
+------------------------------------------------------------------------
 
-For this dataset, location data is provided as a standalone spreadsheet that should be archived in the raw data folder: "test_dataset_2\raw\locations.csv"
+#### **Add location details**
 
-First read the location data provided into R:  
+For this dataset, location data is provided as a standalone spreadsheet, located in the raw data folder: `test_dataset_2\raw\locations.csv`
+
+First read the location data provided into R:
+
 ```{r eval=FALSE}
 locations <-
   read_csv("data/test_dataset_2/raw/location_data.csv")
 ```
 
-traits.build requires three fields to use a specific syntax:  
+traits.build requires three fields to use a specific syntax:
 
--   `latitude` must be in decimal degrees and the field name (column header) must be `latitude (deg)`   
+-   `latitude` must be in decimal degrees and the field name (column header) must be `latitude (deg)`
 
--   `longitude` must be in decimal degrees and the field name (column header) must be `longitude (deg)`   
+-   `longitude` must be in decimal degrees and the field name (column header) must be `longitude (deg)`
 
--   A general site description is document in the field `description`  
-
+-   A general site description is document in the field `description`
 
 traits.build does not require that the labels for other location properties align across datasets, but it is best practice to use a controlled vocabulary, so database users can easily search across all datasets for information on a specific climate variable or soil nutrient content. For new databases or new location properties, any naming/labeling convention can be established.
 
@@ -130,14 +152,16 @@ metadata_add_locations(dataset_id = "test_dataset_2", location_data = locations)
 
 Ensure you select:
 
-location_name: [**location**]{style="color:red;"}\
-location_property columns: [**1 2 3 4 5 6 7 8**]{style="color:red;"}\
+[location_name:]{style="color:blue;"} [**location**]{style="color:red;"}\
+[location_property columns:]{style="color:blue;"} [**1 2 3 4 5 6 7 8**]{style="color:red;"}\
 
-*Check the metadata.yml file to ensure the location information has been added as expected. If there is a problem, rerun the necessary code; this will overwrite what is present. You can also manually add additional properties if something is forgotten.*  
+Check the metadata.yml file to ensure the location information has been added as expected. If there is a problem, rerun the necessary code; this will overwrite what is present. You can also manually add additional properties if something is forgotten.
 
-#### Add traits to the metadata.yml file
+------------------------------------------------------------------------
 
-To select columns in the `data.csv` file that include trait data, run:  
+#### **Add traits**
+
+To select columns in the `data.csv` file that include trait data, run:
 
 ```{r eval=FALSE}
 metadata_add_traits(dataset_id = "test_dataset_2")
@@ -145,49 +169,53 @@ metadata_add_traits(dataset_id = "test_dataset_2")
 
 Select columns [**3 4 5 6**]{style="color:red;"}, as these contain trait data.
 
-*After confirming that the skeletal traits section has been added to `metadata.yml` file, you must fill in all the `unknown` fields.*  
+------------------------------------------------------------------------
 
 ### Manual filling in of metadata
 
+After confirming that the skeletal traits section has been added to `metadata.yml` file, you must fill in all the `unknown` fields.
+
 For this dataset, you will later use functions to add substitutions and exclude unwanted observations, but it is best to first fill in the information for contributors, the dataset, and the traits.
 
-Now begin filling in the remaining metadata.yml fields manually.
+These are all fields that contain the word `unknown` and must be filled in manually: 
 
-These are all fields that contain the word `unknown`.
+-   the `contributors` section\
 
-These include:\
-*the `contributors` section*\
-*the `description`, `basis_of_record`, `life_stage`, `sampling_strategy`, `original_file`, and `notes` under the `dataset` section*\
-*details for each trait, including `unit_in`, `trait_name`, `entity_type`, `value_type`, `basis_of_record`, `replicates` and `methods`*
+-   `description`, `basis_of_record`, `life_stage`, `sampling_strategy`, `original_file`, and `notes` under the `dataset` section\*\
 
-\#### Adding contributors
+-   details for each trait, including `unit_in`, `trait_name`, `entity_type`, `value_type`, `basis_of_record`, `replicates` and `methods`\
 
-*The file "data/test_dataset_1/raw/test_dataset_1_notes.txt" indicates the main data_contributor for this study.*
+#### **Adding contributors**
 
-*Fill in the remaining contributor information as described in the `test_dataset_1`[tutorial](https://XXX).*
+The file 'data/test_dataset_1/raw/test_dataset_1_notes.txt' indicates the main data_contributor for this study.\
 
-\#### Filling in the missing dataset fields
+Fill in the remaining contributor information as described in the [`test_dataset_1`tutorial](https://github.com/traitecoevo/traits.build/tree/develop/vignettes).\
 
-*The file "data/test_dataset_1/raw/test_dataset_1_notes.txt" indicates how to fill in the `unknown` dataset fields for this study.*
+#### **Dataset fields**
 
-\#### Filling in the missing details for each trait.
+The file `data/test_dataset_1/raw/test_dataset_1_notes.txt` indicates how to fill in the `unknown` dataset fields for this study.
 
-*The file "data/test_dataset_1/raw/test_dataset_1_notes.txt" indicates how to fill in the `unknown` trait fields for this study, but see below as well.*
+#### **Trait details**
 
-\##### trait_name
+The file "data/test_dataset_1/raw/test_dataset_1_notes.txt" indicates how to fill in the `unknown` trait fields for this study, but see below as well.
 
-*Remember, the `trait_name` must match a `trait_name` within the [traits dictionary](https://github.com/traitecoevo/traits.build-template/blob/master/config/traits.yml). For this example:*
+##### **trait_name**
 
-`TRAIT Growth Form CATEGORICAL EP epiphyte (mistletoe) F fern G grass H herb S shrub T tree V vine` is plant_growth_form\
-`TRAIT SLA UNITS mm2/g` is leaf_mass_per_area\
-`TRAIT Leaf Size UNITS mm2` is leaf_area\
-`TRAIT Leaf Dry Mass UNITS g` is leaf_dry_mass\
+Remember, the `trait_name` must match a trait concept within the [traits dictionary](https://github.com/traitecoevo/traits.build-template/blob/master/config/traits.yml). For this example:
 
-*You may notice that the second trait is provided by the author as `specific leaf area`, the inverse of `leaf mass per area`. The unit conversions algorithm inverts data read in as specific leaf area, converting it to leaf mass per area. (XXX- TODO - is it possible for this text to appear as a hover link above the word "NOTE" next to the actual trait; just continuing to think of how to reduce the main text.)*
+| column in dataset                                                                                 | trait concept      |
+|---------------------------------------------------------------------------------------------------|--------------------|
+| TRAIT Growth Form CATEGORICAL EP epiphyte (mistletoe) F fern G grass H herb S shrub T tree V vine | plant_growth_form  |
+| TRAIT SLA UNITS mm2/g                                                                             | leaf_mass_per_area |
+| TRAIT Leaf Size UNITS mm2                                                                         | leaf_area          |
+| TRAIT Leaf Dry Mass UNITS g                                                                       | leaf_dry_mass      |
+
+
+Notice that the second trait in this dataset is documented `specific leaf area`, the inverse of the trait concept `leaf mass per area`. The unit conversions algorithm inverts data read in as specific leaf area, converting it to leaf mass per area.
 
 The convention for filling in the remaining metadata fields is different for numeric versus categorical traits.
 
-*For the three numeric traits, fill in:*
+For the three numeric traits, fill in:
 
 unit_in: [(use the units in column header)]{style="color:red;"}\
 entity_type: [**population**]{style="color:red;"}\
@@ -195,7 +223,7 @@ value_type: [**mean**]{style="color:red;"}\
 basis_of_value: [**measurement**]{style="color:red;"}\
 replicates: [**5**]{style="color:red;"}\
 
-*For the categorical trait, fill in:*
+For the categorical trait, fill in:
 
 unit_in: [**.na**]{style="color:red;"}\
 entity_type: [**species**]{style="color:red;"}\
@@ -204,10 +232,10 @@ basis_of_value: [**expert_score**]{style="color:red;"}\
 replicates: [**.na**]{style="color:red;"}\
 
 -   Categorical traits do not have units or replicates, so these fields become `.na`.
--   The traits.build convention for a categorical trait is `value_type: mode`, indicating the recorded value is the most commonly observed trait value.
+-   The traits.build convention for a categorical trait is `value_type: mode`, indicating the recorded value is the most commonly observed trait value. In some datasets there may be multiple space-delimited values within a single cell in the data.csv file, indicating there are multiple commonly observed categorical trait values. 
 -   For most observations of categorical traits, the traits.build convention is that the `basis_of_value` is determined by an expert examining an individual, population or species, and is therefore an `expert_score`.
 
-#### Additional steps
+#### **Additional steps**
 
 Once you are well-versed in adding datasets to a traits.build database you will know that there is additional information required in `metadata.yml`.
 
@@ -217,64 +245,224 @@ However, for this tutorial, let's begin by assuming we're finished adding datase
 dataset_test("test_dataset_2")
 ```
 
-Three items will fail: 1. There are unknown trait values for `plant_growth_form`\
-2. There are values out of range for `leaf_dry_mass`\
-3. There are duplicate entries detected for 11 observation_id's\
+[*Users, please note, not all of these test failures or messages are currently in place. Adding test to document all failures is still a work in progress.]{style="color:red;"}\ 
 
-As indicated in the output messages, there is a \[troubleshooting vignette\](https://github.../vignettes/... to help solve these errors.\
+Three items will fail:\ 
 
-For this tutorial however, keep reading:
+1.    There are unknown trait values for `plant_growth_form` [(error doesn't yet exist)]{style="color:red;"}\ 
+2.    There are values out of range for `leaf_dry_mass` [(error doesn't yet exist)]{style="color:red;"}\ 
+3.    The dataset cannot pivot between `long` and `wide` formats. [(error doesn't yet exist)]{style="color:red;"}\ 
 
-##### Adding trait value substitutions
+As indicated in the output messages, there is a \[troubleshooting vignette\](https://github.../vignettes/) to help solve these errors.\ 
 
-For categorical traits, only trait values that are indicated in the trait dictionary are recognised. This is an important harmonisation step, as it ensures the same trait value concept is mapped to the same trait value throughout the database.
+For this tutorial however, keep reading...
+
+There are several ways to proceed, but for these errors, it is useful to next build the dataset:
+
+```{r eval=FALSE}
+build_setup_pipeline()
+traits.build_database <- remake::make("austraits")
+```
+
+If you look at the excluded_data table, you'll find any data for this dataset that could not be mapped to known traits, known trait values, or fell within allowable ranges.
+
+```{r eval=FALSE}
+traits.build_database$excluded_data %>%
+  filter(dataset_id == "test_dataset_2") %>%
+  View()
+```
+
+This code displays a table with 190 rows of excluded data.\  
+
+-   187 instances of `Unsupported trait value` for the trait `plant_growth_form`\  
+-   3 instance of `Value out of allowable range` for the trait `leaf_dry_mass`\  
+
+Looking through the output you'll notice that the `Unsupported trait value` error exists because the data.csv file used plant growth form values that are different to those in the trait dictionary.
+
+The values that triggered the `Value out of allowable range` error are all 0's, a disallowed `leaf_dry_mass` value; the trait dictionary specifies that `leaf_dry_mass` can range from `0.01 - 15000.0 mg`.
+
+##### **Adding trait value substitutions**
+
+For categorical traits, only trait values that are indicated in the trait dictionary are recognised. This is an important harmonisation step, as it ensures the same trait concept value is mapped to the same trait value throughout the database.
 
 However, researchers use countless synonyms, abbreviations and syntax to express an identical trait value. traits.build converts all input to lowercase, but all other substitutions must be specified in the dataset's `metadata.yml` file.
 
-For this example you'll note that the `data.csv` file used individual letters to express 6 plant growth forms: t, s, h, f, g, ###.
+For this example individual letters were used to express 7 plant growth forms: EP, F, G, H, S, T, V                                                                                      
 
 Looking at the definition for `plant_growth_form` in the trait dictionary and the helpful column header provided by the contributor, you can deduce that `t` is for `tree`; `s` is for `shrub`, etc.
 
 There are two ways to add substitutions into the `metadata.yml` file.
 
-1.  You can map in individual substitutions for each of the errant trait values using:
+1.  Map in individual trait value substitutions using `metadata_add_substitution`:
 
 ```{r eval=FALSE}
 metadata_add_substitution(dataset_id = "test_dataset_2", trait_name = "plant_growth_form", find = "t", replace = "tree")
 ```
 
-*Now check the `metadata.yml` file and you'll note that a substitution has been added, to indicate the `t`'s are `tree`'s*
+Look at the `metadata.yml` file and you'll note that a substitution has been added, to indicate the `t`'s are `tree`'s
 
 You would repeat this step for the remaining unknown trait values.
 
-2.  If there are quite a few trait values that require replacements, it is easier to first create a table of the required substitutions, then add a column of substitutions in either R or Excel.
+2.  Map in a table of substitutions using `metadata_add_substitutions_table`:
+
+* If there are quite a few trait values that require replacements, it is easier to first create a table of the required substitutions, then add a column of substitutions in either R or Excel.
+
 
 ```{r eval=FALSE}
 table <-
-  my_database$excluded_data %>%
+  traits.build_database$excluded_data %>%
   filter(
     dataset_id == "test_dataset_2" &
       error == "Unsupported trait value"
   ) %>%
   distinct(dataset_id, trait_name, value) %>%
   rename(find = value)
+```
 
-# .. view your table to check the order of trait values ...
+Next view your table to check the order of trait values and check the allowed values and definitions in the trait dictionary to ensure you replace each abbreviation with an accepted value. Note that `epiphyte` is not an allowed value for `plant_growth_form` in the trait dictionary, as, AusTraits uses a narrow definition of `plant_growth_form`, and separately has a trait `plant_growth_substrate` which includes the trait value `epiphyte`. For now, we'll simply ignore this data.
 
+To add a column with substitutions, then add the substitutions to the metadata file:
+
+``` {r eval=FALSE}
 table <- table %>%
   mutate(replace = c("shrub", "tree", "herb", NA, "graminoid", "fern", "vine"))
+
+## an alternative is `mutate(replace = c("shrub", "tree", "herb", "epiphyte", "graminoid", "fern", "climber_herbaceous"))` which will result in the epiphyte observations remaining in the excluded data table
 
 metadata_add_substitutions_table(table, dataset_id = dataset_id, trait_name = trait_name, find = find, replace = replace)
 ```
 
-*All required substitutions have been added to the `metadata.yml` file and if you were to rerun `dataset_test("test_dataset_2")` the error referring to `Unsupported trait values` should now have vanished.*
+All required substitutions have been added to the `metadata.yml` file.
 
-##### Replacing "placeholder characters" with NA's
+If you were to rerun `dataset_test("test_dataset_2")` the error referring to `Unsupported trait values` would now have vanished.
+
+##### **Replacing "placeholder characters" with NA's**
 
 The `Values out of range` error is triggered for numeric traits when the traits.build pipeline detects values that fall outside the range specified for the trait in the traits dictionary.
 
-There are three common situations that lead to this error warning:\
-1. Values are truly out of range, possibly due to human error or because a plant really was not performing as expected (i.e. not photosynthesising).\
-2. Values appear to be out of range because of a "unit conversion issue" - that is, the dataset curator or the dataset contributor got the units wrong.\
-This is fixed by working out the correct units and adjusting this in the traits section of the `metadata.yml` file.\
-3. An dataset contributor has used a "dummy symbol" to indicate missing data, such as `0`, `x`, `missing`, etc. Truly missing data should be a blank cell - i.e. `NA`
+There are three common situations that lead to this error warning:\ 
+
+1.    Values are truly out of range, possibly due to human error or because a plant really was not performing as expected (i.e. not photosynthesising).\ 
+2.    Values appear to be out of range because of a "unit conversion issue" - that is, the dataset curator or the dataset contributor got the units wrong.\ 
+      This is fixed by working out the correct units and adjusting this in the traits section of the `metadata.yml` file.\ 
+3.    A dataset contributor has used a "dummy symbol" to indicate missing data, such as `0`, `x`, `missing`, etc. Truly missing data should be a blank cell - i.e. `NA`\ 
+
+This study is likely an example of (3), where `0` is a placeholder symbol. While the 0's can be left in the `excluded_data` table, cluttering the `excluded_data` table with extraneous measurements makes it difficult to scan for true examples of `Value out of allowable range` errors in the future. *(Values that are `NA` are, by default, omitted from the excluded_data table.)*
+
+Instead, you can add R code within the metadata file to replace the placeholder symbol with `NA`.
+
+-   Look at `metadata.yml` in Visual Studio Code.\ 
+-   The second field under the `dataset` section is `custom_R_code: .na`.\ 
+-   You can write any code you'd like within this section.\ 
+-   The file `scripts/custom.R` that you sourced at the beginning of this tutorial contains customised functions commonly used in custom_R_code.\ 
+
+For this example, replace:\ 
+
+``` {r eval=FALSE}
+custom_R_code: na
+```
+
+with:\ 
+
+``` {r eval=FALSE}
+custom_R_code: '
+  data %>%
+    mutate(
+      across(c("TRAIT Leaf Dry Mass UNITS g"), ~na_if(.x,0))
+    )
+'
+```
+
+This code replaces all 0's in the column with NA's.
+
+Note:\ 
+
+-   use the format with the single quotes; this allows you to manually add line breaks, not otherwise permitted in the metadata.yml format.\ 
+-   you pipe in `data` to begin with, but do not need to assign your code back to data; that occurs automatically.\ 
+
+Build the database again, then check the `excluded_data` table to confirm there are no longer any excluded measurements:\ 
+
+```{r eval=FALSE}
+traits.build_database <- remake::make("austraits")
+
+traits.build_database$excluded_data %>%
+  filter(dataset_id == "test_dataset_2") %>%
+  View()
+```
+
+##### **Replacing duplicate values with NA's**
+
+Run the tests again to confirm the errors related to disallowed trait values and values out of range have vanished:\ 
+```{r eval=FALSE}
+dataset_test("test_dataset_2")
+```
+
+However, there should still be an error indicating that the dataset cannot pivot between `long` and `wide` formats.\  
+
+The ability to pivot is important for 2 reasons:\ 
+
+1.    Database users may prefer to display data in wide format to readily compare the values of multiple traits collected on the same individual (or population or species).\ 
+2.    The `pivot test` groups together 13 variables that are meant to uniquely identify each row of data (dataset_id, trait_name, observation_id, source_id, taxon_name, entity_type, life_stage, basis_of_record, value_type, population_id, individual_id, temporal_id, method_id, entity_context_id, original_name). An inability to pivot indicates either:\ 
+      -   A variable present in the `data.csv` file to distinguish between unique observations has not been mapped into the metadata file. (Most likely a context property, column with locations, individual_id or source_id)\ 
+      -   Duplicate values exist within the data.csv file and have been read in multiple times.\ 
+
+The error in this dataset is a common one:\
+
+-   The three numeric traits (`leaf_mass_per_area`, `leaf_mass_per_area` and `leaf_dry_mass`) are all population-level measurements, while `plant_growth_form` is mapped in as having `entity_type: species`, meaning it is considered a species-level measurement. This means if the same species occurs at multiple sites, its growth form value is read in twice. However, because it is designated as `entity_type: species` that traits.build workflow does not connect the value to a location, since the species has the same growth form regardless of location.\ 
+
+-   Two options are to:
+    1.    Recategorise `plant_growth_form` as having `entity_type: population`.
+    2.    Only read in a single instance of `plant_growth_form` per species.
+
+Either allows the dataset to pivot, but if the taxon truly displays only a single growth form across all populations it is much better to read in plant growth form once per species. Otherwise the database becomes longer without capturing additional information. This dataset has only a few instance of duplication, but imagine the dataset that has 500 rows of data for the same tree species - suddenly 500 instances of that species being a tree are read into the database.
+
+The solution is to modify the existing custom_R_code, adding one of the customised functions from the file `scripts/custom.R`, `replace_duplicates_with_NA`:\ 
+
+``` {r eval=FALSE}
+custom_R_code: '
+  data %>%
+    mutate(
+      across(c("TRAIT Leaf Dry Mass UNITS g"), ~na_if(.x,0))
+    ) %>%
+    group_by(name_original) %>% #column with taxon name
+      across(c("TRAIT Growth Form CATEGORICAL EP epiphyte (mistletoe) F fern G grass H herb S shrub T tree V vine"), replace_duplicates_with_NA) %>%
+    ungroup()
+'
+```
+
+Rerun the tests and everything should now pass:\ 
+
+```{r eval=FALSE}
+dataset_test("test_dataset_2")
+```
+
+Then rebuild the database and look at the output in the traits table for one of the taxa that previously had duplicate `plant_growth_form` entries:\ 
+
+```{r eval=FALSE}
+traits.build_database <- remake::make("austraits")
+
+traits.build_database$traits %>%
+  filter(dataset_id == "test_dataset_2") %>% 
+  filter(taxon_name == "Actinotus minor") %>% View()
+
+  dataset_id     taxon_name      observation_id trait_name         value            unit  entity_type location_id
+  <chr>          <chr>           <chr>          <chr>              <chr>            <chr> <chr>       <chr>      
+1 test_dataset_2 Actinotus minor 010            leaf_area          18.8             mm2   population  02         
+2 test_dataset_2 Actinotus minor 010            leaf_dry_mass      7                mg    population  02         
+3 test_dataset_2 Actinotus minor 010            leaf_mass_per_area 344.827586206897 g/m2  population  02         
+4 test_dataset_2 Actinotus minor 011            leaf_area          75.9             mm2   population  03         
+5 test_dataset_2 Actinotus minor 011            leaf_dry_mass      7                mg    population  03         
+6 test_dataset_2 Actinotus minor 011            leaf_mass_per_area 89.2857142857143 g/m2  population  03         
+7 test_dataset_2 Actinotus minor 012            plant_growth_form  herb             NA    species     NA      
+```
+
+The measurements for the three numeric traits from a single location share a common `observation_id`, as they are all part of an observation of a common entity (a specific population of *Actinotus minor*), at a single location, at a single point in time. However the row with the plant growth form measurement has a separate `observation_id` reflecting that this is an observation of a different entity (the taxon *Actinotus minor*). 
+
+##### **build dataset report**
+
+As a final step, build a report for the study
+
+```{r eval=FALSE}
+traits.build_database$build_info$version <- "4.0.0"  # a fix because the function was built around specific AusTraits versions
+dataset_report("test_dataset_2", traits.build_database, overwrite = TRUE)
+```
