@@ -38,15 +38,23 @@ Before you begin this tutorial, ensure you have installed traits.build, cloned t
 
 ## Adding test_dataset_1
 
-### Create a folder for the dataset
+### Ensure the dataset folder contains the correct data files
 
-Begin by creating a folder titled `test_dataset_1` within the data folder.
+On the traits.build-template repository, there is a folder titled `test_dataset_1` within the data folder.\  
 
-(First create a `data/` folder within the main directory if necessary.)
+-   Ensure that this folder exists on your computer.\  
 
-Place the data.csv file for `test_dataset_1` in the folder.
+-   The file `data.csv` exists within the `test_dataset_1` folder.\  
 
-Any ancillary files, such as a raw data file or notes must be inside a secondary nested folder, `raw`.
+-   There is a folder `raw` nested within the `test_dataset_1` folder, that contains one file, `notes.txt`.\  
+
+### source necessary functions
+
+-   Source the functions in the traits.build package:
+
+``` {r eval=FALSE}
+library(traits.build)
+```
 
 ### Use functions to create a metadata.yml file
 
