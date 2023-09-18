@@ -9,7 +9,6 @@
 #'
 #' @param filename_metadata Metadata yaml file for a given study
 #' @param definitions Definitions read in from the `traits.yml`
-#' @param unit_conversion_functions `unit_conversion.csv` file read in from the config folder
 #'
 #' @return List with `dataset_id`, `metadata`, `definitions` and `unit_conversion_functions`
 #' @importFrom purrr map_chr
@@ -20,8 +19,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' dataset_configure("data/Falster_2003/metadata.yml", read_yaml("config/traits.yml"),
-#' get_unit_conversions("config/unit_conversions.csv"))
+#' dataset_configure("data/Falster_2003/metadata.yml", read_yaml("config/traits.yml"))
 #' }
 dataset_configure <- function(
   filename_metadata,
@@ -56,6 +54,8 @@ dataset_configure <- function(
 #' @param filename_data_raw Raw `data.csv` file for any given study
 #' @param config_for_dataset Config settings generated from `dataset_configure()`
 #' @param schema Schema for traits.build
+#' @param resource_metadata Metadata about the traits compilation read in from the config folder
+#' @param unit_conversion_functions `unit_conversion.csv` file read in from the config folder
 #' @param filter_missing_values Default filters missing values from the excluded data table;
 #' change to false to see the rows with missing values.
 #'
@@ -781,7 +781,8 @@ util_check_disallowed_chars <- function(object) {
 
 #' Flag values with unsupported characters
 #'
-#' Flags any values that contain special unsupported characters that are not ASCII.
+#' Disallowed characters are flagged as errors, including for numeric traits, prior to
+#' unit conversions to avoid their conversion to NAs during the unit conversion process.
 #'
 #' @param data Tibble or dataframe containing the study data
 #'
@@ -791,7 +792,8 @@ process_flag_unsupported_chars <- function(data) {
 
   data <- data %>%
     mutate(
-      error = ifelse(is.na(.data$error) & util_check_disallowed_chars(.data$value), "Value contains unsupported characters", .data$error)
+      error = ifelse(is.na(.data$error) & util_check_disallowed_chars(.data$value),
+      "Value contains unsupported characters", .data$error)
     )
   data
 
@@ -865,15 +867,15 @@ util_list_to_bib <- function(ref) {
 #' Flags any categorical traits values that are not on the list of allowed values defined in the
 #' `traits.yml` file.
 #' NA values are flagged as errors.
-#' Disallowed characters are flagged as errors, including for numeric traits, prior to unit conversions
-#' to avoid their conversion to NA's during the unit conversion process
+#' Numeric values that cannot convert to numeric are also flagged as errors.
+#'
 #'
 #' @param data Tibble or dataframe containing the study data
 #' @param definitions Definitions read in from the `traits.yml` file in the config folder
 #'
 #' @importFrom rlang .data
-#' @return Tibble with flagged values outside of allowable range, unsupported categorical
-#' trait values or missing values
+#' @return Tibble with flagged values that are unsupported categorical trait values, missing values
+#' or numeric trait values that cannot be converted to numeric
 process_flag_unsupported_values <- function(data, definitions) {
 
   # NA values
@@ -915,7 +917,7 @@ process_flag_unsupported_values <- function(data, definitions) {
         dplyr::mutate(error = ifelse(i, "Times must be length 12", .data$error))
     }
 
-    # Numerical traits out of range
+    # Test for numeric values that cannot convert to numeric
     if (definitions[[trait]]$type == "numeric") {
 
       x <- suppressWarnings(as.numeric(data[["value"]]))
@@ -944,8 +946,7 @@ process_flag_unsupported_values <- function(data, definitions) {
 #' @param definitions Definitions read in from the `traits.yml` file in the config folder
 #'
 #' @importFrom rlang .data
-#' @return Tibble with flagged values outside of allowable range, unsupported categorical
-#' trait values or missing values
+#' @return Tibble with flagged values outside of allowable range
 process_flag_out_of_range_values <- function(data, definitions) {
 
   # Only check traits not already flagged as errors
