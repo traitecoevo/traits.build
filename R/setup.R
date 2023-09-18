@@ -375,7 +375,7 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
   }
   
   metadata$locations <- location_data %>%
-    dplyr::select(-location_name) %>%  
+    dplyr::select(-dplyr::any_of("location_name")) %>%  
     split(location_data[[location_name]]) %>%
     lapply(as.list)
 

@@ -213,16 +213,7 @@ dataset_process <- function(filename_data_raw,
 
   tmp_bind <-
     metadata[["traits"]] %>%
-    util_list_to_df2() %>%
-    dplyr::filter(!is.na(.data$trait_name)) %>%
-    dplyr::mutate(
-      dataset_id = dataset_id
-    ) %>%
-    dplyr::distinct(.data$dataset_id, .data$trait_name, .data$methods) %>%
-    dplyr::group_by(.data$trait_name) %>%
-    dplyr::mutate(method_id = process_generate_id(.data$methods, "")) %>%
-    dplyr::ungroup() %>%
-    dplyr::select(dplyr::all_of(c("trait_name", "methods", "method_id")))
+    process_generate_method_ids()
 
   # Ensure correct order of columns in traits table
   # At this point, need to retain `taxonomic_resolution`, because taxa table & taxonomic_updates not yet assembled.
@@ -452,6 +443,23 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
   id <- make_id_segment(length(d), prefix)
 
   id[match(x, d)]
+}
+
+#' Function to generate sequence of integer ids for methods
+#' @param metadata_traits the traits section of the metadata
+#' @return Tibble with traits, methods, and method_id
+#' @importFrom rlang .data
+process_generate_method_ids <- function(metadata_traits) {
+  metadata_traits %>%
+    util_list_to_df2() %>%
+    dplyr::filter(!is.na(.data$trait_name)) %>%
+    dplyr::select(dplyr::all_of(c("trait_name", "methods"))) %>%
+    dplyr::distinct() %>%
+    # Group by traits to generate ids.
+    # This handles instances where multiple methods used for a single trait within a dataset
+    dplyr::group_by(.data$trait_name) %>%
+    dplyr::mutate(method_id = process_generate_id(.data$methods, "")) %>%
+    dplyr::ungroup()
 }
 
 
@@ -1332,16 +1340,9 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
     dplyr::full_join(by = "dataset_id",
       # Methods used to collect each trait
       metadata[["traits"]] %>%
-        util_list_to_df2() %>%
-        dplyr::filter(!is.na(.data$trait_name)) %>%
+        process_generate_method_ids() %>%
         dplyr::mutate(dataset_id = dataset_id) %>%
-        dplyr::select(dplyr::all_of(c("dataset_id", "trait_name", "methods"))) %>%
-        dplyr::distinct() %>%
-        # Group by traits to generate ids. 
-        # This handles instances where multiple methods used for a single trait within a dataset
-        dplyr::group_by(.data$trait_name) %>%
-          dplyr::mutate(method_id = process_generate_id(.data$methods, "")) %>%
-        dplyr::ungroup()
+        dplyr::select("dataset_id", everything())
       ,
       # Methods for entire study
       metadata$dataset %>%
