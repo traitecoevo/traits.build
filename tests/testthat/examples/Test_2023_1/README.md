@@ -16,6 +16,7 @@ This dataset is for testing the following, for wide datasets:
 - Taxonomic updates for different taxonomic resolutions
 - `observation_id` refers to unique observations
 - Duplicate trait values
+- Test `method_id`
 
 Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - `entity_type`, `basis_of_value`, `value_type` and `replicates` were moved to dataset level fixed value in metadata.yml, except for `flowering_time`, `huber_value` (LASA1000) and `plant_growth_form` where they're specified at the trait level
@@ -28,6 +29,7 @@ Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - Changed a numeric column `wood_density` to character type with `custom_R_code`
 - Duplicated `flowering_time` value for Acacia celsa
 - Excluded observation 0.17 for `leaf_mass_per_area`
+- Add duplicate of LASA50 column to check `method_id`
 
 
 See output/
