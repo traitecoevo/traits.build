@@ -3,6 +3,8 @@
 
 This dataset is for testing the following, for long datasets:
 - Input of `basis_of_record`, `life_stage`, `entity_type`, `value_type`, `basis_of_value`, `measurement_remarks`, `collection_date` and `replicates` from a column versus at the trait and location level (or from a column at the trait level)
+- Units read in from a column
+- Replicates in character format
 - `source_id` column
 - Locations (latitude and longitude not missing)
 
@@ -16,4 +18,4 @@ Test_2023_4 is a copy of NHNSW_2023 with the following modifications:
 - Added `source_id` column (with NAs)
 - Added two made-up locations
 
-See output/
+See output/ for expected output files.

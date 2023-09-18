@@ -31,5 +31,3 @@ Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 
 
 See output/
-
-See `making_expected_output.r` for changes made to the expected output files.
