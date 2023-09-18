@@ -1,10 +1,10 @@
 dataset_id,context_property,category,value,description,link_id,link_vals
-Test_2023_4,trait scoring method,method,scored from text,Trait value scored directly from taxon description.,method_id,04
-Test_2023_4,trait scoring method,method,inferred_from_species,Trait value inferred from species-level taxon description.,method_id,03
-Test_2023_4,trait scoring method,method,inferred_from_genus,Trait value inferred from genus-level taxon description.,method_id,02
-Test_2023_4,trait scoring method,method,inferred_from_family,Trait value inferred from family-level taxon description.,method_id,01
-Test_2023_4,trait scoring method,method,inferred_from_trait,Trait value inferred from the value of a different trait.,,
-Test_2023_4,trait scoring method,method,inferred_from_taxonomy,Trait value inferred from a higher level taxon description.,,
+Test_2023_4,trait scoring method,method_context,scored from text,Trait value scored directly from taxon description.,method_context_id,04
+Test_2023_4,trait scoring method,method_context,inferred_from_species,Trait value inferred from species-level taxon description.,method_context_id,03
+Test_2023_4,trait scoring method,method_context,inferred_from_genus,Trait value inferred from genus-level taxon description.,method_context_id,02
+Test_2023_4,trait scoring method,method_context,inferred_from_family,Trait value inferred from family-level taxon description.,method_context_id,01
+Test_2023_4,trait scoring method,method_context,inferred_from_trait,Trait value inferred from the value of a different trait.,,
+Test_2023_4,trait scoring method,method_context,inferred_from_taxonomy,Trait value inferred from a higher level taxon description.,,
 Test_2023_4,entity measured,entity_context,unknown,,entity_context_id,02
 Test_2023_4,entity measured,entity_context,leaflet,,,
 Test_2023_4,entity measured,entity_context,pinnae,,,
