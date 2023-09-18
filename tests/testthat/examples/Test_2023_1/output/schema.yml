@@ -130,7 +130,7 @@ austraits:
           range for the study can be indicating, with the starting and ending sample
           date sepatated by a `/`, as in 2010-10/2011-03
         measurement_remarks: Brief comments or notes accompanying the trait measurement.
-        method_id: XXX
+        method_id: A unique integer identifier to distinguish between multiple sets of methods used to measure a single trait within the same dataset. The identifier links to specific information in the methods table.
         method_context_id: A unique integer identifier indicating a trait is measured
           multiple times on the same entity, with different methods used for each
           entry. This field is only used if a single trait is measured using multiple
@@ -195,7 +195,7 @@ austraits:
           source. Methods can include descriptions such as 'measured on botanical
           collections', 'data from the literature', or a detailed description of the
           field or lab methods used to collect the data.
-        method_id: XXX
+        method_id: A unique integer identifier to distinguish between multiple sets of methods used to measure a single trait within the same dataset. The identifier links to specific information in the methods table.
         description: A 1-2 sentence description of the purpose of the study.
         sampling_strategy: A written description of how study locations were selected
           and how study individuals were selected. When available, this information
@@ -297,7 +297,7 @@ austraits:
           range for the study can be indicating, with the starting and ending sample
           date sepatated by a `/`, as in 2010-10/2011-03
         measurement_remarks: Brief comments or notes accompanying the trait measurement.
-        method_id: XXX
+        method_id: A unique integer identifier to distinguish between multiple sets of methods used to measure a single trait within the same dataset. The identifier links to specific information in the methods table.
         method_context_id: A unique integer identifier indicating a trait is measured
           multiple times on the same entity, with different methods used for each
           entry. This field is only used if a single trait is measured using multiple

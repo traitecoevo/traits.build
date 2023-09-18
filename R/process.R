@@ -1247,8 +1247,8 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
              out[["value"]] == substitutions_table[["find"]][i])
 
       if (length(j) > 0) {
-                      out[["value"]][j] <- substitutions_table[["replace"]][i]
-   }
+        out[["value"]][j] <- substitutions_table[["replace"]][i]
+      }
     }
 
   }
@@ -1327,11 +1327,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
                           paste0(" (", contributors$additional_role, ")"),
                           ""))  %>% paste(collapse = ", ")
 
-## XXX Can't figure out how to make grouping flexible based on available columns `any_of` doesn't work with `group_by`
-## the group_by below should include value_type when available, but can't get that to work
-
-## XXX I also can't get group_by to work with any sort of vector of values - i.e. vars_to_group, hence this clunky solution
-
+  ## Create methods table, merging methods for dataset and trait
   methods <-
     dplyr::full_join(by = "dataset_id",
       # Methods used to collect each trait
@@ -1341,11 +1337,13 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
         dplyr::mutate(dataset_id = dataset_id) %>%
         dplyr::select(dplyr::all_of(c("dataset_id", "trait_name", "methods"))) %>%
         dplyr::distinct() %>%
+        # Group by traits to generate ids. 
+        # This handles instances where multiple methods used for a single trait within a dataset
         dplyr::group_by(.data$trait_name) %>%
           dplyr::mutate(method_id = process_generate_id(.data$methods, "")) %>%
         dplyr::ungroup()
       ,
-      # Study methods
+      # Methods for entire study
       metadata$dataset %>%
         util_list_to_df1() %>%
         tidyr::spread(.data$key, .data$value) %>%
