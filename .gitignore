@@ -7,5 +7,3 @@ temp
 *.rda
 .RData
 .Rhistory
-/tests/testthat/export/reports
-build_info.md
