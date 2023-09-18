@@ -6,7 +6,7 @@ editor: visual
 
 ## Welcome to traits.build
 
-traits.build is an R package that was first developed to build AusTraits, a harmonised, open-source database of Australian plant traits. The code has been transformed into a standalone package allowing anyone to build a tabular database for any taxonomic group and any collection of traits.
+traits.build is an R package that was first developed to build AusTraits, a harmonised, open-source database of Australian plant traits. The code has been transformed into a standalone package allowing anyone to build a relational, tabular database for any taxonomic group and any collection of traits.
 
 The project's guiding principles are to:
 
@@ -48,12 +48,14 @@ traits.build-template is a GitHub repository that contains:
     -   See how metadata is documented in fully propagated metadata files.
 
     -   Build a skeletal database before adding your own datasets.
-3.  Five datasets with explicit tutorials for filling in the dataset metadata files.
+3.  Datasets with explicit tutorials for filling in the dataset metadata files.
     -   The tutorials for these datasets introduce you to the traits.build functions.
 
-    -   By working through the five dataset tutorials, you are progressively introduced to how the complexities of ecological datasets can be documented within the traits.build structure
+    -   By working through the dataset tutorials, you are progressively introduced to how the complexities of ecological datasets can be documented within the traits.build structure
 
     -   The datasets offer explicit examples of the types of complexities summarised in the [Adding Data](https://github…) vignette.
+
+    -   As of September 2023 there are 3 tutorials, but this will expand to 6 tutorials by October 2023.
 
 ## Understand our database structure
 
@@ -61,7 +63,7 @@ traits.build can be viewed through two lenses, its output structure and its unde
 
 ### Output structure
 
-traits.build is a relational database. There is a core traits table, supported by ancillary tables that document location properties (include latitude & longitude), context properties, dataset and measurement methods, taxon concepts, contributor details, and sources. All tables are stored in long format, such that there is a single column that includes all trait names (or location properties, or context properties).
+traits.build is a relational database. There is a core traits table, supported by ancillary tables that document location properties (include latitude & longitude), context properties, dataset and measurement methods, taxon concepts, contributor details, and sources. All tables are stored in long format, such that there is a single column that includes all trait names (or location properties, or context properties) and column for trait values.
 
 A series of identifiers, including both textual fields (i.e. taxon_name, trait_name, dataset_id) and numeric identifiers link the ancillary tables to the traits table. The many numeric identifiers are overwhelming until you consider the conceptual framework, or mindmap, that underpins traits.build. They include: observation_id, population_id, individual_id, temporal_id, location_id, entity_context_id, plot_id, and source_id.
 
@@ -69,8 +71,22 @@ Storing the resource as a relational table greatly reduces file sizes and facili
 
 ### Conceptual framework
 
-traits.build's database structure effectively captures the complexities inherent to ecological data. Each dataset is unique, with measurements recorded on different entities (individuals, populations, species), in specific locations, and under countless environmental and experimental conditions, the so-called context of a measurement. The context offers essential meaning to each trait value. An ecological database must effectively capture all relevent contexts or the accompany trait measurements lose much of their value.
+traits.build's database structure effectively captures the complexities inherent to ecological data. Each dataset is unique, with measurements recorded on different entities (individuals, populations, species), in specific locations, and under countless environmental and experimental conditions, the so-called context of a measurement. The context offers essential meaning to each trait value. An ecological database must effectively capture all relevant contexts or the accompanying trait measurements lose much of their value.
 
-The multitude of identifiers traits.build is designed around the concept of an **observation**, a collection of measurements made at a specific point in time on a specific **entity**. OBOE, the Extensible Observation Ontology, first developed this conceptual framework, explicitly for complex ecological datasets. An **observation_id** links the trait measurements that comprise a single observation. Measurements made at different points in time, on different entities, at different locations, or under different contextual conditions require unique **observation_id** values. The additional identifiers in the traits table (and the ancillary tables) were developed to ensure that unique observation_ids were generated for distinct observations, per this framework. Within a dataset, observation_id's are generated for unique combinations of the fields: XXX. For instance, if repeat measurements are made on an individual across time, the two observations will share an **individual_id** but have distinct **temporal_id** values. A full description of the unique importance of each identifier is available XXX.
+traits.build is designed around the concept of an **observation**, a collection of measurements of different traits made at a specific point in time on a specific **entity**. OBOE, the Extensible Observation Ontology, first developed this conceptual framework, explicitly for complex ecological datasets. An **observation_id** links the measurements made on different traits that comprise a single observation. Measurements made at different points in time, on different entities, at different locations, or under different contextual conditions require unique **observation_id** values. The additional identifiers in the traits table (and the ancillary tables) were developed to ensure that unique observation_ids were generated for distinct observations, per this framework.
 
-## Read the traits.build vignettes
+Within a dataset, observation_id's are generated for unique combinations of the fields: **taxon_name**, **population_id**, **individual_id**, **temporal_id**, **entity_type**, and **source_id**. For instance, if measurements are made on the same individual during the wet versus dry season, the two observations will share an **individual_id** but have distinct **temporal_id** values, and therefore have distinct **observation_id**'s. See [traits.build schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for definitions of identifiers
+
+## Getting started
+
+Once you have cloned the repository and installed the package, the next step is to build the simplistic sample database:
+``` {r eval=FALSE}
+build_setup_pipeline()
+traits.build_database <- remake::make("austraits")
+```
+
+As described in [Structure of AusTraits data compilation](http://traitecoevo.github.io/austraits.build/articles/austraits_database_structure.html) the database is comprised of a series of relational tables and additional lists with metadata.
+
+Once you've explored and feel familiar with the basic structure of a traits.build database, continue onto the tutorials to learn how to add datasets using the traits.build workflow.
+
+
