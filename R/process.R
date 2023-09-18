@@ -1022,10 +1022,6 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
   # Look up ideal units, determine whether to convert
   data <- data %>%
     dplyr::mutate(
-      split_values = ifelse(.data$value_type %in% c("bin", "range"), stringr::str_split(.data$value, "\\-\\-"), NA),
-    ) %>%
-    tidyr::unnest_wider("split_values", names_sep = "_") %>%
-    dplyr::mutate(
       i = match(.data$trait_name, names(definitions)),
       to = util_extract_list_element(.data$i, definitions, "units"),
       ucn = process_unit_conversion_name(.data$unit, .data$to),
@@ -1041,42 +1037,34 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
       error = ifelse(j, "Missing unit conversion", .data$error),
       to_convert = ifelse(j, FALSE, .data$to_convert))
 
-  f <- function(value, name) {
+  f_standard <- function(value, name) {
     as.character(unit_conversion_functions[[name]](as.numeric(value)))
   }
 
-  # for datasets without bins or ranges, need to create variables
-  if (!"bin" %in% unique(data$value_type) && !"range" %in% unique(data$value_type)) {
-    data <- data %>%
-      mutate(
-        split_values_1 = NA,
-        split_values_2 = NA
-      )
+  f_range_bin <- function(value, name) {
+    
+    stringr::str_split(value, "\\-\\-") %>%       # split into parts
+    purrr::map(f_standard, name) %>%                       # apply unit conversions to each
+    purrr::map_chr(~paste(.x, collapse = "--"))   # paste back together
   }
 
   # Split by unique unit conversions, to allow for as few calls as possible
   data <- data %>%
     dplyr::group_by(.data$ucn, .data$to_convert) %>%
     dplyr::mutate(
+      # standard conversion
       value = ifelse(.data$to_convert == TRUE &                     # value requires conversion
-                       !.data$value_type %in% c("bin", "range") &   # value_type not a bin or range; those are converted below (split_values_1; split_values_2)
-                       !is.na(.data$value),                         # value not NA - the full matrix from data.csv file is still in data table
-                     f(.data$value, .data$ucn[1]),                  # convert value to appropriate units
+                      !.data$value_type %in% c("bin", "range") &    # value_type not a bin or range; those are converted below
+                      !is.na(.data$value),                          # value not NA - the full matrix from data.csv file is still in data table
+                      f_standard(.data$value, .data$ucn[1]),        # convert value to appropriate units
                      .data$value),                                  # if conditions not met, keep original value
-      split_values_1 = ifelse(.data$to_convert == TRUE  &
-                                .data$value_type %in% c("bin", "range") &
-                                !is.na(.data$split_values_1),
-                              f(.data$split_values_1, .data$ucn[1]),
-                              .data$split_values_1),
-      split_values_2 = ifelse(.data$to_convert == TRUE &
-                                .data$value_type %in% c("bin", "range") &
-                                !is.na(.data$split_values_2),
-                              f(.data$split_values_2, .data$ucn[1]),
-                              .data$split_values_2),
-      unit = ifelse(.data$to_convert, .data$to, .data$unit),
-      value = ifelse(!is.na(.data$split_values_1) & !is.na(.data$split_values_2), paste0(.data$split_values_1, "--", .data$split_values_2), .data$value),
-      value = ifelse(!is.na(.data$split_values_1) & is.na(.data$split_values_2), paste0(.data$split_values_1, "--"), .data$value),
-      value = ifelse(is.na(.data$split_values_1) & !is.na(.data$split_values_2), paste0("--", .data$split_values_2), .data$value)
+      # value is a range of bin
+      value = ifelse(.data$to_convert == TRUE  &                    # value requires conversion
+                      .data$value_type %in% c("bin", "range") &     # value_type is a bin or range
+                      !is.na(.data$value),                          # value not NA - the full matrix from data.csv file is still in data table
+                      f_range_bin(.data$value, .data$ucn[1]),       # convert value to appropriate units
+                     .data$value),                                  # if conditions not met, keep original value
+      unit = ifelse(.data$to_convert, .data$to, .data$unit)
     ) %>%
     dplyr::ungroup() %>%
     dplyr::select(dplyr::any_of(vars))
