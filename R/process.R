@@ -324,7 +324,15 @@ process_custom_code <- function(txt) {
       stringr::str_replace_all("\\s+", " ")
     # test: txt <-" '' \n Total of 23.5 bitcoins. "
 
-    function(data) {eval(parse(text = txt2), envir = new.env())}
+    function(data) {
+      envir = new.env()
+
+      # read in extra functions used in custom R code
+      if(file.exists("R/custom_R_code.R")) {
+        source("R/custom_R_code.R", local = envir)
+      }
+
+      eval(parse(text = txt2), envir = envir)}
   } else {
     identity
   }
