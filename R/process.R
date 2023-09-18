@@ -96,7 +96,7 @@ dataset_process <- function(filename_data_raw,
   # Load and clean trait data
   traits <-
     traits %>%
-    process_parse_data(dataset_id, metadata, contexts)
+    process_parse_data(dataset_id, metadata, contexts, schema)
 
   # Context ids needed to continue processing
   context_ids <- traits$context_ids
@@ -109,7 +109,7 @@ dataset_process <- function(filename_data_raw,
     traits$traits %>%
     process_add_all_columns(
       c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
-        "parsing_id", "location_name", "taxonomic_resolution", "unit_in")
+        "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
     )
 
   traits <- traits %>%
@@ -196,16 +196,32 @@ dataset_process <- function(filename_data_raw,
     dplyr::distinct() %>%
     dplyr::arrange(.data$cleaned_name)
 
+
+  ## A temporary dataframe created to generate and bind method_id,
+  ## for instances where the same trait is measured twice using different methods
+
+  # Test ABRS_2023
+
+  tmp_bind <-
+    metadata[["traits"]] %>%
+    process_generate_method_ids()
+
   # Ensure correct order of columns in traits table
   # At this point, need to retain `taxonomic_resolution`, because taxa table & taxonomic_updates not yet assembled.
+
   traits <-
     traits %>%
+    dplyr::select(-method_id) %>% # Need to remove blank column to bind in real one; blank exists because `method_id` in schema
+    dplyr::left_join(
+      by = c("trait_name", "methods"),
+      tmp_bind
+    ) %>%
     dplyr::select(
       dplyr::all_of(c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
       "error", "taxonomic_resolution", "unit_in"))
     )
 
-  # Remove missing values is specified
+    # Remove missing values is specified
   if (filter_missing_values == TRUE) {
     traits <-
       traits %>% dplyr::filter(!(!is.na(.data$error) & (.data$error == "Missing value")))
@@ -302,11 +318,11 @@ process_create_observation_id <- function(data) {
         (!is.na(.data$location_name) |
          !is.na(.data$treatment_id) |
          !is.na(.data$plot_id)) &
-         .data$entity_type %in% c("individual", "population"),
+         .data$entity_type %in% c("individual", "population", "metapopulation"),
          process_generate_id(.data$population_id, "", sort = TRUE),
          NA),
       pop_id_segment = ifelse(is.na(.data$pop_id_segment) &
-                              .data$entity_type %in% c("individual", "population"),
+                              .data$entity_type %in% c("individual", "population", "metapopulation"),
                               "pop_unk", .data$pop_id_segment),
       population_id = .data$pop_id_segment
     )
@@ -387,7 +403,7 @@ process_create_observation_id <- function(data) {
     dplyr::group_by(.data$dataset_id) %>%
     dplyr::mutate(
       observation_id =
-        paste(.data$taxon_name, .data$population_id, .data$individual_id, .data$temporal_id, .data$entity_type, sep = "-") %>%
+        paste(.data$taxon_name, .data$population_id, .data$individual_id, .data$temporal_id, .data$entity_type, .data$life_stage, sep = "-") %>%
         process_generate_id("", sort = TRUE)
     ) %>%
     dplyr::ungroup()
@@ -397,11 +413,13 @@ process_create_observation_id <- function(data) {
 }
 
 #' Function to generate sequence of integer ids from vector of names
-#' Determines number of 00s needed based on number of records.
-#' @param x Vector of text to convert
-#' @param prefix Text to put before id integer
-#' @param sort Logical to indicate whether x should be sorted before ids are generated
-#' @return Vector of ids
+
+#' Determines number of 00s needed based on number of records
+#' @param x vector of text to convert
+#' @param prefix text to put before id integer
+#' @param sort logical to indicate whether x should be sorted before ids are generated
+#' @return vector of ids
+
 process_generate_id <- function(x, prefix, sort = FALSE) {
 
   make_id_segment <- function(n, prefix) {
@@ -417,6 +435,23 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
   id <- make_id_segment(length(d), prefix)
 
   id[match(x, d)]
+}
+
+#' Function to generate sequence of integer ids for methods
+#' @param metadata_traits the traits section of the metadata
+#' @return Tibble with traits, methods, and method_id
+#' @importFrom rlang .data
+process_generate_method_ids <- function(metadata_traits) {
+  metadata_traits %>%
+    util_list_to_df2() %>%
+    dplyr::filter(!is.na(.data$trait_name)) %>%
+    dplyr::select(dplyr::all_of(c("trait_name", "methods"))) %>%
+    dplyr::distinct() %>%
+    # Group by traits to generate ids.
+    # This handles instances where multiple methods used for a single trait within a dataset
+    dplyr::group_by(.data$trait_name) %>%
+    dplyr::mutate(method_id = process_generate_id(.data$methods, "")) %>%
+    dplyr::ungroup()
 }
 
 
@@ -532,7 +567,7 @@ process_create_context_ids <- function(data, contexts) {
     dplyr::select(dplyr::all_of(c("context_property", "category", "value"))) %>%
     dplyr::distinct()
 
-  categories <- c("plot", "treatment", "entity_context", "temporal", "method") %>% subset(., . %in% tmp$category)
+  categories <- c("plot", "treatment", "entity_context", "temporal", "method_context") %>% subset(., . %in% tmp$category)
 
   ids <- dplyr::tibble(.rows = nrow(context_cols))
 
@@ -622,7 +657,12 @@ process_format_locations <- function(my_list, dataset_id, schema) {
 
   # Default, if length 1 then it's an "na"
   if (length(unlist(my_list)) == 1) {
-    return(tibble::tibble(dataset_id = character()))
+    empty_locations <- tibble::tibble() %>%
+      process_add_all_columns(
+        names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]),
+        add_error_column = FALSE
+      )
+    return(empty_locations)
   }
 
   out <-
@@ -635,7 +675,7 @@ process_format_locations <- function(my_list, dataset_id, schema) {
       names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]),
       add_error_column = FALSE
     ) %>%
-    dplyr::group_by(dataset_id) %>%
+    dplyr::group_by(.data$dataset_id) %>%
     dplyr::mutate(
       location_id = process_generate_id(.data$location_name, "", sort = TRUE)
     ) %>%
@@ -1087,7 +1127,7 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' substitutions and unique observation id added
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
 #' @importFrom rlang .data
-process_parse_data <- function(data, dataset_id, metadata, contexts) {
+process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
   # Get config data for dataset
   data_is_long_format <- metadata[["dataset"]][["data_is_long_format"]]
@@ -1096,18 +1136,18 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
   var_in <- unlist(metadata[["dataset"]])
   i <- var_in %in% names(data)
 
+  v <- setNames(nm = c("entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_context_id"))
+
   df <- data %>%
         # Next step selects and renames columns based on named vector
-        dplyr::select(
-          any_of(c(var_in[i], "entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_id", contexts$var_in))
-        ) %>%
+        dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in))) %>%
         dplyr::mutate(dataset_id = dataset_id)
 
   # Step 1b. Import any values that aren't columns of data
   vars <- c("entity_type", "value_type", "basis_of_value",
             "replicates", "collection_date", "unit_in",
             "basis_of_record", "life_stage",
-            "measurement_remarks", "source_id")
+            "measurement_remarks", "source_id", "methods")
 
   df <-
     df %>%
@@ -1203,7 +1243,12 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
 
   vars_traits <- c(vars, contexts$var_in)
 
+  not_allowed <- c(
+    schema[["entity_type"]][["values"]] %>% names(),
+    schema[["value_type"]][["values"]] %>% names()
+  )
   ## If needed, change from wide to long format
+
   if (!data_is_long_format) {
 
     # If the dataset is `wide` then process each variable in turn, to create the `long` dataset -
@@ -1231,7 +1276,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
         # Question: Why can't `entity_type`, `basis_of_value` come in as column of data?
 
         if (!is.na(value)) {
-          if (!is.null(data[[value]]) && !(v %in% c("entity_type", "basis_of_value"))) {
+          if (!is.null(data[[value]]) & !(value %in% not_allowed)) {
             out[[i]][[v]] <- data[[value]] %>% as.character()
           } else {
             out[[i]][[v]] <- value %>% as.character()
@@ -1284,7 +1329,6 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
       )
 
 # XXXX Why doesn't this work? process_add_all_columns(names(schema[["austraits"]][["elements"]][["contexts"]][["elements"]]))
-
   } else {
     context_ids <- process_create_context_ids(out, contexts)
 
@@ -1312,11 +1356,13 @@ process_parse_data <- function(data, dataset_id, metadata, contexts) {
 
     for (i in seq_len(nrow(substitutions_table))) {
       j <- which(out[["trait_name"]] == substitutions_table[["trait_name"]][i] &
-                  out[["value"]] == substitutions_table[["find"]][i])
+             out[["value"]] == substitutions_table[["find"]][i])
+
       if (length(j) > 0) {
         out[["value"]][j] <- substitutions_table[["replace"]][i]
       }
     }
+
   }
 
   list(
@@ -1393,15 +1439,16 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
                           paste0(" (", contributors$additional_role, ")"),
                           ""))  %>% paste(collapse = ", ")
 
+  ## Create methods table, merging methods for dataset and trait
   methods <-
     dplyr::full_join(by = "dataset_id",
       # Methods used to collect each trait
       metadata[["traits"]] %>%
-        util_list_to_df2() %>%
-        dplyr::filter(!is.na(.data$trait_name)) %>%
+        process_generate_method_ids() %>%
         dplyr::mutate(dataset_id = dataset_id) %>%
-        dplyr::select(dplyr::all_of(c("dataset_id", "trait_name", "methods"))),
-      # Study methods
+        dplyr::select("dataset_id", everything())
+      ,
+      # Methods for entire study
       metadata$dataset %>%
         util_list_to_df1() %>%
         tidyr::spread(.data$key, .data$value) %>%
@@ -1411,7 +1458,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
                                          "trait_name", "population_id", "individual_id",
                                          "location_name", "source_id", "value", "entity_type",
                                          "collection_date", "custom_R_code", "replicates", "measurement_remarks",
-                                         "taxon_name", "basis_of_value", "basis_of_record", "life_stage", "unit_in")))
+                                         "taxon_name", "basis_of_value", "basis_of_record", "life_stage", "value_type", "unit_in")))
       )  %>%
       full_join(by = "dataset_id",
       # References

@@ -16,6 +16,7 @@ This dataset is for testing the following, for wide datasets:
 - Taxonomic updates for different taxonomic resolutions
 - `observation_id` refers to unique observations
 - Duplicate trait values
+- Test `method_id`
 
 Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - `entity_type`, `basis_of_value`, `value_type` and `replicates` were moved to dataset level fixed value in metadata.yml, except for `flowering_time`, `huber_value` (LASA1000) and `plant_growth_form` where they're specified at the trait level
@@ -30,5 +31,6 @@ Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - Excluded observation 0.17 for `leaf_mass_per_area`
 - Added `seed_dry_mass` to check bin conversions, with `seed_dry_mass_units` as the column to read in units from
 - Added a column `leaf_length` with accompanying `leaf_length_units` to test unit conversions read in from a column
+- Add duplicate of LASA50 column to check `method_id`
 
 See output/ for expected output files.

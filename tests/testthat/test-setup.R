@@ -544,12 +544,20 @@ testthat::test_that("`metadata_add_taxonomic_changes_list` is working", {
     taxonomic_resolution = c("species", "variety", "subspecies")
   )
   expect_silent(metadata_add_taxonomic_changes_list("Test_2022", taxonomic_changes))
-  expect_message(
-    metadata_add_taxonomic_changes_list("Test_2022", taxonomic_changes),
-    "Existing taxonomic updates have been overwritten"
+  extra_taxonomic_changes <- tibble::tibble(
+    find = c("species 1", "species 2", "species 4"),
+    replace = c("replaced species 1", "replaced species 2", "new 4"),
+    reason = c("taxonomy change", "another taxonomy change", "test reason 4"),
+    taxonomic_resolution = c("form", "species", "variety")
   )
-  # Expect that this function overwrites existing substitutions, so fourth substitutions should not exist
-  expect_error(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[4]])
+  expect_message(
+    metadata_add_taxonomic_changes_list("Test_2022", extra_taxonomic_changes),
+    ".*(?=already exist)", perl = TRUE
+  )
+  # Expect that this function appends to existing substitutions, so fourth substitutions should exist
+  expect_no_error(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[4]])
+  # but fifth substitution should not, because two of the substitutions already exist
+  expect_error(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[5]])
 })
 
 testthat::test_that("`metadata_find_taxonomic_change` is working", {
