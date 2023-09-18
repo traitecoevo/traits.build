@@ -68,6 +68,7 @@ dataset_configure <- function(
 #' @param filename_data_raw Raw `data.csv` file for any given study
 #' @param config_for_dataset Config settings generated from `dataset_configure()`
 #' @param schema Schema for traits.build
+#' @param resource_metadata metadata for the compilation
 #' @param filter_missing_values Default filters missing values from the excluded data table;
 #' change to false to see the rows with missing values.
 #'
@@ -82,7 +83,8 @@ dataset_configure <- function(
 #' \dontrun{
 #' dataset_process("data/Falster_2003/data.csv", dataset_configure("data/Falster_2003/metadata.yml",
 #' read_yaml("config/traits.yml"), get_unit_conversions("config/unit_conversions.csv")),
-#' get_schema())
+#' get_schema(),
+#' get_schema("config/metadata.yml", "metadata"))
 #' }
 dataset_process <- function(filename_data_raw,
                             config_for_dataset,
@@ -258,6 +260,49 @@ dataset_process <- function(filename_data_raw,
   )
 }
 
+#' Build Dataset
+#'
+#' Build specified dataset. This function completes three steps, which can be excuted speerately if desired: `dataset_configure`, `dataset_process`, `build_update_taxonomy`
+#'
+#' @param filename_metadata Metadata yaml file for a given study
+#' @param filename_data_raw Raw `data.csv` file for any given study
+#' @param definitions Definitions read in from the `traits.yml`
+#' @param unit_conversion_functions `unit_conversion.csv` file read in from the config folder
+#' @param schema Schema for traits.build
+#' @param resource_metadata metadata for the compilation
+#' @param taxon_list Taxon list
+#' @param filter_missing_values Default filters missing values from the excluded data table;
+#' change to false to see the rows with missing values.
+#' @return List, AusTraits database object
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' dataset_build(
+#'   "data/Falster_2003/data.csv",
+#'   "data/Falster_2003/metadata.yml",
+#'   read_yaml("config/traits.yml"),
+#'    get_unit_conversions("config/unit_conversions.csv"),
+#'    get_schema(),
+#'    get_schema("config/metadata.yml", "metadata"),
+#'    read_csv_char("config/taxon_list.csv")
+#' )
+#' }
+dataset_build <- function(
+    filename_metadata,
+    filename_data_raw,
+    definitions,
+    unit_conversion_functions,
+    schema,
+    resource_metadata,
+    taxon_list,
+    filter_missing_values = TRUE) {
+  dataset_config <- dataset_configure(filename_metadata, definitions, unit_conversions)
+  dataset_raw <- dataset_process(filename_data_raw, dataset_config, schema, resource_metadata, filter_missing_values = filter_missing_values)
+  dataset <- build_update_taxonomy(dataset_raw, taxon_list)
+
+  dataset
+}
 
 #' Apply custom data manipulations
 #'
