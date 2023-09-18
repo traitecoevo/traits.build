@@ -1,5 +1,5 @@
 ---
-title: 'Instructions for adding dataset: test_dataset_1'
+title: 'Tutorial for adding dataset: test_dataset_1'
 author: "Elizabeth Wenk, Sophie Yang"
 date: "2023-09-16"
 format: 
@@ -16,9 +16,9 @@ Before you begin this tutorial, ensure you have installed traits.build, cloned t
 
 ### Goals
 
--   Learn how to build a metadata.yml file for a dataset.
+-   Learn how to [build a metadata.yml file](#build_metadata) for a dataset.
 
--   Learn how to merge a new dataset into a traits.build database.
+-   Learn how to [merge a new dataset](#build_pipline) into a traits.build database.
 
 ### New Functions Introduced
 
@@ -56,7 +56,7 @@ In the traits.build-template repository, there is a folder titled `test_dataset_
 library(traits.build)
 ```
 
-### Use functions to create a metadata.yml file
+### Use functions to create a metadata.yml file {#build_metadata}
 
 #### **Create a metadata template**
 
@@ -325,7 +325,7 @@ These are all fields that contain the word `unknown`.
 #### **Adding contributors**
 
 | Contributor field     | Information to add                                                                                                         |
-|---------------------|---------------------------------------------------|
+|----------------------|--------------------------------------------------|
 | last_name, first_name | The contributors first and last names should be available from the source                                                  |
 | ORCID                 | Contributors are identified by their ORCID, available for most active researches at [orcid.org](https://orcid.org/)        |
 | affiliation           | Available from the source or the orcid.org website. Use the same syntax for the same affiliation throughout your database. |
@@ -344,7 +344,7 @@ These are all fields that contain the word `unknown`.
 -   In general, the information to fill in these fields should be available from the source (article) or obtained directly from the dataset contributor.\
 
 | Dataset field    | Information to add                                                                                                                            |
-|--------------------|----------------------------------------------------|
+|---------------------|---------------------------------------------------|
 | basis_of_record  | See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms. |
 | life_stage       | See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms. |
 | description      | A 1-2 sentence summary of the dataset. This can generally be formulated by information in the abstract.                                       |
@@ -387,7 +387,7 @@ If the units being read in for a specific trait differ from those defined for th
 ##### **entity_type, value_type, basis_of_value, replicates, methods**
 
 | field          | value for this dataset                                                                                                                          | description                                                                                                                                                                                                              |
-|-----------------|-------------------|--------------------------------------|
+|------------------|------------------|------------------------------------|
 | entity_type    | population                                                                                                                                      | The entity corresponding to the trait value. Uses a controlled vocabulary. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms. |
 | value_type     | mean                                                                                                                                            | The statistical nature of the trait value. Uses a controlled vocabulary. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms.   |
 | basis_of_value | measurement                                                                                                                                     | How the trait value was obtained. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms.                                          |
@@ -418,7 +418,7 @@ This *should* result in the following output:
 
 [\[ FAIL 0 \| WARN 0 \| SKIP 0 \| PASS 79 \]]{style="color:blue;"}\
 
-##### **add dataset to the database**
+##### **add dataset to the database** {#build_pipline}
 
 Next add the dataset_id to the remake file that builds the database and remake the database
 

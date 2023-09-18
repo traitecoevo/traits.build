@@ -1,5 +1,5 @@
 ---
-title: 'Instructions for adding dataset: test_dataset_2'
+title: 'Tutorial for adding dataset: test_dataset_2'
 author: "Elizabeth Wenk, Sophie Yang"
 date: "2023-09-16"
 format: 
@@ -199,7 +199,7 @@ The file `data/test_dataset_2/raw/test_dataset_2_notes.txt` indicates how to fil
 The file `data/test_dataset_2/raw/test_dataset_2_notes.txt` indicates how to fill in the `unknown` trait fields for this study, but see below as well.
 
 | column in dataset                                                                                 | trait concept      | units_in | entity_type | value_type | basis_of_value | replicates |
-|------------------------------------|---------------|---------|-----------|-----------|---------------|------------|
+|---------------|----------|----------|----------|----------|----------|----------|
 | TRAIT Growth Form CATEGORICAL EP epiphyte (mistletoe) F fern G grass H herb S shrub T tree V vine | plant_growth_form  | .na      | species     | mode       | expert_score   | .na        |
 | TRAIT SLA UNITS mm2/g                                                                             | leaf_mass_per_area | mm2/g    | population  | mean       | measurement    | 5          |
 | TRAIT Leaf Size UNITS mm2                                                                         | leaf_area          | mm2      | population  | mean       | measurement    | 5          |

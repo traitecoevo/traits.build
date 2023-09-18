@@ -16,7 +16,11 @@ Before you begin this tutorial, ensure you have installed traits.build, cloned t
 
 ### Goals
 
--   Learn how to [add contexts](#contexts).
+-   Learn how to [add contexts](#contexts). 
+
+-   Learn some complexities with respect to [units](#complex_units). 
+
+-   Learn additional [custom_R_code tricks](#custom_R_code). 
 
 ### New Functions Introduced
 
@@ -228,6 +232,7 @@ contexts:
 In addition to filling in the preferred context property values and descriptions, you must also assign a name to the `context_property`. This is a free-form field, but as with `location_property` it is best to ensure you align `context_propery` names throughout the database. In the AusTraits plant trait database, this `context_property` is always called `drought treatment`.
 
 The finished context section will be:
+
 ```{r eval= FALSE}
 contexts:
 - context_property: drought treatment
@@ -276,20 +281,20 @@ The file `data/test_dataset_3/raw/test_dataset_3_notes.txt` indicates the main d
 
 The file `data/test_dataset_3/raw/test_dataset_3_notes.txt` indicates how to fill in the `unknown` dataset fields for this study.
 
-#### **Trait details**
+#### **Trait details** {#complex_units}
 
 The file `data/test_dataset_3/raw/test_dataset_3_notes.txt` indicates how to fill in the `unknown` trait fields for this study, but see below as well.
 
 Remember, the `trait_name` must match a trait concept within the [traits dictionary](https://github.com/traitecoevo/traits.build-template/blob/master/config/traits.yml). For this example:
 
-| column in dataset              | trait concept                 | units_in    | entity_type | value_type | basis_of_value | replicates |
-|-------------------------|----------------------|-----------------|------------|--------------|-------------|-----------|
-| life_form                      | life_form                     | .na         | species     | mode       | expert_score   | .na        |
-| WP leaf (Mpa) predawn          | water_potential_predawn       | neg_MPa     | individual  | raw        | measurement    | 1          |
-| WP leaf (Mpa) midday           | water_potential_midday        | neg_MPa     | individual  | raw        | measurement    | 1          |
-| LMA kg/m2                      | leaf_mass_per_area            | kg/m2       | individual  | raw        | measurement    | 1          |
-| Stomatal density Upper surface | leaf_stomatal_density_adaxial | {count}/mm2 | individual  | raw        | measurement    | 1          |
-| Stomatal density Lower surface | leaf_stomatal_density_abaxial | {count}/mm2 | individual  | raw        | measurement    | 1          |
+| column in dataset              | trait concept                 | units_in      | entity_type | value_type | basis_of_value | replicates |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| life_form                      | life_form                     | .na           | species     | mode       | expert_score   | .na        |
+| WP leaf (Mpa) predawn          | water_potential_predawn       | neg_MPa       | individual  | raw        | measurement    | 1          |
+| WP leaf (Mpa) midday           | water_potential_midday        | neg_MPa       | individual  | raw        | measurement    | 1          |
+| LMA kg/m2                      | leaf_mass_per_area            | kg/m2         | individual  | raw        | measurement    | 1          |
+| Stomatal density Upper surface | leaf_stomatal_density_adaxial | '{count}/mm2' | individual  | raw        | measurement    | 1          |
+| Stomatal density Lower surface | leaf_stomatal_density_abaxial | '{count}/mm2' | individual  | raw        | measurement    | 1          |
 
 With the units, note:
 
@@ -297,4 +302,55 @@ With the units, note:
 
 -   stomatal density is a "count density", a number of stomata per unit area. The actual UCUM standard for this is simply `1/mm2` , but for clarity we use `{count}/mm2` . The word `count` is in curly brackets, since it is a "note" rather than a true unit.
 
-#### **Context details**
+-   If the unit begin with a curly bracket, the unit needs to be placed in single quotes
+
+### Testing, error fixes, and report building {#custom_R_code}
+
+At this point, run the dataset tests and rebuild the dataset:
+
+```{r eval=FALSE}
+dataset_test("test_dataset_3")
+
+build_setup_pipeline()
+
+traits.build_database <- remake::make("austraits")
+```
+
+The dataset test should yield an error that one `water_potential_predawn` value does not convert to numeric, indicating a placeholder-character is being used in place of an NA [{note: this error wasn't triggering as this vignette was being written)]{style="color:red;"}
+
+Looking at the excluded_data table indicates there is a "*" in one column, so one adds:
+```{r eval=FALSE}
+  custom_R_code: '
+    data %>%
+      mutate(      
+        across(c("WP leaf (Mpa) predawn"), ~na_if(.x,"*"))
+      )
+  '
+```
+
+However, now you'll get the error:
+[Caused by error in na_if(): ! Can't convert y <character> to match type of x <double>.]{style="color:blue;"}
+
+This indicates a mismatch between column types, necessitating that you change the column to character:
+
+``` {r eval=FALSE}
+  custom_R_code: '
+    data %>%
+      mutate(
+        across(c("WP leaf (Mpa) predawn"), ~as.character(.x)), 
+        across(c("WP leaf (Mpa) predawn"), ~na_if(.x,"*"))
+      )
+  '
+```
+
+At this point, rerunning the tests and rebuilding the database should not generate any errors or excluded values, so you can build and review the report.
+
+As a final step, build a report for the study
+
+```{r eval=FALSE}
+traits.build_database$build_info$version <- "4.0.0"  # a fix because the function was built around specific AusTraits versions
+dataset_report("test_dataset_2", traits.build_database, overwrite = TRUE)
+```
+
+
+
