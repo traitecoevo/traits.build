@@ -1169,10 +1169,12 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
   pipieline <- whisker::whisker.render(template, vals)
 
   if (method == "base") {
-    writeLines(pipieline, "build.R")    
+    writeLines(pipieline, "build.R")
+    message(green("\t-> build using file `build.R`"))
   }
   if (method == "remake") {
     writeLines(pipieline, "remake.yml")
+    message(green("\t-> build using file `remake.yml`"))
   }
 
   # Check file R/custom_R_code.R exists
