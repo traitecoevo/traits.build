@@ -11,7 +11,7 @@ This dataset is for testing the following, for wide datasets:
 - `trait_name` is NA (don't think this needs a test)
 - Types of trait data -- numeric (entered as either true numeric type or character type), categorical, time (e.g. `flowering_time`)
 - Excluded values (automatic and manual), such as out of allowable range, invalid categorical values, invalid time values, and that excluded values table are filled in with correct error types
-- Substitutions work for categorical, numeric (e.g. ranges) and time traits, with NA find or replace values
+- Substitutions work for categorical and time traits, with NA replace values
 - Combinations of multiple categorical values per row, including if there are duplicate trait values within
 - Taxonomic updates for different taxonomic resolutions
 - `observation_id` refers to unique observations
@@ -31,6 +31,7 @@ Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - Excluded observation 0.17 for `leaf_mass_per_area`
 - Added `seed_dry_mass` to check bin conversions, with `seed_dry_mass_units` as the column to read in units from
 - Added a column `leaf_length` with accompanying `leaf_length_units` to test unit conversions read in from a column
-- Add duplicate of LASA50 column to check `method_id`
+- Added duplicate of LASA50 column to check `method_id`
+- Added a substitution for `plant_growth_form` and `flowering_time`
 
 See output/ for expected output files.
