@@ -83,11 +83,6 @@ dataset_process <- function(filename_data_raw,
   metadata <- config_for_dataset$metadata
   definitions <- config_for_dataset$definitions
 
-  # Load and process contextual data
-  contexts <-
-    metadata$contexts %>%
-    process_format_contexts(dataset_id)
-
   # Load and clean trait data
   traits <-
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
@@ -226,7 +221,8 @@ dataset_process <- function(filename_data_raw,
        contexts   = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
        methods    = methods,
        excluded_data = traits %>% dplyr::filter(!is.na(.data$error)) %>%
-              dplyr::select(dplyr::all_of(c("error")), everything()),
+              dplyr::select(dplyr::all_of(c("error")), everything()) %>%
+              dplyr::select(-dplyr::all_of(c("unit_in"))),
        taxonomic_updates = taxonomic_updates,
        taxa       = taxonomic_updates %>% dplyr::select(dplyr::all_of(c(taxon_name = "cleaned_name"))) %>% dplyr::distinct(),
        contributors = contributors,
@@ -441,7 +437,7 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
 process_format_contexts <- function(my_list, dataset_id, traits) {
 
   process_content_worker <- function(x, id, traits) {
-    
+
     vars <- c(
       "dataset_id", "context_property", "category", "var_in",
       "find", "value", "description"
