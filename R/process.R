@@ -907,9 +907,9 @@ process_flag_unsupported_values <- function(data, definitions) {
       ii <- data[["trait_name"]] == trait
 
       # Only Y,N
-      i <-  ii & is.na(data[["error"]]) & grepl("[YN]+", data[["value"]])
+      i <-  ii & is.na(data[["error"]]) & !grepl("^[YyNn]+$", data[["value"]])
       data <- data %>%
-        dplyr::mutate(error = ifelse(i, "Time can only contain 0 & 1s", .data$error))
+        dplyr::mutate(error = ifelse(i, "Time can only contain Y & Ns", .data$error))
 
       # Must be length 12
       i <-  ii & is.na(data[["error"]]) & stringr::str_length(data[["value"]]) != 12
