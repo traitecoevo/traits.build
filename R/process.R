@@ -1024,7 +1024,7 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
     dplyr::mutate(
       split_values = ifelse(.data$value_type %in% c("bin", "range"), stringr::str_split(.data$value, "\\-\\-"), NA),
     ) %>%
-    tidyr::unnest_wider(.data$split_values, names_sep = "_") %>%
+    tidyr::unnest_wider("split_values", names_sep = "_") %>%
     dplyr::mutate(
       i = match(.data$trait_name, names(definitions)),
       to = util_extract_list_element(.data$i, definitions, "units"),
