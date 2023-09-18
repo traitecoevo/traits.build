@@ -1,5 +1,5 @@
 ---
-title: 'Totorial for adding dataset: test_dataset_3'
+title: 'Tutorial for adding dataset: test_dataset_3'
 author: "Elizabeth Wenk, Sophie Yang"
 date: "2023-09-16"
 format: 
@@ -12,18 +12,15 @@ editor: visual
 
 This is the third of five tutorials on adding datasets to your traits.build database.
 
-Before you begin this tutorial, ensure you have installed traits.build, cloned the traits.build-template repository, and have successfully build a database from the datasets in `traits.build-template`. Instructions are available at [XX]https://xx}
+Before you begin this tutorial, ensure you have installed traits.build, cloned the traits.build-template repository, and have successfully build a database from the datasets in `traits.build-template`. Instructions are available at \[XX\]https://xx}
 
 ### Goals
 
--   Learn how to [add contexts](#contexts). 
-
+-   Learn how to [add contexts](#contexts).
 
 ### New Functions Introduced
 
 -   metadata_add_contexts
-
--   metadata_exclude_observations
 
 ------------------------------------------------------------------------
 
@@ -43,7 +40,7 @@ In the traits.build-template repository, there is a folder titled `test_dataset_
 
 -   If you have restarted R Studio since last adding a dataset, ensure all functions are loaded from both the traits.build package and the custom functions file:
 
-``` {r eval=FALSE}
+```{r eval=FALSE}
 library(traits.build)
 source("scripts/custom.R")
 ```
@@ -93,15 +90,15 @@ You have just added 3 doi's that all yield perfect reference information - and i
 
 #### **Add location details**
 
-All data for this dataset was collected at a single location, specified in the `data.csv` file as `The University of Melbourne Burnley campus`. No additional details are provided. For such studies, it is best to look up the campus location and input approximate latitude/longitude coordinates. 
+All data for this dataset was collected at a single location, specified in the `data.csv` file as `The University of Melbourne Burnley campus`. No additional details are provided. For such studies, it is best to look up the campus location and input approximate latitude/longitude coordinates.
 
 As well as adding locations and location properties from a table, the function `metadata_add_locations` lets you add a basic location data scaffold in metadata.yml.
 
 For instance, for this study:\
 
-1.    you add the location names from the data.csv file\
-2.    the function automatically adds blank fields for latitude, longitude, and description\
-3.    values for these fields must then be filled in manually\
+1.  you add the location names from the data.csv file\
+2.  the function automatically adds blank fields for latitude, longitude, and description\
+3.  values for these fields must then be filled in manually\
 
 ```{r eval=FALSE}
 data <- read_csv("data/test_dataset_3.csv")
@@ -114,7 +111,7 @@ You select the location name, but not any location properties, as none are provi
 [location_name:]{style="color:blue;"} [**4: site**]{style="color:red;"}\
 [location_property columns:]{style="color:blue;"} [*just press enter*]{style="color:red;"}\
 
-This creates the following scaffold in `methdata.yml`:\ 
+This creates the following scaffold in `methdata.yml`: 
 
 ```{r eval=FALSE}
   The University of Melbourne Burnley campus:
@@ -123,9 +120,9 @@ This creates the following scaffold in `methdata.yml`:\
     description: na_character
 ```
 
--   `metadata_add_locations` automatically selects the unique values in the location name column.\ 
--   if no columns with location properties are specified, the function just adds the three core location properties.\ 
--   the values for these location properties are available in the notes file.\ 
+-   `metadata_add_locations` automatically selects the unique values in the location name column. 
+-   if no columns with location properties are specified, the function just adds the three core location properties. 
+-   the values for these location properties are available in the notes file. 
 
 ------------------------------------------------------------------------
 
@@ -143,7 +140,7 @@ Select columns [**5 6 7 8 9 10**]{style="color:red;"}, as these contain trait da
 
 #### **Add contexts** {#contexts}
 
-A context is any piece of ancillary information that helps explain why a certain trait value was measured.\ 
+A context is any piece of ancillary information that helps explain why a certain trait value was measured. 
 
 In traits.build, some contexts are mapped in as part of the default metadata structure, including the location (& location properties), a general sense of organism age (`life_stage`), `basis_of_record`, and the general methods for each trait.\
 
@@ -151,23 +148,153 @@ However most contexts are pieces of information that are essential to record for
 
 Context properties are divided into 5 categories:\
 
-1.    **method contexts**: Context properties that capture *differences* in method between measurements of the same trait. For plants, canopy position and leaf age are two common method contexts.\
+1.  **method contexts**: Context properties that capture *differences* in method between measurements of the same trait. For plants, canopy position and leaf age are two common method contexts.\
 
-2.    **temporal contexts**: Context properties that capture explicit time-related differences between groups of measurements. This is separate from `collection_date`, as an explicit meaning should accompany each temporal context property and the distinct values may span a range of collection dates. For plants `sampling season` (dry versus wet) is a commonly mapped in temporal context.\
+2.  **temporal contexts**: Context properties that capture explicit time-related differences between groups of measurements. This is separate from `collection_date`, as an explicit meaning should accompany each temporal context property and the distinct values may span a range of collection dates. For plants `sampling season` (dry versus wet) is a commonly mapped in temporal context.\
 
-3.    **entity contexts**: This context property category pertains to individual-level measurements, and documents features of the individual that explicitly distinguish it from other individuals that are measured. In addition to features like the sex of an individual, it is the location to document individual-level co-variates that are not themselves traits, but are information required to interpret other trait values.\
+3.  **entity contexts**: This context property category pertains to individual-level measurements, and documents features of the individual that explicitly distinguish it from other individuals that are measured. In addition to features like the sex of an individual, it is the location to document individual-level co-variates that are not themselves traits, but are information required to interpret other trait values.\
 
-4.    **treatment contexts**: Any experimental treatment that has been applied to groups of individuals.\
+4.  **treatment contexts**: Any experimental treatment that has been applied to groups of individuals.\
 
-5.    **plot contexts**: Any variation within a documented location, where different individuals experience know differences in growing/living conditions or growing/living history. For plants, this context category is frequently used to map in slope position or fire history.\
+5.  **plot contexts**: Any variation within a documented location, where different individuals experience know differences in growing/living conditions or growing/living history. For plants, this context category is frequently used to map in slope position or fire history.\
 
 Context properties are most frequently included in the `data.csv` file as columns of values. Occasionally, separate columns of trait values might represent measurements with different context property values, a topic for a later tutorial.
 
 Context properties that are columns in the data file, can be added with the function `metadata_add_contexts`:
 
-``` {r eval=FALSE}
+```{r eval=FALSE}
 metadata_add_contexts("test_dataset_3")
 ```
 
+This leads to a user-prompt to select the relevent columns:
 
+[Indicate all columns that contain additional contextual data for test_dataset_3 (by number separated by space; e.g. '1 2 4'):]{style="color:blue;"}\
 
+[1: Species]{style="color:blue;"}\
+[2: Treatment]{style="color:blue;"}\
+[3: Replicate]{style="color:blue;"}\
+[4: site]{style="color:blue;"}\
+[5: life_form]{style="color:blue;"}\
+[6: WP leaf (Mpa) predawn]{style="color:blue;"}\
+[7: WP leaf (Mpa) midday]{style="color:blue;"}\
+[8: LMA kg/m2]{style="color:blue;"}\
+[9: Stomatal density Upper surface]{style="color:blue;"}\
+[10: Stomatal density Lower surface]{style="color:blue;"}\
+
+Select column 2 which is the only column with a context property:
+
+[Selection:]{style="color:blue;"} [**2**]{style="color:red;"}\
+
+Additional user prompts ask for details about the context property category and values:
+
+[What category does context Treatment fit in? (by number separated by space; e.g. '1 2 4'):]{style="color:blue;"}\
+
+[1: treatment]{style="color:blue;"}\
+[2: plot]{style="color:blue;"}\
+[3: temporal]{style="color:blue;"}\
+[4: method]{style="color:blue;"}\
+[5: entity_context]{style="color:blue;"}\
+
+This is a treatment context, so select 1:
+
+[Selection:]{style="color:blue;"} [**1**]{style="color:red;"}\
+
+[The following values exist for this context: Drought, Watered.]{style="color:blue;"}\
+
+[Are replacement values required? (y/n)]{style="color:blue;"} [**y**]{style="color:red;"}\
+
+Although the trait values `Drought` and `Watered` are probably sufficiently descriptive, for other drought-treatment studies we've used `drought` and `well-watered`, so prefer to align the context property values with these.
+
+[Are descriptions required? (y/n)]{style="color:blue;"} [**y**]{style="color:red;"}\
+
+The free-form description field let's you add details about the exact meaning of `drought` vs `well-watered` for this study.
+
+In the `metadata.yml` file, there will now be a scaffold for the contexts:
+
+```{r eval= FALSE}
+contexts:
+- context_property: unknown
+  category: treatment
+  var_in: Treatment
+  values:
+  - find: Drought
+    value: unknown
+    description: unknown
+  - find: Watered
+    value: unknown
+    description: unknown
+```
+
+In addition to filling in the preferred context property values and descriptions, you must also assign a name to the `context_property`. This is a free-form field, but as with `location_property` it is best to ensure you align `context_propery` names throughout the database. In the AusTraits plant trait database, this `context_property` is always called `drought treatment`.
+
+The finished context section will be:
+```{r eval= FALSE}
+contexts:
+- context_property: drought treatment
+  category: treatment
+  var_in: Treatment
+  values:
+  - find: Drought
+    value: drought
+    description: The plants were watered with 20% of the water used by well-watered
+      plants (determined gravimetrically) in the 3-4 days preceding each watering
+      event).
+  - find: Watered
+    value: well-watered
+    description: The plants were watered to pot capacity at (2 L per pot).
+```
+
+------------------------------------------------------------------------
+
+#### **Add traits**
+
+To select columns in the `data.csv` file that include trait data, run:
+
+```{r eval=FALSE}
+metadata_add_traits(dataset_id = "test_dataset_3")
+```
+
+Select columns [**5 6 7 8 9 10**]{style="color:red;"}, as these contain trait data.
+
+------------------------------------------------------------------------
+
+### Manual filling in of metadata
+
+The components of this dataset that can be propagated with functions are not complete, and the remaining `unknown` fields must now be filled in manually.\
+
+-   the `contributors` section\
+
+-   `description`, `basis_of_record`, `life_stage`, `sampling_strategy`, `original_file`, and `notes` under the `dataset` section\
+
+-   details for each trait, including `unit_in`, `trait_name`, `entity_type`, `value_type`, `basis_of_record`, `replicates` and `methods`\
+
+#### **Adding contributors**
+
+The file `data/test_dataset_3/raw/test_dataset_3_notes.txt` indicates the main data_contributor for this study.\
+
+#### **Dataset fields**
+
+The file `data/test_dataset_3/raw/test_dataset_3_notes.txt` indicates how to fill in the `unknown` dataset fields for this study.
+
+#### **Trait details**
+
+The file `data/test_dataset_3/raw/test_dataset_3_notes.txt` indicates how to fill in the `unknown` trait fields for this study, but see below as well.
+
+Remember, the `trait_name` must match a trait concept within the [traits dictionary](https://github.com/traitecoevo/traits.build-template/blob/master/config/traits.yml). For this example:
+
+| column in dataset              | trait concept                 | units_in    | entity_type | value_type | basis_of_value | replicates |
+|-------------------------|----------------------|-----------------|------------|--------------|-------------|-----------|
+| life_form                      | life_form                     | .na         | species     | mode       | expert_score   | .na        |
+| WP leaf (Mpa) predawn          | water_potential_predawn       | neg_MPa     | individual  | raw        | measurement    | 1          |
+| WP leaf (Mpa) midday           | water_potential_midday        | neg_MPa     | individual  | raw        | measurement    | 1          |
+| LMA kg/m2                      | leaf_mass_per_area            | kg/m2       | individual  | raw        | measurement    | 1          |
+| Stomatal density Upper surface | leaf_stomatal_density_adaxial | {count}/mm2 | individual  | raw        | measurement    | 1          |
+| Stomatal density Lower surface | leaf_stomatal_density_abaxial | {count}/mm2 | individual  | raw        | measurement    | 1          |
+
+With the units, note:
+
+-   In the data.csv file, all water potential values are positive, indicating the data contributor mapped in the "negative" of the true water potential values (which are always below zero). A negative sign at the beginning of the units field is not recognised and therefore the convention is to use the prefix `neg_` to indicate the values input are the negative of the true values.
+
+-   stomatal density is a "count density", a number of stomata per unit area. The actual UCUM standard for this is simply `1/mm2` , but for clarity we use `{count}/mm2` . The word `count` is in curly brackets, since it is a "note" rather than a true unit.
+
+#### **Context details**

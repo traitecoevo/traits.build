@@ -21,7 +21,7 @@ The project's guiding principles are to:
 First install the traits.build R package:
 
 ```{r eval=FALSE}
-remotes::install_github("traitecoevo/traits-build", quick = TRUE)
+remotes::install_github("traitecoevo/traits.build", quick = TRUE)
 ```
 
 Next access the collection of traits.build functions:

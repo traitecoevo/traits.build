@@ -40,19 +40,19 @@ Before you begin this tutorial, ensure you have installed traits.build, cloned t
 
 ### Ensure the dataset folder contains the correct data files
 
-In the traits.build-template repository, there is a folder titled `test_dataset_1` within the data folder.\  
+In the traits.build-template repository, there is a folder titled `test_dataset_1` within the data folder. 
 
--   Ensure that this folder exists on your computer.\  
+-   Ensure that this folder exists on your computer. 
 
--   The file `data.csv` exists within the `test_dataset_1` folder.\  
+-   The file `data.csv` exists within the `test_dataset_1` folder. 
 
--   There is a folder `raw` nested within the `test_dataset_1` folder, that contains one file, `notes.txt`.\  
+-   There is a folder `raw` nested within the `test_dataset_1` folder, that contains one file, `notes.txt`. 
 
 ### source necessary functions
 
 -   Source the functions in the traits.build package:
 
-``` {r eval=FALSE}
+```{r eval=FALSE}
 library(traits.build)
 ```
 
@@ -325,7 +325,7 @@ These are all fields that contain the word `unknown`.
 #### **Adding contributors**
 
 | Contributor field     | Information to add                                                                                                         |
-|--------------------|----------------------------------------------------|
+|---------------------|---------------------------------------------------|
 | last_name, first_name | The contributors first and last names should be available from the source                                                  |
 | ORCID                 | Contributors are identified by their ORCID, available for most active researches at [orcid.org](https://orcid.org/)        |
 | affiliation           | Available from the source or the orcid.org website. Use the same syntax for the same affiliation throughout your database. |
@@ -339,12 +339,12 @@ These are all fields that contain the word `unknown`.
 
 #### **Dataset fields**
 
--   The file "data/test_dataset_1/raw/test_dataset_1_notes.txt" indicates how to fill in the `unknown` dataset fields for this study.
+-   The file `data/test_dataset_1/raw/test_dataset_1_notes.txt` indicates how to fill in the `unknown` dataset fields for this study.
 
 -   In general, the information to fill in these fields should be available from the source (article) or obtained directly from the dataset contributor.\
 
 | Dataset field    | Information to add                                                                                                                            |
-|-------------------|-----------------------------------------------------|
+|--------------------|----------------------------------------------------|
 | basis_of_record  | See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms. |
 | life_stage       | See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms. |
 | description      | A 1-2 sentence summary of the dataset. This can generally be formulated by information in the abstract.                                       |
@@ -358,9 +358,11 @@ These are all fields that contain the word `unknown`.
 
 The `trait_name` must match a `trait_name` within the [traits dictionary](https://github.com/traitecoevo/traits.build-template/blob/master/config/traits.yml). For this example:
 
-`LMA (mg mm-2)` is leaf_mass_per_area\
-`Leaf nitrogen (mg mg-1)` is leaf_N_per_dry_mass\
-`leaf size (mm2)` is leaf_area
+| column in dataset       | trait concept       |
+|-------------------------|---------------------|
+| LMA (mg mm-2)           | leaf_mass_per_area  |
+| Leaf nitrogen (mg mg-1) | leaf_N_per_dry_mass |
+| leaf size (mm2)         | leaf_area           |
 
 A dataset curator must be familiar with the likely traits in their discipline to accurately match those in a contributed dataset to traits in the dictionary, and be able to determine if a new trait definition is warranted.
 
@@ -385,12 +387,12 @@ If the units being read in for a specific trait differ from those defined for th
 ##### **entity_type, value_type, basis_of_value, replicates, methods**
 
 | field          | value for this dataset                                                                                                                          | description                                                                                                                                                                                                              |
-|--------------|------------------|----------------------------------------|
+|-----------------|-------------------|--------------------------------------|
 | entity_type    | population                                                                                                                                      | The entity corresponding to the trait value. Uses a controlled vocabulary. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms. |
 | value_type     | mean                                                                                                                                            | The statistical nature of the trait value. Uses a controlled vocabulary. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms.   |
 | basis_of_value | measurement                                                                                                                                     | How the trait value was obtained. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms.                                          |
 | replicates     | 3                                                                                                                                               | The number of replicate measurements that comprise the trait measurement recorded in the spreadsheet.                                                                                                                    |
-| methods        | See the study's [metadata_notes.txt](https://github.com/traitecoevo/traits.build-template/blob/data/test_dataset_1/raw/metadata_notes.txt) file |  A verbatim (free-form) text field documenting the methods used to collect the trait measurements. This is generally available from the reference or directly from the author.                                           |
+| methods        | See the study's [metadata_notes.txt](https://github.com/traitecoevo/traits.build-template/blob/data/test_dataset_1/raw/metadata_notes.txt) file | A verbatim (free-form) text field documenting the methods used to collect the trait measurements. This is generally available from the reference or directly from the author.                                            |
 
 *The values for `entity_type`, `value_type`, `basis_of_value`, and `replicates` can vary by trait -- and indeed by measurement -- but for this study are identical for all traits.*
 
@@ -414,7 +416,7 @@ dataset_test("test_dataset_1")
 
 This *should* result in the following output:
 
-[[ FAIL 0 | WARN 0 | SKIP 0 | PASS 79 ]]{style="color:blue;"}\
+[\[ FAIL 0 \| WARN 0 \| SKIP 0 \| PASS 79 \]]{style="color:blue;"}\
 
 ##### **add dataset to the database**
 
