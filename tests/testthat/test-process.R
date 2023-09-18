@@ -6,15 +6,13 @@ resource_metadata <- get_schema("config/metadata.yml", "metadata")
 traits_definitions <- get_schema("config/traits.yml", "traits")
 unit_conversions <- get_unit_conversions("config/unit_conversions.csv")
 test_config <- dataset_configure("data/Test_2022/test-metadata.yml",
-                                  traits_definitions,
-                                  unit_conversions)
+                                  traits_definitions)
 
 
 test_that("`dataset_configure` is working", {
   expect_no_error(
     test_config <- dataset_configure("data/Test_2022/test-metadata.yml",
-                                      traits_definitions,
-                                      unit_conversions))
+                                      traits_definitions))
   expect_type(test_config, "list")
   expect_length(test_config, 3)
   expect_named(test_config,
@@ -24,7 +22,7 @@ test_that("`dataset_configure` is working", {
 
 test_that("`dataset_process` is working", {
   expect_no_error(austraits_names <- schema$austraits$elements %>% names())
-  expect_no_error(x <- dataset_process(test_data, test_config, schema, resource_metadata))
+  expect_no_error(x <- dataset_process(test_data, test_config, schema, resource_metadata, unit_conversions))
   expect_type(x, "list")
   expect_length(x, 13)
   expect_named(x, austraits_names)
@@ -32,13 +30,13 @@ test_that("`dataset_process` is working", {
   # Test to see if `filter_missing_values` argument works
   expect_equal(
     nrow(
-      dataset_process(test_data, test_config, schema, resource_metadata,
+      dataset_process(test_data, test_config, schema, resource_metadata, unit_conversions,
                       filter_missing_values = TRUE)$excluded_data
     ),
   0)
   expect_equal(
     nrow(
-      dataset_process(test_data, test_config, schema, resource_metadata,
+      dataset_process(test_data, test_config, schema, resource_metadata, unit_conversions,
       filter_missing_values = FALSE)$excluded_data
     ),
   44)
