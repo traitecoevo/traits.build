@@ -130,11 +130,12 @@ austraits:
           range for the study can be indicating, with the starting and ending sample
           date sepatated by a `/`, as in 2010-10/2011-03
         measurement_remarks: Brief comments or notes accompanying the trait measurement.
-        method_id: A unique integer identifier indicating a trait is measured multiple
-          times on the same entity, with different methods used for each entry. This
-          field is only used if a single trait is measured using multiple methods
-          within the same dataset. The identifier links to specific information in
-          the context table.
+        method_id: A unique integer identifier to distinguish between multiple sets of methods used to measure a single trait within the same dataset. The identifier links to specific information in the methods table.
+        method_context_id: A unique integer identifier indicating a trait is measured
+          multiple times on the same entity, with different methods used for each
+          entry. This field is only used if a single trait is measured using multiple
+          methods within the same dataset. The identifier links to specific information
+          in the context table.
         original_name: Name given to taxon in the original data supplied by the authors.
     locations:
       description: A table containing observations of location/site characteristics
@@ -194,9 +195,8 @@ austraits:
           source. Methods can include descriptions such as 'measured on botanical
           collections', 'data from the literature', or a detailed description of the
           field or lab methods used to collect the data.
+        method_id: A unique integer identifier to distinguish between multiple sets of methods used to measure a single trait within the same dataset. The identifier links to specific information in the methods table.
         description: A 1-2 sentence description of the purpose of the study.
-        value_type: Temporarily added to schema as it is in the methods table for
-          some reason.
         sampling_strategy: A written description of how study locations were selected
           and how study individuals were selected. When available, this information
           is lifted verbatim from a published manuscript. For preserved specimens,
@@ -297,11 +297,12 @@ austraits:
           range for the study can be indicating, with the starting and ending sample
           date sepatated by a `/`, as in 2010-10/2011-03
         measurement_remarks: Brief comments or notes accompanying the trait measurement.
-        method_id: A unique integer identifier indicating a trait is measured multiple
-          times on the same entity, with different methods used for each entry. This
-          field is only used if a single trait is measured using multiple methods
-          within the same dataset. The identifier links to specific information in
-          the context table.
+        method_id: A unique integer identifier to distinguish between multiple sets of methods used to measure a single trait within the same dataset. The identifier links to specific information in the methods table.
+        method_context_id: A unique integer identifier indicating a trait is measured
+          multiple times on the same entity, with different methods used for each
+          entry. This field is only used if a single trait is measured using multiple
+          methods within the same dataset. The identifier links to specific information
+          in the context table.
         original_name: Name given to taxon in the original data supplied by the authors.
     taxonomic_updates:
       description: A table of all taxonomic changes implemented in the construction
@@ -630,6 +631,8 @@ metadata:
         trait_name: Element required for long datasets to specify the column indicating
           the trait name associated with each row of data.
         value: The measured value of a trait.
+        value_type: A categorical variable describing the statistical nature of the
+          trait value recorded.
         description: A 1-2 sentence description of the purpose of the study.
         basis_of_record: A categorical variable specifying from which kind of specimen
           traits were recorded.

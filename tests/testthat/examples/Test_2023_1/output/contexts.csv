@@ -9,17 +9,17 @@ Test_2023_1,nutrient treatment,treatment,high nutrient,high nutrient treatment,t
 Test_2023_1,nutrient treatment,treatment,low nutrient,low nutrient treatment,treatment_id,03
 Test_2023_1,sampling time of day,temporal,17:00:00,,temporal_id,02
 Test_2023_1,sampling time of day,temporal,09:00:00,,temporal_id,01
-Test_2023_1,instrument used,method,instrument 1,instrument 1,method_id,"07, 05, 06, 04"
-Test_2023_1,instrument used,method,instrument 2,instrument 2,method_id,"11, 09, 10, 08"
+Test_2023_1,instrument used,method_context,instrument 1,instrument 1,method_context_id,"07, 05, 06, 04"
+Test_2023_1,instrument used,method_context,instrument 2,instrument 2,method_context_id,"11, 09, 10, 08"
 Test_2023_1,tree height,entity_context,3,,entity_context_id,"05, 04"
 Test_2023_1,tree height,entity_context,5,,entity_context_id,14
 Test_2023_1,tree height,entity_context,4,,entity_context_id,"06, 13"
 Test_2023_1,tree height,entity_context,10,,entity_context_id,02
 Test_2023_1,tree height,entity_context,1,,entity_context_id,"09, 10, 11"
 Test_2023_1,tree height,entity_context,2,,entity_context_id,"12, 03"
-Test_2023_1,branch length,method,250 mm branch,Measured on a 250 mm branch segment,method_id,"05, 02, 09"
-Test_2023_1,branch length,method,50 mm branch,Measured on a 50 mm branch segment,method_id,"06, 03, 10"
-Test_2023_1,branch length,method,1000 mm branch,Measured on a 1000 mm branch segment,method_id,"04, 01, 08"
+Test_2023_1,branch length,method_context,250 mm branch,Measured on a 250 mm branch segment,method_context_id,"05, 02, 09"
+Test_2023_1,branch length,method_context,50 mm branch,Measured on a 50 mm branch segment,method_context_id,"06, 03, 10"
+Test_2023_1,branch length,method_context,1000 mm branch,Measured on a 1000 mm branch segment,method_context_id,"04, 01, 08"
 Test_2023_1,plant diameter,entity_context,3,,entity_context_id,"04, 14, 06, 13"
 Test_2023_1,plant diameter,entity_context,4,,entity_context_id,07
 Test_2023_1,plant diameter,entity_context,6,,entity_context_id,02

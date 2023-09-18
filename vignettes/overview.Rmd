@@ -58,7 +58,7 @@ The `metadata` file also includes all metadata associated with the study:
 * Available data on location properties are recorded. 
 * Available data on plot and treatment contextual properties are recorded.
 * A context field, temporal_id, indicates if repeat measures were made on the same individual over time.
-* A context field, method_id, indicates if the same trait was measured using multiple methods.
+* A context field, method_context_id, indicates if the same trait was measured using multiple methods.
 * Collection date is recorded.
 
 ### Error checking

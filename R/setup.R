@@ -375,7 +375,7 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
   }
   
   metadata$locations <- location_data %>%
-    dplyr::select(-location_name) %>%  
+    dplyr::select(-dplyr::any_of("location_name")) %>%  
     split(location_data[[location_name]]) %>%
     lapply(as.list)
 
@@ -909,10 +909,37 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
   metadata <- read_metadata_dataset(dataset_id)
 
   if (!all(is.na(metadata[["taxonomic_updates"]]))) {
-    message(red("Existing taxonomic updates have been overwritten"))
+
+    existing_updates <- metadata[["taxonomic_updates"]] %>% util_list_to_df2()
+    already_exist <- c()
+
+    for (i in seq_len(nrow(taxonomic_updates))) {
+      # Check if the taxonomic update already exists
+      if (taxonomic_updates[i,]$find %in% existing_updates$find) {
+        # Overwrite existing taxonomic update if TRUE
+        existing_updates[which(existing_updates$find == taxonomic_updates[i,]$find),] <- taxonomic_updates[i,]
+        already_exist <- c(already_exist, taxonomic_updates[i,]$find)
+      } else {
+        # Otherwise, bind to end of existing taxonomic updates
+        existing_updates <- existing_updates %>% bind_rows(taxonomic_updates[i,])
+      }
+    }
+
+    if (length(already_exist) > 0) {
+      message(
+        sprintf(
+          green("%s") %+% red(" already exist(s) in `taxonomic_updates` and is being overwritten"),
+          paste(already_exist, collapse = ", ")
+      ))
+    }
+    # Write new taxonomic updates to metadata
+    metadata$taxonomic_updates <- existing_updates %>% dplyr::group_split(.data$find) %>% lapply(as.list)
+  } else {
+
+    # Read in dataframe of taxonomic changes, split into single-row lists, and add to metadata file
+    metadata$taxonomic_updates <- taxonomic_updates %>% dplyr::group_split(.data$find) %>% lapply(as.list)
+
   }
-  # Read in dataframe of taxonomic changes, split into single-row lists, and add to metadata file
-  metadata$taxonomic_updates <- taxonomic_updates %>% dplyr::group_split(.data$find) %>% lapply(as.list)
 
   # Write metadata
   write_metadata_dataset(metadata, dataset_id)
