@@ -43,7 +43,7 @@ traits.build-template is a GitHub repository that contains:
 
     -   a placeholder [taxon list](https://github.com/traitecoevo/traits.build-template/blob/master/config/taxon_list.csv)
 
-    -   a script of useful [R functions](https://github.com/traitecoevo/traits.build-template/blob/master/scripts/custom.R)
+    -   a script of useful [R functions](https://github.com/traitecoevo/traits.build-template/blob/master/R/custom_R_code.R)
 2.  Two pre-added datasets.
     -   See how metadata is documented in fully propagated metadata files.
 

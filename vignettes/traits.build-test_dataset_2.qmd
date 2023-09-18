@@ -54,7 +54,7 @@ In the traits.build-template repository, there is a folder titled `test_dataset_
 
 ```{r eval=FALSE}
 library(traits.build)
-source("scripts/custom.R")
+source("R/custom_R_code.R")
 ```
 
 ### Use functions to create a metadata.yml file
@@ -336,7 +336,7 @@ Instead, you can add R code within the metadata file to replace the placeholder 
 -   Look at `metadata.yml` in Visual Studio Code. 
 -   The second field under the `dataset` section is `custom_R_code: .na`. 
 -   You can write any code you'd like within this section. 
--   The file `scripts/custom.R` that you sourced at the beginning of this tutorial contains customised functions commonly used in custom_R_code. 
+-   The file `R/custom_R_code.R` that you sourced at the beginning of this tutorial contains customised functions commonly used in custom_R_code. 
 
 For this example, replace: 
 
@@ -406,7 +406,7 @@ The error in this dataset is a common one:\
 
 Either allows the dataset to pivot, but if the taxon truly displays only a single growth form across all populations it is much better to read in plant growth form once per species. Otherwise the database becomes longer without capturing additional information. This dataset has only a few instance of duplication, but imagine the dataset that has 500 rows of data for the same tree species - suddenly 500 instances of that species being a tree are read into the database.
 
-The solution is to modify the existing custom_R_code, adding one of the customised functions from the file `scripts/custom.R`, `replace_duplicates_with_NA`: 
+The solution is to modify the existing custom_R_code, adding one of the customised functions from the file `R/custom_R_code.R`, `replace_duplicates_with_NA`: 
 
 ```{r eval=FALSE}
 custom_R_code: '

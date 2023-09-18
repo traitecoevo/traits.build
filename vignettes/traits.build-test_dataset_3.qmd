@@ -46,7 +46,7 @@ In the traits.build-template repository, there is a folder titled `test_dataset_
 
 ```{r eval=FALSE}
 library(traits.build)
-source("scripts/custom.R")
+source("R/custom_R_code.R")
 ```
 
 ### Use functions to create a metadata.yml file
