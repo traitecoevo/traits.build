@@ -116,7 +116,7 @@ dataset_process <- function(filename_data_raw,
     mutate(unit = ifelse(!is.na(unit_in), unit_in, unit)) %>%
     process_flag_unsupported_traits(definitions) %>%
     process_flag_excluded_observations(metadata) %>%
-    process_flag_unsupported_chars() %>%
+    process_flag_unsupported_characters() %>%
     process_flag_unsupported_values(definitions) %>%
     process_convert_units(definitions, unit_conversion_functions) %>%
     process_flag_out_of_range_values(definitions) %>%
@@ -788,7 +788,7 @@ util_check_disallowed_chars <- function(object) {
 #'
 #' @importFrom rlang .data
 #' @return Tibble with flagged values containing unsupported characters
-process_flag_unsupported_chars <- function(data) {
+process_flag_unsupported_characters <- function(data) {
 
   data <- data %>%
     mutate(
