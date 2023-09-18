@@ -4,7 +4,7 @@
 This dataset is for testing the following, for wide datasets:
 - Dataset-level and trait-level input of `basis_of_record`, `life_stage`, `entity_type`, `value_type`, `basis_of_value`, `measurement_remarks`, `collection_date` and `replicates`
 - `replicates` in numeric format
-- Units are correctly converted to the accepted units
+- Units are correctly converted to the accepted units, either from a fixed trait-level value or from a column at the trait level
 - Contexts (correct `link_ids` and `link_vals`; duplicates get collapsed), with and without `find` and `description` values (or NA values), or entered at the trait level as a fixed value or a column (don't think this is possible right now)
 - Methods (methods are unique), including method contexts
 - Locations (latitude and longitude missing)
@@ -28,6 +28,8 @@ Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - Changed a numeric column `wood_density` to character type with `custom_R_code`
 - Duplicated `flowering_time` value for Acacia celsa
 - Excluded observation 0.17 for `leaf_mass_per_area`
+- Added `seed_dry_mass` to check bin conversions, with `seed_dry_mass_units` as the column to read in units from
+- Added a column `leaf_length` with accompanying `leaf_length_units` to test unit conversions read in from a column
 
 
 See output/
