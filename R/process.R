@@ -25,8 +25,7 @@
 #' }
 dataset_configure <- function(
   filename_metadata,
-  definitions,
-  unit_conversion_functions) {
+  definitions) {
 
   dataset_id <- basename(dirname(filename_metadata))
 
@@ -77,13 +76,12 @@ dataset_process <- function(filename_data_raw,
                             config_for_dataset,
                             schema,
                             resource_metadata,
+                            unit_conversion_functions,
                             filter_missing_values = TRUE) {
 
   dataset_id <- config_for_dataset$dataset_id
   metadata <- config_for_dataset$metadata
   definitions <- config_for_dataset$definitions
-
-  unit_conversion_functions <- config_for_dataset$unit_conversion_functions
 
   # Load and process contextual data
   contexts <-
@@ -111,8 +109,6 @@ dataset_process <- function(filename_data_raw,
   locations <-
     metadata$locations %>%
     process_format_locations(dataset_id, schema)
-
-  unit_conversion_functions <- get_unit_conversions("config/unit_conversions.csv") # Isn't this already read in on line 97? - Sophie
 
   traits <-
     traits$traits %>%
