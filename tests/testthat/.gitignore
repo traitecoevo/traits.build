@@ -3,3 +3,6 @@ remake.yml
 .remake
 build.R
 R
+export/reports/
+build_info.md
+**/output/schema.yml
