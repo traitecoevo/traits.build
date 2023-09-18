@@ -705,10 +705,10 @@ dataset_test_worker <-
           select(
             dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "source_id", "taxon_name",
             "entity_type", "life_stage", "basis_of_record", "value_type", "population_id", "individual_id",
-            "temporal_id", "method_id", "entity_context_id", "original_name"))
+            "temporal_id", "method_id", "method_context_id", "entity_context_id", "original_name"))
           ) %>%
           pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
-          pivot_longer(cols = 15:ncol(.)) %>%
+          pivot_longer(cols = 16:ncol(.)) %>%
           rename(all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
           select(
             all_of(c("dataset_id", "taxon_name", "trait_name", "number_of_duplicates", "observation_id",
