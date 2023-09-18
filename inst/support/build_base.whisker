@@ -27,6 +27,10 @@ austraits_raw <- build_combine(
 {{/dataset_ids}}
         NULL)
 
+# version information
+version_number <- util_get_version("config/metadata.yml")
+git_SHA <- util_get_SHA()
+
 # Combine all the source into one resource
 austraits <- build_add_version(austraits_raw, version_number, git_SHA)
 

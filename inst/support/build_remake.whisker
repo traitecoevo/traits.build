@@ -17,14 +17,6 @@ targets:
       - export/data/curr/austraits.rds
 
 # Load data resources
-  version_number: 
-    command: util_get_version("config/metadata.yml")
-    
-  git_SHA:
-    command: util_get_SHA()
-    depends:
-      - .git/index  
-
   schema:
     command: get_schema()
 
@@ -70,6 +62,15 @@ targets:
         {{dataset_id}},
 {{/dataset_ids}}
         NULL)
+
+# version information
+  version_number: 
+    command: util_get_version("config/metadata.yml")
+    
+  git_SHA:
+    command: util_get_SHA()
+    depends:
+      - .git/index  
 
 # Combine all the source into one resource
   austraits:
