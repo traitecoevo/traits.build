@@ -3,21 +3,21 @@
 \name{process_generate_id}
 \alias{process_generate_id}
 \title{Function to generate sequence of integer ids from vector of names
-Determines number of 00s needed based on number of records.}
+Determines number of 00s needed based on number of records}
 \usage{
 process_generate_id(x, prefix, sort = FALSE)
 }
 \arguments{
-\item{x}{Vector of text to convert}
+\item{x}{vector of text to convert}
 
-\item{prefix}{Text to put before id integer}
+\item{prefix}{text to put before id integer}
 
-\item{sort}{Logical to indicate whether x should be sorted before ids are generated}
+\item{sort}{logical to indicate whether x should be sorted before ids are generated}
 }
 \value{
-Vector of ids
+vector of ids
 }
 \description{
 Function to generate sequence of integer ids from vector of names
-Determines number of 00s needed based on number of records.
+Determines number of 00s needed based on number of records
 }

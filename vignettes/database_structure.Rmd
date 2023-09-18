@@ -119,7 +119,7 @@ schema$entity_type$values %>%
 
 #### Identifiers
 
-The traits table includes 12 identifiers, `dataset_id`, `observation_id`, `taxon_name`, `population_id`, `individual_id`, `temporal_id`, `source_id`, `location_id`, `entity_context_id`, `plot_id`, `treatment_id`, and `method_id`.
+The traits table includes 12 identifiers, `dataset_id`, `observation_id`, `taxon_name`, `population_id`, `individual_id`, `temporal_id`, `source_id`, `location_id`, `entity_context_id`, `plot_id`, `treatment_id`, and `method_context_id`.
 
 `dataset_id`, `source_id` and `taxon_name` have easy-to-interpret values. The others are simply integral identifiers that link groups of measurements and are automatically generated through the AusTraits workflow (`individual_id` can be assigned in the metadata file or automatically generated.)
 
@@ -144,7 +144,7 @@ To expand on the definitions provided above,
 
 - `treatment_id`links to information in the `contexts` table for context properties (& associated values/descriptions) with category `treatment`. `Treatment contexts` are experimental manipulations applied to groups of individuals.
 
-- `method_id`links to information in the `contexts` table for context properties (& associated values/descriptions) with category `method`. A `method context` indicates that the same trait was measured on or across individuals using different methods.
+- `method_context_id`links to information in the `contexts` table for context properties (& associated values/descriptions) with category `method`. A `method context` indicates that the same trait was measured on or across individuals using different methods.
 
 As well, `measurement_remarks` is used to document `r tolower(schema$metadata$elements$traits$elements$measurement_remarks)`
 
