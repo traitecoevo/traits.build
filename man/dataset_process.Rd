@@ -19,6 +19,8 @@ dataset_process(
 
 \item{schema}{Schema for traits.build}
 
+\item{resource_metadata}{metadata for the compilation}
+
 \item{filter_missing_values}{Default filters missing values from the excluded data table;
 change to false to see the rows with missing values.}
 }
@@ -34,6 +36,7 @@ study in the `remake.yml` file.
 \dontrun{
 dataset_process("data/Falster_2003/data.csv", dataset_configure("data/Falster_2003/metadata.yml",
 read_yaml("config/traits.yml"), get_unit_conversions("config/unit_conversions.csv")),
-get_schema())
+get_schema(),
+get_schema("config/metadata.yml", "metadata"))
 }
 }

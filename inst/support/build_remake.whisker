@@ -5,9 +5,6 @@
 packages:
   - traits.build
 
-sources:
-  - R/custom_R_code.R
-
 targets:
 
 # Define generic targets

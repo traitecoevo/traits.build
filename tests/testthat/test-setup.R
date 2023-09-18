@@ -593,8 +593,9 @@ test_that("`build_setup_pipeline` is working", {
 
   expect_no_error(zip::unzip("config/testgit.zip"))
   expect_no_error(sha <- git2r::sha(git2r::last_commit()))
-  # Expect error if path name is wrong
+  # Expect error if path or method is wrong
   expect_error(build_setup_pipeline(path = "Datas"))
+  expect_error(build_setup_pipeline(method = "grrrr"))
 
   # base workflow
   expect_silent(suppressMessages(build_setup_pipeline(method = "base")))

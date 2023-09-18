@@ -1140,13 +1140,16 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
                                  template = select_pipeline_template(method)
                                  ) {
   
+  if (!method %in% c("base", "remake", "furrr")) {
+    stop(sprintf("Invalid method selected in `build_setup_pipeline`: %s", method))
+  }
+
   path <- "data"
 
   if (!file.exists(path)) {
     stop("cannot find data directory: ", path)
   }
-
-
+  
   # Check directories have both files
   has_both_files <-
     sapply(
@@ -1160,15 +1163,15 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 
   vals <- list(
     dataset_ids = whisker::iteratelist(dataset_ids, value = "dataset_id"),
-    # not sure the next line will work. I think we just demand the file R/custom_R_code.R exists
-    #sources = dir("R", full.names = TRUE),
+    dataset_ids_vector = 
+      sprintf("c(%s)", sprintf("'%s'", dataset_ids) %>% paste(collapse = ", ")),
     path = path
     )
 
   # setup pipeline based on selected method for building
-  pipieline <- whisker::whisker.render(template, vals)
+  pipieline <- whisker::whisker.render(template, data =  vals)
 
-  if (method == "base") {
+  if (method %in% c("base", "furrr")) {
     writeLines(pipieline, "build.R")
     message(green("\t-> build using file `build.R`"))
   }
@@ -1215,6 +1218,7 @@ select_pipeline_template <- function(method) {
   switch(method,
     base  = "build_base.whisker",
     remake = "build_remake.whisker",
+    furrr = "build_furrr.whisker",
     default  = "build_base.whisker"
   )
   
