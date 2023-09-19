@@ -85,6 +85,45 @@ traits:
     data.csv file, 'Vcmax atTleaf (umol m-2 s-1)', provides Vcmax values at the measured
     leaf temperature and the column 'Tleaf (deg C)' indicates the leaf temperatures
     during gas exchange measurements.
+- var_in: Conductance to H2O (mol m-2 s-1)
+  unit_in: mol{H2O}/m2/s
+  trait_name: leaf_stomatal_conductance
+  entity_type: individual
+  value_type: raw
+  basis_of_value: measurement
+  replicates: 1
+  methods: 'Values used are from the first step of the A-ci curve, where CO2 was approximately
+    400 ppm and PAR 1200 umol m-2 s-1. In detail, two portable photosynthesis systems
+    (Li-6400, LiCor Inc., Lincoln, NE, USA) were used to measure the response of photosynthesis
+    to intercellular CO2 concentration (A-ci curve) and to light (light response curve).
+    The two systems were cross calibrated, and gave unbiased results with respect
+    to each other. The measurement sequence for each sampled leaf started with the
+    A-ci curve and then proceeded to the light response curve. The CO2 concentration
+    (umol mol-1) entering the leaf gas exchange cuvette was altered in the following
+    sequence: 400, 280, 230, 150, 70, 40, 230, 400, 640, 980, and 1200. A measurement
+    of photosynthesis was logged approximately 2 min after each step change in CO2
+    concentration entering the cuvette. Irradiance during the A-ci curve measurements
+    was set at 2000 umol photosynthetically active radiation (PAR) m-2 s-1, supplied
+    by an artificial light source (6400-02B LED, LiCor Inc.). At the conclusion of
+    the A-ci curve, the light response curve was measured on the same leaf. The CO2
+    concentration of air entering the cuvette was maintained at 1200 umol mol-1, and
+    irradiance (umol PAR m-2 s-1) was altered in the following sequence: 2000, 1500,
+    1000, 500, 200, 120, 70, 40, 20, and 0. A measurement of photosynthesis was logged
+    approximately 2 min after each step change in irradiance. We endeavoured to maintain
+    the leaf-to-air vapour pressure difference (D) and the leaf temperature (T) constant
+    across sites and within a site for each sample leaf during A-ci and light response
+    measurements. The target D was 2.5 kPa and the target T was 33 deg C. Mean site
+    values (mean +/- 1 SD) for T during measurements ranged from 32.3 +/- 0.6  deg
+    C at the Howard Springs site to 33.9 +/- 2.0  deg C at the Boulia site. Mean site
+    values during measurements for D ranged from 2.1 +/- 0.2 kPa at the Howard Springs
+    site to 3.1 +/- 0.7 kPa at the Boulia site. Measurements at all sites except the
+    Boulia site took place between 2 and 15 September 2008. Measurements at the Boulia
+    site took place between 5 and 8 December 2008. Precipitation at the Boulia site
+    does not show as highly pronounced a seasonal variation as the more northerly
+    sites. A cumulative precipitation of 56 mm was recorded at the Boulia Airport
+    in the nine months preceding the measurement campaign (http://www.bom.gov.au/index.shtml).
+    Gas exchange measurements were taken between 0800 h and 1700 h local time at each
+    site.'
 substitutions: .na
 taxonomic_updates: .na
 exclude_observations: .na
