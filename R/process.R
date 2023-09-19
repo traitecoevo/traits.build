@@ -702,7 +702,7 @@ process_format_locations <- function(my_list, dataset_id, schema) {
 #' @param definitions Definitions read in from the `traits.yml` file in the config folder
 #'
 #' @importFrom rlang .data
-#' @return Tibble with unrecognised traits flagged as "Unsupported trait" in the "error" column
+#' @return Tibble with unrecognised traits flagged in the "error" column
 process_flag_unsupported_traits <- function(data, definitions) {
 
   # Create error column if not already present
@@ -713,10 +713,10 @@ process_flag_unsupported_traits <- function(data, definitions) {
 
   # Exclude traits not in definitions
   i <- data$trait_name %in% names(definitions)
-  data %>%
-    dplyr::mutate(error = ifelse(!i, "Unsupported trait", .data$error))
 
-  data
+  data %>%
+    dplyr::mutate(error = ifelse(!i, "Trait name not in trait dictionary", .data$error))
+
 }
 
 #' Flag any excluded observations
@@ -890,13 +890,14 @@ process_flag_unsupported_values <- function(data, definitions) {
     dplyr::filter(is.na(.data$error)) %>% dplyr::pull(.data$trait_name) %>% unique()
 
   for (trait in traits) {
+
     # General categorical traits
     if (definitions[[trait]]$type == "categorical") {
 
-      i <-  is.na(data[["error"]]) &
-            data[["trait_name"]] == trait &
-            !is.null(definitions[[trait]]$allowed_values_levels) &
-            !util_check_all_values_in(data$value, names(definitions[[trait]]$allowed_values_levels))
+      i <- is.na(data[["error"]]) &
+           data[["trait_name"]] == trait &
+           !is.null(definitions[[trait]]$allowed_values_levels) &
+           !util_check_all_values_in(data$value, names(definitions[[trait]]$allowed_values_levels))
       data <- data %>%
         dplyr::mutate(error = ifelse(i, "Unsupported trait value", .data$error))
     }
@@ -1034,10 +1035,9 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
 
   data <- data %>%
     dplyr::mutate(
-      error = ifelse(j & trait_name %in% names(definitions), "Missing unit conversion", .data$error),
-      error = ifelse(j & !trait_name %in% names(definitions), "Trait name not in trait dictionary", .data$error),
+      error = ifelse(j, "Missing unit conversion", .data$error),
       to_convert = ifelse(j, FALSE, .data$to_convert)
-      )
+    )
 
   f_standard <- function(value, name) {
     as.character(unit_conversion_functions[[name]](as.numeric(value)))
