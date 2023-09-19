@@ -1,7 +1,5 @@
 dataset_id,location_id,location_name,location_property,value
 Test_2023_1,01,Atherton,description,Tropical rain forest vegetation.
-Test_2023_1,01,Atherton,latitude (deg),-17.1166667
-Test_2023_1,01,Atherton,longitude (deg),145.65
 Test_2023_1,01,Atherton,elevation (m),800
 Test_2023_1,01,Atherton,rainfall (mm),2000
 Test_2023_1,02,Cape Tribulation,description,Complex mesophyll vine forest in tropical rain forest.
