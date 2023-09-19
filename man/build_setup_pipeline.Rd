@@ -5,18 +5,17 @@
 \title{Update the `remake.yml` file with new studies}
 \usage{
 build_setup_pipeline(
-  template = readLines(system.file("support", "remake.yml.whisker", package =
-    "traits.build")),
-  path = "data",
-  dataset_ids = dir(path)
+  dataset_ids = dir("data"),
+  method = "base",
+  template = select_pipeline_template(method)
 )
 }
 \arguments{
-\item{template}{Template used to build}
-
-\item{path}{Path to folder with data}
-
 \item{dataset_ids}{`dataset_id`'s to include; by default includes all}
+
+\item{method}{Approach to use in build}
+
+\item{template}{Template used to build}
 }
 \value{
 Updated `remake.yml` file
