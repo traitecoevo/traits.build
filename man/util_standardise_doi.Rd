@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{util_standardise_doi}
 \alias{util_standardise_doi}
-\title{Standarise doi into form https://doi.org/XXX}
+\title{Standardise doi}
 \usage{
 util_standardise_doi(doi)
 }
@@ -10,5 +10,5 @@ util_standardise_doi(doi)
 \item{doi}{doi of reference to add}
 }
 \description{
-Standarise doi into form https://doi.org/XXX
+Standardise doi
 }

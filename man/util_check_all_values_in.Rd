@@ -7,14 +7,14 @@
 util_check_all_values_in(x, y, sep = " ")
 }
 \arguments{
-\item{x}{vector}
+\item{x}{Vector}
 
-\item{y}{vector}
+\item{y}{Vector}
 
-\item{sep}{amount of space separating values to be split, default = " " (a single space)}
+\item{sep}{Amount of space separating values to be split, default = " " (a single space)}
 }
 \value{
-vector of logical values
+Vector of logical values
 }
 \description{
 `util_check_all_values_in` checks if values in vector x are in y. Values in x may

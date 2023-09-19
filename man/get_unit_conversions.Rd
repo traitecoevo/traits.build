@@ -7,10 +7,10 @@
 get_unit_conversions(filename)
 }
 \arguments{
-\item{filename}{name of file containing unit conversions}
+\item{filename}{Name of file containing unit conversions}
 }
 \value{
-list of conversion functions
+List of conversion functions
 }
 \description{
 Make unit conversion functions

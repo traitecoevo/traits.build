@@ -7,18 +7,22 @@
 metadata_create_template(
   dataset_id,
   path = file.path("data", dataset_id),
-  skip_manual = FALSE
+  skip_manual = FALSE,
+  user_responses = NULL
 )
 }
 \arguments{
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the database}
 
-\item{path}{location of file where output is saved}
+\item{path}{Location of file where output is saved}
 
-\item{skip_manual}{allows skipping of manual selection of variables, default = FALSE}
+\item{skip_manual}{Allows skipping of manual selection of variables, default = FALSE}
+
+\item{user_responses}{Named list containing simulated user input for manual selection
+of variables, mainly for testing purposes}
 }
 \value{
-a yml file template for metadata
+A yaml file template for metadata
 }
 \description{
 Includes place-holders for major sections of the metadata

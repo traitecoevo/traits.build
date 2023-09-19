@@ -7,13 +7,13 @@
 metadata_user_select_column(column, choices)
 }
 \arguments{
-\item{column}{name of the variable of interest}
+\item{column}{Name of the variable of interest}
 
-\item{choices}{the options that can be selected from}
+\item{choices}{The options that can be selected from}
 }
 \description{
-`metadata_user_select_column` is used to select which columns in a dataframe/ tibble 
-corresponds to the variable of interest. It is used compile the metadata yaml
-file by prompting the user to choose the relevant columns. It is used in 
-`metadata_add_locations` and `metadata_add_contexts` and `metadata_create_template`
+`metadata_user_select_column` is used to select which columns in a dataframe/tibble
+corresponds to the variable of interest. It is used to compile the metadata yaml
+file by prompting the user to choose the relevant columns. It is used in
+`metadata_add_locations` and `metadata_create_template`.
 }

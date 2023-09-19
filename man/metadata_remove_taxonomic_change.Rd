@@ -2,20 +2,18 @@
 % Please edit documentation in R/setup.R
 \name{metadata_remove_taxonomic_change}
 \alias{metadata_remove_taxonomic_change}
-\title{Remove a taxonomic change from a yaml file for a dataset_id}
+\title{Remove a taxonomic change from a yaml file for a `dataset_id`}
 \usage{
-metadata_remove_taxonomic_change(dataset_id, find, replace = NULL)
+metadata_remove_taxonomic_change(dataset_id, find)
 }
 \arguments{
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the database}
 
-\item{find}{taxonomic name to find}
-
-\item{replace}{taxonomic name to replace with}
+\item{find}{Taxonomic name to find}
 }
 \value{
-yml file with a taxonomic change removed
+`metadata.yml` file with a taxonomic change removed
 }
 \description{
-Remove a taxonomic change from a yaml file for a dataset_id
+Remove a taxonomic change from a yaml file for a `dataset_id`
 }

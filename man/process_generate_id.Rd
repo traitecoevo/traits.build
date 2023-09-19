@@ -2,7 +2,7 @@
 % Please edit documentation in R/process.R
 \name{process_generate_id}
 \alias{process_generate_id}
-\title{Function to generate seuqnece of integer ids from vector of names
+\title{Function to generate sequence of integer ids from vector of names
 Determines number of 00s needed based on number of records}
 \usage{
 process_generate_id(x, prefix, sort = FALSE)
@@ -18,6 +18,6 @@ process_generate_id(x, prefix, sort = FALSE)
 vector of ids
 }
 \description{
-Function to generate seuqnece of integer ids from vector of names
+Function to generate sequence of integer ids from vector of names
 Determines number of 00s needed based on number of records
 }

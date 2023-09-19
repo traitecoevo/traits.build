@@ -47,10 +47,10 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
 
   if (overwrite || !file.exists(output_html)) {
 
-    cat(sprintf("Building report for %s ", dataset_id))
+    message(sprintf("Building report for %s ", dataset_id))
 
     # Create a new Rmd file with name embedded in title
-    x <- readLines(input_file)
+    x <- readLines(input_file, encoding = "UTF-8")
     x[2] <- sprintf("title: Report on study `%s` from", dataset_id)
     writeLines(x, input_Rmd)
 
@@ -73,9 +73,9 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
     # Remove temporary Rmd
     if (!keep)
       unlink(input_Rmd)
-    cat(" -> ", output_html, "\n")
+    message(" -> ", output_html, "\n")
   } else {
-    cat(sprintf("Report for %s already exists -> %s\n", dataset_id, output_html))
+    message(sprintf(red("Report for %s") %+% red(" already exists -> %s\n"), blue(dataset_id), blue(output_html)))
   }
 
 }

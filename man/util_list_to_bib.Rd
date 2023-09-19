@@ -7,7 +7,7 @@
 util_list_to_bib(ref)
 }
 \arguments{
-\item{ref}{list of elements for a reference}
+\item{ref}{List of elements for a reference}
 }
 \value{
 BibEntry object

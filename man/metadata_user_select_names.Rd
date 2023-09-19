@@ -7,12 +7,12 @@
 metadata_user_select_names(title, vars)
 }
 \arguments{
-\item{title}{character string providing the instruction for the user}
+\item{title}{Character string providing the instruction for the user}
 
-\item{vars}{variable names}
+\item{vars}{Variable names}
 }
 \description{
-`user_select names` is used to prompt the user to select the variables that 
+`metadata_user_select_names` is used to prompt the user to select the variables that
 are relevant for compiling the metadata yaml file. It is currently used for
-`metadata_add_traits`, `metadata_add_locations` and `metadata_add_contexts`
+`metadata_add_traits`, `metadata_add_locations` and `metadata_add_contexts`.
 }

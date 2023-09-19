@@ -4,15 +4,18 @@
 \alias{metadata_add_traits}
 \title{For specified `dataset_id`, populate columns for traits into metadata}
 \usage{
-metadata_add_traits(dataset_id)
+metadata_add_traits(dataset_id, user_responses = NULL)
 }
 \arguments{
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the database}
+
+\item{user_responses}{Named list containing simulated user input for manual selection
+of variables, mainly for testing purposes}
 }
 \description{
-This functions asks users which traits they would like to keep, and adds a template 
+This function asks users which traits they would like to keep, and adds a template
 for those traits in the metadata. This template must then be finished manually.
 }
 \details{
-Can also be used to add a trait to an existing metadata file
+Can also be used to add a trait to an existing metadata file.
 }

@@ -7,11 +7,11 @@
 process_standardise_names(x)
 }
 \arguments{
-\item{x}{vector, dataframe or list containing original species names}
+\item{x}{Vector, dataframe or list containing original species names}
 }
 \value{
-vector with standardised species names
+Vector with standardised species names
 }
 \description{
-Enforces some standards on species names
+Enforces some standards on species names.
 }

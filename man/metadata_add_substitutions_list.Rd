@@ -7,12 +7,12 @@
 metadata_add_substitutions_list(dataset_id, substitutions)
 }
 \arguments{
-\item{dataset_id}{identifier for a particular study in the AusTraits database}
+\item{dataset_id}{Identifier for a particular study in the database}
 
-\item{substitutions}{dataframe of trait value substitutions}
+\item{substitutions}{Dataframe of trait value substitutions}
 }
 \value{
-yml file with multiple trait value substitutions added
+`metadata.yml` file with multiple trait value substitutions added
 }
 \description{
 Add a dataframe of trait value substitutions into a metadata file for a dataset_id

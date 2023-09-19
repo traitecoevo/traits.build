@@ -7,14 +7,14 @@
 util_extract_list_element(i, my_list, var)
 }
 \arguments{
-\item{i}{a value within the definitions$traits$elements list which refers to types of traits}
+\item{i}{A value within the definitions$traits$elements list which refers to types of traits}
 
-\item{my_list}{the list that contains the element we're interested in (i.e. definitions$traits$elements)}
+\item{my_list}{The list that contains the element we're interested in (i.e. definitions$traits$elements)}
 
-\item{var}{the type of variable of a trait}
+\item{var}{The type of variable of a trait}
 }
 \value{
-the element/properties of a trait
+The element/properties of a trait
 }
 \description{
 Extract a trait element from the definitions$traits$elements

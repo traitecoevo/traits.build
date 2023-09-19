@@ -7,14 +7,14 @@
 process_convert_units(data, definitions, unit_conversion_functions)
 }
 \arguments{
-\item{data}{tibble or dataframe containing the study data}
+\item{data}{Tibble or dataframe containing the study data}
 
-\item{definitions}{definitions read in from the traits.yml file in the config folder}
+\item{definitions}{Definitions read in from the `traits.yml` file in the config folder}
 
-\item{unit_conversion_functions}{unit_conversions.csv file stored in the config folder}
+\item{unit_conversion_functions}{`unit_conversions.csv` file stored in the config folder}
 }
 \value{
-tibble with converted units
+Tibble with converted units
 }
 \description{
 Convert units to desired type

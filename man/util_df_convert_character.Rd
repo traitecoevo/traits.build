@@ -7,14 +7,14 @@
 util_df_convert_character(df)
 }
 \arguments{
-\item{df}{a dataframe}
+\item{df}{A dataframe}
 }
 \value{
-a dataframe
+A dataframe
 }
 \description{
 Convert all columns in data frame to character
 }
 \examples{
-lapply(traits.build:::util_df_convert_character(iris), class) 
+lapply(traits.build:::util_df_convert_character(dplyr::starwars), class)
 }

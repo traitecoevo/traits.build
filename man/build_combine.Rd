@@ -7,14 +7,14 @@
 build_combine(..., d = list(...))
 }
 \arguments{
-\item{...}{arguments passed to other functions}
+\item{...}{Arguments passed to other functions}
 
-\item{d}{list of all the AusTraits studies}
+\item{d}{List of all the AusTraits studies}
 }
 \value{
 AusTraits compilation database as a large list
 }
 \description{
 `build_combine` compiles all the loaded studies into a single AusTraits
-database object as a large list
+database object as a large list.
 }
