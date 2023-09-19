@@ -186,7 +186,7 @@ traits:
     published (Osunkoya et al. 1994; Grubb et al. 1998) and unpublished (P. Juniper,
     CSIRO Atherton) sources.
 - var_in: seed_dry_mass
-  unit_in: mg
+  unit_in: seed_dry_mass_units
   trait_name: seed_dry_mass
   value_type: bin
   replicates: '10'
@@ -456,13 +456,18 @@ traits:
   basis_of_value: expert_score
   methods: Made up growth form values.
   replicates: .na
+- var_in: leaf_length
+  unit_in: leaf_length_units
+  trait_name: leaf_length
+  entity_type: individual
+  methods: Made up leaf length values to test reading in units from a column.
 substitutions:
 - trait_name: plant_growth_form
   find: herbs
   replace: herb
-- trait_name: seed_dry_mass
-  find: 1--2
-  replace: 10--20
+- trait_name: flowering_time
+  find: summer
+  replace: yynnnnnnnnny
 taxonomic_updates:
 - find: Homalanthus novoguineensis
   replace: Homalanthus novo-guineensis
