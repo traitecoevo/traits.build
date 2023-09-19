@@ -14,7 +14,7 @@ unit_conversions <- get_unit_conversions("config/unit_conversions.csv")
 taxon_list <- read_csv_char("config/taxon_list.csv")
 
 # Build sources
-dataset_ids <- {{dataset_ids_vector}}[1:20]
+dataset_ids <- {{dataset_ids_vector}}
 
 f <- function(dataset_id) {
   file_metadata <- file.path("data", dataset_id, "metadata.yml")
