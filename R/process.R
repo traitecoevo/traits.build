@@ -399,9 +399,8 @@ process_create_observation_id <- function(data, metadata) {
     dplyr::mutate(individual_id = .data$ind_id_segment, check_for_ind = NA)
 
 
-  ## Create observation_id  for a collection of measurements made on an entity
+  ## Create observation_id for a single set of trait measurements made on an entity
   #  (where an entity can be an individual, population, or taxon)
-  #   at a single point in time
 
   i <- !is.na(data$value)
   data[i,] <-
@@ -413,11 +412,10 @@ process_create_observation_id <- function(data, metadata) {
         process_generate_id("", sort = TRUE)
     ) %>%
     dplyr::ungroup()
-  
-  ## Create repeat_measurements_id  for datasets where there are multiple measurements per observation, such as response curve data
-  #  (where an entity can be an individual, population, or taxon)
-  #   at a single point in time
-  
+
+  ## Create repeat_measurements_id for datasets where there are multiple measurements per observation,
+  #  such as response curve data (where an entity can be an individual, population, or taxon)
+
     i <- !is.na(data$value) & !is.na(data$repeat_measurements_id)
 
     data[i,] <-

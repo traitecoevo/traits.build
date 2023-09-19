@@ -172,4 +172,6 @@ testthat::test_that("Test Dataset 4 builds correctly", {
   # Expected output
   #dataset_test("Test_2023_7", path_data = "examples")
 
+  # Test `pivot_wider`
+
 #})

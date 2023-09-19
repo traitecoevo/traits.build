@@ -373,9 +373,9 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
       `description` = NA_character_,
       )
   }
-  
+
   metadata$locations <- location_data %>%
-    dplyr::select(-dplyr::any_of("location_name")) %>%  
+    dplyr::select(-dplyr::any_of("location_name")) %>%
     split(location_data[[location_name]]) %>%
     lapply(as.list)
 
@@ -389,11 +389,11 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
       blue(dataset_id %>% metadata_path_dataset_id())
     )
   )
-  
+
   if (nrow(location_data) != length(unique(location_data[[location_name]]))) {
   message(
     sprintf(
-      red("WARNING: The number of unique location names (%s), is less than the number rows of location data to add (%s). ") %+% 
+      red("WARNING: The number of unique location names (%s), is less than the number rows of location data to add (%s). ") %+%
         red("Manual editing is REQUIRED in %s to ensure each location has a single value for each location property."),
       blue(length(unique(location_data[[location_name]]))),
       blue(nrow(location_data)),

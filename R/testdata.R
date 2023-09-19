@@ -731,7 +731,7 @@ dataset_test_worker <-
           get_schema("config/metadata.yml",  "metadata"),
           read_csv_char("config/taxon_list.csv")
         ), info = sprintf(" - cannot build %s", dataset_id))
-        
+
         # Check that special characters do not make it into the data
         expect_no_error(
           parsed_data <- data %>%
@@ -752,7 +752,7 @@ dataset_test_worker <-
             "temporal_id", "method_id", "method_context_id", "entity_context_id", "original_name"))
           ) %>%
           pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
-          pivot_longer(cols = 16:ncol(.)) %>%
+          pivot_longer(cols = 17:ncol(.)) %>%
           rename(all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
           select(
             all_of(c("dataset_id", "taxon_name", "trait_name", "number_of_duplicates", "observation_id",
