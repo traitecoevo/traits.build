@@ -39,17 +39,16 @@ testthat::test_that("Test Dataset 1 builds correctly", {
   Test_2023_1$traits <-
     Test_2023_1$traits %>%
     mutate(across(
-      c(temporal_id, entity_context_id, plot_id, treatment_id, method_id),
+      c(temporal_id, entity_context_id, plot_id, treatment_id, method_context_id),
       ~if_else(.x == "NA", NA_character_, .x)
     ))
-  names(Test_2023_1$locations$value) <- NULL
   Test_2023_1$methods <-
     Test_2023_1$methods %>%
     mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
   Test_2023_1$excluded_data <-
     Test_2023_1$excluded_data %>%
     mutate(across(
-      c(temporal_id, entity_context_id, plot_id, treatment_id, method_id),
+      c(temporal_id, entity_context_id, plot_id, treatment_id, method_context_id),
       ~if_else(.x == "NA", NA_character_, .x)
     ))
 
@@ -93,7 +92,6 @@ testthat::test_that("Test Dataset 2 builds correctly", {
   Test_2023_2$traits <-
     Test_2023_2$traits %>%
     mutate(across(dplyr::all_of(columns), as.character))
-  names(Test_2023_2$locations$value) <- NULL
   Test_2023_2$methods <-
     Test_2023_2$methods %>%
     mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
@@ -141,11 +139,6 @@ testthat::test_that("Test Dataset 4 builds correctly", {
   Test_2023_4$traits <-
     Test_2023_4$traits %>%
     mutate(across(dplyr::all_of(columns), as.character))
-  names(Test_2023_4$locations$value) <- NULL
-  names(Test_2023_4$traits$entity_type) <- NULL
-  names(Test_2023_4$traits$value_type) <- NULL
-  names(Test_2023_4$excluded_data$entity_type) <- NULL
-  names(Test_2023_4$excluded_data$value_type) <- NULL
   Test_2023_4$methods <-
     Test_2023_4$methods %>%
     mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
@@ -160,12 +153,21 @@ testthat::test_that("Test Dataset 4 builds correctly", {
 
 })
 
+# Add Test_2023_4
+
 #testthat::test_that("`dataset_test` works properly for Test Dataset 7", {
 
   # Test Dataset 7: Test_2023_7
   # See README.md in examples/Test_2023_7 for details about this dataset
 
   # Build dataset
+  #expect_no_error(
+  #  Test_2023_7 <- test_build_dataset(
+  #    file.path(examples_dir, "Test_2023_7/metadata.yml"),
+  #    file.path(examples_dir, "Test_2023_7/data.csv"),
+  #    "Test Dataset 7", definitions, unit_conversions, schema, resource_metadata, taxon_list
+  #  ),
+  #  info = "Building Test Dataset 7")
 
   # Expected output
   #dataset_test("Test_2023_7", path_data = "examples")

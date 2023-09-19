@@ -17,5 +17,7 @@ Test_2023_4 is a copy of NHNSW_2023 with the following modifications:
 - Added `collection_date` as location-level metadata (set as NA at dataset level because otherwise `custom_R_code` won't be detected correctly -- see `read_metadata` function)
 - Added `source_id` column (with NAs)
 - Added two made-up locations
+- Removed trait-level `unit_in` for `fruit_colour` and `fruit_length` and instead read their units in from a column at the dataset level
+- For the other two traits, put `units` column to NA using `custom_R_code` to test that units are read in at the trait level while they are NA in the column at the dataset level
 
 See output/ for expected output files.

@@ -50,7 +50,7 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
     message(sprintf("Building report for %s ", dataset_id))
 
     # Create a new Rmd file with name embedded in title
-    x <- readLines(input_file)
+    x <- readLines(input_file, encoding = "UTF-8")
     x[2] <- sprintf("title: Report on study `%s` from", dataset_id)
     writeLines(x, input_Rmd)
 

@@ -82,7 +82,8 @@ dataset:
         entity_measured = ifelse(category %in% c("ray_achenes"), "ray_achenes", entity_measured),
         entity_measured = ifelse(category %in% c("valve", "valves"), "valve", entity_measured),
         entity_measured = ifelse(category %in% c("pappus"), "pappus", entity_measured),
-        entity_measured = ifelse(category %in% c("capsule", "silicula", "nut", "utricles", "pyrenes", "berry", "achenes"), "fruit", entity_measured)
+        entity_measured = ifelse(category %in% c("capsule", "silicula", "nut", "utricles", "pyrenes", "berry", "achenes"), "fruit", entity_measured),
+        units = ifelse(trait_name == "fruit_width", NA_character_, units)
       ) %>%
       arrange(category) %>%
       distinct(source, taxon_name, trait_name, trait_value, units, value_type, inferred, .keep_all = TRUE) %>%
@@ -100,6 +101,7 @@ dataset:
   entity_type: test_entity_type
   basis_of_value: unknown
   source_id: source_id
+  unit_in: units
   description: Plant growth form data extracted from the NT Flora Online
   life_stage: seedling
   replicates: 1
@@ -140,7 +142,7 @@ locations:
     collection_date: '2021'
 contexts:
 - context_property: trait scoring method
-  category: method
+  category: method_context
   var_in: inferred
   values:
   - value: scored from text
@@ -195,7 +197,6 @@ contexts:
   - value: 2
 traits:
 - var_in: fruit_colour
-  unit_in: .na
   trait_name: fruit_colour
   replicates: .na
   methods: When specified in the taxon description, only the colours of the fruit
@@ -211,7 +212,6 @@ traits:
   basis_of_record: test_basis_of_record
   life_stage: adult
 - var_in: fruit_length
-  unit_in: mm
   trait_name: fruit_length
   entity_type: species
   methods: The term used to describe the fruit length was stored  as a measurement
