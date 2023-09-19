@@ -373,9 +373,9 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
       `description` = NA_character_,
       )
   }
-  
+
   metadata$locations <- location_data %>%
-    dplyr::select(-dplyr::any_of("location_name")) %>%  
+    dplyr::select(-dplyr::any_of("location_name")) %>%
     split(location_data[[location_name]]) %>%
     lapply(as.list)
 
@@ -389,11 +389,11 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
       blue(dataset_id %>% metadata_path_dataset_id())
     )
   )
-  
+
   if (nrow(location_data) != length(unique(location_data[[location_name]]))) {
   message(
     sprintf(
-      red("WARNING: The number of unique location names (%s), is less than the number rows of location data to add (%s). ") %+% 
+      red("WARNING: The number of unique location names (%s), is less than the number rows of location data to add (%s). ") %+%
         red("Manual editing is REQUIRED in %s to ensure each location has a single value for each location property."),
       blue(length(unique(location_data[[location_name]]))),
       blue(nrow(location_data)),
@@ -1130,7 +1130,7 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' studies.
 #'
 #' @param dataset_ids `dataset_id`'s to include; by default includes all
-#' @param method approach to use in build
+#' @param method Approach to use in build
 #' @param template Template used to build
 #'
 #' @return Updated `remake.yml` file
@@ -1139,7 +1139,7 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
                                  method = "base",
                                  template = select_pipeline_template(method)
                                  ) {
-  
+
   if (!method %in% c("base", "remake", "furrr")) {
     stop(sprintf("Invalid method selected in `build_setup_pipeline`: %s", method))
   }
@@ -1149,7 +1149,7 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
   if (!file.exists(path)) {
     stop("cannot find data directory: ", path)
   }
-  
+
   # Check directories have both files
   has_both_files <-
     sapply(
@@ -1163,13 +1163,13 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 
   vals <- list(
     dataset_ids = whisker::iteratelist(dataset_ids, value = "dataset_id"),
-    dataset_ids_vector = 
+    dataset_ids_vector =
       sprintf("c(%s)", sprintf("'%s'", dataset_ids) %>% paste(collapse = ", ")),
     path = path
     )
 
-  # setup pipeline based on selected method for building
-  pipieline <- whisker::whisker.render(template, data =  vals)
+  # Setup pipeline based on selected method for building
+  pipieline <- whisker::whisker.render(template, data = vals)
 
   if (method %in% c("base", "furrr")) {
     writeLines(pipieline, "build.R")
@@ -1213,15 +1213,15 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 
 
 select_pipeline_template <- function(method) {
-  
+
   file <-
   switch(method,
-    base  = "build_base.whisker",
+    base = "build_base.whisker",
     remake = "build_remake.whisker",
     furrr = "build_furrr.whisker",
-    default  = "build_base.whisker"
+    default = "build_base.whisker"
   )
-  
+
   readLines(system.file("support", file, package = "traits.build"))
 }
 

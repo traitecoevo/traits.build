@@ -68,7 +68,7 @@ dataset_configure <- function(
 #' @param filename_data_raw Raw `data.csv` file for any given study
 #' @param config_for_dataset Config settings generated from `dataset_configure()`
 #' @param schema Schema for traits.build
-#' @param resource_metadata metadata for the compilation
+#' @param resource_metadata Metadata for the compilation
 #' @param filter_missing_values Default filters missing values from the excluded data table;
 #' change to false to see the rows with missing values.
 #'
@@ -103,7 +103,7 @@ dataset_process <- function(filename_data_raw,
     # Read all columns as character type to prevent time data types from being reformatted
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
-  
+
   # Load and process contextual data
   contexts <-
     metadata$contexts %>%
@@ -243,26 +243,30 @@ dataset_process <- function(filename_data_raw,
 
   # Combine for final output
   list(
-       traits     = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error"))),
-       locations  = locations,
-       contexts   = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
-       methods    = methods,
-       excluded_data = traits %>% dplyr::filter(!is.na(.data$error)) %>%
-              dplyr::select(dplyr::all_of(c("error")), everything()),
-       taxonomic_updates = taxonomic_updates,
-       taxa       = taxonomic_updates %>% dplyr::select(dplyr::all_of(c(taxon_name = "cleaned_name"))) %>% dplyr::distinct(),
-       contributors = contributors,
-       sources    = sources,
-       definitions = definitions,
-       schema = schema,
-       metadata = resource_metadata,
-       build_info = list(session_info = utils::sessionInfo())
+    traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error"))),
+    locations = locations,
+    contexts = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
+    methods = methods,
+    excluded_data = traits %>%
+    dplyr::filter(!is.na(.data$error)) %>%
+    dplyr::select(dplyr::all_of(c("error")), everything()),
+    taxonomic_updates = taxonomic_updates,
+    taxa = taxonomic_updates %>%
+    dplyr::select(dplyr::all_of(c(taxon_name = "cleaned_name"))) %>%
+    dplyr::distinct(),
+    contributors = contributors,
+    sources = sources,
+    definitions = definitions,
+    schema = schema,
+    metadata = resource_metadata,
+    build_info = list(session_info = utils::sessionInfo())
   )
 }
 
-#' Build Dataset
+#' Build dataset
 #'
-#' Build specified dataset. This function completes three steps, which can be excuted speerately if desired: `dataset_configure`, `dataset_process`, `build_update_taxonomy`
+#' Build specified dataset. This function completes three steps, which can be executed separately if desired:
+#' `dataset_configure`, `dataset_process`, `build_update_taxonomy`
 #'
 #' @param filename_metadata Metadata yaml file for a given study
 #' @param filename_data_raw Raw `data.csv` file for any given study
@@ -327,7 +331,7 @@ process_custom_code <- function(txt) {
     function(data) {
       envir = new.env()
 
-      # read in extra functions used in custom R code
+      # Read in extra functions used in custom R code
       if(file.exists("R/custom_R_code.R")) {
         source("R/custom_R_code.R", local = envir)
       }
@@ -533,7 +537,7 @@ process_generate_method_ids <- function(metadata_traits) {
 process_format_contexts <- function(my_list, dataset_id, traits) {
 
   process_content_worker <- function(x, id, traits) {
-    
+
     vars <- c(
       "dataset_id", "context_property", "category", "var_in",
       "find", "value", "description"
