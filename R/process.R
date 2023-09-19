@@ -69,9 +69,10 @@ dataset_configure <- function(
 #' @examples
 #' \dontrun{
 #' dataset_process("data/Falster_2003/data.csv", dataset_configure("data/Falster_2003/metadata.yml",
-#' read_yaml("config/traits.yml"), get_unit_conversions("config/unit_conversions.csv")),
+#' read_yaml("config/traits.yml")),
 #' get_schema(),
-#' get_schema("config/metadata.yml", "metadata"))
+#' get_schema("config/metadata.yml", "metadata"),
+#' get_unit_conversions("config/unit_conversions.csv"))
 #' }
 dataset_process <- function(filename_data_raw,
                             config_for_dataset,
@@ -292,8 +293,8 @@ dataset_build <- function(
     resource_metadata,
     taxon_list,
     filter_missing_values = TRUE) {
-  dataset_config <- dataset_configure(filename_metadata, definitions, unit_conversions)
-  dataset_raw <- dataset_process(filename_data_raw, dataset_config, schema, resource_metadata, filter_missing_values = filter_missing_values)
+  dataset_config <- dataset_configure(filename_metadata, definitions)
+  dataset_raw <- dataset_process(filename_data_raw, dataset_config, schema, resource_metadata, unit_conversions, filter_missing_values = filter_missing_values)
   dataset <- build_update_taxonomy(dataset_raw, taxon_list)
 
   dataset
