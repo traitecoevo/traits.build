@@ -112,12 +112,6 @@ dataset_process <- function(filename_data_raw,
         "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
     )
 
-  if (!"repeat_measurements_id" %in% names(traits)) {
-    traits <-
-      traits %>%
-        mutate(repeat_measurements_id = NA)
-  }
-
   traits <- traits %>%
     mutate(unit = ifelse(!is.na(unit_in), unit_in, unit)) %>%
     process_flag_unsupported_traits(definitions) %>%
@@ -126,7 +120,7 @@ dataset_process <- function(filename_data_raw,
     process_flag_unsupported_values(definitions) %>%
     process_convert_units(definitions, unit_conversion_functions) %>%
     process_flag_out_of_range_values(definitions) %>%
-    process_create_observation_id() %>%
+    process_create_observation_id(metadata) %>%
     process_taxonomic_updates(metadata) %>%
     # Sorting of data
     dplyr::mutate(
@@ -325,7 +319,7 @@ process_create_observation_id <- function(data, metadata) {
          !is.na(.data$treatment_id) |
          !is.na(.data$plot_id)) &
          .data$entity_type %in% c("individual", "population", "metapopulation"),
-         process_generate_id(.data$population_id, "", sort = TRUE),
+         process_generate_id(.data$population_id, ""),
          NA),
       pop_id_segment = ifelse(is.na(.data$pop_id_segment) &
                               .data$entity_type %in% c("individual", "population", "metapopulation"),
@@ -342,10 +336,10 @@ process_create_observation_id <- function(data, metadata) {
 
   # There are 3 circumstances:
 
-  # 1. There is a `individual_id` column read in through metadata$data
+  # 1. There is an `individual_id` column read in through metadata$data
   #     and `parsing_id` is equivalent to `individual_id`
   # 2. There is only a single observation for each individual,
-  #     and therefore parsing_id values assigned based upon row number
+  #     and therefore `parsing_id` values assigned based upon row number
   #     correctly identifies an individual. This includes instances where
   #     there is a `temporal context`, but different individuals were
   #     measured each time.
@@ -356,8 +350,8 @@ process_create_observation_id <- function(data, metadata) {
   # For datasets where an individual_id is not assigned via metadata$dataset
   if (all(is.na(data[["individual_id"]]))) {
 
-  # Check which rows of data include individual-level measurements
-  # (based on entity type)
+    # Check which rows of data include individual-level measurements
+    # (based on entity type)
     has_ind_value <-
       data %>%
         dplyr::filter(!is.na(.data$value)) %>%
@@ -375,6 +369,7 @@ process_create_observation_id <- function(data, metadata) {
       data %>%
       dplyr::left_join(has_ind_value, by = "parsing_id") %>%
       dplyr::mutate(individual_id = ifelse(.data$check_for_ind == TRUE, .data$parsing_id, NA))
+
   }
 
   # Create final individual_id within each species and population
@@ -416,19 +411,25 @@ process_create_observation_id <- function(data, metadata) {
   ## Create repeat_measurements_id for datasets where there are multiple measurements per observation,
   #  such as response curve data (where an entity can be an individual, population, or taxon)
 
-    i <- !is.na(data$value) & !is.na(data$repeat_measurements_id)
+  if (!is.null(metadata[["dataset"]][["repeat_measurements_id"]])) {
 
-    data[i,] <-
-      data[i,] %>%
-      dplyr::group_by(.data$dataset_id, .data$observation_id) %>%
-      dplyr::mutate(
-        repeat_measurements_id = row_number() %>%
-          process_generate_id("", sort = FALSE)
-      ) %>%
-      dplyr::ungroup()
+    if (metadata[["dataset"]][["repeat_measurements_id"]] == TRUE) {
 
-  data %>%
-    dplyr::select(-dplyr::all_of(c("check_for_ind")))
+      i <- !is.na(data$value)
+
+      data[i,] <-
+        data[i,] %>%
+        dplyr::group_by(.data$dataset_id, .data$observation_id) %>%
+        dplyr::mutate(
+          repeat_measurements_id = row_number() %>% process_generate_id("", sort = TRUE)
+        ) %>%
+        dplyr::ungroup()
+    }
+
+  }
+
+  data %>% dplyr::select(-dplyr::all_of(c("check_for_ind")))
+
 }
 
 #' Function to generate sequence of integer ids from vector of names
@@ -1147,9 +1148,9 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   v <- setNames(nm = c("entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_context_id"))
 
   df <- data %>%
-        # Next step selects and renames columns based on named vector
-        dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in))) %>% # Why select v? When would those ids ever be in the data?
-        dplyr::mutate(dataset_id = dataset_id)
+    # Next step selects and renames columns based on named vector
+    dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in))) %>% # Why select v? When would those ids ever be in the data?
+    dplyr::mutate(dataset_id = dataset_id)
 
   # Step 1b. Import any values that aren't columns of data
   vars <- c("entity_type", "value_type", "basis_of_value",
@@ -1182,17 +1183,17 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   # just as would occur if no `individual_id` column is specified
 
       if (!is.null(df[["individual_id"]])) {
-        df[["parsing_id"]] <- df[["individual_id"]]
 
+        df[["parsing_id"]] <- df[["individual_id"]]
         prefix <- dataset_id
 
         df <- df %>%
-                  dplyr::mutate(
-                    parsing_id = ifelse(is.na(.data$parsing_id),
-                                paste("temp", dplyr::row_number(), sep = "_"), .data$parsing_id) %>%
-                                as.character() %>%
-                                process_generate_id(prefix)
-                  )
+          dplyr::mutate(
+            parsing_id = ifelse(
+              is.na(.data$parsing_id),
+              paste("temp", dplyr::row_number(), sep = "_"),
+              .data$parsing_id) %>% as.character() %>% process_generate_id(prefix)
+          )
 
       # If an `individual_id` column IS NOT read in through metadata$dataset,
       # row_numbers are assumed to represent unique `entities`
@@ -1201,10 +1202,10 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
       } else {
 
         df <- df %>%
-                  dplyr::mutate(
-                          row_numbers = dplyr::row_number(),
-                          parsing_id = process_generate_id(.data$row_numbers, dataset_id)
-                        )
+          dplyr::mutate(
+            row_numbers = dplyr::row_number(),
+            parsing_id = process_generate_id(.data$row_numbers, dataset_id)
+          )
       }
 
   } else {
@@ -1231,9 +1232,9 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
 
   df <- df %>%
-            dplyr::mutate(
-              parsing_id = as.character(.data$parsing_id)
-            )
+    dplyr::mutate(
+      parsing_id = as.character(.data$parsing_id)
+    )
 
 
   # Step 2. Add trait information, with correct names
@@ -1249,7 +1250,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
     stop(paste(dataset_id, ": missing traits: ", setdiff(traits_table[["var_in"]], colnames(data))))
   }
 
-  # I'm confused why contexts$var_in is added in here (also should be unique()?), instead of just vars
+  # Sophie - I'm confused why contexts$var_in is added in here (also should be unique()?), instead of just vars
   vars_traits <- c(vars, contexts$var_in)
 
   not_allowed <- c(
@@ -1478,14 +1479,15 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
       metadata$dataset %>%
         util_list_to_df1() %>%
         tidyr::spread(.data$key, .data$value) %>%
-        dplyr::select(dplyr::any_of(names(metadata$dataset))) %>%
         dplyr::mutate(dataset_id = dataset_id) %>%
-        dplyr::select(-dplyr::any_of(c("original_file", "notes", "data_is_long_format", "taxon_name",
-                                         "trait_name", "population_id", "individual_id", "value_type",
-                                         "location_name", "source_id", "value", "entity_type",
-                                         "collection_date", "custom_R_code", "replicates", "measurement_remarks",
-                                         "taxon_name", "basis_of_value", "basis_of_record", "life_stage", "value_type", "unit_in")))
-      )  %>%
+        dplyr::select(
+          -dplyr::any_of(
+            c("original_file", "notes", "data_is_long_format", "taxon_name", "trait_name",
+              "population_id", "individual_id", "repeat_measurements_id", "value_type",
+              "location_name", "source_id", "value", "entity_type", "collection_date",
+              "custom_R_code", "replicates", "measurement_remarks", "taxon_name", "basis_of_value",
+              "basis_of_record", "life_stage", "value_type", "unit_in")))
+      ) %>%
       full_join(by = "dataset_id",
       # References
         tibble::tibble(
