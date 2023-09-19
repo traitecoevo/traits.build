@@ -1489,7 +1489,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
       data_collectors = collectors_tmp,
       assistants = ifelse(is.null(metadata$contributors$assistants), NA_character_,
                                       metadata$contributors$assistants),
-      austraits_curators = metadata$contributors$austraits_curators
+      dataset_curators = metadata$contributors$dataset_curators
       )
 
   methods
