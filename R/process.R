@@ -1112,6 +1112,7 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' @param dataset_id Identifier for a particular study in the AusTraits database
 #' @param metadata Yaml file with metadata
 #' @param contexts Dataframe of contexts for this study
+#' @param schema Schema for traits.build
 #' @return Tibble in long format with AusTraits formatted trait names, trait
 #' substitutions and unique observation id added
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols

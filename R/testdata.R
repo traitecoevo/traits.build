@@ -453,7 +453,7 @@ dataset_test_worker <-
         }
 
         # Contexts
-        filename_data <- paste0("data/", dataset_id, "/data.csv")
+        filename_data <- paste0(path_data, "/", dataset_id, "/data.csv")
 
         traits <-
           # Read all columns as character type to prevent time data types from being reformatted
@@ -731,12 +731,12 @@ dataset_test_worker <-
           get_schema("config/metadata.yml",  "metadata"),
           read_csv_char("config/taxon_list.csv")
         ), info = sprintf(" - cannot build %s", dataset_id))
-        
+
         # Check that special characters do not make it into the data
         expect_no_error(
           parsed_data <- data %>%
             process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
-            process_parse_data(dataset_id, metadata, contexts),
+            process_parse_data(dataset_id, metadata, contexts, schema),
           info = "`process_parse_data`")
 
         expect_allowed_text(
