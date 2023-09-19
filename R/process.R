@@ -1235,10 +1235,6 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   # I'm confused why contexts$var_in is added in here (also should be unique()?), instead of just vars
   vars_traits <- c(vars, contexts$var_in)
 
-  not_allowed <- c(
-    schema[["entity_type"]][["values"]] %>% names(),
-    schema[["value_type"]][["values"]] %>% names()
-  )
   ## If needed, change from wide to long format
 
   if (!data_is_long_format) {
