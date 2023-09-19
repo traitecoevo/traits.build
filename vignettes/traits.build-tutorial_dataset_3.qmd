@@ -1,5 +1,5 @@
 ---
-title: 'Tutorial for adding dataset: test_dataset_3'
+title: 'Tutorial for adding dataset: tutorial_dataset_3'
 author: "Elizabeth Wenk, Sophie Yang"
 date: "2023-09-16"
 format: 
@@ -28,17 +28,17 @@ Before you begin this tutorial, ensure you have installed traits.build, cloned t
 
 ------------------------------------------------------------------------
 
-## Adding test_dataset_3
+## Adding tutorial_dataset_3
 
 ### Ensure the dataset folder contains the correct data files
 
-In the traits.build-template repository, there is a folder titled `test_dataset_3` within the data folder. 
+In the traits.build-template repository, there is a folder titled `tutorial_dataset_3` within the data folder. 
 
 -   Ensure that this folder exists on your computer. 
 
--   The file `data.csv` exists within the `test_dataset_3` folder. 
+-   The file `data.csv` exists within the `tutorial_dataset_3` folder. 
 
--   There is a folder `raw` nested within the `test_dataset_3` folder, that contains one file, `notes.txt`. 
+-   There is a folder `raw` nested within the `tutorial_dataset_3` folder, that contains one file, `notes.txt`. 
 
 ### source necessary functions
 
@@ -56,7 +56,7 @@ source("R/custom_R_code.R")
 To create the metadata template, run:
 
 ```{r eval=FALSE}
-metadata_create_template("test_dataset_3")
+metadata_create_template("tutorial_dataset_3")
 ```
 
 As with in the previous tutorials, this function leads you through a series of menus requiring user input. Ensure you select:
@@ -79,7 +79,7 @@ In this dataset, unlike the first two, the data being input is at the individual
 This dataset is from a published source and therefore the source information can be added with the function `metadata_add_source_doi`:
 
 ```{r eval=FALSE}
-metadata_add_source_doi(dataset_id = "test_dataset_3", doi = "10.1007/s11104-013-1725-x")
+metadata_add_source_doi(dataset_id = "tutorial_dataset_3", doi = "10.1007/s11104-013-1725-x")
 ```
 
 confirm:
@@ -105,9 +105,9 @@ For instance, for this study:\
 3.  values for these fields must then be filled in manually\
 
 ```{r eval=FALSE}
-data <- read_csv("data/test_dataset_3.csv")
+data <- read_csv("data/tutorial_dataset_3.csv")
 
-metadata_add_locations("test_dataset_3", data)
+metadata_add_locations("tutorial_dataset_3", data)
 ```
 
 You select the location name, but not any location properties, as none are provided in the data.csv file or another tabular format.
@@ -135,7 +135,7 @@ This creates the following scaffold in `methdata.yml`: 
 To select columns in the `data.csv` file that include trait data, run:
 
 ```{r eval=FALSE}
-metadata_add_traits(dataset_id = "test_dataset_3")
+metadata_add_traits(dataset_id = "tutorial_dataset_3")
 ```
 
 Select columns [**5 6 7 8 9 10**]{style="color:red;"}, as these contain trait data.
@@ -167,12 +167,12 @@ Context properties are most frequently included in the `data.csv` file as column
 Context properties that are columns in the data file, can be added with the function `metadata_add_contexts`:
 
 ```{r eval=FALSE}
-metadata_add_contexts("test_dataset_3")
+metadata_add_contexts("tutorial_dataset_3")
 ```
 
 This leads to a user-prompt to select the relevent columns:
 
-[Indicate all columns that contain additional contextual data for test_dataset_3 (by number separated by space; e.g. '1 2 4'):]{style="color:blue;"}\
+[Indicate all columns that contain additional contextual data for tutorial_dataset_3 (by number separated by space; e.g. '1 2 4'):]{style="color:blue;"}\
 
 [1: Species]{style="color:blue;"}\
 [2: Treatment]{style="color:blue;"}\
@@ -256,7 +256,7 @@ contexts:
 To select columns in the `data.csv` file that include trait data, run:
 
 ```{r eval=FALSE}
-metadata_add_traits(dataset_id = "test_dataset_3")
+metadata_add_traits(dataset_id = "tutorial_dataset_3")
 ```
 
 Select columns [**5 6 7 8 9 10**]{style="color:red;"}, as these contain trait data.
@@ -275,15 +275,15 @@ The components of this dataset that can be propagated with functions are not com
 
 #### **Adding contributors**
 
-The file `data/test_dataset_3/raw/test_dataset_3_notes.txt` indicates the main data_contributor for this study.\
+The file `data/tutorial_dataset_3/raw/tutorial_dataset_3_notes.txt` indicates the main data_contributor for this study.\
 
 #### **Dataset fields**
 
-The file `data/test_dataset_3/raw/test_dataset_3_notes.txt` indicates how to fill in the `unknown` dataset fields for this study.
+The file `data/tutorial_dataset_3/raw/tutorial_dataset_3_notes.txt` indicates how to fill in the `unknown` dataset fields for this study.
 
 #### **Trait details** {#complex_units}
 
-The file `data/test_dataset_3/raw/test_dataset_3_notes.txt` indicates how to fill in the `unknown` trait fields for this study, but see below as well.
+The file `data/tutorial_dataset_3/raw/tutorial_dataset_3_notes.txt` indicates how to fill in the `unknown` trait fields for this study, but see below as well.
 
 Remember, the `trait_name` must match a trait concept within the [traits dictionary](https://github.com/traitecoevo/traits.build-template/blob/master/config/traits.yml). For this example:
 
@@ -309,7 +309,7 @@ With the units, note:
 At this point, run the dataset tests and rebuild the dataset:
 
 ```{r eval=FALSE}
-dataset_test("test_dataset_3")
+dataset_test("tutorial_dataset_3")
 
 build_setup_pipeline()
 
@@ -349,7 +349,7 @@ As a final step, build a report for the study
 
 ```{r eval=FALSE}
 traits.build_database$build_info$version <- "4.0.0"  # a fix because the function was built around specific AusTraits versions
-dataset_report("test_dataset_2", traits.build_database, overwrite = TRUE)
+dataset_report("tutorial_dataset_2", traits.build_database, overwrite = TRUE)
 ```
 
 

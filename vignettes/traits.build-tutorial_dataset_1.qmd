@@ -1,5 +1,5 @@
 ---
-title: 'Tutorial for adding dataset: test_dataset_1'
+title: 'Tutorial for adding dataset: tutorial_dataset_1'
 author: "Elizabeth Wenk, Sophie Yang"
 date: "2023-09-16"
 format: 
@@ -36,17 +36,17 @@ Before you begin this tutorial, ensure you have installed traits.build, cloned t
 
 ------------------------------------------------------------------------
 
-## Adding test_dataset_1
+## Adding tutorial_dataset_1
 
 ### Ensure the dataset folder contains the correct data files
 
-In the traits.build-template repository, there is a folder titled `test_dataset_1` within the data folder. 
+In the traits.build-template repository, there is a folder titled `tutorial_dataset_1` within the data folder. 
 
 -   Ensure that this folder exists on your computer. 
 
--   The file `data.csv` exists within the `test_dataset_1` folder. 
+-   The file `data.csv` exists within the `tutorial_dataset_1` folder. 
 
--   There is a folder `raw` nested within the `test_dataset_1` folder, that contains one file, `notes.txt`. 
+-   There is a folder `raw` nested within the `tutorial_dataset_1` folder, that contains one file, `notes.txt`. 
 
 ### source necessary functions
 
@@ -65,7 +65,7 @@ All dataset metadata is documented within a .yml file that also resides within t
 A function quickly creates the skeletal `metadata.yml` file.
 
 ```{r eval=FALSE}
-metadata_create_template("test_dataset_1")
+metadata_create_template("tutorial_dataset_1")
 ```
 
 This function cycles through a series of user-input menus, querying about both the data format (long versus wide) and which columns contain which variables (taxon name, location name, individual identifiers, collection date).\
@@ -159,7 +159,7 @@ A follow-up question then allows you to add a fixed `collection_date` as a range
 This dataset is from a published source with a `doi` and therefore the source information can be added with a single line of code:
 
 ```{r eval=FALSE}
-metadata_add_source_doi(dataset_id = "test_dataset_1", doi = "10.1111/j.0022-0477.2005.00992.x")
+metadata_add_source_doi(dataset_id = "tutorial_dataset_1", doi = "10.1111/j.0022-0477.2005.00992.x")
 ```
 
 The following information is automatically propagated into the source field:
@@ -195,7 +195,7 @@ Location data can be automatically propagated into the metadata file if it is av
 
 ```{r eval=FALSE}
 locations <-
-  read_csv("data/test_dataset_1/data.csv") %>%
+  read_csv("data/tutorial_dataset_1/data.csv") %>%
     select(site, description, `latitude (deg)`, `longitude (deg)`) %>%
     distinct()
 ```
@@ -203,7 +203,7 @@ locations <-
 You can then add this location information directly into the metadata file by running:
 
 ```{r eval=FALSE}
-metadata_add_locations(dataset_id = "test_dataset_1", location_data = locations)
+metadata_add_locations(dataset_id = "tutorial_dataset_1", location_data = locations)
 ```
 
 This leads to the following user prompts:
@@ -219,7 +219,7 @@ This leads to the following user prompts:
 
 Select the same column that you indicated contained `location` names when you created the metadata template.
 
-[Indicate all columns you wish to keep as distinct location_properties in test_dataset_1 (by number separated by space; e.g. '1 2 4'):]{style="color:blue;"}\
+[Indicate all columns you wish to keep as distinct location_properties in tutorial_dataset_1 (by number separated by space; e.g. '1 2 4'):]{style="color:blue;"}\
 
 [1: description]{style="color:blue;"}\
 [2: latitude (deg)]{style="color:blue;"}\
@@ -229,9 +229,9 @@ Select the same column that you indicated contained `location` names when you cr
 
 Select all columns that include `location properties` that should be documented within the `metadata.yml` file. In this case, it is all three columns.
 
-[Following locations added to metadata for test_dataset_1: 'Atherton', 'Cape Tribulation']{style="color:blue;"}\
+[Following locations added to metadata for tutorial_dataset_1: 'Atherton', 'Cape Tribulation']{style="color:blue;"}\
 [with variables 'description', 'latitude (deg)', 'longitude (deg)']{style="color:blue;"}\
-[Please complete information in data/test_dataset_1/metadata.yml]{style="color:blue;"}\
+[Please complete information in data/tutorial_dataset_1/metadata.yml]{style="color:blue;"}\
 
 All available location data has now been automatically added to the `metadata.yml` file.
 
@@ -256,12 +256,12 @@ The next step is to select which columns in the `data.csv` file have trait infor
 The function `metadata_add_traits` automatically adds the trait-scaffold to `metadata.yml`:
 
 ```{r eval=FALSE}
-metadata_add_traits(dataset_id = "test_dataset_1")
+metadata_add_traits(dataset_id = "tutorial_dataset_1")
 ```
 
 The user is prompted to select the columns with trait data.
 
-[Indicate all columns you wish to keep as distinct traits in test_dataset_1 (by number separated by space; e.g. '1 2 4'):]{style="color:blue;"}\
+[Indicate all columns you wish to keep as distinct traits in tutorial_dataset_1 (by number separated by space; e.g. '1 2 4'):]{style="color:blue;"}\
 
 [1: Species]{style="color:blue;"}\
 [2: site]{style="color:blue;"}\
@@ -276,8 +276,8 @@ The user is prompted to select the columns with trait data.
 
 You select columns 3, 4, 5, as these contain trait data.
 
-[Following traits added to metadata for test_dataset_1: 'LMA (mg mm-2)', 'Leaf nitrogen (mg mg-1)', 'leaf size (mm2)']{style="color:blue;"}\
-[Please complete information in data/test_dataset_1/metadata.yml]{style="color:blue;"}\
+[Following traits added to metadata for tutorial_dataset_1: 'LMA (mg mm-2)', 'Leaf nitrogen (mg mg-1)', 'leaf size (mm2)']{style="color:blue;"}\
+[Please complete information in data/tutorial_dataset_1/metadata.yml]{style="color:blue;"}\
 
 `metadata.yml` now includes a framework in which to manually fill in details about each trait:
 
@@ -339,7 +339,7 @@ These are all fields that contain the word `unknown`.
 
 #### **Dataset fields**
 
--   The file `data/test_dataset_1/raw/test_dataset_1_notes.txt` indicates how to fill in the `unknown` dataset fields for this study.
+-   The file `data/tutorial_dataset_1/raw/tutorial_dataset_1_notes.txt` indicates how to fill in the `unknown` dataset fields for this study.
 
 -   In general, the information to fill in these fields should be available from the source (article) or obtained directly from the dataset contributor.\
 
@@ -392,7 +392,7 @@ If the units being read in for a specific trait differ from those defined for th
 | value_type     | mean                                                                                                                                            | The statistical nature of the trait value. Uses a controlled vocabulary. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms.   |
 | basis_of_value | measurement                                                                                                                                     | How the trait value was obtained. See [traits.build_schema](https://github.com/traitecoevo/traits.build/blob/develop/inst/support/traits.build_schema.yml) for allowable terms.                                          |
 | replicates     | 3                                                                                                                                               | The number of replicate measurements that comprise the trait measurement recorded in the spreadsheet.                                                                                                                    |
-| methods        | See the study's [metadata_notes.txt](https://github.com/traitecoevo/traits.build-template/blob/data/test_dataset_1/raw/metadata_notes.txt) file | A verbatim (free-form) text field documenting the methods used to collect the trait measurements. This is generally available from the reference or directly from the author.                                            |
+| methods        | See the study's [metadata_notes.txt](https://github.com/traitecoevo/traits.build-template/blob/data/tutorial_dataset_1/raw/metadata_notes.txt) file | A verbatim (free-form) text field documenting the methods used to collect the trait measurements. This is generally available from the reference or directly from the author.                                            |
 
 *The values for `entity_type`, `value_type`, `basis_of_value`, and `replicates` can vary by trait -- and indeed by measurement -- but for this study are identical for all traits.*
 
@@ -411,7 +411,7 @@ These should each contain an `.na` (as in `substitutions: .na`). They will be ex
 Confirm there are no errors in the `metadata.yml` file:
 
 ```{r eval=FALSE}
-dataset_test("test_dataset_1")
+dataset_test("tutorial_dataset_1")
 ```
 
 This *should* result in the following output:
@@ -433,7 +433,7 @@ As a final step, build a report for the study
 
 ```{r eval=FALSE}
 traits.build_database$build_info$version <- "4.0.0"  # a fix because the function was built around specific AusTraits versions
-dataset_report("test_dataset_1", traits.build_database, overwrite = TRUE)
+dataset_report("tutorial_dataset_1", traits.build_database, overwrite = TRUE)
 ```
 
 Have a look at the report, but there reports become much more interesting once there are more datasets in the database.

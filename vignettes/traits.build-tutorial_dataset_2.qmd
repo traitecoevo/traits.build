@@ -1,5 +1,5 @@
 ---
-title: 'Tutorial for adding dataset: test_dataset_2'
+title: 'Tutorial for adding dataset: tutorial_dataset_2'
 author: "Elizabeth Wenk, Sophie Yang"
 date: "2023-09-16"
 format: 
@@ -36,17 +36,17 @@ Before you begin this tutorial, ensure you have installed traits.build, cloned t
 
 ------------------------------------------------------------------------
 
-## Adding test_dataset_2
+## Adding tutorial_dataset_2
 
 ### Ensure the dataset folder contains the correct data files
 
-In the traits.build-template repository, there is a folder titled `test_dataset_2` within the data folder. 
+In the traits.build-template repository, there is a folder titled `tutorial_dataset_2` within the data folder. 
 
 -   Ensure that this folder exists on your computer. 
 
--   The file `data.csv` exists within the `test_dataset_2` folder. 
+-   The file `data.csv` exists within the `tutorial_dataset_2` folder. 
 
--   There is a folder `raw` nested within the `test_dataset_2` folder, that contains two files, `locations.csv` and `notes.txt`. 
+-   There is a folder `raw` nested within the `tutorial_dataset_2` folder, that contains two files, `locations.csv` and `notes.txt`. 
 
 ### source necessary functions
 
@@ -64,10 +64,10 @@ source("R/custom_R_code.R")
 To create the metadata template, run:
 
 ```{r eval=FALSE}
-metadata_create_template("test_dataset_2")
+metadata_create_template("tutorial_dataset_2")
 ```
 
-As with `test_dataset_1` this function leads you through a series of menus requiring user input. Ensure you select:
+As with `tutorial_dataset_1` this function leads you through a series of menus requiring user input. Ensure you select:
 
 [data format:]{style="color:blue;"} [**wide**]{style="color:red;"}\
 [taxon_name column:]{style="color:blue;"} [**name_original**]{style="color:red;"}\
@@ -85,7 +85,7 @@ As with `test_dataset_1` this function leads you through a series of menus requi
 This dataset is from a published source and therefore the source information can be added with the function `metadata_add_source_doi`:
 
 ```{r eval=FALSE}
-metadata_add_source_doi(dataset_id = "test_dataset_2", doi = "10.1046/j.1365-2745.2000.00506.x")
+metadata_add_source_doi(dataset_id = "tutorial_dataset_2", doi = "10.1046/j.1365-2745.2000.00506.x")
 ```
 
 confirm:
@@ -98,13 +98,13 @@ confirm:
 
 #### **Add location details** {#locations}
 
-For this dataset, location data is provided as a standalone spreadsheet, located in the raw data folder: `test_dataset_2\raw\locations.csv`
+For this dataset, location data is provided as a standalone spreadsheet, located in the raw data folder: `tutorial_dataset_2\raw\locations.csv`
 
 First read the location data provided into R:
 
 ```{r eval=FALSE}
 locations <-
-  read_csv("data/test_dataset_2/raw/location_data.csv")
+  read_csv("data/tutorial_dataset_2/raw/location_data.csv")
 ```
 
 traits.build requires three fields to use a specific syntax:
@@ -146,7 +146,7 @@ locations <-
 Now add the location information into the metadata file:
 
 ```{r eval=FALSE}
-metadata_add_locations(dataset_id = "test_dataset_2", location_data = locations)
+metadata_add_locations(dataset_id = "tutorial_dataset_2", location_data = locations)
 ```
 
 Ensure you select:
@@ -163,7 +163,7 @@ Check the metadata.yml file to ensure the location information has been added as
 To select columns in the `data.csv` file that include trait data, run:
 
 ```{r eval=FALSE}
-metadata_add_traits(dataset_id = "test_dataset_2")
+metadata_add_traits(dataset_id = "tutorial_dataset_2")
 ```
 
 Select columns [**3 4 5 6**]{style="color:red;"}, as these contain trait data.
@@ -186,17 +186,17 @@ These are all fields that contain the word `unknown` and must be filled in manua
 
 #### **Adding contributors**
 
-The file `data/test_dataset_2/raw/test_dataset_2_notes.txt` indicates the main data_contributor for this study.\
+The file `data/tutorial_dataset_2/raw/tutorial_dataset_2_notes.txt` indicates the main data_contributor for this study.\
 
-Fill in the remaining contributor information as described in the [`test_dataset_1`tutorial](https://github.com/traitecoevo/traits.build/tree/develop/vignettes).\
+Fill in the remaining contributor information as described in the [`tutorial_dataset_1`tutorial](https://github.com/traitecoevo/traits.build/tree/develop/vignettes).\
 
 #### **Dataset fields**
 
-The file `data/test_dataset_2/raw/test_dataset_2_notes.txt` indicates how to fill in the `unknown` dataset fields for this study.
+The file `data/tutorial_dataset_2/raw/tutorial_dataset_2_notes.txt` indicates how to fill in the `unknown` dataset fields for this study.
 
 #### **Trait details**
 
-The file `data/test_dataset_2/raw/test_dataset_2_notes.txt` indicates how to fill in the `unknown` trait fields for this study, but see below as well.
+The file `data/tutorial_dataset_2/raw/tutorial_dataset_2_notes.txt` indicates how to fill in the `unknown` trait fields for this study, but see below as well.
 
 | column in dataset                                                                                 | trait concept      | units_in | entity_type | value_type | basis_of_value | replicates |
 |---------------|----------|----------|----------|----------|----------|----------|
@@ -224,7 +224,7 @@ Once you are well-versed in adding datasets to a traits.build database you will 
 However, for this tutorial, let's begin by assuming we're finished adding dataset metadata and check for errors:
 
 ```{r eval=FALSE}
-dataset_test("test_dataset_2")
+dataset_test("tutorial_dataset_2")
 ```
 
 [\*Users, please note, not all of these test failures or messages are currently in place. Adding test to document all failures is still a work in progress.]{style="color:red;"} 
@@ -250,7 +250,7 @@ If you look at the excluded_data table, you'll find any data for this dataset th
 
 ```{r eval=FALSE}
 traits.build_database$excluded_data %>%
-  filter(dataset_id == "test_dataset_2") %>%
+  filter(dataset_id == "tutorial_dataset_2") %>%
   View()
 ```
 
@@ -278,7 +278,7 @@ There are two ways to add substitutions into the `metadata.yml` file.
 1.  Map in individual trait value substitutions using `metadata_add_substitution`:
 
 ```{r eval=FALSE}
-metadata_add_substitution(dataset_id = "test_dataset_2", trait_name = "plant_growth_form", find = "t", replace = "tree")
+metadata_add_substitution(dataset_id = "tutorial_dataset_2", trait_name = "plant_growth_form", find = "t", replace = "tree")
 ```
 
 Look at the `metadata.yml` file and you'll note that a substitution has been added, to indicate the `t`'s are `tree`'s
@@ -293,7 +293,7 @@ You would repeat this step for the remaining unknown trait values.
 table <-
   traits.build_database$excluded_data %>%
   filter(
-    dataset_id == "test_dataset_2" &
+    dataset_id == "tutorial_dataset_2" &
       error == "Unsupported trait value"
   ) %>%
   distinct(trait_name, value) %>%
@@ -310,12 +310,12 @@ table <- table %>%
 
 ## an alternative is `mutate(replace = c("shrub", "tree", "herb", "epiphyte", "graminoid", "fern", "climber_herbaceous"))` which will result in the epiphyte observations remaining in the excluded data table
 
-metadata_add_substitutions_list("test_dataset_2", table)
+metadata_add_substitutions_list("tutorial_dataset_2", table)
 ```
 
 All required substitutions have been added to the `metadata.yml` file.
 
-If you were to rerun `dataset_test("test_dataset_2")` the error referring to `Unsupported trait values` would now have vanished.
+If you were to rerun `dataset_test("tutorial_dataset_2")` the error referring to `Unsupported trait values` would now have vanished.
 
 ##### **Replacing "placeholder characters" with NA's**
 
@@ -360,7 +360,7 @@ This code replaces all 0's in the column with NA's.
 You can confirm that the custom R code has made the anticipated change with the function `metadata_check_custom_R_code`. This function reads in the data.csv file, then applies any manipulations from the custom_R_code: 
 
 ```{r eval=FALSE}
-metadata_check_custom_R_code("test_dataset_2") %>% View()
+metadata_check_custom_R_code("tutorial_dataset_2") %>% View()
 ```
 
 Note: 
@@ -374,7 +374,7 @@ Build the database again, then check the `excluded_data` table to confirm there 
 traits.build_database <- remake::make("austraits")
 
 traits.build_database$excluded_data %>%
-  filter(dataset_id == "test_dataset_2") %>%
+  filter(dataset_id == "tutorial_dataset_2") %>%
   View()
 ```
 
@@ -383,7 +383,7 @@ traits.build_database$excluded_data %>%
 Run the tests again to confirm the errors related to disallowed trait values and values out of range have vanished: 
 
 ```{r eval=FALSE}
-dataset_test("test_dataset_2")
+dataset_test("tutorial_dataset_2")
 ```
 
 However, there should still be an error indicating that the dataset cannot pivot between `long` and `wide` formats. 
@@ -423,7 +423,7 @@ custom_R_code: '
 Rerun the tests and everything should now pass: 
 
 ```{r eval=FALSE}
-dataset_test("test_dataset_2")
+dataset_test("tutorial_dataset_2")
 ```
 
 Then rebuild the database and look at the output in the traits table for one of the taxa that previously had duplicate `plant_growth_form` entries: 
@@ -432,18 +432,18 @@ Then rebuild the database and look at the output in the traits table for one of 
 traits.build_database <- remake::make("austraits")
 
 traits.build_database$traits %>%
-  filter(dataset_id == "test_dataset_2") %>% 
+  filter(dataset_id == "tutorial_dataset_2") %>% 
   filter(taxon_name == "Actinotus minor") %>% View()
 
   dataset_id     taxon_name      observation_id trait_name         value            unit  entity_type location_id
   <chr>          <chr>           <chr>          <chr>              <chr>            <chr> <chr>       <chr>      
-1 test_dataset_2 Actinotus minor 010            leaf_area          18.8             mm2   population  02         
-2 test_dataset_2 Actinotus minor 010            leaf_dry_mass      7                mg    population  02         
-3 test_dataset_2 Actinotus minor 010            leaf_mass_per_area 344.827586206897 g/m2  population  02         
-4 test_dataset_2 Actinotus minor 011            leaf_area          75.9             mm2   population  03         
-5 test_dataset_2 Actinotus minor 011            leaf_dry_mass      7                mg    population  03         
-6 test_dataset_2 Actinotus minor 011            leaf_mass_per_area 89.2857142857143 g/m2  population  03         
-7 test_dataset_2 Actinotus minor 012            plant_growth_form  herb             NA    species     NA      
+1 tutorial_dataset_2 Actinotus minor 010            leaf_area          18.8             mm2   population  02         
+2 tutorial_dataset_2 Actinotus minor 010            leaf_dry_mass      7                mg    population  02         
+3 tutorial_dataset_2 Actinotus minor 010            leaf_mass_per_area 344.827586206897 g/m2  population  02         
+4 tutorial_dataset_2 Actinotus minor 011            leaf_area          75.9             mm2   population  03         
+5 tutorial_dataset_2 Actinotus minor 011            leaf_dry_mass      7                mg    population  03         
+6 tutorial_dataset_2 Actinotus minor 011            leaf_mass_per_area 89.2857142857143 g/m2  population  03         
+7 tutorial_dataset_2 Actinotus minor 012            plant_growth_form  herb             NA    species     NA      
 ```
 
 The measurements for the three numeric traits from a single location share a common `observation_id`, as they are all part of an observation of a common entity (a specific population of *Actinotus minor*), at a single location, at a single point in time. However the row with the plant growth form measurement has a separate `observation_id` reflecting that this is an observation of a different entity (the taxon *Actinotus minor*).
@@ -454,5 +454,5 @@ As a final step, build a report for the study
 
 ```{r eval=FALSE}
 traits.build_database$build_info$version <- "4.0.0"  # a fix because the function was built around specific AusTraits versions
-dataset_report("test_dataset_2", traits.build_database, overwrite = TRUE)
+dataset_report("tutorial_dataset_2", traits.build_database, overwrite = TRUE)
 ```
