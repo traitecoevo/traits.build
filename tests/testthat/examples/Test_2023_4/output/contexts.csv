@@ -1,0 +1,37 @@
+dataset_id,context_property,category,value,description,link_id,link_vals
+Test_2023_4,trait scoring method,method_context,scored from text,Trait value scored directly from taxon description.,method_context_id,04
+Test_2023_4,trait scoring method,method_context,inferred_from_species,Trait value inferred from species-level taxon description.,method_context_id,03
+Test_2023_4,trait scoring method,method_context,inferred_from_genus,Trait value inferred from genus-level taxon description.,method_context_id,02
+Test_2023_4,trait scoring method,method_context,inferred_from_family,Trait value inferred from family-level taxon description.,method_context_id,01
+Test_2023_4,trait scoring method,method_context,inferred_from_trait,Trait value inferred from the value of a different trait.,,
+Test_2023_4,trait scoring method,method_context,inferred_from_taxonomy,Trait value inferred from a higher level taxon description.,,
+Test_2023_4,entity measured,entity_context,unknown,,entity_context_id,02
+Test_2023_4,entity measured,entity_context,leaflet,,,
+Test_2023_4,entity measured,entity_context,pinnae,,,
+Test_2023_4,entity measured,entity_context,all,,,
+Test_2023_4,entity measured,entity_context,fruit,,entity_context_id,01
+Test_2023_4,entity measured,entity_context,infructescence,,,
+Test_2023_4,entity measured,entity_context,valve,,,
+Test_2023_4,entity measured,entity_context,female_cones,,,
+Test_2023_4,entity measured,entity_context,disc_achenes,,,
+Test_2023_4,entity measured,entity_context,ray_achenes,,,
+Test_2023_4,entity measured,entity_context,leaf,,,
+Test_2023_4,entity measured,entity_context,fertile_leaf,,,
+Test_2023_4,entity measured,entity_context,sterile_leaf,,,
+Test_2023_4,entity measured,entity_context,cauline_leaf,,,
+Test_2023_4,entity measured,entity_context,basal_leaf,,,
+Test_2023_4,entity measured,entity_context,upper_leaf,,,
+Test_2023_4,entity measured,entity_context,stem_leaf,,,
+Test_2023_4,entity measured,entity_context,basal_pinnae,,,
+Test_2023_4,entity measured,entity_context,phyllode,,,
+Test_2023_4,entity measured,entity_context,cladode,,,
+Test_2023_4,entity measured,entity_context,fertile_pinnule,,,
+Test_2023_4,entity measured,entity_context,sterile_pinnule,,,
+Test_2023_4,entity measured,entity_context,lower_leaf,,,
+Test_2023_4,entity measured,entity_context,lateral_leaf,,,
+Test_2023_4,entity measured,entity_context,emergent_leaf,,,
+Test_2023_4,entity measured,entity_context,submerged_leaf,,,
+Test_2023_4,entity measured,entity_context,upper_pinnae,,,
+Test_2023_4,entity measured,entity_context,scale_leaf,,,
+Test_2023_4,replicate observations,temporal,1,,temporal_id,01
+Test_2023_4,replicate observations,temporal,2,,,
