@@ -28,7 +28,7 @@ dataset:
       mutate(
         location_name = "Hawkesbury Forest Experiment site",
         Date = Date %>% mdy(),
-        CO2_Treat = stringr::str_replace(Treatment,"\\+C","added CO2"),
+        CO2_Treat = stringr::str_replace(treatment_context,"\\+C","added CO2"),
         CO2_Treat = stringr::str_replace(CO2_Treat,"0C","ambient CO2")
       )
   '
@@ -57,7 +57,7 @@ locations:
     description: tall closed tree chambers
 contexts:
 - context_property: sampling season
-  category: temporal
+  category: temporal_context
   var_in: month
   values:
   - find: AUG
@@ -70,7 +70,7 @@ contexts:
     value: February
     description: February (late summer)
 - context_property: temperature treatment
-  category: treatment
+  category: treatment_context
   var_in: Temp-trt
   values:
   - find: ambient
@@ -81,7 +81,7 @@ contexts:
     value: elevated
     description: Plants grown 3 deg C above ambient temperatures.
 - context_property: CO2 treatment
-  category: treatment
+  category: treatment_context
   var_in: CO2_Treat
   values:
   - find: ambient CO2
