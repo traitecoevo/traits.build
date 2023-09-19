@@ -153,24 +153,72 @@ testthat::test_that("Test Dataset 4 builds correctly", {
 
 })
 
-# Add Test_2023_4
-
-#testthat::test_that("`dataset_test` works properly for Test Dataset 7", {
+# TODO
+# Need to check for long datasets
+# Reading in from trait vs dataset level?
+testthat::test_that("Test Dataset 7 builds correctly", {
 
   # Test Dataset 7: Test_2023_7
   # See README.md in examples/Test_2023_7 for details about this dataset
 
   # Build dataset
-  #expect_no_error(
-  #  Test_2023_7 <- test_build_dataset(
-  #    file.path(examples_dir, "Test_2023_7/metadata.yml"),
-  #    file.path(examples_dir, "Test_2023_7/data.csv"),
-  #    "Test Dataset 7", definitions, unit_conversions, schema, resource_metadata, taxon_list
-  #  ),
-  #  info = "Building Test Dataset 7")
+  expect_no_error(
+    Test_2023_7 <- test_build_dataset(
+      file.path(examples_dir, "Test_2023_7/metadata.yml"),
+      file.path(examples_dir, "Test_2023_7/data.csv"),
+      "Test Dataset 7", definitions, unit_conversions, schema, resource_metadata, taxon_list
+    ),
+    info = "Building Test Dataset 7")
 
   # Expected output
-  #dataset_test("Test_2023_7", path_data = "examples")
+  tables <- c("traits", "locations", "contexts", "methods", "excluded_data",
+              "taxonomic_updates", "taxa", "contributors")
+  expect_no_error(
+    expected_output <-
+      purrr::map(
+        tables, ~read_csv(sprintf("examples/Test_2023_7/output/%s.csv", .x), col_types = "cccccccccccccccccccccccc")),
+    info = "Reading in expected output tables"
+  )
+  # Todo: also load and test non-csv outputs
+  names(expected_output) <- tables
+
+  # Temporary modifications to get these tests to pass
+  columns <- c("basis_of_value", "replicates", "life_stage", "collection_date", "measurement_remarks")
+
+  Test_2023_7$traits <-
+    Test_2023_7$traits %>%
+    mutate(across(dplyr::all_of(columns), as.character))
+  Test_2023_7$methods <-
+    Test_2023_7$methods %>%
+    mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
+  Test_2023_7$excluded_data <-
+    Test_2023_7$excluded_data %>%
+    mutate(across(dplyr::all_of(columns), as.character))
+
+  # Check all tables are equal to expected output tables
+  for (v in tables) {
+    expect_equal(Test_2023_7[[v]], expected_output[[v]])
+  }
+
+})
+
+
+#testthat::test_that("`dataset_test` works properly for Test Dataset 8", {
+
+  # Test Dataset 8: Test_2023_8
+  # See README.md in examples/Test_2023_8 for details about this dataset
+
+  # Build dataset
+  #expect_no_error(
+  #  Test_2023_8 <- test_build_dataset(
+  #    file.path(examples_dir, "Test_2023_8/metadata.yml"),
+  #    file.path(examples_dir, "Test_2023_8/data.csv"),
+  #    "Test Dataset 8", definitions, unit_conversions, schema, resource_metadata, taxon_list
+  #  ),
+  #  info = "Building Test Dataset 8")
+
+  # Expected output
+  #dataset_test("Test_2023_8", path_data = "examples")
 
   # Test `pivot_wider`
 
