@@ -210,7 +210,7 @@ read_metadata <- function(path) {
   if (!is.na(data$dataset$custom_R_code)) {
     # Read in again, extracting custom R code
 
-    data2 <- readLines(path)
+    data2 <- readLines(path, encoding = "UTF-8")
 
     code_start <- grep("  custom_R_code:", data2, fixed = TRUE)
     code_end <- grep("  collection_date:", data2, fixed = TRUE)[1] - 1

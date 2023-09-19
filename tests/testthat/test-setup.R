@@ -1,5 +1,3 @@
-# Todo:
-# Fix `expect_no_error` and other functions not showing any error messages maybe on another branch
 
 test_that("`metadata_create_template` is working", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
@@ -151,8 +149,8 @@ test_that("`metadata_add_source_doi` is working", {
   #writeLines(bib, "data/test.bib")
   #bib2 <- rcrossref::cr_cn(doi2)
   #writeLines(bib2, "data/test2.bib")
-  bib <- readLines("data/test.bib") %>% paste(collapse = "\n")
-  bib2 <- readLines("data/test2.bib") %>% paste(collapse = "\n")
+  bib <- readLines("data/test.bib", encoding = "UTF-8") %>% paste(collapse = "\n")
+  bib2 <- readLines("data/test2.bib", encoding = "UTF-8") %>% paste(collapse = "\n")
   expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib))
   expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi2, bib = bib2, type = "secondary"))
 

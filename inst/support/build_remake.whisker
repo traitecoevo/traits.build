@@ -34,15 +34,15 @@ targets:
   {{dataset_id}}_config:
     command: >
       dataset_configure("{{path}}/{{dataset_id}}/metadata.yml",
-                 definitions,
-                 unit_conversions
+                 definitions
                  )
   {{dataset_id}}_raw:
     command: >
       dataset_process("{{path}}/{{dataset_id}}/data.csv",
                   {{dataset_id}}_config,
                   schema,
-                  resource_metadata
+                  resource_metadata,
+                  unit_conversions
                  )
   {{dataset_id}}:
     command: >

@@ -102,11 +102,11 @@ test_build_dataset <- function(
 
   # Test it builds with no errors
   expect_no_error({
-    build_config <- dataset_configure(path_metadata, definitions, unit_conversions)
+    build_config <- dataset_configure(path_metadata, definitions)
   }, info = paste(info, "config"))
 
   expect_no_error({
-    build_dataset_raw <- dataset_process(path_data, build_config, schema, resource_metadata)
+    build_dataset_raw <- dataset_process(path_data, build_config, schema, resource_metadata, unit_conversions)
   }, info = paste(info, "dataset_process"))
 
   expect_no_error({

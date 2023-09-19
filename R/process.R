@@ -9,7 +9,6 @@
 #'
 #' @param filename_metadata Metadata yaml file for a given study
 #' @param definitions Definitions read in from the `traits.yml`
-#' @param unit_conversion_functions `unit_conversion.csv` file read in from the config folder
 #'
 #' @return List with `dataset_id`, `metadata`, `definitions` and `unit_conversion_functions`
 #' @importFrom purrr map_chr
@@ -20,13 +19,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' dataset_configure("data/Falster_2003/metadata.yml", read_yaml("config/traits.yml"),
-#' get_unit_conversions("config/unit_conversions.csv"))
+#' dataset_configure("data/Falster_2003/metadata.yml", read_yaml("config/traits.yml"))
 #' }
 dataset_configure <- function(
   filename_metadata,
-  definitions,
-  unit_conversion_functions) {
+  definitions) {
 
   dataset_id <- basename(dirname(filename_metadata))
 
@@ -37,17 +34,7 @@ dataset_configure <- function(
   trait_mapping <-
     metadata[["traits"]] %>%
     util_list_to_df2() %>%
-    dplyr::filter(!is.na(.data$trait_name)) %>%
-    # Determine unit conversions
-    dplyr::mutate(
-      i = match(.data$trait_name, names(definitions$elements)),
-      to = purrr::map_chr(.data$i, ~util_extract_list_element(.x, definitions$elements, "units")),
-      conversion = process_unit_conversion_name(.data$unit_in, .data$to)
-    )
-
-  unit_conversion_functions_sub <-
-    unit_conversion_functions[trait_mapping %>%
-    dplyr::filter(.data$unit_in != .data$to) %>% dplyr::pull(.data$conversion) %>% unique()]
+    dplyr::filter(!is.na(.data$trait_name))
 
   # Subset of definitions
   definitions <-
@@ -55,8 +42,7 @@ dataset_configure <- function(
 
   list(dataset_id = dataset_id,
        metadata = metadata,
-       definitions = definitions,
-       unit_conversion_functions = unit_conversion_functions_sub)
+       definitions = definitions)
 }
 
 #' Load Dataset
@@ -68,7 +54,8 @@ dataset_configure <- function(
 #' @param filename_data_raw Raw `data.csv` file for any given study
 #' @param config_for_dataset Config settings generated from `dataset_configure()`
 #' @param schema Schema for traits.build
-#' @param resource_metadata Metadata for the compilation
+#' @param resource_metadata Metadata about the traits compilation read in from the config folder
+#' @param unit_conversion_functions `unit_conversion.csv` file read in from the config folder
 #' @param filter_missing_values Default filters missing values from the excluded data table;
 #' change to false to see the rows with missing values.
 #'
@@ -90,17 +77,15 @@ dataset_process <- function(filename_data_raw,
                             config_for_dataset,
                             schema,
                             resource_metadata,
+                            unit_conversion_functions,
                             filter_missing_values = TRUE) {
 
   dataset_id <- config_for_dataset$dataset_id
   metadata <- config_for_dataset$metadata
   definitions <- config_for_dataset$definitions
 
-  unit_conversion_functions <- config_for_dataset$unit_conversion_functions
-
-  # Load trait data
+  # Load and clean trait data
   traits <-
-    # Read all columns as character type to prevent time data types from being reformatted
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
 
@@ -125,12 +110,17 @@ dataset_process <- function(filename_data_raw,
     traits$traits %>%
     process_add_all_columns(
       c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
-        "parsing_id", "location_name", "taxonomic_resolution", "methods")
-    ) %>%
+        "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
+    )
+
+  traits <- traits %>%
+    mutate(unit = ifelse(!is.na(unit_in), unit_in, unit)) %>%
     process_flag_unsupported_traits(definitions) %>%
     process_flag_excluded_observations(metadata) %>%
-    process_convert_units(definitions, unit_conversion_functions) %>%
+    process_flag_unsupported_characters() %>%
     process_flag_unsupported_values(definitions) %>%
+    process_convert_units(definitions, unit_conversion_functions) %>%
+    process_flag_out_of_range_values(definitions) %>%
     process_create_observation_id() %>%
     process_taxonomic_updates(metadata) %>%
     # Sorting of data
@@ -161,7 +151,7 @@ dataset_process <- function(filename_data_raw,
 
   # Where missing, fill variables in traits table with values from locations
   if (nrow(locations) > 0) {
-    vars <- c("basis_of_record", "life_stage", "collection_date", "measurement_remarks", "entity_type",
+    vars <- c("basis_of_record", "life_stage", "collection_date", "measurement_remarks", "unit_in", "entity_type",
               "value_type", "basis_of_value", "replicates", "population_id", "individual_id")
 
     for (v in vars) {
@@ -229,7 +219,7 @@ dataset_process <- function(filename_data_raw,
     ) %>%
     dplyr::select(
       dplyr::all_of(c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
-      "error", "taxonomic_resolution"))
+      "error", "taxonomic_resolution", "unit_in"))
     )
 
     # Remove missing values is specified
@@ -243,17 +233,18 @@ dataset_process <- function(filename_data_raw,
 
   # Combine for final output
   list(
-    traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error"))),
+    traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "unit_in"))),
     locations = locations,
     contexts = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
     methods = methods,
     excluded_data = traits %>%
     dplyr::filter(!is.na(.data$error)) %>%
-    dplyr::select(dplyr::all_of(c("error")), everything()),
+    dplyr::select(dplyr::all_of(c("error")), everything()) %>%
+    dplyr::select(-dplyr::all_of(c("unit_in"))),
     taxonomic_updates = taxonomic_updates,
     taxa = taxonomic_updates %>%
-    dplyr::select(dplyr::all_of(c(taxon_name = "cleaned_name"))) %>%
-    dplyr::distinct(),
+      dplyr::select(dplyr::all_of(c(taxon_name = "cleaned_name"))) %>%
+      dplyr::distinct(),
     contributors = contributors,
     sources = sources,
     definitions = definitions,
@@ -773,6 +764,8 @@ process_format_locations <- function(my_list, dataset_id, schema) {
 process_flag_unsupported_traits <- function(data, definitions) {
 
   # Create error column if not already present
+  # Necessary for this function and not the other `process_flag_...` functions as
+  # this is run first during `dataset_process()`
   if (is.null(data[["error"]]))
     data[["error"]] <- NA_character_
 
@@ -817,6 +810,51 @@ process_flag_excluded_observations <- function(data, metadata) {
         "Observation excluded in metadata", .data$error))
 
   data
+}
+
+#' Check values in a vector do not contain disallowed characters
+#'
+#' `util_check_disallowed_chars` checks if values in a vector do not contain disallowed characters,
+#' i.e. values outside of ASCII.
+#'
+#' @param object Vector
+#'
+#' @return Vector of logical values
+util_check_disallowed_chars <- function(object) {
+
+  f <- function(x) {
+
+      i <- charToRaw(x)
+      # Allow all ascii text
+      is_ascii <- i < 0x7F
+      !(is_ascii)
+
+  }
+
+  disallowed <- object %>% lapply(f)
+
+  disallowed %>% lapply(any) %>% unlist()
+
+}
+
+#' Flag values with unsupported characters
+#'
+#' Disallowed characters are flagged as errors, including for numeric traits, prior to
+#' unit conversions to avoid their conversion to NAs during the unit conversion process.
+#'
+#' @param data Tibble or dataframe containing the study data
+#'
+#' @importFrom rlang .data
+#' @return Tibble with flagged values containing unsupported characters
+process_flag_unsupported_characters <- function(data) {
+
+  data <- data %>%
+    mutate(
+      error = ifelse(is.na(.data$error) & util_check_disallowed_chars(.data$value),
+      "Value contains unsupported characters", .data$error)
+    )
+  data
+
 }
 
 #' Check values in one vector against values in another vector
@@ -882,17 +920,20 @@ util_list_to_bib <- function(ref) {
   RefManageR::as.BibEntry(ref)
 }
 
-#' Flag values outside of allowable range
+#' Flag disallowed trait values and disallowed characters
 #'
-#' Flags any values that are outside the allowable range defined in the
-#' `traits.yml` file. NA values are flagged as errors.
+#' Flags any categorical traits values that are not on the list of allowed values defined in the
+#' `traits.yml` file.
+#' NA values are flagged as errors.
+#' Numeric values that cannot convert to numeric are also flagged as errors.
+#'
 #'
 #' @param data Tibble or dataframe containing the study data
 #' @param definitions Definitions read in from the `traits.yml` file in the config folder
 #'
 #' @importFrom rlang .data
-#' @return Tibble with flagged values outside of allowable range, unsupported categorical
-#' trait values or missing values
+#' @return Tibble with flagged values that are unsupported categorical trait values, missing values
+#' or numeric trait values that cannot be converted to numeric
 process_flag_unsupported_values <- function(data, definitions) {
 
   # NA values
@@ -924,9 +965,9 @@ process_flag_unsupported_values <- function(data, definitions) {
       ii <- data[["trait_name"]] == trait
 
       # Only Y,N
-      i <-  ii & is.na(data[["error"]]) & grepl("[YN]+", data[["value"]])
+      i <-  ii & is.na(data[["error"]]) & !grepl("^[YyNn]+$", data[["value"]])
       data <- data %>%
-        dplyr::mutate(error = ifelse(i, "Time can only contain 0 & 1s", .data$error))
+        dplyr::mutate(error = ifelse(i, "Time can only contain Y & Ns", .data$error))
 
       # Must be length 12
       i <-  ii & is.na(data[["error"]]) & stringr::str_length(data[["value"]]) != 12
@@ -934,25 +975,56 @@ process_flag_unsupported_values <- function(data, definitions) {
         dplyr::mutate(error = ifelse(i, "Times must be length 12", .data$error))
     }
 
-    # Numerical traits out of range
+    # Test for numeric values that cannot convert to numeric
     if (definitions[[trait]]$type == "numeric") {
 
       x <- suppressWarnings(as.numeric(data[["value"]]))
-      i <- is.na(
-        data[["error"]]) & data[["trait_name"]] == trait & is.na(x) & !(data[["value_type"]] %in% c("range", "bin")
-        )
+      i <- is.na(data[["error"]]) &
+            data[["trait_name"]] == trait &
+            is.na(x) &
+            !(
+              data[["value_type"]] %in% c("range", "bin") &
+              !(stringr::str_detect(data[["value"]], "([:digit:]+)//-//-([:digit:]+)"))
+            )
 
       data <- data %>%
         dplyr::mutate(error = ifelse(i, "Value does not convert to numeric", .data$error))
 
-      i <-  is.na(data[["error"]]) & data[["trait_name"]] == trait & !(data[["value_type"]] %in% c("range", "bin")) &
-        (x < definitions[[trait]]$allowed_values_min | x > definitions[[trait]]$allowed_values_max)
-
-      data <- data %>%
-        dplyr::mutate(error = ifelse(i, "Value out of allowable range", .data$error))
     }
   }
   data
+}
+
+#' Flag values outside of allowable range
+#'
+#' Flags any numeric values that are outside the allowable range defined in the
+#' `traits.yml` file.
+#'
+#' @param data Tibble or dataframe containing the study data
+#' @param definitions Definitions read in from the `traits.yml` file in the config folder
+#'
+#' @importFrom rlang .data
+#' @return Tibble with flagged values outside of allowable range
+process_flag_out_of_range_values <- function(data, definitions) {
+
+  # Only check traits not already flagged as errors
+  traits <- data %>%
+    dplyr::filter(is.na(.data$error)) %>% dplyr::pull(.data$trait_name) %>% unique()
+
+  for (trait in traits) {
+    if (definitions[[trait]]$type == "numeric") {
+
+    x <- suppressWarnings(as.numeric(data[["value"]]))
+    i <-  is.na(data[["error"]]) &
+          data[["trait_name"]] == trait &
+          !(data[["value_type"]] %in% c("range", "bin")) &
+          (x < definitions[[trait]]$allowed_values_min | x > definitions[[trait]]$allowed_values_max)
+
+    data <- data %>%
+      dplyr::mutate(error = ifelse(i, "Value out of allowable range", .data$error))
+    }
+  }
+data
 }
 
 #' Make unit conversion functions
@@ -1019,19 +1091,39 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
         data[["to_convert"]] & !data[["ucn"]] %in% names(unit_conversion_functions)
 
   data <- data %>%
-    dplyr::mutate(error = ifelse(j, "Missing unit conversion", .data$error),
-                  to_convert = ifelse(j, FALSE, .data$to_convert))
+    dplyr::mutate(
+      error = ifelse(j, "Missing unit conversion", .data$error),
+      to_convert = ifelse(j, FALSE, .data$to_convert))
 
-  f <- function(value, name) {
+  f_standard <- function(value, name) {
     as.character(unit_conversion_functions[[name]](as.numeric(value)))
   }
 
+  f_range_bin <- function(value, name) {
+
+    stringr::str_split(value, "\\-\\-") %>%       # split into parts
+    purrr::map(f_standard, name) %>%                       # apply unit conversions to each
+    purrr::map_chr(~paste(.x, collapse = "--"))   # paste back together
+  }
+
   # Split by unique unit conversions, to allow for as few calls as possible
-  data %>%
+  data <- data %>%
     dplyr::group_by(.data$ucn, .data$to_convert) %>%
     dplyr::mutate(
-      value = ifelse(.data$to_convert, f(.data$value, .data$ucn[1]), .data$value),
-      unit = ifelse(.data$to_convert, .data$to, .data$unit)) %>%
+      # standard conversion
+      value = ifelse(.data$to_convert == TRUE &                     # value requires conversion
+                      !.data$value_type %in% c("bin", "range") &    # value_type not a bin or range; those are converted below
+                      !is.na(.data$value),                          # value not NA - the full matrix from data.csv file is still in data table
+                      f_standard(.data$value, .data$ucn[1]),        # convert value to appropriate units
+                     .data$value),                                  # if conditions not met, keep original value
+      # value is a range of bin
+      value = ifelse(.data$to_convert == TRUE  &                    # value requires conversion
+                      .data$value_type %in% c("bin", "range") &     # value_type is a bin or range
+                      !is.na(.data$value),                          # value not NA - the full matrix from data.csv file is still in data table
+                      f_range_bin(.data$value, .data$ucn[1]),       # convert value to appropriate units
+                     .data$value),                                  # if conditions not met, keep original value
+      unit = ifelse(.data$to_convert, .data$to, .data$unit)
+    ) %>%
     dplyr::ungroup() %>%
     dplyr::select(dplyr::any_of(vars))
 }
@@ -1096,12 +1188,12 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
   df <- data %>%
         # Next step selects and renames columns based on named vector
-        dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in))) %>%
+        dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in))) %>% # Why select v? When would those ids ever be in the data?
         dplyr::mutate(dataset_id = dataset_id)
 
   # Step 1b. Import any values that aren't columns of data
   vars <- c("entity_type", "value_type", "basis_of_value",
-            "replicates", "collection_date",
+            "replicates", "collection_date", "unit_in",
             "basis_of_record", "life_stage",
             "measurement_remarks", "source_id", "methods")
 
@@ -1119,7 +1211,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   # It is required here to correctly connect rows of data as being collected
   # on the same individual or are part of the same observation
 
-    if (!data_is_long_format) {
+  if (!data_is_long_format) {
 
   # If an `individual_id` column IS read in through metadata$dataset,
   # it is used to correctly cluster and identify individuals
@@ -1197,6 +1289,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
     stop(paste(dataset_id, ": missing traits: ", setdiff(traits_table[["var_in"]], colnames(data))))
   }
 
+  # I'm confused why contexts$var_in is added in here (also should be unique()?), instead of just vars
   vars_traits <- c(vars, contexts$var_in)
 
   not_allowed <- c(
@@ -1219,20 +1312,23 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
       out[[i]][["trait_name"]] <- traits_table[["var_in"]][i]
       out[[i]][["value"]] <- data[[traits_table[["var_in"]][i]]] %>% as.character()
 
-      # Pull in additional information for each trait as specified in traits part of metadata, here represented as traits_table
+      # Pull in additional information for each trait as specified in traits part of metadata,
+      # here represented as `traits_table`
       # Values in table can specify a column in the original data OR a value to use
 
       vars_to_check <- vars_traits[vars_traits %in% names(traits_table)]
+
       # For each column in traits_table
       for (v in vars_to_check) {
+
+        not_allowed <- schema[[v]][["values"]] %>% names()
+
         # Get value
         value <- traits_table[i, v, drop = TRUE]
+
         # Check if it is a column in data or not and process accordingly
-
-        # Question: Why can't `entity_type`, `basis_of_value` come in as column of data?
-
         if (!is.na(value)) {
-          if (!is.null(data[[value]]) & !(value %in% not_allowed)) {
+          if (!is.null(data[[value]]) && !(value %in% not_allowed)) {
             out[[i]][[v]] <- data[[value]] %>% as.character()
           } else {
             out[[i]][[v]] <- value %>% as.character()
@@ -1240,25 +1336,39 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
         }
       }
     }
+
     # Convert replicates column to character type to allow `bind_rows`
     out <- out %>% purrr::map(~mutate(.x, dplyr::across(dplyr::any_of("replicates"), ~as.character(.x))))
     out <- dplyr::bind_rows(out)
+
   } else {
 
     out <- df %>% dplyr::filter(.data$trait_name %in% traits_table$var_in)
-    out[["value"]] <- out[["value"]] %>%  as.character()
+    out[["value"]] <- out[["value"]] %>% as.character()
 
     # Pull in additional information for each trait as specified in traits part of metadata,
     # here represented as traits_table
     # (column option not implemented) Values in table can specify a column in the original data OR a value to use
 
     vars_to_check <- vars_traits[vars_traits %in% names(traits_table)]
+
     # For each column in traits_table
     for (i in seq_len(nrow(traits_table))) {
+
       for (v in vars_to_check) {
+
+        not_allowed <- schema[[v]][["values"]] %>% names()
         value <- traits_table[i, v, drop = TRUE]
+
         if (!is.na(value)) {
-          out[[v]][out$trait_name == traits_table[["var_in"]][i]] <- value
+          if (!is.null(data[[value]]) && !(value %in% not_allowed)) {
+            out[[v]][out$trait_name == traits_table[["var_in"]][i]] <-
+              # Subset column to where `trait_name` in the data table equals the current trait in the loop
+              data[[value]][data[[metadata[["dataset"]][["trait_name"]]]] == traits_table[["var_in"]][i]] %>%
+              as.character()
+          } else {
+            out[[v]][out$trait_name == traits_table[["var_in"]][i]] <- value %>% as.character()
+          }
         }
       }
     }
@@ -1411,10 +1521,10 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
         dplyr::select(dplyr::any_of(names(metadata$dataset))) %>%
         dplyr::mutate(dataset_id = dataset_id) %>%
         dplyr::select(-dplyr::any_of(c("original_file", "notes", "data_is_long_format", "taxon_name",
-                                         "trait_name", "population_id", "individual_id",
+                                         "trait_name", "population_id", "individual_id", "value_type",
                                          "location_name", "source_id", "value", "entity_type",
                                          "collection_date", "custom_R_code", "replicates", "measurement_remarks",
-                                         "taxon_name", "basis_of_value", "basis_of_record", "life_stage", "value_type")))
+                                         "taxon_name", "basis_of_value", "basis_of_record", "life_stage", "value_type", "unit_in")))
       )  %>%
       full_join(by = "dataset_id",
       # References

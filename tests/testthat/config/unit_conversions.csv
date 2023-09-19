@@ -22,6 +22,7 @@ cm2,mm2,x*100
 m2,mm2,x*1000000
 mm,m,x*0.001
 g,mg,x*1000
+ug,mg,x*0.001
 um/2,um,x*2
 mm2/mm2,um2/um2,x*1
 um2/um2,mm2/mm2,x*1
@@ -90,7 +91,7 @@ cm/s,m/s,x*1/100
 cm/s,s/m,100/x
 umol/g/s,nmol/g/s,x*1000
 nmol/g/s,umol/g/s,x*0.001
-umol/m2/s,nmol/m2/s,x*1000	
+umol/m2/s,nmol/m2/s,x*1000
 nmol/m2/s,umol/m2/s,x*0.001
 neg_umol{CO2}/m2/s,nmol{CO2}/m2/s,x*-1000
 neg_nmol{CO2}/g/s,nmol{CO2}/g/s,x*-1

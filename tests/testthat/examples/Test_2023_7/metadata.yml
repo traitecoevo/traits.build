@@ -144,7 +144,7 @@ traits:
   trait_name: leaf_mass_per_area
   methods: LMA was calculated as the leaf dry mass (oven-dried for 48 hours at 65
     deg C) divided by leaf size. It was measured on the first five fully expanded
-    leaves at the tip of each individual.
+    leaves at the tip of each individual. Testing of disallowed characters - Ψ◦℃.
 - var_in: Leaf nitrogen (mg mg-1)
   unit_in: mg/mg
   trait_name: leaf_N_per_dry_mass
