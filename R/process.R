@@ -115,7 +115,7 @@ dataset_process <- function(filename_data_raw,
     )
 
   traits <- traits %>%
-    mutate(unit = ifelse(!is.na(unit_in), unit_in, unit)) %>%
+    mutate(unit = ifelse(!is.na(.data$unit_in), .data$unit_in, .data$unit)) %>%
     process_flag_unsupported_traits(definitions) %>%
     process_flag_excluded_observations(metadata) %>%
     process_flag_unsupported_characters() %>%

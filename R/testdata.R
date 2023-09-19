@@ -292,6 +292,25 @@ dataset_test_worker <-
       expect_contains(names(data), expected_names, info = info)
     }
 
+    test_build_dataset <- function(
+      path_metadata, path_data, info, definitions, unit_conversions, schema, resource_metadata, taxon_list) {
+
+      # Test it builds with no errors
+      expect_no_error({
+        build_config <- dataset_configure(path_metadata, definitions)
+      }, info = paste(info, "config"))
+
+      expect_no_error({
+        build_dataset_raw <- dataset_process(path_data, build_config, schema, resource_metadata, unit_conversions)
+      }, info = paste(info, "dataset_process"))
+
+      expect_no_error({
+        build_dataset <- build_update_taxonomy(build_dataset_raw, taxon_list)
+      }, info = paste(info, "update taxonomy"))
+
+      build_dataset
+    }
+
     # Now run tests for each dataset
 
     for (dataset_id in test_dataset_ids) {
@@ -748,21 +767,21 @@ dataset_test_worker <-
           info = sprintf("%s", files[1])
         )
 
-        expect_equal(
+        testthat::expect_equal(
           dataset$traits %>%
           select(
             dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "source_id", "taxon_name",
             "entity_type", "life_stage", "basis_of_record", "value_type", "population_id", "individual_id",
             "temporal_id", "method_id", "method_context_id", "entity_context_id", "original_name"))
           ) %>%
-          pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
-          pivot_longer(cols = 16:ncol(.)) %>%
-          rename(all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
+          tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
+          tidyr::pivot_longer(cols = 16:ncol(.)) %>%
+          dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
           select(
-            all_of(c("dataset_id", "taxon_name", "trait_name", "number_of_duplicates", "observation_id",
+            dplyr::all_of(c("dataset_id", "taxon_name", "trait_name", "number_of_duplicates", "observation_id",
             "entity_type", "value_type", "population_id")), everything()
           ) %>%
-          filter(number_of_duplicates > 1) %>%
+          filter(.data$number_of_duplicates > 1) %>%
           nrow(),
           0, # Expect nrow() = 0
           info = sprintf("Duplicate rows in %s detected; `traits` table cannot pivot wider", dataset_id)
