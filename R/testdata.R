@@ -137,12 +137,19 @@ dataset_test_worker <-
       invisible(object)
     }
 
-    expect_allowed_text <- function(object,
+    expect_allowed_text <- function(object, is_data = FALSE,
                                     info = NULL,
                                     label = NULL) {
+
       if (length(object) > 0) {
-        disallowed <-
-          object %>% lapply(check_disallowed_chars) %>% simplify2array()
+
+        if (is_data) {
+          disallowed <-
+            object %>% lapply(check_disallowed_chars, exceptions = c("")) %>% simplify2array()
+        } else {
+          disallowed <-
+            object %>% lapply(check_disallowed_chars) %>% simplify2array()
+        }
 
         check <- disallowed %>% lapply(any) %>% unlist()
 
@@ -154,12 +161,25 @@ dataset_test_worker <-
                          colour_characters(object[[i]], which(disallowed[[i]])))
         }
 
-        expect(
-          identical(as.vector(all(!check)), TRUE),
-          sprintf("%s -- disallowed characters detected: %s", info, txt)
-        )
+        if (is_data) {
+          expect(
+            identical(as.vector(all(!check)), TRUE),
+            sprintf(
+              "%s -- disallowed characters in data detected: %s\n\tPlease replace using `custom_R_code`",
+              info, txt
+            )
+          )
+        } else {
+          expect(
+            identical(as.vector(all(!check)), TRUE),
+            sprintf("%s -- disallowed characters detected: %s", info, txt)
+          )
+        }
+
       }
+
       invisible(object)
+
     }
 
     colour_characters <- function(x, i = NULL) {
@@ -173,18 +193,18 @@ dataset_test_worker <-
       paste0(chars, collapse = "")
     }
 
-    check_disallowed_chars <- function(x) {
+    check_disallowed_chars <- function(x, exceptions = c("ÁÅÀÂÄÆÃĀâíåæäãàáíÇčóöøéèłńl°êÜüùúû±µµ“”‘’-–—≈˜×")) {
+
       i <- charToRaw(x)
-      # allow all ascii text
+      # Allow all ascii text
       is_ascii <- i < 0x7F
 
-      # allow some utf8 characters, those with accents over letters for foreign names
-      # list of codes is here: http://www.utf8-chartable.de/
-      # note c3 is needed because this is prefix for allowed UTF8 chars
-      exceptions <- c("ÁÅÀÂÄÆÃĀâíåæäãàáíÇčóöøéèłńl°êÜüùúû±µµ“”‘’-–—≈˜×")
-
+      # Allow some utf8 characters, those with accents over letters for foreign names
+      # List of codes is here: http://www.utf8-chartable.de/
+      # Note c3 is needed because this is prefix for allowed UTF8 chars
       is_allowed <- i %in% charToRaw(exceptions)
-      ! (is_ascii | is_allowed)
+      !(is_ascii | is_allowed)
+
     }
 
     # Better than expect_silent as contains `info` and allows for complete failures
@@ -312,7 +332,7 @@ dataset_test_worker <-
 
         # Metadata
         f <- files[2]
-        expect_allowed_text(readLines(f), info = f)
+        expect_allowed_text(readLines(f, encoding = "UTF-8"), info = f)
         expect_silent(metadata <- yaml::read_yaml(f))
         test_list_named_exact(metadata,
                               schema$metadata$elements %>% names(),
@@ -711,6 +731,18 @@ dataset_test_worker <-
           get_schema("config/metadata.yml",  "metadata"),
           read_csv_char("config/taxon_list.csv")
         ), info = sprintf(" - cannot build %s", dataset_id))
+        
+        # Check that special characters do not make it into the data
+        expect_no_error(
+          parsed_data <- data %>%
+            process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
+            process_parse_data(dataset_id, metadata, contexts),
+          info = "`process_parse_data`")
+
+        expect_allowed_text(
+          parsed_data$traits$value, is_data = TRUE,
+          info = sprintf("%s", files[1])
+        )
 
         expect_equal(
           dataset$traits %>%

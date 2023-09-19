@@ -2,7 +2,7 @@
 % Please edit documentation in R/process.R
 \name{process_flag_unsupported_values}
 \alias{process_flag_unsupported_values}
-\title{Flag values outside of allowable range}
+\title{Flag disallowed trait values and disallowed characters}
 \usage{
 process_flag_unsupported_values(data, definitions)
 }
@@ -12,10 +12,12 @@ process_flag_unsupported_values(data, definitions)
 \item{definitions}{Definitions read in from the `traits.yml` file in the config folder}
 }
 \value{
-Tibble with flagged values outside of allowable range, unsupported categorical
-trait values or missing values
+Tibble with flagged values that are unsupported categorical trait values, missing values
+or numeric trait values that cannot be converted to numeric
 }
 \description{
-Flags any values that are outside the allowable range defined in the
-`traits.yml` file. NA values are flagged as errors.
+Flags any categorical traits values that are not on the list of allowed values defined in the
+`traits.yml` file.
+NA values are flagged as errors.
+Numeric values that cannot convert to numeric are also flagged as errors.
 }
