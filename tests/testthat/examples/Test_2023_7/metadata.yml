@@ -106,7 +106,7 @@ contexts:
   - value: '17:00:00'
   - value: '9:00:00'
 - context_property: instrument used
-  category: method
+  category: method_context
   var_in: instrument used
   values:
   - value: instrument 1
@@ -130,7 +130,7 @@ contexts:
   - value: 1.0
   - value: 2.0
 - context_property: branch length
-  category: method
+  category: method_context
   var_in: method_context
   values:
   - value: 250 mm branch
@@ -144,7 +144,7 @@ traits:
   trait_name: leaf_mass_per_area
   methods: LMA was calculated as the leaf dry mass (oven-dried for 48 hours at 65
     deg C) divided by leaf size. It was measured on the first five fully expanded
-    leaves at the tip of each individual.
+    leaves at the tip of each individual. Testing of disallowed characters - Ψ◦℃.
 - var_in: Leaf nitrogen (mg mg-1)
   unit_in: mg/mg
   trait_name: leaf_N_per_dry_mass

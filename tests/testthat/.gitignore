@@ -1,3 +1,6 @@
 remake.yml
 .git
 .remake
+export/reports/
+build_info.md
+**/output/schema.yml

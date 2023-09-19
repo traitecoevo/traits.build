@@ -1,0 +1,7 @@
+dataset_id,location_id,location_name,location_property,value
+Test_2023_4,01,australia,description,First made-up location for testing
+Test_2023_4,01,australia,latitude (deg),-25.702
+Test_2023_4,01,australia,longitude (deg),125.239
+Test_2023_4,02,australia_2,description,Second made-up location for testing
+Test_2023_4,02,australia_2,latitude (deg),-27.158
+Test_2023_4,02,australia_2,longitude (deg),142.685

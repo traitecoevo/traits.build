@@ -4,14 +4,12 @@
 \alias{dataset_configure}
 \title{Configure AusTraits database object}
 \usage{
-dataset_configure(filename_metadata, definitions, unit_conversion_functions)
+dataset_configure(filename_metadata, definitions)
 }
 \arguments{
 \item{filename_metadata}{Metadata yaml file for a given study}
 
 \item{definitions}{Definitions read in from the `traits.yml`}
-
-\item{unit_conversion_functions}{`unit_conversion.csv` file read in from the config folder}
 }
 \value{
 List with `dataset_id`, `metadata`, `definitions` and `unit_conversion_functions`
@@ -26,7 +24,6 @@ in the `remake.yml` file.
 }
 \examples{
 \dontrun{
-dataset_configure("data/Falster_2003/metadata.yml", read_yaml("config/traits.yml"),
-get_unit_conversions("config/unit_conversions.csv"))
+dataset_configure("data/Falster_2003/metadata.yml", read_yaml("config/traits.yml"))
 }
 }

@@ -79,7 +79,8 @@ austraits:
         treatment_id: &treatment_id A unique integer identifier for a treatment, where a treatment is any experimental manipulation to an organism's growing/living conditions. The identifier links to specific information in the context table.
         collection_date: &collection_date Date sample was taken, in the format `yyyy-mm-dd`, `yyyy-mm` or `yyyy`, depending on the resoluton specified. Alternatively an overall range for the study can be indicating, with the starting and ending sample date sepatated by a `/`, as in 2010-10/2011-03
         measurement_remarks: &measurement_remarks Brief comments or notes accompanying the trait measurement.
-        method_id: &method_id A unique integer identifier indicating a trait is measured multiple times on the same entity, with different methods used for each entry. This field is only used if a single trait is measured using multiple methods within the same dataset. The identifier links to specific information in the context table.
+        method_id: &method_id A unique integer identifier to distinguish between multiple sets of methods used to measure a single trait within the same dataset. The identifier links to specific information in the methods table.
+        method_context_id: &method_context_id A unique integer identifier indicating a trait is measured multiple times on the same entity, with different methods used for each entry. This field is only used if a single trait is measured using multiple methods within the same dataset. The identifier links to specific information in the context table.
         original_name: &original_name Name given to taxon in the original data supplied by the authors.
     locations:
       description: A table containing observations of location/site characteristics associated with information in `traits`. Cross referencing between the two dataframes is possible using combinations of the variables `dataset_id`, `location_name`.
@@ -108,8 +109,8 @@ austraits:
         dataset_id: *dataset_id
         trait_name: *trait_name
         methods: &methods A textual description of the methods used to collect the trait data. Whenever available, methods are taken near-verbatim from the referenced source. Methods can include descriptions such as 'measured on botanical collections', 'data from the literature', or a detailed description of the field or lab methods used to collect the data.
+        method_id: *method_id
         description: &description A 1-2 sentence description of the purpose of the study.
-        value_type: Temporarily added to schema as it is in the methods table for some reason.
         sampling_strategy: &sampling_strategy A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript. For preserved specimens, this field ideally indicates which records were 'sampled' to measure a specific trait.
         source_primary_key: Citation key for the primary source in `sources`. The key is typically formatted as `Surname_year`.
         source_primary_citation: Citation for the primary source. This detail is generated from the primary source in the metadata.
@@ -149,6 +150,7 @@ austraits:
         collection_date: *collection_date
         measurement_remarks: *measurement_remarks
         method_id: *method_id
+        method_context_id: *method_context_id
         original_name: *original_name
     taxonomic_updates:
       description: A table of all taxonomic changes implemented in the construction of AusTraits. Changes are determined by comparing the originally submitted taxon name against the taxonomic names listed in the taxonomic reference files, best placed in a subfolder in the `config` folder . Cross referencing with the `traits` table is possible using combinations of the variables `dataset_id` and `taxon_name`.
@@ -356,6 +358,7 @@ metadata:
         observation_id: *observation_id
         trait_name: Element required for long datasets to specify the column indicating the trait name associated with each row of data.
         value: The measured value of a trait.
+        value_type: *value_type
         description: *description
         basis_of_record: *basis_of_record
         life_stage: *life_stage

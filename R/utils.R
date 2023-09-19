@@ -156,7 +156,7 @@ util_list_to_df1 <- function(my_list) {
       my_list[[f]] <- NA
   }
 
-  tibble::tibble(key = names(my_list), value = unlist(my_list))
+  tibble::tibble(key = names(my_list), value = unname(unlist(my_list)))
 }
 
 
@@ -210,7 +210,7 @@ read_metadata <- function(path) {
   if (!is.na(data$dataset$custom_R_code)) {
     # Read in again, extracting custom R code
 
-    data2 <- readLines(path)
+    data2 <- readLines(path, encoding = "UTF-8")
 
     code_start <- grep("  custom_R_code:", data2, fixed = TRUE)
     code_end <- grep("  collection_date:", data2, fixed = TRUE)[1] - 1

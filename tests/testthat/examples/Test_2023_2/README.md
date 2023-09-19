@@ -6,6 +6,7 @@ This dataset is for testing the following, for wide datasets:
 - `entity_type` read in as a fixed value if there is an existing column named as that fixed value
 - `source_id` column
 - Locations (latitude and longitude missing for both locations)
+- Test `method_id` when `value_type` is read from a column at the trait level
 
 Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - Added `replicates`, `basis_of_value` as a column, with also trait-level and location-level metadata (included some NAs)
@@ -16,5 +17,6 @@ Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - Read in `entity_type` as a fixed value and renamed "Species" column to "species"
 - Added `source_id` column
 - Removed latitude and longitude fields for Atherton location and put as .na for Cape Tribulation
+- Add duplicate of LASA1000 to test `method_id`
 
 See output/

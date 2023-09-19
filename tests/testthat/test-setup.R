@@ -1,5 +1,3 @@
-# Todo:
-# Fix `expect_no_error` and other functions not showing any error messages maybe on another branch
 
 test_that("`metadata_create_template` is working", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
@@ -151,8 +149,8 @@ test_that("`metadata_add_source_doi` is working", {
   #writeLines(bib, "data/test.bib")
   #bib2 <- rcrossref::cr_cn(doi2)
   #writeLines(bib2, "data/test2.bib")
-  bib <- readLines("data/test.bib") %>% paste(collapse = "\n")
-  bib2 <- readLines("data/test2.bib") %>% paste(collapse = "\n")
+  bib <- readLines("data/test.bib", encoding = "UTF-8") %>% paste(collapse = "\n")
+  bib2 <- readLines("data/test2.bib", encoding = "UTF-8") %>% paste(collapse = "\n")
   expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib))
   expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi2, bib = bib2, type = "secondary"))
 
@@ -544,12 +542,20 @@ testthat::test_that("`metadata_add_taxonomic_changes_list` is working", {
     taxonomic_resolution = c("species", "variety", "subspecies")
   )
   expect_silent(metadata_add_taxonomic_changes_list("Test_2022", taxonomic_changes))
-  expect_message(
-    metadata_add_taxonomic_changes_list("Test_2022", taxonomic_changes),
-    "Existing taxonomic updates have been overwritten"
+  extra_taxonomic_changes <- tibble::tibble(
+    find = c("species 1", "species 2", "species 4"),
+    replace = c("replaced species 1", "replaced species 2", "new 4"),
+    reason = c("taxonomy change", "another taxonomy change", "test reason 4"),
+    taxonomic_resolution = c("form", "species", "variety")
   )
-  # Expect that this function overwrites existing substitutions, so fourth substitutions should not exist
-  expect_error(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[4]])
+  expect_message(
+    metadata_add_taxonomic_changes_list("Test_2022", extra_taxonomic_changes),
+    ".*(?=already exist)", perl = TRUE
+  )
+  # Expect that this function appends to existing substitutions, so fourth substitutions should exist
+  expect_no_error(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[4]])
+  # but fifth substitution should not, because two of the substitutions already exist
+  expect_error(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[5]])
 })
 
 testthat::test_that("`metadata_find_taxonomic_change` is working", {

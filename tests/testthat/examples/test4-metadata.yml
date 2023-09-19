@@ -24,7 +24,7 @@ contributors:
 dataset:
   data_is_long_format: no
   custom_R_code: '
-    data %>% 
+    data %>%
       mutate(
         location_name = "Hawkesbury Forest Experiment site",
         Date = Date %>% mdy(),
@@ -44,7 +44,7 @@ dataset:
   life_stage: sapling
   sampling_strategy: Plant material Eucalyptus globulus ssp. globulus planting material
     was obtained from a commercial tree nursery in Victoria as firstseason tube stock
-    seedlings. 
+    seedlings.
   original_file: Globulus_Austraits.xls
   notes: A number of observations for 'leaf_light_respiration_per_area' are showing
     up as duplicates, because the values adjusted to 25C and the raw values are sometimes
@@ -91,7 +91,7 @@ contexts:
     value: 640 ppm
     description: Plants grown at elevated CO2 (640 ppm); 240 ppm above ambient.
 - context_property: measurement temperature
-  category: method
+  category: method_context
   var_in: method_context
   values:
   - find: Measurement made at 20°C
@@ -183,7 +183,7 @@ traits:
   entity_type: individual
   value_type: raw
   basis_of_value: measurement
-  replicates: 1  
+  replicates: 1
   method_context: Measurement made at 25°C
   methods: *fluorescence
 substitutions:
