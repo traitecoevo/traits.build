@@ -749,7 +749,7 @@ dataset_test_worker <-
           select(
             dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "source_id", "taxon_name",
             "entity_type", "life_stage", "basis_of_record", "value_type", "population_id", "individual_id",
-            "temporal_id", "method_id", "method_context_id", "entity_context_id", "original_name"))
+            "temporal_context_id", "method_id", "method_context_id", "entity_context_id", "original_name"))
           ) %>%
           pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
           pivot_longer(cols = 16:ncol(.)) %>%

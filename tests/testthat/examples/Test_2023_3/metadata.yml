@@ -170,7 +170,7 @@ contexts:
   - value: upper_pinnae
   - value: scale_leaf
 - context_property: replicate observations
-  category: temporal
+  category: temporal_context
   var_in: observation_number
   values:
   - value: 1

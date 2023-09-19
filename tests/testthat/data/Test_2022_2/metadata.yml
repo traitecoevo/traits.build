@@ -61,7 +61,7 @@ locations:
     rainfall (mm): 3500
 contexts:
 - context_property: unknown
-  category: treatment
+  category: treatment_context
   var_in: test_context_1
   values:
   - find: categorical context
@@ -74,7 +74,7 @@ contexts:
   - value: 2.0
     description: unknown
 - context_property: unknown
-  category: treatment
+  category: treatment_context
   var_in: test_context_1
   values:
   - find: categorical context
