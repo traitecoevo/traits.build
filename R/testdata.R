@@ -432,8 +432,8 @@ dataset_test_worker <-
         }
 
         # Dataset curators
-        expect_true(!is.null(metadata[["contributors"]][["austraits_curators"]]))
-        expect_type(metadata[["contributors"]][["austraits_curators"]], "character")
+        expect_true(!is.null(metadata[["contributors"]][["dataset_curators"]]))
+        expect_type(metadata[["contributors"]][["dataset_curators"]], "character")
 
         # Assistants
         if (!is.null(metadata[["contributors"]][["assistants"]][1]))
@@ -772,7 +772,7 @@ dataset_test_worker <-
           select(
             dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "source_id", "taxon_name",
             "entity_type", "life_stage", "basis_of_record", "value_type", "population_id", "individual_id",
-            "temporal_id", "method_id", "method_context_id", "entity_context_id", "original_name"))
+            "temporal_context_id", "method_id", "method_context_id", "entity_context_id", "original_name"))
           ) %>%
           tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
           tidyr::pivot_longer(cols = 16:ncol(.)) %>%

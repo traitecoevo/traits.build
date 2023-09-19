@@ -350,17 +350,17 @@ process_create_observation_id <- function(data) {
   # Create population_id
 
   # `population_id`'s are numbers assigned to unique combinations of
-  #                location_name, treatment_id and plot_id
+  #                location_name, treatment_context_id and plot_context_id
   # Their purpose is to allow `population_level` measurements to be
   # easily mapped to individuals within the given population
     if (
       !all(is.na(data[["location_name"]])) ||
-      !all(is.na(data[["plot_id"]])) ||
-      !all(is.na(data[["treatment_id"]]))
+      !all(is.na(data[["plot_context_id"]])) ||
+      !all(is.na(data[["treatment_context_id"]]))
     ) {
       data <- data %>%
         dplyr::mutate(
-          population_id = paste(.data$location_name, .data$plot_id, .data$treatment_id, sep = "")
+          population_id = paste(.data$location_name, .data$plot_context_id, .data$treatment_context_id, sep = "")
         )
     } else {
       data <- data %>%
@@ -373,8 +373,8 @@ process_create_observation_id <- function(data) {
     dplyr::mutate(
       pop_id_segment = ifelse(
         (!is.na(.data$location_name) |
-         !is.na(.data$treatment_id) |
-         !is.na(.data$plot_id)) &
+         !is.na(.data$treatment_context_id) |
+         !is.na(.data$plot_context_id)) &
          .data$entity_type %in% c("individual", "population", "metapopulation"),
          process_generate_id(.data$population_id, "", sort = TRUE),
          NA),
@@ -460,7 +460,7 @@ process_create_observation_id <- function(data) {
     dplyr::group_by(.data$dataset_id) %>%
     dplyr::mutate(
       observation_id =
-        paste(.data$taxon_name, .data$population_id, .data$individual_id, .data$temporal_id, .data$entity_type, .data$life_stage, sep = "-") %>%
+        paste(.data$taxon_name, .data$population_id, .data$individual_id, .data$temporal_context_id, .data$entity_type, .data$life_stage, sep = "-") %>%
         process_generate_id("", sort = TRUE)
     ) %>%
     dplyr::ungroup()
@@ -626,7 +626,7 @@ process_create_context_ids <- function(data, contexts) {
     dplyr::select(dplyr::all_of(c("context_property", "category", "value"))) %>%
     dplyr::distinct()
 
-  categories <- c("plot", "treatment", "entity_context", "temporal", "method_context") %>% subset(., . %in% tmp$category)
+  categories <- c("plot_context", "treatment_context", "entity_context", "temporal_context", "method_context") %>% subset(., . %in% tmp$category)
 
   ids <- dplyr::tibble(.rows = nrow(context_cols))
 
@@ -1185,7 +1185,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   var_in <- unlist(metadata[["dataset"]])
   i <- var_in %in% names(data)
 
-  v <- stats::setNames(nm = c("entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_context_id"))
+  v <- setNames(nm = c("entity_context_id", "plot_context_id", "treatment_context_id", "temporal_context_id", "method_context_id"))
 
   df <- data %>%
         # Next step selects and renames columns based on named vector
@@ -1549,7 +1549,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
       data_collectors = collectors_tmp,
       assistants = ifelse(is.null(metadata$contributors$assistants), NA_character_,
                                       metadata$contributors$assistants),
-      austraits_curators = metadata$contributors$austraits_curators
+      dataset_curators = metadata$contributors$dataset_curators
       )
 
   methods
