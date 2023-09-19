@@ -1,14 +1,14 @@
 dataset_id,context_property,category,value,description,link_id,link_vals
 Test_2023_1,plant sex,entity_context,female,female plant,entity_context_id,"03, 04, 05, 01, 02"
 Test_2023_1,plant sex,entity_context,male,male plant,entity_context_id,"09, 08, 10, 06, 07"
-Test_2023_1,slope position,plot,bottom slope,bottom slope,plot_id,01
-Test_2023_1,slope position,plot,dune crest,dune crest,plot_id,02
-Test_2023_1,slope position,plot,mid-slope,mid-slope,plot_id,03
-Test_2023_1,nutrient treatment,treatment,control,control treatment,treatment_id,01
-Test_2023_1,nutrient treatment,treatment,high nutrient,high nutrient treatment,treatment_id,02
-Test_2023_1,nutrient treatment,treatment,low nutrient,low nutrient treatment,treatment_id,03
-Test_2023_1,sampling time of day,temporal,17:00:00,,temporal_id,01
-Test_2023_1,sampling time of day,temporal,9:00:00,,,
+Test_2023_1,slope position,plot_context,bottom slope,bottom slope,plot_context_id,01
+Test_2023_1,slope position,plot_context,dune crest,dune crest,plot_context_id,02
+Test_2023_1,slope position,plot_context,mid-slope,mid-slope,plot_context_id,03
+Test_2023_1,nutrient treatment,treatment_context,control,control treatment,treatment_context_id,01
+Test_2023_1,nutrient treatment,treatment_context,high nutrient,high nutrient treatment,treatment_context_id,02
+Test_2023_1,nutrient treatment,treatment_context,low nutrient,low nutrient treatment,treatment_context_id,03
+Test_2023_1,sampling time of day,temporal_context,17:00:00,,temporal_context_id,01
+Test_2023_1,sampling time of day,temporal_context,9:00:00,,,
 Test_2023_1,instrument used,method,instrument 1,instrument 1,method_id,"07, 05, 06, 04"
 Test_2023_1,instrument used,method,instrument 2,instrument 2,method_id,"11, 09, 10, 08"
 Test_2023_1,tree height,entity_context,3,,entity_context_id,03
