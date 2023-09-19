@@ -582,7 +582,7 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
         dplyr::mutate(find = ifelse(is.na(.data$find), .data$value, .data$find))
     } else {
       out <- out %>%
-        dplyr::mutate(find = value)
+        dplyr::mutate(find = .data$value)
     }
     # Ensure character types
     out %>%
