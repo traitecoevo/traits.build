@@ -19,7 +19,7 @@ dataset_process(
 
 \item{schema}{Schema for traits.build}
 
-\item{resource_metadata}{metadata for the compilation}
+\item{resource_metadata}{Metadata for the compilation}
 
 \item{filter_missing_values}{Default filters missing values from the excluded data table;
 change to false to see the rows with missing values.}

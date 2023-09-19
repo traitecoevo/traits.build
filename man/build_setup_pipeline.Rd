@@ -13,7 +13,7 @@ build_setup_pipeline(
 \arguments{
 \item{dataset_ids}{`dataset_id`'s to include; by default includes all}
 
-\item{method}{approach to use in build}
+\item{method}{Approach to use in build}
 
 \item{template}{Template used to build}
 }

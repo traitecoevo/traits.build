@@ -2,7 +2,7 @@
 % Please edit documentation in R/process.R
 \name{dataset_build}
 \alias{dataset_build}
-\title{Build Dataset}
+\title{Build dataset}
 \usage{
 dataset_build(
   filename_metadata,
@@ -37,7 +37,8 @@ change to false to see the rows with missing values.}
 List, AusTraits database object
 }
 \description{
-Build specified dataset. This function completes three steps, which can be excuted speerately if desired: `dataset_configure`, `dataset_process`, `build_update_taxonomy`
+Build specified dataset. This function completes three steps, which can be executed separately if desired:
+`dataset_configure`, `dataset_process`, `build_update_taxonomy`
 }
 \examples{
 \dontrun{
