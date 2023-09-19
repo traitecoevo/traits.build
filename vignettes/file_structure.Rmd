@@ -555,7 +555,7 @@ Occasionally all the changes we want to make to dataset may not fit into the pre
 data <-
   read_csv(filename_data_raw, col_types = cols()) %>%
   process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
-  process_parse_data(dataset_id, metadata) %>%
+  process_parse_data(dataset_id, metadata, contexts, schema) %>%
   ...()
 ```
 
