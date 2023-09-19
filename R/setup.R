@@ -1159,7 +1159,7 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 
   dataset_ids <- dataset_ids[has_both_files]
 
-  message(green(sprintf("Setting build pipeline for %s studies, using %s", length(dataset_ids), method)))
+  message(green(sprintf("Setting up build pipeline for %s studies, using `%s` method", length(dataset_ids), method)))
 
   vals <- list(
     dataset_ids = whisker::iteratelist(dataset_ids, value = "dataset_id"),
@@ -1173,11 +1173,11 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 
   if (method %in% c("base", "furrr")) {
     writeLines(pipieline, "build.R")
-    message(green("\t-> build using file `build.R`"))
+    message(green("\t-> build compilation using file `build.R`"))
   }
   if (method == "remake") {
     writeLines(pipieline, "remake.yml")
-    message(green("\t-> build using file `remake.yml`"))
+    message(green("\t-> build compilation using file `remake.yml`"))
   }
 
   # Check file R/custom_R_code.R exists

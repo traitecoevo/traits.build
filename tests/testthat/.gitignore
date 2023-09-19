@@ -2,7 +2,7 @@ remake.yml
 .git
 .remake
 build.R
-R
+R/*
 export/reports/
 build_info.md
 **/output/schema.yml
