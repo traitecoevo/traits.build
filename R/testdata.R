@@ -165,14 +165,14 @@ dataset_test_worker <-
           expect(
             identical(as.vector(all(!check)), TRUE),
             sprintf(
-              "%s -- disallowed characters in data detected: %s\n\tPlease replace using `custom_R_code`",
+              "%s - disallowed characters in data detected: %s\n\tPlease replace using `custom_R_code`",
               info, txt
             )
           )
         } else {
           expect(
             identical(as.vector(all(!check)), TRUE),
-            sprintf("%s -- disallowed characters detected: %s", info, txt)
+            sprintf("%s - disallowed characters detected: %s", info, txt)
           )
         }
 
@@ -306,7 +306,7 @@ dataset_test_worker <-
 
         # Check for other files
         vals <- c("data.csv", "metadata.yml", "raw")
-        expect_isin(dir(s), vals, info = paste(f, " disallowed files"))
+        expect_isin(dir(s), vals, info = paste(f, " - disallowed files"))
 
 
         # `data.csv`
@@ -342,7 +342,7 @@ dataset_test_worker <-
         txt <- metadata[["dataset"]][["custom_R_code"]]
         #expect_false(grepl("#", txt), label=paste0(files[3], "-custom_R_code cannot contain comments, except on last line"))
         expect_no_error(process_custom_code(txt)(data),
-                        label = paste0(files[3], "-custom_R_code"))
+                        label = paste0(files[3], " - custom_R_code"))
 
         # Apply custom manipulations
         data <- process_custom_code(txt)(data)
@@ -420,7 +420,7 @@ dataset_test_worker <-
 
         test_list_named_allowed(metadata[["dataset"]],
                                 schema$metadata$elements$dataset$values %>% names(),
-                                info = paste0(f, "-dataset"))
+                                info = paste0(f, " - dataset"))
 
         expect_type(metadata[["dataset"]][["data_is_long_format"]], "logical")
         expect_type(metadata[["dataset"]], "list")
@@ -447,7 +447,7 @@ dataset_test_worker <-
             expect_contains(
               names(metadata[["locations"]][[v]]),
               c("latitude (deg)", "longitude (deg)"),
-              info = paste0(f, " - site: ", v)
+              info = paste0(f, " - locations: ", v)
             )
           }
         }
@@ -471,7 +471,7 @@ dataset_test_worker <-
           test_dataframe_names_contain(
             contexts,
             c("context_property", "category", "var_in"),
-            info = paste0(f, "-contexts")
+            info = paste0(f, " - contexts")
           )
 
           for (i in seq_along(metadata$contexts)) {
@@ -536,10 +536,10 @@ dataset_test_worker <-
         # Traits
         expect_list_elements_contains_names(metadata[["traits"]],
                                             schema$metadata$elements$traits$elements[1:3] %>% names(),
-                                            info = paste0(f, "-traits"))
+                                            info = paste0(f, " - traits"))
         expect_list_elements_allowed_names(metadata[["traits"]],
                                            c(schema$metadata$elements$traits$elements %>% names(), unique(contexts$var_in)),
-                                           info = paste0(f, "-traits"))
+                                           info = paste0(f, " - traits"))
         expect_silent(
           traits <- traits.build::util_list_to_df2(metadata[["traits"]])
         )
@@ -547,7 +547,7 @@ dataset_test_worker <-
 
         expect_isin(traits$trait_name,
                     definitions$elements %>% names(),
-                    info = paste0(f, "-traits"))
+                    info = paste0(f, " - traits"))
 
         # Now that traits loaded, check details of context match
         if (nrow(contexts > 0)) {
@@ -580,7 +580,7 @@ dataset_test_worker <-
             expect_true(all(i),
                         info = paste0(
                           f,
-                          "- context names from data file not present in metadata contexts: ",
+                          " - context names from data file not present in metadata contexts: ",
                           v[!i]
                         )
             )
@@ -601,7 +601,7 @@ dataset_test_worker <-
           expect_isin(
             value_type_fixed,
             schema$value_type$values %>% names,
-            info = paste0(f, "-value types")
+            info = paste0(f, " - value types")
           )
 
           if (length(value_type_cols) > 0) {
@@ -609,7 +609,7 @@ dataset_test_worker <-
               expect_isin(
                 data[[v]] %>% unique(),
                 schema$value_type$values %>% names,
-                info = paste(f, v, "- value types columns")
+                info = paste(f, v, " - value types columns")
               )
           }
         }
@@ -625,11 +625,11 @@ dataset_test_worker <-
             sapply(metadata[["substitutions"]], "[[", "trait_name")
           expect_isin(unique(trait_names),
                       definitions$elements %>% names(),
-                      info = paste0(f, "-substitutions-trait_name"))
+                      info = paste0(f, " - substitutions - trait_name"))
           expect_isin(
             unique(trait_names),
             unique(traits$trait_name),
-            info = paste0(f, "-substitutions-trait_name")
+            info = paste0(f, " - substitutions - trait_name")
           )
 
           # Check for allowable values of categorical variables
@@ -709,13 +709,13 @@ dataset_test_worker <-
             (data[[metadata[["dataset"]][["location_name"]]]] %>% unique %>% na.omit)
           i <- v %in% names(metadata$locations)
           expect_true(all(i),
-                      info = paste0(f,  "- site names from data file not present in metadata: ", v[!i]))
+                      info = paste0(f,  " - site names from data file not present in metadata: ", v[!i]))
 
           i <- names(metadata$locations) %in% v
           expect_true(all(i),
                       info = paste0(
                         f,
-                        "- site names from metadata not present in data file: ",
+                        " - site names from metadata not present in data file: ",
                         names(metadata$locations)[!i]
                       ))
         }
@@ -728,7 +728,7 @@ dataset_test_worker <-
           get_schema("config/traits.yml", "traits"),
           get_unit_conversions("config/unit_conversions.csv"),
           get_schema(),
-          get_schema("config/metadata.yml",  "metadata"),
+          get_schema("config/metadata.yml", "metadata"),
           read_csv_char("config/taxon_list.csv")
         ), info = sprintf(" - cannot build %s", dataset_id))
 
