@@ -921,7 +921,7 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
         already_exist <- c(already_exist, taxonomic_updates[i,]$find)
       } else {
         # Otherwise, bind to end of existing taxonomic updates
-        existing_updates <- existing_updates %>% bind_rows(taxonomic_updates[i,])
+        existing_updates <- existing_updates %>% dplyr::bind_rows(taxonomic_updates[i,])
       }
     }
 

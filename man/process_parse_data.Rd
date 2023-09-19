@@ -14,6 +14,8 @@ process_parse_data(data, dataset_id, metadata, contexts, schema)
 \item{metadata}{Yaml file with metadata}
 
 \item{contexts}{Dataframe of contexts for this study}
+
+\item{schema}{Schema for traits.build}
 }
 \value{
 Tibble in long format with AusTraits formatted trait names, trait

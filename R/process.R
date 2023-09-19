@@ -222,7 +222,7 @@ dataset_process <- function(filename_data_raw,
 
   traits <-
     traits %>%
-    dplyr::select(-method_id) %>% # Need to remove blank column to bind in real one; blank exists because `method_id` in schema
+    dplyr::select(-"method_id") %>% # Need to remove blank column to bind in real one; blank exists because `method_id` in schema
     dplyr::left_join(
       by = c("trait_name", "methods"),
       tmp_bind
@@ -553,31 +553,33 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
       dplyr::mutate(dataset_id = dataset_id) %>%
       dplyr::select(dplyr::any_of(vars))
 
-    ## if the field `description` is missing from metadata[["contexts"]] for the specific context property, create a column now
+    ## If the field `description` is missing from metadata[["contexts"]] for the specific
+    # context property, create a column now
     if (!"description" %in% names(out)) {
       out[["description"]] <- NA_character_
     }
 
-    ## if the fields `find` and `value` are both missing from metadata[["contexts"]] for the specific context property create them
-    ## they are both the unique set of values in the column in the data.csv file.
+    ## If the fields `find` and `value` are both missing from metadata[["contexts"]] for
+    # the specific context property create them
+    ## They are both the unique set of values in the column in the data.csv file
     if (all(!c("find", "value") %in% names(out))) {
       out <- out %>%
-        # The following line shouldn't be neeeded, as we testsed this was missing for the if statement above
+        # The following line shouldn't be neeeded, as we tested this was missing for the if statement above
         dplyr::select(-any_of(c("value"))) %>%
         dplyr::left_join(
           by = "var_in",
-          tibble(
+          tibble::tibble(
             var_in = out[["var_in"]][1],
             value = unique(traits[[out$var_in[1]]])
           ) %>%
-            dplyr::filter(!is.na(value))
+        dplyr::filter(!is.na(.data$value))
         ) %>%
-        dplyr::mutate(find = value)
+        dplyr::mutate(find = .data$value)
     }
 
     if ("find" %in% names(out)) {
       out <- out %>%
-        dplyr::mutate(find = ifelse(is.na(find), value, find))
+        dplyr::mutate(find = ifelse(is.na(.data$find), .data$value, .data$find))
     } else {
       out <- out %>%
         dplyr::mutate(find = value)
@@ -801,7 +803,7 @@ process_flag_excluded_observations <- function(data, metadata) {
   fix <-
     metadata$exclude_observations %>%
     util_list_to_df2() %>%
-    tidyr::separate_longer_delim(find, delim = ", ") %>%
+    tidyr::separate_longer_delim("find", delim = ", ") %>%
     dplyr::mutate(find = str_squish(.data$find))
 
   if (nrow(fix) == 0) return(data)
@@ -1076,6 +1078,7 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' @param dataset_id Identifier for a particular study in the AusTraits database
 #' @param metadata Yaml file with metadata
 #' @param contexts Dataframe of contexts for this study
+#' @param schema Schema for traits.build
 #' @return Tibble in long format with AusTraits formatted trait names, trait
 #' substitutions and unique observation id added
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
@@ -1089,7 +1092,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   var_in <- unlist(metadata[["dataset"]])
   i <- var_in %in% names(data)
 
-  v <- setNames(nm = c("entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_context_id"))
+  v <- stats::setNames(nm = c("entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_context_id"))
 
   df <- data %>%
         # Next step selects and renames columns based on named vector

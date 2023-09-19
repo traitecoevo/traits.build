@@ -175,12 +175,14 @@ dataset_test_worker <-
 
     check_disallowed_chars <- function(x) {
       i <- charToRaw(x)
-      # allow all ascii text
+      # Allow all ascii text
       is_ascii <- i < 0x7F
 
-      # allow some utf8 characters, those with accents over letters for foreign names
-      # list of codes is here: http://www.utf8-chartable.de/
-      # note c3 is needed because this is prefix for allowed UTF8 chars
+      # Allow some utf8 characters, those with accents over letters for foreign names
+      # List of codes is here: http://www.utf8-chartable.de/
+      # Note c3 is needed because this is prefix for allowed UTF8 chars
+      # Warning: Portable packages must use only ASCII characters in their R code
+      # Sophie - could replace these with unicode like Lizzy did before?
       exceptions <- c("ÁÅÀÂÄÆÃĀâíåæäãàáíÇčóöøéèłńl°êÜüùúû±µµ“”‘’-–—≈˜×")
 
       is_allowed <- i %in% charToRaw(exceptions)
@@ -573,17 +575,17 @@ dataset_test_worker <-
 
         if ("value_type" %in% names(traits)) {
           i <- (traits$value_type %in% names(data))
-          
+
           value_type_fixed <- traits$value_type[!i] %>% unique()
           value_type_cols <- traits$value_type[i] %>% unique()
-          
-          
+
+
           expect_isin(
             value_type_fixed,
             schema$value_type$values %>% names,
             info = paste0(f, "-value types")
           )
-          
+
           if (length(value_type_cols) > 0) {
             for (v in value_type_cols)
               expect_isin(
