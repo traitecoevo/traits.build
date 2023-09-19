@@ -58,10 +58,9 @@ metadata_create_template <- function(dataset_id,
   out$contributors[c("assistants", "austraits_curators")] <- "unknown"
 
   out$dataset <-
-    out$dataset$values[c("data_is_long_format", "custom_R_code", "collection_date", "taxon_name", "location_name", "repeat_measurements",
+    out$dataset$values[c("data_is_long_format", "custom_R_code", "collection_date", "taxon_name", "location_name",
                          "description", "basis_of_record", "life_stage", "sampling_strategy", "original_file", "notes")]
   out$dataset[] <- "unknown"
-  out$dataset$repeat_measurements <- FALSE
   out$dataset$custom_R_code <- NA
 
   if (skip_manual == FALSE) {
@@ -135,7 +134,7 @@ metadata_create_template <- function(dataset_id,
 
   # Reorder elements in dataset
   order <- c("data_is_long_format", "custom_R_code", "collection_date", "taxon_name", "trait_name",
-             "value", "location_name", "individual_id", "repeat_measurements", "description", "basis_of_record", "life_stage",
+             "value", "location_name", "individual_id", "description", "basis_of_record", "life_stage",
              "sampling_strategy", "original_file", "notes")
 
   order <- order[which(order %in% names(out[["dataset"]]))]

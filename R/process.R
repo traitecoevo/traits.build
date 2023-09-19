@@ -112,6 +112,12 @@ dataset_process <- function(filename_data_raw,
         "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
     )
 
+  if (!"repeat_measurements_id" %in% names(traits)) {
+    traits <-
+      traits %>%
+        mutate(repeat_measurements_id = NA)
+  }
+
   traits <- traits %>%
     mutate(unit = ifelse(!is.na(unit_in), unit_in, unit)) %>%
     process_flag_unsupported_traits(definitions) %>%
@@ -408,23 +414,20 @@ process_create_observation_id <- function(data, metadata) {
     ) %>%
     dplyr::ungroup()
   
-  ## Create repeat_measurement_id  for datasets where there are multiple measurements per observation, such as response curve data
+  ## Create repeat_measurements_id  for datasets where there are multiple measurements per observation, such as response curve data
   #  (where an entity can be an individual, population, or taxon)
   #   at a single point in time
   
-  if (metadata$dataset$repeat_measurements == TRUE) {  
-    i <- !is.na(data$value)
+    i <- !is.na(data$value) & !is.na(data$repeat_measurements_id)
+
     data[i,] <-
       data[i,] %>%
       dplyr::group_by(.data$dataset_id, .data$observation_id) %>%
       dplyr::mutate(
-        repeat_measurement_id = row_number() %>%
-          process_generate_id("", sort = TRUE)
+        repeat_measurements_id = row_number() %>%
+          process_generate_id("", sort = FALSE)
       ) %>%
-      dplyr::ungroup()  
-  } else {
-    data$repeat_measurement_id = NA_character_
-  }
+      dplyr::ungroup()
 
   data %>%
     dplyr::select(-dplyr::all_of(c("check_for_ind")))
