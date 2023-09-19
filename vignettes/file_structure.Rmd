@@ -252,7 +252,7 @@ Note that only the AusTraits custodians have the contributors' e-mail addresses 
 Additional fields within contributors are:
 
 - `Assistants`, `r tolower(schema$metadata$elements$contributors$elements$assistants$description)`
-- `AusTraits_curators`, `r tolower(schema$metadata$elements$contributors$elements$austraits_curators$description)`
+- `dataset_curators`, `r tolower(schema$metadata$elements$contributors$elements$dataset_curators$description)`
 
 #### Dataset
 

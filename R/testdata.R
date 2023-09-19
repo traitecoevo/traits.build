@@ -409,8 +409,8 @@ dataset_test_worker <-
         }
 
         # Dataset curators
-        expect_true(!is.null(metadata[["contributors"]][["austraits_curators"]]))
-        expect_type(metadata[["contributors"]][["austraits_curators"]], "character")
+        expect_true(!is.null(metadata[["contributors"]][["dataset_curators"]]))
+        expect_type(metadata[["contributors"]][["dataset_curators"]], "character")
 
         # Assistants
         if (!is.null(metadata[["contributors"]][["assistants"]][1]))
