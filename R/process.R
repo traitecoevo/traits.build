@@ -1042,7 +1042,7 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
   }
 
   f_range_bin <- function(value, name) {
-    
+
     stringr::str_split(value, "\\-\\-") %>%       # split into parts
     purrr::map(f_standard, name) %>%                       # apply unit conversions to each
     purrr::map_chr(~paste(.x, collapse = "--"))   # paste back together
@@ -1129,7 +1129,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
   df <- data %>%
         # Next step selects and renames columns based on named vector
-        dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in))) %>%
+        dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in))) %>% # Why select v? When would those ids ever be in the data?
         dplyr::mutate(dataset_id = dataset_id)
 
   # Step 1b. Import any values that aren't columns of data
@@ -1152,7 +1152,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   # It is required here to correctly connect rows of data as being collected
   # on the same individual or are part of the same observation
 
-    if (!data_is_long_format) {
+  if (!data_is_long_format) {
 
   # If an `individual_id` column IS read in through metadata$dataset,
   # it is used to correctly cluster and identify individuals
@@ -1230,6 +1230,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
     stop(paste(dataset_id, ": missing traits: ", setdiff(traits_table[["var_in"]], colnames(data))))
   }
 
+  # I'm confused why contexts$var_in is added in here (also should be unique()?), instead of just vars
   vars_traits <- c(vars, contexts$var_in)
 
   not_allowed <- c(
@@ -1252,18 +1253,23 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
       out[[i]][["trait_name"]] <- traits_table[["var_in"]][i]
       out[[i]][["value"]] <- data[[traits_table[["var_in"]][i]]] %>% as.character()
 
-      # Pull in additional information for each trait as specified in traits part of metadata, here represented as traits_table
+      # Pull in additional information for each trait as specified in traits part of metadata,
+      # here represented as `traits_table`
       # Values in table can specify a column in the original data OR a value to use
 
       vars_to_check <- vars_traits[vars_traits %in% names(traits_table)]
+
       # For each column in traits_table
       for (v in vars_to_check) {
+
+        not_allowed <- schema[[v]][["values"]] %>% names()
+
         # Get value
         value <- traits_table[i, v, drop = TRUE]
-        # Check if it is a column in data or not and process accordingly
 
+        # Check if it is a column in data or not and process accordingly
         if (!is.na(value)) {
-          if (!is.null(data[[value]]) & !(value %in% not_allowed)) {
+          if (!is.null(data[[value]]) && !(value %in% not_allowed)) {
             out[[i]][[v]] <- data[[value]] %>% as.character()
           } else {
             out[[i]][[v]] <- value %>% as.character()
@@ -1271,25 +1277,39 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
         }
       }
     }
+
     # Convert replicates column to character type to allow `bind_rows`
     out <- out %>% purrr::map(~mutate(.x, dplyr::across(dplyr::any_of("replicates"), ~as.character(.x))))
     out <- dplyr::bind_rows(out)
+
   } else {
 
     out <- df %>% dplyr::filter(.data$trait_name %in% traits_table$var_in)
-    out[["value"]] <- out[["value"]] %>%  as.character()
+    out[["value"]] <- out[["value"]] %>% as.character()
 
     # Pull in additional information for each trait as specified in traits part of metadata,
     # here represented as traits_table
     # (column option not implemented) Values in table can specify a column in the original data OR a value to use
 
     vars_to_check <- vars_traits[vars_traits %in% names(traits_table)]
+
     # For each column in traits_table
     for (i in seq_len(nrow(traits_table))) {
+
       for (v in vars_to_check) {
+
+        not_allowed <- schema[[v]][["values"]] %>% names()
         value <- traits_table[i, v, drop = TRUE]
+
         if (!is.na(value)) {
-          out[[v]][out$trait_name == traits_table[["var_in"]][i]] <- value
+          if (!is.null(data[[value]]) && !(value %in% not_allowed)) {
+            out[[v]][out$trait_name == traits_table[["var_in"]][i]] <-
+              # Subset column to where `trait_name` in the data table equals the current trait in the loop
+              data[[value]][data[[metadata[["dataset"]][["trait_name"]]]] == traits_table[["var_in"]][i]] %>%
+              as.character()
+          } else {
+            out[[v]][out$trait_name == traits_table[["var_in"]][i]] <- value %>% as.character()
+          }
         }
       }
     }
@@ -1442,7 +1462,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
         dplyr::select(dplyr::any_of(names(metadata$dataset))) %>%
         dplyr::mutate(dataset_id = dataset_id) %>%
         dplyr::select(-dplyr::any_of(c("original_file", "notes", "data_is_long_format", "taxon_name",
-                                         "trait_name", "population_id", "individual_id",
+                                         "trait_name", "population_id", "individual_id", "value_type",
                                          "location_name", "source_id", "value", "entity_type",
                                          "collection_date", "custom_R_code", "replicates", "measurement_remarks",
                                          "taxon_name", "basis_of_value", "basis_of_record", "life_stage", "value_type", "unit_in")))

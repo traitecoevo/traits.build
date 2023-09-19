@@ -1,5 +1,3 @@
-# Todo:
-# Fix `expect_no_error` and other functions not showing any error messages maybe on another branch
 
 test_that("`metadata_create_template` is working", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
