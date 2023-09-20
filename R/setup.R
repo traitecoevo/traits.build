@@ -55,7 +55,7 @@ metadata_create_template <- function(dataset_id,
   out$contributors <- out$contributors$elements
   out$contributors$data_collectors <- list(out$contributors$data_collectors$elements[collectors])
   out$contributors$data_collectors[[1]][] <- "unknown"
-  out$contributors[c("assistants", "austraits_curators")] <- "unknown"
+  out$contributors[c("assistants", "dataset_curators")] <- "unknown"
 
   out$dataset <-
     out$dataset$values[c("data_is_long_format", "custom_R_code", "collection_date", "taxon_name", "location_name",
@@ -921,7 +921,7 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
         already_exist <- c(already_exist, taxonomic_updates[i,]$find)
       } else {
         # Otherwise, bind to end of existing taxonomic updates
-        existing_updates <- existing_updates %>% bind_rows(taxonomic_updates[i,])
+        existing_updates <- existing_updates %>% dplyr::bind_rows(taxonomic_updates[i,])
       }
     }
 
@@ -1129,15 +1129,22 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' `build_setup_pipeline` rewrites the `remake.yml` file to include new
 #' studies.
 #'
-#' @param template Template used to build
-#' @param path Path to folder with data
 #' @param dataset_ids `dataset_id`'s to include; by default includes all
+#' @param method Approach to use in build
+#' @param template Template used to build
 #'
 #' @return Updated `remake.yml` file
 #' @export
-build_setup_pipeline <- function(template = readLines(system.file("support", "remake.yml.whisker", package = "traits.build")),
-                                 path = "data",
-                                 dataset_ids = dir(path)) {
+build_setup_pipeline <- function(dataset_ids = dir("data"),
+                                 method = "base",
+                                 template = select_pipeline_template(method)
+                                 ) {
+
+  if (!method %in% c("base", "remake", "furrr")) {
+    stop(sprintf("Invalid method selected in `build_setup_pipeline`: %s", method))
+  }
+
+  path <- "data"
 
   if (!file.exists(path)) {
     stop("cannot find data directory: ", path)
@@ -1152,13 +1159,33 @@ build_setup_pipeline <- function(template = readLines(system.file("support", "re
 
   dataset_ids <- dataset_ids[has_both_files]
 
+  message(green(sprintf("Setting up build pipeline for %s studies, using `%s` method", length(dataset_ids), method)))
+
   vals <- list(
     dataset_ids = whisker::iteratelist(dataset_ids, value = "dataset_id"),
+    dataset_ids_vector =
+      sprintf("c(%s)", sprintf("'%s'", dataset_ids) %>% paste(collapse = ", ")),
     path = path
     )
 
-  str <- whisker::whisker.render(template, vals)
-  writeLines(str, "remake.yml")
+  # Setup pipeline based on selected method for building
+  pipieline <- whisker::whisker.render(template, data = vals)
+
+  if (method %in% c("base", "furrr")) {
+    writeLines(pipieline, "build.R")
+    message(green("\t-> build compilation using file `build.R`"))
+  }
+  if (method == "remake") {
+    writeLines(pipieline, "remake.yml")
+    message(green("\t-> build compilation using file `remake.yml`"))
+  }
+
+  # Check file R/custom_R_code.R exists
+  filename <- "R/custom_R_code.R"
+  if (!file.exists(filename)) {
+    dir.create("R", FALSE)
+    writeLines("\n# Put any functions you use in custom R code here\n\n", "R/custom_R_code.R")
+  }
 
   # Check taxon list exists
   filename <- "config/taxon_list.csv"
@@ -1184,6 +1211,19 @@ build_setup_pipeline <- function(template = readLines(system.file("support", "re
   }
 }
 
+
+select_pipeline_template <- function(method) {
+
+  file <-
+  switch(method,
+    base = "build_base.whisker",
+    remake = "build_remake.whisker",
+    furrr = "build_furrr.whisker",
+    default = "build_base.whisker"
+  )
+
+  readLines(system.file("support", file, package = "traits.build"))
+}
 
 #' Find list of unique datasets within compilation containing specified taxa
 #'

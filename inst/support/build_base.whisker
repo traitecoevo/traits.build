@@ -13,13 +13,17 @@ unit_conversions <- get_unit_conversions("config/unit_conversions.csv")
 taxon_list <- read_csv_char("config/taxon_list.csv")
 
 # Build each source
-Test_2022_config <- dataset_configure("data/Test_2022/metadata.yml", definitions)
-Test_2022_raw <- dataset_process("data/Test_2022/data.csv", Test_2022_config, schema, resource_metadata, unit_conversions)
-Test_2022 <- build_update_taxonomy(Test_2022_raw, taxon_list)
+{{#dataset_ids}}
+{{dataset_id}}_config <- dataset_configure("{{path}}/{{dataset_id}}/metadata.yml", definitions)
+{{dataset_id}}_raw <- dataset_process("{{path}}/{{dataset_id}}/data.csv", {{dataset_id}}_config, schema, resource_metadata, unit_conversions)
+{{dataset_id}} <- build_update_taxonomy({{dataset_id}}_raw, taxon_list)
 
+{{/dataset_ids}}
 
 austraits_raw <- build_combine(
-        Test_2022,
+{{#dataset_ids}}
+        {{dataset_id}},
+{{/dataset_ids}}
         NULL)
 
 # version information

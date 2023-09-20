@@ -28,7 +28,6 @@ Imports:
     magrittr,
     purrr,
     RefManageR,
-    remake,
     rlang,
     rmarkdown,
     stringi,
@@ -38,6 +37,8 @@ Imports:
     whisker,
     yaml
 Suggests:
+    furrr,
+    remake,
     austraits,
     leaflet,
     bibtex,
