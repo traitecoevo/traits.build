@@ -340,7 +340,7 @@ In each case we want to make some custom modifications to a particular dataset b
 data <-
   read_csv(filename_data_raw, col_types = cols(), guess_max = 1e5) %>%
   process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
-  process_parse_data(dataset_id, metadata)
+  process_parse_data(dataset_id, metadata, contexts, schema)
 ```
 
 Note the second line. This is where the custom code gets applied, right after the file is loaded.
