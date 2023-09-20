@@ -223,7 +223,7 @@ dataset_process <- function(filename_data_raw,
       "error", "taxonomic_resolution", "unit_in"))
     )
 
-    # Remove missing values is specified
+  # Remove missing values is specified
   if (filter_missing_values == TRUE) {
     traits <-
       traits %>% dplyr::filter(!(!is.na(.data$error) & (.data$error == "Missing value")))
@@ -460,7 +460,8 @@ process_create_observation_id <- function(data, metadata) {
     dplyr::group_by(.data$dataset_id) %>%
     dplyr::mutate(
       observation_id =
-        paste(.data$taxon_name, .data$population_id, .data$individual_id, .data$temporal_context_id, .data$entity_type, .data$life_stage, sep = "-") %>%
+        paste(.data$taxon_name, .data$population_id, .data$individual_id, .data$temporal_context_id,
+              .data$entity_type, .data$life_stage, sep = "-") %>%
         process_generate_id("", sort = TRUE)
     ) %>%
     dplyr::ungroup()
@@ -476,7 +477,10 @@ process_create_observation_id <- function(data, metadata) {
 
       data[i,] <-
         data[i,] %>%
-        dplyr::group_by(.data$dataset_id, .data$observation_id) %>%
+        dplyr::group_by(
+          .data$dataset_id, .data$observation_id, .data$trait_name, .data$source_id,
+          .data$basis_of_record, .data$value_type, .data$method_context_id, .data$entity_context_id
+        ) %>%
         dplyr::mutate(
           repeat_measurements_id = row_number() %>% process_generate_id("", sort = TRUE)
         ) %>%
