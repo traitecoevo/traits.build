@@ -156,7 +156,7 @@ testthat::test_that("Test Dataset 4 builds correctly", {
 # TODO
 # Need to check for long datasets
 # Reading in from trait vs dataset level?
-# Maybe there should be a prompt with `metadata_create_template` or `metadata_add_traits`
+# Maybe there should be a prompt in `metadata_create_template` and `metadata_add_traits`
 # about `repeat_measurements_id`?
 # Make sure that the order of measurements in the data is preserved with `repeat_measurements_id`
 
