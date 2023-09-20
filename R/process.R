@@ -294,7 +294,7 @@ dataset_build <- function(
     taxon_list,
     filter_missing_values = TRUE) {
   dataset_config <- dataset_configure(filename_metadata, definitions)
-  dataset_raw <- dataset_process(filename_data_raw, dataset_config, schema, resource_metadata, unit_conversions, filter_missing_values = filter_missing_values)
+  dataset_raw <- dataset_process(filename_data_raw, dataset_config, schema, resource_metadata, unit_conversion_functions, filter_missing_values = filter_missing_values)
   dataset <- build_update_taxonomy(dataset_raw, taxon_list)
 
   dataset
