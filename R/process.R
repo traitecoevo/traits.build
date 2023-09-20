@@ -483,9 +483,10 @@ process_create_observation_id <- function(data, metadata) {
           .data$method_id, .data$method_context_id,
         ) %>%
         dplyr::mutate(
-          repeat_measurements_id = row_number() %>% process_generate_id("", sort = FALSE)
+          repeat_measurements_id = row_number() %>% process_generate_id("")
         ) %>%
         dplyr::ungroup()
+
     }
 
   }

@@ -188,7 +188,7 @@ traits:
       label: Leaf stomatal conductance
       description: Second dummy trait definition to test response curves in Test Dataset 7.
       type: numeric
-      units: mmol{H2O}/m2/s
+      units: mol{H2O}/m2/s
       allowed_values_min: 0
       allowed_values_max: 1
     plant_growth_form:
