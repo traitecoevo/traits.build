@@ -28,8 +28,14 @@ dataset:
   data_is_long_format: no
   custom_R_code: '
     data %>%
-    mutate(across(`wood density (mg mm-3)`, as.character)) %>%
-    mutate(LASA50_dupe = LASA50, LASA1000_dupe = LASA1000)
+      mutate(across(`wood density (mg mm-3)`, as.character)) %>%
+      mutate(
+        wrong_trait_name = "test",
+        wood_density_dupe = `wood density (mg mm-3)`,
+        no_unit_conversion = 2,
+        LASA50_dupe = LASA50,
+        LASA1000_dupe = LASA1000
+      )
   '
   collection_date: 2004/2004
   taxon_name: Species
@@ -454,6 +460,30 @@ traits:
   basis_of_value: expert_score
   methods: Made up growth form values.
   replicates: .na
+- var_in: wrong_trait_name
+  unit_in: .na
+  trait_name: wrong_trait_name
+  entity_type: species
+  value_type: mode
+  basis_of_value: expert_score
+  methods: Test that a wrong trait name will go to excluded data.
+  replicates: .na
+- var_in: wood_density_dupe
+  unit_in: .na
+  trait_name: wood_density
+  entity_type: species
+  value_type: mean
+  basis_of_value: measurement
+  methods: Test that NA units will go to excluded data.
+  replicates: unknown
+- var_in: no_unit_conversion
+  unit_in: mass
+  trait_name: seed_dry_mass
+  entity_type: species
+  value_type: mean
+  basis_of_value: measurement
+  methods: Test that a unit without a unit conversion will go to excluded data.
+  replicates: unknown
 - var_in: leaf_length
   unit_in: leaf_length_units
   trait_name: leaf_length

@@ -294,7 +294,7 @@ dataset_build <- function(
     taxon_list,
     filter_missing_values = TRUE) {
   dataset_config <- dataset_configure(filename_metadata, definitions)
-  dataset_raw <- dataset_process(filename_data_raw, dataset_config, schema, resource_metadata, unit_conversions, filter_missing_values = filter_missing_values)
+  dataset_raw <- dataset_process(filename_data_raw, dataset_config, schema, resource_metadata, unit_conversion_functions, filter_missing_values = filter_missing_values)
   dataset <- build_update_taxonomy(dataset_raw, taxon_list)
 
   dataset
@@ -786,7 +786,7 @@ process_format_locations <- function(my_list, dataset_id, schema) {
 #' @param definitions Definitions read in from the `traits.yml` file in the config folder
 #'
 #' @importFrom rlang .data
-#' @return Tibble with unrecognised traits flagged as "Unsupported trait" in the "error" column
+#' @return Tibble with unrecognised traits flagged in the "error" column
 process_flag_unsupported_traits <- function(data, definitions) {
 
   # Create error column if not already present
@@ -797,10 +797,10 @@ process_flag_unsupported_traits <- function(data, definitions) {
 
   # Exclude traits not in definitions
   i <- data$trait_name %in% names(definitions)
-  data %>%
-    dplyr::mutate(error = ifelse(!i, "Unsupported trait", .data$error))
 
-  data
+  data %>%
+    dplyr::mutate(error = ifelse(!i, "Trait name not in trait dictionary", .data$error))
+
 }
 
 #' Flag any excluded observations
@@ -974,13 +974,14 @@ process_flag_unsupported_values <- function(data, definitions) {
     dplyr::filter(is.na(.data$error)) %>% dplyr::pull(.data$trait_name) %>% unique()
 
   for (trait in traits) {
+
     # General categorical traits
     if (definitions[[trait]]$type == "categorical") {
 
-      i <-  is.na(data[["error"]]) &
-            data[["trait_name"]] == trait &
-            !is.null(definitions[[trait]]$allowed_values_levels) &
-            !util_check_all_values_in(data$value, names(definitions[[trait]]$allowed_values_levels))
+      i <- is.na(data[["error"]]) &
+           data[["trait_name"]] == trait &
+           !is.null(definitions[[trait]]$allowed_values_levels) &
+           !util_check_all_values_in(data$value, names(definitions[[trait]]$allowed_values_levels))
       data <- data %>%
         dplyr::mutate(error = ifelse(i, "Unsupported trait value", .data$error))
     }
@@ -1119,7 +1120,8 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
   data <- data %>%
     dplyr::mutate(
       error = ifelse(j, "Missing unit conversion", .data$error),
-      to_convert = ifelse(j, FALSE, .data$to_convert))
+      to_convert = ifelse(j, FALSE, .data$to_convert)
+    )
 
   f_standard <- function(value, name) {
     as.character(unit_conversion_functions[[name]](as.numeric(value)))
@@ -1318,10 +1320,6 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   # Sophie - I'm confused why contexts$var_in is added in here (also should be unique()?), instead of just vars
   vars_traits <- c(vars, contexts$var_in)
 
-  not_allowed <- c(
-    schema[["entity_type"]][["values"]] %>% names(),
-    schema[["value_type"]][["values"]] %>% names()
-  )
   ## If needed, change from wide to long format
 
   if (!data_is_long_format) {

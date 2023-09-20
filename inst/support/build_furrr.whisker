@@ -28,16 +28,16 @@ f <- function(dataset_id) {
                 taxon_list = taxon_list)
 }
 
-# sources <- purrr::map(dataset_ids, f)
+#sources <- purrr::map(dataset_ids, f)
 
-plan(multisession, workers = 5)
+plan(multisession, workers = {{workers}})
 #plan(sequential)
 
 sources <- future_map(dataset_ids, f, .progress = TRUE)
 
 austraits_raw <- build_combine(d = sources)
 
-# version information
+# Version information
 version_number <- util_get_version("config/metadata.yml")
 git_SHA <- util_get_SHA()
 

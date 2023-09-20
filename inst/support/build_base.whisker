@@ -26,7 +26,7 @@ austraits_raw <- build_combine(
 {{/dataset_ids}}
         NULL)
 
-# version information
+# Version information
 version_number <- util_get_version("config/metadata.yml")
 git_SHA <- util_get_SHA()
 
