@@ -27,8 +27,7 @@ dataset:
     data %>%
       group_by(Species, `Leaf number`) %>%
       mutate(individual_id = cur_group_id()) %>%
-      ungroup() %>%
-      mutate(plant_growth_form = "tree")
+      ungroup()
   '
   collection_date: Date
   taxon_name: Species
