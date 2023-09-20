@@ -4,6 +4,7 @@
 
 # Load R resources
 library(traits.build)
+library(furrr)
 
 # Load data resources
 schema <- get_schema()
@@ -12,15 +13,29 @@ definitions <- get_schema("config/traits.yml", "traits")
 unit_conversions <- get_unit_conversions("config/unit_conversions.csv")
 taxon_list <- read_csv_char("config/taxon_list.csv")
 
-# Build each source
-Test_2022_config <- dataset_configure("data/Test_2022/metadata.yml", definitions)
-Test_2022_raw <- dataset_process("data/Test_2022/data.csv", Test_2022_config, schema, resource_metadata, unit_conversions)
-Test_2022 <- build_update_taxonomy(Test_2022_raw, taxon_list)
+# Build sources
+dataset_ids <- {{dataset_ids_vector}}
 
+f <- function(dataset_id) {
+  file_metadata <- file.path("data", dataset_id, "metadata.yml")
+  file_data <- file.path("data", dataset_id, "data.csv")
 
-austraits_raw <- build_combine(
-        Test_2022,
-        NULL)
+  dataset_build(file_metadata, file_data,
+                definitions = definitions,
+                unit_conversion_functions = unit_conversions,
+                schema = schema,
+                resource_metadata = resource_metadata,
+                taxon_list = taxon_list)
+}
+
+# sources <- purrr::map(dataset_ids, f)
+
+plan(multisession, workers = 5)
+#plan(sequential)
+
+sources <- future_map(dataset_ids, f, .progress = TRUE)
+
+austraits_raw <- build_combine(d = sources)
 
 # version information
 version_number <- util_get_version("config/metadata.yml")

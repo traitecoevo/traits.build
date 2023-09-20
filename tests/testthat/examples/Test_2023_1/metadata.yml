@@ -23,7 +23,7 @@ contributors:
     given_name: Mark
     ORCID: 0000-0001-7690-4530
     affiliation: Department of Biological Sciences, Macquarie University, Australia
-  austraits_curators: Elizabeth Wenk
+  dataset_curators: Elizabeth Wenk
 dataset:
   data_is_long_format: no
   custom_R_code: '
@@ -85,7 +85,7 @@ contexts:
     value: female
     description: female plant
 - context_property: slope position
-  category: plot
+  category: plot_context
   var_in: slope position
   values:
   - value: bottom slope
@@ -95,7 +95,7 @@ contexts:
   - value: mid-slope
     description: mid-slope
 - context_property: nutrient treatment
-  category: treatment
+  category: treatment_context
   var_in: nutrient treatment
   values:
   - value: control
@@ -105,7 +105,7 @@ contexts:
   - value: low nutrient
     description: low nutrient treatment
 - context_property: sampling time of day
-  category: temporal
+  category: temporal_context
   var_in: sampling time of day
   values:
   - value: '17:00:00'

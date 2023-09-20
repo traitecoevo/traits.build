@@ -38,7 +38,9 @@ study in the `remake.yml` file.
 \examples{
 \dontrun{
 dataset_process("data/Falster_2003/data.csv", dataset_configure("data/Falster_2003/metadata.yml",
-read_yaml("config/traits.yml"), get_unit_conversions("config/unit_conversions.csv")),
-get_schema())
+read_yaml("config/traits.yml")),
+get_schema(),
+get_schema("config/metadata.yml", "metadata"),
+get_unit_conversions("config/unit_conversions.csv"))
 }
 }

@@ -202,6 +202,10 @@ dataset_test_worker <-
       # Allow some utf8 characters, those with accents over letters for foreign names
       # List of codes is here: http://www.utf8-chartable.de/
       # Note c3 is needed because this is prefix for allowed UTF8 chars
+      # Warning: Portable packages must use only ASCII characters in their R code
+      # Sophie - could replace these with unicode like Lizzy did before?
+      exceptions <- c("ÁÅÀÂÄÆÃĀâíåæäãàáíÇčóöøéèłńl°êÜüùúû±µµ“”‘’-–—≈˜×")
+
       is_allowed <- i %in% charToRaw(exceptions)
       !(is_ascii | is_allowed)
 
@@ -286,6 +290,25 @@ dataset_test_worker <-
       test_list_names_valid(data, info)
       expect_named(data)
       expect_contains(names(data), expected_names, info = info)
+    }
+
+    test_build_dataset <- function(
+      path_metadata, path_data, info, definitions, unit_conversions, schema, resource_metadata, taxon_list) {
+
+      # Test it builds with no errors
+      expect_no_error({
+        build_config <- dataset_configure(path_metadata, definitions)
+      }, info = paste(info, "config"))
+
+      expect_no_error({
+        build_dataset_raw <- dataset_process(path_data, build_config, schema, resource_metadata, unit_conversions)
+      }, info = paste(info, "dataset_process"))
+
+      expect_no_error({
+        build_dataset <- build_update_taxonomy(build_dataset_raw, taxon_list)
+      }, info = paste(info, "update taxonomy"))
+
+      build_dataset
     }
 
     # Now run tests for each dataset
@@ -409,8 +432,8 @@ dataset_test_worker <-
         }
 
         # Dataset curators
-        expect_true(!is.null(metadata[["contributors"]][["austraits_curators"]]))
-        expect_type(metadata[["contributors"]][["austraits_curators"]], "character")
+        expect_true(!is.null(metadata[["contributors"]][["dataset_curators"]]))
+        expect_type(metadata[["contributors"]][["dataset_curators"]], "character")
 
         # Assistants
         if (!is.null(metadata[["contributors"]][["assistants"]][1]))
@@ -731,7 +754,7 @@ dataset_test_worker <-
           get_schema("config/metadata.yml",  "metadata"),
           read_csv_char("config/taxon_list.csv")
         ), info = sprintf(" - cannot build %s", dataset_id))
-        
+
         # Check that special characters do not make it into the data
         expect_no_error(
           parsed_data <- data %>%
@@ -744,21 +767,21 @@ dataset_test_worker <-
           info = sprintf("%s", files[1])
         )
 
-        expect_equal(
+        testthat::expect_equal(
           dataset$traits %>%
           select(
             dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "source_id", "taxon_name",
             "entity_type", "life_stage", "basis_of_record", "value_type", "population_id", "individual_id",
-            "temporal_id", "method_id", "method_context_id", "entity_context_id", "original_name"))
+            "temporal_context_id", "method_id", "method_context_id", "entity_context_id", "original_name"))
           ) %>%
-          pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
-          pivot_longer(cols = 16:ncol(.)) %>%
-          rename(all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
+          tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
+          tidyr::pivot_longer(cols = 16:ncol(.)) %>%
+          dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
           select(
-            all_of(c("dataset_id", "taxon_name", "trait_name", "number_of_duplicates", "observation_id",
+            dplyr::all_of(c("dataset_id", "taxon_name", "trait_name", "number_of_duplicates", "observation_id",
             "entity_type", "value_type", "population_id")), everything()
           ) %>%
-          filter(number_of_duplicates > 1) %>%
+          filter(.data$number_of_duplicates > 1) %>%
           nrow(),
           0, # Expect nrow() = 0
           info = sprintf("Duplicate rows in %s detected; `traits` table cannot pivot wider", dataset_id)

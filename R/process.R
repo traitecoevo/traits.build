@@ -69,8 +69,10 @@ dataset_configure <- function(
 #' @examples
 #' \dontrun{
 #' dataset_process("data/Falster_2003/data.csv", dataset_configure("data/Falster_2003/metadata.yml",
-#' read_yaml("config/traits.yml"), get_unit_conversions("config/unit_conversions.csv")),
-#' get_schema())
+#' read_yaml("config/traits.yml")),
+#' get_schema(),
+#' get_schema("config/metadata.yml", "metadata"),
+#' get_unit_conversions("config/unit_conversions.csv"))
 #' }
 dataset_process <- function(filename_data_raw,
                             config_for_dataset,
@@ -113,7 +115,7 @@ dataset_process <- function(filename_data_raw,
     )
 
   traits <- traits %>%
-    mutate(unit = ifelse(!is.na(unit_in), unit_in, unit)) %>%
+    mutate(unit = ifelse(!is.na(.data$unit_in), .data$unit_in, .data$unit)) %>%
     process_flag_unsupported_traits(definitions) %>%
     process_flag_excluded_observations(metadata) %>%
     process_flag_unsupported_characters() %>%
@@ -211,7 +213,7 @@ dataset_process <- function(filename_data_raw,
 
   traits <-
     traits %>%
-    dplyr::select(-method_id) %>% # Need to remove blank column to bind in real one; blank exists because `method_id` in schema
+    dplyr::select(-"method_id") %>% # Need to remove blank column to bind in real one; blank exists because `method_id` in schema
     dplyr::left_join(
       by = c("trait_name", "methods"),
       tmp_bind
@@ -232,24 +234,71 @@ dataset_process <- function(filename_data_raw,
 
   # Combine for final output
   list(
-       traits     = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "unit_in"))),
-       locations  = locations,
-       contexts   = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
-       methods    = methods,
-       excluded_data = traits %>% dplyr::filter(!is.na(.data$error)) %>%
-              dplyr::select(dplyr::all_of(c("error")), everything()) %>%
-              dplyr::select(-dplyr::all_of(c("unit_in"))),
-       taxonomic_updates = taxonomic_updates,
-       taxa       = taxonomic_updates %>% dplyr::select(dplyr::all_of(c(taxon_name = "cleaned_name"))) %>% dplyr::distinct(),
-       contributors = contributors,
-       sources    = sources,
-       definitions = definitions,
-       schema = schema,
-       metadata = resource_metadata,
-       build_info = list(session_info = utils::sessionInfo())
+    traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "unit_in"))),
+    locations = locations,
+    contexts = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
+    methods = methods,
+    excluded_data = traits %>%
+    dplyr::filter(!is.na(.data$error)) %>%
+    dplyr::select(dplyr::all_of(c("error")), everything()) %>%
+    dplyr::select(-dplyr::all_of(c("unit_in"))),
+    taxonomic_updates = taxonomic_updates,
+    taxa = taxonomic_updates %>%
+      dplyr::select(dplyr::all_of(c(taxon_name = "cleaned_name"))) %>%
+      dplyr::distinct(),
+    contributors = contributors,
+    sources = sources,
+    definitions = definitions,
+    schema = schema,
+    metadata = resource_metadata,
+    build_info = list(session_info = utils::sessionInfo())
   )
 }
 
+#' Build dataset
+#'
+#' Build specified dataset. This function completes three steps, which can be executed separately if desired:
+#' `dataset_configure`, `dataset_process`, `build_update_taxonomy`
+#'
+#' @param filename_metadata Metadata yaml file for a given study
+#' @param filename_data_raw Raw `data.csv` file for any given study
+#' @param definitions Definitions read in from the `traits.yml`
+#' @param unit_conversion_functions `unit_conversion.csv` file read in from the config folder
+#' @param schema Schema for traits.build
+#' @param resource_metadata metadata for the compilation
+#' @param taxon_list Taxon list
+#' @param filter_missing_values Default filters missing values from the excluded data table;
+#' change to false to see the rows with missing values.
+#' @return List, AusTraits database object
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' dataset_build(
+#'   "data/Falster_2003/data.csv",
+#'   "data/Falster_2003/metadata.yml",
+#'   read_yaml("config/traits.yml"),
+#'    get_unit_conversions("config/unit_conversions.csv"),
+#'    get_schema(),
+#'    get_schema("config/metadata.yml", "metadata"),
+#'    read_csv_char("config/taxon_list.csv")
+#' )
+#' }
+dataset_build <- function(
+    filename_metadata,
+    filename_data_raw,
+    definitions,
+    unit_conversion_functions,
+    schema,
+    resource_metadata,
+    taxon_list,
+    filter_missing_values = TRUE) {
+  dataset_config <- dataset_configure(filename_metadata, definitions)
+  dataset_raw <- dataset_process(filename_data_raw, dataset_config, schema, resource_metadata, unit_conversions, filter_missing_values = filter_missing_values)
+  dataset <- build_update_taxonomy(dataset_raw, taxon_list)
+
+  dataset
+}
 
 #' Apply custom data manipulations
 #'
@@ -271,7 +320,15 @@ process_custom_code <- function(txt) {
       stringr::str_replace_all("\\s+", " ")
     # test: txt <-" '' \n Total of 23.5 bitcoins. "
 
-    function(data) {eval(parse(text = txt2), envir = new.env())}
+    function(data) {
+      envir = new.env()
+
+      # Read in extra functions used in custom R code
+      if(file.exists("R/custom_R_code.R")) {
+        source("R/custom_R_code.R", local = envir)
+      }
+
+      eval(parse(text = txt2), envir = envir)}
   } else {
     identity
   }
@@ -293,17 +350,17 @@ process_create_observation_id <- function(data) {
   # Create population_id
 
   # `population_id`'s are numbers assigned to unique combinations of
-  #                location_name, treatment_id and plot_id
+  #                location_name, treatment_context_id and plot_context_id
   # Their purpose is to allow `population_level` measurements to be
   # easily mapped to individuals within the given population
     if (
       !all(is.na(data[["location_name"]])) ||
-      !all(is.na(data[["plot_id"]])) ||
-      !all(is.na(data[["treatment_id"]]))
+      !all(is.na(data[["plot_context_id"]])) ||
+      !all(is.na(data[["treatment_context_id"]]))
     ) {
       data <- data %>%
         dplyr::mutate(
-          population_id = paste(.data$location_name, .data$plot_id, .data$treatment_id, sep = "")
+          population_id = paste(.data$location_name, .data$plot_context_id, .data$treatment_context_id, sep = "")
         )
     } else {
       data <- data %>%
@@ -316,8 +373,8 @@ process_create_observation_id <- function(data) {
     dplyr::mutate(
       pop_id_segment = ifelse(
         (!is.na(.data$location_name) |
-         !is.na(.data$treatment_id) |
-         !is.na(.data$plot_id)) &
+         !is.na(.data$treatment_context_id) |
+         !is.na(.data$plot_context_id)) &
          .data$entity_type %in% c("individual", "population", "metapopulation"),
          process_generate_id(.data$population_id, "", sort = TRUE),
          NA),
@@ -403,7 +460,7 @@ process_create_observation_id <- function(data) {
     dplyr::group_by(.data$dataset_id) %>%
     dplyr::mutate(
       observation_id =
-        paste(.data$taxon_name, .data$population_id, .data$individual_id, .data$temporal_id, .data$entity_type, .data$life_stage, sep = "-") %>%
+        paste(.data$taxon_name, .data$population_id, .data$individual_id, .data$temporal_context_id, .data$entity_type, .data$life_stage, sep = "-") %>%
         process_generate_id("", sort = TRUE)
     ) %>%
     dplyr::ungroup()
@@ -488,34 +545,36 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
       dplyr::mutate(dataset_id = dataset_id) %>%
       dplyr::select(dplyr::any_of(vars))
 
-    ## if the field `description` is missing from metadata[["contexts"]] for the specific context property, create a column now
+    ## If the field `description` is missing from metadata[["contexts"]] for the specific
+    # context property, create a column now
     if (!"description" %in% names(out)) {
       out[["description"]] <- NA_character_
     }
 
-    ## if the fields `find` and `value` are both missing from metadata[["contexts"]] for the specific context property create them
-    ## they are both the unique set of values in the column in the data.csv file.
+    ## If the fields `find` and `value` are both missing from metadata[["contexts"]] for
+    # the specific context property create them
+    ## They are both the unique set of values in the column in the data.csv file
     if (all(!c("find", "value") %in% names(out))) {
       out <- out %>%
-        # The following line shouldn't be neeeded, as we testsed this was missing for the if statement above
+        # The following line shouldn't be neeeded, as we tested this was missing for the if statement above
         dplyr::select(-any_of(c("value"))) %>%
         dplyr::left_join(
           by = "var_in",
-          tibble(
+          tibble::tibble(
             var_in = out[["var_in"]][1],
             value = unique(traits[[out$var_in[1]]])
           ) %>%
-            dplyr::filter(!is.na(value))
+        dplyr::filter(!is.na(.data$value))
         ) %>%
-        dplyr::mutate(find = value)
+        dplyr::mutate(find = .data$value)
     }
 
     if ("find" %in% names(out)) {
       out <- out %>%
-        dplyr::mutate(find = ifelse(is.na(find), value, find))
+        dplyr::mutate(find = ifelse(is.na(.data$find), .data$value, .data$find))
     } else {
       out <- out %>%
-        dplyr::mutate(find = value)
+        dplyr::mutate(find = .data$value)
     }
     # Ensure character types
     out %>%
@@ -567,7 +626,7 @@ process_create_context_ids <- function(data, contexts) {
     dplyr::select(dplyr::all_of(c("context_property", "category", "value"))) %>%
     dplyr::distinct()
 
-  categories <- c("plot", "treatment", "entity_context", "temporal", "method_context") %>% subset(., . %in% tmp$category)
+  categories <- c("plot_context", "treatment_context", "entity_context", "temporal_context", "method_context") %>% subset(., . %in% tmp$category)
 
   ids <- dplyr::tibble(.rows = nrow(context_cols))
 
@@ -738,7 +797,7 @@ process_flag_excluded_observations <- function(data, metadata) {
   fix <-
     metadata$exclude_observations %>%
     util_list_to_df2() %>%
-    tidyr::separate_longer_delim(find, delim = ", ") %>%
+    tidyr::separate_longer_delim("find", delim = ", ") %>%
     dplyr::mutate(find = str_squish(.data$find))
 
   if (nrow(fix) == 0) return(data)
@@ -1114,6 +1173,7 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' @param dataset_id Identifier for a particular study in the AusTraits database
 #' @param metadata Yaml file with metadata
 #' @param contexts Dataframe of contexts for this study
+#' @param schema Schema for traits.build
 #' @return Tibble in long format with AusTraits formatted trait names, trait
 #' substitutions and unique observation id added
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
@@ -1127,7 +1187,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   var_in <- unlist(metadata[["dataset"]])
   i <- var_in %in% names(data)
 
-  v <- setNames(nm = c("entity_context_id", "plot_id", "treatment_id", "temporal_id", "method_context_id"))
+  v <- setNames(nm = c("entity_context_id", "plot_context_id", "treatment_context_id", "temporal_context_id", "method_context_id"))
 
   df <- data %>%
         # Next step selects and renames columns based on named vector
@@ -1487,7 +1547,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
       data_collectors = collectors_tmp,
       assistants = ifelse(is.null(metadata$contributors$assistants), NA_character_,
                                       metadata$contributors$assistants),
-      austraits_curators = metadata$contributors$austraits_curators
+      dataset_curators = metadata$contributors$dataset_curators
       )
 
   methods
