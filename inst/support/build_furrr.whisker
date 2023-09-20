@@ -30,7 +30,7 @@ f <- function(dataset_id) {
 
 #sources <- purrr::map(dataset_ids, f)
 
-plan(multisession, workers = 5)
+plan(multisession, workers = {{workers}})
 #plan(sequential)
 
 sources <- future_map(dataset_ids, f, .progress = TRUE)

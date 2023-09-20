@@ -1137,7 +1137,8 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' @export
 build_setup_pipeline <- function(dataset_ids = dir("data"),
                                  method = "base",
-                                 template = select_pipeline_template(method)
+                                 template = select_pipeline_template(method),
+                                 workers = 1
                                  ) {
 
   if (!method %in% c("base", "remake", "furrr")) {
@@ -1165,18 +1166,30 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
     dataset_ids = whisker::iteratelist(dataset_ids, value = "dataset_id"),
     dataset_ids_vector =
       sprintf("c(%s)", sprintf("'%s'", dataset_ids) %>% paste(collapse = ", ")),
-    path = path
+    path = path,
+    workers = workers
     )
 
   # Setup pipeline based on selected method for building
-  pipieline <- whisker::whisker.render(template, data = vals)
+  pipeline <- whisker::whisker.render(template, data = vals)
 
-  if (method %in% c("base", "furrr")) {
-    writeLines(pipieline, "build.R")
+  if (method == "base") {
+    writeLines(pipeline, "build.R")
     message(green("\t-> build compilation using file `build.R`"))
   }
+
+  if (method == "furrr") {
+    writeLines(pipeline, "build.R")
+    message(green("\t-> build compilation using file `build.R`"))
+
+    if (workers == 1) {
+      message(green("\nSpecify number of workers to use with the `workers` argument (default = 1)"))
+    }
+
+  }
+
   if (method == "remake") {
-    writeLines(pipieline, "remake.yml")
+    writeLines(pipeline, "remake.yml")
     message(green("\t-> build compilation using file `remake.yml`"))
   }
 

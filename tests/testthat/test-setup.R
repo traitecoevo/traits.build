@@ -619,15 +619,31 @@ test_that("`build_setup_pipeline` is working", {
   expect_length(taxa2, 15)
   expect_true(nrow(taxa2) == 7)
 
-  ## Now try building in a controlled env
-  tmp_env <- new.env()
-  expect_silent(suppressMessages(source("build.R", local = tmp_env)))
+  ## Now try building in a controlled env, using base method
+  base_tmp_env <- new.env()
+  expect_silent(suppressMessages(source("build.R", local = base_tmp_env)))
 
   targets <- c(
     "austraits", "austraits_raw", "definitions", "git_SHA", "resource_metadata", "schema", "taxon_list",
     "Test_2022", "Test_2022_config", "Test_2022_raw", "unit_conversions", "version_number"
   )
-  expect_equal(sort(names(tmp_env)), sort(targets))
+  expect_equal(sort(names(base_tmp_env)), sort(targets))
+
+  # `furrr` workflow
+  furrr_tmp_env <- new.env()
+  expect_silent(suppressMessages(build_setup_pipeline(method = "furrr")))
+
+  expect_true(file.exists("build.R"))
+  expect_true(file.exists("config/taxon_list.csv"))
+  expect_true(file.exists("R/custom_R_code.R"))
+
+  expect_silent(suppressMessages(source("build.R", local = furrr_tmp_env)))
+
+  targets <- c(
+    "austraits", "austraits_raw", "dataset_ids", "f", "definitions", "git_SHA", "resource_metadata",
+    "schema", "sources", "taxon_list", "unit_conversions", "version_number"
+  )
+  expect_equal(sort(names(furrr_tmp_env)), sort(targets))
 
   # Remake workflow
   expect_silent(suppressMessages(build_setup_pipeline(method = "remake")))
@@ -652,9 +668,10 @@ test_that("`build_setup_pipeline` is working", {
   expect_length(austraits$taxa, 14)
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
 
-  # Compare products from two methods, except build_info
+  # Compare products from three methods, except `build_info`
   v <- setdiff(names(austraits), "build_info")
-  expect_equal(tmp_env$austraits[v], austraits[v])
+  expect_equal(base_tmp_env$austraits[v], austraits[v])
+  expect_equal(furrr_tmp_env$austraits[v], austraits[v])
 
 })
 
