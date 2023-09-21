@@ -213,7 +213,8 @@ dataset_process <- function(filename_data_raw,
 
   traits <-
     traits %>%
-    dplyr::select(-"method_id") %>% # Need to remove blank column to bind in real one; blank exists because `method_id` in schema
+    # Need to remove blank column to bind in real one; blank exists because `method_id` in schema
+    dplyr::select(-"method_id") %>%
     dplyr::left_join(
       by = c("trait_name", "methods"),
       tmp_bind
@@ -293,8 +294,11 @@ dataset_build <- function(
     resource_metadata,
     taxon_list,
     filter_missing_values = TRUE) {
+
   dataset_config <- dataset_configure(filename_metadata, definitions)
-  dataset_raw <- dataset_process(filename_data_raw, dataset_config, schema, resource_metadata, unit_conversion_functions, filter_missing_values = filter_missing_values)
+  dataset_raw <- dataset_process(
+    filename_data_raw, dataset_config, schema, resource_metadata, unit_conversion_functions,
+    filter_missing_values = filter_missing_values)
   dataset <- build_update_taxonomy(dataset_raw, taxon_list)
 
   dataset
@@ -350,24 +354,24 @@ process_create_observation_id <- function(data, metadata) {
   # Create population_id
 
   # `population_id`'s are numbers assigned to unique combinations of
-  #                location_name, treatment_context_id and plot_context_id
+  # location_name, treatment_context_id and plot_context_id
   # Their purpose is to allow `population_level` measurements to be
   # easily mapped to individuals within the given population
-    if (
-      !all(is.na(data[["location_name"]])) ||
-      !all(is.na(data[["plot_context_id"]])) ||
-      !all(is.na(data[["treatment_context_id"]]))
-    ) {
-      data <- data %>%
-        dplyr::mutate(
-          population_id = paste(.data$location_name, .data$plot_context_id, .data$treatment_context_id, sep = "")
-        )
-    } else {
-      data <- data %>%
-        dplyr::mutate(
-          population_id = NA_character_
-        )
-    }
+  if (
+    !all(is.na(data[["location_name"]])) ||
+    !all(is.na(data[["plot_context_id"]])) ||
+    !all(is.na(data[["treatment_context_id"]]))
+  ) {
+    data <- data %>%
+      dplyr::mutate(
+        population_id = paste(.data$location_name, .data$plot_context_id, .data$treatment_context_id, sep = "")
+      )
+  } else {
+    data <- data %>%
+      dplyr::mutate(
+        population_id = NA_character_
+      )
+  }
 
   data <- data %>%
     dplyr::mutate(
@@ -394,15 +398,15 @@ process_create_observation_id <- function(data, metadata) {
   # There are 3 circumstances:
 
   # 1. There is an `individual_id` column read in through metadata$data
-  #     and `parsing_id` is equivalent to `individual_id`
+  #    and `parsing_id` is equivalent to `individual_id`
   # 2. There is only a single observation for each individual,
-  #     and therefore `parsing_id` values assigned based upon row number
-  #     correctly identifies an individual. This includes instances where
-  #     there is a `temporal context`, but different individuals were
-  #     measured each time.
+  #    and therefore `parsing_id` values assigned based upon row number
+  #    correctly identifies an individual. This includes instances where
+  #    there is a `temporal context`, but different individuals were
+  #    measured each time.
   # 3. There are multiple observations for each individual, but these are
-  #     presented in the `data.csv` file as multiple columns and therefore
-  #     row number correctly identifies an individual.
+  #    presented in the `data.csv` file as multiple columns and therefore
+  #    row number correctly identifies an individual.
 
   # For datasets where an individual_id is not assigned via metadata$dataset
   if (all(is.na(data[["individual_id"]]))) {
@@ -450,13 +454,12 @@ process_create_observation_id <- function(data, metadata) {
     dplyr::ungroup() %>%
     dplyr::mutate(individual_id = .data$ind_id_segment, check_for_ind = NA)
 
-
   ## Create observation_id for a single set of trait measurements made on an entity
   #  (where an entity can be an individual, population, or taxon)
 
   i <- !is.na(data$value)
-  data[i,] <-
-    data[i,] %>%
+  data[i, ] <-
+    data[i, ] %>%
     dplyr::group_by(.data$dataset_id) %>%
     dplyr::mutate(
       observation_id =
@@ -476,8 +479,8 @@ process_create_observation_id <- function(data, metadata) {
 
       i <- !is.na(data$value)
 
-      data[i,] <-
-        data[i,] %>%
+      data[i, ] <-
+        data[i, ] %>%
         dplyr::group_by(
           .data$dataset_id, .data$observation_id, .data$trait_name, .data$value_type,
           .data$method_id, .data$method_context_id,
@@ -488,6 +491,29 @@ process_create_observation_id <- function(data, metadata) {
         dplyr::ungroup()
 
     }
+
+  }
+  browser()
+  traits_table <- metadata[["traits"]] %>% util_list_to_df2()
+
+  if (!is.null(traits_table[["repeat_measurements_id"]])) {
+
+    to_add_id <- traits_table %>%
+      filter(repeat_measurements_id == TRUE) %>%
+      dplyr::pull(trait_name)
+
+    i <- !is.na(data$value) & data$trait_name %in% to_add_id
+
+    data[i, ] <-
+      data[i, ] %>%
+      dplyr::group_by(
+        .data$dataset_id, .data$observation_id, .data$trait_name, .data$value_type,
+        .data$method_id, .data$method_context_id,
+      ) %>%
+      dplyr::mutate(
+        repeat_measurements_id = row_number() %>% process_generate_id("")
+      ) %>%
+      dplyr::ungroup()
 
   }
 
@@ -652,7 +678,10 @@ process_create_context_ids <- function(data, contexts) {
     dplyr::select(dplyr::all_of(c("context_property", "category", "value"))) %>%
     dplyr::distinct()
 
-  categories <- c("plot_context", "treatment_context", "entity_context", "temporal_context", "method_context") %>% subset(., . %in% tmp$category)
+  categories <- c(
+    "plot_context", "treatment_context", "entity_context",
+    "temporal_context", "method_context") %>%
+    subset(., . %in% tmp$category)
 
   ids <- dplyr::tibble(.rows = nrow(context_cols))
 
@@ -1071,10 +1100,13 @@ get_unit_conversions <- function(filename) {
   x <- read_csv(filename, col_types = cols(), progress = FALSE)
 
   # Make functions from text
-  fs <- lapply(x[["function"]], function(x) {
-                                  my_f <- function(x) {}
-                                  body(my_f) <- parse(text = x)
-                                  my_f})
+  fs <- lapply(
+    x[["function"]],
+    function(x) {
+      my_f <- function(x) {}
+      body(my_f) <- parse(text = x)
+      my_f
+    })
   names(fs) <- process_unit_conversion_name(x[["unit_from"]], x[["unit_to"]])
   fs
 }
@@ -1213,7 +1245,10 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   var_in <- unlist(metadata[["dataset"]])
   i <- var_in %in% names(data)
 
-  v <- setNames(nm = c("entity_context_id", "plot_context_id", "treatment_context_id", "temporal_context_id", "method_context_id"))
+  v <- setNames(
+    nm = c("entity_context_id", "plot_context_id", "treatment_context_id",
+           "temporal_context_id", "method_context_id")
+    )
 
   df <- data %>%
     # Next step selects and renames columns based on named vector
@@ -1373,7 +1408,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
     # Pull in additional information for each trait as specified in traits part of metadata,
     # here represented as traits_table
-    # (column option not implemented) Values in table can specify a column in the original data OR a value to use
+    # Values in table can specify a column in the original data OR a value to use
 
     vars_to_check <- vars_traits[vars_traits %in% names(traits_table)]
 
@@ -1419,7 +1454,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
         link_vals = NA_character_
       )
 
-# XXXX Why doesn't this work? process_add_all_columns(names(schema[["austraits"]][["elements"]][["contexts"]][["elements"]]))
+  # XXXX Why doesn't this work? process_add_all_columns(names(schema[["austraits"]][["elements"]][["contexts"]][["elements"]]))
   } else {
     context_ids <- process_create_context_ids(out, contexts)
 

@@ -31,6 +31,8 @@ dataset:
   '
   collection_date: Date
   taxon_name: Species
+  trait_name: name
+  value: value
   location_name: Site
   individual_id: individual_id
   repeat_measurements_id: TRUE

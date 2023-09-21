@@ -40,6 +40,7 @@ dataset:
   collection_date: 2004/2004
   taxon_name: Species
   location_name: site
+  individual_id: individual_id
   description: Investigation into trait values correlated with plant height along
     light availability and successional gradients for far north Queensland species.
   basis_of_record: field
@@ -489,6 +490,15 @@ traits:
   trait_name: leaf_length
   entity_type: individual
   methods: Made up leaf length values to test reading in units from a column.
+- var_in: leaf_photosynthesis
+  unit_in: umol/m2/s
+  trait_name: leaf_photosynthesis
+  entity_type: individual
+  value_type: raw
+  basis_of_value: measurement
+  methods: Test `repeat_measurements_id` at the trait level.
+  replicates: 1
+  repeat_measurements_id: TRUE
 substitutions:
 - trait_name: plant_growth_form
   find: herbs
