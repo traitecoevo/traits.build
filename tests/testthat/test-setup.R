@@ -35,7 +35,7 @@ test_that("`metadata_create_template` is working with simulated user input", {
 
   # Check long format
   user_responses <- list(
-    data_is_long_format = TRUE,
+    data_is_long_format = TRUE, repeat_measurements_id = TRUE,
     taxon_name = "Species", trait_name = "trait_name", value = "value",
     location_name = NA, individual_id = "id", collection_date = "2008/2009"
   )
@@ -53,7 +53,9 @@ test_that("`metadata_create_template` is working with simulated user input", {
 
   expect_true(test_metadata$dataset$data_is_long_format)
   # Test metadata fields are equal to inputs in `user_responses`
-  fields <- c("taxon_name", "trait_name", "value", "location_name", "individual_id", "collection_date")
+  fields <- c(
+    "taxon_name", "trait_name", "value", "location_name", "individual_id",
+    "collection_date", "repeat_measurements_id")
   for (f in fields) {
     if (f == "location_name") {
       expect_equal(test_metadata[["dataset"]][[f]], "unknown")
@@ -90,6 +92,8 @@ test_that("`metadata_create_template` is working with simulated user input", {
       expect_equal(test_metadata[["dataset"]][[f]], user_responses[[f]])
     }
   }
+  # Expect `repeat_measurements_id` is null if not specified
+  expect_null(test_metadata[["dataset"]][["repeat_measurements_id"]])
 
  })
 

@@ -96,9 +96,17 @@ metadata_create_template <- function(dataset_id,
           out[["dataset"]][[v]] <- tmp
         }
         if (v == "collection_date" && is.na(tmp)) {
-          collection_date <- readline(prompt = "Enter collection_date range in format '2007/2009': ")
+          collection_date <- readline(prompt = "\nEnter `collection_date` range in format '2007/2009': ")
           out[["dataset"]][[v]] <- collection_date
         }
+      }
+
+      # `repeat_measurements_id`
+      tmp <- menu(c("Yes", "No"), title = "\nDo all traits need `repeat_measurements_id`'s?\n\nIf only some do, specify `repeat_measurements_id: TRUE` at the trait level")
+
+      if (tmp == 1) {
+        repeat_measurements_id <- TRUE
+        out[["dataset"]][["repeat_measurements_id"]] <- repeat_measurements_id
       }
 
     # Use `user_responses` to fill metadata fields
@@ -129,13 +137,19 @@ metadata_create_template <- function(dataset_id,
           out[["dataset"]][[v]] <- tmp
         }
       }
+
+      # `repeat_measurements_id`
+      if (!is.null(user_responses[["repeat_measurements_id"]]) && user_responses[["repeat_measurements_id"]] == TRUE) {
+        out[["dataset"]][["repeat_measurements_id"]] <- TRUE
+      }
+
     }
   }
 
   # Reorder elements in dataset
   order <- c("data_is_long_format", "custom_R_code", "collection_date", "taxon_name", "trait_name",
-             "value", "location_name", "individual_id", "description", "basis_of_record", "life_stage",
-             "sampling_strategy", "original_file", "notes")
+             "value", "location_name", "individual_id", "repeat_measurements_id", "description",
+             "basis_of_record", "life_stage", "sampling_strategy", "original_file", "notes")
 
   order <- order[which(order %in% names(out[["dataset"]]))]
   out[["dataset"]] <- out[["dataset"]][order]
@@ -158,7 +172,7 @@ metadata_create_template <- function(dataset_id,
 #'
 metadata_user_select_column <- function(column, choices) {
 
-  tmp <- utils::menu(choices, title = sprintf("Select column for `%s`", column))
+  tmp <- utils::menu(choices, title = sprintf("\nSelect column for `%s`", column))
 
   choices[tmp]
 }

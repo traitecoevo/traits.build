@@ -157,7 +157,7 @@ testthat::test_that("Test Dataset 4 builds correctly", {
 # Need to check for long datasets
 # Reading in from trait vs dataset level? ### Check for long datasets
 # Maybe there should be a prompt in `metadata_create_template` and `metadata_add_traits`
-# about `repeat_measurements_id`? ### TODO
+# about `repeat_measurements_id`?
 # Make sure that the order of measurements in the data is preserved with `repeat_measurements_id`
 
 # Question: For the dataset level in wide format, would every row have the same `repeat_measurements_id`
@@ -177,8 +177,10 @@ testthat::test_that("Test Dataset 4 builds correctly", {
 # If there are repeat measurements at the individual level, there doesn't need to be an `individual_id`
 # column specified because long format automatically groups together values with the same location
 # and `taxon_name`
-# If there are repeat measurements at the population level, ...
-# If there are repeat measurements at the species level, ...
+# If there are repeat measurements at the population level, there needs to be a location name,
+# plot context, or treatment context identifying the populations
+# If there are repeat measurements at the species level, the code works fine because `observation_id`
+# is the same across rows for a given species
 
 testthat::test_that("Test Dataset 7 builds correctly", {
 

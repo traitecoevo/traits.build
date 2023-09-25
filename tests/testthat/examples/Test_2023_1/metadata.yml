@@ -514,7 +514,7 @@ traits:
   entity_type: species
   value_type: raw
   basis_of_value: measurement
-  methods: Test `repeat_measurements_id` at the trait level for species `entity_type`.
+  methods: Test `repeat_measurements_id` at the trait level for species.
   replicates: 1
   repeat_measurements_id: TRUE
 - var_in: leaf_stomatal_conductance_3

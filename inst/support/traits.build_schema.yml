@@ -356,6 +356,7 @@ metadata:
         treatment_context_id: *treatment_context_id
         individual_id: *individual_id
         observation_id: *observation_id
+        repeat_measurements_id: *repeat_measurements_id
         trait_name: Element required for long datasets to specify the column indicating the trait name associated with each row of data.
         value: The measured value of a trait.
         value_type: *value_type
@@ -401,6 +402,7 @@ metadata:
         measurement_remarks: *measurement_remarks
         methods: *methods
         life_stage: *life_stage
+        repeat_measurements_id: *repeat_measurements_id
     substitutions:
       description: A list of any "find and replace" substitutions needed to get the data into the right format.
       type: array

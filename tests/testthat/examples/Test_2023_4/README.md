@@ -20,5 +20,6 @@ Test_2023_4 is a copy of NHNSW_2023 with the following modifications:
 - Added two made-up locations
 - Removed trait-level `unit_in` for `fruit_colour` and `fruit_length` and instead read their units in from a column at the dataset level
 - For the other two traits, put `units` column to NA using `custom_R_code` to test that units are read in at the trait level while they are NA in the column at the dataset level
+- Added `leaf_photosynthesis` and `leaf_stomatal_conductance` to test `repeat_measurements_id`, with another `leaf_stomatal_conductance_2` variable that doesn't specify `repeat_measurements_id`
 
 See output/ for expected output files.
