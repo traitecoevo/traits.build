@@ -496,9 +496,37 @@ traits:
   entity_type: individual
   value_type: raw
   basis_of_value: measurement
-  methods: Test `repeat_measurements_id` at the trait level.
+  methods: Test `repeat_measurements_id` at the trait level for individuals.
   replicates: 1
   repeat_measurements_id: TRUE
+- var_in: leaf_stomatal_conductance
+  unit_in: mol{H2O}/m2/s
+  trait_name: leaf_stomatal_conductance
+  entity_type: population
+  value_type: raw
+  basis_of_value: measurement
+  methods: Test `repeat_measurements_id` at the trait level for populations.
+  replicates: 1
+  repeat_measurements_id: TRUE
+- var_in: leaf_stomatal_conductance_2
+  unit_in: mol{H2O}/m2/s
+  trait_name: leaf_stomatal_conductance
+  entity_type: species
+  value_type: raw
+  basis_of_value: measurement
+  methods: Test `repeat_measurements_id` at the trait level for species `entity_type`.
+  replicates: 1
+  repeat_measurements_id: TRUE
+- var_in: leaf_stomatal_conductance_3
+  unit_in: mol{H2O}/m2/s
+  trait_name: leaf_stomatal_conductance
+  entity_type: species
+  value_type: raw
+  basis_of_value: measurement
+  methods: Test that `repeat_measurements_id` is not made for traits where `repeat_measurements_id`
+    is set to FALSE but have already been entered with `repeat_measurements_id` as TRUE from another
+    column.
+  replicates: 1
 substitutions:
 - trait_name: plant_growth_form
   find: herbs

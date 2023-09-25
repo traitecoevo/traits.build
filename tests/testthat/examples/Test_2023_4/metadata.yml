@@ -89,7 +89,10 @@ dataset:
       distinct(source, taxon_name, trait_name, trait_value, units, value_type, inferred, .keep_all = TRUE) %>%
       mutate(entity_measured = ifelse(is.na(entity_measured), "unknown", entity_measured)) %>%
       group_by(taxon_name, trait_name, entity_measured, value_type) %>%
-      mutate(observation_number = row_number()) %>%
+      mutate(
+        observation_number = row_number(),
+        observation_number = ifelse(trait_name == "leaf_photosynthesis", NA, observation_number)
+      ) %>%
       ungroup()
   '
   collection_date: .na
@@ -226,6 +229,22 @@ traits:
   methods: The term used to describe the fruit width was stored  as a measurement
     remark for greater clarity e.g. fruit, achene, capsule. Fruits which were spherical
     or round in shape were inferred as possessing the same dimensions in other planes.
+- var_in: leaf_photosynthesis
+  unit_in: umol/m2/s
+  trait_name: leaf_photosynthesis
+  value_type: raw
+  basis_of_value: measurement
+  methods: Test `repeat_measurements_id` at the trait level for long datasets.
+  replicates: 1
+  repeat_measurements_id: TRUE
+- var_in: leaf_stomatal_conductance
+  unit_in: mol{H2O}/m2/s
+  trait_name: leaf_stomatal_conductance
+  value_type: raw
+  basis_of_value: measurement
+  methods: Test `repeat_measurements_id` at the trait level for populations and species.
+  replicates: 1
+  repeat_measurements_id: TRUE
 substitutions: .na
 taxonomic_updates:
 - find: Acaena anserovina
