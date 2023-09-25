@@ -155,22 +155,30 @@ testthat::test_that("Test Dataset 4 builds correctly", {
 
 # TODO
 # Need to check for long datasets
-# Reading in from trait vs dataset level?
+# Reading in from trait vs dataset level? ### Check for long datasets
 # Maybe there should be a prompt in `metadata_create_template` and `metadata_add_traits`
-# about `repeat_measurements_id`?
+# about `repeat_measurements_id`? ### TODO
 # Make sure that the order of measurements in the data is preserved with `repeat_measurements_id`
-# Check why Acacia celsa in Test_2023_1 was assigned a different `observation_id` for flowering time
-# For the dataset level in wide format, would every row have the same `repeat_measurements_id`
+
+# Question: For the dataset level in wide format, would every row have the same `repeat_measurements_id`
 # across all variables? Right now I think if there's an NA in a column then `repeat_measurements_id`
 # wouldn't be the same after that NA
+# I'm not sure what users of response curve data would prefer
 
 # Trait level, wide format:
 # If there are repeat measurements at the individual level, there needs to be an `individual_id`
 # column otherwise each row will be assumed to be a different `observation_id`
 # If there are repeat measurements at the population level, there needs to be a location name,
 # plot context, or treatment context identifying the populations
-# If there are repeat measurements at the species level, `observation_id` needs to be the same
-# across rows
+# If there are repeat measurements at the species level, the code works fine because `observation_id`
+# is the same across rows for a given species
+
+# Trait level, long format:
+# If there are repeat measurements at the individual level, there doesn't need to be an `individual_id`
+# column specified because long format automatically groups together values with the same location
+# and `taxon_name`
+# If there are repeat measurements at the population level, ...
+# If there are repeat measurements at the species level, ...
 
 testthat::test_that("Test Dataset 7 builds correctly", {
 
