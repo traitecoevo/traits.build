@@ -493,7 +493,7 @@ process_create_observation_id <- function(data, metadata) {
     }
 
   }
-  browser()
+
   traits_table <- metadata[["traits"]] %>% util_list_to_df2()
 
   if (!is.null(traits_table[["repeat_measurements_id"]])) {
@@ -502,7 +502,11 @@ process_create_observation_id <- function(data, metadata) {
       filter(repeat_measurements_id == TRUE) %>%
       dplyr::pull(trait_name)
 
-    i <- !is.na(data$value) & data$trait_name %in% to_add_id
+    i <- !is.na(data$value) & data$trait_name %in% to_add_id &
+      # To ensure `repeat_measurements_id`'s are only added to data where `repeat_measurements_id`
+      # was specified as TRUE in the traits table (applicable to when a trait is entered twice,
+      # one TRUE and one FALSE):
+      (!is.na(data$repeat_measurements_id) & data$repeat_measurements_id == TRUE)
 
     data[i, ] <-
       data[i, ] %>%
@@ -1258,7 +1262,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   # Step 1b. Import any values that aren't columns of data
   vars <- c("entity_type", "value_type", "basis_of_value",
             "replicates", "collection_date", "unit_in",
-            "basis_of_record", "life_stage",
+            "basis_of_record", "life_stage", "repeat_measurements_id",
             "measurement_remarks", "source_id", "methods")
 
   df <-
@@ -1353,8 +1357,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
     stop(paste(dataset_id, ": missing traits: ", setdiff(traits_table[["var_in"]], colnames(data))))
   }
 
-  # Sophie - I'm confused why contexts$var_in is added in here (also should be unique()?), instead of just vars
-  vars_traits <- c(vars, contexts$var_in)
+  vars_traits <- c(vars, unique(contexts$var_in))
 
   ## If needed, change from wide to long format
 
