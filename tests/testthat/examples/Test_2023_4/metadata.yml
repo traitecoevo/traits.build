@@ -85,13 +85,11 @@ dataset:
         entity_measured = ifelse(category %in% c("capsule", "silicula", "nut", "utricles", "pyrenes", "berry", "achenes"), "fruit", entity_measured),
         units = ifelse(trait_name == "fruit_width", NA_character_, units)
       ) %>%
-      arrange(category) %>%
-      distinct(source, taxon_name, trait_name, trait_value, units, value_type, inferred, .keep_all = TRUE) %>%
       mutate(entity_measured = ifelse(is.na(entity_measured), "unknown", entity_measured)) %>%
       group_by(taxon_name, trait_name, entity_measured, value_type) %>%
       mutate(
         observation_number = row_number(),
-        observation_number = ifelse(trait_name == "leaf_photosynthesis", NA, observation_number)
+        observation_number = ifelse(trait_name %in% c("leaf_photosynthesis", "leaf_stomatal_conductance", "leaf_stomatal_conductance_2"), NA, observation_number)
       ) %>%
       ungroup()
   '
@@ -99,6 +97,7 @@ dataset:
   taxon_name: taxon_name
   trait_name: trait_name
   value: trait_value
+  individual_id: individual_id
   location_name: test_location
   value_type: value_type
   entity_type: test_entity_type
@@ -245,6 +244,16 @@ traits:
   methods: Test `repeat_measurements_id` at the trait level for populations and species.
   replicates: 1
   repeat_measurements_id: TRUE
+- var_in: leaf_stomatal_conductance_2
+  unit_in: mol{H2O}/m2/s
+  trait_name: leaf_stomatal_conductance
+  value_type: raw
+  entity_type: species
+  basis_of_value: measurement
+  methods: Test that `repeat_measurements_id` is not made for traits where `repeat_measurements_id`
+    is set to FALSE but have already been entered with `repeat_measurements_id` as TRUE from another
+    column.
+  replicates: 1
 substitutions: .na
 taxonomic_updates:
 - find: Acaena anserovina

@@ -16,7 +16,8 @@ This dataset is for testing the following, for wide datasets:
 - Taxonomic updates for different taxonomic resolutions
 - `observation_id` refers to unique observations
 - Duplicate trait values
-- Test `method_id`
+- `method_id`
+- `repeat_measurements_id` at the trait level, for individuals (using `individual_id`), populations and species (including when it is specified as TRUE and FALSE when a trait is entered twice)
 
 Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - `entity_type`, `basis_of_value`, `value_type` and `replicates` were moved to dataset level fixed value in metadata.yml, except for `flowering_time`, `huber_value` (LASA1000) and `plant_growth_form` where they're specified at the trait level
@@ -33,5 +34,6 @@ Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - Added a column `leaf_length` with accompanying `leaf_length_units` to test unit conversions read in from a column
 - Added duplicate of LASA50 column to check `method_id`
 - Added a substitution for `plant_growth_form` and `flowering_time`
+- Added `leaf_photosynthesis`, `leaf_stomatal_conductance` and `leaf_stomatal_conductance_2` to test `repeat_measurements_id`, with another `leaf_stomatal_conductance_3` variable that doesn't specify `repeat_measurements_id`
 
 See output/ for expected output files.

@@ -199,9 +199,9 @@ PlantNET_flora,australia_2,Nicotiana glauca,fruit_length,capsule,13,NA,mm,mode,s
 PlantNET_flora,australia_2,Ipomoea cairica,fruit_length,capsule,11,NA,mm,mode,species,,,,
 PlantNET_flora,australia_2,Euphorbia inappendiculata var. queenslandica,fruit_length,capsule,1.5,NA,mm,mode,species,,,,
 PlantNET_flora,australia_2,Daviesia arenaria,fruit_length,pod,7,NA,mm,mode,species,,,,
-PlantNET_flora,australia_2,Nicotiana glauca,leaf_photosynthesis,NA,6,NA,,,individual,,,,1
-PlantNET_flora,australia_2,Nicotiana glauca,leaf_photosynthesis,NA,4,NA,,,individual,,,,1
-PlantNET_flora,australia_2,Nicotiana glauca,leaf_photosynthesis,NA,3.7,NA,,,individual,,,,1
+PlantNET_flora,australia_2,Nicotiana glauca,leaf_photosynthesis,NA,6,NA,,,individual,,,,
+PlantNET_flora,australia_2,Nicotiana glauca,leaf_photosynthesis,NA,4,NA,,,individual,,,,
+PlantNET_flora,australia_2,Nicotiana glauca,leaf_photosynthesis,NA,3.7,NA,,,individual,,,,
 PlantNET_flora,australia_2,Lotus corniculatus,leaf_photosynthesis,NA,5,NA,,,individual,,,,1
 PlantNET_flora,australia_2,Lotus corniculatus,leaf_photosynthesis,NA,4.4,NA,,,individual,,,,1
 PlantNET_flora,australia_2,Lotus corniculatus,leaf_photosynthesis,NA,2,NA,,,individual,,,,1
@@ -217,3 +217,8 @@ PlantNET_flora,australia_2,Eucalyptus pulverulenta,leaf_stomatal_conductance,NA,
 PlantNET_flora,australia_2,Eucalyptus pulverulenta,leaf_stomatal_conductance,NA,0.6,NA,,,species,,,,
 PlantNET_flora,australia_2,Eucalyptus pulverulenta,leaf_stomatal_conductance,NA,0.7,NA,,,species,,,,
 PlantNET_flora,australia_2,Eucalyptus pulverulenta,leaf_stomatal_conductance,NA,0.88,NA,,,species,,,,
+PlantNET_flora,australia,Ipomoea cairica,leaf_stomatal_conductance_2,NA,0.6,NA,,,,,,,
+PlantNET_flora,australia,Ipomoea cairica,leaf_stomatal_conductance_2,NA,0.5,NA,,,,,,,
+PlantNET_flora,australia_2,Ipomoea cairica,leaf_stomatal_conductance_2,NA,0.42,NA,,,,,,,
+PlantNET_flora,australia_2,Phyla nodiflora,leaf_stomatal_conductance_2,NA,0.37,NA,,,,,,,
+PlantNET_flora,australia_2,Phyla nodiflora,leaf_stomatal_conductance_2,NA,0.6,NA,,,,,,,

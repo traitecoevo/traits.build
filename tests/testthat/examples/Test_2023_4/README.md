@@ -7,6 +7,7 @@ This dataset is for testing the following, for long datasets:
 - Replicates in character format
 - `source_id` column
 - Locations (latitude and longitude not missing)
+- `repeat_measurements_id` at the trait level, for individuals (using and not using `individual_id`), populations and species (including when it is specified as TRUE and FALSE when a trait is entered twice)
 
 Test_2023_4 is a copy of NHNSW_2023 with the following modifications:
 - Subsetted the dataset to only `fruit_colour`, `fruit_dehiscence`, `fruit_length`, `fruit_width` and randomly sampled 200 rows
