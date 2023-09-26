@@ -55,3 +55,18 @@ fruit_colour:
     white: Fruit's exocarp is white.
     yellow: Fruit's exocarp is yellow.
   entity_URI: https://w3id.org/APD/traits/trait_0012519
+leaf_photosynthesis:
+  label: Leaf photosynthesis
+  description: Dummy trait definition to test response curves in Test Dataset 7.
+  type: numeric
+  units: umol/m2/s
+  allowed_values_min: -5
+  allowed_values_max: 50
+leaf_stomatal_conductance:
+  label: Leaf stomatal conductance
+  description: Second dummy trait definition to test response curves in Test Dataset
+    7.
+  type: numeric
+  units: mol{H2O}/m2/s
+  allowed_values_min: 0
+  allowed_values_max: 1

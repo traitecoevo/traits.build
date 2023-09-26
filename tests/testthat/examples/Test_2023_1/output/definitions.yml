@@ -100,6 +100,21 @@ seed_dry_mass:
   allowed_values_min: 1.0e-05
   allowed_values_max: 1000000.0
   entity_URI: https://w3id.org/APD/traits/trait_0012610
+leaf_photosynthesis:
+  label: Leaf photosynthesis
+  description: Dummy trait definition to test response curves in Test Dataset 7.
+  type: numeric
+  units: umol/m2/s
+  allowed_values_min: -5
+  allowed_values_max: 50
+leaf_stomatal_conductance:
+  label: Leaf stomatal conductance
+  description: Second dummy trait definition to test response curves in Test Dataset
+    7.
+  type: numeric
+  units: mol{H2O}/m2/s
+  allowed_values_min: 0
+  allowed_values_max: 1
 plant_growth_form:
   label: Plant growth form
   description: A whole plant [PO:0000003] phenotype [NCIT:C16977] trait that summarises
