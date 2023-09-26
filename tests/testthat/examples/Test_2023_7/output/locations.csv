@@ -1,0 +1,7 @@
+dataset_id,location_id,location_name,location_property,value
+Test_2023_7,01,Howard Springs,description,eucalypt-dominated savannas
+Test_2023_7,01,Howard Springs,latitude (deg),-12.485
+Test_2023_7,01,Howard Springs,longitude (deg),131.146
+Test_2023_7,01,Howard Springs,elevation (m),37
+Test_2023_7,01,Howard Springs,"precipitation, MAP (mm)",1714
+Test_2023_7,01,Howard Springs,"temperature, MAT (C)",27.8
