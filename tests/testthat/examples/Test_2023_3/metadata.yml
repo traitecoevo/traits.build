@@ -84,6 +84,9 @@ dataset:
         entity_measured = ifelse(category %in% c("valve", "valves"), "valve", entity_measured),
         entity_measured = ifelse(category %in% c("pappus"), "pappus", entity_measured),
         entity_measured = ifelse(category %in% c("capsule", "silicula", "nut", "utricles", "pyrenes", "berry", "achenes"), "fruit", entity_measured),
+        species = "species",
+        trait_name = ifelse(value_type == "maximum" & trait_name == "fruit_width", "fruit_width_max", trait_name),
+        trait_name = ifelse(value_type == "minimum" & trait_name == "fruit_width", "fruit_width_min", trait_name)
       )  %>%
       arrange(category) %>%
       distinct(source, taxon_name, trait_name, trait_value, units, value_type, inferred, .keep_all = TRUE) %>%
@@ -96,7 +99,7 @@ dataset:
   taxon_name: taxon_name
   trait_name: trait_name
   value: trait_value
-  value_type: value_type
+  entity_type: species
   measurement_remarks: measurement_remarks
   description: Plant growth form data extracted from the NT Flora Online
   basis_of_record: literature
@@ -119,13 +122,20 @@ dataset:
     were scored as `achene`, which was mentioned only in the genus description.
   original_file: .na
   notes: .na
-locations: .na
+locations:
+  australia:
+    description: First made-up location for testing
+  australia_2:
+    latitude (deg): -27.158
+    longitude (deg): 142.685
+    description: Second made-up location for testing
 contexts:
 - context_property: trait scoring method
   category: method_context
   var_in: inferred
   values:
-  - value: scored from text
+  - find: scored from text
+    value: scored_from_text
     description: Trait value scored directly from taxon description.
   - value: inferred_from_species
     description: Trait value inferred from species-level taxon description.
@@ -133,42 +143,13 @@ contexts:
     description: Trait value inferred from genus-level taxon description.
   - value: inferred_from_family
     description: Trait value inferred from family-level taxon description.
-  - value: inferred_from_trait
-    description: Trait value inferred from the value of a different trait.
-  - value: inferred_from_taxonomy
-    description: Trait value inferred from a higher level taxon description.
 - context_property: entity measured
   category: entity_context
   var_in: entity_measured
   values:
-  - value: unknown
-  - value: leaflet
-  - value: pinnae
-  - value: all
+  - find: unknown
+    value: fruit
   - value: fruit
-  - value: infructescence
-  - value: valve
-  - value: female_cones
-  - value: disc_achenes
-  - value: ray_achenes
-  - value: leaf
-  - value: fertile_leaf
-  - value: sterile_leaf
-  - value: cauline_leaf
-  - value: basal_leaf
-  - value: upper_leaf
-  - value: stem_leaf
-  - value: basal_pinnae
-  - value: phyllode
-  - value: cladode
-  - value: fertile_pinnule
-  - value: sterile_pinnule
-  - value: lower_leaf
-  - value: lateral_leaf
-  - value: emergent_leaf
-  - value: submerged_leaf
-  - value: upper_pinnae
-  - value: scale_leaf
 - context_property: replicate observations
   category: temporal_context
   var_in: observation_number
@@ -181,6 +162,7 @@ traits:
   trait_name: fruit_colour
   entity_type: species
   basis_of_value: expert_score
+  value_type: mean
   replicates: .na
   methods: When specified in the taxon description, only the colours of the fruit
     at maturity or the dominant colours of the fruit exterior were scored. If neither
@@ -190,6 +172,7 @@ traits:
   trait_name: fruit_dehiscence
   entity_type: species
   basis_of_value: expert_score
+  value_type: mean
   replicates: .na
   methods: Taxa were scored as dehiscent from a variety of terms in the text including
     the kind of dehiscence e.g. scepticidal, loculicidal or possessing valves.
@@ -198,20 +181,59 @@ traits:
   trait_name: fruit_length
   entity_type: species
   basis_of_value: measurement
-  replicates: .na
+  value_type: mean
+  replicates: '3'
   methods: The term used to describe the fruit length was stored  as a measurement
     remark for greater clarity e.g. fruit, achene, capsule. Fruits which were spherical
     or round in shape were inferred as possessing the same dimensions in other planes.
-- var_in: fruit_width
+- var_in: fruit_length_dupe
   unit_in: mm
+  trait_name: .na
+  entity_type: species
+  basis_of_value: measurement
+  value_type: mean
+  replicates: '3'
+  methods: trait_name set to .na
+- var_in: fruit_width_min
+  unit_in: units
   trait_name: fruit_width
   entity_type: species
   basis_of_value: measurement
+  value_type: minimum
+  replicates: '3'
+  methods: Minimum fruit width; the term used to describe the fruit width was stored as
+    a measurement remark for greater clarity e.g. fruit, achene, capsule. Fruits which
+    were spherical or round in shape were inferred as possessing the same dimensions in
+    other planes.
+- var_in: fruit_width_max
+  unit_in: units
+  trait_name: fruit_width
+  entity_type: species
+  basis_of_value: measurement
+  value_type: maximum
+  replicates: '3'
+  methods: Maximum fruit width; the term used to describe the fruit width was stored as
+    a measurement remark for greater clarity e.g. fruit, achene, capsule. Fruits which
+    were spherical or round in shape were inferred as possessing the same dimensions in
+    other planes.
+- var_in: flowering_time
+  unit_in: .na
+  trait_name: flowering_time
+  entity_type: population
+  value_type: mode
+  basis_of_value: expert_score
+  methods: Made up flowering time values.
   replicates: .na
-  methods: The term used to describe the fruit width was stored  as a measurement
-    remark for greater clarity e.g. fruit, achene, capsule. Fruits which were spherical
-    or round in shape were inferred as possessing the same dimensions in other planes.
-substitutions: .na
+substitutions:
+- trait_name: fruit_dehiscence
+  find: not dehiscent
+  replace: indehiscent
+- trait_name: flowering_time
+  find: winter
+  replace: nnnnnyyynnnn
+- trait_name: flowering_time
+  find: not observed
+  replace: .na
 taxonomic_updates:
 - find: Acaena anserovina
   replace: Acaena x anserovina

@@ -33,7 +33,6 @@ dataset:
   source_id: source_id
   entity_type: species
   replicates: replicates
-  basis_of_value: basis_of_value
   description: Investigation into trait values correlated with plant height along
     light availability and successional gradients for far north Queensland species.
   value_type: mean
@@ -56,17 +55,14 @@ locations:
     description: Tropical rain forest vegetation.
     elevation (m): 800
     rainfall (mm): 2000
-    basis_of_value: measurement
     collection_date: '2002/2003'
   Cape Tribulation:
     description: Complex mesophyll vine forest in tropical rain forest.
     elevation (m): 25
-    latitude (deg): .na
-    longitude (deg): .na
     rainfall (mm): 3500
     replicates: 10
-    basis_of_value: field_experiment
     life_stage: juvenile
+    basis_of_record: field_experiment
     measurement_remarks: Made-up measurement remarks for Cape Tribulation
 contexts: .na
 traits:
@@ -82,6 +78,7 @@ traits:
   unit_in: mg/mg
   trait_name: leaf_N_per_dry_mass
   value_type: value_type
+  basis_of_value: basis_of_value
   methods: Leaves from all individuals per species were pooled and finely ground for
     nitrogen analysis. Total nitrogen concentration (%) was measured using complete
     combustion gas chromatography by Waite Analytical Services, Adelaide. The first
@@ -90,12 +87,14 @@ traits:
   unit_in: mm2
   trait_name: leaf_area
   value_type: value_type
+  basis_of_value: basis_of_value
   methods: Leaf size was calculated as the one-sided leaf area (flat bed scanner).
     It was measured on the first five fully expanded leaves at the tip of each individual.
 - var_in: wood density (mg mm-3)
   unit_in: mg/mm3
   trait_name: wood_density
   value_type: value_type
+  basis_of_value: basis_of_value
   methods: Wood density was calculated using 40-60 mm stem segments taken 250 mm and
     1000 mm back along a branch from the branch tip. Fresh samples were refrigerated
     before processing. After removing bark material, the volume of each wood sample
@@ -110,6 +109,7 @@ traits:
   trait_name: branch_mass_fraction
   entity_type: population
   value_type: value_type
+  basis_of_value: basis_of_value
   methods: Branch mass fraction was calculated as the mass side branches/total mass,
     on a carbon dry mass basis. The zero values are correct - these are plants with
     no branches.
@@ -120,6 +120,7 @@ traits:
   value_type: value_type
   replicates: unknown
   basis_of_record: literature
+  basis_of_value: basis_of_value
   life_stage: seedling
   methods: Mean oven-dried seed mass (including seed coat but excluding seed accessories)
     was estimated for all species with available field material. In total, collections
@@ -131,6 +132,7 @@ traits:
   trait_name: huber_value
   entity_type: population
   value_type: value_type
+  basis_of_value: basis_of_value
   replicates: 7
   methods: 'Leaf area was determined for a shoot whose sapwood had a cross sectional
     area of 10 mm2. In detail from Wright_2006, which used this data, No single best
@@ -173,6 +175,7 @@ traits:
   trait_name: huber_value
   entity_type: population
   value_type: value_type
+  basis_of_value: basis_of_value
   methods: 'Leaf area was determined for a 250 mm branch segment and sapwood cross-sectional
     area was determined where the branch was cut. In detail from Wright_2006, which
     used this data, No single best point exists to compare traits such as LM/ SM,
@@ -214,6 +217,7 @@ traits:
   trait_name: huber_value
   entity_type: population
   value_type: value_type
+  basis_of_value: basis_of_value
   methods: 'Leaf area was determined for a 50 mm branch segment and sapwood cross-sectional
     area was determined where the branch was cut. In detail from Wright_2006, which
     used this data, No single best point exists to compare traits such as LM/ SM,
@@ -255,6 +259,7 @@ traits:
   trait_name: huber_value
   entity_type: population
   value_type: mean
+  basis_of_value: basis_of_value
   methods: 'Leaf area was determined for a 1000 mm branch segment and sapwood cross-sectional
     area was determined where the branch was cut. In detail from Wright_2006, which
     used this data, No single best point exists to compare traits such as LM/ SM,
@@ -295,7 +300,8 @@ traits:
   unit_in: mm2{leaf}/mm2{sapwood}
   trait_name: huber_value
   entity_type: population
-  value_type: value_type
+  value_type: maximum
+  basis_of_value: basis_of_value
   methods: 'Leaf area was determined for a 1000 mm branch segment and sapwood cross-sectional
     area was determined where the branch was cut. In detail from Wright_2006, which
     used this data, No single best point exists to compare traits such as LM/ SM,
