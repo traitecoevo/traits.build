@@ -478,6 +478,7 @@ process_create_observation_id <- function(data, metadata) {
     if (metadata[["dataset"]][["repeat_measurements_id"]] == TRUE) {
 
       i <- !is.na(data$value)
+      data$repeat_measurements_id <- data$repeat_measurements_id %>% as.character()
 
       data[i, ] <-
         data[i, ] %>%
