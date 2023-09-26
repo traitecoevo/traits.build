@@ -399,6 +399,7 @@ metadata:
         basis_of_record: *basis_of_record
         basis_of_value: *basis_of_value
         replicates: *replicates
+        collection_date: *collection_date
         measurement_remarks: *measurement_remarks
         methods: *methods
         life_stage: *life_stage
