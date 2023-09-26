@@ -1146,6 +1146,8 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' @param dataset_ids `dataset_id`'s to include; by default includes all
 #' @param method Approach to use in build
 #' @param template Template used to build
+#' @param workers Number of workers/parallel processes to use when using
+#' method = "furrr"
 #'
 #' @return Updated `remake.yml` file
 #' @export

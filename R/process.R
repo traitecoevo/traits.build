@@ -345,6 +345,7 @@ process_custom_code <- function(txt) {
 #' This depends upon a `parsing_id` being established when the `data.csv` file is first read in.
 #'
 #' @param data The traits table at the point where this function is called
+#' @param metadata Yaml file with metadata
 #'
 #' @return Character string
 process_create_observation_id <- function(data, metadata) {
@@ -487,7 +488,7 @@ process_create_observation_id <- function(data, metadata) {
           .data$method_id, .data$method_context_id,
         ) %>%
         dplyr::mutate(
-          repeat_measurements_id = row_number() %>% process_generate_id("")
+          repeat_measurements_id = dplyr::row_number() %>% process_generate_id("")
         ) %>%
         dplyr::ungroup()
 
@@ -500,8 +501,8 @@ process_create_observation_id <- function(data, metadata) {
   if (!is.null(traits_table[["repeat_measurements_id"]])) {
 
     to_add_id <- traits_table %>%
-      filter(repeat_measurements_id == TRUE) %>%
-      dplyr::pull(trait_name)
+      filter(.data$repeat_measurements_id == TRUE) %>%
+      dplyr::pull(.data$trait_name)
 
     i <- !is.na(data$value) & data$trait_name %in% to_add_id &
       # To ensure `repeat_measurements_id`'s are only added to data where `repeat_measurements_id`
@@ -516,7 +517,7 @@ process_create_observation_id <- function(data, metadata) {
         .data$method_id, .data$method_context_id,
       ) %>%
       dplyr::mutate(
-        repeat_measurements_id = row_number() %>% process_generate_id("")
+        repeat_measurements_id = dplyr::row_number() %>% process_generate_id("")
       ) %>%
       dplyr::ungroup()
 
@@ -845,7 +846,7 @@ process_flag_unsupported_traits <- function(data, definitions) {
 #' with excluded observations flagged in a new column.
 #'
 #' @param data Tibble or dataframe containing the study data
-#' @param metadata Metadata yaml file for any given study
+#' @param metadata Yaml file with metadata
 #'
 #' @importFrom stringr str_squish
 #' @importFrom rlang .data
@@ -1250,7 +1251,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   var_in <- unlist(metadata[["dataset"]])
   i <- var_in %in% names(data)
 
-  v <- setNames(
+  v <- stats::setNames(
     nm = c("entity_context_id", "plot_context_id", "treatment_context_id",
            "temporal_context_id", "method_context_id")
     )
@@ -1680,7 +1681,7 @@ process_standardise_names <- function(x) {
 #' Applies taxonomic updates to the study data from the `metadata.yml` file.
 #'
 #' @param data Tibble or dataframe containing the study data
-#' @param metadata Yaml file containing the metadata
+#' @param metadata Yaml file with metadata
 #'
 #' @return Tibble with the taxonomic updates applied
 process_taxonomic_updates <- function(data, metadata) {
