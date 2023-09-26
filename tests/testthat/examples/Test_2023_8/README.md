@@ -6,6 +6,7 @@ This dataset is for testing:
 
 Test_2023_8 is a copy of 'Cernusak_2011/raw/full_curve_data.csv' with the following modifications:
 - Subsetted to one location: Howard Springs
+- Only leaf photosynthesis and conductance traits
 - Converted to long format
 
 See output/ for expected output files.

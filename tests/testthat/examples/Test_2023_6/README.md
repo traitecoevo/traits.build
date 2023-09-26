@@ -9,4 +9,4 @@ This dataset is for testing:
 
 Test_2023_6 is a copy of X with the following modifications:
 
-See output/
+See output/ for expected output files.
