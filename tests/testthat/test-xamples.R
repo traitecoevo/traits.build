@@ -29,7 +29,7 @@ testthat::test_that("Test Dataset 1 builds correctly", {
   expect_no_error(
     expected_output <-
       purrr::map(
-        tables, ~read_csv(sprintf("examples/Test_2023_1/output/%s.csv", .x), col_types = "cccccccccccccccccccccccc")),
+        tables, ~read_csv(sprintf("examples/Test_2023_1/output/%s.csv", .x), col_types = cols(.default = "c"))),
     info = "Reading in expected output tables"
   )
   # Todo: also load and test non-csv outputs
@@ -80,7 +80,7 @@ testthat::test_that("Test Dataset 2 builds correctly", {
   expect_no_error(
     expected_output <-
       purrr::map(
-        tables, ~read_csv(sprintf("examples/Test_2023_2/output/%s.csv", .x), col_types = "cccccccccccccccccccccccc")),
+        tables, ~read_csv(sprintf("examples/Test_2023_2/output/%s.csv", .x), col_types = cols(.default = "c"))),
     info = "Reading in expected output tables"
   )
   # Todo: also load and test non-csv outputs
@@ -127,7 +127,7 @@ testthat::test_that("Test Dataset 4 builds correctly", {
   expect_no_error(
     expected_output <-
       purrr::map(
-        tables, ~read_csv(sprintf("examples/Test_2023_4/output/%s.csv", .x), col_types = "cccccccccccccccccccccccc")),
+        tables, ~read_csv(sprintf("examples/Test_2023_4/output/%s.csv", .x), col_types = cols(.default = "c"))),
     info = "Reading in expected output tables"
   )
   # Todo: also load and test non-csv outputs
@@ -202,7 +202,7 @@ testthat::test_that("Test Dataset 7 builds correctly", {
   expect_no_error(
     expected_output <-
       purrr::map(
-        tables, ~read_csv(sprintf("examples/Test_2023_7/output/%s.csv", .x), col_types = "cccccccccccccccccccccccc")),
+        tables, ~read_csv(sprintf("examples/Test_2023_7/output/%s.csv", .x), col_types = cols(.default = "c"))),
     info = "Reading in expected output tables"
   )
   # Todo: also load and test non-csv outputs
@@ -250,7 +250,7 @@ testthat::test_that("Test Dataset 8 builds correctly", {
   expect_no_error(
     expected_output <-
       purrr::map(
-        tables, ~read_csv(sprintf("examples/Test_2023_8/output/%s.csv", .x), col_types = "cccccccccccccccccccccccc")),
+        tables, ~read_csv(sprintf("examples/Test_2023_8/output/%s.csv", .x), col_types = cols(.default = "c"))),
     info = "Reading in expected output tables"
   )
   # Todo: also load and test non-csv outputs
