@@ -14,4 +14,4 @@ Lizzy recommends this dataset for testing units:
 Test_2023_5 is a copy of Falster_2005_1 (maybe change to Richards_2008) with the following modifications:
 - Added all `bibtype` options to the dataset via secondary/original sources
 
-See output/
+See output/ for expected output files.

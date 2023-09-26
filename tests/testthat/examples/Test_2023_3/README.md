@@ -24,7 +24,7 @@ Test_2023_3 is a copy of NHNSW_2023 with the following modifications:
 - Changed trait scoring method context to substitute "scored from text" with "scored_from_text", replaced "unknown" with "fruit" to test duplicates being collapsed
 - Split `fruit_width` into two traits using `custom_R_code` and input with different methods to check `method_id`
 - Added two made-up locations with one location missing latitude and longitude fields
-- Duplicated `fruit_length` and set `trait_name` to .na
+- Added two `fruit_length_dupe` rows and set `trait_name` to .na
 - Added a `flowering_time` trait
 - Invalid `flowering_time` value, invalid `fruit_colour` value ("brunneous" instead of "brown"), out of range `fruit_length` value (3000 mm) should go to `excluded_data`
 - Changed a "indehiscent" value to "not dehiscent" for substitutions, added some `flowering_time` values to be substituted
