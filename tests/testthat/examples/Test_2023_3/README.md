@@ -30,4 +30,3 @@ Test_2023_3 is a copy of NHNSW_2023 with the following modifications:
 - Changed a "indehiscent" value to "not dehiscent" for substitutions, added some `flowering_time` values to be substituted
 
 See output/ for expected output files.
-
