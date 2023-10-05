@@ -1,215 +1,218 @@
 dataset_id,taxon_name,observation_id,trait_name,value,unit,entity_type,value_type,basis_of_value,replicates,basis_of_record,life_stage,population_id,individual_id,repeat_measurements_id,temporal_context_id,source_id,location_id,entity_context_id,plot_context_id,treatment_context_id,collection_date,measurement_remarks,method_id,method_context_id,original_name
-Test_2023_4,Abildgaardia ovata,001,fruit_width,1.2,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Abildgaardia ovata
-Test_2023_4,Acacia alpina,002,fruit_width,3,mm,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia alpina
-Test_2023_4,Acacia beadleana,003,fruit_width,10.5,mm,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia beadleana
+Test_2023_4,Abildgaardia ovata,001,fruit_width,1.2,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Abildgaardia ovata
+Test_2023_4,Acacia alpina,002,fruit_width,3,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia alpina
+Test_2023_4,Acacia beadleana,003,fruit_width,10.5,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia beadleana
 Test_2023_4,Acacia bulgaensis,004,fruit_length,95,mm,population,minimum,measurement,2,literature,juvenile,,,,01,,01,02,,,2020,Part of Test Dataset 4,01,04,Acacia bulgaensis
-Test_2023_4,Acacia caroleae,005,fruit_width,2,mm,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia caroleae
-Test_2023_4,Acacia crassa,006,fruit_length,40,mm,species,mode,expert_score,1,field,seedling,,,,01,Test_2003,,02,,,,Part of Test Dataset 4,01,04,Acacia crassa
-Test_2023_4,Acacia flexifolia,007,fruit_width,2,mm,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia flexifolia
+Test_2023_4,Acacia caroleae,005,fruit_width,2,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia caroleae
+Test_2023_4,Acacia crassa,006,fruit_length,40,mm,species,minimum,expert_score,1,field,seedling,,,,01,Test_2003,,02,,,,Part of Test Dataset 4,01,04,Acacia crassa
+Test_2023_4,Acacia flexifolia,007,fruit_width,2,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia flexifolia
 Test_2023_4,Acacia gladiiformis,008,fruit_length,150,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia gladiiformis
-Test_2023_4,Acacia havilandiorum,009,fruit_width,2,mm,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia havilandiorum
-Test_2023_4,Acacia leiocalyx subsp. leiocalyx,010,fruit_width,4,mm,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia leiocalyx subsp. leiocalyx
-Test_2023_4,Acacia myrtifolia,011,fruit_width,5,mm,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia myrtifolia
+Test_2023_4,Acacia havilandiorum,009,fruit_width,2,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia havilandiorum
+Test_2023_4,Acacia leiocalyx subsp. leiocalyx,010,fruit_width,4,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia leiocalyx subsp. leiocalyx
+Test_2023_4,Acacia myrtifolia,011,fruit_width,5,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia myrtifolia
 Test_2023_4,Acacia ramulosa var. ramulosa,012,fruit_length,20,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia ramulosa var. ramulosa
 Test_2023_4,Acacia spectabilis,013,fruit_length,170,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia spectabilis
-Test_2023_4,Acacia terminalis subsp. Glabrous form (M.Hancock 94),014,fruit_width,14,mm,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia terminalis subsp. Glabrous form (M.Hancock 94)
-Test_2023_4,Acronychia littoralis,015,fruit_width,20,mm,species,,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Acronychia littoralis
-Test_2023_4,Adriana tomentosa,016,fruit_width,12,mm,,mode,unknown,1,,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Adriana tomentosa
+Test_2023_4,Acacia terminalis subsp. Glabrous form (M.Hancock 94),014,fruit_width,14,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Acacia terminalis subsp. Glabrous form (M.Hancock 94)
+Test_2023_4,Acronychia littoralis,015,fruit_width,20,mm,species,,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Acronychia littoralis
+Test_2023_4,Adriana tomentosa,016,fruit_width,12,mm,,mode,,1,field_experiment,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Adriana tomentosa
 Test_2023_4,Alectryon coriaceus,017,fruit_length,7,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Alectryon coriaceus
-Test_2023_4,Alectryon oleifolius,018,fruit_width,10,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Alectryon oleifolius
+Test_2023_4,Alectryon oleifolius,018,fruit_width,10,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Alectryon oleifolius
 Test_2023_4,Alectryon subdentatus,019,fruit_length,8,mm,population,minimum,measurement,2,,juvenile,,,,01,Test_2003,01,01,,,2020,Part of Test Dataset 4,01,04,Alectryon subdentatus
-Test_2023_4,Amyema preissii,020,fruit_colour,pink white,,,mode,unknown,1,,seedling,,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,04,Amyema preissii
-Test_2023_4,Angophora leiocarpa,021,fruit_width,11,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Angophora leiocarpa
-Test_2023_4,Apophyllum anomalum,022,fruit_colour,purple,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Apophyllum anomalum
-Test_2023_4,Arbutus unedo,023,fruit_colour,red,,metapopulation,mode,unknown,1,,seedling,03,,,01,,02,02,,,2021,From `australia_2` site,01,04,Arbutus unedo
+Test_2023_4,Amyema preissii,020,fruit_colour,pink white,,,mode,,1,,seedling,,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,04,Amyema preissii
+Test_2023_4,Angophora leiocarpa,021,fruit_width,11,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Angophora leiocarpa
+Test_2023_4,Apophyllum anomalum,022,fruit_colour,purple,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Apophyllum anomalum
+Test_2023_4,Arbutus unedo,023,fruit_colour,red,,metapopulation,mode,,1,,seedling,03,,,01,,02,02,,,2021,From `australia_2` site,01,04,Arbutus unedo
 Test_2023_4,Australina pusilla,024,fruit_length,1,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Australina pusilla
-Test_2023_4,Burmannia disticha,025,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Burmannia disticha
-Test_2023_4,Bursaria spinosa subsp. spinosa,026,fruit_width,9,mm,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Bursaria spinosa subsp. spinosa
+Test_2023_4,Burmannia disticha,025,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Burmannia disticha
+Test_2023_4,Bursaria spinosa subsp. spinosa,026,fruit_width,9,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Bursaria spinosa subsp. spinosa
 Test_2023_4,Calendula arvensis,027,fruit_length,15,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Calendula arvensis
-Test_2023_4,Callistemon purpurascens,028,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Callistemon purpurascens
-Test_2023_4,Carex cephalotes,029,fruit_length,2.5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Carex cephalotes
-Test_2023_4,Carex cephalotes,029,fruit_width,1,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Carex cephalotes
-Test_2023_4,Carex leporina,030,fruit_length,3.5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Carex leporina
-Test_2023_4,Carex raleighii,031,fruit_length,2.5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Carex raleighii
-Test_2023_4,Carmichaelia exsul,032,fruit_length,10,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Carmichaelia exsul
-Test_2023_4,Cassinia compacta,033,fruit_length,0.5,mm,species,mode,,1,literature,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Cassinia compacta
-Test_2023_4,Castanospermum australe,034,fruit_length,100,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Castanospermum australe
-Test_2023_4,Centaurium tenuiflorum,035,fruit_length,6,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Centaurium tenuiflorum
-Test_2023_4,Cestrum nocturnum,036,fruit_width,8,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Cestrum nocturnum
-Test_2023_4,Chthonocephalus pseudevax,037,fruit_length,0.5,mm,species,mode,,1,,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Chthonocephalus pseudevax
-Test_2023_4,Claoxylon australe,038,fruit_width,5,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Claoxylon australe
-Test_2023_4,Commersonia amystia,039,fruit_width,13,mm,species,maximum,unknown,1,,seedling,,,,01,Test_2003,,01,,,,Part of Test Dataset 4,01,04,Commersonia amystia
-Test_2023_4,Commersonia salviifolia,040,fruit_width,5,mm,species,mode,unknown,1,,seedling,,,,01,Test_2000,02,01,,,2021,From `australia_2` site,01,04,Commersonia salviifolia
-Test_2023_4,Convolvulus farinosus,041,fruit_width,6,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Convolvulus farinosus
-Test_2023_4,Coprosma niphophila,042,fruit_colour,orange red,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Coprosma niphophila
-Test_2023_4,Coprosma nivalis,043,fruit_colour,grey purple,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Coprosma nivalis
-Test_2023_4,Correa alba,044,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,Test_2000,02,01,,,2021,From `australia_2` site,01,04,Correa alba
-Test_2023_4,Corymbia citriodora,045,fruit_length,15,mm,species,mode,measurement,1,literature,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Corymbia citriodora
-Test_2023_4,Corymbia eximia,046,fruit_length,13,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Corymbia eximia
-Test_2023_4,Crassula decumbens,047,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,04,Crassula decumbens
-Test_2023_4,Crassula peduncularis,048,fruit_dehiscence,dehiscent,,population,mode,unknown,3,literature,adult,03,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,04,Crassula peduncularis
-Test_2023_4,Crotalaria brevis,049,fruit_colour,brown,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Crotalaria brevis
-Test_2023_4,Crotalaria brevis,049,fruit_length,6,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Crotalaria brevis
-Test_2023_4,Crotalaria grahamiana,050,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Crotalaria grahamiana
-Test_2023_4,Crotalaria lanceolata,051,fruit_length,20,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Crotalaria lanceolata
-Test_2023_4,Cylindropuntia kleiniae,052,fruit_length,20,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Cylindropuntia kleiniae
-Test_2023_4,Cyperus albostriatus,053,fruit_colour,black brown,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Cyperus albostriatus
-Test_2023_4,Cyperus betchei,054,fruit_width,0.4,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Cyperus betchei
-Test_2023_4,Cyperus bulbosus,055,fruit_colour,grey,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Cyperus bulbosus
-Test_2023_4,Cyperus laevigatus,056,fruit_width,1.2,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Cyperus laevigatus
-Test_2023_4,Cyperus sculptus,057,fruit_length,1,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Cyperus sculptus
-Test_2023_4,Dampiera fusca,058,fruit_colour,brown,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Dampiera fusca
-Test_2023_4,Davidsonia johnsonii,059,fruit_length,30,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Davidsonia johnsonii
-Test_2023_4,Daviesia arenaria,060,fruit_length,7,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Daviesia arenaria
-Test_2023_4,Derris involuta,061,fruit_dehiscence,indehiscent,,population,mode,unknown,3,literature,adult,03,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,02,Derris involuta
-Test_2023_4,Dichromochlamys dentatifolia,062,fruit_length,1.8,mm,species,mode,,1,field_experiment,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Dichromochlamys dentatifolia
-Test_2023_4,Dillwynia cinerascens,063,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Dillwynia cinerascens
-Test_2023_4,Dillwynia floribunda,064,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Dillwynia floribunda
-Test_2023_4,Dinosperma erythrococcum,065,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Dinosperma erythrococcum
-Test_2023_4,Dodonaea petiolaris,066,fruit_length,16,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Dodonaea petiolaris
-Test_2023_4,Dodonaea truncatiales,067,fruit_width,17,mm,metapopulation,mode,unknown,1,,seedling,03,,,01,,02,01,,,2021,From `australia_2` site,01,04,Dodonaea truncatiales
-Test_2023_4,Dovyalis caffra,068,fruit_colour,orange yellow,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Dovyalis caffra
-Test_2023_4,Elaeocarpus grandis,069,fruit_width,20,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Elaeocarpus grandis
-Test_2023_4,Eleocharis pallens,070,fruit_length,1.4,mm,species,mode,,1,literature,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Eleocharis pallens
-Test_2023_4,Endiandra globosa,071,fruit_width,50,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Endiandra globosa
-Test_2023_4,Endiandra muelleri,072,fruit_colour,black,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Endiandra muelleri
-Test_2023_4,Epilobium gunnianum,073,fruit_length,75,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Epilobium gunnianum
-Test_2023_4,Eremophila deserti,074,fruit_colour,black yellow,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Eremophila deserti
-Test_2023_4,Eremophila oppositifolia,075,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eremophila oppositifolia
-Test_2023_4,Erigeron conyzoides,076,fruit_length,2.5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Erigeron conyzoides
-Test_2023_4,Erythroxylum australe,077,fruit_width,4,mm,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Erythroxylum australe
-Test_2023_4,Escallonia bifida,078,fruit_length,3,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Escallonia bifida
-Test_2023_4,Eucalyptus badjensis,079,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus badjensis
-Test_2023_4,Eucalyptus camphora,080,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus camphora
-Test_2023_4,Eucalyptus dorrigoensis,081,fruit_length,5,mm,population,minimum,measurement,2,field_experiment,juvenile,,,,01,Test_2003,01,01,,,2020,Part of Test Dataset 4,01,04,Eucalyptus dorrigoensis
-Test_2023_4,Eucalyptus leucoxylon subsp. pruinosa,082,fruit_dehiscence,dehiscent,,species,,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus leucoxylon subsp. pruinosa
-Test_2023_4,Eucalyptus muelleriana,083,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus muelleriana
-Test_2023_4,Eucalyptus nandewarica,084,fruit_length,3,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus nandewarica
-Test_2023_4,Eucalyptus oblonga,085,fruit_length,8,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus oblonga
-Test_2023_4,Eucalyptus olida,086,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus olida
-Test_2023_4,Eucalyptus pulverulenta,087,fruit_width,6,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus pulverulenta
-Test_2023_4,Eucalyptus pulverulenta,088,leaf_stomatal_conductance,0.3,mol{H2O}/m2/s,species,raw,measurement,1,,seedling,,,01,,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus pulverulenta
-Test_2023_4,Eucalyptus pulverulenta,088,leaf_stomatal_conductance,0.6,mol{H2O}/m2/s,species,raw,measurement,1,,seedling,,,02,,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus pulverulenta
-Test_2023_4,Eucalyptus pulverulenta,088,leaf_stomatal_conductance,0.7,mol{H2O}/m2/s,species,raw,measurement,1,,seedling,,,03,,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus pulverulenta
-Test_2023_4,Eucalyptus pulverulenta,088,leaf_stomatal_conductance,0.88,mol{H2O}/m2/s,species,raw,measurement,1,,seedling,,,04,,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus pulverulenta
-Test_2023_4,Eucalyptus recurva,089,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,Test_2000,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus recurva
-Test_2023_4,Eucalyptus rossii,090,fruit_width,6,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus rossii
-Test_2023_4,Eucalyptus scias,091,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus scias
-Test_2023_4,Eucalyptus viminalis,092,fruit_width,4,mm,species,,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus viminalis
-Test_2023_4,Eucalyptus yangoura,093,fruit_width,6,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus yangoura
-Test_2023_4,Eucalyptus youmanii,094,fruit_length,12,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus youmanii
-Test_2023_4,Eucalyptus youmanii,094,fruit_width,9,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus youmanii
-Test_2023_4,Euphorbia inappendiculata var. queenslandica,095,fruit_length,1.5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Euphorbia inappendiculata var. queenslandica
-Test_2023_4,Exocarpos homalocladus,096,fruit_width,8,mm,population,minimum,unknown,2,,juvenile,,,,01,Test_2000,01,02,,,2020,Part of Test Dataset 4,01,04,Exocarpos homalocladus
-Test_2023_4,Exocarpos sparteus,097,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Exocarpos sparteus
-Test_2023_4,Ficus henneana,098,fruit_length,15,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Ficus henneana
-Test_2023_4,Freesia hybrid,099,fruit_colour,green,,metapopulation,mode,unknown,1,,seedling,03,,,01,,02,02,,,2021,From `australia_2` site,01,04,Freesia hybrid
-Test_2023_4,Freesia laxa,100,fruit_length,12,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Freesia laxa
-Test_2023_4,Geijera salicifolia,101,fruit_width,6,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Geijera salicifolia
-Test_2023_4,Gentiana wingecarribiensis,102,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Gentiana wingecarribiensis
-Test_2023_4,Gentianella barringtonensis,103,fruit_colour,brown,,population,minimum,unknown,2,literature,juvenile,,,,01,,01,02,,,2020,Part of Test Dataset 4,01,02,Gentianella barringtonensis
-Test_2023_4,Geranium obtusisepalum,104,fruit_length,17,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Geranium obtusisepalum
-Test_2023_4,Geranium purpureum subsp. purpureum,105,fruit_length,12,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Geranium purpureum subsp. purpureum
-Test_2023_4,Gompholobium grandiflorum,106,fruit_length,15,mm,species,mode,,1,,seedling,,,,01,Test_2003,,02,,,,Part of Test Dataset 4,01,04,Gompholobium grandiflorum
-Test_2023_4,Goodenia varia,107,fruit_length,10,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Goodenia varia
-Test_2023_4,Gossia bidwillii,108,fruit_colour,black,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Gossia bidwillii
-Test_2023_4,Grevillea scortechinii,109,fruit_colour,brown red,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Grevillea scortechinii
-Test_2023_4,Hakea macraeana,110,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Hakea macraeana
-Test_2023_4,Hemisteptia lyrata,111,fruit_length,2,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Hemisteptia lyrata
-Test_2023_4,Hibbertia crinita,112,fruit_dehiscence,dehiscent,,species,,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Hibbertia crinita
-Test_2023_4,Hibiscus brachysiphonius,113,fruit_length,15,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Hibiscus brachysiphonius
-Test_2023_4,Hibiscus sturtii,114,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Hibiscus sturtii
-Test_2023_4,Hypericum elodes,115,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Hypericum elodes
-Test_2023_4,Hypoxis glabella var. glabella,116,fruit_dehiscence,dehiscent,,population,mode,unknown,3,literature,adult,03,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,02,Hypoxis glabella var. glabella
-Test_2023_4,Imperata cylindrica,117,fruit_length,1,mm,population,minimum,measurement,2,literature,juvenile,,,,01,Test_2000,01,02,,,2020,Part of Test Dataset 4,01,04,Imperata cylindrica
-Test_2023_4,Indigofera triflora,118,fruit_length,30,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Indigofera triflora
-Test_2023_4,Ipomoea cairica,119,fruit_length,11,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Ipomoea cairica
-Test_2023_4,Ipomoea cairica,120,leaf_stomatal_conductance,0.6,mol{H2O}/m2/s,population,minimum,measurement,2,,juvenile,,,,,,01,02,,,2020,Part of Test Dataset 4,02,04,Ipomoea cairica
-Test_2023_4,Ipomoea cairica,120,leaf_stomatal_conductance,0.5,mol{H2O}/m2/s,population,minimum,measurement,2,,juvenile,,,,,,01,02,,,2020,Part of Test Dataset 4,02,04,Ipomoea cairica
-Test_2023_4,Ipomoea cairica,120,leaf_stomatal_conductance,0.42,mol{H2O}/m2/s,species,raw,measurement,1,,seedling,,,,,,02,02,,,2021,From `australia_2` site,02,04,Ipomoea cairica
-Test_2023_4,Isolepis montivaga,121,fruit_length,0.9,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Isolepis montivaga
-Test_2023_4,Isotoma axillaris,122,fruit_length,7,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Isotoma axillaris
-Test_2023_4,Isotoma fluviatilis subsp. fluviatilis,123,fruit_width,3,mm,,mode,unknown,1,,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Isotoma fluviatilis subsp. fluviatilis
-Test_2023_4,Juncus acutus subsp. acutus,124,fruit_dehiscence,dehiscent,,species,,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,01,Juncus acutus subsp. acutus
-Test_2023_4,Juncus kraussii,125,fruit_colour,black brown red yellow,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Juncus kraussii
-Test_2023_4,Lantana montevidensis,126,fruit_colour,black purple,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Lantana montevidensis
-Test_2023_4,Lepidium africanum,127,fruit_width,2,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Lepidium africanum
-Test_2023_4,Lepidium foliosum,128,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Lepidium foliosum
-Test_2023_4,Lepidium oxytrichum,129,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Lepidium oxytrichum
-Test_2023_4,Lepidosperma gladiatum,130,fruit_length,3,mm,population,minimum,measurement,2,literature,juvenile,,,,01,Test_2000,01,01,,,2020,Part of Test Dataset 4,01,04,Lepidosperma gladiatum
-Test_2023_4,Leptomeria drupacea,131,fruit_length,6,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Leptomeria drupacea
-Test_2023_4,Leptospermum continentale,132,fruit_length,6,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Leptospermum continentale
-Test_2023_4,Leptospermum obovatum,133,fruit_width,8,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Leptospermum obovatum
-Test_2023_4,Leucopogon amplexicaulis,134,fruit_length,3.5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Leucopogon amplexicaulis
-Test_2023_4,Lobelia pedunculata,135,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Lobelia pedunculata
-Test_2023_4,Lobelia trigonocaulis,136,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Lobelia trigonocaulis
-Test_2023_4,Lotononis bainesii,137,fruit_length,8,mm,species,mode,,1,,seedling,,,,01,Test_2000,02,02,,,2021,From `australia_2` site,01,04,Lotononis bainesii
-Test_2023_4,Lotus corniculatus,138,leaf_stomatal_conductance,0.3,mol{H2O}/m2/s,population,minimum,measurement,2,,juvenile,01,,01,,,01,02,,,2020,Part of Test Dataset 4,01,04,Lotus corniculatus
-Test_2023_4,Lotus corniculatus,138,leaf_stomatal_conductance,0.2,mol{H2O}/m2/s,population,minimum,measurement,2,,juvenile,01,,02,,,01,02,,,2020,Part of Test Dataset 4,01,04,Lotus corniculatus
-Test_2023_4,Lotus corniculatus,139,leaf_photosynthesis,5,umol/m2/s,individual,raw,measurement,1,,seedling,03,01,01,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
-Test_2023_4,Lotus corniculatus,139,leaf_photosynthesis,4.4,umol/m2/s,individual,raw,measurement,1,,seedling,03,01,02,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
-Test_2023_4,Lotus corniculatus,139,leaf_photosynthesis,2,umol/m2/s,individual,raw,measurement,1,,seedling,03,01,03,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
-Test_2023_4,Lotus corniculatus,140,leaf_photosynthesis,0.9,umol/m2/s,individual,raw,measurement,1,,seedling,03,02,01,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
-Test_2023_4,Lotus corniculatus,141,leaf_stomatal_conductance,0.5,mol{H2O}/m2/s,population,raw,measurement,1,,seedling,03,,01,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
-Test_2023_4,Lotus corniculatus,141,leaf_stomatal_conductance,0.44,mol{H2O}/m2/s,population,raw,measurement,1,,seedling,03,,02,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
-Test_2023_4,Lotus corniculatus,141,leaf_stomatal_conductance,0.3,mol{H2O}/m2/s,population,raw,measurement,1,,seedling,03,,03,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
-Test_2023_4,Lotus corniculatus,142,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Lotus corniculatus
-Test_2023_4,Lupinus polyphyllus,143,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Lupinus polyphyllus
-Test_2023_4,Medicago orbicularis,144,fruit_length,7,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Medicago orbicularis
-Test_2023_4,Melichrus procumbens,145,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Melichrus procumbens
-Test_2023_4,Mischocarpus australis,146,fruit_width,8,mm,,mode,unknown,1,,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Mischocarpus australis
-Test_2023_4,Muehlenbeckia adpressa,147,fruit_colour,black brown,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Muehlenbeckia adpressa
-Test_2023_4,Myoporum boninense subsp. australe,148,fruit_length,10,mm,species,mode,measurement,1,literature,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Myoporum boninense subsp. australe
-Test_2023_4,Nicotiana glauca,149,leaf_photosynthesis,6,umol/m2/s,individual,raw,measurement,1,,seedling,03,,01,,,02,02,,,2021,From `australia_2` site,01,04,Nicotiana glauca
-Test_2023_4,Nicotiana glauca,149,leaf_photosynthesis,4,umol/m2/s,individual,raw,measurement,1,,seedling,03,,02,,,02,02,,,2021,From `australia_2` site,01,04,Nicotiana glauca
-Test_2023_4,Nicotiana glauca,149,leaf_photosynthesis,3.7,umol/m2/s,individual,raw,measurement,1,,seedling,03,,03,,,02,02,,,2021,From `australia_2` site,01,04,Nicotiana glauca
-Test_2023_4,Nicotiana glauca,150,fruit_length,13,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Nicotiana glauca
-Test_2023_4,Nicotiana goodspeedii,151,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Nicotiana goodspeedii
-Test_2023_4,Oxalis corniculata,152,fruit_width,1.5,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Oxalis corniculata
-Test_2023_4,Pandorea pandorana subsp. austrocaledonica,153,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Pandorea pandorana subsp. austrocaledonica
-Test_2023_4,Paraserianthes lophantha,154,fruit_width,25,mm,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Paraserianthes lophantha
-Test_2023_4,Parentucellia latifolia,155,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Parentucellia latifolia
-Test_2023_4,Phlegmatospermum cochlearinum,156,fruit_length,10,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Phlegmatospermum cochlearinum
-Test_2023_4,Phyla nodiflora,157,fruit_width,2,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Phyla nodiflora
-Test_2023_4,Phyla nodiflora,158,leaf_stomatal_conductance,0.2,mol{H2O}/m2/s,population,minimum,measurement,2,,juvenile,,,01,,,01,02,,,2020,Part of Test Dataset 4,01,04,Phyla nodiflora
-Test_2023_4,Phyla nodiflora,158,leaf_stomatal_conductance,0.1,mol{H2O}/m2/s,species,raw,measurement,1,,seedling,,,02,,,02,02,,,2021,From `australia_2` site,01,04,Phyla nodiflora
-Test_2023_4,Phyla nodiflora,158,leaf_stomatal_conductance,0.37,mol{H2O}/m2/s,species,raw,measurement,1,,seedling,,,,,,02,02,,,2021,From `australia_2` site,02,04,Phyla nodiflora
-Test_2023_4,Phyla nodiflora,158,leaf_stomatal_conductance,0.6,mol{H2O}/m2/s,species,raw,measurement,1,,seedling,,,,,,02,02,,,2021,From `australia_2` site,02,04,Phyla nodiflora
-Test_2023_4,Picris barbarorum,159,fruit_length,7.5,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Picris barbarorum
-Test_2023_4,Pimelea ligustrina subsp. ligustrina,160,fruit_colour,green,,metapopulation,mode,unknown,1,literature,seedling,03,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,03,Pimelea ligustrina subsp. ligustrina
-Test_2023_4,Pinus pinea,161,fruit_colour,brown,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Pinus pinea
-Test_2023_4,Pisum sativum var. arvense,162,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Pisum sativum var. arvense
-Test_2023_4,Pittosporum erioloma,163,fruit_dehiscence,dehiscent,,,mode,unknown,3,literature,adult,,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,04,Pittosporum erioloma
-Test_2023_4,Plantago turrifera,164,fruit_length,3,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Plantago turrifera
-Test_2023_4,Polycarpon tetraphyllum,165,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Polycarpon tetraphyllum
-Test_2023_4,Potamogeton australiensis,166,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Potamogeton australiensis
-Test_2023_4,Psoralea pinnata,167,fruit_width,2.5,mm,population,minimum,unknown,2,,juvenile,01,,,01,Test_2003,01,01,,,2020,Part of Test Dataset 4,01,04,Psoralea pinnata
-Test_2023_4,Pultenaea ferruginea,168,fruit_length,6,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Pultenaea ferruginea
-Test_2023_4,Rhodamnia argentea,169,fruit_length,6,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Rhodamnia argentea
-Test_2023_4,Rhodamnia argentea,170,fruit_colour,black,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Rhodamnia argentea
-Test_2023_4,Rorippa gigantea,171,fruit_length,15,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Rorippa gigantea
-Test_2023_4,Rubus parvifolius,172,fruit_colour,red,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Rubus parvifolius
-Test_2023_4,Salix alba,173,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Salix alba
-Test_2023_4,Schenkia australis,174,fruit_length,10,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Schenkia australis
-Test_2023_4,Schoenus apogon,175,fruit_colour,white,,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Schoenus apogon
-Test_2023_4,Schoenus brevifolius,176,fruit_width,0.7,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Schoenus brevifolius
-Test_2023_4,Schoenus lepidosperma,177,fruit_width,2.5,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Schoenus lepidosperma
-Test_2023_4,Schoenus vaginatus,178,fruit_colour,brown red yellow,,metapopulation,mode,unknown,1,,seedling,03,,,01,,02,02,,,2021,From `australia_2` site,01,04,Schoenus vaginatus
-Test_2023_4,Scleria rugosa,179,fruit_length,3,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Scleria rugosa
-Test_2023_4,Senecio longipilus,180,fruit_length,2.5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Senecio longipilus
-Test_2023_4,Sida goniocarpa,181,fruit_width,7,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Sida goniocarpa
-Test_2023_4,Sigesbeckia orientalis,182,fruit_length,3,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Sigesbeckia orientalis
-Test_2023_4,Sisymbrium irio,183,fruit_length,25,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Sisymbrium irio
-Test_2023_4,Sparaxis bulbifera,184,fruit_colour,green,,population,minimum,unknown,2,field,juvenile,01,,,01,,01,02,,,2020,Part of Test Dataset 4,01,04,Sparaxis bulbifera
-Test_2023_4,Spergularia diandra,185,fruit_dehiscence,dehiscent,,species,mean,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Spergularia diandra
-Test_2023_4,Sphaeromorphaea littoralis,186,fruit_length,1.3,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Sphaeromorphaea littoralis
-Test_2023_4,Stellaria angustifolia subsp. angustifolia,187,fruit_length,8.5,mm,species,mode,measurement,1,literature,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Stellaria angustifolia subsp. angustifolia
-Test_2023_4,Styphelia viridis,188,fruit_length,10,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Styphelia viridis
-Test_2023_4,Swainsona cadellii,189,fruit_length,25,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Swainsona cadellii
-Test_2023_4,Teucrium puberulum,190,fruit_width,4,mm,species,mode,unknown,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Teucrium puberulum
-Test_2023_4,Thelymitra kangaloonica,191,fruit_length,12,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Thelymitra kangaloonica
-Test_2023_4,Thesium australe,192,fruit_width,2.5,mm,species,mode,unknown,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Thesium australe
-Test_2023_4,Trifolium dubium,193,fruit_length,2,mm,species,mode,measurement,1,literature,seedling,,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,04,Trifolium dubium
-Test_2023_4,Veronica catenata,194,fruit_dehiscence,dehiscent,,species,mode,unknown,3,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Veronica catenata
-Test_2023_4,Veronica derwentiana,195,fruit_length,2.8,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Veronica derwentiana
-Test_2023_4,Wahlenbergia luteola,196,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Wahlenbergia luteola
+Test_2023_4,Callistemon purpurascens,028,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Callistemon purpurascens
+Test_2023_4,Carex cephalotes,029,fruit_length,2.5,mm,species,,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Carex cephalotes
+Test_2023_4,Carex cephalotes,030,fruit_width,1,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Carex cephalotes
+Test_2023_4,Carex leporina,031,fruit_length,3.5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Carex leporina
+Test_2023_4,Carex raleighii,032,fruit_length,2.5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Carex raleighii
+Test_2023_4,Carmichaelia exsul,033,fruit_length,10,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Carmichaelia exsul
+Test_2023_4,Carmichaelia exsul,034,fruit_width,1--2,mm,species,bin,,1,field_experiment,seedling,,,,01,,,02,,,,Part of Test Dataset 4,01,04,Carmichaelia exsul
+Test_2023_4,Cassinia compacta,035,fruit_length,0.5,mm,species,mode,,1,literature,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Cassinia compacta
+Test_2023_4,Castanospermum australe,036,fruit_length,100,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Castanospermum australe
+Test_2023_4,Centaurium tenuiflorum,037,fruit_length,6,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Centaurium tenuiflorum
+Test_2023_4,Cestrum nocturnum,038,fruit_width,8,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Cestrum nocturnum
+Test_2023_4,Chthonocephalus pseudevax,039,fruit_length,0.5,mm,species,mode,,1,,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Chthonocephalus pseudevax
+Test_2023_4,Claoxylon australe,040,fruit_width,5,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Claoxylon australe
+Test_2023_4,Commersonia amystia,041,fruit_width,13,mm,species,maximum,,1,field_experiment,seedling,,,,01,Test_2003,,01,,,,Part of Test Dataset 4,01,04,Commersonia amystia
+Test_2023_4,Commersonia salviifolia,042,fruit_width,5,mm,species,mode,,1,field_experiment,seedling,,,,01,Test_2000,02,01,,,2021,From `australia_2` site,01,04,Commersonia salviifolia
+Test_2023_4,Convolvulus farinosus,043,fruit_width,6,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Convolvulus farinosus
+Test_2023_4,Coprosma niphophila,044,fruit_colour,orange red,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Coprosma niphophila
+Test_2023_4,Coprosma nivalis,045,fruit_colour,grey purple,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Coprosma nivalis
+Test_2023_4,Correa alba,046,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,Test_2000,02,01,,,2021,From `australia_2` site,01,04,Correa alba
+Test_2023_4,Corymbia citriodora,047,fruit_length,15,mm,species,mode,measurement,1,literature,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Corymbia citriodora
+Test_2023_4,Corymbia eximia,048,fruit_length,13,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Corymbia eximia
+Test_2023_4,Crassula decumbens,049,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,04,Crassula decumbens
+Test_2023_4,Crassula peduncularis,050,fruit_dehiscence,dehiscent,,population,mode,,1,literature,adult,03,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,04,Crassula peduncularis
+Test_2023_4,Crotalaria brevis,051,fruit_colour,brown,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Crotalaria brevis
+Test_2023_4,Crotalaria brevis,051,fruit_length,6,mm,species,mean,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Crotalaria brevis
+Test_2023_4,Crotalaria grahamiana,052,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Crotalaria grahamiana
+Test_2023_4,Crotalaria lanceolata,053,fruit_length,20,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Crotalaria lanceolata
+Test_2023_4,Cylindropuntia kleiniae,054,fruit_length,20,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Cylindropuntia kleiniae
+Test_2023_4,Cyperus albostriatus,055,fruit_colour,black brown,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Cyperus albostriatus
+Test_2023_4,Cyperus betchei,056,fruit_width,0.4,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Cyperus betchei
+Test_2023_4,Cyperus bulbosus,057,fruit_colour,grey,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Cyperus bulbosus
+Test_2023_4,Cyperus laevigatus,058,fruit_width,1.2,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Cyperus laevigatus
+Test_2023_4,Cyperus sculptus,059,fruit_length,1,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Cyperus sculptus
+Test_2023_4,Dampiera fusca,060,fruit_colour,brown,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Dampiera fusca
+Test_2023_4,Davidsonia johnsonii,061,fruit_length,30,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Davidsonia johnsonii
+Test_2023_4,Daviesia arenaria,062,fruit_length,7,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Daviesia arenaria
+Test_2023_4,Derris involuta,063,fruit_dehiscence,indehiscent,,population,mode,,1,literature,adult,03,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,02,Derris involuta
+Test_2023_4,Dichromochlamys dentatifolia,064,fruit_length,1.8,mm,species,mode,,1,field_experiment,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Dichromochlamys dentatifolia
+Test_2023_4,Dillwynia cinerascens,065,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Dillwynia cinerascens
+Test_2023_4,Dillwynia floribunda,066,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Dillwynia floribunda
+Test_2023_4,Dinosperma erythrococcum,067,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Dinosperma erythrococcum
+Test_2023_4,Dodonaea petiolaris,068,fruit_length,16,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Dodonaea petiolaris
+Test_2023_4,Dodonaea truncatiales,069,fruit_width,17,mm,metapopulation,mode,,1,field_experiment,seedling,03,,,01,,02,01,,,2021,From `australia_2` site,01,04,Dodonaea truncatiales
+Test_2023_4,Dovyalis caffra,070,fruit_colour,orange yellow,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Dovyalis caffra
+Test_2023_4,Dovyalis caffra,071,fruit_width,2--4,mm,species,bin,,1,field_experiment,seedling,,,,01,,,02,,,,Part of Test Dataset 4,01,04,Dovyalis caffra
+Test_2023_4,Elaeocarpus grandis,072,fruit_width,20,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Elaeocarpus grandis
+Test_2023_4,Eleocharis pallens,073,fruit_length,1.4,mm,species,mode,,1,literature,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Eleocharis pallens
+Test_2023_4,Endiandra globosa,074,fruit_width,50,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Endiandra globosa
+Test_2023_4,Endiandra muelleri,075,fruit_colour,black,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Endiandra muelleri
+Test_2023_4,Epilobium gunnianum,076,fruit_length,75,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Epilobium gunnianum
+Test_2023_4,Eremophila deserti,077,fruit_colour,black yellow,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Eremophila deserti
+Test_2023_4,Eremophila oppositifolia,078,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eremophila oppositifolia
+Test_2023_4,Erigeron conyzoides,079,fruit_length,2.5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Erigeron conyzoides
+Test_2023_4,Erythroxylum australe,080,fruit_width,4,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Erythroxylum australe
+Test_2023_4,Escallonia bifida,081,fruit_length,3,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Escallonia bifida
+Test_2023_4,Eucalyptus badjensis,082,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus badjensis
+Test_2023_4,Eucalyptus camphora,083,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus camphora
+Test_2023_4,Eucalyptus dorrigoensis,084,fruit_length,5,mm,population,minimum,measurement,2,field_experiment,juvenile,,,,01,Test_2003,01,01,,,2020,Part of Test Dataset 4,01,04,Eucalyptus dorrigoensis
+Test_2023_4,Eucalyptus leucoxylon subsp. pruinosa,085,fruit_dehiscence,dehiscent,,species,,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus leucoxylon subsp. pruinosa
+Test_2023_4,Eucalyptus muelleriana,086,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus muelleriana
+Test_2023_4,Eucalyptus nandewarica,087,fruit_length,3,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus nandewarica
+Test_2023_4,Eucalyptus oblonga,088,fruit_length,8,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus oblonga
+Test_2023_4,Eucalyptus olida,089,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus olida
+Test_2023_4,Eucalyptus pulverulenta,090,fruit_width,6,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus pulverulenta
+Test_2023_4,Eucalyptus pulverulenta,091,leaf_stomatal_conductance,0.3,mol{H2O}/m2/s,species,raw,measurement,5,field_experiment,seedling,,,01,,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus pulverulenta
+Test_2023_4,Eucalyptus pulverulenta,091,leaf_stomatal_conductance,0.6,mol{H2O}/m2/s,species,raw,measurement,5,field_experiment,seedling,,,02,,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus pulverulenta
+Test_2023_4,Eucalyptus pulverulenta,091,leaf_stomatal_conductance,0.7,mol{H2O}/m2/s,species,raw,measurement,5,field_experiment,seedling,,,03,,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus pulverulenta
+Test_2023_4,Eucalyptus pulverulenta,091,leaf_stomatal_conductance,0.88,mol{H2O}/m2/s,species,raw,measurement,5,field_experiment,seedling,,,04,,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus pulverulenta
+Test_2023_4,Eucalyptus recurva,092,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,Test_2000,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus recurva
+Test_2023_4,Eucalyptus rossii,093,fruit_width,6,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus rossii
+Test_2023_4,Eucalyptus scias,094,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Eucalyptus scias
+Test_2023_4,Eucalyptus viminalis,095,fruit_width,4,mm,species,,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus viminalis
+Test_2023_4,Eucalyptus yangoura,096,fruit_width,6,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus yangoura
+Test_2023_4,Eucalyptus youmanii,097,fruit_length,12,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus youmanii
+Test_2023_4,Eucalyptus youmanii,098,fruit_width,9,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Eucalyptus youmanii
+Test_2023_4,Euphorbia inappendiculata var. queenslandica,099,fruit_length,1.5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Euphorbia inappendiculata var. queenslandica
+Test_2023_4,Exocarpos homalocladus,100,fruit_width,8,mm,population,maximum,,2,field_experiment,juvenile,,,,01,Test_2000,01,02,,,2020,Part of Test Dataset 4,01,04,Exocarpos homalocladus
+Test_2023_4,Exocarpos sparteus,101,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Exocarpos sparteus
+Test_2023_4,Ficus henneana,102,fruit_length,15,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Ficus henneana
+Test_2023_4,Freesia hybrid,103,fruit_colour,green,,metapopulation,mode,,1,,seedling,03,,,01,,02,02,,,2021,From `australia_2` site,01,04,Freesia hybrid
+Test_2023_4,Freesia laxa,104,fruit_length,12,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Freesia laxa
+Test_2023_4,Geijera salicifolia,105,fruit_width,6,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Geijera salicifolia
+Test_2023_4,Gentiana wingecarribiensis,106,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Gentiana wingecarribiensis
+Test_2023_4,Gentianella barringtonensis,107,fruit_colour,brown,,population,minimum,,2,literature,juvenile,,,,01,,01,02,,,2020,Part of Test Dataset 4,01,02,Gentianella barringtonensis
+Test_2023_4,Geranium obtusisepalum,108,fruit_length,17,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Geranium obtusisepalum
+Test_2023_4,Geranium purpureum subsp. purpureum,109,fruit_length,12,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Geranium purpureum subsp. purpureum
+Test_2023_4,Gompholobium grandiflorum,110,fruit_length,15,mm,species,maximum,,1,,seedling,,,,01,Test_2003,,02,,,,Part of Test Dataset 4,01,04,Gompholobium grandiflorum
+Test_2023_4,Goodenia varia,111,fruit_length,10,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Goodenia varia
+Test_2023_4,Gossia bidwillii,112,fruit_colour,black,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Gossia bidwillii
+Test_2023_4,Grevillea scortechinii,113,fruit_colour,brown red,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Grevillea scortechinii
+Test_2023_4,Hakea macraeana,114,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Hakea macraeana
+Test_2023_4,Hemisteptia lyrata,115,fruit_length,2,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Hemisteptia lyrata
+Test_2023_4,Hemisteptia lyrata,116,fruit_width,1--3,mm,species,bin,,1,field_experiment,seedling,,,,01,,,02,,,,Part of Test Dataset 4,01,04,Hemisteptia lyrata
+Test_2023_4,Hibbertia crinita,117,fruit_dehiscence,dehiscent,,species,,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Hibbertia crinita
+Test_2023_4,Hibiscus brachysiphonius,118,fruit_length,15,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Hibiscus brachysiphonius
+Test_2023_4,Hibiscus sturtii,119,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Hibiscus sturtii
+Test_2023_4,Hypericum elodes,120,fruit_length,4,mm,species,mean,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Hypericum elodes
+Test_2023_4,Hypoxis glabella var. glabella,121,fruit_dehiscence,dehiscent,,population,mode,,1,literature,adult,03,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,02,Hypoxis glabella var. glabella
+Test_2023_4,Imperata cylindrica,122,fruit_length,1,mm,population,minimum,measurement,2,literature,juvenile,,,,01,Test_2000,01,02,,,2020,Part of Test Dataset 4,01,04,Imperata cylindrica
+Test_2023_4,Indigofera triflora,123,fruit_length,30,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Indigofera triflora
+Test_2023_4,Ipomoea cairica,124,fruit_length,11,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Ipomoea cairica
+Test_2023_4,Ipomoea cairica,125,leaf_stomatal_conductance,0.6,mol{H2O}/m2/s,population,raw,measurement,2,field_experiment,juvenile,,,,,,01,02,,,2020,Part of Test Dataset 4,02,04,Ipomoea cairica
+Test_2023_4,Ipomoea cairica,125,leaf_stomatal_conductance,0.5,mol{H2O}/m2/s,population,raw,measurement,2,field_experiment,juvenile,,,,,,01,02,,,2020,Part of Test Dataset 4,02,04,Ipomoea cairica
+Test_2023_4,Ipomoea cairica,125,leaf_stomatal_conductance,0.42,mol{H2O}/m2/s,species,raw,measurement,5,field_experiment,seedling,,,,,,02,02,,,2021,From `australia_2` site,02,04,Ipomoea cairica
+Test_2023_4,Isolepis montivaga,126,fruit_length,0.9,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Isolepis montivaga
+Test_2023_4,Isotoma axillaris,127,fruit_length,7,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Isotoma axillaris
+Test_2023_4,Isotoma fluviatilis subsp. fluviatilis,128,fruit_width,3,mm,,mode,,1,field_experiment,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Isotoma fluviatilis subsp. fluviatilis
+Test_2023_4,Juncus acutus subsp. acutus,129,fruit_dehiscence,dehiscent,,species,,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,01,Juncus acutus subsp. acutus
+Test_2023_4,Juncus kraussii,130,fruit_colour,black brown red yellow,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Juncus kraussii
+Test_2023_4,Lantana montevidensis,131,fruit_colour,black purple,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Lantana montevidensis
+Test_2023_4,Lepidium africanum,132,fruit_width,2,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Lepidium africanum
+Test_2023_4,Lepidium foliosum,133,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Lepidium foliosum
+Test_2023_4,Lepidium oxytrichum,134,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Lepidium oxytrichum
+Test_2023_4,Lepidosperma gladiatum,135,fruit_length,3,mm,population,maximum,measurement,2,literature,juvenile,,,,01,Test_2000,01,01,,,2020,Part of Test Dataset 4,01,04,Lepidosperma gladiatum
+Test_2023_4,Leptomeria drupacea,136,fruit_length,6,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Leptomeria drupacea
+Test_2023_4,Leptospermum continentale,137,fruit_length,6,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Leptospermum continentale
+Test_2023_4,Leptospermum obovatum,138,fruit_width,8,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Leptospermum obovatum
+Test_2023_4,Leucopogon amplexicaulis,139,fruit_length,3.5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Leucopogon amplexicaulis
+Test_2023_4,Lobelia pedunculata,140,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Lobelia pedunculata
+Test_2023_4,Lobelia trigonocaulis,141,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Lobelia trigonocaulis
+Test_2023_4,Lotononis bainesii,142,fruit_length,8,mm,species,mode,,1,,seedling,,,,01,Test_2000,02,02,,,2021,From `australia_2` site,01,04,Lotononis bainesii
+Test_2023_4,Lotus corniculatus,143,leaf_stomatal_conductance,0.3,mol{H2O}/m2/s,population,raw,measurement,2,field_experiment,juvenile,01,,01,,,01,02,,,2020,Part of Test Dataset 4,01,04,Lotus corniculatus
+Test_2023_4,Lotus corniculatus,143,leaf_stomatal_conductance,0.2,mol{H2O}/m2/s,population,raw,measurement,2,field_experiment,juvenile,01,,02,,,01,02,,,2020,Part of Test Dataset 4,01,04,Lotus corniculatus
+Test_2023_4,Lotus corniculatus,144,leaf_photosynthesis,5,umol/m2/s,individual,raw,measurement,5,field_experiment,seedling,03,01,01,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
+Test_2023_4,Lotus corniculatus,144,leaf_photosynthesis,4.4,umol/m2/s,individual,raw,measurement,5,field_experiment,seedling,03,01,02,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
+Test_2023_4,Lotus corniculatus,144,leaf_photosynthesis,2,umol/m2/s,individual,raw,measurement,5,field_experiment,seedling,03,01,03,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
+Test_2023_4,Lotus corniculatus,145,leaf_photosynthesis,0.9,umol/m2/s,individual,raw,measurement,5,field_experiment,seedling,03,02,01,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
+Test_2023_4,Lotus corniculatus,146,leaf_stomatal_conductance,0.5,mol{H2O}/m2/s,population,raw,measurement,5,field_experiment,seedling,03,,01,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
+Test_2023_4,Lotus corniculatus,146,leaf_stomatal_conductance,0.44,mol{H2O}/m2/s,population,raw,measurement,5,field_experiment,seedling,03,,02,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
+Test_2023_4,Lotus corniculatus,146,leaf_stomatal_conductance,0.3,mol{H2O}/m2/s,population,raw,measurement,5,field_experiment,seedling,03,,03,,,02,02,,,2021,From `australia_2` site,01,04,Lotus corniculatus
+Test_2023_4,Lotus corniculatus,147,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Lotus corniculatus
+Test_2023_4,Lupinus polyphyllus,148,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Lupinus polyphyllus
+Test_2023_4,Medicago orbicularis,149,fruit_length,7,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Medicago orbicularis
+Test_2023_4,Melichrus procumbens,150,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Melichrus procumbens
+Test_2023_4,Mischocarpus australis,151,fruit_width,8,mm,,mode,,1,field_experiment,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Mischocarpus australis
+Test_2023_4,Muehlenbeckia adpressa,152,fruit_colour,black brown,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Muehlenbeckia adpressa
+Test_2023_4,Myoporum boninense subsp. australe,153,fruit_length,10,mm,species,mode,measurement,1,literature,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Myoporum boninense subsp. australe
+Test_2023_4,Nicotiana glauca,154,leaf_photosynthesis,6,umol/m2/s,individual,raw,measurement,5,field_experiment,seedling,03,,01,,,02,02,,,2021,From `australia_2` site,01,04,Nicotiana glauca
+Test_2023_4,Nicotiana glauca,154,leaf_photosynthesis,4,umol/m2/s,individual,raw,measurement,5,field_experiment,seedling,03,,02,,,02,02,,,2021,From `australia_2` site,01,04,Nicotiana glauca
+Test_2023_4,Nicotiana glauca,154,leaf_photosynthesis,3.7,umol/m2/s,individual,raw,measurement,5,field_experiment,seedling,03,,03,,,02,02,,,2021,From `australia_2` site,01,04,Nicotiana glauca
+Test_2023_4,Nicotiana glauca,155,fruit_length,13,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Nicotiana glauca
+Test_2023_4,Nicotiana goodspeedii,156,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Nicotiana goodspeedii
+Test_2023_4,Oxalis corniculata,157,fruit_width,1.5,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Oxalis corniculata
+Test_2023_4,Pandorea pandorana subsp. austrocaledonica,158,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Pandorea pandorana subsp. austrocaledonica
+Test_2023_4,Paraserianthes lophantha,159,fruit_width,25,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Paraserianthes lophantha
+Test_2023_4,Parentucellia latifolia,160,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Parentucellia latifolia
+Test_2023_4,Phlegmatospermum cochlearinum,161,fruit_length,10,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Phlegmatospermum cochlearinum
+Test_2023_4,Phyla nodiflora,162,fruit_width,2,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Phyla nodiflora
+Test_2023_4,Phyla nodiflora,163,leaf_stomatal_conductance,0.2,mol{H2O}/m2/s,population,raw,measurement,2,field_experiment,juvenile,,,01,,,01,02,,,2020,Part of Test Dataset 4,01,04,Phyla nodiflora
+Test_2023_4,Phyla nodiflora,163,leaf_stomatal_conductance,0.1,mol{H2O}/m2/s,species,raw,measurement,5,field_experiment,seedling,,,02,,,02,02,,,2021,From `australia_2` site,01,04,Phyla nodiflora
+Test_2023_4,Phyla nodiflora,163,leaf_stomatal_conductance,0.37,mol{H2O}/m2/s,species,raw,measurement,5,field_experiment,seedling,,,,,,02,02,,,2021,From `australia_2` site,02,04,Phyla nodiflora
+Test_2023_4,Phyla nodiflora,163,leaf_stomatal_conductance,0.6,mol{H2O}/m2/s,species,raw,measurement,5,field_experiment,seedling,,,,,,02,02,,,2021,From `australia_2` site,02,04,Phyla nodiflora
+Test_2023_4,Picris barbarorum,164,fruit_length,7.5,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Picris barbarorum
+Test_2023_4,Pimelea ligustrina subsp. ligustrina,165,fruit_colour,green,,metapopulation,mode,,1,literature,seedling,03,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,03,Pimelea ligustrina subsp. ligustrina
+Test_2023_4,Pinus pinea,166,fruit_colour,brown,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Pinus pinea
+Test_2023_4,Pisum sativum var. arvense,167,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Pisum sativum var. arvense
+Test_2023_4,Pittosporum erioloma,168,fruit_dehiscence,dehiscent,,,mode,,1,literature,adult,,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,04,Pittosporum erioloma
+Test_2023_4,Plantago turrifera,169,fruit_length,3,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Plantago turrifera
+Test_2023_4,Polycarpon tetraphyllum,170,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Polycarpon tetraphyllum
+Test_2023_4,Potamogeton australiensis,171,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Potamogeton australiensis
+Test_2023_4,Psoralea pinnata,172,fruit_width,2.5,mm,population,minimum,,2,field_experiment,juvenile,01,,,01,Test_2003,01,01,,,2020,Part of Test Dataset 4,01,04,Psoralea pinnata
+Test_2023_4,Pultenaea ferruginea,173,fruit_length,6,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Pultenaea ferruginea
+Test_2023_4,Rhodamnia argentea,174,fruit_length,6,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Rhodamnia argentea
+Test_2023_4,Rhodamnia argentea,175,fruit_colour,black,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Rhodamnia argentea
+Test_2023_4,Rorippa gigantea,176,fruit_length,15,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Rorippa gigantea
+Test_2023_4,Rubus parvifolius,177,fruit_colour,red,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Rubus parvifolius
+Test_2023_4,Salix alba,178,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Salix alba
+Test_2023_4,Schenkia australis,179,fruit_length,10,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Schenkia australis
+Test_2023_4,Schoenus apogon,180,fruit_colour,white,,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Schoenus apogon
+Test_2023_4,Schoenus brevifolius,181,fruit_width,0.7,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Schoenus brevifolius
+Test_2023_4,Schoenus lepidosperma,182,fruit_width,2.5,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Schoenus lepidosperma
+Test_2023_4,Schoenus vaginatus,183,fruit_colour,brown red yellow,,metapopulation,mode,,1,,seedling,03,,,01,,02,02,,,2021,From `australia_2` site,01,04,Schoenus vaginatus
+Test_2023_4,Scleria rugosa,184,fruit_length,3,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Scleria rugosa
+Test_2023_4,Senecio longipilus,185,fruit_length,2.5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Senecio longipilus
+Test_2023_4,Sida goniocarpa,186,fruit_width,7,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Sida goniocarpa
+Test_2023_4,Sigesbeckia orientalis,187,fruit_length,3,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Sigesbeckia orientalis
+Test_2023_4,Sisymbrium irio,188,fruit_length,25,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Sisymbrium irio
+Test_2023_4,Sparaxis bulbifera,189,fruit_colour,green,,population,minimum,,2,field,juvenile,01,,,01,,01,02,,,2020,Part of Test Dataset 4,01,04,Sparaxis bulbifera
+Test_2023_4,Spergularia diandra,190,fruit_dehiscence,dehiscent,,species,mean,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Spergularia diandra
+Test_2023_4,Sphaeromorphaea littoralis,191,fruit_length,1.3,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Sphaeromorphaea littoralis
+Test_2023_4,Stellaria angustifolia subsp. angustifolia,192,fruit_length,8.5,mm,species,mode,measurement,1,literature,seedling,,,,01,Test_2003,02,01,,,2021,From `australia_2` site,01,04,Stellaria angustifolia subsp. angustifolia
+Test_2023_4,Styphelia viridis,193,fruit_length,10,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Styphelia viridis
+Test_2023_4,Swainsona cadellii,194,fruit_length,25,mm,species,mode,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Swainsona cadellii
+Test_2023_4,Teucrium puberulum,195,fruit_width,4,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Teucrium puberulum
+Test_2023_4,Thelymitra kangaloonica,196,fruit_length,12,mm,species,,,1,,seedling,,,,01,,02,02,,,2021,From `australia_2` site,01,04,Thelymitra kangaloonica
+Test_2023_4,Thesium australe,197,fruit_width,2.5,mm,species,mode,,1,field_experiment,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Thesium australe
+Test_2023_4,Trifolium dubium,198,fruit_length,2,mm,species,mode,measurement,1,literature,seedling,,,,01,Test_2003,02,02,,,2021,From `australia_2` site,01,04,Trifolium dubium
+Test_2023_4,Veronica catenata,199,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,02,02,,,2021,From `australia_2` site,01,02,Veronica catenata
+Test_2023_4,Veronica derwentiana,200,fruit_length,2.8,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Veronica derwentiana
+Test_2023_4,Wahlenbergia luteola,201,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,02,01,,,2021,From `australia_2` site,01,04,Wahlenbergia luteola
