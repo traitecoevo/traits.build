@@ -99,6 +99,7 @@ dataset:
   taxon_name: taxon_name
   trait_name: trait_name
   value: trait_value
+  location_name: test_location
   entity_type: species
   measurement_remarks: measurement_remarks
   description: Plant growth form data extracted from the NT Flora Online

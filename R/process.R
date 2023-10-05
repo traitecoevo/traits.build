@@ -383,9 +383,10 @@ process_create_observation_id <- function(data, metadata) {
          .data$entity_type %in% c("individual", "population", "metapopulation"),
          process_generate_id(.data$population_id, ""),
          NA),
-      pop_id_segment = ifelse(is.na(.data$pop_id_segment) &
-                              .data$entity_type %in% c("individual", "population", "metapopulation"),
-                              "pop_unk", .data$pop_id_segment),
+      pop_id_segment = ifelse(
+        is.na(.data$pop_id_segment) & .data$entity_type %in% c("individual", "population", "metapopulation"),
+        "pop_unk",
+        .data$pop_id_segment),
       population_id = .data$pop_id_segment
     )
 
@@ -409,7 +410,7 @@ process_create_observation_id <- function(data, metadata) {
   #    presented in the `data.csv` file as multiple columns and therefore
   #    row number correctly identifies an individual.
 
-  # For datasets where an individual_id is not assigned via metadata$dataset
+  # For datasets where an `individual_id` is not assigned via metadata$dataset
   if (all(is.na(data[["individual_id"]]))) {
 
     # Check which rows of data include individual-level measurements
