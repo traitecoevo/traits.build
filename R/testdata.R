@@ -600,12 +600,13 @@ dataset_test_worker <-
             # Look for context values in `find` column
             i <- v %in% contextsub[["find"]]
 
-            expect_true(all(i),
-                        info = paste0(
-                          f,
-                          " - context names from data file not present in metadata contexts: ",
-                          v[!i]
-                        )
+            expect_true(
+              all(i),
+              info = ifelse(
+                "hms" %in% class(v),
+                sprintf("%s - context names from data file not present in metadata contexts: %s\n\n'%s' has been detected as a time data type and reformatted\n\t-> Please make sure context metadata matches reformatting", f, v[!i], j),
+                sprintf("%s - context names from data file not present in metadata contexts: %s", f, v[!i])
+              )
             )
           }
         }
