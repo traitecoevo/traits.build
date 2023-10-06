@@ -1026,12 +1026,12 @@ process_flag_unsupported_values <- function(data, definitions) {
       ii <- data[["trait_name"]] == trait
 
       # Only Y,N
-      i <-  ii & is.na(data[["error"]]) & !grepl("^[YyNn]+$", data[["value"]])
+      i <- ii & is.na(data[["error"]]) & !grepl("^[YyNn]+$", data[["value"]])
       data <- data %>%
         dplyr::mutate(error = ifelse(i, "Time can only contain Y & Ns", .data$error))
 
       # Must be length 12
-      i <-  ii & is.na(data[["error"]]) & stringr::str_length(data[["value"]]) != 12
+      i <- ii & is.na(data[["error"]]) & stringr::str_length(data[["value"]]) != 12
       data <- data %>%
         dplyr::mutate(error = ifelse(i, "Times must be length 12", .data$error))
     }

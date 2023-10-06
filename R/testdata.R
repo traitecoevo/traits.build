@@ -663,9 +663,8 @@ dataset_test_worker <-
             if (!is.null(definitions$elements[[trait]]) &&
                 definitions$elements[[trait]]$type == "categorical") {
               to_check <- x[[trait]]$replace %>% unique()
-              allowable <-
-                c(definitions$elements[[trait]]$allowed_values_levels %>% names(),
-                  NA)
+              to_check <- to_check[!(grepl("^[YyNn]+$", to_check) & stringr::str_length(to_check) == 12)]
+              allowable <- c(definitions$elements[[trait]]$allowed_values_levels %>% names(), NA)
               failing <- to_check[!(
                 is.na(to_check) |
                   to_check %in% allowable |
