@@ -103,6 +103,7 @@ dataset_process <- function(filename_data_raw,
   # Context ids needed to continue processing
   context_ids <- traits$context_ids
 
+  # Extract location data from metadata
   locations <-
     metadata$locations %>%
     process_format_locations(dataset_id, schema)
@@ -113,6 +114,44 @@ dataset_process <- function(filename_data_raw,
       c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
         "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
     )
+  browser()
+  # Replace location_name with a location_id
+  if (nrow(locations) > 0) {
+    traits <-
+      traits %>%
+      dplyr::select(-dplyr::all_of(c("location_id"))) %>%
+      dplyr::left_join(
+        by = c("location_name"),
+        locations %>% dplyr::select(dplyr::all_of(c("location_name", "location_id"))) %>% dplyr::distinct()
+      )
+  }
+
+  # Where missing, fill variables in traits table with values from locations
+  # Currently overwriting dataset-level column metadata -- NEED FIX
+  if (nrow(locations) > 0) {
+    vars <- c("basis_of_record", "life_stage", "collection_date", "measurement_remarks", "unit_in", "entity_type",
+              "value_type", "basis_of_value", "replicates", "population_id", "individual_id")
+
+    for (v in vars) {
+      # Merge into traits from location level
+      if (v %in% unique(locations$location_property)) {
+        traits_tmp <- traits %>%
+          dplyr::left_join(
+            by = "location_id",
+            locations %>%
+              tidyr::pivot_wider(names_from = "location_property", values_from = "value") %>%
+              mutate(col_tmp = .data[[v]]) %>%
+              dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
+              stats::na.omit()
+          )
+      # Use location level value if present
+      traits[[v]] <- ifelse(!is.na(traits_tmp[["col_tmp"]]), traits_tmp[["col_tmp"]], traits[[v]])
+      }
+    }
+
+    # Remove any values included to map into traits table
+    locations <- locations %>% dplyr::filter(!(.data$location_property %in% vars))
+  }
 
   traits <- traits %>%
     mutate(unit = ifelse(!is.na(.data$unit_in), .data$unit_in, .data$unit)) %>%
@@ -133,47 +172,6 @@ dataset_process <- function(filename_data_raw,
     dplyr::arrange(.data$observation_id, .data$trait_name, .data$value_type) %>%
     # Ensure everything converted to character type
     util_df_convert_character()
-
-  # Extract location data from metadata
-  locations <-
-    metadata$locations %>%
-    process_format_locations(dataset_id, schema)
-
-  # Replace location_name with a location_id
-  if (nrow(locations) > 0) {
-    traits <-
-      traits %>%
-      dplyr::select(-dplyr::all_of(c("location_id"))) %>%
-      dplyr::left_join(
-        by = c("location_name"),
-        locations %>% dplyr::select(dplyr::all_of(c("location_name", "location_id"))) %>% dplyr::distinct()
-      )
-  }
-
-  # Where missing, fill variables in traits table with values from locations
-  if (nrow(locations) > 0) {
-    vars <- c("basis_of_record", "life_stage", "collection_date", "measurement_remarks", "unit_in", "entity_type",
-              "value_type", "basis_of_value", "replicates", "population_id", "individual_id")
-
-    for (v in vars) {
-      # Merge into traits from location level
-      if (v %in% unique(locations$location_property)) {
-        traits_tmp <- traits %>%
-          dplyr::left_join(by = "location_id",
-                            locations %>%
-                            tidyr::pivot_wider(names_from = "location_property", values_from = "value") %>%
-                            mutate(col_tmp = .data[[v]]) %>%
-                            dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
-                            stats::na.omit()
-                          )
-      # Use location level value if present
-      traits[[v]] <- ifelse(!is.na(traits_tmp[["col_tmp"]]), traits_tmp[["col_tmp"]], traits[[v]])
-      }
-    }
-
-    # Remove any values included to map into traits table
-    locations <- locations %>% dplyr::filter(!(.data$location_property %in% vars))
-  }
 
   # Record contributors
   contributors <-
@@ -197,7 +195,6 @@ dataset_process <- function(filename_data_raw,
     ) %>%
     dplyr::distinct() %>%
     dplyr::arrange(.data$cleaned_name)
-
 
   ## A temporary dataframe created to generate and bind method_id,
   ## for instances where the same trait is measured twice using different methods
