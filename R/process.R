@@ -114,7 +114,7 @@ dataset_process <- function(filename_data_raw,
       c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
         "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
     )
-  browser()
+
   # Replace location_name with a location_id
   if (nrow(locations) > 0) {
     traits <-
