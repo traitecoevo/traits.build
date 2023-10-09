@@ -581,6 +581,8 @@ testthat::test_that("`metadata_find_taxonomic_change` is working", {
 test_that("`build_setup_pipeline` is working", {
 
   unlink("remake.yml")
+  unlink("build.R")
+  unlink("R/custom_R_code.R")
   unlink("config/taxon_list.csv")
   unlink(".git", recursive = TRUE)
   expect_false(file.exists("remake.yml"))
@@ -589,12 +591,17 @@ test_that("`build_setup_pipeline` is working", {
 
   expect_no_error(zip::unzip("config/testgit.zip"))
   expect_no_error(sha <- git2r::sha(git2r::last_commit()))
-  # Expect error if path name is wrong
+  # Expect error if path or method is wrong
   expect_error(build_setup_pipeline(path = "Datas"))
-  expect_silent(build_setup_pipeline())
-  expect_true(file.exists("remake.yml"))
-  expect_silent(yaml::read_yaml("remake.yml"))
+  expect_error(build_setup_pipeline(method = "grrrr"))
+
+  # Base workflow
+  expect_silent(suppressMessages(build_setup_pipeline(method = "base")))
+  expect_true(file.exists("build.R"))
   expect_true(file.exists("config/taxon_list.csv"))
+  expect_true(file.exists("R/custom_R_code.R"))
+
+  ## Check details on taxon list
   expect_silent(taxa1 <- read_csv_char("config/taxon_list.csv"))
 
   vars <-
@@ -612,6 +619,38 @@ test_that("`build_setup_pipeline` is working", {
   expect_length(taxa2, 15)
   expect_true(nrow(taxa2) == 7)
 
+  ## Now try building in a controlled env, using base method
+  base_tmp_env <- new.env()
+  expect_silent(suppressMessages(source("build.R", local = base_tmp_env)))
+
+  targets <- c(
+    "austraits", "austraits_raw", "definitions", "git_SHA", "resource_metadata", "schema", "taxon_list",
+    "Test_2022", "Test_2022_config", "Test_2022_raw", "unit_conversions", "version_number"
+  )
+  expect_equal(sort(names(base_tmp_env)), sort(targets))
+
+  # `furrr` workflow
+  furrr_tmp_env <- new.env()
+  expect_silent(suppressMessages(build_setup_pipeline(method = "furrr")))
+
+  expect_true(file.exists("build.R"))
+  expect_true(file.exists("config/taxon_list.csv"))
+  expect_true(file.exists("R/custom_R_code.R"))
+
+  expect_silent(suppressMessages(source("build.R", local = furrr_tmp_env)))
+
+  targets <- c(
+    "austraits", "austraits_raw", "dataset_ids", "f", "definitions", "git_SHA", "resource_metadata",
+    "schema", "sources", "taxon_list", "unit_conversions", "version_number"
+  )
+  expect_equal(sort(names(furrr_tmp_env)), sort(targets))
+
+  # Remake workflow
+  expect_silent(suppressMessages(build_setup_pipeline(method = "remake")))
+  expect_true(file.exists("remake.yml"))
+  expect_silent(yaml::read_yaml("remake.yml"))
+  expect_true(file.exists("config/taxon_list.csv"))
+
   unlink(".remake", recursive = TRUE)
   expect_silent(suppressMessages(austraits_raw <- remake::make("austraits_raw")))
   expect_silent(suppressMessages(austraits <- remake::make("austraits")))
@@ -628,6 +667,12 @@ test_that("`build_setup_pipeline` is working", {
   expect_length(austraits_raw$taxa, 14)
   expect_length(austraits$taxa, 14)
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
+
+  # Compare products from three methods, except `build_info`
+  v <- setdiff(names(austraits), "build_info")
+  expect_equal(base_tmp_env$austraits[v], austraits[v])
+  expect_equal(furrr_tmp_env$austraits[v], austraits[v])
+
 })
 
 

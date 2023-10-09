@@ -165,14 +165,14 @@ dataset_test_worker <-
           expect(
             identical(as.vector(all(!check)), TRUE),
             sprintf(
-              "%s -- disallowed characters in data detected: %s\n\tPlease replace using `custom_R_code`",
+              "%s - disallowed characters in data detected: %s\n\tPlease replace using `custom_R_code`",
               info, txt
             )
           )
         } else {
           expect(
             identical(as.vector(all(!check)), TRUE),
-            sprintf("%s -- disallowed characters detected: %s", info, txt)
+            sprintf("%s - disallowed characters detected: %s", info, txt)
           )
         }
 
@@ -202,6 +202,10 @@ dataset_test_worker <-
       # Allow some utf8 characters, those with accents over letters for foreign names
       # List of codes is here: http://www.utf8-chartable.de/
       # Note c3 is needed because this is prefix for allowed UTF8 chars
+      # Warning: Portable packages must use only ASCII characters in their R code
+      # Sophie - could replace these with unicode like Lizzy did before?
+      exceptions <- c("ÁÅÀÂÄÆÃĀâíåæäãàáíÇčóöøéèłńl°êÜüùúû±µµ“”‘’-–—≈˜×")
+
       is_allowed <- i %in% charToRaw(exceptions)
       !(is_ascii | is_allowed)
 
@@ -288,6 +292,25 @@ dataset_test_worker <-
       expect_contains(names(data), expected_names, info = info)
     }
 
+    test_build_dataset <- function(
+      path_metadata, path_data, info, definitions, unit_conversions, schema, resource_metadata, taxon_list) {
+
+      # Test it builds with no errors
+      expect_no_error({
+        build_config <- dataset_configure(path_metadata, definitions)
+      }, info = paste(info, "config"))
+
+      expect_no_error({
+        build_dataset_raw <- dataset_process(path_data, build_config, schema, resource_metadata, unit_conversions)
+      }, info = paste(info, "dataset_process"))
+
+      expect_no_error({
+        build_dataset <- build_update_taxonomy(build_dataset_raw, taxon_list)
+      }, info = paste(info, "update taxonomy"))
+
+      build_dataset
+    }
+
     # Now run tests for each dataset
 
     for (dataset_id in test_dataset_ids) {
@@ -306,7 +329,7 @@ dataset_test_worker <-
 
         # Check for other files
         vals <- c("data.csv", "metadata.yml", "raw")
-        expect_isin(dir(s), vals, info = paste(f, " disallowed files"))
+        expect_isin(dir(s), vals, info = paste(f, " - disallowed files"))
 
 
         # `data.csv`
@@ -342,7 +365,7 @@ dataset_test_worker <-
         txt <- metadata[["dataset"]][["custom_R_code"]]
         #expect_false(grepl("#", txt), label=paste0(files[3], "-custom_R_code cannot contain comments, except on last line"))
         expect_no_error(process_custom_code(txt)(data),
-                        label = paste0(files[3], "-custom_R_code"))
+                        label = paste0(files[3], " - custom_R_code"))
 
         # Apply custom manipulations
         data <- process_custom_code(txt)(data)
@@ -409,8 +432,8 @@ dataset_test_worker <-
         }
 
         # Dataset curators
-        expect_true(!is.null(metadata[["contributors"]][["austraits_curators"]]))
-        expect_type(metadata[["contributors"]][["austraits_curators"]], "character")
+        expect_true(!is.null(metadata[["contributors"]][["dataset_curators"]]))
+        expect_type(metadata[["contributors"]][["dataset_curators"]], "character")
 
         # Assistants
         if (!is.null(metadata[["contributors"]][["assistants"]][1]))
@@ -420,7 +443,7 @@ dataset_test_worker <-
 
         test_list_named_allowed(metadata[["dataset"]],
                                 schema$metadata$elements$dataset$values %>% names(),
-                                info = paste0(f, "-dataset"))
+                                info = paste0(f, " - dataset"))
 
         expect_type(metadata[["dataset"]][["data_is_long_format"]], "logical")
         expect_type(metadata[["dataset"]], "list")
@@ -447,13 +470,13 @@ dataset_test_worker <-
             expect_contains(
               names(metadata[["locations"]][[v]]),
               c("latitude (deg)", "longitude (deg)"),
-              info = paste0(f, " - site: ", v)
+              info = paste0(f, " - locations: ", v)
             )
           }
         }
 
         # Contexts
-        filename_data <- paste0("data/", dataset_id, "/data.csv")
+        filename_data <- paste0(path_data, "/", dataset_id, "/data.csv")
 
         traits <-
           # Read all columns as character type to prevent time data types from being reformatted
@@ -471,7 +494,7 @@ dataset_test_worker <-
           test_dataframe_names_contain(
             contexts,
             c("context_property", "category", "var_in"),
-            info = paste0(f, "-contexts")
+            info = paste0(f, " - contexts")
           )
 
           for (i in seq_along(metadata$contexts)) {
@@ -536,10 +559,10 @@ dataset_test_worker <-
         # Traits
         expect_list_elements_contains_names(metadata[["traits"]],
                                             schema$metadata$elements$traits$elements[1:3] %>% names(),
-                                            info = paste0(f, "-traits"))
+                                            info = paste0(f, " - traits"))
         expect_list_elements_allowed_names(metadata[["traits"]],
                                            c(schema$metadata$elements$traits$elements %>% names(), unique(contexts$var_in)),
-                                           info = paste0(f, "-traits"))
+                                           info = paste0(f, " - traits"))
         expect_silent(
           traits <- traits.build::util_list_to_df2(metadata[["traits"]])
         )
@@ -547,7 +570,7 @@ dataset_test_worker <-
 
         expect_isin(traits$trait_name,
                     definitions$elements %>% names(),
-                    info = paste0(f, "-traits"))
+                    info = paste0(f, " - traits"))
 
         # Now that traits loaded, check details of context match
         if (nrow(contexts > 0)) {
@@ -580,7 +603,7 @@ dataset_test_worker <-
             expect_true(all(i),
                         info = paste0(
                           f,
-                          "- context names from data file not present in metadata contexts: ",
+                          " - context names from data file not present in metadata contexts: ",
                           v[!i]
                         )
             )
@@ -601,7 +624,7 @@ dataset_test_worker <-
           expect_isin(
             value_type_fixed,
             schema$value_type$values %>% names,
-            info = paste0(f, "-value types")
+            info = paste0(f, " - value types")
           )
 
           if (length(value_type_cols) > 0) {
@@ -609,7 +632,7 @@ dataset_test_worker <-
               expect_isin(
                 data[[v]] %>% unique(),
                 schema$value_type$values %>% names,
-                info = paste(f, v, "- value types columns")
+                info = paste(f, v, " - value types columns")
               )
           }
         }
@@ -625,11 +648,11 @@ dataset_test_worker <-
             sapply(metadata[["substitutions"]], "[[", "trait_name")
           expect_isin(unique(trait_names),
                       definitions$elements %>% names(),
-                      info = paste0(f, "-substitutions-trait_name"))
+                      info = paste0(f, " - substitutions - trait_name"))
           expect_isin(
             unique(trait_names),
             unique(traits$trait_name),
-            info = paste0(f, "-substitutions-trait_name")
+            info = paste0(f, " - substitutions - trait_name")
           )
 
           # Check for allowable values of categorical variables
@@ -709,13 +732,13 @@ dataset_test_worker <-
             (data[[metadata[["dataset"]][["location_name"]]]] %>% unique %>% na.omit)
           i <- v %in% names(metadata$locations)
           expect_true(all(i),
-                      info = paste0(f,  "- site names from data file not present in metadata: ", v[!i]))
+                      info = paste0(f,  " - site names from data file not present in metadata: ", v[!i]))
 
           i <- names(metadata$locations) %in% v
           expect_true(all(i),
                       info = paste0(
                         f,
-                        "- site names from metadata not present in data file: ",
+                        " - site names from metadata not present in data file: ",
                         names(metadata$locations)[!i]
                       ))
         }
@@ -728,15 +751,15 @@ dataset_test_worker <-
           get_schema("config/traits.yml", "traits"),
           get_unit_conversions("config/unit_conversions.csv"),
           get_schema(),
-          get_schema("config/metadata.yml",  "metadata"),
+          get_schema("config/metadata.yml", "metadata"),
           read_csv_char("config/taxon_list.csv")
         ), info = sprintf(" - cannot build %s", dataset_id))
-        
+
         # Check that special characters do not make it into the data
         expect_no_error(
           parsed_data <- data %>%
             process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
-            process_parse_data(dataset_id, metadata, contexts),
+            process_parse_data(dataset_id, metadata, contexts, schema),
           info = "`process_parse_data`")
 
         expect_allowed_text(
@@ -744,21 +767,21 @@ dataset_test_worker <-
           info = sprintf("%s", files[1])
         )
 
-        expect_equal(
+        testthat::expect_equal(
           dataset$traits %>%
           select(
             dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "source_id", "taxon_name",
             "entity_type", "life_stage", "basis_of_record", "value_type", "population_id", "individual_id",
-            "temporal_id", "method_id", "method_context_id", "entity_context_id", "original_name"))
+            "temporal_context_id", "method_id", "method_context_id", "entity_context_id", "original_name"))
           ) %>%
-          pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
-          pivot_longer(cols = 16:ncol(.)) %>%
-          rename(all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
+          tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
+          tidyr::pivot_longer(cols = 16:ncol(.)) %>%
+          dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
           select(
-            all_of(c("dataset_id", "taxon_name", "trait_name", "number_of_duplicates", "observation_id",
+            dplyr::all_of(c("dataset_id", "taxon_name", "trait_name", "number_of_duplicates", "observation_id",
             "entity_type", "value_type", "population_id")), everything()
           ) %>%
-          filter(number_of_duplicates > 1) %>%
+          filter(.data$number_of_duplicates > 1) %>%
           nrow(),
           0, # Expect nrow() = 0
           info = sprintf("Duplicate rows in %s detected; `traits` table cannot pivot wider", dataset_id)

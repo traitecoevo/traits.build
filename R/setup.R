@@ -55,7 +55,7 @@ metadata_create_template <- function(dataset_id,
   out$contributors <- out$contributors$elements
   out$contributors$data_collectors <- list(out$contributors$data_collectors$elements[collectors])
   out$contributors$data_collectors[[1]][] <- "unknown"
-  out$contributors[c("assistants", "austraits_curators")] <- "unknown"
+  out$contributors[c("assistants", "dataset_curators")] <- "unknown"
 
   out$dataset <-
     out$dataset$values[c("data_is_long_format", "custom_R_code", "collection_date", "taxon_name", "location_name",
@@ -373,9 +373,9 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
       `description` = NA_character_,
       )
   }
-  
+
   metadata$locations <- location_data %>%
-    dplyr::select(-dplyr::any_of("location_name")) %>%  
+    dplyr::select(-dplyr::any_of("location_name")) %>%
     split(location_data[[location_name]]) %>%
     lapply(as.list)
 
@@ -389,11 +389,11 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
       blue(dataset_id %>% metadata_path_dataset_id())
     )
   )
-  
+
   if (nrow(location_data) != length(unique(location_data[[location_name]]))) {
   message(
     sprintf(
-      red("WARNING: The number of unique location names (%s), is less than the number rows of location data to add (%s). ") %+% 
+      red("WARNING: The number of unique location names (%s), is less than the number rows of location data to add (%s). ") %+%
         red("Manual editing is REQUIRED in %s to ensure each location has a single value for each location property."),
       blue(length(unique(location_data[[location_name]]))),
       blue(nrow(location_data)),
@@ -921,7 +921,7 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
         already_exist <- c(already_exist, taxonomic_updates[i,]$find)
       } else {
         # Otherwise, bind to end of existing taxonomic updates
-        existing_updates <- existing_updates %>% bind_rows(taxonomic_updates[i,])
+        existing_updates <- existing_updates %>% dplyr::bind_rows(taxonomic_updates[i,])
       }
     }
 
@@ -1129,15 +1129,23 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' `build_setup_pipeline` rewrites the `remake.yml` file to include new
 #' studies.
 #'
-#' @param template Template used to build
-#' @param path Path to folder with data
 #' @param dataset_ids `dataset_id`'s to include; by default includes all
+#' @param method Approach to use in build
+#' @param template Template used to build
 #'
 #' @return Updated `remake.yml` file
 #' @export
-build_setup_pipeline <- function(template = readLines(system.file("support", "remake.yml.whisker", package = "traits.build")),
-                                 path = "data",
-                                 dataset_ids = dir(path)) {
+build_setup_pipeline <- function(dataset_ids = dir("data"),
+                                 method = "base",
+                                 template = select_pipeline_template(method),
+                                 workers = 1
+                                 ) {
+
+  if (!method %in% c("base", "remake", "furrr")) {
+    stop(sprintf("Invalid method selected in `build_setup_pipeline`: %s", method))
+  }
+
+  path <- "data"
 
   if (!file.exists(path)) {
     stop("cannot find data directory: ", path)
@@ -1152,13 +1160,45 @@ build_setup_pipeline <- function(template = readLines(system.file("support", "re
 
   dataset_ids <- dataset_ids[has_both_files]
 
+  message(green(sprintf("Setting up build pipeline for %s studies, using `%s` method", length(dataset_ids), method)))
+
   vals <- list(
     dataset_ids = whisker::iteratelist(dataset_ids, value = "dataset_id"),
-    path = path
+    dataset_ids_vector =
+      sprintf("c(%s)", sprintf("'%s'", dataset_ids) %>% paste(collapse = ", ")),
+    path = path,
+    workers = workers
     )
 
-  str <- whisker::whisker.render(template, vals)
-  writeLines(str, "remake.yml")
+  # Setup pipeline based on selected method for building
+  pipeline <- whisker::whisker.render(template, data = vals)
+
+  if (method == "base") {
+    writeLines(pipeline, "build.R")
+    message(green("\t-> build compilation using file `build.R`"))
+  }
+
+  if (method == "furrr") {
+    writeLines(pipeline, "build.R")
+    message(green("\t-> build compilation using file `build.R`"))
+
+    if (workers == 1) {
+      message(green("\nSpecify number of workers to use with the `workers` argument (default = 1)"))
+    }
+
+  }
+
+  if (method == "remake") {
+    writeLines(pipeline, "remake.yml")
+    message(green("\t-> build compilation using file `remake.yml`"))
+  }
+
+  # Check file R/custom_R_code.R exists
+  filename <- "R/custom_R_code.R"
+  if (!file.exists(filename)) {
+    dir.create("R", FALSE)
+    writeLines("\n# Put any functions you use in custom R code here\n\n", "R/custom_R_code.R")
+  }
 
   # Check taxon list exists
   filename <- "config/taxon_list.csv"
@@ -1184,6 +1224,19 @@ build_setup_pipeline <- function(template = readLines(system.file("support", "re
   }
 }
 
+
+select_pipeline_template <- function(method) {
+
+  file <-
+  switch(method,
+    base = "build_base.whisker",
+    remake = "build_remake.whisker",
+    furrr = "build_furrr.whisker",
+    default = "build_base.whisker"
+  )
+
+  readLines(system.file("support", file, package = "traits.build"))
+}
 
 #' Find list of unique datasets within compilation containing specified taxa
 #'
