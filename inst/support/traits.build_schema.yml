@@ -58,7 +58,7 @@ austraits:
       elements:
         dataset_id: &dataset_id Primary identifier for each study contributed to AusTraits; most often these are scientific papers, books, or online resources. By default this should be the name of the first author and year of publication, e.g. `Falster_2005`.
         taxon_name: &taxon_name Scientific name of the taxon on which traits were sampled, without authorship. When possible, this is the currently accepted (botanical) or valid (zoological) scientific name, but might also be a higher taxonomic level.
-        observation_id: &observation_id A unique integral identifier for the observation, where an observation is all measurements made on an individual at a single point in time. It is important for joining traits coming from the same `observation_id`. Within each dataset, observation_id's are unique combinations of `taxon_name`, `population_id`, `individual_id`, and `temporal_id`.
+        observation_id: &observation_id A unique integral identifier for the observation, where an observation is all measurements made on an individual at a single point in time. It is important for joining traits coming from the same `observation_id`. Within each dataset, observation_id's are unique combinations of `taxon_name`, `population_id`, `individual_id`, and `temporal_context_id`.
         trait_name: &trait_name Name of the trait sampled. Allowable values specified in the table `definitions`.
         value: &value The measured value of a trait, location property or context property.
         unit: &units Units of the sampled trait value after aligning with AusTraits standards.
@@ -68,14 +68,14 @@ austraits:
         replicates: &replicates Number of replicate measurements that comprise a recorded trait measurement. A numeric value (or range) is ideal and appropriate if the value type is a `mean`, `median`, `min` or  `max`. For these value types, if replication is unknown the entry should be `unknown`. If the value type is `raw_value` the replicate value should be 1. If the trait is categorical or the value indicates a measurement for an entire species (or other taxon) replicate value should be `.na`.
         basis_of_record: *basis_of_record
         life_stage: &life_stage A field to indicate the life stage or age class of the entity measured. Standard values are `adult`, `sapling`, `seedling` and `juvenile`.
-        population_id: &population_id A unique integer identifier for a population, where a population is defined as individuals growing in the same location (location_id /location_name) and plot (plot_id, a context category) and being subjected to the same treatment (treatment_id, a context category).
+        population_id: &population_id A unique integer identifier for a population, where a population is defined as individuals growing in the same location (location_id /location_name) and plot (plot_context_id, a context category) and being subjected to the same treatment (treatment_context_id, a context category).
         individual_id: &individual_id A unique integer identifier for an individual, with individuals numbered sequentially within each dataset by taxon by population grouping. Most often each row of data represents an individual, but in some datasets trait data collected on a single individual is presented across multiple rows of data, such as if the same trait is measured using different methods or the same individual is measured repeatedly across time.
-        temporal_id: &temporal_id A unique integer identifier assigned where repeat observations are made on the same individual (or population, or taxon) across time. The identifier links to specific information in the context table.
+        temporal_context_id: &temporal_context_id A unique integer identifier assigned where repeat observations are made on the same individual (or population, or taxon) across time. The identifier links to specific information in the context table.
         source_id: &source_id For datasets that are compilations, an identifier for the original data source.
         location_id: &location_id A unique integer identifier for a location, with locations numbered sequentially within a dataset. The identifier links to specific information in the location table.
         entity_context_id: &entity_context_id A unique integer identifier indicating specific contextual properties of an individual, possibly including the individual's sex or caste (for social insects).
-        plot_id: &plot_id A unique integer identifier for a plot, where a plot is a distinct collection of organisms within a single geographic location, such as plants growing on different aspects or blocks in an experiment. The identifier links to specific information in the context table.
-        treatment_id: &treatment_id A unique integer identifier for a treatment, where a treatment is any experimental manipulation to an organism's growing/living conditions. The identifier links to specific information in the context table.
+        plot_context_id: &plot_context_id A unique integer identifier for a plot, where a plot is a distinct collection of organisms within a single geographic location, such as plants growing on different aspects or blocks in an experiment. The identifier links to specific information in the context table.
+        treatment_context_id: &treatment_context_id A unique integer identifier for a treatment, where a treatment is any experimental manipulation to an organism's growing/living conditions. The identifier links to specific information in the context table.
         collection_date: &collection_date Date sample was taken, in the format `yyyy-mm-dd`, `yyyy-mm` or `yyyy`, depending on the resoluton specified. Alternatively an overall range for the study can be indicating, with the starting and ending sample date sepatated by a `/`, as in 2010-10/2011-03
         measurement_remarks: &measurement_remarks Brief comments or notes accompanying the trait measurement.
         method_id: &method_id A unique integer identifier to distinguish between multiple sets of methods used to measure a single trait within the same dataset. The identifier links to specific information in the methods table.
@@ -119,7 +119,7 @@ austraits:
         source_original_dataset_citation: Citations for the original dataset_id in sources; for compilationse. This detail is generated from the original source in the metadata.
         data_collectors: &data_collectors The person (people) leading data collection for this study.
         assistants: &assistants Names of additional people who played a more minor role in data collection for the study.
-        austraits_curators: &austraits_curators Names of AusTraits team member(s) who contacted the data collectors and added the study to the AusTraits repository.
+        dataset_curators: &dataset_curators Names of AusTraits team member(s) who contacted the data collectors and added the study to the AusTraits repository.
     excluded_data:
       description: A table of data that did not pass quality tests and so were excluded from the master dataset. The structure is identical to that presented in the `traits` table, only with an extra column called `error` indicating why the record was excluded. Common reasons are missing_unit_conversions, missing_value, and unsupported_trait_value.
       type: table
@@ -139,12 +139,12 @@ austraits:
         life_stage: *life_stage
         population_id: *population_id
         individual_id: *individual_id
-        temporal_id: *temporal_id
+        temporal_context_id: *temporal_context_id
         source_id: *source_id
         location_id: *location_id
         entity_context_id: *entity_context_id
-        plot_id: *plot_id
-        treatment_id: *treatment_id
+        plot_context_id: *plot_context_id
+        treatment_context_id: *treatment_context_id
         collection_date: *collection_date
         measurement_remarks: *measurement_remarks
         method_id: *method_id
@@ -337,8 +337,8 @@ metadata:
             additional_role: Any additional roles the data collector had in the study, a field most frequently used to identify which data contributor is the contact person for the dataset.
         assistants:
           description: *assistants
-        austraits_curators:
-          description: *austraits_curators
+        dataset_curators:
+          description: *dataset_curators
     dataset:
       description: Study details, including format of the data, custom R code applied to data, and various descriptors. The value entered for each element can be either a header for a column within the data.csv file or the actual value to be used.
       type: categorical
@@ -350,8 +350,8 @@ metadata:
         location_name: *location_name
         source_id: *source_id
         entity_type: *entity_type
-        plot_id: *plot_id
-        treatment_id: *treatment_id
+        plot_context_id: *plot_context_id
+        treatment_context_id: *treatment_context_id
         individual_id: *individual_id
         observation_id: *observation_id
         trait_name: Element required for long datasets to specify the column indicating the trait name associated with each row of data.

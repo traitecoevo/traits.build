@@ -201,7 +201,7 @@ If a current affiliation isn't known, provide the last known institution. We als
 In addition, the following people are included as
 
 - assistants: `r ifelse(is.null(metadata$contributors$assistants), "none", paste(metadata$contributors$assistants, collapse=", "))`
-- data curator(s):  `r metadata$contributors$austraits_curators`
+- data curator(s):  `r metadata$contributors$dataset_curators`
 
 ```{r, results='asis', echo=FALSE}
 new_question("(section `people`) Are all appropriate people listed, with appropriate details?")
