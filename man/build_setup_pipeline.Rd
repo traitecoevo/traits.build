@@ -7,7 +7,8 @@
 build_setup_pipeline(
   dataset_ids = dir("data"),
   method = "base",
-  template = select_pipeline_template(method)
+  template = select_pipeline_template(method),
+  workers = 1
 )
 }
 \arguments{
@@ -16,6 +17,9 @@ build_setup_pipeline(
 \item{method}{Approach to use in build}
 
 \item{template}{Template used to build}
+
+\item{workers}{Number of workers/parallel processes to use when using
+method = "furrr"}
 }
 \value{
 Updated `remake.yml` file

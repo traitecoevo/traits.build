@@ -1,6 +1,6 @@
 source:
   primary:
-    key: NHNSW_2023
+    key: Test_2023_4
     bibtype: Online
     year: 2023
     author: National Herbarium of New South Wales
@@ -85,21 +85,22 @@ dataset:
         entity_measured = ifelse(category %in% c("capsule", "silicula", "nut", "utricles", "pyrenes", "berry", "achenes"), "fruit", entity_measured),
         units = ifelse(trait_name == "fruit_width", NA_character_, units)
       ) %>%
-      arrange(category) %>%
-      distinct(source, taxon_name, trait_name, trait_value, units, value_type, inferred, .keep_all = TRUE) %>%
       mutate(entity_measured = ifelse(is.na(entity_measured), "unknown", entity_measured)) %>%
       group_by(taxon_name, trait_name, entity_measured, value_type) %>%
-      mutate(observation_number = row_number()) %>%
+      mutate(
+        observation_number = row_number(),
+        observation_number = ifelse(trait_name %in% c("leaf_photosynthesis", "leaf_stomatal_conductance", "leaf_stomatal_conductance_2"), NA, observation_number)
+      ) %>%
       ungroup()
   '
   collection_date: .na
   taxon_name: taxon_name
   trait_name: trait_name
   value: trait_value
+  individual_id: individual_id
   location_name: test_location
-  value_type: value_type
   entity_type: test_entity_type
-  basis_of_value: unknown
+  basis_of_record: field_experiment
   source_id: source_id
   unit_in: units
   description: Plant growth form data extracted from the NT Flora Online
@@ -130,7 +131,6 @@ locations:
     longitude (deg): 125.239
     description: First made-up location for testing
     entity_type: population
-    value_type: minimum
     life_stage: juvenile
     replicates: 2
     collection_date: '2020'
@@ -199,6 +199,7 @@ traits:
 - var_in: fruit_colour
   trait_name: fruit_colour
   replicates: .na
+  value_type: value_type
   methods: When specified in the taxon description, only the colours of the fruit
     at maturity or the dominant colours of the fruit exterior were scored. If neither
     were specified, all colours associated with the fruit were scored.
@@ -206,7 +207,8 @@ traits:
 - var_in: fruit_dehiscence
   unit_in: .na
   trait_name: fruit_dehiscence
-  replicates: 3
+  replicates: .na
+  value_type: value_type
   methods: Taxa were scored as dehiscent from a variety of terms in the text including
     the kind of dehiscence e.g. scepticidal, loculicidal or possessing valves.
   basis_of_record: test_basis_of_record
@@ -217,15 +219,48 @@ traits:
   methods: The term used to describe the fruit length was stored  as a measurement
     remark for greater clarity e.g. fruit, achene, capsule. Fruits which were spherical
     or round in shape were inferred as possessing the same dimensions in other planes.
-  value_type: mode
+  value_type: value_type
   basis_of_value: test_basis_of_value
   basis_of_record: test_basis_of_record
 - var_in: fruit_width
   unit_in: mm
   trait_name: fruit_width
+  value_type: value_type
   methods: The term used to describe the fruit width was stored  as a measurement
     remark for greater clarity e.g. fruit, achene, capsule. Fruits which were spherical
     or round in shape were inferred as possessing the same dimensions in other planes.
+- var_in: fruit_width_2
+  trait_name: fruit_width
+  value_type: value_type
+  methods: The term used to describe the fruit width was stored  as a measurement
+    remark for greater clarity e.g. fruit, achene, capsule. Fruits which were spherical
+    or round in shape were inferred as possessing the same dimensions in other planes.
+- var_in: leaf_photosynthesis
+  unit_in: umol/m2/s
+  trait_name: leaf_photosynthesis
+  value_type: raw
+  basis_of_value: measurement
+  methods: Test `repeat_measurements_id` at the trait level for long datasets.
+  replicates: 5
+  repeat_measurements_id: TRUE
+- var_in: leaf_stomatal_conductance
+  unit_in: mol{H2O}/m2/s
+  trait_name: leaf_stomatal_conductance
+  value_type: raw
+  basis_of_value: measurement
+  methods: Test `repeat_measurements_id` at the trait level for populations and species.
+  replicates: 5
+  repeat_measurements_id: TRUE
+- var_in: leaf_stomatal_conductance_2
+  unit_in: mol{H2O}/m2/s
+  trait_name: leaf_stomatal_conductance
+  value_type: raw
+  entity_type: species
+  basis_of_value: measurement
+  methods: Test that `repeat_measurements_id` is not made for traits where `repeat_measurements_id`
+    is set to FALSE but have already been entered with `repeat_measurements_id` as TRUE from another
+    column.
+  replicates: 5
 substitutions: .na
 taxonomic_updates:
 - find: Acaena anserovina

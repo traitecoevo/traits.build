@@ -177,29 +177,20 @@ traits:
       allowed_values_min: 1.0e-05
       allowed_values_max: 1000000.0
       entity_URI: https://w3id.org/APD/traits/trait_0012610
-    leaf_photosynthesis_Vcmax_per_area:
-      label: Leaf Vcmax per unit leaf area (Vcmax)
-      description: Maximum [NCIT:C25564] carboxylation [MOP:0000591] rate [PATO:0000161]
-        by the Rubisco complex [GO:0048492] in plant leaves [PO:0025034], recorded
-        per unit leaf [PO:0025034] area [PATO:0001323]. The value is a model parameter
-        [STATO:0000034] derived from the initial slope of a photosynthesis [GO:0015979]
-        A-ci response curve, the component that is carbon dioxide [CHEBI:16526] limited
-        and hence limited by Rubisco activity.;The apparent maximum rate of Rubisco
-        (ribulose 1,5-bisphosphate carboxylase/oxygenase) activity carboxylase activity
-        (carboxylation capacity), recorded per unit leaf dry mass. This is a model-derived
-        value, calculated from the portion of an A-ci response curve (curve showing
-        the photosynthetic response to increasing carbon dioxide concentrations) at
-        low carbon dioxide concentrations. This is the portion of the curve where
-        the photosynthetic rate is limited by the Rubisco activity.
-      comments: This trait is explicitly for Vcmax per leaf area measurements made
-        at a temperature other than 25 deg C. It is essential to record measurement
-        temperature as a context property as Vcmax is very sensitive to changes in
-        temperature. Measurements made at 25 deg C should be mapped to `leaf_photosynthesis_Vcmax_per_area_25C`
+    leaf_photosynthesis:
+      label: Leaf photosynthesis
+      description: Dummy trait definition to test response curves in Test Dataset 7.
       type: numeric
       units: umol/m2/s
-      allowed_values_min: 10.0
-      allowed_values_max: 300.0
-      entity_URI: https://w3id.org/APD/traits/trait_0020413
+      allowed_values_min: -5
+      allowed_values_max: 50
+    leaf_stomatal_conductance:
+      label: Leaf stomatal conductance
+      description: Second dummy trait definition to test response curves in Test Dataset 7.
+      type: numeric
+      units: mol{H2O}/m2/s
+      allowed_values_min: 0
+      allowed_values_max: 1
     plant_growth_form:
       label: Plant growth form
       description: A whole plant [PO:0000003] phenotype [NCIT:C16977] trait that summarises
