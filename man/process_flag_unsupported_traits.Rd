@@ -12,7 +12,7 @@ process_flag_unsupported_traits(data, definitions)
 \item{definitions}{Definitions read in from the `traits.yml` file in the config folder}
 }
 \value{
-Tibble with unrecognised traits flagged as "Unsupported trait" in the "error" column
+Tibble with unrecognised traits flagged in the "error" column
 }
 \description{
 Flag any unrecognised traits, as defined in the `traits.yml` file.

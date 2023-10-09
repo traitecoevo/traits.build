@@ -9,7 +9,7 @@ process_flag_excluded_observations(data, metadata)
 \arguments{
 \item{data}{Tibble or dataframe containing the study data}
 
-\item{metadata}{Metadata yaml file for any given study}
+\item{metadata}{Yaml file with metadata}
 }
 \value{
 Dataframe with flagged excluded observations if there are any
