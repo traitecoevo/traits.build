@@ -1,0 +1,88 @@
+---
+title: "Troubleshooting traits.build"
+author: "Elizabeth Wenk, Sophie Yang"
+date: "2023-09-16"
+format: 
+  html:
+    toc: TRUE
+editor: visual
+---
+## Troubleshooting traits.build problems
+
+**Note, this vignette is a work in progress. It will be expanded over time.**
+
+### Unsupported trait values
+
+This error occurs when, for a categorical trait, the value in [data.csv]{style="color:blue;"} is different to the value in the traits dictionary ([config/traits.yml]{style="color:blue;"}).
+
+```{r eval=TRUE}
+table <- my_database$excluded_data %>%
+  filter(dataset_id == current_study) %>%
+  filter(error == "Unsupported trait value") %>%
+  select(dataset_id, trait_name, value) %>%
+  distinct()
+```
+
+You can individually add substitutions to [metadata.yml]{style="color:blue;"} using the function [metadata_add_substitution]{style="color:blue;"}
+
+```{r eval=TRUE}
+metadata_add_substitution(dataset_id = current_study, trait_name = "plant_growth_form", find = "T", replace = "tree")
+```
+
+Or, you can add an additional column to the table output (code above) and read it into [metadata.yml]{style="color:blue;"} using the function [metadata_add_substitutions_table]{style="color:blue;"}
+
+The table read in must have the columns [dataset_id]{style="color:blue;"}, [trait_name]{style="color:blue;"}, [find]{style="color:blue;"}, and [replace]{style="color:blue;"}.
+
+This is a hypothetical example for a table that contains 5 rows with plant_growth_form value that need updating.
+
+```{r eval=TRUE}
+table <- table %>%
+  rename(find = value) %>%
+  mutate(replace = c("tree", "mallee", "shrub", "graminoid", "herb"))
+
+metadata_add_substitutions_table(table, dataset_id = dataset_id, trait_name = trait_name, find = find, replace = replace)
+```
+
+You can of course also write the table to a csv file, edit it in Excel or a text editor, then read it back into R.
+
+```{r eval=TRUE}
+write_csv(table, "data/dataset_id/raw/substitutions_required.csv")
+
+...edit outside of R
+
+table <- read_csv("data/dataset_id/raw/substitutions_required.csv")
+```
+
+### Dataset can't pivot wider
+
+In order to convert a traits.build database into a wide format, the traits.build$traits table must be able to pivot wider. This dataset was unable to pivot, due to duplication in the following rows:
+
+```{r eval=TRUE}
+my_database$traits %>%
+  filter(dataset_id == dataset_ids) %>%
+  select(
+      dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "source_id", "taxon_name",
+      "entity_type", "life_stage", "basis_of_record", "value_type", "population_id", "individual_id",
+      "temporal_id", "method_id", "method_context_id", "entity_context_id", "original_name"))
+          )
+  pivot_wider(names_from = trait_name, values_from = value, values_fn = length) %>%
+  pivot_longer(cols = 16:ncol(.)) %>%
+  rename(trait_name = name, number_of_duplicates = value) %>%
+  select(dataset_id, taxon_name, trait_name, number_of_duplicates, observation_id, entity_type, value_type, population_id, everything()) %>%
+  filter(number_of_duplicates > 1)
+```
+
+There are two likely explanations -- and solutions -- to this error:
+
+1.  If your dataset combines individual (or population) level measurements with species-level measurements, the same species-level measurement may be read in many times. To solve this problem, you need to retain only the first instance of each species-level measurement, by including the following `custom_R_code`, where `taxon_name` is the column that contains taxon names and `column 1`, `column 2`, etc is a vector of the columns with categorical traits that require `de-duplicating`.
+
+```{r eval=TRUE}
+data %>%
+  group_by(taxon_name) %>%
+  mutate(across(c("column 1", "column 2", "column 3"), replace_duplicates_with_NA))
+  ungroup()
+```
+
+2.  Rows of data that represent measurements made at different times,
+
+ ... TBC
