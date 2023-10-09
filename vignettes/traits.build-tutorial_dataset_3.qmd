@@ -193,10 +193,10 @@ Additional user prompts ask for details about the context property category and 
 
 [What category does context Treatment fit in? (by number separated by space; e.g. '1 2 4'):]{style="color:blue;"}\
 
-[1: treatment]{style="color:blue;"}\
-[2: plot]{style="color:blue;"}\
-[3: temporal]{style="color:blue;"}\
-[4: method]{style="color:blue;"}\
+[1: treatment_context]{style="color:blue;"}\
+[2: plot_context]{style="color:blue;"}\
+[3: temporal_context]{style="color:blue;"}\
+[4: method_context]{style="color:blue;"}\
 [5: entity_context]{style="color:blue;"}\
 
 This is a treatment context, so select 1:
@@ -349,8 +349,5 @@ As a final step, build a report for the study
 
 ```{r eval=FALSE}
 traits.build_database$build_info$version <- "4.0.0"  # a fix because the function was built around specific AusTraits versions
-dataset_report("tutorial_dataset_2", traits.build_database, overwrite = TRUE)
+dataset_report("tutorial_dataset_3", traits.build_database, overwrite = TRUE)
 ```
-
-
-
