@@ -96,9 +96,17 @@ metadata_create_template <- function(dataset_id,
           out[["dataset"]][[v]] <- tmp
         }
         if (v == "collection_date" && is.na(tmp)) {
-          collection_date <- readline(prompt = "Enter collection_date range in format '2007/2009': ")
+          collection_date <- readline(prompt = "\nEnter `collection_date` range in format '2007/2009': ")
           out[["dataset"]][[v]] <- collection_date
         }
+      }
+
+      # `repeat_measurements_id`
+      tmp <- menu(c("Yes", "No"), title = "\nDo all traits need `repeat_measurements_id`'s?\n\nIf only some do, specify `repeat_measurements_id: TRUE` at the trait level")
+
+      if (tmp == 1) {
+        repeat_measurements_id <- TRUE
+        out[["dataset"]][["repeat_measurements_id"]] <- repeat_measurements_id
       }
 
     # Use `user_responses` to fill metadata fields
@@ -129,13 +137,19 @@ metadata_create_template <- function(dataset_id,
           out[["dataset"]][[v]] <- tmp
         }
       }
+
+      # `repeat_measurements_id`
+      if (!is.null(user_responses[["repeat_measurements_id"]]) && user_responses[["repeat_measurements_id"]] == TRUE) {
+        out[["dataset"]][["repeat_measurements_id"]] <- TRUE
+      }
+
     }
   }
 
   # Reorder elements in dataset
   order <- c("data_is_long_format", "custom_R_code", "collection_date", "taxon_name", "trait_name",
-             "value", "location_name", "individual_id", "description", "basis_of_record", "life_stage",
-             "sampling_strategy", "original_file", "notes")
+             "value", "location_name", "individual_id", "repeat_measurements_id", "description",
+             "basis_of_record", "life_stage", "sampling_strategy", "original_file", "notes")
 
   order <- order[which(order %in% names(out[["dataset"]]))]
   out[["dataset"]] <- out[["dataset"]][order]
@@ -158,7 +172,7 @@ metadata_create_template <- function(dataset_id,
 #'
 metadata_user_select_column <- function(column, choices) {
 
-  tmp <- utils::menu(choices, title = sprintf("Select column for `%s`", column))
+  tmp <- utils::menu(choices, title = sprintf("\nSelect column for `%s`", column))
 
   choices[tmp]
 }
@@ -915,13 +929,13 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
 
     for (i in seq_len(nrow(taxonomic_updates))) {
       # Check if the taxonomic update already exists
-      if (taxonomic_updates[i,]$find %in% existing_updates$find) {
+      if (taxonomic_updates[i, ]$find %in% existing_updates$find) {
         # Overwrite existing taxonomic update if TRUE
-        existing_updates[which(existing_updates$find == taxonomic_updates[i,]$find),] <- taxonomic_updates[i,]
-        already_exist <- c(already_exist, taxonomic_updates[i,]$find)
+        existing_updates[which(existing_updates$find == taxonomic_updates[i, ]$find), ] <- taxonomic_updates[i, ]
+        already_exist <- c(already_exist, taxonomic_updates[i, ]$find)
       } else {
         # Otherwise, bind to end of existing taxonomic updates
-        existing_updates <- existing_updates %>% dplyr::bind_rows(taxonomic_updates[i,])
+        existing_updates <- existing_updates %>% dplyr::bind_rows(taxonomic_updates[i, ])
       }
     }
 
@@ -1132,6 +1146,8 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' @param dataset_ids `dataset_id`'s to include; by default includes all
 #' @param method Approach to use in build
 #' @param template Template used to build
+#' @param workers Number of workers/parallel processes to use when using
+#' method = "furrr"
 #'
 #' @return Updated `remake.yml` file
 #' @export
