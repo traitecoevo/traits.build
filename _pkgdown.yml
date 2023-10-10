@@ -43,11 +43,12 @@ reference:
     - '`get_unit_conversions`'
 
   - title: Creating metadata files
-    desc: functiosn that help you create metadata files
+    desc: functions that help you create metadata files
     contents:
     - '`dataset_test`'
     - '`dataset_test_worker`'
     - '`metadata_create_template`'
+    - '`metadata_check_custom_R_code`'
     - '`metadata_add_traits`'
     - '`metadata_add_contexts`'
     - '`metadata_add_locations`'
@@ -58,12 +59,11 @@ reference:
     - '`metadata_add_substitutions_table`'
     - '`metadata_add_taxonomic_change`'
     - '`metadata_add_taxonomic_changes_list`'
-    - '`metadata_check_custom_R_code`'
-    - '`metadata_exclude_observations`'
     - '`metadata_find_taxonomic_change`'
-    - '`metadata_path_dataset_id`'
     - '`metadata_remove_taxonomic_change`'
     - '`metadata_update_taxonomic_change`'
+    - '`metadata_exclude_observations`'
+    - '`metadata_path_dataset_id`'
     - '`metadata_user_select_column`'
     - '`metadata_user_select_names`'
 
@@ -130,7 +130,7 @@ reference:
 
 
   - title: Functions used when writing reports
-    desc: Functions used inside the template reports (unlimely to be called by users)
+    desc: Functions used inside the template reports (unlikely to be called by users)
     contents:
     - '`notetaker_start`'
     - '`notetaker_add_note`'

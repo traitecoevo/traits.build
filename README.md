@@ -17,12 +17,12 @@ disconnected primary sources and arises from the AusTraits project [austraits.or
 The goals of this package are to:
 
 1.  Enable users to create open-source, harmonised, reproducible databases from disparate datasets.
-2.  Provide a fully transparent workflow, where all decisions on how to handle the data are exposed and can be.
+2.  Provide a fully transparent workflow, where all decisions on how the data are handled are exposed.
 3.  Offer a relational database structure that fully documents the contextual data essential to interpreting ecological data.
 4.  Offer a straightforward, robust template for building a trait dictionary.
 5.  Offer a database structure that is flexible enough to accommodate the complexities inherent to ecological data.
 6.  Offer a database structure that is underlain by a documented ontology, ensuring each database field is interpretable and interoperable with other databases and data structures.
-7. Have no dependencies on proprietary software or costs to setup and maintain (beyond person time).
+7.  Have no dependencies on proprietary software or costs to setup and maintain (beyond person time).
 
 To handle the harmonising of diverse data sources, we use a reproducible
 workflow to implement the various changes required for each source to
@@ -47,7 +47,7 @@ There are multiple ways to install the `traits.build` package itself, and both t
 
 <!-- ## Get started in 5(?) minutes
 
-The 5-minute video at <xxx> demonstrates the use of `traits.build` using an template example compilation. This template is also used in chapters
+The 5-minute video at <xxx> demonstrates the use of `traits.build` using a template example compilation. This template is also used in chapters
 of the [user manual](https://traitecoevo.github.io/traits.build-book/).
 
 -- [![](./man/figures/video.png)](XXX) -->
@@ -73,7 +73,7 @@ Please read the [help guide](https://traitecoevo.github.io/traits.build-book/hel
 
 ## Citation
 
-We are developing a paper descrbing the `traits.build` workflow. In the meantime, please cite the following publication
+We are developing a paper describing the `traits.build` workflow. In the meantime, please cite the following publication
 
 > Falster D, Gallagher R, Wenk, E et al. (2021) AusTraits, a curated plant trait 
 database for the Australian flora. Scientific Data 8: 254. 
