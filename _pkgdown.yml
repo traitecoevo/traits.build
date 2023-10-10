@@ -6,53 +6,53 @@ template:
 home:
   links:
   - text: AusTraits
-    href: https://github.com/traitecoevo/austraits
-  - text: Zenodo
-    href: https://doi.org/10.5281/zenodo.3568417
+    href: https://github.com/traitecoevo/austraits.build
 
-  
+navbar:
+  type: default
+  left:
+  - text: home
+    icon: fas fa-home fa-lg
+    href: index.html
+  - text: Functions
+    icon: fa-list
+    href: reference/index.html
+  - text: Manual
+    href: https://traitecoevo.github.io/traits.build-book/
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/traitecoevo/traits.build
+
+
 reference:
-  - title: Building austraits compilation
+  - title: Building a dataset or compilation
     desc: Functions that can be used when building individual datasets and entire compilation
     contents:
     - '`build_setup_pipeline`'
-    - '`get_schema`'
-    - '`dataset_configure`'
-    - '`dataset_process`'
     - '`build_combine`'
     - '`build_add_version`'
     - '`build_update_taxonomy`'
-    - '`process_add_all_columns`'
-    - '`process_taxonomic_updates`'
-    - '`process_convert_units`'
-    - '`process_parse_data`'
-    - '`process_custom_code`'
-    - '`process_format_locations`'
-    - '`process_flag_excluded_observations`'
-    - '`process_flag_unsupported_traits`'
-    - '`process_flag_unsupported_values`'
-    - '`process_standardise_names`'
-    - '`process_unit_conversion_name`'
-    - '`process_create_observation_id`'
-    - '`process_format_contexts`'
-    - '`process_format_contributors`'
-    - '`process_generate_id`'
+    - '`dataset_build`'
+    - '`dataset_configure`'
+    - '`dataset_process`'
     - '`dataset_report`'
-
+    - '`get_schema`'
+    - '`get_unit_conversions`'
 
   - title: Creating metadata files
-    desc: ~
+    desc: functiosn that help you create metadata files
     contents:
     - '`dataset_test`'
     - '`dataset_test_worker`'
     - '`metadata_create_template`'
     - '`metadata_add_traits`'
+    - '`metadata_add_contexts`'
+    - '`metadata_add_locations`'
     - '`metadata_add_source_bibtex`'
     - '`metadata_add_source_doi`'
-    - '`metadata_add_locations`'
-    - '`metadata_add_contexts`'
     - '`metadata_add_substitution`'
     - '`metadata_add_substitutions_list`'
+    - '`metadata_add_substitutions_table`'
     - '`metadata_add_taxonomic_change`'
     - '`metadata_add_taxonomic_changes_list`'
     - '`metadata_check_custom_R_code`'
@@ -61,12 +61,34 @@ reference:
     - '`metadata_path_dataset_id`'
     - '`metadata_remove_taxonomic_change`'
     - '`metadata_update_taxonomic_change`'
-    - '`metadata_add_substitutions_table`'
     - '`metadata_user_select_column`'
     - '`metadata_user_select_names`'
 
+
+  - title: Building a compilation - background
+    desc: Functions that are called when building individual datasets and entire compilation, but are less likely to be called by users
+    contents:
+    - '`process_add_all_columns`'
+    - '`process_convert_units`'
+    - '`process_create_observation_id`'
+    - '`process_custom_code`'
+    - '`process_flag_excluded_observations`'
+    - '`process_flag_out_of_range_values`'
+    - '`process_flag_unsupported_characters`'
+    - '`process_flag_unsupported_traits`'
+    - '`process_flag_unsupported_values`'
+    - '`process_format_contexts`'
+    - '`process_format_contributors`'
+    - '`process_format_locations`'
+    - '`process_generate_id`'
+    - '`process_generate_method_ids`'
+    - '`process_parse_data`'
+    - '`process_standardise_names`'
+    - '`process_taxonomic_updates`'
+    - '`process_unit_conversion_name`'
+
   - title: Reading & writing files
-    desc: ~
+    desc: Enable reading and wring of various file types
     contents:
     - '`read_csv_char`'
     - '`read_metadata`'
@@ -83,66 +105,36 @@ reference:
     - '`util_get_SHA`'
     - '`util_append_to_list`'
     - '`bib_print`'
-    - '`util_replace_null`'
+    - '`util_append_to_list`'
     - '`util_bib_to_list`'
-    - '`util_list_to_bib`'
+    - '`util_check_all_values_in`'
+    - '`util_check_disallowed_chars`'
+    - '`util_df_convert_character`'
     - '`util_df_to_list`'
     - '`util_extract_list_element`'
-    - '`util_list_to_df2`'
-    - '`util_list_to_df1`'
-    - '`util_separate_and_sort`'
-    - '`util_check_all_values_in`'
-    - '`util_df_convert_character`'
+    - '`util_get_SHA`'
     - '`util_get_version`'
     - '`util_kable_styling_html`'
+    - '`util_list_to_bib`'
+    - '`util_list_to_df1`'
+    - '`util_list_to_df2`'
+    - '`util_replace_null`'
+    - '`util_separate_and_sort`'
     - '`util_standardise_doi`'
     - '`util_strip_taxon_names`'
     - '`build_find_taxon`'
     - '`create_tree_branch`'
-    - '`get_unit_conversions`'
+
 
   - title: Functions used when writing reports
-    desc: ~
+    desc: Functions used inside the template reports (unlimely to be called by users)
     contents:
-    - '`notes_random_string`'
+    - '`notetaker_start`'
     - '`notetaker_add_note`'
     - '`notetaker_as_note`'
     - '`notetaker_get_note`'
     - '`notetaker_print_all`'
     - '`notetaker_print_note`'
     - '`notetaker_print_notes`'
-    - '`notetaker_start`'
+    - '`notes_random_string`'
 
-navbar:
-  type: default
-  left:
-  - text: home
-    icon: fas fa-home fa-lg
-    href: index.html
-  - text: Get started
-    href: articles/traits.build.html
-  - text: Details
-    icon: fas fa-book
-    menu:
-      - text: Overview of `AusTraits` workflow
-        href: articles/overview.html
-      - text: Getting started with traits.build
-        href: articles/traits.build.html
-      - text: Structure of `AusTraits` data compilation
-        href: articles/database_structure.html
-      - text: Definitions for traits in `AusTraits`
-        href: articles/trait_definitions.html
-      - text: Repository file structure
-        href: articles/file_structure.html
-      - text: Contributing data to `AusTraits`
-        href: articles/contributing_data.html
-      - text: Adding new datasets into `AusTraits`
-        href: articles/adding_data.html
-      - text: Docker for reproducible compute environment
-        href: articles/docker.html
-  - text: Functions
-    icon: fa-list
-    href: reference/index.html
-  right:
-  - icon: fa-github fa-lg
-    href: https://github.com/traitecoevo/traits.build
