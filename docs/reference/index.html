@@ -44,11 +44,7 @@
   </a>
 </li>
 <li>
-  <a href="../news/index.html">
-    <span class="fa fa-news"></span>
-     
-    News
-  </a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/traitecoevo/traits.build" class="external-link">
@@ -112,6 +108,14 @@
           <p><code><a href="get_unit_conversions.html">get_unit_conversions()</a></code> </p>
         </td>
         <td><p>Make unit conversion functions</p></td>
+      </tr><tr><td>
+          <p><code><a href="util_get_SHA.html">util_get_SHA()</a></code> </p>
+        </td>
+        <td><p>Get SHA string from Github repository for latest commit</p></td>
+      </tr><tr><td>
+          <p><code><a href="util_get_version.html">util_get_version()</a></code> </p>
+        </td>
+        <td><p>Retrieve version for compilation from definitions</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="creating-metadata-files">Creating metadata files <a href="#creating-metadata-files" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>functions that help you create metadata files</p>
@@ -121,13 +125,14 @@
         </td>
         <td><p>Test whether specified `dataset_id` has the correct setup</p></td>
       </tr><tr><td>
-          <p><code><a href="dataset_test_worker.html">dataset_test_worker()</a></code> </p>
-        </td>
-        <td><p>Test whether specified `dataset_id` has the correct setup</p></td>
-      </tr><tr><td>
           <p><code><a href="metadata_create_template.html">metadata_create_template()</a></code> </p>
         </td>
         <td><p>Create a template of file `metadata.yml` for specified `dataset_id`</p></td>
+      </tr><tr><td>
+          <p><code><a href="metadata_check_custom_R_code.html">metadata_check_custom_R_code()</a></code> </p>
+        </td>
+        <td><p>Check the output of running `custom_R_code` specified in
+the metadata for specified `dataset_id`</p></td>
       </tr><tr><td>
           <p><code><a href="metadata_add_traits.html">metadata_add_traits()</a></code> </p>
         </td>
@@ -169,22 +174,9 @@
         </td>
         <td><p>Add a list of taxonomic updates into a metadata file for a `dataset_id`</p></td>
       </tr><tr><td>
-          <p><code><a href="metadata_check_custom_R_code.html">metadata_check_custom_R_code()</a></code> </p>
-        </td>
-        <td><p>Check the output of running `custom_R_code` specified in
-the metadata for specified `dataset_id`</p></td>
-      </tr><tr><td>
-          <p><code><a href="metadata_exclude_observations.html">metadata_exclude_observations()</a></code> </p>
-        </td>
-        <td><p>Exclude observations in a yaml file for a `dataset_id`</p></td>
-      </tr><tr><td>
           <p><code><a href="metadata_find_taxonomic_change.html">metadata_find_taxonomic_change()</a></code> </p>
         </td>
         <td><p>Find `dataset_id`'s with a given taxonomic change</p></td>
-      </tr><tr><td>
-          <p><code><a href="metadata_path_dataset_id.html">metadata_path_dataset_id()</a></code> </p>
-        </td>
-        <td><p>Path to the `metadata.yml` file for specified `dataset_id`</p></td>
       </tr><tr><td>
           <p><code><a href="metadata_remove_taxonomic_change.html">metadata_remove_taxonomic_change()</a></code> </p>
         </td>
@@ -194,16 +186,44 @@ the metadata for specified `dataset_id`</p></td>
         </td>
         <td><p>Update a taxonomic change into a yaml file for a `dataset_id`</p></td>
       </tr><tr><td>
-          <p><code><a href="metadata_user_select_column.html">metadata_user_select_column()</a></code> </p>
+          <p><code><a href="metadata_exclude_observations.html">metadata_exclude_observations()</a></code> </p>
         </td>
-        <td><p>Select column by user</p></td>
+        <td><p>Exclude observations in a yaml file for a `dataset_id`</p></td>
       </tr><tr><td>
-          <p><code><a href="metadata_user_select_names.html">metadata_user_select_names()</a></code> </p>
+          <p><code><a href="dataset_find_taxon.html">dataset_find_taxon()</a></code> </p>
         </td>
-        <td><p>Select variable names by user</p></td>
+        <td><p>Find list of unique datasets within compilation containing specified taxa</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="building-a-compilation-background">Building a compilation - background <a href="#building-a-compilation-background" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Functions that are called when building individual datasets and entire compilation, but are less likely to be called by users</p>
+          <h2 id="reading-writing-files">Reading &amp; writing files <a href="#reading-writing-files" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Enable reading and wring of various file types</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="read_csv_char.html">read_csv_char()</a></code> </p>
+        </td>
+        <td><p>Read in a csv as a tibble with column types as characters</p></td>
+      </tr><tr><td>
+          <p><code><a href="read_metadata.html">read_metadata()</a></code> </p>
+        </td>
+        <td><p>Read in a `metadata.yml` file for a study</p></td>
+      </tr><tr><td>
+          <p><code><a href="write_metadata.html">write_metadata()</a></code> </p>
+        </td>
+        <td><p>Write `metadata.yml` for a study</p></td>
+      </tr><tr><td>
+          <p><code><a href="read_yaml.html">read_yaml</a></code> </p>
+        </td>
+        <td><p>Read yaml (from package yaml)</p></td>
+      </tr><tr><td>
+          <p><code><a href="write_yaml.html">write_yaml</a></code> </p>
+        </td>
+        <td><p>write yaml (from package yaml)</p></td>
+      </tr><tr><td>
+          <p><code><a href="write_plaintext.html">write_plaintext()</a></code> </p>
+        </td>
+        <td><p>Export AusTraits version as plain text</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="building-a-compilation-private-">Building a compilation (private) <a href="#building-a-compilation-private-" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Private functions that are called in the background when building individual datasets and entire compilation. These are only of interest to developers.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="process_add_all_columns.html">process_add_all_columns()</a></code> </p>
@@ -278,52 +298,36 @@ Determines number of 00s needed based on number of records</p></td>
           <p><code><a href="process_unit_conversion_name.html">process_unit_conversion_name()</a></code> </p>
         </td>
         <td><p>Generate unit conversion name</p></td>
-      </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="reading-writing-files">Reading &amp; writing files <a href="#reading-writing-files" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Enable reading and wring of various file types</p>
-        </th>
-      </tr></tbody><tbody><tr><td>
-          <p><code><a href="read_csv_char.html">read_csv_char()</a></code> </p>
-        </td>
-        <td><p>Read in a csv as a tibble with column types as characters</p></td>
       </tr><tr><td>
-          <p><code><a href="read_metadata.html">read_metadata()</a></code> </p>
+          <p><code><a href="dataset_test_worker.html">dataset_test_worker()</a></code> </p>
         </td>
-        <td><p>Read in a `metadata.yml` file for a study</p></td>
+        <td><p>Test whether specified `dataset_id` has the correct setup</p></td>
+      </tr><tr><td>
+          <p><code><a href="metadata_path_dataset_id.html">metadata_path_dataset_id()</a></code> </p>
+        </td>
+        <td><p>Path to the `metadata.yml` file for specified `dataset_id`</p></td>
+      </tr><tr><td>
+          <p><code><a href="metadata_user_select_column.html">metadata_user_select_column()</a></code> </p>
+        </td>
+        <td><p>Select column by user</p></td>
+      </tr><tr><td>
+          <p><code><a href="metadata_user_select_names.html">metadata_user_select_names()</a></code> </p>
+        </td>
+        <td><p>Select variable names by user</p></td>
       </tr><tr><td>
           <p><code><a href="read_metadata_dataset.html">read_metadata_dataset()</a></code> </p>
         </td>
         <td><p>Read the `metadata.yml` file for specified `dataset_id`</p></td>
       </tr><tr><td>
-          <p><code><a href="read_yaml.html">read_yaml</a></code> </p>
-        </td>
-        <td><p>Read yaml (from package yaml)</p></td>
-      </tr><tr><td>
-          <p><code><a href="write_metadata.html">write_metadata()</a></code> </p>
-        </td>
-        <td><p>Write `metadata.yml` for a study</p></td>
-      </tr><tr><td>
           <p><code><a href="write_metadata_dataset.html">write_metadata_dataset()</a></code> </p>
         </td>
         <td><p>Write the YAML representation of `metadata.yml` for specified `dataset_id` to
 file <code>data/dataset_id/metadata.yml</code></p></td>
-      </tr><tr><td>
-          <p><code><a href="write_yaml.html">write_yaml</a></code> </p>
-        </td>
-        <td><p>write yaml (from package yaml)</p></td>
-      </tr><tr><td>
-          <p><code><a href="write_plaintext.html">write_plaintext()</a></code> </p>
-        </td>
-        <td><p>Export AusTraits version as plain text</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="diverse-utility-functions-for-converting-and-working-with-various-data-types">Diverse utility functions for converting and working with various data types <a href="#diverse-utility-functions-for-converting-and-working-with-various-data-types" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="util_get_SHA.html">util_get_SHA()</a></code> </p>
-        </td>
-        <td><p>Get SHA string from Github repository for latest commit</p></td>
-      </tr><tr><td>
           <p><code><a href="util_append_to_list.html">util_append_to_list()</a></code> </p>
         </td>
         <td><p>Add an item to the end of a list</p></td>
@@ -356,10 +360,6 @@ file <code>data/dataset_id/metadata.yml</code></p></td>
         </td>
         <td><p>Extract a trait element from the definitions$traits$elements</p></td>
       </tr><tr><td>
-          <p><code><a href="util_get_version.html">util_get_version()</a></code> </p>
-        </td>
-        <td><p>Retrieve version for compilation from definitions</p></td>
-      </tr><tr><td>
           <p><code><a href="util_kable_styling_html.html">util_kable_styling_html()</a></code> </p>
         </td>
         <td><p>Format table with kable and default styling for html</p></td>
@@ -388,20 +388,12 @@ file <code>data/dataset_id/metadata.yml</code></p></td>
         </td>
         <td><p>Standardise doi</p></td>
       </tr><tr><td>
-          <p><code><a href="util_strip_taxon_names.html">util_strip_taxon_names()</a></code> </p>
-        </td>
-        <td><p>Strip scientific names of formatting and abbreviations</p></td>
-      </tr><tr><td>
-          <p><code><a href="build_find_taxon.html">build_find_taxon()</a></code> </p>
-        </td>
-        <td><p>Find list of unique datasets within compilation containing specified taxa</p></td>
-      </tr><tr><td>
           <p><code><a href="create_tree_branch.html">create_tree_branch()</a></code> </p>
         </td>
         <td><p>Format a tree structure from a vector</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="functions-used-when-writing-reports">Functions used when writing reports <a href="#functions-used-when-writing-reports" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Functions used inside the template reports (unlikely to be called by users)</p>
+          <h2 id="functions-used-when-writing-reports-private-">Functions used when writing reports (private) <a href="#functions-used-when-writing-reports-private-" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Private functions used inside the template reports. These are only of interest to developers.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="notetaker_start.html">notetaker_start()</a></code> </p>
