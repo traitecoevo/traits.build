@@ -1264,7 +1264,7 @@ select_pipeline_template <- function(method) {
 #' @importFrom rlang .data
 #' @return List of unique datasets within compilation containing each taxon
 #' @export
-build_find_taxon <- function(taxa, austraits, original_name = FALSE) {
+dataset_find_taxon <- function(taxa, austraits, original_name = FALSE) {
 
   data <- austraits$traits
 
