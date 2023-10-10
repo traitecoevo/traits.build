@@ -41,12 +41,13 @@ reference:
     - '`dataset_report`'
     - '`get_schema`'
     - '`get_unit_conversions`'
+    - '`util_get_SHA`'
+    - '`util_get_version`'
 
   - title: Creating metadata files
     desc: functions that help you create metadata files
     contents:
     - '`dataset_test`'
-    - '`dataset_test_worker`'
     - '`metadata_create_template`'
     - '`metadata_check_custom_R_code`'
     - '`metadata_add_traits`'
@@ -63,13 +64,20 @@ reference:
     - '`metadata_remove_taxonomic_change`'
     - '`metadata_update_taxonomic_change`'
     - '`metadata_exclude_observations`'
-    - '`metadata_path_dataset_id`'
-    - '`metadata_user_select_column`'
-    - '`metadata_user_select_names`'
+    - '`dataset_find_taxon`'
 
+  - title: Reading & writing files
+    desc: Enable reading and wring of various file types
+    contents:
+    - '`read_csv_char`'
+    - '`read_metadata`'
+    - '`write_metadata`'
+    - '`read_yaml`'
+    - '`write_yaml`'
+    - '`write_plaintext`'
 
-  - title: Building a compilation - background
-    desc: Functions that are called when building individual datasets and entire compilation, but are less likely to be called by users
+  - title: Building a compilation (private)
+    desc: Private functions that are called in the background when building individual datasets and entire compilation. These are only of interest to developers.
     contents:
     - '`process_add_all_columns`'
     - '`process_convert_units`'
@@ -89,23 +97,16 @@ reference:
     - '`process_standardise_names`'
     - '`process_taxonomic_updates`'
     - '`process_unit_conversion_name`'
-
-  - title: Reading & writing files
-    desc: Enable reading and wring of various file types
-    contents:
-    - '`read_csv_char`'
-    - '`read_metadata`'
+    - '`dataset_test_worker`'
+    - '`metadata_path_dataset_id`'
+    - '`metadata_user_select_column`'
+    - '`metadata_user_select_names`'
     - '`read_metadata_dataset`'
-    - '`read_yaml`'
-    - '`write_metadata`'
     - '`write_metadata_dataset`'
-    - '`write_yaml`'
-    - '`write_plaintext`'
 
   - title: Diverse utility functions for converting and working with various data types
     desc: ~
     contents:
-    - '`util_get_SHA`'
     - '`util_append_to_list`'
     - '`bib_print`'
     - '`util_append_to_list`'
@@ -115,8 +116,6 @@ reference:
     - '`util_df_convert_character`'
     - '`util_df_to_list`'
     - '`util_extract_list_element`'
-    - '`util_get_SHA`'
-    - '`util_get_version`'
     - '`util_kable_styling_html`'
     - '`util_list_to_bib`'
     - '`util_list_to_df1`'
@@ -124,13 +123,10 @@ reference:
     - '`util_replace_null`'
     - '`util_separate_and_sort`'
     - '`util_standardise_doi`'
-    - '`util_strip_taxon_names`'
-    - '`build_find_taxon`'
     - '`create_tree_branch`'
 
-
-  - title: Functions used when writing reports
-    desc: Functions used inside the template reports (unlikely to be called by users)
+  - title: Functions used when writing reports (private)
+    desc: Private functions used inside the template reports. These are only of interest to developers.
     contents:
     - '`notetaker_start`'
     - '`notetaker_add_note`'
