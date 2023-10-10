@@ -18,7 +18,10 @@ navbar:
     icon: fa-list
     href: reference/index.html
   - text: Manual
+    icon: fa-book
     href: https://traitecoevo.github.io/traits.build-book/
+  - text: News
+    href: news/index.html
   right:
   - icon: fa-github fa-lg
     href: https://github.com/traitecoevo/traits.build
