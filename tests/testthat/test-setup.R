@@ -680,10 +680,10 @@ test_that("`build_setup_pipeline` is working", {
 })
 
 
-testthat::test_that("`build_find_taxon` is working", {
+testthat::test_that("`dataset_find_taxon` is working", {
   expect_silent(suppressMessages(austraits <- remake::make("austraits")))
   taxon <- c("Acacia celsa", "Acronychia acidula", "Aleurites rockinghamensis", "Syzygium sayeri")
-  expect_no_error(x <- build_find_taxon(taxon, austraits), label = "`build_find_taxon`")
+  expect_no_error(x <- dataset_find_taxon(taxon, austraits), label = "`dataset_find_taxon`")
   expect_equal(unname(x[[4]]), "Test_2022")
   expect_equal(names(x[[4]]), "Syzygium sayeri")
 })
