@@ -331,17 +331,12 @@ dataset_test_worker <-
         vals <- c("data.csv", "metadata.yml", "raw")
         expect_isin(dir(s), vals, info = paste(f, " - disallowed files"))
 
-
         # `data.csv`
         f <- files[1]
         # Time columns get reformatted
-        expect_silent(data <-
-                        read_csv(
-                          f,
-                          col_types = cols(),
-                          guess_max = 1e5,
-                          progress = FALSE
-                        ))
+        expect_silent(
+          data <- read_csv(f, col_types = cols(), guess_max = 1e5, progress = FALSE)
+        )
         # Check no issues flagged when parsing file
         expect_no_error(
           readr::stop_for_problems(data),
@@ -357,15 +352,18 @@ dataset_test_worker <-
         f <- files[2]
         expect_allowed_text(readLines(f, encoding = "UTF-8"), info = f)
         expect_silent(metadata <- yaml::read_yaml(f))
-        test_list_named_exact(metadata,
-                              schema$metadata$elements %>% names(),
-                              info = f)
+        test_list_named_exact(metadata, schema$metadata$elements %>% names(), info = f)
 
         # Custom R code
         txt <- metadata[["dataset"]][["custom_R_code"]]
+        # Check that `custom_R_code` is immediately followed by `collection_date`
+        expect_equal(
+          metadata[["dataset"]][which(names(metadata[["dataset"]]) == "custom_R_code") + 1] %>% names(),
+          "collection_date",
+          info = sprintf("%s - dataset: the `custom_R_code` field must be followed by `collection_date`", f)
+        )
         #expect_false(grepl("#", txt), label=paste0(files[3], "-custom_R_code cannot contain comments, except on last line"))
-        expect_no_error(process_custom_code(txt)(data),
-                        label = paste0(files[3], " - custom_R_code"))
+        expect_no_error(process_custom_code(txt)(data), label = paste0(files[3], " - custom_R_code"))
 
         # Apply custom manipulations
         data <- process_custom_code(txt)(data)
