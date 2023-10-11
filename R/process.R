@@ -464,7 +464,7 @@ process_create_observation_id <- function(data, metadata) {
       observation_id =
         paste(.data$taxon_name, .data$population_id, .data$individual_id, .data$temporal_context_id,
               .data$entity_type, .data$life_stage, .data$source_id, .data$entity_context_id,
-              .data$basis_of_record, sep = "-") %>%
+              .data$basis_of_record, .data$collection_date, .data$original_name, sep = "-") %>%
         process_generate_id("", sort = TRUE)
     ) %>%
     dplyr::ungroup()
@@ -483,7 +483,7 @@ process_create_observation_id <- function(data, metadata) {
         data[i, ] %>%
         dplyr::group_by(
           .data$dataset_id, .data$observation_id, .data$trait_name, .data$value_type,
-          .data$method_id, .data$method_context_id,
+          .data$method_id, .data$method_context_id
         ) %>%
         dplyr::mutate(
           repeat_measurements_id = dplyr::row_number() %>% process_generate_id("")
@@ -512,7 +512,7 @@ process_create_observation_id <- function(data, metadata) {
       data[i, ] %>%
       dplyr::group_by(
         .data$dataset_id, .data$observation_id, .data$trait_name, .data$value_type,
-        .data$method_id, .data$method_context_id,
+        .data$method_id, .data$method_context_id
       ) %>%
       dplyr::mutate(
         repeat_measurements_id = dplyr::row_number() %>% process_generate_id("")
