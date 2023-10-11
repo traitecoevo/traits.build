@@ -102,7 +102,7 @@ metadata_create_template <- function(dataset_id,
       }
 
       # `repeat_measurements_id`
-      tmp <- menu(c("Yes", "No"), title = "\nDo all traits need `repeat_measurements_id`'s?\n\nIf only some do, specify `repeat_measurements_id: TRUE` at the trait level")
+      tmp <- menu(c("Yes", "No"), title = "\nDo all traits need `repeat_measurements_id`'s?")
 
       if (tmp == 1) {
         repeat_measurements_id <- TRUE
