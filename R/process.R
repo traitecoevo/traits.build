@@ -1601,15 +1601,27 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
           dataset_id = dataset_id,
           source_primary_key = source_primary_key,
           source_primary_citation = bib_print(sources[[source_primary_key]]),
-          source_secondary_key = source_secondary_keys %>% paste(collapse = "; "),
-          source_secondary_citation = ifelse(length(source_secondary_keys) == 0, NA_character_,
-            purrr::map_chr(source_secondary_keys, ~sources[[.x]] %>% bib_print) %>% paste(collapse = "; ") %>%
+          source_secondary_key = ifelse(
+            length(source_secondary_keys) > 0,
+            source_secondary_keys %>% paste(collapse = "; "),
+            NA_character_
+          ),
+          source_secondary_citation = ifelse(
+            length(source_secondary_keys) == 0, NA_character_,
+            purrr::map_chr(source_secondary_keys, ~sources[[.x]] %>% bib_print) %>%
+              paste(collapse = "; ") %>%
               stringr::str_replace_all("\\.;", ";")
-            ),
-          source_original_dataset_key = source_original_dataset_keys %>% paste(collapse = "; "),
-          source_original_dataset_citation = ifelse(length(source_original_dataset_keys) == 0, NA_character_,
-            purrr::map_chr(source_original_dataset_keys, ~sources[[.x]] %>% bib_print) %>% paste(collapse = "; ") %>%
-            stringr::str_replace_all("\\.;", ";")
+          ),
+          source_original_dataset_key = ifelse(
+            length(source_original_dataset_keys) > 0,
+            source_original_dataset_keys %>% paste(collapse = "; "),
+            NA_character_
+          ),
+          source_original_dataset_citation = ifelse(
+            length(source_original_dataset_keys) == 0, NA_character_,
+            purrr::map_chr(source_original_dataset_keys, ~sources[[.x]] %>% bib_print) %>%
+              paste(collapse = "; ") %>%
+              stringr::str_replace_all("\\.;", ";")
           )
         )
       ) %>%
