@@ -8,6 +8,7 @@ This dataset is for testing the following, for long datasets:
 - `source_id` column
 - Locations (latitude and longitude not missing)
 - `repeat_measurements_id` at the trait level, for individuals (using and not using `individual_id`), populations and species (including when it is specified as TRUE and FALSE when a trait is entered twice)
+- Check that `location_id` is NA for species `entity_type` measurements, and hence location-level metadata does not overwrite metadata
 
 Test_2023_4 is a copy of NHNSW_2023 with the following modifications:
 - Subsetted the dataset to only `fruit_colour`, `fruit_dehiscence`, `fruit_length`, `fruit_width` and randomly sampled 200 rows
@@ -24,5 +25,6 @@ Test_2023_4 is a copy of NHNSW_2023 with the following modifications:
 - Added `source_id` column (with NAs)
 - Added two made-up locations
 - Added `leaf_photosynthesis` and `leaf_stomatal_conductance` to test `repeat_measurements_id`, with another `leaf_stomatal_conductance_2` variable that doesn't specify `repeat_measurements_id`
+- See Phyla nodiflora in `data.csv` to test that location-level metadata isn't filled in for the observations since `entity_type` is initially "species"
 
 See output/ for expected output files.
