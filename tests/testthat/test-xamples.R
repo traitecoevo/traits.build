@@ -35,23 +35,6 @@ testthat::test_that("Test Dataset 1 builds correctly", {
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
 
-  # Temporary modifications to get these tests to pass
-  Test_2023_1$traits <-
-    Test_2023_1$traits %>%
-    mutate(across(
-      c(temporal_context_id, entity_context_id, plot_context_id, treatment_context_id, method_context_id),
-      ~if_else(.x == "NA", NA_character_, .x)
-    ))
-  Test_2023_1$methods <-
-    Test_2023_1$methods %>%
-    mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
-  Test_2023_1$excluded_data <-
-    Test_2023_1$excluded_data %>%
-    mutate(across(
-      c(temporal_context_id, entity_context_id, plot_context_id, treatment_context_id, method_context_id),
-      ~if_else(.x == "NA", NA_character_, .x)
-    ))
-
   # Check all tables are equal to expected output tables
   for (v in tables) {
     expect_equal(Test_2023_1[[v]], expected_output[[v]])
@@ -85,19 +68,6 @@ testthat::test_that("Test Dataset 2 builds correctly", {
   )
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
-
-  # Temporary modifications to get these tests to pass
-  columns <- c("basis_of_value", "replicates", "life_stage", "collection_date", "measurement_remarks")
-
-  Test_2023_2$traits <-
-    Test_2023_2$traits %>%
-    mutate(across(dplyr::all_of(columns), as.character))
-  Test_2023_2$methods <-
-    Test_2023_2$methods %>%
-    mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
-  Test_2023_2$excluded_data <-
-    Test_2023_2$excluded_data %>%
-    mutate(across(dplyr::all_of(columns), as.character))
 
   # Check all tables are equal to expected output tables
   for (v in tables) {
@@ -133,19 +103,6 @@ testthat::test_that("Test Dataset 3 builds correctly", {
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
 
-  # Temporary modifications to get these tests to pass
-  columns <- c("basis_of_value", "replicates", "life_stage", "collection_date", "measurement_remarks")
-
-  Test_2023_3$traits <-
-    Test_2023_3$traits %>%
-    mutate(across(dplyr::all_of(columns), as.character))
-  Test_2023_3$methods <-
-    Test_2023_3$methods %>%
-    mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
-  Test_2023_3$excluded_data <-
-    Test_2023_3$excluded_data %>%
-    mutate(across(dplyr::all_of(columns), as.character))
-
   # Check all tables are equal to expected output tables
   for (v in tables) {
     expect_equal(Test_2023_3[[v]], expected_output[[v]])
@@ -179,19 +136,6 @@ testthat::test_that("Test Dataset 4 builds correctly", {
   )
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
-
-  # Temporary modifications to get these tests to pass
-  columns <- c("basis_of_value", "replicates", "life_stage", "collection_date", "measurement_remarks")
-
-  Test_2023_4$traits <-
-    Test_2023_4$traits %>%
-    mutate(across(dplyr::all_of(columns), as.character))
-  Test_2023_4$methods <-
-    Test_2023_4$methods %>%
-    mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
-  Test_2023_4$excluded_data <-
-    Test_2023_4$excluded_data %>%
-    mutate(across(dplyr::all_of(columns), as.character))
 
   # Check all tables are equal to expected output tables
   for (v in tables) {
@@ -255,19 +199,6 @@ testthat::test_that("Test Dataset 7 builds correctly", {
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
 
-  # Temporary modifications to get these tests to pass
-  columns <- c("basis_of_value", "replicates", "life_stage", "collection_date", "measurement_remarks")
-
-  Test_2023_7$traits <-
-    Test_2023_7$traits %>%
-    mutate(across(dplyr::all_of(columns), as.character))
-  Test_2023_7$methods <-
-    Test_2023_7$methods %>%
-    mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
-  Test_2023_7$excluded_data <-
-    Test_2023_7$excluded_data %>%
-    mutate(across(dplyr::all_of(columns), as.character))
-
   # Check all tables are equal to expected output tables
   for (v in tables) {
     expect_equal(Test_2023_7[[v]], expected_output[[v]])
@@ -301,19 +232,6 @@ testthat::test_that("Test Dataset 8 builds correctly", {
   )
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
-
-  # Temporary modifications to get these tests to pass
-  columns <- c("basis_of_value", "replicates", "life_stage", "collection_date", "measurement_remarks")
-
-  Test_2023_8$traits <-
-    Test_2023_8$traits %>%
-    mutate(across(dplyr::all_of(columns), as.character))
-  Test_2023_8$methods <-
-    Test_2023_8$methods %>%
-    mutate(across(c(source_secondary_key, source_original_dataset_key), ~NA_character_))
-  Test_2023_8$excluded_data <-
-    Test_2023_8$excluded_data %>%
-    mutate(across(dplyr::all_of(columns), as.character))
 
   # Check all tables are equal to expected output tables
   for (v in tables) {
