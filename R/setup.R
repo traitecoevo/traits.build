@@ -931,13 +931,13 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
 
     for (i in seq_len(nrow(taxonomic_updates))) {
       # Check if the taxonomic update already exists
-      if (taxonomic_updates[i,]$find %in% existing_updates$find) {
+      if (taxonomic_updates[i, ]$find %in% existing_updates$find) {
         # Overwrite existing taxonomic update if TRUE
-        existing_updates[which(existing_updates$find == taxonomic_updates[i,]$find),] <- taxonomic_updates[i,]
-        already_exist <- c(already_exist, taxonomic_updates[i,]$find)
+        existing_updates[which(existing_updates$find == taxonomic_updates[i, ]$find), ] <- taxonomic_updates[i, ]
+        already_exist <- c(already_exist, taxonomic_updates[i, ]$find)
       } else {
         # Otherwise, bind to end of existing taxonomic updates
-        existing_updates <- existing_updates %>% dplyr::bind_rows(taxonomic_updates[i,])
+        existing_updates <- existing_updates %>% dplyr::bind_rows(taxonomic_updates[i, ])
       }
     }
 
@@ -1266,7 +1266,7 @@ select_pipeline_template <- function(method) {
 #' @importFrom rlang .data
 #' @return List of unique datasets within compilation containing each taxon
 #' @export
-build_find_taxon <- function(taxa, austraits, original_name = FALSE) {
+dataset_find_taxon <- function(taxa, austraits, original_name = FALSE) {
 
   data <- austraits$traits
 

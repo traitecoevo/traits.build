@@ -69,21 +69,6 @@ test_that("`util_separate_and_sort` returns alphabetically sorted characters", {
 })
 
 
-test_that("`util_strip_taxon_names` is working", {
-  v1 <-  c("banksia serrata", "Banksia_serrata", "banksia  serrata", "Banksia Serrata")
-  v2 <- util_strip_taxon_names(v1)
-
-  expect_true(all(v2 == v1[1]))
-  expect_equal(length(v1), length(v2))
-
-  v1 <- c("banksia serrata spinulosa", "Banksia_serrata var. SpinUlosa",
-          "banksia  serrata s.l. spinulosa", "Banksia Serrata aff. spinulosa")
-  v2 <- util_strip_taxon_names(v1)
-
-  expect_true(all(v2 == v1[1]))
-  expect_equal(length(v1), length(v2))
-})
-
 
 test_that("testing env is working", {
   expect_true(is_testing_env())
