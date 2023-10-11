@@ -13,6 +13,7 @@ This dataset is for testing the following, for long datasets:
 - Types of trait data -- numeric (entered as either true numeric type or character type) and categorical, time (e.g. `flowering_time`)
 - Excluded values, such as out of allowable range, invalid categorical values, invalid time values
 - Substitutions work for categorical and time traits, replacing with NA or finding NA
+- Check that `location_id` is NA for species `entity_type` measurements
 
 
 Test_2023_3 is a copy of NHNSW_2023 with the following modifications:

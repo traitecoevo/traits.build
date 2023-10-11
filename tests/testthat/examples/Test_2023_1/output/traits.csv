@@ -23,7 +23,7 @@ Test_2023_1,Acacia celsa,005,leaf_stomatal_conductance,0.8,mol{H2O}/m2/s,populat
 Test_2023_1,Acacia celsa,005,leaf_stomatal_conductance,0.7,mol{H2O}/m2/s,population,raw,measurement,1,field,adult,04,,03,,,02,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
 Test_2023_1,Acacia celsa,005,leaf_stomatal_conductance,0.66,mol{H2O}/m2/s,population,raw,measurement,1,field,adult,04,,04,,,02,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
 Test_2023_1,Acacia celsa,005,leaf_stomatal_conductance,0.3,mol{H2O}/m2/s,population,raw,measurement,1,field,adult,04,,05,,,02,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
-Test_2023_1,Acacia celsa,006,plant_growth_form,herb,,species,mode,expert_score,3,field,adult,,,,02,,01,04,01,01,2004/2004,from Falster_2005_1,01,07,Acacia celsa
+Test_2023_1,Acacia celsa,006,plant_growth_form,herb,,species,mode,expert_score,3,field,adult,,,,02,,,04,01,01,2004/2004,from Falster_2005_1,01,07,Acacia celsa
 Test_2023_1,Acmena graveolens,008,huber_value,0.000139742873113471,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,,,,,02,10,,,2002/2002,made-up measurement remarks,04,01,Acmena graveolens
 Test_2023_1,Acmena graveolens,008,huber_value,0.000139742873113471,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,,,,,02,10,,,2002/2002,made-up measurement remarks,05,,Acmena graveolens
 Test_2023_1,Acmena graveolens,008,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,01,,Acmena graveolens
@@ -49,7 +49,7 @@ Test_2023_1,Acronychia acidula,013,leaf_area,14302,mm2,population,mean,measureme
 Test_2023_1,Acronychia acidula,013,leaf_mass_per_area,85,g/m2,population,mean,measurement,3,field,adult,03,,,02,,01,06,02,01,2004/2004,from Falster_2005_1,01,07,Acronychia acidula
 Test_2023_1,Acronychia acidula,013,seed_dry_mass,3--4,mg,population,bin,measurement,10,field,adult,03,,,02,,01,06,02,01,2004/2004,from Falster_2005_1,02,07,Acronychia acidula
 Test_2023_1,Acronychia acidula,013,wood_density,0.525,mg/mm3,population,mean,measurement,3,field,adult,03,,,02,,01,06,02,01,2004/2004,from Falster_2005_1,01,07,Acronychia acidula
-Test_2023_1,Acronychia acidula,014,plant_growth_form,shrub,,species,mode,expert_score,3,field,adult,,,,02,,01,06,02,01,2004/2004,from Falster_2005_1,01,07,Acronychia acidula
+Test_2023_1,Acronychia acidula,014,plant_growth_form,shrub,,species,mode,expert_score,3,field,adult,,,,02,,,06,02,01,2004/2004,from Falster_2005_1,01,07,Acronychia acidula
 Test_2023_1,Aleurites rockinghamensis,016,flowering_time,yynnnnnnnnny,,individual,mode,expert_score,3,field,adult,04,,,,,02,11,,,2004/2004,from Falster_2005_1,01,,Aleurites rockinghamensis
 Test_2023_1,Aleurites rockinghamensis,016,huber_value,0.000161056530842326,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,,,,,02,11,,,2002/2002,made-up measurement remarks,04,01,Aleurites rockinghamensis
 Test_2023_1,Aleurites rockinghamensis,016,huber_value,0.000161056530842326,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,,,,,02,11,,,2002/2002,made-up measurement remarks,05,,Aleurites rockinghamensis
@@ -77,7 +77,7 @@ Test_2023_1,Alphitonia petriei,021,leaf_mass_per_area,149,g/m2,population,mean,m
 Test_2023_1,Alphitonia petriei,021,seed_dry_mass,27.2,mg,population,mean,measurement,3,field,adult,05,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
 Test_2023_1,Alphitonia petriei,021,seed_dry_mass,3--4,mg,population,bin,measurement,10,field,adult,05,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,02,,Alphitonia petriei
 Test_2023_1,Alphitonia petriei,021,wood_density,0.413,mg/mm3,population,mean,measurement,3,field,adult,05,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
-Test_2023_1,Alphitonia petriei,022,plant_growth_form,mallee mallee shrub tree tree,,species,mode,expert_score,3,field,adult,,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
+Test_2023_1,Alphitonia petriei,022,plant_growth_form,mallee mallee shrub tree tree,,species,mode,expert_score,3,field,adult,,,,02,,,14,03,02,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
 Test_2023_1,Alstonia scholaris,024,huber_value,0.000254323499491353,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,,,,,02,11,,,2002/2002,made-up measurement remarks,04,01,Alstonia scholaris
 Test_2023_1,Alstonia scholaris,024,huber_value,0.000254323499491353,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,,,,,02,11,,,2002/2002,made-up measurement remarks,05,,Alstonia scholaris
 Test_2023_1,Alstonia scholaris,024,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,,,,,02,11,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
@@ -89,11 +89,11 @@ Test_2023_1,Alstonia scholaris,025,leaf_area,6182,mm2,population,mean,measuremen
 Test_2023_1,Alstonia scholaris,025,leaf_mass_per_area,107,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,11,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
 Test_2023_1,Alstonia scholaris,025,seed_dry_mass,1.53,mg,population,mean,measurement,3,field,adult,04,,,,,02,11,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
 Test_2023_1,Alstonia scholaris,025,wood_density,0.361,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,11,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
-Test_2023_1,Alstonia scholaris,026,plant_growth_form,herb,,species,mode,expert_score,3,field,adult,,,,,,02,11,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
-Test_2023_1,Alstonia scholaris,027,leaf_stomatal_conductance,0.1,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,01,,,02,,,,2004/2004,from Falster_2005_1,02,,Alstonia scholaris
-Test_2023_1,Alstonia scholaris,027,leaf_stomatal_conductance,0.2,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,02,,,01,,,,2004/2004,from Falster_2005_1,02,,Alstonia scholaris
-Test_2023_1,Alstonia scholaris,027,leaf_stomatal_conductance,0.9,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Alstonia scholaris
-Test_2023_1,Alstonia scholaris,027,leaf_stomatal_conductance,0.88,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Alstonia scholaris
+Test_2023_1,Alstonia scholaris,026,plant_growth_form,herb,,species,mode,expert_score,3,field,adult,,,,,,,11,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
+Test_2023_1,Alstonia scholaris,027,leaf_stomatal_conductance,0.1,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,01,,,,,,,2004/2004,from Falster_2005_1,02,,Alstonia scholaris
+Test_2023_1,Alstonia scholaris,027,leaf_stomatal_conductance,0.2,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,02,,,,,,,2004/2004,from Falster_2005_1,02,,Alstonia scholaris
+Test_2023_1,Alstonia scholaris,027,leaf_stomatal_conductance,0.9,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Alstonia scholaris
+Test_2023_1,Alstonia scholaris,027,leaf_stomatal_conductance,0.88,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Alstonia scholaris
 Test_2023_1,Argyrodendron peralatum,028,huber_value,0.000148853825543316,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,10,,,,,02,12,,01,2002/2002,made-up measurement remarks,04,01,Argyrodendron peralatum
 Test_2023_1,Argyrodendron peralatum,028,huber_value,0.000148853825543316,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,10,,,,,02,12,,01,2002/2002,made-up measurement remarks,05,,Argyrodendron peralatum
 Test_2023_1,Argyrodendron peralatum,028,leaf_length,40,mm,individual,mean,measurement,3,field,adult,10,,,,,02,12,,01,2004/2004,from Falster_2005_1,01,,Argyrodendron peralatum
@@ -115,7 +115,7 @@ Test_2023_1,Atractocarpus hirtus,032,leaf_N_per_dry_mass,15.7,mg/g,population,me
 Test_2023_1,Atractocarpus hirtus,032,leaf_area,11374,mm2,population,mean,measurement,3,field,adult,10,,,,,02,13,,01,2004/2004,from Falster_2005_1,01,,Atractocarpus hirtus
 Test_2023_1,Atractocarpus hirtus,032,leaf_mass_per_area,72,g/m2,population,mean,measurement,3,field,adult,10,,,,,02,13,,01,2004/2004,from Falster_2005_1,01,,Atractocarpus hirtus
 Test_2023_1,Atractocarpus hirtus,032,wood_density,0.804,mg/mm3,population,mean,measurement,3,field,adult,10,,,,,02,13,,01,2004/2004,from Falster_2005_1,01,,Atractocarpus hirtus
-Test_2023_1,Atractocarpus hirtus,033,plant_growth_form,tree,,species,mode,expert_score,3,field,adult,,,,,,02,13,,01,2004/2004,from Falster_2005_1,01,,Atractocarpus hirtus
+Test_2023_1,Atractocarpus hirtus,033,plant_growth_form,tree,,species,mode,expert_score,3,field,adult,,,,,,,13,,01,2004/2004,from Falster_2005_1,01,,Atractocarpus hirtus
 Test_2023_1,Brombya platynema,034,huber_value,0.000185977310768086,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,11,,,,,02,16,,02,2002/2002,made-up measurement remarks,04,01,Brombya platynema
 Test_2023_1,Brombya platynema,034,huber_value,0.000185977310768086,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,11,,,,,02,16,,02,2002/2002,made-up measurement remarks,05,,Brombya platynema
 Test_2023_1,Brombya platynema,034,leaf_length,40,mm,individual,mean,measurement,3,field,adult,11,,,,,02,16,,02,2004/2004,from Falster_2005_1,01,,Brombya platynema
@@ -126,9 +126,9 @@ Test_2023_1,Brombya platynema,035,leaf_N_per_dry_mass,18.8,mg/g,population,mean,
 Test_2023_1,Brombya platynema,035,leaf_area,8218,mm2,population,mean,measurement,3,field,adult,11,,,,,02,16,,02,2004/2004,from Falster_2005_1,01,,Brombya platynema
 Test_2023_1,Brombya platynema,035,leaf_mass_per_area,106,g/m2,population,mean,measurement,3,field,adult,11,,,,,02,16,,02,2004/2004,from Falster_2005_1,01,,Brombya platynema
 Test_2023_1,Brombya platynema,035,wood_density,0.603,mg/mm3,population,mean,measurement,3,field,adult,11,,,,,02,16,,02,2004/2004,from Falster_2005_1,01,,Brombya platynema
-Test_2023_1,Brombya platynema,036,plant_growth_form,tree,,species,mode,expert_score,3,field,adult,,,,,,02,16,,02,2004/2004,from Falster_2005_1,01,,Brombya platynema
-Test_2023_1,Brombya platynema,037,leaf_stomatal_conductance,0.35,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,01,,,01,,,,2004/2004,from Falster_2005_1,02,,Brombya platynema
-Test_2023_1,Brombya platynema,037,leaf_stomatal_conductance,0.25,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Brombya platynema
+Test_2023_1,Brombya platynema,036,plant_growth_form,tree,,species,mode,expert_score,3,field,adult,,,,,,,16,,02,2004/2004,from Falster_2005_1,01,,Brombya platynema
+Test_2023_1,Brombya platynema,037,leaf_stomatal_conductance,0.35,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,01,,,,,,,2004/2004,from Falster_2005_1,02,,Brombya platynema
+Test_2023_1,Brombya platynema,037,leaf_stomatal_conductance,0.25,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Brombya platynema
 Test_2023_1,Cardwellia sublimis,038,huber_value,0.000120743781695243,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,11,,,,,02,16,,02,2002/2002,made-up measurement remarks,04,01,Cardwellia sublimis
 Test_2023_1,Cardwellia sublimis,038,huber_value,0.000120743781695243,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,11,,,,,02,16,,02,2002/2002,made-up measurement remarks,05,,Cardwellia sublimis
 Test_2023_1,Cardwellia sublimis,038,leaf_length,40,mm,individual,mean,measurement,3,field,adult,11,,,,,02,16,,02,2004/2004,from Falster_2005_1,01,,Cardwellia sublimis
@@ -140,7 +140,7 @@ Test_2023_1,Cardwellia sublimis,039,leaf_area,4352,mm2,population,mean,measureme
 Test_2023_1,Cardwellia sublimis,039,leaf_mass_per_area,127,g/m2,population,mean,measurement,3,field,adult,11,,,,,02,16,,02,2004/2004,from Falster_2005_1,01,,Cardwellia sublimis
 Test_2023_1,Cardwellia sublimis,039,seed_dry_mass,582.3,mg,population,mean,measurement,3,field,adult,11,,,,,02,16,,02,2004/2004,from Falster_2005_1,01,,Cardwellia sublimis
 Test_2023_1,Cardwellia sublimis,039,wood_density,0.603,mg/mm3,population,mean,measurement,3,field,adult,11,,,,,02,16,,02,2004/2004,from Falster_2005_1,01,,Cardwellia sublimis
-Test_2023_1,Cardwellia sublimis,040,plant_growth_form,tree,,species,mode,expert_score,3,field,adult,,,,,,02,16,,02,2004/2004,from Falster_2005_1,01,,Cardwellia sublimis
+Test_2023_1,Cardwellia sublimis,040,plant_growth_form,tree,,species,mode,expert_score,3,field,adult,,,,,,,16,,02,2004/2004,from Falster_2005_1,01,,Cardwellia sublimis
 Test_2023_1,Castanospermum australe,041,huber_value,0.000112752283233735,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,12,,,,,02,03,,03,2002/2002,made-up measurement remarks,04,01,Castanospermum australe
 Test_2023_1,Castanospermum australe,041,huber_value,0.000112752283233735,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,12,,,,,02,03,,03,2002/2002,made-up measurement remarks,05,,Castanospermum australe
 Test_2023_1,Castanospermum australe,041,leaf_length,40,mm,individual,mean,measurement,3,field,adult,12,,,,,02,03,,03,2004/2004,from Falster_2005_1,01,,Castanospermum australe
@@ -162,12 +162,12 @@ Test_2023_1,Cleistanthus myrianthus,045,leaf_area,4828,mm2,population,mean,measu
 Test_2023_1,Cleistanthus myrianthus,045,leaf_mass_per_area,78,g/m2,population,mean,measurement,3,field,adult,12,,,,,02,08,,03,2004/2004,from Falster_2005_1,01,,Cleistanthus myrianthus
 Test_2023_1,Cleistanthus myrianthus,045,seed_dry_mass,3--4,mg,population,bin,measurement,10,field,adult,12,,,,,02,08,,03,2004/2004,from Falster_2005_1,02,,Cleistanthus myrianthus
 Test_2023_1,Cleistanthus myrianthus,045,wood_density,0.588,mg/mm3,population,mean,measurement,3,field,adult,12,,,,,02,08,,03,2004/2004,from Falster_2005_1,01,,Cleistanthus myrianthus
-Test_2023_1,Cleistanthus myrianthus,047,leaf_stomatal_conductance,0.4,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,01,,,01,,,,2004/2004,from Falster_2005_1,02,,Cleistanthus myrianthus
-Test_2023_1,Cleistanthus myrianthus,047,leaf_stomatal_conductance,0.32,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,02,,,01,,,,2004/2004,from Falster_2005_1,02,,Cleistanthus myrianthus
-Test_2023_1,Cleistanthus myrianthus,047,leaf_stomatal_conductance,0.3,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,03,,,01,,,,2004/2004,from Falster_2005_1,02,,Cleistanthus myrianthus
-Test_2023_1,Cleistanthus myrianthus,047,leaf_stomatal_conductance,0.34,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
-Test_2023_1,Cleistanthus myrianthus,047,leaf_stomatal_conductance,0.44,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
-Test_2023_1,Cleistanthus myrianthus,047,leaf_stomatal_conductance,0.56,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
+Test_2023_1,Cleistanthus myrianthus,047,leaf_stomatal_conductance,0.4,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,01,,,,,,,2004/2004,from Falster_2005_1,02,,Cleistanthus myrianthus
+Test_2023_1,Cleistanthus myrianthus,047,leaf_stomatal_conductance,0.32,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,02,,,,,,,2004/2004,from Falster_2005_1,02,,Cleistanthus myrianthus
+Test_2023_1,Cleistanthus myrianthus,047,leaf_stomatal_conductance,0.3,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,03,,,,,,,2004/2004,from Falster_2005_1,02,,Cleistanthus myrianthus
+Test_2023_1,Cleistanthus myrianthus,047,leaf_stomatal_conductance,0.34,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
+Test_2023_1,Cleistanthus myrianthus,047,leaf_stomatal_conductance,0.44,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
+Test_2023_1,Cleistanthus myrianthus,047,leaf_stomatal_conductance,0.56,mol{H2O}/m2/s,species,raw,measurement,1,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
 Test_2023_1,Cryptocarya laevigata,048,huber_value,0.000131787032156036,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,,,,,02,08,,,2002/2002,made-up measurement remarks,04,01,Cryptocarya laevigata
 Test_2023_1,Cryptocarya laevigata,048,huber_value,0.000131787032156036,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,,,,,02,08,,,2002/2002,made-up measurement remarks,05,,Cryptocarya laevigata
 Test_2023_1,Cryptocarya laevigata,048,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,,,,,02,08,,,2004/2004,from Falster_2005_1,01,,Cryptocarya laevigata
@@ -312,7 +312,7 @@ Test_2023_1,Homalanthus novo-guineensis,085,leaf_area,10682,mm2,population,mean,
 Test_2023_1,Homalanthus novo-guineensis,085,leaf_mass_per_area,82,g/m2,population,mean,measurement,3,field,adult,07,,,,,01,14,01,03,2004/2004,from Falster_2005_1,01,11,Homalanthus novoguineensis
 Test_2023_1,Homalanthus novo-guineensis,085,seed_dry_mass,7,mg,population,mean,measurement,3,field,adult,07,,,,,01,14,01,03,2004/2004,from Falster_2005_1,01,11,Homalanthus novoguineensis
 Test_2023_1,Homalanthus novo-guineensis,085,wood_density,0.319,mg/mm3,population,mean,measurement,3,field,adult,07,,,,,01,14,01,03,2004/2004,from Falster_2005_1,01,11,Homalanthus novoguineensis
-Test_2023_1,Homalanthus novo-guineensis,086,plant_growth_form,climber,,species,mode,expert_score,3,field,adult,,,,,,01,14,01,03,2004/2004,from Falster_2005_1,01,11,Homalanthus novoguineensis
+Test_2023_1,Homalanthus novo-guineensis,086,plant_growth_form,climber,,species,mode,expert_score,3,field,adult,,,,,,,14,01,03,2004/2004,from Falster_2005_1,01,11,Homalanthus novoguineensis
 Test_2023_1,Ixora biflora,087,huber_value,0.000123548307388189,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,,,,,02,,,,2002/2002,made-up measurement remarks,04,01,Ixora biflora
 Test_2023_1,Ixora biflora,087,huber_value,0.000123548307388189,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,,,,,02,,,,2002/2002,made-up measurement remarks,05,,Ixora biflora
 Test_2023_1,Ixora biflora,087,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Ixora biflora
@@ -404,7 +404,7 @@ Test_2023_1,Melicope elleryana,109,leaf_area,6955,mm2,population,mean,measuremen
 Test_2023_1,Melicope elleryana,109,leaf_mass_per_area,75,g/m2,population,mean,measurement,3,field,adult,07,,,01,,01,,01,03,2004/2004,from Falster_2005_1,01,,Melicope elleryana
 Test_2023_1,Melicope elleryana,109,seed_dry_mass,1.61,mg,population,mean,measurement,3,field,adult,07,,,01,,01,,01,03,2004/2004,from Falster_2005_1,01,,Melicope elleryana
 Test_2023_1,Melicope elleryana,109,wood_density,0.346,mg/mm3,population,mean,measurement,3,field,adult,07,,,01,,01,,01,03,2004/2004,from Falster_2005_1,01,,Melicope elleryana
-Test_2023_1,Melicope elleryana,110,plant_growth_form,geophyte,,species,mode,expert_score,3,field,adult,,,,01,,01,,01,03,2004/2004,from Falster_2005_1,01,,Melicope elleryana
+Test_2023_1,Melicope elleryana,110,plant_growth_form,geophyte,,species,mode,expert_score,3,field,adult,,,,01,,,,01,03,2004/2004,from Falster_2005_1,01,,Melicope elleryana
 Test_2023_1,Myristica insipida,111,huber_value,0.000107839965491211,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,,,,,02,,,,2002/2002,made-up measurement remarks,04,01,Myristica insipida
 Test_2023_1,Myristica insipida,111,huber_value,0.000107839965491211,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,,,,,02,,,,2002/2002,made-up measurement remarks,05,,Myristica insipida
 Test_2023_1,Myristica insipida,111,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Myristica insipida
@@ -428,7 +428,7 @@ Test_2023_1,Neolitsea dealbata,115,leaf_area,5228,mm2,population,mean,measuremen
 Test_2023_1,Neolitsea dealbata,115,leaf_mass_per_area,93,g/m2,population,mean,measurement,3,field,adult,08,,,01,,01,,01,,2004/2004,from Falster_2005_1,01,,Neolitsea dealbata
 Test_2023_1,Neolitsea dealbata,115,seed_dry_mass,176.1,mg,population,mean,measurement,3,field,adult,08,,,01,,01,,01,,2004/2004,from Falster_2005_1,01,,Neolitsea dealbata
 Test_2023_1,Neolitsea dealbata,115,wood_density,0.352,mg/mm3,population,mean,measurement,3,field,adult,08,,,01,,01,,01,,2004/2004,from Falster_2005_1,01,,Neolitsea dealbata
-Test_2023_1,Neolitsea dealbata,116,plant_growth_form,geophyte,,species,mode,expert_score,3,field,adult,,,,01,,01,,01,,2004/2004,from Falster_2005_1,01,,Neolitsea dealbata
+Test_2023_1,Neolitsea dealbata,116,plant_growth_form,geophyte,,species,mode,expert_score,3,field,adult,,,,01,,,,01,,2004/2004,from Falster_2005_1,01,,Neolitsea dealbata
 Test_2023_1,Pittosporum rubiginosum,117,huber_value,0.00015271838729383,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,,,,,02,,,,2002/2002,made-up measurement remarks,04,01,Pittosporum rubiginosum
 Test_2023_1,Pittosporum rubiginosum,117,huber_value,0.00015271838729383,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,,,,,02,,,,2002/2002,made-up measurement remarks,05,,Pittosporum rubiginosum
 Test_2023_1,Pittosporum rubiginosum,117,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Pittosporum rubiginosum
@@ -450,7 +450,7 @@ Test_2023_1,Polyscias australiana,121,leaf_area,6806,mm2,population,mean,measure
 Test_2023_1,Polyscias australiana,121,leaf_mass_per_area,79,g/m2,population,mean,measurement,3,field,adult,09,,,01,,01,07,02,,2004/2004,from Falster_2005_1,01,,Polyscias australiana
 Test_2023_1,Polyscias australiana,121,seed_dry_mass,8.35,mg,population,mean,measurement,3,field,adult,09,,,01,,01,07,02,,2004/2004,from Falster_2005_1,01,,Polyscias australiana
 Test_2023_1,Polyscias australiana,121,wood_density,0.397,mg/mm3,population,mean,measurement,3,field,adult,09,,,01,,01,07,02,,2004/2004,from Falster_2005_1,01,,Polyscias australiana
-Test_2023_1,Polyscias australiana,122,plant_growth_form,tree,,species,mode,expert_score,3,field,adult,,,,01,,01,07,02,,2004/2004,from Falster_2005_1,01,,Polyscias australiana
+Test_2023_1,Polyscias australiana,122,plant_growth_form,tree,,species,mode,expert_score,3,field,adult,,,,01,,,07,02,,2004/2004,from Falster_2005_1,01,,Polyscias australiana
 Test_2023_1,Psychotria dallachiana,123,huber_value,0.000210039907582441,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,,,,,02,,,,2002/2002,made-up measurement remarks,04,01,Psychotria dallachiana
 Test_2023_1,Psychotria dallachiana,123,huber_value,0.000210039907582441,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,,,,,02,,,,2002/2002,made-up measurement remarks,05,,Psychotria dallachiana
 Test_2023_1,Psychotria dallachiana,123,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Psychotria dallachiana
@@ -495,7 +495,7 @@ Test_2023_1,Rhodomyrtus trineura,133,leaf_N_per_dry_mass,11.1,mg/g,population,me
 Test_2023_1,Rhodomyrtus trineura,133,leaf_area,3401,mm2,population,mean,measurement,3,field,adult,02,,,,,01,15,,,2004/2004,from Falster_2005_1,01,,Rhodomyrtus trineura
 Test_2023_1,Rhodomyrtus trineura,133,leaf_mass_per_area,129,g/m2,population,mean,measurement,3,field,adult,02,,,,,01,15,,,2004/2004,from Falster_2005_1,01,,Rhodomyrtus trineura
 Test_2023_1,Rhodomyrtus trineura,133,wood_density,0.763,mg/mm3,population,mean,measurement,3,field,adult,02,,,,,01,15,,,2004/2004,from Falster_2005_1,01,,Rhodomyrtus trineura
-Test_2023_1,Rhodomyrtus trineura,134,plant_growth_form,tree,,species,mode,expert_score,3,field,adult,,,,,,01,15,,,2004/2004,from Falster_2005_1,01,,Rhodomyrtus trineura
+Test_2023_1,Rhodomyrtus trineura,134,plant_growth_form,tree,,species,mode,expert_score,3,field,adult,,,,,,,15,,,2004/2004,from Falster_2005_1,01,,Rhodomyrtus trineura
 Test_2023_1,Rockinghamia angustifolia,135,huber_value,0.000163988192850115,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,,,,,02,,,,2002/2002,made-up measurement remarks,04,01,Rockinghamia angustifolia
 Test_2023_1,Rockinghamia angustifolia,135,huber_value,0.000163988192850115,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,,,,,02,,,,2002/2002,made-up measurement remarks,05,,Rockinghamia angustifolia
 Test_2023_1,Rockinghamia angustifolia,135,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Rockinghamia angustifolia

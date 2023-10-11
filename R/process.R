@@ -124,6 +124,11 @@ dataset_process <- function(filename_data_raw,
         by = c("location_name"),
         locations %>% dplyr::select(dplyr::all_of(c("location_name", "location_id"))) %>% dplyr::distinct()
       )
+    traits <-
+      traits %>%
+      mutate(
+        location_id = ifelse(.data$entity_type == "species", NA_character_, .data$location_id)
+      )
   }
 
   # Where missing, fill variables in traits table with values from locations
