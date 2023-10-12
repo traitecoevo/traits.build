@@ -768,10 +768,8 @@ dataset_test_worker <-
         testthat::expect_equal(
           dataset$traits %>%
             select(
-              dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "source_id", "taxon_name",
-              "entity_type", "life_stage", "basis_of_record", "value_type", "population_id", "individual_id",
-              "repeat_measurements_id", "temporal_context_id", "method_id", "method_context_id", "entity_context_id",
-              "original_name"))
+              dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "value_type",
+              "repeat_measurements_id", "method_id", "method_context_id"))
             ) %>%
             tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
             tidyr::pivot_longer(cols = 17:ncol(.)) %>%
