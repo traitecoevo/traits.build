@@ -11,7 +11,7 @@ This dataset is for testing the following, for wide datasets:
 - Check that `location_id` is NA for species `entity_type` measurements
 
 Test_2023_2 is a copy of Falster_2005_1 with the following modifications:
-- Added `replicates` as a column, with also trait-level and location-level metadata (included some NAs)
+- Added `replicates` as a column, with also trait-level metadata (included some NAs)
 - Added `basis_of_value` as a column at the trait level, with also some traits with fixed values (included some NAs)
 - Added `value_type` as a column at the trait-level ("LASA1000"), not dataset-level (fixed value at dataset level) (included NAs in column)
 - Added `basis_of_record`, `life_stage` as dataset-level, trait-level and location-level metadata

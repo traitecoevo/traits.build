@@ -58,7 +58,6 @@ locations:
     description: Complex mesophyll vine forest in tropical rain forest.
     elevation (m): 25
     rainfall (mm): 3500
-    replicates: 10
     life_stage: juvenile
     basis_of_record: field_experiment
     collection_date: '2002/2003'

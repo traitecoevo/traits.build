@@ -125,7 +125,6 @@ locations:
     description: First made-up location for testing
     entity_type: population
     life_stage: juvenile
-    replicates: 2
   australia_2:
     latitude (deg): -27.158
     longitude (deg): 142.685
