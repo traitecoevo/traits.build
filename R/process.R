@@ -159,7 +159,6 @@ dataset_process <- function(filename_data_raw,
   }
 
   traits <- traits %>%
-    mutate(unit = ifelse(!is.na(.data$unit_in), .data$unit_in, .data$unit)) %>%
     process_flag_unsupported_traits(definitions) %>%
     process_flag_excluded_observations(metadata) %>%
     process_flag_unsupported_characters() %>%
@@ -1161,9 +1160,9 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
     dplyr::mutate(
       i = match(.data$trait_name, names(definitions)),
       to = util_extract_list_element(.data$i, definitions, "units"),
-      ucn = process_unit_conversion_name(.data$unit, .data$to),
+      ucn = process_unit_conversion_name(.data$unit_in, .data$to),
       type = util_extract_list_element(.data$i, definitions, "type"),
-      to_convert =  ifelse(is.na(.data$error), (.data$type == "numeric" & .data$unit != .data$to), FALSE))
+      to_convert = ifelse(is.na(.data$error), (.data$type == "numeric" & .data$unit_in != .data$to), FALSE))
 
   # Identify anything problematic in conversions and drop
   j <- is.na(data[["to_convert"]]) |
@@ -1202,7 +1201,7 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
                       !is.na(.data$value),                          # value not NA - the full matrix from data.csv file is still in data table
                       f_range_bin(.data$value, .data$ucn[1]),       # convert value to appropriate units
                      .data$value),                                  # if conditions not met, keep original value
-      unit = ifelse(.data$to_convert, .data$to, .data$unit)
+      unit = ifelse(.data$to_convert, .data$to, .data$unit_in)
     ) %>%
     dplyr::ungroup() %>%
     dplyr::select(dplyr::any_of(vars))
@@ -1482,11 +1481,9 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   }
 
   # Now process any name changes as per metadata[["traits"]]
-  out[["unit"]] <- NA_character_
   i <- match(out[["trait_name"]], traits_table[["var_in"]])
   if (length(i) > 0) {
     j <- !is.na(i)
-    out[["unit"]][j] <- traits_table[["unit_in"]][i[j]]
     out[["trait_name"]][j] <- traits_table[["trait_name"]][i[j]]
   }
 
