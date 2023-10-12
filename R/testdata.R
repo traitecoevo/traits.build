@@ -772,11 +772,10 @@ dataset_test_worker <-
               "repeat_measurements_id", "method_id", "method_context_id"))
             ) %>%
             tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
-            tidyr::pivot_longer(cols = 17:ncol(.)) %>%
+            tidyr::pivot_longer(cols = 7:ncol(.)) %>%
             dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
             select(
-              dplyr::all_of(c("dataset_id", "taxon_name", "trait_name", "number_of_duplicates", "observation_id",
-              "entity_type", "value_type", "population_id")), everything()
+              dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates", "observation_id", "value_type")), everything()
             ) %>%
             filter(.data$number_of_duplicates > 1) %>%
             nrow(),
