@@ -20,6 +20,7 @@ This dataset is for testing the following, for wide datasets:
 - `collection_date` read in from multiple different columns at the trait level for multiple traits (affecting `observation_id`)
 - Two rows with different `original_name`'s that merge into one `taxon_name` have correct `observation_id`'s #TODO
 - Check that `location_id` is NA for species `entity_type` measurements
+- Check that time data type can be substituted without issues with reformatting
 
 Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - `entity_type` and `replicates` were moved to dataset level fixed value in metadata.yml, except for `flowering_time`, `huber_value` (LASA1000), `plant_growth_form`, `leaf_length` and `leaf_photosynthesis` (and some `excluded_data` dummy traits) where they're specified at the trait level
@@ -39,6 +40,7 @@ Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - Added substitutions for `plant_growth_form` and `flowering_time`
 - Added `leaf_photosynthesis`, `leaf_stomatal_conductance` and `leaf_stomatal_conductance_2` to test `repeat_measurements_id`, with another `leaf_stomatal_conductance_3` variable that doesn't specify `repeat_measurements_id`
 - Added row for Alphitonia petriei with `flowering_time` and `LASA1000` values (`entity_type: individual`), read in `collection_date` from separate columns for each (`collection_date1`, `collection_date2`) to test same `individual_id` but different `observation_id` (because of different `collection_date`) (remember `LASA1000_dupe` also has the same `individual_id`)
+- Added "7:00:00" as a substitution to make sure it doesn't get reformatted to "07:00:00" (happens e.g. when `read_csv` detects time data type)
 
 
 See output/ for expected output files.
