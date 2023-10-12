@@ -1604,8 +1604,8 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
             c("original_file", "notes", "data_is_long_format", "taxon_name", "trait_name",
               "population_id", "individual_id", "repeat_measurements_id", "value_type",
               "location_name", "source_id", "value", "entity_type", "collection_date",
-              "custom_R_code", "replicates", "measurement_remarks", "taxon_name", "basis_of_value",
-              "basis_of_record", "life_stage", "value_type", "unit_in")))
+              "custom_R_code", "replicates", "measurement_remarks", "basis_of_value",
+              "basis_of_record", "life_stage", "unit_in")))
       ) %>%
       full_join(by = "dataset_id",
       # References
