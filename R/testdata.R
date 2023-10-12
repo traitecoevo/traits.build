@@ -329,7 +329,7 @@ dataset_test_worker <-
 
         # Check for other files
         vals <- c("data.csv", "metadata.yml", "raw")
-        expect_isin(dir(s), vals, info = paste(f, " - disallowed files"))
+        expect_isin(dir(s), vals, info = paste(f, "- disallowed files"))
 
         # `data.csv`
         f <- files[1]

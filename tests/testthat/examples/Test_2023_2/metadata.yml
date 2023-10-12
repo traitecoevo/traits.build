@@ -35,7 +35,6 @@ dataset:
   replicates: replicates
   description: Investigation into trait values correlated with plant height along
     light availability and successional gradients for far north Queensland species.
-  value_type: mean
   basis_of_record: field
   life_stage: adult
   sampling_strategy: Nineteen species, ranging from early to late successional status,
