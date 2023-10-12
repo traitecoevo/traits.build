@@ -37,7 +37,8 @@ dataset:
     light availability and successional gradients for far north Queensland species.
   value_type: mean
   basis_of_record: field
-  life_stage: adult
+  life_stage: life_stage
+  measurement_remarks: measurement_remarks
   sampling_strategy: Nineteen species, ranging from early to late successional status,
     were selected using published sources (Hopkins & Graham 1987; Osunkoya 1996; Hyland
     et al. 1999). Species selected to represent the light gradient establish and mature
@@ -60,7 +61,6 @@ locations:
     description: Complex mesophyll vine forest in tropical rain forest.
     elevation (m): 25
     rainfall (mm): 3500
-    replicates: 10
     life_stage: juvenile
     basis_of_record: field_experiment
     measurement_remarks: Made-up measurement remarks for Cape Tribulation
@@ -113,6 +113,7 @@ traits:
   methods: Branch mass fraction was calculated as the mass side branches/total mass,
     on a carbon dry mass basis. The zero values are correct - these are plants with
     no branches.
+  measurement_remarks: Made-up remarks for `branch_mass_fraction`
 - var_in: Seed mass (mg)
   unit_in: mg
   trait_name: seed_dry_mass
@@ -121,7 +122,7 @@ traits:
   replicates: unknown
   basis_of_record: literature
   basis_of_value: basis_of_value
-  life_stage: seedling
+  life_stage: life_stage_seed_mass
   methods: Mean oven-dried seed mass (including seed coat but excluding seed accessories)
     was estimated for all species with available field material. In total, collections
     for 17 of 47 species were made. Data for an additional 12 species were drawn from

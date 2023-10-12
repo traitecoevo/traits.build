@@ -10,12 +10,12 @@ This dataset is for testing the following, for wide datasets:
 - Check that `location_id` is NA for species `entity_type` measurements
 
 Test_2023_2 is a copy of Falster_2005_1 with the following modifications:
-- Added `replicates` as a column, with also trait-level and location-level metadata (included some NAs)
+- Added `replicates` as a column at the dataset level, with also trait-level metadata (included some NAs)
 - Added `basis_of_value` as a column at the trait level, with also some traits with fixed values (included some NAs)
-- Added `value_type` as a column at the trait-level ("LASA1000"), not dataset-level (fixed value at dataset level) (included NAs in column)
-- Added `basis_of_record`, `life_stage` as dataset-level, trait-level and location-level metadata
-- Added `collection_date` as dataset-level and location-level metadata
-- Added `measurement_remarks` as location-level metadata
+- Added `value_type` as a column at the trait level ("LASA1000"), not dataset-level (fixed value at dataset level) (included NAs in column)
+- Added `basis_of_record` as dataset-level, trait-level and location-level metadata
+- Added `measurement_remarks` as dataset-level column metadata, trait-level metadata and location-level metadata
+- Added `life_stage` as dataset-level column metadata, location-level metadata and trait-level column metadata
 - Read in `entity_type` as a fixed value and renamed "Species" column to "species"
 - Added `source_id` column
 - Removed latitude and longitude fields for both locations
