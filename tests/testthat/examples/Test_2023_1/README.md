@@ -2,7 +2,7 @@
 # Test Dataset 1: `Test_2023_1`
 
 This dataset is for testing the following, for wide datasets:
-- Dataset-level and trait-level input of `basis_of_record`, `life_stage`, `entity_type`, `value_type`, `basis_of_value`, `measurement_remarks`, `collection_date` and `replicates`
+- Dataset-level and trait-level input of `basis_of_record`, `life_stage`, `entity_type`, `value_type`, `basis_of_value`, `measurement_remarks` and `replicates`
 - `replicates` in numeric format
 - Units are correctly converted to the accepted units, either from a fixed trait-level value or from a column at the trait level
 - Bins are correctly converted to the accepted units, from a fixed trait value or from a column at the trait level
@@ -14,9 +14,11 @@ This dataset is for testing the following, for wide datasets:
 - Excluded values (automatic and manual), such as out of allowable range, invalid categorical values, invalid time values, and that excluded values table are filled in with correct error types
 - Substitutions work for categorical and time traits, with NA replace values
 - Combinations of multiple categorical values per row, including if there are duplicate trait values within
-- *Taxonomic updates for different taxonomic resolutions - have yet to add*
+- *Taxonomic updates for different taxonomic resolutions - have yet to add* #TODO
 - `observation_id` refers to unique observations
 - `repeat_measurements_id` at the trait level, for individuals (using `individual_id`), populations and species (including when it is specified as TRUE and FALSE when a trait is entered twice)
+- `collection_date` read in from multiple different columns at the trait level for multiple traits (affecting `observation_id`)
+- Two rows with different `original_name`'s that merge into one `taxon_name` have correct `observation_id`'s #TODO
 
 Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - `entity_type` and `replicates` were moved to dataset level fixed value in metadata.yml, except for `flowering_time`, `huber_value` (LASA1000), `plant_growth_form`, `leaf_length` and `leaf_photosynthesis` (and some `excluded_data` dummy traits) where they're specified at the trait level
@@ -35,5 +37,7 @@ Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - Changed leaf nitrogen for Acronychia acidula to 100 for checking out of allowable range error, "unknown" should be an excluded value for `plant_growth_form` and there should be an invalid `flowering_time` value
 - Added substitutions for `plant_growth_form` and `flowering_time`
 - Added `leaf_photosynthesis`, `leaf_stomatal_conductance` and `leaf_stomatal_conductance_2` to test `repeat_measurements_id`, with another `leaf_stomatal_conductance_3` variable that doesn't specify `repeat_measurements_id`
+- Added row for Alphitonia petriei with `flowering_time` and `LASA1000` values (`entity_type: individual`), read in `collection_date` from separate columns for each (`collection_date1`, `collection_date2`) to test same `individual_id` but different `observation_id` (because of different `collection_date`) (remember `LASA1000_dupe` also has the same `individual_id`)
+
 
 See output/ for expected output files.

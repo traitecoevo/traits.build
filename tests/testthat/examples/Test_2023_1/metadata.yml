@@ -380,7 +380,7 @@ traits:
   value_type: raw
   basis_of_value: model_derived
   measurement_remarks: made-up measurement remarks
-  collection_date: 2002/2002
+  collection_date: collection_date1
   replicates: 5
   methods: 'Leaf area was determined for a 1000 mm branch segment and sapwood cross-sectional
     area was determined where the branch was cut. In detail from Wright_2006, which
@@ -435,6 +435,7 @@ traits:
   entity_type: individual
   value_type: mode
   basis_of_value: expert_score
+  collection_date: collection_date2
   methods: Made up flowering time values.
   replicates: .na
 - var_in: plant_growth_form
