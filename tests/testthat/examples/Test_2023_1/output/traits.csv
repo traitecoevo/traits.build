@@ -483,6 +483,7 @@ Test_2023_1,Quassia baileyana,130,leaf_N_per_dry_mass,23,mg/g,population,mean,me
 Test_2023_1,Quassia baileyana,130,leaf_area,9624,mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
 Test_2023_1,Quassia baileyana,130,leaf_mass_per_area,86,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
 Test_2023_1,Quassia baileyana,130,wood_density,0.501,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
+Test_2023_1,Rhodomyrtus trineura,132,flowering_time,nnnnnnnnnnny,,individual,mode,expert_score,3,field,adult,02,,,,,01,15,,,2004/2004,from Falster_2005_1,01,,Rhodomyrtus trineura
 Test_2023_1,Rhodomyrtus trineura,132,huber_value,0.00014541224371092,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,02,,,,,01,15,,,2002/2002,made-up measurement remarks,04,01,Rhodomyrtus trineura
 Test_2023_1,Rhodomyrtus trineura,132,huber_value,0.00014541224371092,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,02,,,,,01,15,,,2002/2002,made-up measurement remarks,05,,Rhodomyrtus trineura
 Test_2023_1,Rhodomyrtus trineura,132,leaf_length,40,mm,individual,mean,measurement,3,field,adult,02,,,,,01,15,,,2004/2004,from Falster_2005_1,01,,Rhodomyrtus trineura

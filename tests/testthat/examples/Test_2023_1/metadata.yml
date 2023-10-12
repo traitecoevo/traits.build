@@ -531,6 +531,9 @@ substitutions:
 - trait_name: flowering_time
   find: not observed
   replace: .na
+- trait_name: flowering_time
+  find: 7:00:00
+  replace: nnnnnnnnnnny
 taxonomic_updates:
 - find: Homalanthus novoguineensis
   replace: Homalanthus novo-guineensis
