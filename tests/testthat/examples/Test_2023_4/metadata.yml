@@ -96,7 +96,6 @@ dataset:
   entity_type: test_entity_type
   basis_of_record: field_experiment
   source_id: source_id
-  unit_in: units
   description: Plant growth form data extracted from the NT Flora Online
   life_stage: seedling
   replicates: 1
@@ -186,6 +185,7 @@ traits:
   trait_name: fruit_colour
   replicates: .na
   value_type: value_type
+  unit_in: units
   methods: When specified in the taxon description, only the colours of the fruit
     at maturity or the dominant colours of the fruit exterior were scored. If neither
     were specified, all colours associated with the fruit were scored.
@@ -201,6 +201,7 @@ traits:
   life_stage: adult
 - var_in: fruit_length
   trait_name: fruit_length
+  unit_in: units
   methods: The term used to describe the fruit length was stored  as a measurement
     remark for greater clarity e.g. fruit, achene, capsule. Fruits which were spherical
     or round in shape were inferred as possessing the same dimensions in other planes.
@@ -218,6 +219,7 @@ traits:
 - var_in: fruit_width_2
   trait_name: fruit_width
   value_type: value_type
+  unit_in: units
   methods: The term used to describe the fruit width was stored  as a measurement
     remark for greater clarity e.g. fruit, achene, capsule. Fruits which were spherical
     or round in shape were inferred as possessing the same dimensions in other planes.
