@@ -347,9 +347,9 @@ process_custom_code <- function(txt) {
 #' @return Character string
 process_create_observation_id <- function(data, metadata) {
 
-  # Create four IDs: population_id, individual_id, observation_id, repeat_measurements_id
+  # Create four IDs: `population_id`, `individual_id`, `observation_id`, `repeat_measurements_id`
 
-  # Create population_id
+  # Create `population_id`
 
   # `population_id`'s are numbers assigned to unique combinations of
   # location_name, treatment_context_id and plot_context_id
@@ -387,7 +387,7 @@ process_create_observation_id <- function(data, metadata) {
       population_id = .data$pop_id_segment
     )
 
-  ## Create individual_id
+  ## Create `individual_id`
 
   # For datasets where there are individual-level measurements
   # (i.e. entity_type = `individual`), the `parsing_id` values
@@ -432,10 +432,10 @@ process_create_observation_id <- function(data, metadata) {
 
   }
 
-  # Create final individual_id within each species and population
+  # Create final `individual_id` within each species and population
   # (as identified by their segment numbers)
   # The function `process_generate_id` ensures that values with the same
-  # parsing_id/individual_id are given the same value
+  # `parsing_id`/`individual_id` are given the same value
   data <-
     data %>%
     dplyr::group_by(.data$taxon_name, .data$population_id) %>%
@@ -444,7 +444,6 @@ process_create_observation_id <- function(data, metadata) {
         !is.na(.data$individual_id) & .data$entity_type == "individual",
         process_generate_id(.data$individual_id, ""),
         NA),
-      #individual_id = row_number(),
       ind_id_segment = ifelse(
         is.na(.data$ind_id_segment) & is.na(.data$entity_type),
         process_generate_id(.data$individual_id, "entity_unk"),
@@ -453,7 +452,7 @@ process_create_observation_id <- function(data, metadata) {
     dplyr::ungroup() %>%
     dplyr::mutate(individual_id = .data$ind_id_segment, check_for_ind = NA)
 
-  ## Create observation_id for a single set of trait measurements made on an entity
+  ## Create `observation_id` for a single set of trait measurements made on an entity
   #  (where an entity can be an individual, population, or taxon)
 
   i <- !is.na(data$value)
@@ -528,10 +527,10 @@ process_create_observation_id <- function(data, metadata) {
 #' Function to generate sequence of integer ids from vector of names
 
 #' Determines number of 00s needed based on number of records
-#' @param x vector of text to convert
-#' @param prefix text to put before id integer
-#' @param sort logical to indicate whether x should be sorted before ids are generated
-#' @return vector of ids
+#' @param x Vector of text to convert
+#' @param prefix Text to put before id integer
+#' @param sort Logical to indicate whether x should be sorted before ids are generated
+#' @return Vector of ids
 
 process_generate_id <- function(x, prefix, sort = FALSE) {
 
@@ -1285,7 +1284,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   # it is used to correctly cluster and identify individuals
 
   # For a file where `individual_id` is specified in the metadata,
-  # if there are rows of data where the `individual_id`` is `NA`,
+  # if there are rows of data where the `individual_id` is NA,
   # these are filled in with the row_number(),
   # just as would occur if no `individual_id` column is specified
 
