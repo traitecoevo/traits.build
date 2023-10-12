@@ -193,9 +193,7 @@ dataset_process <- function(filename_data_raw,
   taxonomic_updates <-
     traits %>%
     dplyr::select(
-      dplyr::all_of(c("dataset_id", "original_name",
-      cleaned_name = "taxon_name",
-      taxonomic_resolution = "taxonomic_resolution"))
+      dplyr::all_of(c("dataset_id", "original_name", cleaned_name = "taxon_name", taxonomic_resolution = "taxonomic_resolution"))
     ) %>%
     dplyr::distinct() %>%
     dplyr::arrange(.data$cleaned_name)
@@ -1162,7 +1160,9 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
       to = util_extract_list_element(.data$i, definitions, "units"),
       ucn = process_unit_conversion_name(.data$unit_in, .data$to),
       type = util_extract_list_element(.data$i, definitions, "type"),
-      to_convert = ifelse(is.na(.data$error), (.data$type == "numeric" & .data$unit_in != .data$to), FALSE))
+      to_convert = ifelse(is.na(.data$error), (.data$type == "numeric" & .data$unit_in != .data$to), FALSE),
+      unit_in = ifelse(.data$type == "categorical", NA, unit_in)
+    )
 
   # Identify anything problematic in conversions and drop
   j <- is.na(data[["to_convert"]]) |
