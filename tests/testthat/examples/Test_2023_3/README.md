@@ -14,6 +14,8 @@ This dataset is for testing the following, for long datasets:
 - Excluded values, such as out of allowable range, invalid categorical values, invalid time values
 - Substitutions work for categorical and time traits, replacing with NA or finding NA
 - Test `collection_date` read in from a column at the trait level and as a fixed value at the dataset level #TODO
+- Check that `location_id` is NA for species `entity_type` measurements
+
 
 Test_2023_3 is a copy of NHNSW_2023 with the following modifications:
 - Subsetted the dataset to only `fruit_colour`, `fruit_dehiscence`, `fruit_length`, `fruit_width` and randomly sampled 200 rows

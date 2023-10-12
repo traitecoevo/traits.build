@@ -357,7 +357,7 @@ dataset_test_worker <-
         # Custom R code
         txt <- metadata[["dataset"]][["custom_R_code"]]
         # Check that `custom_R_code` is immediately followed by `collection_date`
-        expect_equal(
+        testthat::expect_equal(
           metadata[["dataset"]][which(names(metadata[["dataset"]]) == "custom_R_code") + 1] %>% names(),
           "collection_date",
           info = sprintf("%s - dataset: the `custom_R_code` field must be followed by `collection_date`", f)

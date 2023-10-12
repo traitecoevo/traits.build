@@ -19,6 +19,7 @@ This dataset is for testing the following, for wide datasets:
 - `repeat_measurements_id` at the trait level, for individuals (using `individual_id`), populations and species (including when it is specified as TRUE and FALSE when a trait is entered twice)
 - `collection_date` read in from multiple different columns at the trait level for multiple traits (affecting `observation_id`)
 - Two rows with different `original_name`'s that merge into one `taxon_name` have correct `observation_id`'s #TODO
+- Check that `location_id` is NA for species `entity_type` measurements
 
 Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - `entity_type` and `replicates` were moved to dataset level fixed value in metadata.yml, except for `flowering_time`, `huber_value` (LASA1000), `plant_growth_form`, `leaf_length` and `leaf_photosynthesis` (and some `excluded_data` dummy traits) where they're specified at the trait level

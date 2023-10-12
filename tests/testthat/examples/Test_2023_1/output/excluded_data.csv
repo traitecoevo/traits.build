@@ -1,185 +1,185 @@
 error,dataset_id,taxon_name,observation_id,trait_name,value,unit,entity_type,value_type,basis_of_value,replicates,basis_of_record,life_stage,population_id,individual_id,repeat_measurements_id,temporal_context_id,source_id,location_id,entity_context_id,plot_context_id,treatment_context_id,collection_date,measurement_remarks,method_id,method_context_id,original_name
-Missing unit conversion,Test_2023_1,Acacia celsa,006,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,02,,01,04,01,01,2004/2004,from Falster_2005_1,03,07,Acacia celsa
-Missing unit conversion,Test_2023_1,Acacia celsa,006,wood_density,0.498,,species,mean,measurement,3,field,adult,,,,02,,01,04,01,01,2004/2004,from Falster_2005_1,02,07,Acacia celsa
-Trait name not in trait dictionary,Test_2023_1,Acacia celsa,006,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,02,,01,04,01,01,2004/2004,from Falster_2005_1,01,07,Acacia celsa
-Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
-Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
-Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
-Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
-Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
-Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
-Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
-Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
-Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
-Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
-Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
-Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
-Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
-Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
-Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
-Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
-Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
-Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
-Missing unit conversion,Test_2023_1,Acmena graveolens,010,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,10,,,2004/2004,from Falster_2005_1,03,,Acmena graveolens
-Missing unit conversion,Test_2023_1,Acmena graveolens,010,wood_density,0.599,,species,mean,measurement,3,field,adult,,,,,,02,10,,,2004/2004,from Falster_2005_1,02,,Acmena graveolens
-Trait name not in trait dictionary,Test_2023_1,Acmena graveolens,010,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,10,,,2004/2004,from Falster_2005_1,01,,Acmena graveolens
+Missing unit conversion,Test_2023_1,Acacia celsa,006,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,02,,,04,01,01,2004/2004,from Falster_2005_1,03,07,Acacia celsa
+Missing unit conversion,Test_2023_1,Acacia celsa,006,wood_density,0.498,,species,mean,measurement,3,field,adult,,,,02,,,04,01,01,2004/2004,from Falster_2005_1,02,07,Acacia celsa
+Trait name not in trait dictionary,Test_2023_1,Acacia celsa,006,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,02,,,04,01,01,2004/2004,from Falster_2005_1,01,07,Acacia celsa
+Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
+Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
+Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
+Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
+Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
+Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
+Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
+Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
+Missing unit conversion,Test_2023_1,Acacia celsa,007,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Acacia celsa
+Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
+Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
+Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
+Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
+Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
+Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
+Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
+Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
+Trait name not in trait dictionary,Test_2023_1,Acacia celsa,007,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
+Missing unit conversion,Test_2023_1,Acmena graveolens,010,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,10,,,2004/2004,from Falster_2005_1,03,,Acmena graveolens
+Missing unit conversion,Test_2023_1,Acmena graveolens,010,wood_density,0.599,,species,mean,measurement,3,field,adult,,,,,,,10,,,2004/2004,from Falster_2005_1,02,,Acmena graveolens
+Trait name not in trait dictionary,Test_2023_1,Acmena graveolens,010,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,10,,,2004/2004,from Falster_2005_1,01,,Acmena graveolens
 Value out of allowable range,Test_2023_1,Acronychia acidula,013,leaf_N_per_dry_mass,1e+05,mg/g,population,mean,measurement,3,field,adult,03,,,02,,01,06,02,01,2004/2004,from Falster_2005_1,01,07,Acronychia acidula
-Missing unit conversion,Test_2023_1,Acronychia acidula,014,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,02,,01,06,02,01,2004/2004,from Falster_2005_1,03,07,Acronychia acidula
-Missing unit conversion,Test_2023_1,Acronychia acidula,014,wood_density,0.525,,species,mean,measurement,3,field,adult,,,,02,,01,06,02,01,2004/2004,from Falster_2005_1,02,07,Acronychia acidula
-Trait name not in trait dictionary,Test_2023_1,Acronychia acidula,014,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,02,,01,06,02,01,2004/2004,from Falster_2005_1,01,07,Acronychia acidula
-Missing unit conversion,Test_2023_1,Acronychia acidula,015,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,09,,,2004/2004,from Falster_2005_1,03,,Acronychia acidula
-Missing unit conversion,Test_2023_1,Acronychia acidula,015,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,09,,,2004/2004,from Falster_2005_1,03,,Acronychia acidula
-Missing unit conversion,Test_2023_1,Acronychia acidula,015,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,09,,,2004/2004,from Falster_2005_1,03,,Acronychia acidula
-Trait name not in trait dictionary,Test_2023_1,Acronychia acidula,015,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,09,,,2004/2004,from Falster_2005_1,01,,Acronychia acidula
-Trait name not in trait dictionary,Test_2023_1,Acronychia acidula,015,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,09,,,2004/2004,from Falster_2005_1,01,,Acronychia acidula
-Trait name not in trait dictionary,Test_2023_1,Acronychia acidula,015,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,09,,,2004/2004,from Falster_2005_1,01,,Acronychia acidula
-Missing unit conversion,Test_2023_1,Aleurites rockinghamensis,018,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,11,,,2004/2004,from Falster_2005_1,03,,Aleurites rockinghamensis
-Missing unit conversion,Test_2023_1,Aleurites rockinghamensis,018,wood_density,0.28,,species,mean,measurement,3,field,adult,,,,,,02,11,,,2004/2004,from Falster_2005_1,02,,Aleurites rockinghamensis
-Trait name not in trait dictionary,Test_2023_1,Aleurites rockinghamensis,018,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,11,,,2004/2004,from Falster_2005_1,01,,Aleurites rockinghamensis
-Missing unit conversion,Test_2023_1,Alphitonia petriei,022,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
-Missing unit conversion,Test_2023_1,Alphitonia petriei,022,wood_density,0.413,,species,mean,measurement,3,field,adult,,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,02,,Alphitonia petriei
-Trait name not in trait dictionary,Test_2023_1,Alphitonia petriei,022,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
-Missing unit conversion,Test_2023_1,Alphitonia petriei,023,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,16,,,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
-Missing unit conversion,Test_2023_1,Alphitonia petriei,023,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,16,,,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
-Missing unit conversion,Test_2023_1,Alphitonia petriei,023,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,16,,,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
-Missing unit conversion,Test_2023_1,Alphitonia petriei,023,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,16,,,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
-Trait name not in trait dictionary,Test_2023_1,Alphitonia petriei,023,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,16,,,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
-Trait name not in trait dictionary,Test_2023_1,Alphitonia petriei,023,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,16,,,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
-Trait name not in trait dictionary,Test_2023_1,Alphitonia petriei,023,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,16,,,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
-Trait name not in trait dictionary,Test_2023_1,Alphitonia petriei,023,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,16,,,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
-Missing unit conversion,Test_2023_1,Alstonia scholaris,026,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,11,,,2004/2004,from Falster_2005_1,03,,Alstonia scholaris
-Missing unit conversion,Test_2023_1,Alstonia scholaris,026,wood_density,0.361,,species,mean,measurement,3,field,adult,,,,,,02,11,,,2004/2004,from Falster_2005_1,02,,Alstonia scholaris
-Trait name not in trait dictionary,Test_2023_1,Alstonia scholaris,026,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,11,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
-Missing unit conversion,Test_2023_1,Alstonia scholaris,027,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Alstonia scholaris
-Missing unit conversion,Test_2023_1,Alstonia scholaris,027,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Alstonia scholaris
-Trait name not in trait dictionary,Test_2023_1,Alstonia scholaris,027,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
-Trait name not in trait dictionary,Test_2023_1,Alstonia scholaris,027,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
-Missing unit conversion,Test_2023_1,Argyrodendron peralatum,030,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,12,,01,2004/2004,from Falster_2005_1,03,,Argyrodendron peralatum
-Missing unit conversion,Test_2023_1,Argyrodendron peralatum,030,wood_density,0.726,,species,mean,measurement,3,field,adult,,,,,,02,12,,01,2004/2004,from Falster_2005_1,02,,Argyrodendron peralatum
-Trait name not in trait dictionary,Test_2023_1,Argyrodendron peralatum,030,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,12,,01,2004/2004,from Falster_2005_1,01,,Argyrodendron peralatum
-Missing unit conversion,Test_2023_1,Atractocarpus hirtus,033,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,13,,01,2004/2004,from Falster_2005_1,03,,Atractocarpus hirtus
-Missing unit conversion,Test_2023_1,Atractocarpus hirtus,033,wood_density,0.804,,species,mean,measurement,3,field,adult,,,,,,02,13,,01,2004/2004,from Falster_2005_1,02,,Atractocarpus hirtus
-Trait name not in trait dictionary,Test_2023_1,Atractocarpus hirtus,033,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,13,,01,2004/2004,from Falster_2005_1,01,,Atractocarpus hirtus
-Missing unit conversion,Test_2023_1,Brombya platynema,036,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,16,,02,2004/2004,from Falster_2005_1,03,,Brombya platynema
-Missing unit conversion,Test_2023_1,Brombya platynema,036,wood_density,0.603,,species,mean,measurement,3,field,adult,,,,,,02,16,,02,2004/2004,from Falster_2005_1,02,,Brombya platynema
-Trait name not in trait dictionary,Test_2023_1,Brombya platynema,036,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,16,,02,2004/2004,from Falster_2005_1,01,,Brombya platynema
-Missing unit conversion,Test_2023_1,Brombya platynema,037,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Brombya platynema
-Trait name not in trait dictionary,Test_2023_1,Brombya platynema,037,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,01,,Brombya platynema
-Missing unit conversion,Test_2023_1,Cardwellia sublimis,040,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,16,,02,2004/2004,from Falster_2005_1,03,,Cardwellia sublimis
-Missing unit conversion,Test_2023_1,Cardwellia sublimis,040,wood_density,0.603,,species,mean,measurement,3,field,adult,,,,,,02,16,,02,2004/2004,from Falster_2005_1,02,,Cardwellia sublimis
-Trait name not in trait dictionary,Test_2023_1,Cardwellia sublimis,040,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,16,,02,2004/2004,from Falster_2005_1,01,,Cardwellia sublimis
-Unsupported trait value,Test_2023_1,Castanospermum australe,043,plant_growth_form,unknown,,species,mode,expert_score,3,field,adult,,,,,,02,03,,03,2004/2004,from Falster_2005_1,01,,Castanospermum australe
-Missing unit conversion,Test_2023_1,Castanospermum australe,043,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,03,,03,2004/2004,from Falster_2005_1,03,,Castanospermum australe
-Missing unit conversion,Test_2023_1,Castanospermum australe,043,wood_density,0.587,,species,mean,measurement,3,field,adult,,,,,,02,03,,03,2004/2004,from Falster_2005_1,02,,Castanospermum australe
-Trait name not in trait dictionary,Test_2023_1,Castanospermum australe,043,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,03,,03,2004/2004,from Falster_2005_1,01,,Castanospermum australe
-Missing unit conversion,Test_2023_1,Cleistanthus myrianthus,046,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,08,,03,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
-Missing unit conversion,Test_2023_1,Cleistanthus myrianthus,046,wood_density,0.588,,species,mean,measurement,3,field,adult,,,,,,02,08,,03,2004/2004,from Falster_2005_1,02,,Cleistanthus myrianthus
-Trait name not in trait dictionary,Test_2023_1,Cleistanthus myrianthus,046,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,08,,03,2004/2004,from Falster_2005_1,01,,Cleistanthus myrianthus
-Missing unit conversion,Test_2023_1,Cleistanthus myrianthus,047,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
-Missing unit conversion,Test_2023_1,Cleistanthus myrianthus,047,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
-Missing unit conversion,Test_2023_1,Cleistanthus myrianthus,047,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
-Trait name not in trait dictionary,Test_2023_1,Cleistanthus myrianthus,047,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,01,,Cleistanthus myrianthus
-Trait name not in trait dictionary,Test_2023_1,Cleistanthus myrianthus,047,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,01,,Cleistanthus myrianthus
-Trait name not in trait dictionary,Test_2023_1,Cleistanthus myrianthus,047,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,,,,2004/2004,from Falster_2005_1,01,,Cleistanthus myrianthus
-Missing unit conversion,Test_2023_1,Cryptocarya laevigata,050,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,08,,,2004/2004,from Falster_2005_1,03,,Cryptocarya laevigata
-Missing unit conversion,Test_2023_1,Cryptocarya laevigata,050,wood_density,0.64,,species,mean,measurement,3,field,adult,,,,,,02,08,,,2004/2004,from Falster_2005_1,02,,Cryptocarya laevigata
-Trait name not in trait dictionary,Test_2023_1,Cryptocarya laevigata,050,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,08,,,2004/2004,from Falster_2005_1,01,,Cryptocarya laevigata
-Missing unit conversion,Test_2023_1,Cryptocarya mackinnoniana,053,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,01,,,2004/2004,from Falster_2005_1,03,,Cryptocarya mackinnoniana
-Missing unit conversion,Test_2023_1,Cryptocarya mackinnoniana,053,wood_density,0.655,,species,mean,measurement,3,field,adult,,,,,,02,01,,,2004/2004,from Falster_2005_1,02,,Cryptocarya mackinnoniana
-Trait name not in trait dictionary,Test_2023_1,Cryptocarya mackinnoniana,053,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,01,,,2004/2004,from Falster_2005_1,01,,Cryptocarya mackinnoniana
-Missing unit conversion,Test_2023_1,Cryptocarya murrayi,056,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Cryptocarya murrayi
-Missing unit conversion,Test_2023_1,Cryptocarya murrayi,056,wood_density,0.674,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Cryptocarya murrayi
-Trait name not in trait dictionary,Test_2023_1,Cryptocarya murrayi,056,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Cryptocarya murrayi
-Missing unit conversion,Test_2023_1,Dendrocnide moroides,059,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Dendrocnide moroides
-Missing unit conversion,Test_2023_1,Dendrocnide moroides,059,wood_density,0.23,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Dendrocnide moroides
-Trait name not in trait dictionary,Test_2023_1,Dendrocnide moroides,059,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Dendrocnide moroides
-Missing unit conversion,Test_2023_1,Elaeocarpus grandis,062,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Elaeocarpus grandis
-Missing unit conversion,Test_2023_1,Elaeocarpus grandis,062,wood_density,0.499,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Elaeocarpus grandis
-Trait name not in trait dictionary,Test_2023_1,Elaeocarpus grandis,062,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
-Missing unit conversion,Test_2023_1,Endiandra leptodendron,065,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Endiandra leptodendron
-Missing unit conversion,Test_2023_1,Endiandra leptodendron,065,wood_density,0.611,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Endiandra leptodendron
-Trait name not in trait dictionary,Test_2023_1,Endiandra leptodendron,065,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Endiandra leptodendron
-Missing unit conversion,Test_2023_1,Endiandra microneura,068,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Endiandra microneura
-Missing unit conversion,Test_2023_1,Endiandra microneura,068,wood_density,0.623,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Endiandra microneura
-Trait name not in trait dictionary,Test_2023_1,Endiandra microneura,068,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Endiandra microneura
-Missing unit conversion,Test_2023_1,Gillbeea adenopetala,071,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Gillbeea adenopetala
-Missing unit conversion,Test_2023_1,Gillbeea adenopetala,071,wood_density,0.43,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Gillbeea adenopetala
-Trait name not in trait dictionary,Test_2023_1,Gillbeea adenopetala,071,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Gillbeea adenopetala
-Missing unit conversion,Test_2023_1,Glochidion hylandii,074,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,05,,02,2004/2004,from Falster_2005_1,03,11,Glochidion hylandii
-Missing unit conversion,Test_2023_1,Glochidion hylandii,074,wood_density,0.566,,species,mean,measurement,3,field,adult,,,,,,01,05,,02,2004/2004,from Falster_2005_1,02,11,Glochidion hylandii
-Trait name not in trait dictionary,Test_2023_1,Glochidion hylandii,074,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,05,,02,2004/2004,from Falster_2005_1,01,11,Glochidion hylandii
-Missing unit conversion,Test_2023_1,Haplostichanthus submontanus,077,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Haplostichanthus sp Coop. Ck
-Missing unit conversion,Test_2023_1,Haplostichanthus submontanus,077,wood_density,0.668,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Haplostichanthus sp Coop. Ck
-Trait name not in trait dictionary,Test_2023_1,Haplostichanthus submontanus,077,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
-Missing unit conversion,Test_2023_1,Harpullia rhyticarpa,080,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Harpullia rhyticarpa
-Missing unit conversion,Test_2023_1,Harpullia rhyticarpa,080,wood_density,0.621,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Harpullia rhyticarpa
-Trait name not in trait dictionary,Test_2023_1,Harpullia rhyticarpa,080,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Harpullia rhyticarpa
-Missing unit conversion,Test_2023_1,Hernandia albiflora,083,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Hernandia albiflora
-Missing unit conversion,Test_2023_1,Hernandia albiflora,083,wood_density,0.447,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Hernandia albiflora
-Trait name not in trait dictionary,Test_2023_1,Hernandia albiflora,083,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Hernandia albiflora
-Missing unit conversion,Test_2023_1,Homalanthus novo-guineensis,086,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,14,01,03,2004/2004,from Falster_2005_1,03,11,Homalanthus novoguineensis
-Missing unit conversion,Test_2023_1,Homalanthus novo-guineensis,086,wood_density,0.319,,species,mean,measurement,3,field,adult,,,,,,01,14,01,03,2004/2004,from Falster_2005_1,02,11,Homalanthus novoguineensis
-Trait name not in trait dictionary,Test_2023_1,Homalanthus novo-guineensis,086,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,14,01,03,2004/2004,from Falster_2005_1,01,11,Homalanthus novoguineensis
-Missing unit conversion,Test_2023_1,Ixora biflora,089,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Ixora biflora
-Missing unit conversion,Test_2023_1,Ixora biflora,089,wood_density,0.843,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Ixora biflora
-Trait name not in trait dictionary,Test_2023_1,Ixora biflora,089,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Ixora biflora
-Missing unit conversion,Test_2023_1,Lasianthus strigosus,092,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Lasianthus strigosus
-Missing unit conversion,Test_2023_1,Lasianthus strigosus,092,wood_density,0.684,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Lasianthus strigosus
-Trait name not in trait dictionary,Test_2023_1,Lasianthus strigosus,092,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
-Missing unit conversion,Test_2023_1,Litsea leefeana,095,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Litsea leefeana
-Missing unit conversion,Test_2023_1,Litsea leefeana,095,wood_density,0.549,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Litsea leefeana
-Trait name not in trait dictionary,Test_2023_1,Litsea leefeana,095,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Litsea leefeana
-Missing unit conversion,Test_2023_1,Macaranga tanarius,098,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Macaranga tanarius
-Missing unit conversion,Test_2023_1,Macaranga tanarius,098,wood_density,0.344,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Macaranga tanarius
-Trait name not in trait dictionary,Test_2023_1,Macaranga tanarius,098,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Macaranga tanarius
-Missing unit conversion,Test_2023_1,Mallotus mollissimus,101,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Mallotus mollissimus
-Missing unit conversion,Test_2023_1,Mallotus mollissimus,101,wood_density,0.373,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Mallotus mollissimus
-Trait name not in trait dictionary,Test_2023_1,Mallotus mollissimus,101,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Mallotus mollissimus
-Missing unit conversion,Test_2023_1,Medicosma sessiliflora,104,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Medicosma sessiliflora
-Missing unit conversion,Test_2023_1,Medicosma sessiliflora,104,wood_density,0.69,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Medicosma sessiliflora
-Trait name not in trait dictionary,Test_2023_1,Medicosma sessiliflora,104,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Medicosma sessiliflora
-Missing unit conversion,Test_2023_1,Melastoma cyanoides,107,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Melastoma cyanoides
-Missing unit conversion,Test_2023_1,Melastoma cyanoides,107,wood_density,0.381,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Melastoma cyanoides
-Trait name not in trait dictionary,Test_2023_1,Melastoma cyanoides,107,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Melastoma cyanoides
-Missing unit conversion,Test_2023_1,Melicope elleryana,110,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,01,,01,,01,03,2004/2004,from Falster_2005_1,03,,Melicope elleryana
-Missing unit conversion,Test_2023_1,Melicope elleryana,110,wood_density,0.346,,species,mean,measurement,3,field,adult,,,,01,,01,,01,03,2004/2004,from Falster_2005_1,02,,Melicope elleryana
-Trait name not in trait dictionary,Test_2023_1,Melicope elleryana,110,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,01,,01,,01,03,2004/2004,from Falster_2005_1,01,,Melicope elleryana
-Missing unit conversion,Test_2023_1,Myristica insipida,113,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Myristica insipida
-Missing unit conversion,Test_2023_1,Myristica insipida,113,wood_density,0.433,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Myristica insipida
-Trait name not in trait dictionary,Test_2023_1,Myristica insipida,113,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Myristica insipida
-Missing unit conversion,Test_2023_1,Neolitsea dealbata,116,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,01,,01,,01,,2004/2004,from Falster_2005_1,03,,Neolitsea dealbata
-Missing unit conversion,Test_2023_1,Neolitsea dealbata,116,wood_density,0.352,,species,mean,measurement,3,field,adult,,,,01,,01,,01,,2004/2004,from Falster_2005_1,02,,Neolitsea dealbata
-Trait name not in trait dictionary,Test_2023_1,Neolitsea dealbata,116,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,01,,01,,01,,2004/2004,from Falster_2005_1,01,,Neolitsea dealbata
-Missing unit conversion,Test_2023_1,Pittosporum rubiginosum,119,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Pittosporum rubiginosum
-Missing unit conversion,Test_2023_1,Pittosporum rubiginosum,119,wood_density,0.728,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Pittosporum rubiginosum
-Trait name not in trait dictionary,Test_2023_1,Pittosporum rubiginosum,119,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Pittosporum rubiginosum
+Missing unit conversion,Test_2023_1,Acronychia acidula,014,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,02,,,06,02,01,2004/2004,from Falster_2005_1,03,07,Acronychia acidula
+Missing unit conversion,Test_2023_1,Acronychia acidula,014,wood_density,0.525,,species,mean,measurement,3,field,adult,,,,02,,,06,02,01,2004/2004,from Falster_2005_1,02,07,Acronychia acidula
+Trait name not in trait dictionary,Test_2023_1,Acronychia acidula,014,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,02,,,06,02,01,2004/2004,from Falster_2005_1,01,07,Acronychia acidula
+Missing unit conversion,Test_2023_1,Acronychia acidula,015,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,09,,,2004/2004,from Falster_2005_1,03,,Acronychia acidula
+Missing unit conversion,Test_2023_1,Acronychia acidula,015,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,09,,,2004/2004,from Falster_2005_1,03,,Acronychia acidula
+Missing unit conversion,Test_2023_1,Acronychia acidula,015,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,09,,,2004/2004,from Falster_2005_1,03,,Acronychia acidula
+Trait name not in trait dictionary,Test_2023_1,Acronychia acidula,015,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,09,,,2004/2004,from Falster_2005_1,01,,Acronychia acidula
+Trait name not in trait dictionary,Test_2023_1,Acronychia acidula,015,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,09,,,2004/2004,from Falster_2005_1,01,,Acronychia acidula
+Trait name not in trait dictionary,Test_2023_1,Acronychia acidula,015,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,09,,,2004/2004,from Falster_2005_1,01,,Acronychia acidula
+Missing unit conversion,Test_2023_1,Aleurites rockinghamensis,018,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,11,,,2004/2004,from Falster_2005_1,03,,Aleurites rockinghamensis
+Missing unit conversion,Test_2023_1,Aleurites rockinghamensis,018,wood_density,0.28,,species,mean,measurement,3,field,adult,,,,,,,11,,,2004/2004,from Falster_2005_1,02,,Aleurites rockinghamensis
+Trait name not in trait dictionary,Test_2023_1,Aleurites rockinghamensis,018,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,11,,,2004/2004,from Falster_2005_1,01,,Aleurites rockinghamensis
+Missing unit conversion,Test_2023_1,Alphitonia petriei,022,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,02,,,14,03,02,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
+Missing unit conversion,Test_2023_1,Alphitonia petriei,022,wood_density,0.413,,species,mean,measurement,3,field,adult,,,,02,,,14,03,02,2004/2004,from Falster_2005_1,02,,Alphitonia petriei
+Trait name not in trait dictionary,Test_2023_1,Alphitonia petriei,022,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,02,,,14,03,02,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
+Missing unit conversion,Test_2023_1,Alphitonia petriei,023,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,16,,,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
+Missing unit conversion,Test_2023_1,Alphitonia petriei,023,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,16,,,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
+Missing unit conversion,Test_2023_1,Alphitonia petriei,023,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,16,,,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
+Missing unit conversion,Test_2023_1,Alphitonia petriei,023,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,16,,,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
+Trait name not in trait dictionary,Test_2023_1,Alphitonia petriei,023,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,16,,,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
+Trait name not in trait dictionary,Test_2023_1,Alphitonia petriei,023,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,16,,,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
+Trait name not in trait dictionary,Test_2023_1,Alphitonia petriei,023,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,16,,,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
+Trait name not in trait dictionary,Test_2023_1,Alphitonia petriei,023,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,16,,,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
+Missing unit conversion,Test_2023_1,Alstonia scholaris,026,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,11,,,2004/2004,from Falster_2005_1,03,,Alstonia scholaris
+Missing unit conversion,Test_2023_1,Alstonia scholaris,026,wood_density,0.361,,species,mean,measurement,3,field,adult,,,,,,,11,,,2004/2004,from Falster_2005_1,02,,Alstonia scholaris
+Trait name not in trait dictionary,Test_2023_1,Alstonia scholaris,026,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,11,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
+Missing unit conversion,Test_2023_1,Alstonia scholaris,027,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Alstonia scholaris
+Missing unit conversion,Test_2023_1,Alstonia scholaris,027,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Alstonia scholaris
+Trait name not in trait dictionary,Test_2023_1,Alstonia scholaris,027,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
+Trait name not in trait dictionary,Test_2023_1,Alstonia scholaris,027,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
+Missing unit conversion,Test_2023_1,Argyrodendron peralatum,030,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,12,,01,2004/2004,from Falster_2005_1,03,,Argyrodendron peralatum
+Missing unit conversion,Test_2023_1,Argyrodendron peralatum,030,wood_density,0.726,,species,mean,measurement,3,field,adult,,,,,,,12,,01,2004/2004,from Falster_2005_1,02,,Argyrodendron peralatum
+Trait name not in trait dictionary,Test_2023_1,Argyrodendron peralatum,030,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,12,,01,2004/2004,from Falster_2005_1,01,,Argyrodendron peralatum
+Missing unit conversion,Test_2023_1,Atractocarpus hirtus,033,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,13,,01,2004/2004,from Falster_2005_1,03,,Atractocarpus hirtus
+Missing unit conversion,Test_2023_1,Atractocarpus hirtus,033,wood_density,0.804,,species,mean,measurement,3,field,adult,,,,,,,13,,01,2004/2004,from Falster_2005_1,02,,Atractocarpus hirtus
+Trait name not in trait dictionary,Test_2023_1,Atractocarpus hirtus,033,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,13,,01,2004/2004,from Falster_2005_1,01,,Atractocarpus hirtus
+Missing unit conversion,Test_2023_1,Brombya platynema,036,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,16,,02,2004/2004,from Falster_2005_1,03,,Brombya platynema
+Missing unit conversion,Test_2023_1,Brombya platynema,036,wood_density,0.603,,species,mean,measurement,3,field,adult,,,,,,,16,,02,2004/2004,from Falster_2005_1,02,,Brombya platynema
+Trait name not in trait dictionary,Test_2023_1,Brombya platynema,036,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,16,,02,2004/2004,from Falster_2005_1,01,,Brombya platynema
+Missing unit conversion,Test_2023_1,Brombya platynema,037,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Brombya platynema
+Trait name not in trait dictionary,Test_2023_1,Brombya platynema,037,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Brombya platynema
+Missing unit conversion,Test_2023_1,Cardwellia sublimis,040,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,16,,02,2004/2004,from Falster_2005_1,03,,Cardwellia sublimis
+Missing unit conversion,Test_2023_1,Cardwellia sublimis,040,wood_density,0.603,,species,mean,measurement,3,field,adult,,,,,,,16,,02,2004/2004,from Falster_2005_1,02,,Cardwellia sublimis
+Trait name not in trait dictionary,Test_2023_1,Cardwellia sublimis,040,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,16,,02,2004/2004,from Falster_2005_1,01,,Cardwellia sublimis
+Unsupported trait value,Test_2023_1,Castanospermum australe,043,plant_growth_form,unknown,,species,mode,expert_score,3,field,adult,,,,,,,03,,03,2004/2004,from Falster_2005_1,01,,Castanospermum australe
+Missing unit conversion,Test_2023_1,Castanospermum australe,043,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,03,,03,2004/2004,from Falster_2005_1,03,,Castanospermum australe
+Missing unit conversion,Test_2023_1,Castanospermum australe,043,wood_density,0.587,,species,mean,measurement,3,field,adult,,,,,,,03,,03,2004/2004,from Falster_2005_1,02,,Castanospermum australe
+Trait name not in trait dictionary,Test_2023_1,Castanospermum australe,043,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,03,,03,2004/2004,from Falster_2005_1,01,,Castanospermum australe
+Missing unit conversion,Test_2023_1,Cleistanthus myrianthus,046,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,08,,03,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
+Missing unit conversion,Test_2023_1,Cleistanthus myrianthus,046,wood_density,0.588,,species,mean,measurement,3,field,adult,,,,,,,08,,03,2004/2004,from Falster_2005_1,02,,Cleistanthus myrianthus
+Trait name not in trait dictionary,Test_2023_1,Cleistanthus myrianthus,046,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,08,,03,2004/2004,from Falster_2005_1,01,,Cleistanthus myrianthus
+Missing unit conversion,Test_2023_1,Cleistanthus myrianthus,047,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
+Missing unit conversion,Test_2023_1,Cleistanthus myrianthus,047,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
+Missing unit conversion,Test_2023_1,Cleistanthus myrianthus,047,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Cleistanthus myrianthus
+Trait name not in trait dictionary,Test_2023_1,Cleistanthus myrianthus,047,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Cleistanthus myrianthus
+Trait name not in trait dictionary,Test_2023_1,Cleistanthus myrianthus,047,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Cleistanthus myrianthus
+Trait name not in trait dictionary,Test_2023_1,Cleistanthus myrianthus,047,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Cleistanthus myrianthus
+Missing unit conversion,Test_2023_1,Cryptocarya laevigata,050,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,08,,,2004/2004,from Falster_2005_1,03,,Cryptocarya laevigata
+Missing unit conversion,Test_2023_1,Cryptocarya laevigata,050,wood_density,0.64,,species,mean,measurement,3,field,adult,,,,,,,08,,,2004/2004,from Falster_2005_1,02,,Cryptocarya laevigata
+Trait name not in trait dictionary,Test_2023_1,Cryptocarya laevigata,050,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,08,,,2004/2004,from Falster_2005_1,01,,Cryptocarya laevigata
+Missing unit conversion,Test_2023_1,Cryptocarya mackinnoniana,053,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,01,,,2004/2004,from Falster_2005_1,03,,Cryptocarya mackinnoniana
+Missing unit conversion,Test_2023_1,Cryptocarya mackinnoniana,053,wood_density,0.655,,species,mean,measurement,3,field,adult,,,,,,,01,,,2004/2004,from Falster_2005_1,02,,Cryptocarya mackinnoniana
+Trait name not in trait dictionary,Test_2023_1,Cryptocarya mackinnoniana,053,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,01,,,2004/2004,from Falster_2005_1,01,,Cryptocarya mackinnoniana
+Missing unit conversion,Test_2023_1,Cryptocarya murrayi,056,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Cryptocarya murrayi
+Missing unit conversion,Test_2023_1,Cryptocarya murrayi,056,wood_density,0.674,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Cryptocarya murrayi
+Trait name not in trait dictionary,Test_2023_1,Cryptocarya murrayi,056,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Cryptocarya murrayi
+Missing unit conversion,Test_2023_1,Dendrocnide moroides,059,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Dendrocnide moroides
+Missing unit conversion,Test_2023_1,Dendrocnide moroides,059,wood_density,0.23,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Dendrocnide moroides
+Trait name not in trait dictionary,Test_2023_1,Dendrocnide moroides,059,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Dendrocnide moroides
+Missing unit conversion,Test_2023_1,Elaeocarpus grandis,062,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Elaeocarpus grandis
+Missing unit conversion,Test_2023_1,Elaeocarpus grandis,062,wood_density,0.499,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Elaeocarpus grandis
+Trait name not in trait dictionary,Test_2023_1,Elaeocarpus grandis,062,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
+Missing unit conversion,Test_2023_1,Endiandra leptodendron,065,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Endiandra leptodendron
+Missing unit conversion,Test_2023_1,Endiandra leptodendron,065,wood_density,0.611,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Endiandra leptodendron
+Trait name not in trait dictionary,Test_2023_1,Endiandra leptodendron,065,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Endiandra leptodendron
+Missing unit conversion,Test_2023_1,Endiandra microneura,068,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Endiandra microneura
+Missing unit conversion,Test_2023_1,Endiandra microneura,068,wood_density,0.623,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Endiandra microneura
+Trait name not in trait dictionary,Test_2023_1,Endiandra microneura,068,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Endiandra microneura
+Missing unit conversion,Test_2023_1,Gillbeea adenopetala,071,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Gillbeea adenopetala
+Missing unit conversion,Test_2023_1,Gillbeea adenopetala,071,wood_density,0.43,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Gillbeea adenopetala
+Trait name not in trait dictionary,Test_2023_1,Gillbeea adenopetala,071,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Gillbeea adenopetala
+Missing unit conversion,Test_2023_1,Glochidion hylandii,074,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,05,,02,2004/2004,from Falster_2005_1,03,11,Glochidion hylandii
+Missing unit conversion,Test_2023_1,Glochidion hylandii,074,wood_density,0.566,,species,mean,measurement,3,field,adult,,,,,,,05,,02,2004/2004,from Falster_2005_1,02,11,Glochidion hylandii
+Trait name not in trait dictionary,Test_2023_1,Glochidion hylandii,074,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,05,,02,2004/2004,from Falster_2005_1,01,11,Glochidion hylandii
+Missing unit conversion,Test_2023_1,Haplostichanthus submontanus,077,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Haplostichanthus sp Coop. Ck
+Missing unit conversion,Test_2023_1,Haplostichanthus submontanus,077,wood_density,0.668,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Haplostichanthus sp Coop. Ck
+Trait name not in trait dictionary,Test_2023_1,Haplostichanthus submontanus,077,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
+Missing unit conversion,Test_2023_1,Harpullia rhyticarpa,080,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Harpullia rhyticarpa
+Missing unit conversion,Test_2023_1,Harpullia rhyticarpa,080,wood_density,0.621,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Harpullia rhyticarpa
+Trait name not in trait dictionary,Test_2023_1,Harpullia rhyticarpa,080,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Harpullia rhyticarpa
+Missing unit conversion,Test_2023_1,Hernandia albiflora,083,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Hernandia albiflora
+Missing unit conversion,Test_2023_1,Hernandia albiflora,083,wood_density,0.447,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Hernandia albiflora
+Trait name not in trait dictionary,Test_2023_1,Hernandia albiflora,083,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Hernandia albiflora
+Missing unit conversion,Test_2023_1,Homalanthus novo-guineensis,086,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,14,01,03,2004/2004,from Falster_2005_1,03,11,Homalanthus novoguineensis
+Missing unit conversion,Test_2023_1,Homalanthus novo-guineensis,086,wood_density,0.319,,species,mean,measurement,3,field,adult,,,,,,,14,01,03,2004/2004,from Falster_2005_1,02,11,Homalanthus novoguineensis
+Trait name not in trait dictionary,Test_2023_1,Homalanthus novo-guineensis,086,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,14,01,03,2004/2004,from Falster_2005_1,01,11,Homalanthus novoguineensis
+Missing unit conversion,Test_2023_1,Ixora biflora,089,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Ixora biflora
+Missing unit conversion,Test_2023_1,Ixora biflora,089,wood_density,0.843,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Ixora biflora
+Trait name not in trait dictionary,Test_2023_1,Ixora biflora,089,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Ixora biflora
+Missing unit conversion,Test_2023_1,Lasianthus strigosus,092,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Lasianthus strigosus
+Missing unit conversion,Test_2023_1,Lasianthus strigosus,092,wood_density,0.684,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Lasianthus strigosus
+Trait name not in trait dictionary,Test_2023_1,Lasianthus strigosus,092,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
+Missing unit conversion,Test_2023_1,Litsea leefeana,095,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Litsea leefeana
+Missing unit conversion,Test_2023_1,Litsea leefeana,095,wood_density,0.549,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Litsea leefeana
+Trait name not in trait dictionary,Test_2023_1,Litsea leefeana,095,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Litsea leefeana
+Missing unit conversion,Test_2023_1,Macaranga tanarius,098,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Macaranga tanarius
+Missing unit conversion,Test_2023_1,Macaranga tanarius,098,wood_density,0.344,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Macaranga tanarius
+Trait name not in trait dictionary,Test_2023_1,Macaranga tanarius,098,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Macaranga tanarius
+Missing unit conversion,Test_2023_1,Mallotus mollissimus,101,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Mallotus mollissimus
+Missing unit conversion,Test_2023_1,Mallotus mollissimus,101,wood_density,0.373,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Mallotus mollissimus
+Trait name not in trait dictionary,Test_2023_1,Mallotus mollissimus,101,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Mallotus mollissimus
+Missing unit conversion,Test_2023_1,Medicosma sessiliflora,104,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Medicosma sessiliflora
+Missing unit conversion,Test_2023_1,Medicosma sessiliflora,104,wood_density,0.69,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Medicosma sessiliflora
+Trait name not in trait dictionary,Test_2023_1,Medicosma sessiliflora,104,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Medicosma sessiliflora
+Missing unit conversion,Test_2023_1,Melastoma cyanoides,107,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Melastoma cyanoides
+Missing unit conversion,Test_2023_1,Melastoma cyanoides,107,wood_density,0.381,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Melastoma cyanoides
+Trait name not in trait dictionary,Test_2023_1,Melastoma cyanoides,107,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Melastoma cyanoides
+Missing unit conversion,Test_2023_1,Melicope elleryana,110,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,01,,,,01,03,2004/2004,from Falster_2005_1,03,,Melicope elleryana
+Missing unit conversion,Test_2023_1,Melicope elleryana,110,wood_density,0.346,,species,mean,measurement,3,field,adult,,,,01,,,,01,03,2004/2004,from Falster_2005_1,02,,Melicope elleryana
+Trait name not in trait dictionary,Test_2023_1,Melicope elleryana,110,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,01,,,,01,03,2004/2004,from Falster_2005_1,01,,Melicope elleryana
+Missing unit conversion,Test_2023_1,Myristica insipida,113,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Myristica insipida
+Missing unit conversion,Test_2023_1,Myristica insipida,113,wood_density,0.433,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Myristica insipida
+Trait name not in trait dictionary,Test_2023_1,Myristica insipida,113,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Myristica insipida
+Missing unit conversion,Test_2023_1,Neolitsea dealbata,116,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,01,,,,01,,2004/2004,from Falster_2005_1,03,,Neolitsea dealbata
+Missing unit conversion,Test_2023_1,Neolitsea dealbata,116,wood_density,0.352,,species,mean,measurement,3,field,adult,,,,01,,,,01,,2004/2004,from Falster_2005_1,02,,Neolitsea dealbata
+Trait name not in trait dictionary,Test_2023_1,Neolitsea dealbata,116,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,01,,,,01,,2004/2004,from Falster_2005_1,01,,Neolitsea dealbata
+Missing unit conversion,Test_2023_1,Pittosporum rubiginosum,119,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Pittosporum rubiginosum
+Missing unit conversion,Test_2023_1,Pittosporum rubiginosum,119,wood_density,0.728,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Pittosporum rubiginosum
+Trait name not in trait dictionary,Test_2023_1,Pittosporum rubiginosum,119,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Pittosporum rubiginosum
 Times must be length 12,Test_2023_1,Polyscias australiana,120,flowering_time,nnnnnyyyynnnnnnnnnn,,individual,mode,expert_score,3,field,adult,09,,,01,,01,07,02,,2004/2004,from Falster_2005_1,01,,Polyscias australiana
-Missing unit conversion,Test_2023_1,Polyscias australiana,122,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,01,,01,07,02,,2004/2004,from Falster_2005_1,03,,Polyscias australiana
-Missing unit conversion,Test_2023_1,Polyscias australiana,122,wood_density,0.397,,species,mean,measurement,3,field,adult,,,,01,,01,07,02,,2004/2004,from Falster_2005_1,02,,Polyscias australiana
-Trait name not in trait dictionary,Test_2023_1,Polyscias australiana,122,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,01,,01,07,02,,2004/2004,from Falster_2005_1,01,,Polyscias australiana
-Missing unit conversion,Test_2023_1,Psychotria dallachiana,125,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Psychotria dallachiana
-Missing unit conversion,Test_2023_1,Psychotria dallachiana,125,wood_density,0.612,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Psychotria dallachiana
-Trait name not in trait dictionary,Test_2023_1,Psychotria dallachiana,125,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Psychotria dallachiana
-Unsupported trait value,Test_2023_1,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),128,plant_growth_form,trees,,species,mode,expert_score,3,field,adult,,,,,,01,02,02,,2004/2004,from Falster_2005_1,01,,Psychotria sp Utchee Creek
-Missing unit conversion,Test_2023_1,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),128,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,02,02,,2004/2004,from Falster_2005_1,03,,Psychotria sp Utchee Creek
-Missing unit conversion,Test_2023_1,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),128,wood_density,0.582,,species,mean,measurement,3,field,adult,,,,,,01,02,02,,2004/2004,from Falster_2005_1,02,,Psychotria sp Utchee Creek
-Trait name not in trait dictionary,Test_2023_1,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),128,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,02,02,,2004/2004,from Falster_2005_1,01,,Psychotria sp Utchee Creek
-Missing unit conversion,Test_2023_1,Quassia baileyana,131,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Quassia baileyana
-Missing unit conversion,Test_2023_1,Quassia baileyana,131,wood_density,0.501,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Quassia baileyana
-Trait name not in trait dictionary,Test_2023_1,Quassia baileyana,131,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
-Missing unit conversion,Test_2023_1,Rhodomyrtus trineura,134,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,15,,,2004/2004,from Falster_2005_1,03,,Rhodomyrtus trineura
-Missing unit conversion,Test_2023_1,Rhodomyrtus trineura,134,wood_density,0.763,,species,mean,measurement,3,field,adult,,,,,,01,15,,,2004/2004,from Falster_2005_1,02,,Rhodomyrtus trineura
-Trait name not in trait dictionary,Test_2023_1,Rhodomyrtus trineura,134,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,01,15,,,2004/2004,from Falster_2005_1,01,,Rhodomyrtus trineura
-Missing unit conversion,Test_2023_1,Rockinghamia angustifolia,137,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Rockinghamia angustifolia
-Missing unit conversion,Test_2023_1,Rockinghamia angustifolia,137,wood_density,0.455,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Rockinghamia angustifolia
-Trait name not in trait dictionary,Test_2023_1,Rockinghamia angustifolia,137,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Rockinghamia angustifolia
+Missing unit conversion,Test_2023_1,Polyscias australiana,122,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,01,,,07,02,,2004/2004,from Falster_2005_1,03,,Polyscias australiana
+Missing unit conversion,Test_2023_1,Polyscias australiana,122,wood_density,0.397,,species,mean,measurement,3,field,adult,,,,01,,,07,02,,2004/2004,from Falster_2005_1,02,,Polyscias australiana
+Trait name not in trait dictionary,Test_2023_1,Polyscias australiana,122,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,01,,,07,02,,2004/2004,from Falster_2005_1,01,,Polyscias australiana
+Missing unit conversion,Test_2023_1,Psychotria dallachiana,125,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Psychotria dallachiana
+Missing unit conversion,Test_2023_1,Psychotria dallachiana,125,wood_density,0.612,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Psychotria dallachiana
+Trait name not in trait dictionary,Test_2023_1,Psychotria dallachiana,125,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Psychotria dallachiana
+Unsupported trait value,Test_2023_1,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),128,plant_growth_form,trees,,species,mode,expert_score,3,field,adult,,,,,,,02,02,,2004/2004,from Falster_2005_1,01,,Psychotria sp Utchee Creek
+Missing unit conversion,Test_2023_1,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),128,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,02,02,,2004/2004,from Falster_2005_1,03,,Psychotria sp Utchee Creek
+Missing unit conversion,Test_2023_1,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),128,wood_density,0.582,,species,mean,measurement,3,field,adult,,,,,,,02,02,,2004/2004,from Falster_2005_1,02,,Psychotria sp Utchee Creek
+Trait name not in trait dictionary,Test_2023_1,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),128,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,02,02,,2004/2004,from Falster_2005_1,01,,Psychotria sp Utchee Creek
+Missing unit conversion,Test_2023_1,Quassia baileyana,131,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Quassia baileyana
+Missing unit conversion,Test_2023_1,Quassia baileyana,131,wood_density,0.501,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Quassia baileyana
+Trait name not in trait dictionary,Test_2023_1,Quassia baileyana,131,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
+Missing unit conversion,Test_2023_1,Rhodomyrtus trineura,134,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,15,,,2004/2004,from Falster_2005_1,03,,Rhodomyrtus trineura
+Missing unit conversion,Test_2023_1,Rhodomyrtus trineura,134,wood_density,0.763,,species,mean,measurement,3,field,adult,,,,,,,15,,,2004/2004,from Falster_2005_1,02,,Rhodomyrtus trineura
+Trait name not in trait dictionary,Test_2023_1,Rhodomyrtus trineura,134,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,15,,,2004/2004,from Falster_2005_1,01,,Rhodomyrtus trineura
+Missing unit conversion,Test_2023_1,Rockinghamia angustifolia,137,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Rockinghamia angustifolia
+Missing unit conversion,Test_2023_1,Rockinghamia angustifolia,137,wood_density,0.455,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Rockinghamia angustifolia
+Trait name not in trait dictionary,Test_2023_1,Rockinghamia angustifolia,137,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Rockinghamia angustifolia
 Observation excluded in metadata,Test_2023_1,Syzygium gustavioides,139,leaf_mass_per_area,0.167,mg/mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Syzygium gustavioides
-Missing unit conversion,Test_2023_1,Syzygium gustavioides,140,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Syzygium gustavioides
-Missing unit conversion,Test_2023_1,Syzygium gustavioides,140,wood_density,0.521,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Syzygium gustavioides
-Trait name not in trait dictionary,Test_2023_1,Syzygium gustavioides,140,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Syzygium gustavioides
-Missing unit conversion,Test_2023_1,Syzygium sayeri,143,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Syzygium sayeri
-Missing unit conversion,Test_2023_1,Syzygium sayeri,143,wood_density,0.485,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Syzygium sayeri
-Trait name not in trait dictionary,Test_2023_1,Syzygium sayeri,143,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Syzygium sayeri
-Missing unit conversion,Test_2023_1,Trema aspera,146,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Trema aspera
-Missing unit conversion,Test_2023_1,Trema aspera,146,wood_density,0.357,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Trema aspera
-Trait name not in trait dictionary,Test_2023_1,Trema aspera,146,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Missing unit conversion,Test_2023_1,Syzygium gustavioides,140,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Syzygium gustavioides
+Missing unit conversion,Test_2023_1,Syzygium gustavioides,140,wood_density,0.521,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Syzygium gustavioides
+Trait name not in trait dictionary,Test_2023_1,Syzygium gustavioides,140,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Syzygium gustavioides
+Missing unit conversion,Test_2023_1,Syzygium sayeri,143,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Syzygium sayeri
+Missing unit conversion,Test_2023_1,Syzygium sayeri,143,wood_density,0.485,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Syzygium sayeri
+Trait name not in trait dictionary,Test_2023_1,Syzygium sayeri,143,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Syzygium sayeri
+Missing unit conversion,Test_2023_1,Trema aspera,146,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Trema aspera
+Missing unit conversion,Test_2023_1,Trema aspera,146,wood_density,0.357,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Trema aspera
+Trait name not in trait dictionary,Test_2023_1,Trema aspera,146,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Trema aspera

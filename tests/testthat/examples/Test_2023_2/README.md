@@ -8,6 +8,7 @@ This dataset is for testing the following, for wide datasets:
 - Locations (latitude and longitude missing for both locations)
 - Test `method_id` when `value_type` is read from a column at the trait level
 - Read in `collection_date` as a column at the dataset level (check `observation_id`)
+- Check that `location_id` is NA for species `entity_type` measurements
 
 Test_2023_2 is a copy of Falster_2005_1 with the following modifications:
 - Added `replicates` as a column, with also trait-level and location-level metadata (included some NAs)
