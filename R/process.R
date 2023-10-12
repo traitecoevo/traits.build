@@ -697,9 +697,9 @@ process_create_context_ids <- function(data, contexts) {
     dplyr::select(dplyr::all_of(c("context_property", "category", "value"))) %>%
     dplyr::distinct()
 
-  categories <- c(
-    "plot_context", "treatment_context", "entity_context",
-    "temporal_context", "method_context") %>%
+  categories <-
+    c("plot_context", "treatment_context", "entity_context",
+      "temporal_context", "method_context") %>%
     subset(., . %in% tmp$category)
 
   ids <- dplyr::tibble(.rows = nrow(context_cols))
@@ -1041,12 +1041,12 @@ process_flag_unsupported_values <- function(data, definitions) {
       ii <- data[["trait_name"]] == trait
 
       # Only Y,N
-      i <-  ii & is.na(data[["error"]]) & !grepl("^[YyNn]+$", data[["value"]])
+      i <- ii & is.na(data[["error"]]) & !grepl("^[YyNn]+$", data[["value"]])
       data <- data %>%
         dplyr::mutate(error = ifelse(i, "Time can only contain Y & Ns", .data$error))
 
       # Must be length 12
-      i <-  ii & is.na(data[["error"]]) & stringr::str_length(data[["value"]]) != 12
+      i <- ii & is.na(data[["error"]]) & stringr::str_length(data[["value"]]) != 12
       data <- data %>%
         dplyr::mutate(error = ifelse(i, "Times must be length 12", .data$error))
     }
@@ -1492,15 +1492,17 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
   # Implement any value changes as per substitutions
   if (!is.na(metadata[["substitutions"]][1])) {
-    substitutions_table <-  util_list_to_df2(metadata[["substitutions"]]) %>%
+    substitutions_table <- util_list_to_df2(metadata[["substitutions"]]) %>%
       dplyr::mutate(
         find = tolower(.data$find),
         replace = tolower(.data$replace)
       )
 
     for (i in seq_len(nrow(substitutions_table))) {
-      j <- which(out[["trait_name"]] == substitutions_table[["trait_name"]][i] &
-             out[["value"]] == substitutions_table[["find"]][i])
+      j <- which(
+        out[["trait_name"]] == substitutions_table[["trait_name"]][i] &
+        out[["value"]] == substitutions_table[["find"]][i]
+      )
 
       if (length(j) > 0) {
         out[["value"]][j] <- substitutions_table[["replace"]][i]
