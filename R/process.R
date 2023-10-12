@@ -430,6 +430,17 @@ process_create_observation_id <- function(data, metadata) {
       dplyr::left_join(has_ind_value, by = "parsing_id") %>%
       dplyr::mutate(individual_id = ifelse(.data$check_for_ind == TRUE, .data$parsing_id, NA))
 
+  # For datasets where an `individual_id` is assigned via metadata$dataset
+  } else {
+
+    # Replace NAs in `individual_id` column with `parsing_id`
+    data <-
+      data %>%
+      dplyr::mutate(
+        individual_id = ifelse(
+          is.na(.data$individual_id) & .data$entity_type == "individual",
+          .data$parsing_id, .data$individual_id
+        ))
   }
 
   # Create final `individual_id` within each species and population
