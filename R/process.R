@@ -134,8 +134,8 @@ dataset_process <- function(filename_data_raw,
   # Where missing, fill variables in traits table with values from locations
   # Currently overwriting dataset-level column metadata -- NEED FIX
   if (nrow(locations) > 0) {
-    vars <- c("basis_of_record", "life_stage", "collection_date", "measurement_remarks", "unit_in", "entity_type",
-              "value_type", "basis_of_value", "replicates", "population_id", "individual_id")
+    vars <- c("basis_of_record", "life_stage", "collection_date",
+              "measurement_remarks", "entity_type")
 
     for (v in vars) {
       # Merge into traits from location level
