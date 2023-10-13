@@ -319,7 +319,7 @@ dataset_build <- function(
 #' otherwise no changes are made
 process_custom_code <- function(txt) {
 
-  if (!is.null(txt) && !is.na(txt)  && nchar(txt) > 0) {
+  if (!is.null(txt) && !is.na(txt) && nchar(txt) > 0) {
 
     txt2 <-
       # Trim white space, quotes, new line from front and back
