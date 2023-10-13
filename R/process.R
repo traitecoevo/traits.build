@@ -132,7 +132,9 @@ dataset_process <- function(filename_data_raw,
   }
 
   # Where missing, fill variables in traits table with values from locations
-  # Currently overwriting dataset-level column metadata -- NEED FIX
+  # Trait metadata should probably have precedence -- right now trait metadata
+  # is being read in during `process_parse_data` and getting overwritten here #TODO
+
   if (nrow(locations) > 0) {
     vars <- c("basis_of_record", "life_stage", "collection_date",
               "measurement_remarks", "entity_type")
@@ -149,8 +151,8 @@ dataset_process <- function(filename_data_raw,
               dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
               stats::na.omit()
           )
-      # Use location level value if present
-      traits[[v]] <- ifelse(!is.na(traits_tmp[["col_tmp"]]), traits_tmp[["col_tmp"]], traits[[v]])
+        # Use location level value if present
+        traits[[v]] <- ifelse(!is.na(traits_tmp[["col_tmp"]]), traits_tmp[["col_tmp"]], traits[[v]])
       }
     }
 
