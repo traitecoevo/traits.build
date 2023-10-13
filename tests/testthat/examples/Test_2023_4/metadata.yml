@@ -104,9 +104,9 @@ dataset:
   source_id: source_id
   unit_in: units
   description: Plant growth form data extracted from the NT Flora Online
-  life_stage: seedling
+  life_stage: life_stage
   replicates: 1
-  measurement_remarks: Part of Test Dataset 4
+  measurement_remarks: measurement_remarks
   sampling_strategy: This dataset is sourced from the PlantNet online flora (version
     date 2022-05-06). Briefly, the textual descriptions of each taxon were downloaded
     and organised into a tabular format of individual taxon names and their corresponding
@@ -132,7 +132,6 @@ locations:
     description: First made-up location for testing
     entity_type: population
     life_stage: juvenile
-    replicates: 2
     collection_date: '2020'
   australia_2:
     latitude (deg): -27.158
@@ -213,6 +212,7 @@ traits:
     the kind of dehiscence e.g. scepticidal, loculicidal or possessing valves.
   basis_of_record: test_basis_of_record
   life_stage: adult
+  measurement_remarks: measurement_remarks_fruit_dehiscence
 - var_in: fruit_length
   trait_name: fruit_length
   entity_type: species

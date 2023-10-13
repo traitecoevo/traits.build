@@ -15,8 +15,9 @@ Test_2023_4 is a copy of NHNSW_2023 with the following modifications:
 - Added `entity_type` as a column, and read in as a dataset-level column with also trait-level and location-level metadata (included some NAs)
 - Read `value_type` as a column and as fixed values at the trait level
 - Added `basis_of_value` and `basis_of_record` as columns at the trait-level, with a fixed value at the dataset level for the latter (included NAs in column) (and missing `basis_of_record` for `fruit_width`)
-- Added `life_stage`, `replicates`, as dataset-level, trait-level and location-level metadata
-- Added `measurement_remarks` as dataset-level and location-level metadata
+- Added `replicates` as dataset-level, trait-level and location-level metadata
+- Added `life_stage` as dataset-level column metadata, fixed trait-level and location-level metadata
+- Added `measurement_remarks` as dataset-level column metadata, fixed location-level metadata and trait-level column metadata #TODO
 - Added `collection_date` as location-level metadata (set as NA at dataset level because otherwise `custom_R_code` won't be detected correctly -- see `read_metadata` function)
 - Removed trait-level `unit_in` for `fruit_colour` and `fruit_length` and instead read their units in from a column at the dataset level
 - Converted some `fruit_length` units to cm (and changed the "units" column)
