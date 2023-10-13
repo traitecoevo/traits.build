@@ -85,15 +85,9 @@ dataset:
         entity_measured = ifelse(category %in% c("capsule", "silicula", "nut", "utricles", "pyrenes", "berry", "achenes"), "fruit", entity_measured),
         units = ifelse(trait_name == "fruit_width", NA_character_, units)
       ) %>%
-      mutate(entity_measured = ifelse(is.na(entity_measured), "unknown", entity_measured)) %>%
-      group_by(taxon_name, trait_name, entity_measured, value_type) %>%
-      mutate(
-        observation_number = row_number(),
-        observation_number = ifelse(trait_name %in% c("leaf_photosynthesis", "leaf_stomatal_conductance", "leaf_stomatal_conductance_2"), NA, observation_number)
-      ) %>%
-      ungroup()
+      mutate(entity_measured = ifelse(is.na(entity_measured), "unknown", entity_measured))
   '
-  collection_date: .na
+  collection_date: collection_date
   taxon_name: taxon_name
   trait_name: trait_name
   value: trait_value
@@ -102,7 +96,6 @@ dataset:
   entity_type: test_entity_type
   basis_of_record: field_experiment
   source_id: source_id
-  unit_in: units
   description: Plant growth form data extracted from the NT Flora Online
   life_stage: life_stage
   replicates: 1
@@ -138,7 +131,6 @@ locations:
     longitude (deg): 142.685
     description: Second made-up location for testing
     measurement_remarks: From `australia_2` site
-    collection_date: '2021'
 contexts:
 - context_property: trait scoring method
   category: method_context
@@ -188,17 +180,12 @@ contexts:
   - value: submerged_leaf
   - value: upper_pinnae
   - value: scale_leaf
-- context_property: replicate observations
-  category: temporal_context
-  var_in: observation_number
-  values:
-  - value: 1
-  - value: 2
 traits:
 - var_in: fruit_colour
   trait_name: fruit_colour
   replicates: .na
   value_type: value_type
+  unit_in: units
   methods: When specified in the taxon description, only the colours of the fruit
     at maturity or the dominant colours of the fruit exterior were scored. If neither
     were specified, all colours associated with the fruit were scored.
@@ -215,7 +202,7 @@ traits:
   measurement_remarks: measurement_remarks_fruit_dehiscence
 - var_in: fruit_length
   trait_name: fruit_length
-  entity_type: species
+  unit_in: units
   methods: The term used to describe the fruit length was stored  as a measurement
     remark for greater clarity e.g. fruit, achene, capsule. Fruits which were spherical
     or round in shape were inferred as possessing the same dimensions in other planes.
@@ -226,12 +213,14 @@ traits:
   unit_in: mm
   trait_name: fruit_width
   value_type: value_type
+  entity_type: species
   methods: The term used to describe the fruit width was stored  as a measurement
     remark for greater clarity e.g. fruit, achene, capsule. Fruits which were spherical
     or round in shape were inferred as possessing the same dimensions in other planes.
 - var_in: fruit_width_2
   trait_name: fruit_width
   value_type: value_type
+  unit_in: units
   methods: The term used to describe the fruit width was stored  as a measurement
     remark for greater clarity e.g. fruit, achene, capsule. Fruits which were spherical
     or round in shape were inferred as possessing the same dimensions in other planes.

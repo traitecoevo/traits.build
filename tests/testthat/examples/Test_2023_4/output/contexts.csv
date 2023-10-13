@@ -33,5 +33,3 @@ Test_2023_4,entity measured,entity_context,emergent_leaf,,,
 Test_2023_4,entity measured,entity_context,submerged_leaf,,,
 Test_2023_4,entity measured,entity_context,upper_pinnae,,,
 Test_2023_4,entity measured,entity_context,scale_leaf,,,
-Test_2023_4,replicate observations,temporal_context,1,,temporal_context_id,01
-Test_2023_4,replicate observations,temporal_context,2,,,
