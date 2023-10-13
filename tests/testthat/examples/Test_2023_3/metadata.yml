@@ -89,11 +89,8 @@ dataset:
         trait_name = ifelse(value_type == "minimum" & trait_name == "fruit_width", "fruit_width_min", trait_name)
       )  %>%
       arrange(category) %>%
-      distinct(source, taxon_name, trait_name, trait_value, units, value_type, inferred, .keep_all = TRUE) %>%
-      mutate(entity_measured = ifelse(is.na(entity_measured), "unknown", entity_measured)) %>%
-      group_by(taxon_name, trait_name, entity_measured, value_type) %>%
-        mutate(observation_number = row_number()) %>%
-      ungroup()
+      distinct() %>%
+      mutate(entity_measured = ifelse(is.na(entity_measured), "unknown", entity_measured))
   '
   collection_date: unknown/2022
   taxon_name: taxon_name
@@ -151,12 +148,6 @@ contexts:
   - find: unknown
     value: fruit
   - value: fruit
-- context_property: replicate observations
-  category: temporal_context
-  var_in: observation_number
-  values:
-  - value: 1
-  - value: 2
 traits:
 - var_in: fruit_colour
   unit_in: .na
@@ -201,6 +192,7 @@ traits:
   entity_type: species
   basis_of_value: measurement
   value_type: minimum
+  collection_date: collection_date
   replicates: '3'
   methods: Minimum fruit width; the term used to describe the fruit width was stored as
     a measurement remark for greater clarity e.g. fruit, achene, capsule. Fruits which

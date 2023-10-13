@@ -2,7 +2,7 @@
 # Test Dataset 3: `Test_2023_3`
 
 This dataset is for testing the following, for long datasets:
-- Dataset-level and trait-level input of `basis_of_record`, `life_stage`, `entity_type`, `value_type`, `basis_of_value`, `measurement_remarks`, `collection_date` and `replicates`
+- Dataset-level and trait-level input of `basis_of_record`, `life_stage`, `entity_type`, `value_type`, `basis_of_value`, `measurement_remarks` and `replicates`
 - `entity_type` read in as a fixed value if there is an existing column named as that fixed value
 - `replicates` in character format
 - Units are correctly converted to the accepted units
@@ -13,6 +13,7 @@ This dataset is for testing the following, for long datasets:
 - Types of trait data -- numeric (entered as either true numeric type or character type) and categorical, time (e.g. `flowering_time`)
 - Excluded values, such as out of allowable range, invalid categorical values, invalid time values
 - Substitutions work for categorical and time traits, replacing with NA or finding NA
+- Test `collection_date` read in from a column at the trait level and as a fixed value at the dataset level #TODO
 - Check that `location_id` is NA for species `entity_type` measurements
 
 
@@ -29,5 +30,6 @@ Test_2023_3 is a copy of NHNSW_2023 with the following modifications:
 - Added a `flowering_time` trait
 - Invalid `flowering_time` value, invalid `fruit_colour` value ("brunneous" instead of "brown"), out of range `fruit_length` value (3000 mm) should go to `excluded_data`
 - Changed a "indehiscent" value to "not dehiscent" for substitutions, added some `flowering_time` values to be substituted
+- Duplicated row for `fruit_width_min` for Psoralea pinnata to test `collection_date` for making `observation_id`
 
 See output/ for expected output files.

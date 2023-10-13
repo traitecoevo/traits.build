@@ -329,7 +329,7 @@ dataset_test_worker <-
 
         # Check for other files
         vals <- c("data.csv", "metadata.yml", "raw")
-        expect_isin(dir(s), vals, info = paste(f, " - disallowed files"))
+        expect_isin(dir(s), vals, info = paste(f, "- disallowed files"))
 
         # `data.csv`
         f <- files[1]
@@ -768,17 +768,14 @@ dataset_test_worker <-
         testthat::expect_equal(
           dataset$traits %>%
             select(
-              dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "source_id", "taxon_name",
-              "entity_type", "life_stage", "basis_of_record", "value_type", "population_id", "individual_id",
-              "repeat_measurements_id", "temporal_context_id", "method_id", "method_context_id", "entity_context_id",
-              "original_name"))
+              dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "value_type",
+              "repeat_measurements_id", "method_id", "method_context_id"))
             ) %>%
             tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
-            tidyr::pivot_longer(cols = 17:ncol(.)) %>%
+            tidyr::pivot_longer(cols = 7:ncol(.)) %>%
             dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
             select(
-              dplyr::all_of(c("dataset_id", "taxon_name", "trait_name", "number_of_duplicates", "observation_id",
-              "entity_type", "value_type", "population_id")), everything()
+              dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates", "observation_id", "value_type")), everything()
             ) %>%
             filter(.data$number_of_duplicates > 1) %>%
             nrow(),
