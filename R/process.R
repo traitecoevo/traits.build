@@ -858,15 +858,16 @@ process_flag_excluded_observations <- function(data, metadata) {
     util_list_to_df2() %>%
     tidyr::separate_longer_delim("find", delim = ", ") %>%
     dplyr::mutate(find = str_squish(.data$find))
-
+  
   if (nrow(fix) == 0) return(data)
 
   fix <- split(fix, fix$variable)
 
   for (v in names(fix))
+
     data <- data %>%
       dplyr::mutate(
-        error = ifelse(.data$trait_name == v & .data$value %in% fix[[v]]$find,
+        error = ifelse(.data[[v]] %in% fix[[v]]$find,
         "Observation excluded in metadata", .data$error))
 
   data
