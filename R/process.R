@@ -1196,6 +1196,7 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
   # Split by unique unit conversions, to allow for as few calls as possible
   data <- data %>%
     dplyr::group_by(.data$ucn, .data$to_convert) %>%
+    dplyr::rowwise() %>%
     dplyr::mutate(
       # Standard conversion
       value = ifelse(.data$to_convert == TRUE &                     # Value requires conversion
@@ -1203,8 +1204,8 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
                       !is.na(.data$value),                          # Value not NA - the full matrix from data.csv file is still in data table
                       f_standard(.data$value, .data$ucn[1]),        # Convert value to appropriate units
                      .data$value),                                  # If conditions not met, keep original value
-      # Value is a range of bin
-      value = ifelse(.data$to_convert == TRUE  &                    # Value requires conversion
+      # Value is a range or bin
+      value = ifelse(.data$to_convert == TRUE &                    # Value requires conversion
                       .data$value_type %in% c("bin", "range") &     # `value_type` is a bin or range
                       !is.na(.data$value),                          # Value not NA - the full matrix from data.csv file is still in data table
                       f_range_bin(.data$value, .data$ucn[1]),       # Convert value to appropriate units
