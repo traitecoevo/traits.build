@@ -132,7 +132,9 @@ dataset_process <- function(filename_data_raw,
   }
 
   # Where missing, fill variables in traits table with values from locations
-  # Currently overwriting dataset-level column metadata -- NEED FIX
+  # Trait metadata should probably have precedence -- right now trait metadata
+  # is being read in during `process_parse_data` and getting overwritten here #TODO
+
   if (nrow(locations) > 0) {
     vars <- c("basis_of_record", "life_stage", "collection_date",
               "measurement_remarks", "entity_type")
@@ -149,8 +151,8 @@ dataset_process <- function(filename_data_raw,
               dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
               stats::na.omit()
           )
-      # Use location level value if present
-      traits[[v]] <- ifelse(!is.na(traits_tmp[["col_tmp"]]), traits_tmp[["col_tmp"]], traits[[v]])
+        # Use location level value if present
+        traits[[v]] <- ifelse(!is.na(traits_tmp[["col_tmp"]]), traits_tmp[["col_tmp"]], traits[[v]])
       }
     }
 
@@ -193,12 +195,14 @@ dataset_process <- function(filename_data_raw,
   taxonomic_updates <-
     traits %>%
     dplyr::select(
-      dplyr::all_of(c("dataset_id", "original_name", cleaned_name = "taxon_name", taxonomic_resolution = "taxonomic_resolution"))
+      dplyr::all_of(
+        c("dataset_id", "original_name", cleaned_name = "taxon_name",
+          taxonomic_resolution = "taxonomic_resolution"))
     ) %>%
     dplyr::distinct() %>%
     dplyr::arrange(.data$cleaned_name)
 
-  ## A temporary dataframe created to generate and bind method_id,
+  ## A temporary dataframe created to generate and bind `method_id`,
   ## for instances where the same trait is measured twice using different methods
 
   # Test ABRS_2023
@@ -314,7 +318,8 @@ dataset_build <- function(
 #' @return character text containing custom_R_code if custom_R_code is not empty,
 #' otherwise no changes are made
 process_custom_code <- function(txt) {
-  if (!is.null(txt) && !is.na(txt)  && nchar(txt) > 0) {
+
+  if (!is.null(txt) && !is.na(txt) && nchar(txt) > 0) {
 
     txt2 <-
       # Trim white space, quotes, new line from front and back
@@ -324,17 +329,20 @@ process_custom_code <- function(txt) {
     # test: txt <-" '' \n Total of 23.5 bitcoins. "
 
     function(data) {
-      envir = new.env()
-
+      envir <- new.env()
       # Read in extra functions used in custom R code
-      if(file.exists("R/custom_R_code.R")) {
+      if (file.exists("R/custom_R_code.R")) {
         source("R/custom_R_code.R", local = envir)
       }
+      eval(parse(text = txt2), envir = envir)
+    }
 
-      eval(parse(text = txt2), envir = envir)}
   } else {
+
     identity
+
   }
+
 }
 
 #' Create entity id
@@ -1921,13 +1929,13 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
       taxon_rank = ifelse(!is.na(.data$taxon_rank), .data$taxonomic_resolution, .data$taxon_rank),
       # Field trinomial is only filled in if taxonomic resolution is an infraspecific name
       trinomial = ifelse(.data$taxon_rank %in% c("Subspecies", "Forma", "Varietas"),
-                        stringr::str_split_fixed(.data$taxon_name, "\\[", 2)[,1] %>% stringr::str_trim(), NA),
+                        stringr::str_split_fixed(.data$taxon_name, "\\[", 2)[, 1] %>% stringr::str_trim(), NA),
       # Field binomial is filled in if taxonomic resolution is an infraspecific name or a binomial
       # All taxon names that have "extra" information (beyond the actual name) have been formatted
       # to have that information in square brackets '[]', so these can be used as a delimitor to
       # extract the actual name
       binomial = ifelse(.data$taxon_rank %in% c("Species"),
-                        stringr::str_split_fixed(.data$taxon_name, "\\[", 2)[,1] %>% stringr::str_trim(), NA),
+                        stringr::str_split_fixed(.data$taxon_name, "\\[", 2)[, 1] %>% stringr::str_trim(), NA),
       binomial = ifelse(.data$taxon_rank %in% c("Subspecies", "Forma", "Varietas", "Series"),
                         stringr::word(.data$taxon_name, start = 1, end = 2), .data$binomial),
       binomial = stringr::str_trim(.data$binomial),

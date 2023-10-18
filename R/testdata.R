@@ -756,7 +756,6 @@ dataset_test_worker <-
         # Check that special characters do not make it into the data
         expect_no_error(
           parsed_data <- data %>%
-            process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
             process_parse_data(dataset_id, metadata, contexts, schema),
           info = "`process_parse_data`")
 
