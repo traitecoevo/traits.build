@@ -202,7 +202,7 @@ dataset_process <- function(filename_data_raw,
     dplyr::distinct() %>%
     dplyr::arrange(.data$cleaned_name)
 
-  ## A temporary dataframe created to generate and bind method_id,
+  ## A temporary dataframe created to generate and bind `method_id`,
   ## for instances where the same trait is measured twice using different methods
 
   # Test ABRS_2023
