@@ -858,7 +858,7 @@ process_flag_excluded_observations <- function(data, metadata) {
     util_list_to_df2() %>%
     tidyr::separate_longer_delim("find", delim = ", ") %>%
     dplyr::mutate(find = str_squish(.data$find))
-  
+
   if (nrow(fix) == 0) return(data)
 
   fix <- split(fix, fix$variable)
