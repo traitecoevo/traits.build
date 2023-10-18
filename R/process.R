@@ -1860,42 +1860,27 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
         dplyr::all_of(c("cleaned_name", "cleaned_scientific_name_id", "cleaned_name_taxonomic_status",
                         "cleaned_name_alternative_taxonomic_status", "taxon_id", "taxon_name", "taxon_rank")))
     ) %>%
-    dplyr::mutate(
-      # if `taxonomic_resolution` is not blank (i.e. asssigned during taxonomic updates) and
-      # not equal to taxon_rank from taxon_list, taxon_rank
-      # gets priority
-      # XXX this seems backward:
-      # shouldn't one use the `taxonomic_resolution` value specified in metadata$taxonomic_updates?
-      taxonomic_resolution = ifelse(
-        !is.na(.data$taxonomic_resolution) & .data$taxonomic_resolution != .data$taxon_rank,
-        .data$taxon_rank, .data$taxonomic_resolution
-      ),
-      # if `taxonomic_resolution` is blank (for all taxa not requiring alignments), 
-      # taxon_rank from taxon_list used
-      taxonomic_resolution = ifelse(
-        is.na(.data$taxonomic_resolution),
-        .data$taxon_rank, .data$taxonomic_resolution
-      )
-    ) %>%
     dplyr::distinct() %>%
     dplyr::select(-dplyr::all_of(c("taxon_rank"))) %>%
     dplyr::arrange(.data$cleaned_name)
 
-
   austraits_raw$traits <-
     austraits_raw$traits %>%
     dplyr::rename(dplyr::all_of(c("cleaned_name" = "taxon_name"))) %>%
+    # XX Annotate why is taxon_rank needed (Lizzy knows it is necessary, but need to add that here).
     dplyr::left_join(by = "cleaned_name",
               taxa %>% dplyr::select(dplyr::all_of(c("cleaned_name", "taxon_name", "taxon_rank")))
               ) %>%
     dplyr::select(dplyr::all_of(c("dataset_id", "taxon_name")), dplyr::everything()) %>%
+    # for taxa where the aligned name ("cleaned_name") is not a species rank name (will have "[")
+    # or where there is no taxon_name to matched to a "cleaned_name", maintain the "cleaned_name" as the "taxon_name"
     dplyr::mutate(
       taxon_name = ifelse(is.na(.data$taxon_name), .data$cleaned_name, .data$taxon_name),
       taxon_name = ifelse(stringr::str_detect(.data$cleaned_name, "\\["), .data$cleaned_name, .data$taxon_name)
     ) %>%
     dplyr::select(-dplyr::all_of(c("cleaned_name")))
 
-# Names, identifiers for all genera
+# Create table with names, identifiers for all genera in taxon_list
   genera_tmp <- taxa %>%
     dplyr::filter(.data$taxon_rank %in% c("Genus", "genus")) %>%
     dplyr::select(dplyr::all_of(c("taxon_name", "family", "taxonomic_reference", "taxon_id",
@@ -1907,7 +1892,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     ))) %>%
     dplyr::distinct()
 
-# Names, identifiers for all families in APC
+# Create table with names, identifiers for all families in APC in taxon_list
   families_tmp <- taxa %>%
     dplyr::filter(.data$taxon_rank %in% c("Familia", "family")) %>%
     dplyr::select(
@@ -1932,11 +1917,10 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
       dplyr::distinct() %>% util_df_convert_character()
     )
 
-
   species_tmp <- species_tmp %>%
     dplyr::mutate(
-      # If no taxonomic resolution is specified, then the name's taxonomic resolution
-      # is the taxon_rank for the taxon name
+      # If no taxonomic resolution is specified from taxonomic_updates, 
+      # then the name's taxonomic resolution is the taxon_rank for the taxon name
       taxonomic_resolution = ifelse(
         .data$taxon_name %in% taxa$cleaned_name,
         taxa$taxon_rank[match(.data$taxon_name, taxa$cleaned_name)],
