@@ -37,7 +37,9 @@ Missing unit conversion,Test_2023_1,Aleurites rockinghamensis,018,seed_dry_mass,
 Missing unit conversion,Test_2023_1,Aleurites rockinghamensis,018,wood_density,0.28,,species,mean,measurement,3,field,adult,,,,,,02,11,,,2004/2004,from Falster_2005_1,02,,Aleurites rockinghamensis
 Trait name not in trait dictionary,Test_2023_1,Aleurites rockinghamensis,018,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,11,,,2004/2004,from Falster_2005_1,01,,Aleurites rockinghamensis
 Missing unit conversion,Test_2023_1,Alphitonia petriei,022,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
+Missing unit conversion,Test_2023_1,Alphitonia petriei,022,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
 Missing unit conversion,Test_2023_1,Alphitonia petriei,022,wood_density,0.413,,species,mean,measurement,3,field,adult,,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,02,,Alphitonia petriei
+Trait name not in trait dictionary,Test_2023_1,Alphitonia petriei,022,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
 Trait name not in trait dictionary,Test_2023_1,Alphitonia petriei,022,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
 Missing unit conversion,Test_2023_1,Alphitonia petriei,023,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,16,,,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
 Missing unit conversion,Test_2023_1,Alphitonia petriei,023,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,01,16,,,2004/2004,from Falster_2005_1,03,,Alphitonia petriei
@@ -153,7 +155,7 @@ Trait name not in trait dictionary,Test_2023_1,Neolitsea dealbata,116,wrong_trai
 Missing unit conversion,Test_2023_1,Pittosporum rubiginosum,119,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Pittosporum rubiginosum
 Missing unit conversion,Test_2023_1,Pittosporum rubiginosum,119,wood_density,0.728,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Pittosporum rubiginosum
 Trait name not in trait dictionary,Test_2023_1,Pittosporum rubiginosum,119,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Pittosporum rubiginosum
-Times must be length 12,Test_2023_1,Polyscias australiana,120,flowering_time,nnnnnyyyynnnnnnnnnn,,individual,mode,expert_score,3,field,adult,09,,,01,,01,07,02,,2004/2004,from Falster_2005_1,01,,Polyscias australiana
+Times must be length 12,Test_2023_1,Polyscias australiana,120,flowering_time,nnnnnyyyynnnnnnnnnn,,individual,mode,expert_score,3,field,adult,09,,,01,,01,07,02,,,from Falster_2005_1,01,,Polyscias australiana
 Missing unit conversion,Test_2023_1,Polyscias australiana,122,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,01,,01,07,02,,2004/2004,from Falster_2005_1,03,,Polyscias australiana
 Missing unit conversion,Test_2023_1,Polyscias australiana,122,wood_density,0.397,,species,mean,measurement,3,field,adult,,,,01,,01,07,02,,2004/2004,from Falster_2005_1,02,,Polyscias australiana
 Trait name not in trait dictionary,Test_2023_1,Polyscias australiana,122,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,01,,01,07,02,,2004/2004,from Falster_2005_1,01,,Polyscias australiana
@@ -173,7 +175,7 @@ Trait name not in trait dictionary,Test_2023_1,Rhodomyrtus trineura,134,wrong_tr
 Missing unit conversion,Test_2023_1,Rockinghamia angustifolia,137,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Rockinghamia angustifolia
 Missing unit conversion,Test_2023_1,Rockinghamia angustifolia,137,wood_density,0.455,,species,mean,measurement,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,02,,Rockinghamia angustifolia
 Trait name not in trait dictionary,Test_2023_1,Rockinghamia angustifolia,137,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Rockinghamia angustifolia
-Observation excluded in metadata,Test_2023_1,Syzygium gustavioides,138,huber_value,6584,mm2{leaf}/mm2{sapwood},individual,raw,model_derived,5,field,adult,04,,,,,02,,,,2002/2002,made-up measurement remarks,04,01,Syzygium gustavioides
+Observation excluded in metadata,Test_2023_1,Syzygium gustavioides,138,huber_value,6584,mm2{leaf}/mm2{sapwood},individual,raw,model_derived,5,field,adult,04,,,,,02,,,,,made-up measurement remarks,04,01,Syzygium gustavioides
 Observation excluded in metadata,Test_2023_1,Syzygium gustavioides,138,huber_value,6584,mm2{leaf}/mm2{sapwood},individual,mean,model_derived,5,field,adult,04,,,,,02,,,,2002/2002,made-up measurement remarks,05,,Syzygium gustavioides
 Observation excluded in metadata,Test_2023_1,Syzygium gustavioides,138,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Syzygium gustavioides
 Observation excluded in metadata,Test_2023_1,Syzygium gustavioides,139,huber_value,2833,mm2{leaf}/mm2{sapwood},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Syzygium gustavioides
