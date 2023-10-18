@@ -102,7 +102,7 @@ metadata_create_template <- function(dataset_id,
       }
 
       # `repeat_measurements_id`
-      tmp <- menu(c("Yes", "No"), title = "\nDo all traits need `repeat_measurements_id`'s?\n\nIf only some do, specify `repeat_measurements_id: TRUE` at the trait level")
+      tmp <- menu(c("Yes", "No"), title = "\nDo all traits need `repeat_measurements_id`'s?")
 
       if (tmp == 1) {
         repeat_measurements_id <- TRUE
@@ -470,14 +470,16 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
     var_in <- metadata_user_select_names(
       paste("Indicate all columns that contain additional contextual data for ", dataset_id), v)
-    categories <- c("treatment", "plot", "temporal", "method", "entity_context")
+    categories <-
+      c("treatment_context", "plot_context", "temporal_context",
+        "method_context", "entity_context")
 
     for (i in seq_along(var_in)) {
 
       ii <- n_existing + i
       category <- metadata_user_select_names(
         paste("What category does context", var_in[i], "fit in?"), categories)
-      context_values <- data[[var_in[i]]] %>% unique() %>% na.omit()
+      context_values <- data[[var_in[i]]] %>% unique() %>% na.omit() %>% as.character()
 
       message(sprintf("\tThe following values exist for this context: %s", context_values %>% paste(collapse = ", ")))
 

@@ -359,7 +359,6 @@ metadata:
         repeat_measurements_id: *repeat_measurements_id
         trait_name: Element required for long datasets to specify the column indicating the trait name associated with each row of data.
         value: The measured value of a trait.
-        value_type: *value_type
         description: *description
         basis_of_record: *basis_of_record
         life_stage: *life_stage
@@ -398,6 +397,7 @@ metadata:
         value_type: *value_type
         basis_of_record: *basis_of_record
         basis_of_value: *basis_of_value
+        source_id: *source_id
         replicates: *replicates
         collection_date: *collection_date
         measurement_remarks: *measurement_remarks

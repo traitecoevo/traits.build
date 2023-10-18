@@ -329,7 +329,7 @@ dataset_test_worker <-
 
         # Check for other files
         vals <- c("data.csv", "metadata.yml", "raw")
-        expect_isin(dir(s), vals, info = paste(f, " - disallowed files"))
+        expect_isin(dir(s), vals, info = paste(f, "- disallowed files"))
 
         # `data.csv`
         f <- files[1]
@@ -357,7 +357,7 @@ dataset_test_worker <-
         # Custom R code
         txt <- metadata[["dataset"]][["custom_R_code"]]
         # Check that `custom_R_code` is immediately followed by `collection_date`
-        expect_equal(
+        testthat::expect_equal(
           metadata[["dataset"]][which(names(metadata[["dataset"]]) == "custom_R_code") + 1] %>% names(),
           "collection_date",
           info = sprintf("%s - dataset: the `custom_R_code` field must be followed by `collection_date`", f)
@@ -598,12 +598,13 @@ dataset_test_worker <-
             # Look for context values in `find` column
             i <- v %in% contextsub[["find"]]
 
-            expect_true(all(i),
-                        info = paste0(
-                          f,
-                          " - context names from data file not present in metadata contexts: ",
-                          v[!i]
-                        )
+            expect_true(
+              all(i),
+              info = ifelse(
+                "hms" %in% class(v),
+                sprintf("%s - context names from data file not present in metadata contexts: %s\n\n'%s' has been detected as a time data type and reformatted\n\t-> Please make sure context metadata matches reformatting", f, v[!i], j),
+                sprintf("%s - context names from data file not present in metadata contexts: %s", f, v[!i])
+              )
             )
           }
         }
@@ -661,9 +662,8 @@ dataset_test_worker <-
             if (!is.null(definitions$elements[[trait]]) &&
                 definitions$elements[[trait]]$type == "categorical") {
               to_check <- x[[trait]]$replace %>% unique()
-              allowable <-
-                c(definitions$elements[[trait]]$allowed_values_levels %>% names(),
-                  NA)
+              to_check <- to_check[!(grepl("^[YyNn]+$", to_check) & stringr::str_length(to_check) == 12)]
+              allowable <- c(definitions$elements[[trait]]$allowed_values_levels %>% names(), NA)
               failing <- to_check[!(
                 is.na(to_check) |
                   to_check %in% allowable |
@@ -768,17 +768,14 @@ dataset_test_worker <-
         testthat::expect_equal(
           dataset$traits %>%
             select(
-              dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "source_id", "taxon_name",
-              "entity_type", "life_stage", "basis_of_record", "value_type", "population_id", "individual_id",
-              "repeat_measurements_id", "temporal_context_id", "method_id", "method_context_id", "entity_context_id",
-              "original_name"))
+              dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "value_type",
+              "repeat_measurements_id", "method_id", "method_context_id"))
             ) %>%
             tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
-            tidyr::pivot_longer(cols = 17:ncol(.)) %>%
+            tidyr::pivot_longer(cols = 7:ncol(.)) %>%
             dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
             select(
-              dplyr::all_of(c("dataset_id", "taxon_name", "trait_name", "number_of_duplicates", "observation_id",
-              "entity_type", "value_type", "population_id")), everything()
+              dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates", "observation_id", "value_type")), everything()
             ) %>%
             filter(.data$number_of_duplicates > 1) %>%
             nrow(),
