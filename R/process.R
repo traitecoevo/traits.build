@@ -1722,7 +1722,7 @@ process_taxonomic_updates <- function(data, metadata) {
 
   # Copy original species name to a new column
   out[["original_name"]] <- out[["taxon_name"]]
-  # Create a column for `taxnomic_resolution`
+  # Create a column for `taxonomic_resolution`
   out[["taxonomic_resolution"]] <- NA_character_
 
   # Now make any replacements specified in metadata yaml
@@ -1844,19 +1844,34 @@ build_combine <- function(..., d = list(...)) {
 #' @export
 build_update_taxonomy <- function(austraits_raw, taxa) {
 
+  # incoming table from austraits_raw is a list of all taxa for the study
+  # `original_name` and `cleaned_name` will be different if 
+  # there were taxonomic_updates specified in metadata file
   austraits_raw$taxonomic_updates <-
     austraits_raw$taxonomic_updates %>%
     dplyr::left_join(
       by = "cleaned_name",
       taxa %>% dplyr::select(
+      # add in many columns from the `taxon_list`
+      # `cleaned_scientific_name_id` is pre-taxonomic updates
+      # `taxon_id` aligns with `taxon_name` which is post-taxonomic updates  
+      # XXX for integration with APCalign, also add in `taxonomic_dataset`?
+      # XXX remove `cleaned_name_alternative_taxonomic_status` - current forumulation isn't meaningful 
         dplyr::all_of(c("cleaned_name", "cleaned_scientific_name_id", "cleaned_name_taxonomic_status",
                         "cleaned_name_alternative_taxonomic_status", "taxon_id", "taxon_name", "taxon_rank")))
     ) %>%
     dplyr::mutate(
+      # if `taxonomic_resolution` is not blank (i.e. asssigned during taxonomic updates) and
+      # not equal to taxon_rank from taxon_list, taxon_rank
+      # gets priority
+      # XXX this seems backward:
+      # shouldn't one use the `taxonomic_resolution` value specified in metadata$taxonomic_updates?
       taxonomic_resolution = ifelse(
         !is.na(.data$taxonomic_resolution) & .data$taxonomic_resolution != .data$taxon_rank,
         .data$taxon_rank, .data$taxonomic_resolution
       ),
+      # if `taxonomic_resolution` is blank (for all taxa not requiring alignments), 
+      # taxon_rank from taxon_list used
       taxonomic_resolution = ifelse(
         is.na(.data$taxonomic_resolution),
         .data$taxon_rank, .data$taxonomic_resolution
