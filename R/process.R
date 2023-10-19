@@ -1844,6 +1844,15 @@ build_combine <- function(..., d = list(...)) {
 #' @export
 build_update_taxonomy <- function(austraits_raw, taxa) {
 
+  columns_in_taxon_list <- names(taxa)
+  required_columns <- c("cleaned_name", "taxon_name", "taxon_rank", "family")
+  optional_columns <- columns_in_taxon_list[! columns_in_taxon_list %in% required_columns]
+  # XX this list assumes names come in as English versions. Do we insist on this?
+  higher_ranks <- c("Genus", "Familia", "order", "class", "phylum")
+  higher_ranks_austraits_raw <-  higher_ranks[higher_ranks %in% unique(austraits_raw$traits$taxonomic_resolution)]
+  higher_ranks_taxon_list <- higher_ranks[higher_ranks %in% unique(taxa$taxon_rank)]
+  highest_ranks_taxon_list <- higher_ranks[c("order", "class", "phylum") %in% unique(taxa$taxon_rank)]
+  
   # incoming table from austraits_raw is a list of all taxa for the study
   # `original_name` and `cleaned_name` will be different if 
   # there were taxonomic_updates specified in metadata file
@@ -1857,11 +1866,10 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
       # `taxon_id` aligns with `taxon_name` which is post-taxonomic updates  
       # XXX for integration with APCalign, also add in `taxonomic_dataset`?
       # XXX remove `cleaned_name_alternative_taxonomic_status` - current forumulation isn't meaningful 
-        dplyr::all_of(c("cleaned_name", "cleaned_scientific_name_id", "cleaned_name_taxonomic_status",
-                        "cleaned_name_alternative_taxonomic_status", "taxon_id", "taxon_name", "taxon_rank")))
+        dplyr::any_of(c("cleaned_name", "cleaned_scientific_name_id", "cleaned_name_taxonomic_status",
+                        "cleaned_name_alternative_taxonomic_status", "taxon_id", "taxon_name")))
     ) %>%
     dplyr::distinct() %>%
-    dplyr::select(-dplyr::all_of(c("taxon_rank"))) %>%
     dplyr::arrange(.data$cleaned_name)
 
   austraits_raw$traits <-
@@ -1869,7 +1877,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::rename(dplyr::all_of(c("cleaned_name" = "taxon_name"))) %>%
     # XX Annotate why is taxon_rank needed (Lizzy knows it is necessary, but need to add that here).
     dplyr::left_join(by = "cleaned_name",
-              taxa %>% dplyr::select(dplyr::all_of(c("cleaned_name", "taxon_name", "taxon_rank")))
+              taxa %>% dplyr::select(dplyr::all_of(c("cleaned_name", "taxon_name")))
               ) %>%
     dplyr::select(dplyr::all_of(c("dataset_id", "taxon_name")), dplyr::everything()) %>%
     # for taxa where the aligned name ("cleaned_name") is not a species rank name (will have "[")
@@ -1880,32 +1888,28 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     ) %>%
     dplyr::select(-dplyr::all_of(c("cleaned_name")))
 
-# Create table with names, identifiers for all genera in taxon_list
-  genera_tmp <- taxa %>%
-    dplyr::filter(.data$taxon_rank %in% c("Genus", "genus")) %>%
-    dplyr::select(dplyr::all_of(c("taxon_name", "family", "taxonomic_reference", "taxon_id",
-                  "scientific_name_id", "taxonomic_status"))) %>%
-    dplyr::rename(dplyr::all_of(c(
-      "name_to_match_to" = "taxon_name", "taxonomic_reference_genus" = "taxonomic_reference",
-      "taxon_id_genus" = "taxon_id", "scientific_name_id_genus" = "scientific_name_id",
-      "taxonomic_status_genus" = "taxonomic_status"
-    ))) %>%
-    dplyr::distinct()
+# Create table with names, identifiers for all genera, families, additional high taxa. in taxon_list
+  
+higher_ranks_tables_tmp <- split(higher_ranks_taxon_list, higher_ranks_taxon_list)
+  
+ for (i in seq_along(higher_ranks_taxon_list)) {
+   higher_ranks_tables_tmp[[i]] <- taxa %>%
+     dplyr::filter(stringr::str_to_lower(.data$taxon_rank) == (stringr::str_to_lower(higher_ranks_taxon_list[i]))) %>%
+     dplyr::select(dplyr::any_of(c("taxon_name", "family", "taxonomic_reference", "taxon_id",
+                                   "scientific_name_id", "taxonomic_status"))) %>%
+     dplyr::rename("name_to_match_to" = "taxon_name") %>%
+     dplyr::rename_with(~paste(.x, higher_ranks_taxon_list[i], sep = "_"), 
+                        .cols = dplyr::any_of(c("taxonomic_reference", "taxon_id", "scientific_name_id", "taxonomic_status"))) %>%
+     dplyr::distinct()
+  
+   # XXX maybe need to remove "family" is family, order, class, etc.
+   higher_ranks_tables_tmp[[i]]
+  }
 
-# Create table with names, identifiers for all families in APC in taxon_list
-  families_tmp <- taxa %>%
-    dplyr::filter(.data$taxon_rank %in% c("Familia", "family")) %>%
-    dplyr::select(
-      dplyr::all_of(
-        c(name_to_match_to = "taxon_name", taxonomic_reference_family = "taxonomic_reference",
-          taxon_id_family = "taxon_id", scientific_name_id_family = "scientific_name_id",
-          taxonomic_status_family = "taxonomic_status")
-      )) %>%
-    dplyr::distinct()
-
-### Fill in columns for trinomial, binomial, genus, and family, as appropriate
+  # Fill in columns for trinomial, binomial, genus, and family, as appropriate
   # and match additional taxon information to the most specific name
 
+  # XXX All `taxonomic_resolution` should be able to be `taxon_rank` - to do in a later commit
   species_tmp <-
     austraits_raw$traits %>%
     dplyr::select(dplyr::all_of(c("taxon_name", "taxonomic_resolution"))) %>%
@@ -1913,10 +1917,10 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     util_df_convert_character() %>%
     dplyr::left_join(
       by = "taxon_name",
-      taxa %>% dplyr::select(dplyr::all_of(c("taxon_name", "taxon_rank", "family"))) %>%
+      taxa %>% dplyr::select(dplyr::any_of(c("taxon_name", "family", "order", "class", "phylum", "kingdom"))) %>%
       dplyr::distinct() %>% util_df_convert_character()
     )
-
+  
   species_tmp <- species_tmp %>%
     dplyr::mutate(
       # If no taxonomic resolution is specified from taxonomic_updates, 
@@ -1925,7 +1929,8 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
         .data$taxon_name %in% taxa$cleaned_name,
         taxa$taxon_rank[match(.data$taxon_name, taxa$cleaned_name)],
         .data$taxonomic_resolution),
-      taxon_rank = ifelse(!is.na(.data$taxon_rank), .data$taxonomic_resolution, .data$taxon_rank),
+      taxon_rank = .data$taxonomic_resolution,
+      #taxon_rank = ifelse(!is.na(.data$taxon_rank), .data$taxonomic_resolution, .data$taxon_rank),
       # Field trinomial is only filled in if taxonomic resolution is an infraspecific name
       trinomial = ifelse(.data$taxon_rank %in% c("Subspecies", "Forma", "Varietas"),
                         stringr::str_split_fixed(.data$taxon_name, "\\[", 2)[, 1] %>% stringr::str_trim(), NA),
@@ -1940,55 +1945,87 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
       binomial = stringr::str_trim(.data$binomial),
       # Genus filled in for all names that have a taxonomic of genus or more detailed
       genus = ifelse(
-        !.data$taxon_rank %in% c("Familia", "family"),
-        ifelse(stringr::word(.data$taxon_name, 1) == "x",
-               stringr::word(.data$taxon_name, start = 1, end = 2),
-               stringr::word(.data$taxon_name, 1)),
+        !.data$taxon_rank %in% c("Familia", "family", "order", "class", "phylum", "kingdom"),
+          ifelse(stringr::word(.data$taxon_name, 1) == "x",
+                stringr::word(.data$taxon_name, start = 1, end = 2),
+                stringr::word(.data$taxon_name, 1)),
         NA),
-      family = ifelse(.data$taxon_rank %in% c("Familia", "family"), stringr::word(.data$taxon_name, 1), .data$family),
+      family = ifelse(
+        !.data$taxon_rank %in% c("order", "class", "phylum", "kingdom"),
+          ifelse(.data$taxon_rank %in% c("Familia", "family"),
+                 stringr::word(.data$taxon_name, 1),
+                 .data$family),
+        NA),
       # Identify which name is to be matched to the various identifiers, distribution information, etc. in the taxa file
-      name_to_match_to = ifelse(.data$taxon_rank %in% c("Subspecies", "Forma", "Varietas"), .data$trinomial, NA),
-      name_to_match_to = ifelse(
-        is.na(.data$name_to_match_to) & .data$taxon_rank %in% c("Species"),
-        .data$binomial, .data$name_to_match_to),
-      name_to_match_to = ifelse(
-        is.na(.data$name_to_match_to) & .data$taxon_rank %in% c("genus", "Genus"),
-        .data$genus, .data$name_to_match_to),
-      name_to_match_to = ifelse(
-        is.na(.data$name_to_match_to) & is.na(.data$taxon_rank),
-        .data$genus, .data$name_to_match_to),
-      name_to_match_to = ifelse(
-        is.na(.data$name_to_match_to) & .data$taxon_rank %in% c("family", "Familia"),
-        .data$family, .data$name_to_match_to)
-      ) %>%
+      # For taxon_ranks higher than family, use the first word of taxon name for matching, as this should also be the `order`, `class`, etc
+      name_to_match_to = NA,
+      name_to_match_to = case_when(
+        .data$taxon_rank %in% c("Subspecies", "Forma", "Varietas") ~ .data$trinomial,
+        .data$taxon_rank %in% c("Species") ~ .data$binomial, 
+        .data$taxon_rank %in% c("genus", "Genus") ~ .data$genus,
+        .data$taxon_rank %in% c("family", "Familia") ~ .data$family,
+        .data$taxon_rank %in% c("order") ~ .data$order,
+        .data$taxon_rank %in% c("class") ~ .data$class,      
+        .data$taxon_rank %in% c("phylum") ~ .data$phylum,            
+        is.na(.data$taxon_rank) ~ .data$genus                         # This should be a transient effect, until taxon_list is rebuilt with all taxa
+      )) %>%
       # Remove family, taxon_rank; they are about to be merged back in, but matches will now be possible to more rows
-      select(-dplyr::all_of(c("taxon_rank", "taxonomic_resolution"))) %>%
-      dplyr::rename("family_tmp" = "family") %>%
+      select(-dplyr::all_of(c("taxon_rank", "taxonomic_resolution", "family"))) %>%
       util_df_convert_character() %>%
       # Merge in all data from taxa
       dplyr::left_join(by = c("name_to_match_to" = "taxon_name"),
-        taxa %>% dplyr::select(-dplyr::contains("clean")) %>% dplyr::distinct() %>% util_df_convert_character()
+        # XX This should filter to just include data on accepted (or best match) APC names (all ranks) + distinct APNI names
+        # XX currently there are a few names where, for some reason, the scientific names haven't been updated
+        # XX wondering if it would be a problem to have distinct `taxon_names`
+        # taxa %>% dplyr::select(-dplyr::contains("clean")) %>% dplyr::distinct() %>% util_df_convert_character()
+        taxa %>% dplyr::select(-dplyr::contains("clean")) %>% dplyr::distinct(taxon_name, .keep_all = TRUE) %>% util_df_convert_character()
       ) %>%
-      dplyr::arrange(.data$taxon_name) %>%
-      # Merge in identifiers for genera & families
-      dplyr::left_join(by = c("name_to_match_to", "family"), genera_tmp) %>%
-      dplyr::left_join(by = "name_to_match_to", families_tmp) %>%
+      dplyr::arrange(.data$taxon_name)
+  
+  # Merge in identifiers for genera & families through a series of loops
+  
+  # For taxonomic status, paste taxon rank to taxonomic status for genus-level names & above
+  if ("taxonomic_status" %in% optional_columns) {
+    for (i in seq_along(higher_ranks_taxon_list)) {
+      var_tmp <-  seq_along(higher_ranks_tables_tmp[[i]])[stringr::str_detect(names(higher_ranks_tables_tmp[[i]]), "taxonomic_status")]
+      species_tmp <- species_tmp %>%
+        dplyr::mutate(
+          taxonomic_status = ifelse(.data$taxon_rank == higher_ranks_taxon_list[[i]],
+                                    paste0(higher_ranks_taxon_list[[i]], "_", higher_ranks_tables_tmp[[i]][[var_tmp]][match(.data$name_to_match_to, higher_ranks_tables_tmp[[i]]$name_to_match_to)]),
+                                    .data$taxonomic_status)
+        )
+    }
+  }
+
+  # For "taxonomic_reference", "taxon_id", "scientific_name_id", use higher-order value if higher-order taxon rank (genus or above)
+  for (j in c("taxonomic_reference", "taxon_id", "scientific_name_id")) {
+    if (j %in% optional_columns) {
+      for (i in seq_along(higher_ranks_taxon_list)) {
+        var_tmp <-  seq_along(higher_ranks_tables_tmp[[i]])[stringr::str_detect(names(higher_ranks_tables_tmp[[i]]), j)]
+        species_tmp[[j]] = ifelse(species_tmp$taxon_rank == higher_ranks_taxon_list[[i]], 
+                                         higher_ranks_tables_tmp[[i]][[var_tmp]][match(species_tmp$name_to_match_to, higher_ranks_tables_tmp[[i]]$name_to_match_to)],
+                                  species_tmp[[j]])
+      }
+    }
+  }
+  
+  
+  if ("taxon_distribution" %in% optional_columns) {
+    species_tmp <- species_tmp %>%
       dplyr::mutate(
-        taxonomic_status = ifelse(.data$taxon_rank %in% c("Genus", "genus"), .data$taxonomic_status_genus, .data$taxonomic_status),
-        taxonomic_status = ifelse(.data$taxon_rank %in% c("Familia", "family"), .data$taxonomic_status_family, .data$taxonomic_status),
-        taxonomic_reference = ifelse(.data$taxon_rank %in% c("Genus", "genus"), .data$taxonomic_reference_genus, .data$taxonomic_reference),
-        taxonomic_reference = ifelse(.data$taxon_rank %in% c("Familia", "family"), .data$taxonomic_reference_family, .data$taxonomic_reference),
-        taxon_id = ifelse(.data$taxon_rank %in% c("Genus", "genus"), .data$taxon_id_genus, .data$taxon_id),
-        taxon_id = ifelse(.data$taxon_rank %in% c("Familia", "family"), .data$taxon_id_family, .data$taxon_id),
-        scientific_name_id = ifelse(.data$taxon_rank %in% c("Genus", "genus"), .data$scientific_name_id_genus, .data$scientific_name_id),
-        scientific_name_id = ifelse(.data$taxon_rank %in% c("Familia", "family"), .data$scientific_name_id_family, .data$scientific_name_id),
-        taxon_distribution = ifelse(.data$taxon_rank %in% c("Familia", "family", "Genus", "genus"), NA, .data$taxon_distribution),
-        establishment_means = ifelse(.data$taxon_rank %in% c("Familia", "family", "Genus", "genus"), NA, .data$establishment_means)
-      ) %>%
-      dplyr::select(dplyr::all_of(c("taxon_name", "taxonomic_reference", "taxon_rank", "trinomial", "binomial",
-                    "genus", "family", "taxon_distribution", "establishment_means",
-                    "taxonomic_status", "scientific_name", "scientific_name_authorship", "taxon_id",
-                    "scientific_name_id")))
+        taxon_distribution = ifelse(.data$taxon_rank %in% higher_ranks, NA, .data$taxon_distribution)
+      )
+  }
+  
+  if ("establishment_means" %in% optional_columns) {
+    species_tmp <- species_tmp %>%
+      dplyr::mutate(
+        establishment_means = ifelse(.data$taxon_rank %in% higher_ranks, NA, .data$establishment_means)
+      )
+  }
+
+  species_tmp <- species_tmp %>%
+      dplyr::select(-dplyr::any_of(c("family_tmp", "name_to_match_to")))
 
   austraits_raw$taxa <-
     species_tmp %>%
@@ -2000,7 +2037,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
 
   austraits_raw$traits <-
     austraits_raw$traits %>%
-      dplyr::select(-dplyr::all_of(c("taxonomic_resolution", "taxon_rank")))
+      dplyr::select(-dplyr::all_of(c("taxonomic_resolution")))
 
   austraits_raw$excluded_data <-
     austraits_raw$excluded_data %>%
