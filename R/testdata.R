@@ -555,12 +555,16 @@ dataset_test_worker <-
         }
 
         # Traits
-        expect_list_elements_contains_names(metadata[["traits"]],
-                                            schema$metadata$elements$traits$elements[1:3] %>% names(),
-                                            info = paste0(f, " - traits"))
-        expect_list_elements_allowed_names(metadata[["traits"]],
-                                           c(schema$metadata$elements$traits$elements %>% names(), unique(contexts$var_in)),
-                                           info = paste0(f, " - traits"))
+        expect_list_elements_contains_names(
+          metadata[["traits"]],
+          schema$metadata$elements$traits$elements[1:3] %>% names(),
+          info = paste0(f, " - traits")
+        )
+        expect_list_elements_allowed_names(
+          metadata[["traits"]],
+          c(schema$metadata$elements$traits$elements %>% names(), unique(contexts$var_in)),
+          info = paste0(f, " - traits")
+        )
         expect_silent(
           traits <- traits.build::util_list_to_df2(metadata[["traits"]])
         )
@@ -602,8 +606,8 @@ dataset_test_worker <-
               all(i),
               info = ifelse(
                 "hms" %in% class(v),
-                sprintf("%s - context names from data file not present in metadata contexts: %s\n\n'%s' has been detected as a time data type and reformatted\n\t-> Please make sure context metadata matches reformatting", f, v[!i], j),
-                sprintf("%s - context names from data file not present in metadata contexts: %s", f, v[!i])
+                sprintf("%s - context values from data file not present in metadata contexts: %s\n\n'%s' has been detected as a time data type and reformatted\n\t-> Please make sure context metadata matches reformatting", f, v[!i], j),
+                sprintf("%s - context values from data file not present in metadata contexts: %s", f, v[!i])
               )
             )
           }
@@ -757,7 +761,7 @@ dataset_test_worker <-
         expect_no_error(
           parsed_data <- data %>%
             process_parse_data(dataset_id, metadata, contexts, schema),
-          info = "`process_parse_data`")
+          info = sprintf("%s - `process_parse_data` has an error", dataset_id))
 
         expect_allowed_text(
           parsed_data$traits$value, is_data = TRUE,
