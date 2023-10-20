@@ -10,9 +10,9 @@ check_duplicates(
 )
 }
 \arguments{
-\item{dataset_ids}{`dataset_id`'s to check for duplicates; default is all of them}
+\item{database_object}{Database object}
 
-\item{database}{Database object}
+\item{dataset_ids}{`dataset_id`'s to check for duplicates; default is all of them}
 }
 \value{
 Tibble with duplicates and pivot columns

@@ -1170,7 +1170,7 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
       ucn = process_unit_conversion_name(.data$unit_in, .data$to),
       type = util_extract_list_element(.data$i, definitions, "type"),
       to_convert = ifelse(is.na(.data$error), (.data$type == "numeric" & .data$unit_in != .data$to), FALSE),
-      unit_in = ifelse(.data$type == "categorical", NA, unit_in)
+      unit_in = ifelse(.data$type == "categorical", NA, .data$unit_in)
     )
 
   # Identify anything problematic in conversions and drop
@@ -2061,7 +2061,7 @@ write_plaintext <- function(austraits, path) {
 
 #' Identify duplicates preventing pivoting wider
 #'
-#' @param database Database object
+#' @param database_object Database object
 #' @param dataset_ids `dataset_id`'s to check for duplicates; default is all of them
 #'
 #' @return Tibble with duplicates and pivot columns
@@ -2073,7 +2073,7 @@ check_duplicates <- function(
 
   # Check for duplicates
   database_object$traits %>%
-    filter(dataset_id %in% dataset_ids) %>%
+    filter(.data$dataset_id %in% dataset_ids) %>%
     select(
       # `taxon_name` and `original_name` are not needed for pivoting but are included for informative purposes
       dplyr::all_of(
