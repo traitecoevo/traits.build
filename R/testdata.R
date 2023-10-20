@@ -610,6 +610,16 @@ dataset_test_worker <-
                 sprintf("%s - context values from data file not present in metadata contexts: %s", f, v[!i])
               )
             )
+
+            i <- contextsub[["find"]] %in% v
+
+            expect_true(
+              all(i),
+              info = sprintf(
+                "%s - context values in metadata contexts not detected in context values from data file: %s",
+                f, contextsub[["find"]][!i])
+            )
+
           }
         }
 
@@ -730,8 +740,7 @@ dataset_test_worker <-
             info = paste0(files[2], " - column ", metadata[["dataset"]][["location_name"]], "not found in data")
           )
 
-          v <-
-            (data[[metadata[["dataset"]][["location_name"]]]] %>% unique %>% na.omit)
+          v <- data[[metadata[["dataset"]][["location_name"]]]] %>% unique %>% na.omit
           i <- v %in% names(metadata$locations)
           expect_true(all(i),
                       info = paste0(f,  " - site names from data file not present in metadata: ", v[!i]))
