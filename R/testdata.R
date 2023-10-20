@@ -555,12 +555,16 @@ dataset_test_worker <-
         }
 
         # Traits
-        expect_list_elements_contains_names(metadata[["traits"]],
-                                            schema$metadata$elements$traits$elements[1:3] %>% names(),
-                                            info = paste0(f, " - traits"))
-        expect_list_elements_allowed_names(metadata[["traits"]],
-                                           c(schema$metadata$elements$traits$elements %>% names(), unique(contexts$var_in)),
-                                           info = paste0(f, " - traits"))
+        expect_list_elements_contains_names(
+          metadata[["traits"]],
+          schema$metadata$elements$traits$elements[1:3] %>% names(),
+          info = paste0(f, " - traits")
+        )
+        expect_list_elements_allowed_names(
+          metadata[["traits"]],
+          c(schema$metadata$elements$traits$elements %>% names(), unique(contexts$var_in)),
+          info = paste0(f, " - traits")
+        )
         expect_silent(
           traits <- traits.build::util_list_to_df2(metadata[["traits"]])
         )
@@ -750,46 +754,61 @@ dataset_test_worker <-
                       ))
         }
 
-        ## Check that dataset can pivot wider
-        expect_no_error(dataset <- test_build_dataset(
-          file.path(path_data, dataset_id, "metadata.yml"),
-          file.path(path_data, dataset_id, "data.csv"),
-          dataset_id,
-          get_schema("config/traits.yml", "traits"),
-          get_unit_conversions("config/unit_conversions.csv"),
-          get_schema(),
-          get_schema("config/metadata.yml", "metadata"),
-          read_csv_char("config/taxon_list.csv")
-        ), info = sprintf(" - cannot build %s", dataset_id))
-
         # Check that special characters do not make it into the data
         expect_no_error(
           parsed_data <- data %>%
             process_parse_data(dataset_id, metadata, contexts, schema),
-          info = "`process_parse_data`")
+          info = sprintf("%s - `process_parse_data` has an error", dataset_id))
 
         expect_allowed_text(
           parsed_data$traits$value, is_data = TRUE,
           info = sprintf("%s", files[1])
         )
 
-        testthat::expect_equal(
-          dataset$traits %>%
-            select(
-              dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "value_type",
-              "repeat_measurements_id", "method_id", "method_context_id"))
-            ) %>%
-            tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
-            tidyr::pivot_longer(cols = 7:ncol(.)) %>%
-            dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
-            select(
-              dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates", "observation_id", "value_type")), everything()
-            ) %>%
-            filter(.data$number_of_duplicates > 1) %>%
-            nrow(),
-          0, # Expect nrow() = 0
-          info = sprintf("Duplicate rows in %s detected; `traits` table cannot pivot wider", dataset_id)
-        )
+        expect_false(
+          nrow(metadata[["traits"]] %>% util_list_to_df2() %>% dplyr::filter(!is.na(.data$trait_name))) == 0,
+          info = paste0(f, " - `traits` metadata only contains NA `trait_name`'s"))
+
+        if (nrow(metadata[["traits"]] %>% util_list_to_df2() %>% dplyr::filter(!is.na(.data$trait_name))) > 0) {
+          # Test build dataset
+          expect_no_error(
+            dataset <- test_build_dataset(
+              file.path(path_data, dataset_id, "metadata.yml"),
+              file.path(path_data, dataset_id, "data.csv"),
+              dataset_id,
+              get_schema("config/traits.yml", "traits"),
+              get_unit_conversions("config/unit_conversions.csv"),
+              get_schema(),
+              get_schema("config/metadata.yml", "metadata"),
+              read_csv_char("config/taxon_list.csv")
+            ),
+            info = sprintf("%s - cannot build dataset", dataset_id))
+
+          # Check that traits table is not empty
+          expect_false(nrow(dataset$traits) == 0, info = sprintf("%s - `traits` table is empty", dataset_id))
+
+          # Check that dataset can pivot wider
+          if (nrow(dataset$traits) > 0) {
+            testthat::expect_equal(
+              dataset$traits %>%
+                select(
+                  dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "value_type",
+                  "repeat_measurements_id", "method_id", "method_context_id"))
+                ) %>%
+                tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
+                tidyr::pivot_longer(cols = 7:ncol(.)) %>%
+                dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
+                select(
+                  dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates", "observation_id",
+                  "value_type")), everything()
+                ) %>%
+                filter(.data$number_of_duplicates > 1) %>%
+                nrow(),
+              0, # Expect nrow() = 0
+              info = sprintf("Duplicate rows in %s detected; `traits` table cannot pivot wider", dataset_id)
+            )
+          }
+        }
       })
     }
 

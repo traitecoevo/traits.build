@@ -680,7 +680,7 @@ process_create_context_ids <- function(data, contexts) {
 
   # Extract context columns
   context_cols <- data %>%
-    dplyr::select(dplyr::all_of(tmp$var_in)) %>%
+    dplyr::select(dplyr::any_of(tmp$var_in)) %>%
     dplyr::mutate(dplyr::across(everything(), as.character))
   names(context_cols) <- tmp$context_property
 
