@@ -22,9 +22,9 @@ taxon_list <- read_csv_char("config/taxon_list.csv")
 
 {{database_name}}_raw <- build_combine(
 {{#dataset_ids}}
-        {{dataset_id}},
+  {{dataset_id}},
 {{/dataset_ids}}
-        NULL)
+  NULL)
 
 # Version information
 version_number <- util_get_version("config/metadata.yml")
