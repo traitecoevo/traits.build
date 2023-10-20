@@ -1195,8 +1195,7 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
 
   # Split by unique unit conversions, to allow for as few calls as possible
   data <- data %>%
-    dplyr::group_by(.data$ucn, .data$to_convert) %>%
-    dplyr::rowwise() %>%
+    dplyr::group_by(.data$ucn, .data$to_convert, .data$value_type) %>%
     dplyr::mutate(
       # Standard conversion
       value = ifelse(
