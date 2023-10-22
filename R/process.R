@@ -1845,17 +1845,19 @@ build_combine <- function(..., d = list(...)) {
 build_update_taxonomy <- function(austraits_raw, taxa) {
 
   columns_in_taxon_list <- names(taxa)
-  required_columns <- c("cleaned_name", "taxon_name", "taxon_rank", "family")
-  optional_columns <- columns_in_taxon_list[! columns_in_taxon_list %in% required_columns]
-  # XX this list assumes names come in as English versions. Do we insist on this?
-  higher_ranks <- c("Genus", "Familia", "order", "class", "phylum")
-  higher_ranks_austraits_raw <-  higher_ranks[higher_ranks %in% unique(austraits_raw$traits$taxonomic_resolution)]
+  # XXX Do we reformat information so all names come in as English (hard, because what do you save as), only accept English?, etc?
+  higher_ranks <- c("phylum", "class", "order", "family", "Familia", "genus", "Genus")
+  highest_ranks <- c("phylum", "class", "order")
   higher_ranks_taxon_list <- higher_ranks[higher_ranks %in% unique(taxa$taxon_rank)]
-  highest_ranks_taxon_list <- higher_ranks[c("order", "class", "phylum") %in% unique(taxa$taxon_rank)]
+  highest_rank_column <- higher_ranks_taxon_list[1]
+  highest_ranks_taxon_list <- highest_ranks[highest_ranks %in% unique(taxa$taxon_rank)]
+  required_columns <- c("cleaned_name", "taxon_name", "taxon_rank")
+  optional_columns <- columns_in_taxon_list[! columns_in_taxon_list %in% required_columns]
   
   # incoming table from austraits_raw is a list of all taxa for the study
   # `original_name` and `cleaned_name` will be different if 
   # there were taxonomic_updates specified in metadata file
+  
   austraits_raw$taxonomic_updates <-
     austraits_raw$taxonomic_updates %>%
     dplyr::left_join(
@@ -1865,7 +1867,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
       # `cleaned_scientific_name_id` is pre-taxonomic updates
       # `taxon_id` aligns with `taxon_name` which is post-taxonomic updates  
       # XXX for integration with APCalign, also add in `taxonomic_dataset`?
-      # XXX remove `cleaned_name_alternative_taxonomic_status` - current forumulation isn't meaningful 
+      # XXX remove `cleaned_name_alternative_taxonomic_status` - current formulation isn't meaningful 
         dplyr::any_of(c("cleaned_name", "cleaned_scientific_name_id", "cleaned_name_taxonomic_status",
                         "cleaned_name_alternative_taxonomic_status", "taxon_id", "taxon_name")))
     ) %>%
@@ -1875,7 +1877,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
   austraits_raw$traits <-
     austraits_raw$traits %>%
     dplyr::rename(dplyr::all_of(c("cleaned_name" = "taxon_name"))) %>%
-    # XX Annotate why is taxon_rank needed (Lizzy knows it is necessary, but need to add that here).
+    # XXX Taxon rank possibly still required here; if something breaks, that is likely why.
     dplyr::left_join(by = "cleaned_name",
               taxa %>% dplyr::select(dplyr::all_of(c("cleaned_name", "taxon_name")))
               ) %>%
@@ -1895,14 +1897,13 @@ higher_ranks_tables_tmp <- split(higher_ranks_taxon_list, higher_ranks_taxon_lis
  for (i in seq_along(higher_ranks_taxon_list)) {
    higher_ranks_tables_tmp[[i]] <- taxa %>%
      dplyr::filter(stringr::str_to_lower(.data$taxon_rank) == (stringr::str_to_lower(higher_ranks_taxon_list[i]))) %>%
-     dplyr::select(dplyr::any_of(c("taxon_name", "family", "taxonomic_reference", "taxon_id",
+     dplyr::select(dplyr::any_of(c("taxon_name", "family", highest_ranks_taxon_list, "taxonomic_reference", "taxon_id",
                                    "scientific_name_id", "taxonomic_status"))) %>%
      dplyr::rename("name_to_match_to" = "taxon_name") %>%
      dplyr::rename_with(~paste(.x, higher_ranks_taxon_list[i], sep = "_"), 
                         .cols = dplyr::any_of(c("taxonomic_reference", "taxon_id", "scientific_name_id", "taxonomic_status"))) %>%
      dplyr::distinct()
   
-   # XXX maybe need to remove "family" is family, order, class, etc.
    higher_ranks_tables_tmp[[i]]
   }
 
@@ -1959,26 +1960,35 @@ higher_ranks_tables_tmp <- split(higher_ranks_taxon_list, higher_ranks_taxon_lis
       # Identify which name is to be matched to the various identifiers, distribution information, etc. in the taxa file
       # For taxon_ranks higher than family, use the first word of taxon name for matching, as this should also be the `order`, `class`, etc
       name_to_match_to = NA,
+      order = ifelse("order" %in% highest_ranks_taxon_list & "order" %in% columns_in_taxon_list, order, NA),
+      class = ifelse("class" %in% highest_ranks_taxon_list  & "class" %in% columns_in_taxon_list, class, NA),
+      phylum = ifelse("phylum" %in% highest_ranks_taxon_list & "phylum" %in% columns_in_taxon_list, phylum, NA),
       name_to_match_to = case_when(
         .data$taxon_rank %in% c("Subspecies", "Forma", "Varietas") ~ .data$trinomial,
         .data$taxon_rank %in% c("Species") ~ .data$binomial, 
         .data$taxon_rank %in% c("genus", "Genus") ~ .data$genus,
         .data$taxon_rank %in% c("family", "Familia") ~ .data$family,
-        .data$taxon_rank %in% c("order") ~ .data$order,
-        .data$taxon_rank %in% c("class") ~ .data$class,      
-        .data$taxon_rank %in% c("phylum") ~ .data$phylum,            
+        .data$taxon_rank %in% c("order") & "order" %in% columns_in_taxon_list ~ .data$order,
+        .data$taxon_rank %in% c("order") & !"order" %in% columns_in_taxon_list ~ .data$taxon_name,
+        .data$taxon_rank %in% c("class") & "class" %in% columns_in_taxon_list ~ .data$class,     
+        .data$taxon_rank %in% c("class") & !"class" %in% columns_in_taxon_list ~ .data$taxon_name,   
+        .data$taxon_rank %in% c("phylum") & "phylum" %in% columns_in_taxon_list ~ .data$phylum,    
+        .data$taxon_rank %in% c("phylum") & !"phylum" %in% columns_in_taxon_list ~ .data$taxon_name,           
         is.na(.data$taxon_rank) ~ .data$genus                         # This should be a transient effect, until taxon_list is rebuilt with all taxa
-      )) %>%
-      # Remove family, taxon_rank; they are about to be merged back in, but matches will now be possible to more rows
-      select(-dplyr::all_of(c("taxon_rank", "taxonomic_resolution", "family"))) %>%
+      ))
+  
+  species_tmp <- species_tmp %>%
+    # dplyr::rename("family_tmp" = "family") %>% XXX do not think this will be required any more, but keeping for now in case
+      # Remove taxon_rank, family, higher-order taxon columns; they are about to be merged back in, but matches will now be possible to more rows
+      select(-dplyr::any_of(c("taxon_rank", "taxonomic_resolution", "family", highest_ranks_taxon_list))) %>%
       util_df_convert_character() %>%
       # Merge in all data from taxa
       dplyr::left_join(by = c("name_to_match_to" = "taxon_name"),
-        # XX This should filter to just include data on accepted (or best match) APC names (all ranks) + distinct APNI names
-        # XX currently there are a few names where, for some reason, the scientific names haven't been updated
-        # XX wondering if it would be a problem to have distinct `taxon_names`
+        # XXX This should filter to just include data on accepted (or best match) APC names (all ranks) + distinct APNI names
+        # XXX In commented-out formulation (original code), there were a few taxon names where the scientific names haven't been updated
+        # XXX hence added in distinct `taxon_names`- not sure if this will be a problem at some point
         # taxa %>% dplyr::select(-dplyr::contains("clean")) %>% dplyr::distinct() %>% util_df_convert_character()
-        taxa %>% dplyr::select(-dplyr::contains("clean")) %>% dplyr::distinct(taxon_name, .keep_all = TRUE) %>% util_df_convert_character()
+        taxa %>% dplyr::select(-dplyr::any_of(dplyr::contains("clean"))) %>% dplyr::distinct(taxon_name, .keep_all = TRUE) %>% util_df_convert_character()
       ) %>%
       dplyr::arrange(.data$taxon_name)
   
@@ -2024,6 +2034,7 @@ higher_ranks_tables_tmp <- split(higher_ranks_taxon_list, higher_ranks_taxon_lis
       )
   }
 
+  # XXX There was previously a column "family_tmp" that was created, but it has been removed - one piece of algorithm that needs more testing with higher order taxon names
   species_tmp <- species_tmp %>%
       dplyr::select(-dplyr::any_of(c("family_tmp", "name_to_match_to")))
 
@@ -2031,7 +2042,8 @@ higher_ranks_tables_tmp <- split(higher_ranks_taxon_list, higher_ranks_taxon_lis
     species_tmp %>%
     dplyr::bind_rows() %>%
     dplyr::arrange(.data$taxon_name) %>%
-    dplyr::distinct(.data$taxon_name, .keep_all = TRUE)
+    dplyr::distinct(.data$taxon_name, .keep_all = TRUE) %>%
+    dplyr::select(dplyr::any_of(columns_in_taxon_list))
 
   # Only now, at the very end, can `taxonomic_resolution` be removed from the traits table
 
