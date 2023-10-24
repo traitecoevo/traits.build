@@ -1889,28 +1889,44 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
       taxon_name = ifelse(stringr::str_detect(.data$cleaned_name, "\\["), .data$cleaned_name, .data$taxon_name)
     ) %>%
     dplyr::select(-dplyr::all_of(c("cleaned_name")))
-
+  
 # Create table with names, identifiers for all genera, families, additional high taxa. in taxon_list
-  
+  # add empty columns for core processing columns that might not be in all taxon list files
+    taxa <- taxa %>%
+      dplyr::mutate(
+        taxonomic_reference = ifelse("taxonomic_reference" %in% columns_in_taxon_list, taxonomic_reference, NA),
+        taxon_id = ifelse("taxon_id" %in% columns_in_taxon_list, taxon_id, NA),
+        scientific_name_id = ifelse("scientific_name_id" %in% columns_in_taxon_list, scientific_name_id, NA),
+        taxonomic_status = ifelse("taxonomic_status" %in% columns_in_taxon_list, taxonomic_status, NA),
+        family = ifelse("family" %in% columns_in_taxon_list, family, NA)
+      )
+      
 higher_ranks_tables_tmp <- split(higher_ranks_taxon_list, higher_ranks_taxon_list)
-  
+
  for (i in seq_along(higher_ranks_taxon_list)) {
    higher_ranks_tables_tmp[[i]] <- taxa %>%
      dplyr::filter(stringr::str_to_lower(.data$taxon_rank) == (stringr::str_to_lower(higher_ranks_taxon_list[i]))) %>%
      dplyr::select(dplyr::any_of(c("taxon_name", "family", highest_ranks_taxon_list, "taxonomic_reference", "taxon_id",
                                    "scientific_name_id", "taxonomic_status"))) %>%
-     dplyr::rename("name_to_match_to" = "taxon_name") %>%
-     dplyr::rename_with(~paste(.x, higher_ranks_taxon_list[i], sep = "_"), 
-                        .cols = dplyr::any_of(c("taxonomic_reference", "taxon_id", "scientific_name_id", "taxonomic_status"))) %>%
-     dplyr::distinct()
-  
+     dplyr::rename("name_to_match_to" = "taxon_name")
+   
+    if (any(c("taxonomic_reference", "taxon_id", "scientific_name_id", "taxonomic_status") %in% columns_in_taxon_list)) {
+      higher_ranks_tables_tmp[[i]] <- higher_ranks_tables_tmp[[i]] %>%
+        dplyr::rename_with(~paste(.x, higher_ranks_taxon_list[i], sep = "_"), 
+                          .cols = dplyr::any_of(c("taxonomic_reference", "taxon_id", "scientific_name_id", "taxonomic_status"))) %>%
+        dplyr::distinct()
+    }
+   
    higher_ranks_tables_tmp[[i]]
+   
   }
 
   # Fill in columns for trinomial, binomial, genus, and family, as appropriate
   # and match additional taxon information to the most specific name
 
   # XXX All `taxonomic_resolution` should be able to be `taxon_rank` - to do in a later commit
+#browser()
+
   species_tmp <-
     austraits_raw$traits %>%
     dplyr::select(dplyr::all_of(c("taxon_name", "taxonomic_resolution"))) %>%
@@ -1951,6 +1967,11 @@ higher_ranks_tables_tmp <- split(higher_ranks_taxon_list, higher_ranks_taxon_lis
                 stringr::word(.data$taxon_name, start = 1, end = 2),
                 stringr::word(.data$taxon_name, 1)),
         NA),
+      # create empty columns for ranks not in taxon_list.csv
+      family = ifelse("family" %in% columns_in_taxon_list, family, NA),
+      order = ifelse("order" %in% highest_ranks_taxon_list & "order" %in% columns_in_taxon_list, order, NA),
+      class = ifelse("class" %in% highest_ranks_taxon_list  & "class" %in% columns_in_taxon_list, class, NA),
+      phylum = ifelse("phylum" %in% highest_ranks_taxon_list & "phylum" %in% columns_in_taxon_list, phylum, NA),
       family = ifelse(
         !.data$taxon_rank %in% c("order", "class", "phylum", "kingdom"),
           ifelse(.data$taxon_rank %in% c("Familia", "family"),
@@ -1960,9 +1981,6 @@ higher_ranks_tables_tmp <- split(higher_ranks_taxon_list, higher_ranks_taxon_lis
       # Identify which name is to be matched to the various identifiers, distribution information, etc. in the taxa file
       # For taxon_ranks higher than family, use the first word of taxon name for matching, as this should also be the `order`, `class`, etc
       name_to_match_to = NA,
-      order = ifelse("order" %in% highest_ranks_taxon_list & "order" %in% columns_in_taxon_list, order, NA),
-      class = ifelse("class" %in% highest_ranks_taxon_list  & "class" %in% columns_in_taxon_list, class, NA),
-      phylum = ifelse("phylum" %in% highest_ranks_taxon_list & "phylum" %in% columns_in_taxon_list, phylum, NA),
       name_to_match_to = case_when(
         .data$taxon_rank %in% c("Subspecies", "Forma", "Varietas") ~ .data$trinomial,
         .data$taxon_rank %in% c("Species") ~ .data$binomial, 
