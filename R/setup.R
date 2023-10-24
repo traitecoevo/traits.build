@@ -1147,6 +1147,7 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #'
 #' @param dataset_ids `dataset_id`'s to include; by default includes all
 #' @param method Approach to use in build
+#' @param database_name Name of database to be built
 #' @param template Template used to build
 #' @param workers Number of workers/parallel processes to use when using
 #' method = "furrr"
@@ -1155,6 +1156,7 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' @export
 build_setup_pipeline <- function(dataset_ids = dir("data"),
                                  method = "base",
+                                 database_name = "database",
                                  template = select_pipeline_template(method),
                                  workers = 1
                                  ) {
@@ -1185,6 +1187,7 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
     dataset_ids_vector =
       sprintf("c(%s)", sprintf("'%s'", dataset_ids) %>% paste(collapse = ", ")),
     path = path,
+    database_name = database_name,
     workers = workers
     )
 

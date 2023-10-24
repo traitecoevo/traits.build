@@ -628,7 +628,7 @@ test_that("`build_setup_pipeline` is working", {
   expect_silent(suppressMessages(source("build.R", local = base_tmp_env)))
 
   targets <- c(
-    "austraits", "austraits_raw", "definitions", "git_SHA", "resource_metadata", "schema", "taxon_list",
+    "database", "database_raw", "definitions", "git_SHA", "resource_metadata", "schema", "taxon_list",
     "Test_2022", "Test_2022_config", "Test_2022_raw", "unit_conversions", "version_number"
   )
   expect_equal(sort(names(base_tmp_env)), sort(targets))
@@ -644,7 +644,7 @@ test_that("`build_setup_pipeline` is working", {
   expect_silent(suppressMessages(source("build.R", local = furrr_tmp_env)))
 
   targets <- c(
-    "austraits", "austraits_raw", "dataset_ids", "f", "definitions", "git_SHA", "resource_metadata",
+    "database", "database_raw", "dataset_ids", "f", "definitions", "git_SHA", "resource_metadata",
     "schema", "sources", "taxon_list", "unit_conversions", "version_number"
   )
   expect_equal(sort(names(furrr_tmp_env)), sort(targets))
@@ -656,8 +656,8 @@ test_that("`build_setup_pipeline` is working", {
   expect_true(file.exists("config/taxon_list.csv"))
 
   unlink(".remake", recursive = TRUE)
-  expect_silent(suppressMessages(austraits_raw <- remake::make("austraits_raw")))
-  expect_silent(suppressMessages(austraits <- remake::make("austraits")))
+  expect_silent(suppressMessages(austraits_raw <- remake::make("database_raw")))
+  expect_silent(suppressMessages(austraits <- remake::make("database")))
 
   # Test that austraits_raw has no version number or git_SHA
   expect_null(austraits_raw$build_info$version)
@@ -674,14 +674,30 @@ test_that("`build_setup_pipeline` is working", {
 
   # Compare products from three methods, except `build_info`
   v <- setdiff(names(austraits), "build_info")
-  expect_equal(base_tmp_env$austraits[v], austraits[v])
-  expect_equal(furrr_tmp_env$austraits[v], austraits[v])
+  expect_equal(base_tmp_env$database[v], austraits[v])
+  expect_equal(furrr_tmp_env$database[v], austraits[v])
 
+  # Try building database with a different name with base method
+  expect_silent(suppressMessages(build_setup_pipeline(method = "base", database_name = "test_name")))
+
+  base_tmp_env <- new.env()
+  expect_silent(suppressMessages(source("build.R", local = base_tmp_env)))
+
+  targets <- c(
+    "test_name", "test_name_raw", "definitions", "git_SHA", "resource_metadata", "schema", "taxon_list",
+    "Test_2022", "Test_2022_config", "Test_2022_raw", "unit_conversions", "version_number"
+  )
+  expect_equal(sort(names(base_tmp_env)), sort(targets))
+
+  # Try building database with a different name with `remake` method
+  expect_silent(suppressMessages(build_setup_pipeline(method = "remake", database_name = "test_name")))
+  expect_silent(suppressMessages(test_name_raw <- remake::make("test_name_raw")))
+  expect_silent(suppressMessages(test_name <- remake::make("test_name")))
 })
 
 
 testthat::test_that("`dataset_find_taxon` is working", {
-  expect_silent(suppressMessages(austraits <- remake::make("austraits")))
+  expect_silent(suppressMessages(austraits <- remake::make("test_name")))
   taxon <- c("Acacia celsa", "Acronychia acidula", "Aleurites rockinghamensis", "Syzygium sayeri")
   expect_no_error(x <- dataset_find_taxon(taxon, austraits), label = "`dataset_find_taxon`")
   expect_equal(unname(x[[4]]), "Test_2022")
@@ -690,7 +706,7 @@ testthat::test_that("`dataset_find_taxon` is working", {
 
 
 test_that("reports and plots are produced", {
-  expect_silent(suppressMessages(austraits <- remake::make("austraits")))
+  expect_silent(suppressMessages(austraits <- remake::make("test_name")))
   # Not testing right now
   #expect_no_error(
     #p <-
