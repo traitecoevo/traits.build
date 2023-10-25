@@ -1170,7 +1170,7 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
       ucn = process_unit_conversion_name(.data$unit_in, .data$to),
       type = util_extract_list_element(.data$i, definitions, "type"),
       to_convert = ifelse(is.na(.data$error), (.data$type == "numeric" & .data$unit_in != .data$to), FALSE),
-      unit_in = ifelse(.data$type == "categorical", NA, unit_in)
+      unit_in = ifelse(.data$type == "categorical", NA, .data$unit_in)
     )
 
   # Identify anything problematic in conversions and drop
@@ -2124,4 +2124,36 @@ write_plaintext <- function(austraits, path) {
   for (v in c("traits", "locations", "contexts", "methods", "excluded_data", "taxonomic_updates", "taxa", "contributors")) {
     readr::write_csv(austraits[[v]], sprintf("%s/%s.csv", path, v), na = "")
   }
+}
+
+#' Identify duplicates preventing pivoting wider
+#'
+#' @param database_object Database object
+#' @param dataset_ids `dataset_id`'s to check for duplicates; default is all of them
+#'
+#' @return Tibble with duplicates and pivot columns
+#' @export
+check_duplicates <- function(
+  database_object,
+  dataset_ids = unique(database_object$traits$dataset_id)
+) {
+
+  # Check for duplicates
+  database_object$traits %>%
+    filter(.data$dataset_id %in% dataset_ids) %>%
+    select(
+      # `taxon_name` and `original_name` are not needed for pivoting but are included for informative purposes
+      dplyr::all_of(
+        c("dataset_id", "trait_name", "value", "taxon_name", "original_name", "observation_id",
+        "value_type", "repeat_measurements_id", "method_id", "method_context_id"))
+    ) %>%
+    tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
+    tidyr::pivot_longer(cols = 9:ncol(.)) %>%
+    dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
+    select(
+      dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates",
+      "taxon_name", "original_name", "observation_id", "value_type")), everything()
+    ) %>%
+    filter(.data$number_of_duplicates > 1)
+
 }

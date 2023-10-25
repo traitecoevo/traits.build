@@ -7,6 +7,7 @@
 build_setup_pipeline(
   dataset_ids = dir("data"),
   method = "base",
+  database_name = "database",
   template = select_pipeline_template(method),
   workers = 1
 )
@@ -15,6 +16,8 @@ build_setup_pipeline(
 \item{dataset_ids}{`dataset_id`'s to include; by default includes all}
 
 \item{method}{Approach to use in build}
+
+\item{database_name}{Name of database to be built}
 
 \item{template}{Template used to build}
 
