@@ -224,7 +224,7 @@ dataset_test_worker <-
         })
         expect(
           is.null(error),
-          sprintf("%s threw an error: %s", info, paste(error$message, collapse = ",")))
+          sprintf("%s threw an error:\n%s", info, paste(error, collapse = ",")))
         invisible(NULL)
       }
 
@@ -246,13 +246,13 @@ dataset_test_worker <-
       expect_not_NA(colnames(data), info = info)
       expect_allowed_text(colnames(data), info = info)
       expect_unique(colnames(data), info = info)
-      expect_true(is.data.frame(data), info = info)
+      expect_true(is.data.frame(data), info = sprintf("%s - is not a dataframe", info))
     }
 
     # Function is assigned but not used
-    expect_dataframe_named <- function(data, expected_colnames, info) {
+    expect_dataframe_named <- function(data, expected_colnames, info, label) {
       expect_dataframe_valid(data, info)
-      expect_named(data, expected_colnames, info = info)
+      expect_named(data, expected_colnames, info = info, label = label)
     }
 
     expect_dataframe_names_contain <-
@@ -262,7 +262,7 @@ dataset_test_worker <-
       }
 
     expect_list <- function(data, info) {
-      expect_true(class(data) == "list", info = info)
+      expect_true(class(data) == "list", info = sprintf("%s - is not a list", info))
     }
 
     expect_list_names_valid <- function(data, info) {
@@ -279,14 +279,14 @@ dataset_test_worker <-
 
     expect_list_names_allowed <- function(data, allowed_names, info, label) {
       expect_list_names_valid(data, info)
-      expect_named(data, info = info)
+      expect_named(data, label = label)
       expect_allowed(names(data), allowed_names, info = info)
     }
 
     # Function is assigned but not used
-    expect_list_names_contain <- function(data, expected_names, info) {
+    expect_list_names_contain <- function(data, expected_names, info, label) {
       expect_list_names_valid(data, info)
-      expect_named(data, info = info)
+      expect_named(data, label = label)
       expect_contains(names(data), expected_names, info = info)
     }
 
@@ -296,15 +296,15 @@ dataset_test_worker <-
       # Test it builds with no errors
       expect_no_error({
         build_config <- dataset_configure(path_metadata, definitions)
-      }, info = paste(info, "config"))
+      }, info = "`dataset_configure`")
 
       expect_no_error({
         build_dataset_raw <- dataset_process(path_data, build_config, schema, resource_metadata, unit_conversions)
-      }, info = paste(info, "dataset_process"))
+      }, info = "`dataset_process`")
 
       expect_no_error({
         build_dataset <- build_update_taxonomy(build_dataset_raw, taxon_list)
-      }, info = paste(info, "update taxonomy"))
+      }, info = "`build_update_taxonomy`")
 
       build_dataset
     }
@@ -339,7 +339,7 @@ dataset_test_worker <-
         expect_no_error(
           readr::stop_for_problems(data),
           info = sprintf(
-            "Problems present when reading data, run `read_csv(%s)` to investigate",
+            "`read_csv(%s)`",
             f
           )
         )
@@ -350,8 +350,10 @@ dataset_test_worker <-
         f <- files[2]
         expect_allowed_text(readLines(f, encoding = "UTF-8"), info = f)
         expect_silent(metadata <- yaml::read_yaml(f))
-        browser()
-        expect_list_names_exact(metadata, schema$metadata$elements %>% names(), info = f)
+        expect_list_names_exact(
+          metadata, schema$metadata$elements %>% names(),
+          info = paste0("in ", f), label = "metadata sections"
+        )
 
         # Custom R code
         txt <- metadata[["dataset"]][["custom_R_code"]]
@@ -369,7 +371,7 @@ dataset_test_worker <-
 
         # Source
         expect_list(metadata[["source"]], info = f)
-        expect_list_names_valid(metadata[["source"]], info = f)
+        expect_list_names_valid(metadata[["source"]], info = sprintf("%s - source - field names are not valid", f))
 
         v <- names(metadata[["source"]])
         i <- grepl("primary", v) | grepl("secondary", v) | grepl("original", v)
@@ -402,11 +404,11 @@ dataset_test_worker <-
 
         # People
         expect_list(metadata[["contributors"]], info = f)
-        browser()
+
         expect_list_names_allowed(
           metadata[["contributors"]],
           schema$metadata$elements$contributors$elements %>% names(),
-          info = f
+          info = f, label = "`contributors` section"
         )
 
         # Data collectors
@@ -417,9 +419,12 @@ dataset_test_worker <-
           for (i in seq_along(metadata[["contributors"]][["data_collectors"]])) {
             expect_list_names_allowed(
               metadata[["contributors"]][["data_collectors"]][[i]],
-              vars, info = paste(f, "data_collector", i)
+              vars, info = paste(f, "data_collector", i), label = "`data_collectors` section"
             )
-            expect_contains(metadata[["contributors"]][["data_collectors"]][[i]] %>% names(), vars[1:4])
+
+            expect_contains(
+              metadata[["contributors"]][["data_collectors"]][[i]] %>% names(), vars[1:4],
+              info = sprintf("`data_collectors` %s", i))
           }
         }
 
@@ -435,11 +440,10 @@ dataset_test_worker <-
           expect_type(metadata[["contributors"]][["assistants"]], "character")
 
         # Dataset
-
         expect_list_names_allowed(
           metadata[["dataset"]],
           schema$metadata$elements$dataset$values %>% names(),
-          info = paste0(f, " - dataset")
+          info = paste0(f, " - dataset"), label = "`dataset` metadata"
         )
 
         expect_type(metadata[["dataset"]][["data_is_long_format"]], "logical")
@@ -759,7 +763,7 @@ dataset_test_worker <-
         expect_no_error(
           parsed_data <- data %>%
             process_parse_data(dataset_id, metadata, contexts, schema),
-          info = sprintf("%s - `process_parse_data` has an error", dataset_id))
+          info = sprintf("%s - `process_parse_data`", dataset_id))
 
         expect_allowed_text(
           parsed_data$traits$value, is_data = TRUE,
@@ -771,6 +775,8 @@ dataset_test_worker <-
           info = paste0(f, " - `traits` metadata only contains NA `trait_name`'s"))
 
         if (nrow(metadata[["traits"]] %>% util_list_to_df2() %>% dplyr::filter(!is.na(.data$trait_name))) > 0) {
+
+          browser()
           # Test build dataset
           expect_no_error(
             dataset <- test_build_dataset(
@@ -783,7 +789,7 @@ dataset_test_worker <-
               get_schema("config/metadata.yml", "metadata"),
               read_csv_char("config/taxon_list.csv")
             ),
-            info = sprintf("%s - cannot build dataset", dataset_id))
+            info = sprintf("%s - building dataset", dataset_id))
 
           # Check that traits table is not empty
           expect_false(nrow(dataset$traits) == 0, info = sprintf("%s - `traits` table is empty", dataset_id))
