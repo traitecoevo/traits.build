@@ -57,9 +57,6 @@ dataset_test_worker <-
     # https://cran.r-project.org/web/packages/testthat/vignettes/third-edition.html
     local_edition(2)
 
-    ## New expect_that helper functions; test that a number is in a range,
-    ## or that a range contains a number.
-
     expect_is_in <- function(object, expected, ..., info = NULL, na.rm = TRUE) {
 
         if (na.rm)
@@ -78,7 +75,6 @@ dataset_test_worker <-
         invisible(object)
       }
 
-    # Expectation: one set contains the other
     expect_contains <- function(object, expected, ..., info = NULL) {
       i <- expected %in% object
 
@@ -90,7 +86,6 @@ dataset_test_worker <-
       invisible(object)
     }
 
-    # Expectation: one set contains the other
     expect_allowed <- function(object, allowed, ..., info = NULL) {
       i <- object %in% allowed
 
@@ -109,7 +104,6 @@ dataset_test_worker <-
     expect_equal <- function(object, expected, info = NULL) {
       i <- object == expected
       comp <- compare(all(i), TRUE)
-      browser()
       expect(comp$equal, sprintf("%s", info))
     }
 
@@ -208,7 +202,7 @@ dataset_test_worker <-
 
     # Better than expect_silent as contains `info` and allows for complete failures
     expect_no_error <-
-      function(object, regexp = NULL, ..., info = NULL, label = NULL) {
+      function(object, regexp = NULL, ..., info = NULL) {
         error <- tryCatch({
           object
           NULL
@@ -217,12 +211,7 @@ dataset_test_worker <-
         })
         expect(
           is.null(error),
-          sprintf(
-            "%s threw an error: %s",
-            label,
-            paste(error$message, collapse = ",")
-          ),
-          info = info)
+          sprintf("%s threw an error: %s", info, paste(error$message, collapse = ",")))
         invisible(NULL)
       }
 
@@ -325,7 +314,7 @@ dataset_test_worker <-
 
         # Check for other files
         vals <- c("data.csv", "metadata.yml", "raw")
-        expect_is_in(dir(s), vals, info = paste(f, "- disallowed files"))
+        expect_is_in(dir(s), vals, info = paste0(file.path(path_data,dataset_id), " - disallowed files"))
 
         # `data.csv`
         f <- files[1]
@@ -359,7 +348,7 @@ dataset_test_worker <-
           info = sprintf("%s - dataset: the `custom_R_code` field must be followed by `collection_date`", f)
         )
         #expect_false(grepl("#", txt), label=paste0(files[3], "-custom_R_code cannot contain comments, except on last line"))
-        expect_no_error(process_custom_code(txt)(data), label = paste0(files[3], " - custom_R_code"))
+        expect_no_error(process_custom_code(txt)(data), info = paste0(files[3], " - custom_R_code"))
 
         # Apply custom manipulations
         data <- process_custom_code(txt)(data)
@@ -666,7 +655,9 @@ dataset_test_worker <-
 
           # Check for allowable values of categorical variables
           expect_no_error(
-            x <- metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name))
+            x <- metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name),
+            info = "allowable substitutions" # Check
+          )
 
           for (trait in names(x)) {
             if (!is.null(definitions$elements[[trait]]) &&
