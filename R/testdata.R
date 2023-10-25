@@ -14,7 +14,7 @@ dataset_test <-
   function(dataset_ids,
            path_config = "config",
            path_data = "data",
-           reporter = testthat::default_reporter()) {
+           reporter = testthat::CompactProgressReporter) {
 
     requireNamespace("testthat", quietly = TRUE)
 
@@ -333,10 +333,10 @@ dataset_test_worker <-
 
         # `data.csv`
         f <- files[1]
-        # Time columns get reformatted
         expect_silent(
-          data <- read_csv(f, col_types = cols(), guess_max = 1e5, progress = FALSE)
+          data <- read_csv(f, col_types = cols(), guess_max = 1e5, progress = FALSE) # Time columns get reformatted
         )
+
         # Check no issues flagged when parsing file
         expect_no_error(
           readr::stop_for_problems(data),
