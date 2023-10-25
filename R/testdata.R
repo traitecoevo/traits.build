@@ -41,7 +41,7 @@ dataset_test <-
 #' @inheritParams dataset_test
 #' @param schema Data schema
 #' @param definitions Trait defininitons
-#' @importFrom testthat local_edition compare expect expect_true expect_false expect_named test_that context expect_silent expect_type
+#' @importFrom testthat local_edition compare expect expect_named test_that context expect_silent expect_type
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
 dataset_test_worker <-
@@ -55,9 +55,10 @@ dataset_test_worker <-
 
     # We're using 2nd edition of test that, which has "context" field
     # https://cran.r-project.org/web/packages/testthat/vignettes/third-edition.html
+    # Is there a reason to be using the 2nd edition, while context has been superseded in later versions?
     local_edition(2)
 
-    expect_is_in <- function(object, expected, ..., info = NULL, na.rm = TRUE) {
+    expect_is_in <- function(object, expected, ..., info, na.rm = TRUE) {
 
         if (na.rm)
           object <- object[!is.na(object)]
@@ -75,7 +76,7 @@ dataset_test_worker <-
         invisible(object)
       }
 
-    expect_contains <- function(object, expected, ..., info = NULL) {
+    expect_contains <- function(object, expected, ..., info) {
       i <- expected %in% object
 
       comp <- compare(all(i), TRUE, ...)
@@ -86,7 +87,7 @@ dataset_test_worker <-
       invisible(object)
     }
 
-    expect_allowed <- function(object, allowed, ..., info = NULL) {
+    expect_allowed <- function(object, allowed, ..., info) {
       i <- object %in% allowed
 
       comp <- compare(all(i), TRUE, ...)
@@ -101,26 +102,38 @@ dataset_test_worker <-
       invisible(object)
     }
 
-    expect_equal <- function(object, expected, info = NULL) {
+    expect_equal <- function(object, expected, info) {
       i <- object == expected
       comp <- compare(all(i), TRUE)
-      expect(comp$equal, sprintf("%s", info))
+      expect(comp$equal, info)
     }
 
-    expect_not_NA <- function(object, info = NULL) {
+    expect_true <- function(object, info) {
+      i <- object == TRUE
+      comp <- compare(all(i), TRUE)
+      expect(comp$equal, info)
+    }
+
+    expect_false <- function(object, info) {
+      i <- object == FALSE
+      comp <- compare(all(i), TRUE)
+      expect(comp$equal, info)
+    }
+
+    expect_not_NA <- function(object, info) {
       i <- !is.na(object)
       comp <- compare(all(i), TRUE)
       expect(comp$equal, sprintf("%s - contains test NAs", info))
       invisible(object)
     }
 
-    expect_length_zero <- function(object, info = NULL, label = NULL) {
+    expect_length_zero <- function(object, info, label) {
       comp <- compare(length(object), 0)
       expect(comp$equal, sprintf("%s: %s", info, label))
       invisible(object)
     }
 
-    expect_unique <- function(object, info = NULL) {
+    expect_unique <- function(object, info) {
       x <- table(unlist(object))
       i <- x == 1
       comp <- compare(all(i), TRUE)
@@ -129,7 +142,7 @@ dataset_test_worker <-
     }
 
     expect_allowed_text <- function(object, is_data = FALSE,
-                                    info = NULL) {
+                                    info) {
 
       if (length(object) > 0) {
 
@@ -202,7 +215,7 @@ dataset_test_worker <-
 
     # Better than expect_silent as contains `info` and allows for complete failures
     expect_no_error <-
-      function(object, regexp = NULL, ..., info = NULL) {
+      function(object, regexp = NULL, ..., info) {
         error <- tryCatch({
           object
           NULL
@@ -237,7 +250,7 @@ dataset_test_worker <-
     }
 
     # Function is assigned but not used
-    expected_dataframe_named <- function(data, expected_colnames, info) {
+    expect_dataframe_named <- function(data, expected_colnames, info) {
       expect_dataframe_valid(data, info)
       expect_named(data, expected_colnames, info = info)
     }
@@ -259,21 +272,21 @@ dataset_test_worker <-
       expect_unique(names(data), info = info)
     }
 
-    expect_list_names_exact <- function(data, expected_names, info) {
+    expect_list_names_exact <- function(data, expected_names, info, label) {
       expect_list_names_valid(data, info)
-      expect_named(data, expected_names, info = info)
+      expect_named(data, expected_names, info = info, label = label)
     }
 
-    expect_list_names_allowed <- function(data, allowed_names, info) {
+    expect_list_names_allowed <- function(data, allowed_names, info, label) {
       expect_list_names_valid(data, info)
-      expect_named(data)
+      expect_named(data, info = info)
       expect_allowed(names(data), allowed_names, info = info)
     }
 
     # Function is assigned but not used
     expect_list_names_contain <- function(data, expected_names, info) {
       expect_list_names_valid(data, info)
-      expect_named(data)
+      expect_named(data, info = info)
       expect_contains(names(data), expected_names, info = info)
     }
 
@@ -309,12 +322,12 @@ dataset_test_worker <-
         # Exists
         files <- file.path(s, c("data.csv", "metadata.yml"))
         for (f in files) {
-          expect_true(file.exists(f), info = f)
+          expect_true(file.exists(f), info = sprintf("%s - file does not exist", f))
         }
 
         # Check for other files
         vals <- c("data.csv", "metadata.yml", "raw")
-        expect_is_in(dir(s), vals, info = paste0(file.path(path_data,dataset_id), " - disallowed files"))
+        expect_is_in(dir(s), vals, info = paste0(file.path(path_data, dataset_id), " - disallowed files"))
 
         # `data.csv`
         f <- files[1]
@@ -337,6 +350,7 @@ dataset_test_worker <-
         f <- files[2]
         expect_allowed_text(readLines(f, encoding = "UTF-8"), info = f)
         expect_silent(metadata <- yaml::read_yaml(f))
+        browser()
         expect_list_names_exact(metadata, schema$metadata$elements %>% names(), info = f)
 
         # Custom R code
@@ -364,19 +378,13 @@ dataset_test_worker <-
 
         expect_true(
           sum(grepl("primary", v)) <= 1,
-          info = paste(
-            f,
-            "sources can have max 1 type labelled 'primary': ",
-            paste(v, collapse = ", ")
-          )
+          info = paste(f, "sources can have max 1 type labelled 'primary': ", paste(v, collapse = ", "))
         )
 
-        expect_true(all(i),
-                    info = paste(
-                      f,
-                      "sources must be either primary or secondary:",
-                      paste(v[!i], collapse = ", ")
-                    ))
+        expect_true(
+          all(i),
+          info = paste(f, "sources must be either primary or secondary:", paste(v[!i], collapse = ", "))
+        )
 
         vals <- c("key", "bibtype", "author", "title", "year")
 
@@ -394,10 +402,11 @@ dataset_test_worker <-
 
         # People
         expect_list(metadata[["contributors"]], info = f)
-
-        expect_list_names_allowed(metadata[["contributors"]],
-                                schema$metadata$elements$contributors$elements %>% names(),
-                                info = f
+        browser()
+        expect_list_names_allowed(
+          metadata[["contributors"]],
+          schema$metadata$elements$contributors$elements %>% names(),
+          info = f
         )
 
         # Data collectors
@@ -415,7 +424,10 @@ dataset_test_worker <-
         }
 
         # Dataset curators
-        expect_true(!is.null(metadata[["contributors"]][["dataset_curators"]]))
+        expect_true(
+          !is.null(metadata[["contributors"]][["dataset_curators"]]),
+          info = sprintf("%s - contributors - `dataset_curators` is missing", f)
+        )
         expect_type(metadata[["contributors"]][["dataset_curators"]], "character")
 
         # Assistants
@@ -424,9 +436,11 @@ dataset_test_worker <-
 
         # Dataset
 
-        expect_list_names_allowed(metadata[["dataset"]],
-                                schema$metadata$elements$dataset$values %>% names(),
-                                info = paste0(f, " - dataset"))
+        expect_list_names_allowed(
+          metadata[["dataset"]],
+          schema$metadata$elements$dataset$values %>% names(),
+          info = paste0(f, " - dataset")
+        )
 
         expect_type(metadata[["dataset"]][["data_is_long_format"]], "logical")
         expect_type(metadata[["dataset"]], "list")
@@ -553,7 +567,7 @@ dataset_test_worker <-
         expect_silent(
           traits <- traits.build::util_list_to_df2(metadata[["traits"]])
         )
-        expect_true(is.data.frame(traits))
+        expect_true(is.data.frame(traits), info = paste0(f, " - traits metadata cannot be converted to a dataframe"))
 
         expect_is_in(traits$trait_name,
                     definitions$elements %>% names(),
@@ -716,9 +730,10 @@ dataset_test_worker <-
         ## Check `location_name`'s are in locations dataset
 
         if (length(unlist(metadata[["locations"]])) > 1) {
+
           expect_true(
             !is.null(metadata[["dataset"]][["location_name"]]),
-            info = paste0(files[2], " - variable_match -> location_name is missing")
+            info = paste0(files[2], " - `location_name` is missing from dataset metadata")
           )
 
           expect_contains(
@@ -729,16 +744,15 @@ dataset_test_worker <-
 
           v <- data[[metadata[["dataset"]][["location_name"]]]] %>% unique %>% na.omit
           i <- v %in% names(metadata$locations)
-          expect_true(all(i),
-                      info = paste0(f,  " - site names from data file not present in metadata: ", v[!i]))
+          expect_true(all(i), info = paste0(f,  " - site names from data file not present in metadata: ", v[!i]))
 
           i <- names(metadata$locations) %in% v
-          expect_true(all(i),
-                      info = paste0(
-                        f,
-                        " - site names from metadata not present in data file: ",
-                        names(metadata$locations)[!i]
-                      ))
+          expect_true(
+            all(i),
+              info = paste0(
+                f, " - site names from metadata not present in data file: ", names(metadata$locations)[!i]
+              ))
+
         }
 
         # Check that special characters do not make it into the data
