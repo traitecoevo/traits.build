@@ -60,25 +60,20 @@ dataset_test_worker <-
     ## New expect_that helper functions; test that a number is in a range,
     ## or that a range contains a number.
 
-    expect_isin <-
-      function(object,
-               expected,
-               ...,
-               info = NULL,
-               label = NULL,
-               expected.label = NULL,
-               na.rm = TRUE) {
+    expect_is_in <- function(object, expected, ..., info = NULL, na.rm = TRUE) {
+
         if (na.rm)
           object <- object[!is.na(object)]
         i <- object %in% expected
 
         comp <- compare(all(i), TRUE, ...)
-        expect(comp$equal,
-               sprintf(
-                 "%s - should not contain: %s",
-                 info,
-                 paste(object[!i], collapse = ", ")
-               ))
+        expect(
+          comp$equal,
+          sprintf(
+            "%s - should not contain: %s",
+            info,
+            paste(object[!i], collapse = ", ")
+          ))
 
         invisible(object)
       }
@@ -88,12 +83,9 @@ dataset_test_worker <-
       i <- expected %in% object
 
       comp <- compare(all(i), TRUE, ...)
-      expect(comp$equal,
-             sprintf(
-               "%s - does not contain: %s",
-               info,
-               paste(expected[!i], collapse = ", ")
-             ))
+      expect(
+        comp$equal, sprintf("%s - does not contain: %s", info, paste(expected[!i], collapse = ", ")
+      ))
 
       invisible(object)
     }
@@ -103,43 +95,47 @@ dataset_test_worker <-
       i <- object %in% allowed
 
       comp <- compare(all(i), TRUE, ...)
-      expect(comp$equal,
-             sprintf(
-               "%s - includes invalid terms: %s",
-               info,
-               paste(object[!i], collapse = ", ")
-             ))
+      expect(
+        comp$equal,
+        sprintf(
+          "%s - includes invalid terms: %s",
+          info,
+          paste(object[!i], collapse = ", ")
+        ))
 
       invisible(object)
     }
 
-    expect_not_NA <- function(object, info = NULL, label = NULL) {
+    expect_equal <- function(object, expected, info = NULL) {
+      i <- object == expected
+      comp <- compare(all(i), TRUE)
+      browser()
+      expect(comp$equal, sprintf("%s", info))
+    }
+
+    expect_not_NA <- function(object, info = NULL) {
       i <- !is.na(object)
       comp <- compare(all(i), TRUE)
-      expect(comp$equal,
-             sprintf("%s - contains NAs: %s", info, label))
+      expect(comp$equal, sprintf("%s - contains test NAs", info))
       invisible(object)
     }
 
     expect_length_zero <- function(object, info = NULL, label = NULL) {
       comp <- compare(length(object), 0)
-      expect(comp$equal,
-             sprintf("%s: %s", info, label))
+      expect(comp$equal, sprintf("%s: %s", info, label))
       invisible(object)
     }
 
-    expect_unique <- function(object, info = NULL, label = NULL) {
+    expect_unique <- function(object, info = NULL) {
       x <- table(unlist(object))
       i <- x == 1
       comp <- compare(all(i), TRUE)
-      expect(comp$equal,
-             sprintf("%s - not unique: %s", info, paste(names(x)[!i], collapse = ", ")))
+      expect(comp$equal, sprintf("%s - not unique: %s", info, paste(names(x)[!i], collapse = ", ")))
       invisible(object)
     }
 
     expect_allowed_text <- function(object, is_data = FALSE,
-                                    info = NULL,
-                                    label = NULL) {
+                                    info = NULL) {
 
       if (length(object) > 0) {
 
@@ -155,10 +151,9 @@ dataset_test_worker <-
 
         txt <- "\n"
         for (i in which(check)) {
-          txt <- sprintf("%s\t- ln %s: %s\n",
-                         txt,
-                         i,
-                         colour_characters(object[[i]], which(disallowed[[i]])))
+          txt <- sprintf(
+            "%s\t- ln %s: %s\n",
+            txt, i, colour_characters(object[[i]], which(disallowed[[i]])))
         }
 
         if (is_data) {
@@ -220,13 +215,14 @@ dataset_test_worker <-
         }, error = function(e) {
           e
         })
-        expect(is.null(error),
-               sprintf(
-                 "%s threw an error: %s",
-                 label,
-                 paste(error$message, collapse = ",")
-               ),
-               info = info)
+        expect(
+          is.null(error),
+          sprintf(
+            "%s threw an error: %s",
+            label,
+            paste(error$message, collapse = ",")
+          ),
+          info = info)
         invisible(NULL)
       }
 
@@ -239,12 +235,12 @@ dataset_test_worker <-
 
     expect_list_elements_allowed_names <- function(object, allowed, info) {
       for (i in seq_along(object))
-        expect_allowed(names(object[[i]]), allowed,  info = paste(info, i))
+        expect_allowed(names(object[[i]]), allowed, info = paste(info, i))
 
       invisible(NULL)
     }
 
-    test_dataframe_valid <- function(data, info) {
+    expect_dataframe_valid <- function(data, info) {
       expect_not_NA(colnames(data), info = info)
       expect_allowed_text(colnames(data), info = info)
       expect_unique(colnames(data), info = info)
@@ -252,42 +248,42 @@ dataset_test_worker <-
     }
 
     # Function is assigned but not used
-    test_dataframe_named <- function(data, expected_colnames, info) {
-      test_dataframe_valid(data, info)
+    expected_dataframe_named <- function(data, expected_colnames, info) {
+      expect_dataframe_valid(data, info)
       expect_named(data, expected_colnames, info = info)
     }
 
-    test_dataframe_names_contain <-
+    expect_dataframe_names_contain <-
       function(data, expected_colnames, info) {
-        test_dataframe_valid(data, info)
+        expect_dataframe_valid(data, info)
         expect_contains(names(data), expected_colnames, info = info)
       }
 
-    test_list <- function(data, info) {
+    expect_list <- function(data, info) {
       expect_true(class(data) == "list", info = info)
     }
 
-    test_list_names_valid <- function(data, info) {
-      test_list(data, info)
+    expect_list_names_valid <- function(data, info) {
+      expect_list(data, info)
       expect_not_NA(names(data), info = info)
       expect_allowed_text(names(data), info = info)
       expect_unique(names(data), info = info)
     }
 
-    test_list_named_exact <- function(data, expected_names, info) {
-      test_list_names_valid(data, info)
+    expect_list_names_exact <- function(data, expected_names, info) {
+      expect_list_names_valid(data, info)
       expect_named(data, expected_names, info = info)
     }
 
-    test_list_named_allowed <- function(data, allowed_names, info) {
-      test_list_names_valid(data, info)
+    expect_list_names_allowed <- function(data, allowed_names, info) {
+      expect_list_names_valid(data, info)
       expect_named(data)
       expect_allowed(names(data), allowed_names, info = info)
     }
 
     # Function is assigned but not used
-    test_list_named_contains <- function(data, expected_names, info) {
-      test_list_names_valid(data, info)
+    expect_list_names_contain <- function(data, expected_names, info) {
+      expect_list_names_valid(data, info)
       expect_named(data)
       expect_contains(names(data), expected_names, info = info)
     }
@@ -329,7 +325,7 @@ dataset_test_worker <-
 
         # Check for other files
         vals <- c("data.csv", "metadata.yml", "raw")
-        expect_isin(dir(s), vals, info = paste(f, "- disallowed files"))
+        expect_is_in(dir(s), vals, info = paste(f, "- disallowed files"))
 
         # `data.csv`
         f <- files[1]
@@ -346,18 +342,18 @@ dataset_test_worker <-
           )
         )
 
-        test_dataframe_valid(data, info = f)
+        expect_dataframe_valid(data, info = f)
 
         # Metadata
         f <- files[2]
         expect_allowed_text(readLines(f, encoding = "UTF-8"), info = f)
         expect_silent(metadata <- yaml::read_yaml(f))
-        test_list_named_exact(metadata, schema$metadata$elements %>% names(), info = f)
+        expect_list_names_exact(metadata, schema$metadata$elements %>% names(), info = f)
 
         # Custom R code
         txt <- metadata[["dataset"]][["custom_R_code"]]
         # Check that `custom_R_code` is immediately followed by `collection_date`
-        testthat::expect_equal(
+        expect_equal(
           metadata[["dataset"]][which(names(metadata[["dataset"]]) == "custom_R_code") + 1] %>% names(),
           "collection_date",
           info = sprintf("%s - dataset: the `custom_R_code` field must be followed by `collection_date`", f)
@@ -369,8 +365,8 @@ dataset_test_worker <-
         data <- process_custom_code(txt)(data)
 
         # Source
-        test_list(metadata[["source"]], info = f)
-        test_list_names_valid(metadata[["source"]], info = f)
+        expect_list(metadata[["source"]], info = f)
+        expect_list_names_valid(metadata[["source"]], info = f)
 
         v <- names(metadata[["source"]])
         i <- grepl("primary", v) | grepl("secondary", v) | grepl("original", v)
@@ -408,20 +404,20 @@ dataset_test_worker <-
         ))
 
         # People
-        test_list(metadata[["contributors"]], info = f)
+        expect_list(metadata[["contributors"]], info = f)
 
-        test_list_named_allowed(metadata[["contributors"]],
+        expect_list_names_allowed(metadata[["contributors"]],
                                 schema$metadata$elements$contributors$elements %>% names(),
                                 info = f
         )
 
         # Data collectors
         if (!is.na(metadata[["contributors"]][["data_collectors"]][1])) {
-          test_list(metadata[["contributors"]][["data_collectors"]], info = f)
+          expect_list(metadata[["contributors"]][["data_collectors"]], info = f)
 
           vars <- schema$metadata$elements$contributors$elements$data_collectors$elements %>% names()
           for (i in seq_along(metadata[["contributors"]][["data_collectors"]])) {
-            test_list_named_allowed(
+            expect_list_names_allowed(
               metadata[["contributors"]][["data_collectors"]][[i]],
               vars, info = paste(f, "data_collector", i)
             )
@@ -439,7 +435,7 @@ dataset_test_worker <-
 
         # Dataset
 
-        test_list_named_allowed(metadata[["dataset"]],
+        expect_list_names_allowed(metadata[["dataset"]],
                                 schema$metadata$elements$dataset$values %>% names(),
                                 info = paste0(f, " - dataset"))
 
@@ -448,7 +444,7 @@ dataset_test_worker <-
 
         # Locations
         if (length(unlist(metadata[["locations"]])) > 1) {
-          test_list(metadata[["locations"]], info = f)
+          expect_list(metadata[["locations"]], info = f)
 
           expect_silent(
             locations <-
@@ -457,14 +453,14 @@ dataset_test_worker <-
               process_add_all_columns(names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]))
           )
 
-          test_dataframe_names_contain(
+          expect_dataframe_names_contain(
             locations,
             c("dataset_id", "location_name", "location_property", "value"),
             info = paste0(f, " - locations")
           )
 
           for (v in names(metadata$locations)) {
-            test_list(metadata[["locations"]][[v]], info = f)
+            expect_list(metadata[["locations"]][[v]], info = f)
             expect_contains(
               names(metadata[["locations"]][[v]]),
               c("latitude (deg)", "longitude (deg)"),
@@ -489,7 +485,7 @@ dataset_test_worker <-
 
         ## Check context details load
         if (nrow(contexts) > 0) {
-          test_dataframe_names_contain(
+          expect_dataframe_names_contain(
             contexts,
             c("context_property", "category", "var_in"),
             info = paste0(f, " - contexts")
@@ -570,7 +566,7 @@ dataset_test_worker <-
         )
         expect_true(is.data.frame(traits))
 
-        expect_isin(traits$trait_name,
+        expect_is_in(traits$trait_name,
                     definitions$elements %>% names(),
                     info = paste0(f, " - traits"))
 
@@ -634,7 +630,7 @@ dataset_test_worker <-
           value_type_cols <- traits$value_type[i] %>% unique()
 
 
-          expect_isin(
+          expect_is_in(
             value_type_fixed,
             schema$value_type$values %>% names,
             info = paste0(f, " - value types")
@@ -642,7 +638,7 @@ dataset_test_worker <-
 
           if (length(value_type_cols) > 0) {
             for (v in value_type_cols)
-              expect_isin(
+              expect_is_in(
                 data[[v]] %>% unique(),
                 schema$value_type$values %>% names,
                 info = paste(f, v, " - value types columns")
@@ -659,10 +655,10 @@ dataset_test_worker <-
           )
           trait_names <-
             sapply(metadata[["substitutions"]], "[[", "trait_name")
-          expect_isin(unique(trait_names),
+          expect_is_in(unique(trait_names),
                       definitions$elements %>% names(),
                       info = paste0(f, " - substitutions - trait_name"))
-          expect_isin(
+          expect_is_in(
             unique(trait_names),
             unique(traits$trait_name),
             info = paste0(f, " - substitutions - trait_name")
@@ -699,7 +695,7 @@ dataset_test_worker <-
         ## Check config files contain all relevant columns
         if (metadata[["dataset"]][["data_is_long_format"]]) {
           # Variable match
-          #expect_isin(names(metadata[["dataset"]]), c("taxon_name",  "trait_name", "value","location_name", "individual_id", "context_name", "collection_date"), info=paste0(f, " - variable_match"))
+          #expect_is_in(names(metadata[["dataset"]]), c("taxon_name",  "trait_name", "value","location_name", "individual_id", "context_name", "collection_date"), info=paste0(f, " - variable_match"))
 
           # For vertical datasets, expect all values of "trait column" found in traits
           var_out <- names(metadata[["dataset"]])
@@ -709,11 +705,11 @@ dataset_test_worker <-
           expect_contains(traits[["var_in"]], values, info = files[2])
         } else {
           # Variable match
-          #expect_isin(names(metadata[["dataset"]]), c("taxon_name", "location_name", "individual_id", "context_name", "collection_date"), info=paste0(f, " - variable_match"))
+          #expect_is_in(names(metadata[["dataset"]]), c("taxon_name", "location_name", "individual_id", "context_name", "collection_date"), info=paste0(f, " - variable_match"))
 
           # For wide datasets, expect variables in traits are header in the data
           values <- names(data)
-          expect_isin(traits[["var_in"]], values, info = files[2])
+          expect_is_in(traits[["var_in"]], values, info = files[2])
         }
 
 
@@ -789,7 +785,7 @@ dataset_test_worker <-
 
           # Check that dataset can pivot wider
           if (nrow(dataset$traits) > 0) {
-            testthat::expect_equal(
+            expect_equal(
               dataset$traits %>%
                 select(
                   dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "value_type",
