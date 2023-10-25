@@ -141,8 +141,7 @@ dataset_test_worker <-
       invisible(object)
     }
 
-    expect_allowed_text <- function(object, is_data = FALSE,
-                                    info) {
+    expect_allowed_text <- function(object, is_data = FALSE, info) {
 
       if (length(object) > 0) {
 
@@ -214,8 +213,7 @@ dataset_test_worker <-
     }
 
     # Better than expect_silent as contains `info` and allows for complete failures
-    expect_no_error <-
-      function(object, regexp = NULL, ..., info) {
+    expect_no_error <- function(object, regexp = NULL, ..., info) {
         error <- tryCatch({
           object
           NULL
@@ -255,8 +253,7 @@ dataset_test_worker <-
       expect_named(data, expected_colnames, info = info, label = label)
     }
 
-    expect_dataframe_names_contain <-
-      function(data, expected_colnames, info) {
+    expect_dataframe_names_contain <- function(data, expected_colnames, info) {
         expect_dataframe_valid(data, info)
         expect_contains(names(data), expected_colnames, info = info)
       }
@@ -408,7 +405,7 @@ dataset_test_worker <-
         expect_list_names_allowed(
           metadata[["contributors"]],
           schema$metadata$elements$contributors$elements %>% names(),
-          info = f, label = "`contributors` section"
+          info = paste0(f, " - contributors"), label = "`contributors` section"
         )
 
         # Data collectors
@@ -419,7 +416,7 @@ dataset_test_worker <-
           for (i in seq_along(metadata[["contributors"]][["data_collectors"]])) {
             expect_list_names_allowed(
               metadata[["contributors"]][["data_collectors"]][[i]],
-              vars, info = paste(f, "data_collector", i), label = "`data_collectors` section"
+              vars, info = paste0(f, " - data_collector ", i), label = "`data_collectors` section"
             )
 
             expect_contains(
@@ -563,14 +560,15 @@ dataset_test_worker <-
           schema$metadata$elements$traits$elements[1:3] %>% names(),
           info = paste0(f, " - traits")
         )
+
         expect_list_elements_allowed_names(
           metadata[["traits"]],
           c(schema$metadata$elements$traits$elements %>% names(), unique(contexts$var_in)),
           info = paste0(f, " - traits")
         )
-        expect_silent(
-          traits <- traits.build::util_list_to_df2(metadata[["traits"]])
-        )
+
+        expect_silent(traits <- traits.build::util_list_to_df2(metadata[["traits"]]))
+
         expect_true(is.data.frame(traits), info = paste0(f, " - traits metadata cannot be converted to a dataframe"))
 
         expect_is_in(traits$trait_name,
@@ -776,7 +774,6 @@ dataset_test_worker <-
 
         if (nrow(metadata[["traits"]] %>% util_list_to_df2() %>% dplyr::filter(!is.na(.data$trait_name))) > 0) {
 
-          browser()
           # Test build dataset
           expect_no_error(
             dataset <- test_build_dataset(
