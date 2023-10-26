@@ -651,38 +651,48 @@ dataset_test_worker <-
               all(i),
               info = ifelse(
                 "hms" %in% class(v),
-                sprintf("%s - context values from data file not present in metadata contexts: %s\n\n'%s' has been detected as a time data type and reformatted\n\t-> Please make sure context metadata matches reformatting", f, v[!i], j),
-                sprintf("%s - context values from data file not present in metadata contexts: %s", f, v[!i])
-              )
+                sprintf(
+                  "%s\tcontexts - context values of '%s' from data file not present in metadata contexts: %s\n\n'%s' has been detected as a time data type and reformatted\n\t-> Please make sure context metadata matches reformatting",
+                  red(f), j, v[!i], j),
+                sprintf(
+                  "%s\tcontexts - context values of '%s' from data file not present in metadata: %s",
+                  red(f), j, v[!i]))
             )
 
             i <- contextsub[["find"]] %in% v
 
             expect_true(
               all(i),
-              info = sprintf(
-                "%s - context values in metadata contexts not detected in context values from data file: %s",
-                f, contextsub[["find"]][!i])
+              info = ifelse(
+                !is.null(data[[j]]),
+                sprintf(
+                  "%s\tcontexts - values of '%s' in metadata not detected in context values from data file: %s",
+                  red(f), j, contextsub[["find"]][!i]),
+                sprintf(
+                  "%s\tcontexts - values of '%s' in metadata not detected in context values from traits metadata: %s",
+                  red(f), j, contextsub[["find"]][!i])
+              )
             )
-
           }
         }
 
         # Check value types in metadata and any columns of data
 
-        # XXXX To do -- also check for entity type, basis of value and any other columns
+        # XXXX TODO -- also check for entity type, basis of value and any other columns
+        # Note this only checks for `value_type` at the trait metadata level, which is appropriate for `value_type`
+        # but may not be appropriate for other fields on the TODO list
 
         if ("value_type" %in% names(traits)) {
-          i <- (traits$value_type %in% names(data))
+
+          i <- traits$value_type %in% names(data)
 
           value_type_fixed <- traits$value_type[!i] %>% unique()
           value_type_cols <- traits$value_type[i] %>% unique()
 
-
           expect_is_in(
             value_type_fixed,
             schema$value_type$values %>% names,
-            info = paste0(f, " - value types")
+            info = paste0(red(f), "\ttraits", label = "value types")
           )
 
           if (length(value_type_cols) > 0) {
@@ -690,13 +700,14 @@ dataset_test_worker <-
               expect_is_in(
                 data[[v]] %>% unique(),
                 schema$value_type$values %>% names,
-                info = paste(f, v, " - value types columns")
+                info = sprintf("%s\t%s", red(files[1]), v), label = "value type column"
               )
           }
         }
-
+        browser()
         # Substitutions
         if (!is.na(metadata[["substitutions"]][1])) {
+
           expect_list_elements_contains_names(
             metadata[["substitutions"]],
             schema$metadata$elements$substitutions$values %>% names(),
@@ -790,13 +801,13 @@ dataset_test_worker <-
 
           v <- data[[metadata[["dataset"]][["location_name"]]]] %>% unique %>% na.omit
           i <- v %in% names(metadata$locations)
-          expect_true(all(i), info = paste0(f,  " - site names from data file not present in metadata: ", v[!i]))
+          expect_true(all(i), info = paste0(red(f),  "\tlocations - location names from data file not present in metadata: ", v[!i]))
 
           i <- names(metadata$locations) %in% v
           expect_true(
             all(i),
               info = paste0(
-                f, " - site names from metadata not present in data file: ", names(metadata$locations)[!i]
+                red(f), "\tlocations - location names from metadata not present in data file: ", names(metadata$locations)[!i]
               ))
 
         }
@@ -805,16 +816,16 @@ dataset_test_worker <-
         expect_no_error(
           parsed_data <- data %>%
             process_parse_data(dataset_id, metadata, contexts, schema),
-          info = sprintf("%s - `process_parse_data`", dataset_id))
+          info = sprintf("%s\t`process_parse_data`", red(dataset_id)))
 
         expect_allowed_text(
           parsed_data$traits$value, is_data = TRUE,
-          info = sprintf("%s", files[1])
+          info = sprintf("%s", red(files[1]))
         )
 
         expect_false(
           nrow(metadata[["traits"]] %>% util_list_to_df2() %>% dplyr::filter(!is.na(.data$trait_name))) == 0,
-          info = paste0(f, " - `traits` metadata only contains NA `trait_name`'s"))
+          info = paste0(red(f), "\ttraits - only contains NA `trait_name`'s"))
 
         if (nrow(metadata[["traits"]] %>% util_list_to_df2() %>% dplyr::filter(!is.na(.data$trait_name))) > 0) {
 
@@ -830,10 +841,10 @@ dataset_test_worker <-
               get_schema("config/metadata.yml", "metadata"),
               read_csv_char("config/taxon_list.csv")
             ),
-            info = sprintf("%s - building dataset", dataset_id))
+            info = sprintf("%s\tbuilding dataset", red(dataset_id)))
 
           # Check that traits table is not empty
-          expect_false(nrow(dataset$traits) == 0, info = sprintf("%s - `traits` table is empty", dataset_id))
+          expect_false(nrow(dataset$traits) == 0, info = sprintf("%s\t`traits` table is empty", red(dataset_id)))
 
           # Check that dataset can pivot wider
           if (nrow(dataset$traits) > 0) {
@@ -853,7 +864,7 @@ dataset_test_worker <-
                 filter(.data$number_of_duplicates > 1) %>%
                 nrow(),
               0, # Expect nrow() = 0
-              info = sprintf("Duplicate rows in %s detected; `traits` table cannot pivot wider", dataset_id)
+              info = sprintf("%s\tDuplicate rows detected; `traits` table cannot pivot wider", red(dataset_id))
             )
           }
         }
