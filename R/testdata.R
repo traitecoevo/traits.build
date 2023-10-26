@@ -41,7 +41,7 @@ dataset_test <-
 #' @inheritParams dataset_test
 #' @param schema Data schema
 #' @param definitions Trait defininitons
-#' @importFrom testthat local_edition compare expect expect_named test_that context expect_silent expect_type
+#' @importFrom testthat local_edition compare expect test_that context expect_silent
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
 dataset_test_worker <-
@@ -58,7 +58,7 @@ dataset_test_worker <-
     # Is there a reason to be using the 2nd edition, while context has been superseded in later versions?
     local_edition(2)
 
-    expect_is_in <- function(object, expected, ..., info, na.rm = TRUE) {
+    expect_is_in <- function(object, expected, ..., info, label, na.rm = TRUE) {
 
         if (na.rm)
           object <- object[!is.na(object)]
@@ -68,8 +68,8 @@ dataset_test_worker <-
         expect(
           comp$equal,
           sprintf(
-            "%s - should not contain: %s",
-            info,
+            "%s - %s should not contain: %s",
+            info, label,
             paste(object[!i], collapse = ", ")
           ))
 
@@ -82,13 +82,14 @@ dataset_test_worker <-
 
       comp <- compare(all(i), TRUE, ...)
       expect(
-        comp$equal, sprintf("%s - does not contain: %s", info, paste(expected[!i], collapse = ", ")
-      ))
+        comp$equal,
+        sprintf("%s - do/does not contain: %s", info, paste(expected[!i], collapse = ", "))
+      )
 
       invisible(object)
     }
 
-    expect_allowed <- function(object, allowed, ..., info) {
+    expect_allowed <- function(object, allowed, ..., info, label) {
 
       i <- object %in% allowed
 
@@ -96,8 +97,8 @@ dataset_test_worker <-
       expect(
         comp$equal,
         sprintf(
-          "%s - includes invalid terms: %s",
-          info,
+          "%s - %s include(s) invalid terms: %s",
+          info, label,
           paste(object[!i], collapse = ", ")
         ))
 
@@ -120,6 +121,33 @@ dataset_test_worker <-
       i <- object == FALSE
       comp <- compare(all(i), TRUE)
       expect(comp$equal, info)
+    }
+
+    expect_named <- function(object, expected_names, info, label) {
+
+      if (missing(expected_names)) {
+        expect(
+          !identical(names(object), NULL),
+          sprintf("%s - %s do/does not have names", info, label))
+      } else {
+        expect(
+          identical(names(object), expected_names),
+          sprintf(
+            "%s\tnames of %s (%s) don't match %s",
+            info,
+            label, paste0("'", names(object), "'", collapse = ", "),
+            paste0("'", expected_names, "'", collapse = ", ")
+          )
+        )
+      }
+    }
+
+    expect_type <- function(object, type, info, label) {
+      stopifnot(is.character(type), length(type) == 1)
+      expect(
+        identical(typeof(object), type),
+        sprintf("%s - %s has type %s, not %s", info, label, typeof(object), type)
+      )
     }
 
     expect_not_NA <- function(object, info, label) {
@@ -234,9 +262,9 @@ dataset_test_worker <-
       invisible(NULL)
     }
 
-    expect_list_elements_allowed_names <- function(object, allowed, info) {
+    expect_list_elements_allowed_names <- function(object, allowed, info, label) {
       for (i in seq_along(object))
-        expect_allowed(names(object[[i]]), allowed, info = paste(info, i))
+        expect_allowed(names(object[[i]]), allowed, info = paste(info, i), label = "field names")
       invisible(NULL)
     }
 
@@ -276,14 +304,14 @@ dataset_test_worker <-
 
     expect_list_names_allowed <- function(data, allowed_names, info, label) {
       expect_list_names_valid(data, info, label = label)
-      expect_named(data, label = label)
-      expect_allowed(names(data), allowed_names, info = info)
+      expect_named(data, info = info, label = label)
+      expect_allowed(names(data), allowed_names, info = info, label = label)
     }
 
     # Function is assigned but not used
     expect_list_names_contain <- function(data, expected_names, info, label) {
       expect_list_names_valid(data, info, label = label)
-      expect_named(data, label = label)
+      expect_named(data, info = info, label = label)
       expect_contains(names(data), expected_names, info = info)
     }
 
@@ -324,7 +352,11 @@ dataset_test_worker <-
 
         # Check for other files
         vals <- c("data.csv", "metadata.yml", "raw")
-        expect_is_in(dir(s), vals, info = paste0(red(file.path(path_data, dataset_id)), "\tdisallowed files"))
+        expect_is_in(
+          dir(s), vals,
+          info = paste0(red(file.path(path_data, dataset_id)), "\tdisallowed files"),
+          label = "folder"
+        )
 
         # `data.csv`
         f <- files[1]
@@ -370,78 +402,97 @@ dataset_test_worker <-
 
         expect_true(
           sum(grepl("primary", v)) <= 1,
-          info = paste0(red(f), " - sources can have max 1 type labelled 'primary': ", paste(v, collapse = ", "))
+          info = paste0(red(f), "\tsources can have max 1 type labelled 'primary': ", paste(v, collapse = ", "))
         )
 
         expect_true(
           all(i),
-          info = paste0(red(f), " - sources must be primary, secondary or original:", paste(v[!i], collapse = ", "))
+          info = paste0(red(f), "\tsources must be primary, secondary or original: ", paste(v[!i], collapse = ", "))
         )
 
         vals <- c("key", "bibtype", "author", "title", "year")
 
         for (bib in names(metadata[["source"]])) {
-          expect_contains(names(metadata[["source"]][[bib]]), vals, info = f)
+          expect_contains(
+            names(metadata[["source"]][[bib]]), vals,
+            info = sprintf("%s\tsource '%s'", red(f), bib)
+          )
         }
 
         keys <- unlist(lapply(metadata[["source"]], "[[", "key"))
 
-        expect_unique(keys, info = paste(
-          f,
-          "sources must have unique keys:",
-          paste(keys, collapse = ", ")
-        ))
+        expect_unique(
+          keys,
+          info = paste0(red(f), "\tsources"),
+          label = "keys"
+        )
 
         # People
-        expect_list(metadata[["contributors"]], info = f)
+        expect_list(metadata[["contributors"]], info = paste0(red(f), "\tcontributors"))
 
         expect_list_names_allowed(
           metadata[["contributors"]],
           schema$metadata$elements$contributors$elements %>% names(),
-          info = paste0(f, " - contributors"), label = "`contributors` section"
+          info = paste0(red(f), "\tcontributors"), label = "contributor types"
         )
 
         # Data collectors
         if (!is.na(metadata[["contributors"]][["data_collectors"]][1])) {
-          expect_list(metadata[["contributors"]][["data_collectors"]], info = f)
 
+          expect_list(metadata[["contributors"]][["data_collectors"]], info = paste0(red(f), "\tdata_collectors"))
           vars <- schema$metadata$elements$contributors$elements$data_collectors$elements %>% names()
+
           for (i in seq_along(metadata[["contributors"]][["data_collectors"]])) {
             expect_list_names_allowed(
               metadata[["contributors"]][["data_collectors"]][[i]],
-              vars, info = paste0(f, " - data_collector ", i), label = "`data_collectors` section"
+              vars,
+              info = paste0(red(f), "\tdata_collector ", i), label = "`data_collector` field names"
             )
 
             expect_contains(
               metadata[["contributors"]][["data_collectors"]][[i]] %>% names(), vars[1:4],
-              info = sprintf("`data_collectors` %s", i))
+              info = sprintf("%s\tdata_collector %s", red(f), i)
+            )
           }
         }
 
         # Dataset curators
         expect_true(
           !is.null(metadata[["contributors"]][["dataset_curators"]]),
-          info = sprintf("%s - contributors - `dataset_curators` is missing", f)
+          info = sprintf("%s\tcontributors - `dataset_curators` is missing", red(f))
         )
-        expect_type(metadata[["contributors"]][["dataset_curators"]], "character")
+        expect_type(
+          metadata[["contributors"]][["dataset_curators"]], "character",
+          info = paste0(red(f), "\tcontributors"), label = "`dataset_curators`"
+        )
 
         # Assistants
         if (!is.null(metadata[["contributors"]][["assistants"]][1]))
-          expect_type(metadata[["contributors"]][["assistants"]], "character")
+          expect_type(
+            metadata[["contributors"]][["assistants"]], "character",
+            info = paste0(red(f), "\tcontributors"), label = "`assistants`"
+          )
 
         # Dataset
         expect_list_names_allowed(
           metadata[["dataset"]],
           schema$metadata$elements$dataset$values %>% names(),
-          info = paste0(f, " - dataset"), label = "`dataset` metadata"
+          info = paste0(red(f), "\tdataset"), label = "`dataset` field names"
         )
 
-        expect_type(metadata[["dataset"]][["data_is_long_format"]], "logical")
-        expect_type(metadata[["dataset"]], "list")
+        expect_type(
+          metadata[["dataset"]][["data_is_long_format"]], "logical",
+          info = paste0(red(f), "\tdataset"), label = "`data_is_long_format`"
+        )
+
+        expect_type(
+          metadata[["dataset"]], "list",
+          info = paste0(red(f), "\tdataset"), label = "metadata"
+        )
 
         # Locations
         if (length(unlist(metadata[["locations"]])) > 1) {
-          expect_list(metadata[["locations"]], info = f)
+          expect_list(metadata[["locations"]], info = paste0(red(f), "\tlocations"))
 
           expect_silent(
             locations <-
@@ -453,15 +504,15 @@ dataset_test_worker <-
           expect_dataframe_names_contain(
             locations,
             c("dataset_id", "location_name", "location_property", "value"),
-            info = paste0(f, " - locations")
+            info = paste0(red(f), "\tlocations")
           )
 
           for (v in names(metadata$locations)) {
-            expect_list(metadata[["locations"]][[v]], info = f)
+            expect_list(metadata[["locations"]][[v]], info = paste0(red(f), "\tlocation ", v))
             expect_contains(
               names(metadata[["locations"]][[v]]),
               c("latitude (deg)", "longitude (deg)"),
-              info = paste0(f, " - location ", green(v))
+              info = paste0(red(f), "\tlocation ", v)
             )
           }
         }
@@ -482,10 +533,11 @@ dataset_test_worker <-
 
         ## Check context details load
         if (nrow(contexts) > 0) {
+
           expect_dataframe_names_contain(
             contexts,
             c("context_property", "category", "var_in"),
-            info = paste0(f, " - contexts")
+            info = paste0(red(f), "\tcontexts")
           )
 
           for (i in seq_along(metadata$contexts)) {
@@ -500,44 +552,39 @@ dataset_test_worker <-
                 if (!is.null(vals[[s]][["find"]])) {
                   expect_false(
                     is.na(vals[[s]][["find"]]),
-                    info = paste0(
-                      f,
-                      sprintf("\tcontexts: `find` value in the `context_property` '%s' should not be NA\n\tPlease replace NAs with desired value using `custom_R_code`",
-                              metadata$contexts[[i]][["context_property"]]))
+                    info = paste0(red(f),
+                      sprintf(
+                        "\tcontexts - `find` value in the `context_property` '%s' should not be NA\n\tPlease replace NAs with desired value using `custom_R_code`",
+                        metadata$contexts[[i]][["context_property"]]))
                   )
                 }
 
                 # Check that there are no `find` fields without accompanying `value` fields
                 expect_false(
                   !is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
-                  info = paste0(
-                    f,
+                  info = paste0(red(f),
                     sprintf(
-                      "\tcontexts: `find: %s` in the `context_property` '%s' is not accompanied by a `value` field",
-                      vals[[s]][["find"]], metadata$contexts[[i]][["context_property"]]
-                    ))
+                      "\tcontexts - `find: %s` in the `context_property` '%s' is not accompanied by a `value` field",
+                      vals[[s]][["find"]], metadata$contexts[[i]][["context_property"]]))
                 )
 
                 # Check that there are no `description` fields with NA `value` fields
                 if (!is.null(vals[[s]][["value"]]) && !is.null(vals[[s]][["description"]])) {
                   expect_false(
                     !is.na(vals[[s]][["description"]]) && is.na(vals[[s]][["value"]]),
-                    info = paste0(
-                      f,
+                    info = paste0(red(f),
                       sprintf(
-                        "\tcontexts: `description: %s` in the `context_property` '%s' should not be accompanied by an NA `value` field\n\tPlease use `custom_R_code` to assign a proper value to NA fields",
-                        vals[[s]][["description"]], metadata$contexts[[i]][["context_property"]]
-                      ))
+                        "\tcontexts - `description: %s` in the `context_property` '%s' should not be accompanied by an NA `value` field\n\tPlease use `custom_R_code` to assign a proper value to NA fields",
+                        vals[[s]][["description"]], metadata$contexts[[i]][["context_property"]]))
                   )
                 }
 
                 # Check that there are no `description` fields without accompanying `find` and `value` fields
                 expect_false(
                   !is.null(vals[[s]][["description"]]) && is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
-                  info = paste0(
-                    f,
+                  info = paste0(red(f),
                     sprintf(
-                      "\tcontexts: `description: %s` in the `context_property` '%s' is not accompanied by `find` and `value` fields",
+                      "\tcontexts - `description: %s` in the `context_property` '%s' is not accompanied by `find` and `value` fields",
                       vals[[s]][["description"]], metadata$contexts[[i]][["context_property"]]
                     )
                   )
@@ -551,22 +598,27 @@ dataset_test_worker <-
         expect_list_elements_contains_names(
           metadata[["traits"]],
           schema$metadata$elements$traits$elements[1:3] %>% names(),
-          info = paste0(f, " - traits")
+          info = paste0(red(f), "\ttrait")
         )
 
         expect_list_elements_allowed_names(
           metadata[["traits"]],
           c(schema$metadata$elements$traits$elements %>% names(), unique(contexts$var_in)),
-          info = paste0(f, " - traits")
+          info = paste0(red(f), "\ttrait")
         )
 
         expect_silent(traits <- traits.build::util_list_to_df2(metadata[["traits"]]))
 
-        expect_true(is.data.frame(traits), info = paste0(f, " - traits metadata cannot be converted to a dataframe"))
+        expect_true(
+          is.data.frame(traits),
+          info = paste0(red(f), "\ttraits - metadata cannot be converted to a dataframe")
+        )
 
-        expect_is_in(traits$trait_name,
-                    definitions$elements %>% names(),
-                    info = paste0(f, " - traits"))
+        expect_is_in(
+          traits$trait_name, definitions$elements %>% names(),
+          info = paste0(red(f), "\ttraits"),
+          label = "`trait_name`'s"
+        )
 
         # Now that traits loaded, check details of context match
         if (nrow(contexts > 0)) {
@@ -575,16 +627,15 @@ dataset_test_worker <-
           expect_contains(
             c(names(data), names(traits)),
             unique(contexts$var_in),
-            info = files[2]
+            info = paste0(red(files[1]), red(", "), red(files[2]), "\tdata and/or traits metadata")
           )
 
           for (j in unique(contexts[["var_in"]])) {
-            contextsub <-
-              contexts %>% filter(var_in == j)
 
-            unique2 <- function(x) {unique(x[!is.na(x)])}
+            contextsub <- contexts %>% filter(var_in == j)
+
+            unique2 <- function(x) unique(x[!is.na(x)])
             # Context values align either with a column of data or a column of traits table
-            # Sophie - Not sure how context values can align with the latter?
             if (is.null(data[[j]])) {
               v <- traits[[j]] %>% unique2()
             } else {
