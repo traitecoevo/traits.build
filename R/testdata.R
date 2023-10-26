@@ -77,6 +77,7 @@ dataset_test_worker <-
       }
 
     expect_contains <- function(object, expected, ..., info) {
+
       i <- expected %in% object
 
       comp <- compare(all(i), TRUE, ...)
@@ -88,6 +89,7 @@ dataset_test_worker <-
     }
 
     expect_allowed <- function(object, allowed, ..., info) {
+
       i <- object %in% allowed
 
       comp <- compare(all(i), TRUE, ...)
@@ -120,10 +122,10 @@ dataset_test_worker <-
       expect(comp$equal, info)
     }
 
-    expect_not_NA <- function(object, info) {
+    expect_not_NA <- function(object, info, label) {
       i <- !is.na(object)
       comp <- compare(all(i), TRUE)
-      expect(comp$equal, sprintf("%s - contains test NAs", info))
+      expect(comp$equal, sprintf("%s - %s contain(s) NAs", info, label))
       invisible(object)
     }
 
@@ -133,15 +135,15 @@ dataset_test_worker <-
       invisible(object)
     }
 
-    expect_unique <- function(object, info) {
+    expect_unique <- function(object, info, label) {
       x <- table(unlist(object))
       i <- x == 1
       comp <- compare(all(i), TRUE)
-      expect(comp$equal, sprintf("%s - not unique: %s", info, paste(names(x)[!i], collapse = ", ")))
+      expect(comp$equal, sprintf("%s - %s not unique: %s", info, label, paste(names(x)[!i], collapse = ", ")))
       invisible(object)
     }
 
-    expect_allowed_text <- function(object, is_data = FALSE, info) {
+    expect_allowed_text <- function(object, is_data = FALSE, info, label) {
 
       if (length(object) > 0) {
 
@@ -173,7 +175,7 @@ dataset_test_worker <-
         } else {
           expect(
             identical(as.vector(all(!check)), TRUE),
-            sprintf("%s - disallowed characters detected: %s", info, txt)
+            sprintf("%s - disallowed characters in %s detected: \n%s", info, label, txt)
           )
         }
 
@@ -184,6 +186,7 @@ dataset_test_worker <-
     }
 
     colour_characters <- function(x, i = NULL) {
+
       chars <- x %>% charToRaw() %>% lapply(rawToChar) %>% unlist()
 
       # Wrapper around characters to print as colour
@@ -209,41 +212,38 @@ dataset_test_worker <-
 
       is_allowed <- i %in% charToRaw(exceptions)
       !(is_ascii | is_allowed)
-
     }
 
     # Better than expect_silent as contains `info` and allows for complete failures
     expect_no_error <- function(object, regexp = NULL, ..., info) {
-        error <- tryCatch({
-          object
-          NULL
-        }, error = function(e) {
-          e
-        })
-        expect(
-          is.null(error),
-          sprintf("%s threw an error:\n%s", info, paste(error, collapse = ",")))
-        invisible(NULL)
-      }
+      error <- tryCatch({
+        object
+        NULL
+      }, error = function(e) {
+        e
+      })
+      expect(
+        is.null(error),
+        sprintf("%s threw an error:\n\n" %+% red("%s"), info, paste(error, collapse = ",")))
+      invisible(NULL)
+    }
 
     expect_list_elements_contains_names <- function(object, expected, info) {
       for (i in seq_along(object))
         expect_contains(names(object[[i]]), expected, info = paste(info, i))
-
       invisible(NULL)
     }
 
     expect_list_elements_allowed_names <- function(object, allowed, info) {
       for (i in seq_along(object))
         expect_allowed(names(object[[i]]), allowed, info = paste(info, i))
-
       invisible(NULL)
     }
 
     expect_dataframe_valid <- function(data, info) {
-      expect_not_NA(colnames(data), info = info)
-      expect_allowed_text(colnames(data), info = info)
-      expect_unique(colnames(data), info = info)
+      expect_not_NA(colnames(data), info = info, label = "column names")
+      expect_allowed_text(colnames(data), info = info, label = "column names")
+      expect_unique(colnames(data), info = info, label = "column names")
       expect_true(is.data.frame(data), info = sprintf("%s - is not a dataframe", info))
     }
 
@@ -254,35 +254,35 @@ dataset_test_worker <-
     }
 
     expect_dataframe_names_contain <- function(data, expected_colnames, info) {
-        expect_dataframe_valid(data, info)
-        expect_contains(names(data), expected_colnames, info = info)
-      }
+      expect_dataframe_valid(data, info)
+      expect_contains(names(data), expected_colnames, info = info)
+    }
 
     expect_list <- function(data, info) {
       expect_true(class(data) == "list", info = sprintf("%s - is not a list", info))
     }
 
-    expect_list_names_valid <- function(data, info) {
+    expect_list_names_valid <- function(data, info, label) {
       expect_list(data, info)
-      expect_not_NA(names(data), info = info)
-      expect_allowed_text(names(data), info = info)
-      expect_unique(names(data), info = info)
+      expect_not_NA(names(data), info = info, label = label)
+      expect_allowed_text(names(data), info = info, label = label)
+      expect_unique(names(data), info = info, label = label)
     }
 
     expect_list_names_exact <- function(data, expected_names, info, label) {
-      expect_list_names_valid(data, info)
+      expect_list_names_valid(data, info, label = label)
       expect_named(data, expected_names, info = info, label = label)
     }
 
     expect_list_names_allowed <- function(data, allowed_names, info, label) {
-      expect_list_names_valid(data, info)
+      expect_list_names_valid(data, info, label = label)
       expect_named(data, label = label)
       expect_allowed(names(data), allowed_names, info = info)
     }
 
     # Function is assigned but not used
     expect_list_names_contain <- function(data, expected_names, info, label) {
-      expect_list_names_valid(data, info)
+      expect_list_names_valid(data, info, label = label)
       expect_named(data, label = label)
       expect_contains(names(data), expected_names, info = info)
     }
@@ -319,12 +319,12 @@ dataset_test_worker <-
         # Exists
         files <- file.path(s, c("data.csv", "metadata.yml"))
         for (f in files) {
-          expect_true(file.exists(f), info = sprintf("%s - file does not exist", f))
+          expect_true(file.exists(f), info = sprintf("%s" %+% " - file does not exist", red(f)))
         }
 
         # Check for other files
         vals <- c("data.csv", "metadata.yml", "raw")
-        expect_is_in(dir(s), vals, info = paste0(file.path(path_data, dataset_id), " - disallowed files"))
+        expect_is_in(dir(s), vals, info = paste0(red(file.path(path_data, dataset_id)), "\tdisallowed files"))
 
         # `data.csv`
         f <- files[1]
@@ -335,21 +335,18 @@ dataset_test_worker <-
         # Check no issues flagged when parsing file
         expect_no_error(
           readr::stop_for_problems(data),
-          info = sprintf(
-            "`read_csv(%s)`",
-            f
-          )
+          info = sprintf(red("`read_csv(%s)`"), f)
         )
 
-        expect_dataframe_valid(data, info = f)
+        expect_dataframe_valid(data, info = red(f))
 
         # Metadata
         f <- files[2]
-        expect_allowed_text(readLines(f, encoding = "UTF-8"), info = f)
+        expect_allowed_text(readLines(f, encoding = "UTF-8"), info = red(f), label = "metadata")
         expect_silent(metadata <- yaml::read_yaml(f))
         expect_list_names_exact(
           metadata, schema$metadata$elements %>% names(),
-          info = paste0("in ", f), label = "metadata sections"
+          info = red(f), label = "metadata sections"
         )
 
         # Custom R code
@@ -358,17 +355,13 @@ dataset_test_worker <-
         expect_equal(
           metadata[["dataset"]][which(names(metadata[["dataset"]]) == "custom_R_code") + 1] %>% names(),
           "collection_date",
-          info = sprintf("%s - dataset: the `custom_R_code` field must be followed by `collection_date`", f)
+          info = sprintf("%s\tdataset - the `custom_R_code` field must be followed by `collection_date`", red(f))
         )
-        #expect_false(grepl("#", txt), label=paste0(files[3], "-custom_R_code cannot contain comments, except on last line"))
-        expect_no_error(process_custom_code(txt)(data), info = paste0(files[3], " - custom_R_code"))
-
         # Apply custom manipulations
-        data <- process_custom_code(txt)(data)
+        expect_no_error(data <- process_custom_code(txt)(data), info = paste0(red(f), "\t`custom_R_code`"))
 
         # Source
-        expect_list(metadata[["source"]], info = f)
-        expect_list_names_valid(metadata[["source"]], info = sprintf("%s - source - field names are not valid", f))
+        expect_list_names_valid(metadata[["source"]], info = sprintf("%s\tsource", red(f)), label = "field names")
 
         v <- names(metadata[["source"]])
         i <- grepl("primary", v) | grepl("secondary", v) | grepl("original", v)
@@ -468,7 +461,7 @@ dataset_test_worker <-
             expect_contains(
               names(metadata[["locations"]][[v]]),
               c("latitude (deg)", "longitude (deg)"),
-              info = paste0(f, " - locations: ", v)
+              info = paste0(f, " - location ", green(v))
             )
           }
         }
