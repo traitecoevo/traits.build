@@ -667,7 +667,7 @@ for (trait in traits_categorical) {
       "No substitutions were required to align the data for this trait with AusTraits allowed trait values."),
     ifelse(nrow(substitutions_for_trait) > 0,
       substitutions_for_trait %>%
-        rename(all_of("value in contributed data table" = find, "AusTraits aligned value" = replace)) %>%
+        rename(all_of(c("value in contributed data table" = "find", "AusTraits aligned value" = "replace"))) %>%
         my_kable_styling(),
       ""
     ),
