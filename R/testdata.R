@@ -366,16 +366,16 @@ dataset_test_worker <-
         v <- names(metadata[["source"]])
         i <- grepl("primary", v) | grepl("secondary", v) | grepl("original", v)
 
-        expect_contains(v, "primary", info = f)
+        expect_contains(v, "primary", info = paste0(red(f), "\tsource"))
 
         expect_true(
           sum(grepl("primary", v)) <= 1,
-          info = paste(f, "sources can have max 1 type labelled 'primary': ", paste(v, collapse = ", "))
+          info = paste0(red(f), " - sources can have max 1 type labelled 'primary': ", paste(v, collapse = ", "))
         )
 
         expect_true(
           all(i),
-          info = paste(f, "sources must be either primary or secondary:", paste(v[!i], collapse = ", "))
+          info = paste0(red(f), " - sources must be primary, secondary or original:", paste(v[!i], collapse = ", "))
         )
 
         vals <- c("key", "bibtype", "author", "title", "year")
