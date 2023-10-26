@@ -692,7 +692,7 @@ dataset_test_worker <-
           expect_is_in(
             value_type_fixed,
             schema$value_type$values %>% names,
-            info = paste0(red(f), "\ttraits", label = "value types")
+            info = paste0(red(f), "\ttraits"), label = "value types"
           )
 
           if (length(value_type_cols) > 0) {
@@ -704,35 +704,42 @@ dataset_test_worker <-
               )
           }
         }
-        browser()
+
         # Substitutions
+        ## TODO do the same for `taxonomic_updates` and `exclude_observations`?
         if (!is.na(metadata[["substitutions"]][1])) {
 
           expect_list_elements_contains_names(
             metadata[["substitutions"]],
             schema$metadata$elements$substitutions$values %>% names(),
-            "metadata - substitution #"
+            info = paste0(red(f), "\tsubstitution")
           )
-          trait_names <-
-            sapply(metadata[["substitutions"]], "[[", "trait_name")
-          expect_is_in(unique(trait_names),
-                      definitions$elements %>% names(),
-                      info = paste0(f, " - substitutions - trait_name"))
+          expect_list_elements_allowed_names(
+            metadata[["substitutions"]],
+            schema$metadata$elements$substitutions$values %>% names(),
+            info = paste0(red(f), "\tsubstitution")
+          )
+          trait_names <- sapply(metadata[["substitutions"]], "[[", "trait_name")
           expect_is_in(
-            unique(trait_names),
-            unique(traits$trait_name),
-            info = paste0(f, " - substitutions - trait_name")
+            unique(trait_names), definitions$elements %>% names(),
+            info = paste0(red(f), "\tsubstitutions"), label = "`trait_name`'s"
+          )
+          expect_is_in(
+            unique(trait_names), unique(traits$trait_name),
+            info = paste0(red(f), "\tsubstitutions"), label = "`trait_name`'s"
           )
 
           # Check for allowable values of categorical variables
           expect_no_error(
             x <- metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name),
-            info = "allowable substitutions" # Check
+            info = paste0(red(f), "\tconverting substitutions to a dataframe and splitting by `trait_name`") # Check
           )
 
           for (trait in names(x)) {
+
             if (!is.null(definitions$elements[[trait]]) &&
                 definitions$elements[[trait]]$type == "categorical") {
+
               to_check <- x[[trait]]$replace %>% unique()
               to_check <- to_check[!(grepl("^[YyNn]+$", to_check) & stringr::str_length(to_check) == 12)]
               allowable <- c(definitions$elements[[trait]]$allowed_values_levels %>% names(), NA)
@@ -744,10 +751,8 @@ dataset_test_worker <-
               expect_length_zero(
                 failing,
                 info = sprintf(
-                  "%s - substitutions for `%s` have invalid replacement values",
-                  f,
-                  trait
-                ),
+                  "%s\tsubstitutions - `%s` has invalid replacement values",
+                  red(f), trait),
                 label = failing %>% paste(collapse = ", ")
               )
             }
@@ -756,22 +761,26 @@ dataset_test_worker <-
 
         ## Check config files contain all relevant columns
         if (metadata[["dataset"]][["data_is_long_format"]]) {
-          # Variable match
-          #expect_is_in(names(metadata[["dataset"]]), c("taxon_name",  "trait_name", "value","location_name", "individual_id", "context_name", "collection_date"), info=paste0(f, " - variable_match"))
 
           # For vertical datasets, expect all values of "trait column" found in traits
           var_out <- names(metadata[["dataset"]])
           var_in <- unlist(metadata[["dataset"]])
           i <- match("trait_name", var_out)
           values <- unique(data[[var_in[i]]])
-          expect_contains(traits[["var_in"]], values, info = files[2])
-        } else {
-          # Variable match
-          #expect_is_in(names(metadata[["dataset"]]), c("taxon_name", "location_name", "individual_id", "context_name", "collection_date"), info=paste0(f, " - variable_match"))
+          expect_contains(
+            traits[["var_in"]], values,
+            info = paste0(red(files[2]), "\ttraits")
+          )
 
-          # For wide datasets, expect variables in traits are header in the data
+        } else {
+
+          # For wide datasets, expect variables in traits are headers in the data
           values <- names(data)
-          expect_is_in(traits[["var_in"]], values, info = files[2])
+          expect_is_in(
+            traits[["var_in"]], values,
+            info = paste0(red(files[2]), "\ttraits"), label = "`var_in`"
+          )
+
         }
 
 
@@ -785,7 +794,8 @@ dataset_test_worker <-
         ## For numeric trait data, check it looks reasonable & converts properly
 
         ## Check `location_name`'s are in locations dataset
-
+        # left off here
+        browser()
         if (length(unlist(metadata[["locations"]])) > 1) {
 
           expect_true(
