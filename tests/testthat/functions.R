@@ -66,7 +66,7 @@ expect_list_names_valid <- function(data, info) {
 }
 
 
-expected_named_list <- function(data, expected_names, info) {
+expect_named_list <- function(data, expected_names, info) {
   expect_list_names_valid(data, info)
   expect_named(data, expected_names, info = info)
 }

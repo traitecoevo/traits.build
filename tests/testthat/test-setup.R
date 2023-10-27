@@ -722,7 +722,7 @@ test_that("reports and plots are produced", {
 
 testthat::test_that("`dataset_test` is working", {
   # Expect error if no `dataset_ids` argument is input
-  expect_output(expect_error(dataset_test()))
+  expect_error(dataset_test())
   expect_silent(
     out <- dataset_test("Test_2022", reporter = testthat::SilentReporter))
   expect_in(
