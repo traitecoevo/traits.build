@@ -735,13 +735,16 @@ schema$austraits$elements$taxa$elements %>%
 Clicking on the name will take you to the relevant taxonomic record in the APC or APNI, where known:
 
 ```{r taxon_list2, results='asis', echo=FALSE}
+taxa_columns <- names(data_study$taxa)
+
 tmp <- data_study$taxa %>%
   select(one_of(names(schema$austraits$elements$taxa$elements)))
 
 if (nrow(tmp) < 10000) {
   tmp %>%
   mutate(
-    taxon_name = as_link(taxon_id, taxon_name)) %>%
+    taxon_name = ifelse(taxon_id %in% taxa_columns, as_link(taxon_id, taxon_name), taxon_name)
+    ) %>%
   mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   my_kable_styling()
 } else {
@@ -761,13 +764,17 @@ To create the list of aligned taxa, we needed to make some taxonomic changes. Th
 Links on `cleaned_name` and `taxon_name` take you to the APC or APNI record for that name.
 
 ```{r}
+taxa_columns <- names(data_study$taxa)
+
 data_study$taxonomic_updates %>% select(-dataset_id) %>%
   filter(original_name != taxon_name) %>%
   mutate(
+    cleaned_name_taxonomic_status = ifelse(cleaned_name_taxonomic_status %in% taxa_columns, cleaned_name_taxonomic_status, NA),
+    cleaned_name_alternative_taxonomic_status = ifelse(cleaned_name_alternative_taxonomic_status %in% taxa_columns, cleaned_name_alternative_taxonomic_status, ""),
     d1 = purrr::map2_dbl(original_name, cleaned_name, ~adist(.x, .y)) %>% as.character() %>% str_replace("0", ""),
     d2 = purrr::map2_dbl(taxon_name, cleaned_name, ~adist(.x, .y)) %>% as.character() %>% str_replace("0", ""),
-    cleaned_name = as_link(cleaned_scientific_name_id, cleaned_name),
-    taxon_name = as_link(taxon_id, taxon_name),
+    cleaned_name = ifelse(cleaned_scientific_name_id %in% taxa_columns, as_link(cleaned_scientific_name_id, cleaned_name), cleaned_name),
+    taxon_name = ifelse(taxon_id %in% taxa_columns, as_link(taxon_id, taxon_name), taxon_name),
     cleaned_name_alternative_taxonomic_status = replace_na(cleaned_name_alternative_taxonomic_status, ""),
     `status cleaned name` = sprintf(
       "%s %s", cleaned_name_taxonomic_status,
@@ -787,8 +794,13 @@ We were unable to find taxonomic matches for the following taxa in the data. Whe
 ```{r taxa_list3, results='asis', echo=FALSE}
 data_study$taxa %>%
   filter(is.na(taxon_id)) %>%
+  mutate(
+    genus = ifelse("genus" %in% taxa_columns, genus, NA),
+    binomial = ifelse("binomial" %in% taxa_columns, binomial, NA),
+    trinomial = ifelse("trinomial" %in% taxa_columns, trinomial, NA),
+  ) %>%
   select(one_of(names(schema$austraits$elements$taxa$elements))) %>%
-  select(-taxon_id, -scientific_name_id, -taxon_distribution, -establishment_means) %>%
+  dplyr::select(-dplyr::any_of(c("taxon_id", "scientific_name_id", "taxon_distribution", "establishment_means"))) %>%
   mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   my_kable_styling()
 ```
