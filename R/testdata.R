@@ -896,23 +896,6 @@ dataset_test_worker <-
           dataset_with_version <-
             build_add_version(dataset, util_get_version("config/metadata.yml"), util_get_SHA())
 
-          functions <- c(
-            "join_taxonomy", "join_methods", "join_locations",
-            "join_contexts", "join_all", "as_wide_table")
-
-          for (f in functions) {
-            apply_function <- function(function_name) {
-              function(database_name) {
-                envir <- new.env()
-                eval(parse(text = sprintf("%s(database_name)", function_name)), envir = envir)
-              }
-            }
-            expect_no_error(
-              apply_function(f)(dataset_with_version),
-              info = paste0(red(dataset_id), sprintf("\t`%s`", f))
-            )
-          }
-
           expect_no_error(
             extract_dataset(dataset_with_version, dataset_id),
             info = paste0(red(dataset_id), "\t`extract_dataset`")
@@ -933,31 +916,24 @@ dataset_test_worker <-
             trait_pivot_longer(dataset_with_version$traits),
             info = paste0(red(dataset_id), "\t`trait_pivot_longer`")
           )
-          expect_no_error(
-            join_taxonomy(dataset_with_version),
-            info = paste0(red(dataset_id), "\t`join_taxonomy`")
-          )
-          expect_no_error(
-            join_methods(dataset_with_version),
-            info = paste0(red(dataset_id), "\t`join_methods`")
-          )
-          expect_no_error(
-            join_locations(dataset_with_version),
-            info = paste0(red(dataset_id), "\t`join_locations`")
-          )
-          expect_no_error(
-            join_contexts(dataset_with_version),
-            info = paste0(red(dataset_id), "\t`join_contexts`")
-          )
-          expect_no_error(
-            join_all(dataset_with_version),
-            info = paste0(red(dataset_id), "\t`join_all`")
-          )
-          expect_no_error(
-            as_wide_table(dataset_with_version),
-            info = paste0(red(dataset_id), "\t`as_wide_table`")
-          )
 
+          # Test the `join_` functions in a loop
+          functions <- c(
+            "join_taxonomy", "join_methods", "join_locations",
+            "join_contexts", "join_all", "as_wide_table")
+
+          for (f in functions) {
+            apply_function <- function(function_name) {
+              function(database_name) {
+                envir <- new.env()
+                eval(parse(text = sprintf("%s(database_name)", function_name)), envir = envir)
+              }
+            }
+            expect_no_error(
+              apply_function(f)(dataset_with_version),
+              info = paste0(red(dataset_id), sprintf("\t`%s`", f))
+            )
+          }
         }
       })
     }
