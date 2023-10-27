@@ -243,7 +243,7 @@ dataset_test_worker <-
     }
 
     # Better than expect_silent as contains `info` and allows for complete failures
-    expect_no_error <- function(object, regexp = NULL, ..., info) {
+    expect_no_error <- function(object, ..., info) {
       error <- tryCatch({
         object
         NULL
