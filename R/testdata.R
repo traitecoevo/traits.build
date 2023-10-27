@@ -83,7 +83,7 @@ dataset_test_worker <-
       comp <- compare(all(i), TRUE, ...)
       expect(
         comp$equal,
-        sprintf("%s - do/does not contain: %s", info, paste(expected[!i], collapse = ", "))
+        sprintf("%s - does not contain: %s", info, paste(expected[!i], collapse = ", "))
       )
 
       invisible(object)
@@ -128,7 +128,7 @@ dataset_test_worker <-
       if (missing(expected_names)) {
         expect(
           !identical(names(object), NULL),
-          sprintf("%s - %s do/does not have names", info, label))
+          sprintf("%s - %s do not exist", info, label))
       } else {
         expect(
           identical(names(object), expected_names),
@@ -196,7 +196,7 @@ dataset_test_worker <-
           expect(
             identical(as.vector(all(!check)), TRUE),
             sprintf(
-              "%s - disallowed characters in data detected: %s\n\tPlease replace using `custom_R_code`",
+              "%s\tdisallowed characters in data detected: %s\n\tPlease replace using `custom_R_code`",
               info, txt
             )
           )
@@ -268,21 +268,21 @@ dataset_test_worker <-
       invisible(NULL)
     }
 
-    expect_dataframe_valid <- function(data, info) {
-      expect_not_NA(colnames(data), info = info, label = "column names")
-      expect_allowed_text(colnames(data), info = info, label = "column names")
-      expect_unique(colnames(data), info = info, label = "column names")
+    expect_dataframe_valid <- function(data, info, label) {
+      expect_not_NA(colnames(data), info, label)
+      expect_allowed_text(colnames(data), info = info, label = label)
+      expect_unique(colnames(data), info, label)
       expect_true(is.data.frame(data), info = sprintf("%s - is not a dataframe", info))
     }
 
     # Function is assigned but not used
     expect_dataframe_named <- function(data, expected_colnames, info, label) {
-      expect_dataframe_valid(data, info)
+      expect_dataframe_valid(data, info, label)
       expect_named(data, expected_colnames, info = info, label = label)
     }
 
-    expect_dataframe_names_contain <- function(data, expected_colnames, info) {
-      expect_dataframe_valid(data, info)
+    expect_dataframe_names_contain <- function(data, expected_colnames, info, label) {
+      expect_dataframe_valid(data, info, label)
       expect_contains(names(data), expected_colnames, info = info)
     }
 
@@ -346,7 +346,7 @@ dataset_test_worker <-
         # Exists
         files <- file.path(s, c("data.csv", "metadata.yml"))
         for (f in files) {
-          expect_true(file.exists(f), info = sprintf("%s" %+% " - file does not exist", red(f)))
+          expect_true(file.exists(f), info = sprintf("%s" %+% "\tfile does not exist", red(f)))
         }
 
         # Check for other files
@@ -369,11 +369,11 @@ dataset_test_worker <-
           info = sprintf(red("`read_csv(%s)`"), f)
         )
 
-        expect_dataframe_valid(data, info = red(f))
+        expect_dataframe_valid(data, info = paste0(red(f), "\tdata"), label = "column names")
 
         # Metadata
         f <- files[2]
-        expect_allowed_text(readLines(f, encoding = "UTF-8"), info = red(f), label = "metadata")
+        expect_allowed_text(readLines(f, encoding = "UTF-8"), info = paste0(red(f), "\tmetadata"), label = "metadata")
         expect_silent(metadata <- yaml::read_yaml(f))
         expect_list_names_exact(
           metadata, schema$metadata$elements %>% names(),
@@ -432,7 +432,7 @@ dataset_test_worker <-
         expect_list_names_allowed(
           metadata[["contributors"]],
           schema$metadata$elements$contributors$elements %>% names(),
-          info = paste0(red(f), "\tcontributors"), label = "contributor types"
+          info = paste0(red(f), "\tcontributors"), label = "contributor type fields"
         )
 
         # Data collectors
@@ -503,7 +503,7 @@ dataset_test_worker <-
           expect_dataframe_names_contain(
             locations,
             c("dataset_id", "location_name", "location_property", "value"),
-            info = paste0(red(f), "\tlocations")
+            info = paste0(red(f), "\tlocations"), label = "field names"
           )
 
           for (v in names(metadata$locations)) {
@@ -511,7 +511,7 @@ dataset_test_worker <-
             expect_contains(
               names(metadata[["locations"]][[v]]),
               c("latitude (deg)", "longitude (deg)"),
-              info = paste0(red(f), "\tlocation ", v)
+              info = paste0(red(f), "\tlocation '", v, "'")
             )
           }
         }
@@ -536,7 +536,7 @@ dataset_test_worker <-
           expect_dataframe_names_contain(
             contexts,
             c("context_property", "category", "var_in"),
-            info = paste0(red(f), "\tcontexts")
+            info = paste0(red(f), "\tcontexts"), label = "field names"
           )
 
           for (i in seq_along(metadata$contexts)) {
@@ -793,31 +793,39 @@ dataset_test_worker <-
         ## For numeric trait data, check it looks reasonable & converts properly
 
         ## Check `location_name`'s are in locations dataset
-        # left off here
-        browser()
         if (length(unlist(metadata[["locations"]])) > 1) {
 
           expect_true(
             !is.null(metadata[["dataset"]][["location_name"]]),
-            info = paste0(files[2], " - `location_name` is missing from dataset metadata")
+            info = paste0(red(files[2]), "\tdataset - `location_name` is missing")
           )
 
           expect_contains(
             names(data),
             metadata[["dataset"]][["location_name"]],
-            info = paste0(files[2], " - column ", metadata[["dataset"]][["location_name"]], "not found in data")
+            info = paste0(
+              red(files[2]),
+              "\tdataset - `location_name` column not found in data")
           )
 
           v <- data[[metadata[["dataset"]][["location_name"]]]] %>% unique %>% na.omit
           i <- v %in% names(metadata$locations)
-          expect_true(all(i), info = paste0(red(f),  "\tlocations - location names from data file not present in metadata: ", v[!i]))
+          expect_true(
+            all(i),
+            info = paste0(
+              red(f),
+              "\tlocations - location names from data file not present in metadata: ",
+              v[!i])
+          )
 
           i <- names(metadata$locations) %in% v
           expect_true(
             all(i),
-              info = paste0(
-                red(f), "\tlocations - location names from metadata not present in data file: ", names(metadata$locations)[!i]
-              ))
+            info = paste0(
+              red(f),
+              "\tlocations - location names from metadata not present in data file: ",
+              names(metadata$locations)[!i])
+          )
 
         }
 
@@ -834,7 +842,7 @@ dataset_test_worker <-
 
         expect_false(
           nrow(metadata[["traits"]] %>% util_list_to_df2() %>% dplyr::filter(!is.na(.data$trait_name))) == 0,
-          info = paste0(red(f), "\ttraits - only contains NA `trait_name`'s"))
+          info = paste0(red(f), "\ttraits - only contain NA `trait_name`'s"))
 
         if (nrow(metadata[["traits"]] %>% util_list_to_df2() %>% dplyr::filter(!is.na(.data$trait_name))) > 0) {
 
@@ -873,7 +881,7 @@ dataset_test_worker <-
                 filter(.data$number_of_duplicates > 1) %>%
                 nrow(),
               0, # Expect nrow() = 0
-              info = sprintf("%s\tDuplicate rows detected; `traits` table cannot pivot wider", red(dataset_id))
+              info = sprintf("%s\tduplicate rows detected; `traits` table cannot pivot wider", red(dataset_id))
             )
           }
         }
