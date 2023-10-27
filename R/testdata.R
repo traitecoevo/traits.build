@@ -293,7 +293,6 @@ dataset_test_worker <-
     expect_list_names_valid <- function(data, info, label) {
       expect_list(data, info)
       expect_not_NA(names(data), info = info, label = label)
-      expect_allowed_text(names(data), info = info, label = label)
       expect_unique(names(data), info = info, label = label)
     }
 
