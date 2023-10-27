@@ -9,7 +9,7 @@ metadata:
     geodetic_datum: EPSG:4326
   language: en
   related_identifiers:
-  - related_identifier_type: url 
+  - related_identifier_type: url
     identifier: https://github.com/traitecoevo/traits.build/tree/v3.0.2
     relation_type: isCompiledBy
     resource_type: dataset
@@ -21,7 +21,7 @@ metadata:
   publisher: Zenodo
   publication_date: 27 Nov 2022
   license:
-    rights: CC-BY-4.0    
+    rights: CC-BY-4.0
     rights_holder: Falster, Daniel
     rights_URI: https://creativecommons.org/licenses/by/4.0/
     description: Under this license, the material can be copied and redistributed in any medium or format. It can be remixed, transformed, and built upon for any purpose, even commercially. Re-users must give appropriate credit, provide a link to the license, and indicate if changes were made. Re-users may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
@@ -50,7 +50,7 @@ metadata:
     award_IRI: purl.org/au-research/grants/arc/DE170100208
     award_number: DE170100208
     award_title: Discovery Early Career Researcher Award
-  - funder_name: Australian Research Council 
+  - funder_name: Australian Research Council
     award_IRI: purl.org/au-research/grants/arc/FT160100113
     award_number: FT160100113
     award_title: Future Fellowship
@@ -58,7 +58,7 @@ metadata:
     award_IRI: purl.org/au-research/grants/arc/FT100100910
     award_number: FT100100910
     award_title: Future Fellowship
-  creators: 
+  creators:
   - last_name: Falster
     given_name: Daniel
     ORCID: 0000-0002-9814-092X

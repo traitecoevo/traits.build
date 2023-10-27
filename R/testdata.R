@@ -44,6 +44,8 @@ dataset_test <-
 #' @importFrom testthat local_edition compare expect test_that context expect_silent
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
+#' @importFrom austraits extract_dataset extract_taxa extract_trait trait_pivot_longer
+#' trait_pivot_wider join_taxonomy join_methods join_locations join_contexts join_all as_wide_table
 dataset_test_worker <-
   function(test_dataset_ids,
            path_config = "config",
@@ -253,19 +255,19 @@ dataset_test_worker <-
       expect(
         is.null(error),
         sprintf("%s threw an error:\n\n" %+% red("%s"), info, paste(error, collapse = ",")))
-      invisible(NULL)
+      invisible(object)
     }
 
     expect_list_elements_contains_names <- function(object, expected, info) {
       for (i in seq_along(object))
         expect_contains(names(object[[i]]), expected, info = paste(info, i))
-      invisible(NULL)
+      invisible(object)
     }
 
     expect_list_elements_allowed_names <- function(object, allowed, info, label) {
       for (i in seq_along(object))
         expect_allowed(names(object[[i]]), allowed, info = paste(info, i), label = "field names")
-      invisible(NULL)
+      invisible(object)
     }
 
     expect_dataframe_valid <- function(data, info, label) {
@@ -884,6 +886,78 @@ dataset_test_worker <-
               info = sprintf("%s\tduplicate rows detected; `traits` table cannot pivot wider", red(dataset_id))
             )
           }
+
+          # Test `austraits` functions
+          # Testing per study, not on all studies combined (is this ideal?)
+          # Check which functions should be tested
+          # Should I add `summarise_trait_means`, `bind_trait_values`, `separate_trait_values`
+          # I'm not testing whether the functions work as intended, just that they throw no error
+
+          dataset_with_version <-
+            build_add_version(dataset, util_get_version("config/metadata.yml"), util_get_SHA())
+
+          functions <- c(
+            "join_taxonomy", "join_methods", "join_locations",
+            "join_contexts", "join_all", "as_wide_table")
+
+          for (f in functions) {
+            apply_function <- function(function_name) {
+              function(database_name) {
+                envir <- new.env()
+                eval(parse(text = sprintf("%s(database_name)", function_name)), envir = envir)
+              }
+            }
+            expect_no_error(
+              apply_function(f)(dataset_with_version),
+              info = paste0(red(dataset_id), sprintf("\t`%s`", f))
+            )
+          }
+
+          expect_no_error(
+            extract_dataset(dataset_with_version, dataset_id),
+            info = paste0(red(dataset_id), "\t`extract_dataset`")
+          )
+          expect_no_error(
+            extract_taxa(dataset_with_version, taxon_name),
+            info = paste0(red(dataset_id), "\t`extract_taxa`")
+          )
+          expect_no_error(
+            extract_trait(dataset_with_version, trait_names),
+            info = paste0(red(dataset_id), "\t`extract_trait`")
+          )
+          expect_no_error(
+            trait_pivot_wider(dataset_with_version$traits),
+            info = paste0(red(dataset_id), "\t`trait_pivot_wider`")
+          )
+          expect_no_error(
+            trait_pivot_longer(dataset_with_version$traits),
+            info = paste0(red(dataset_id), "\t`trait_pivot_longer`")
+          )
+          expect_no_error(
+            join_taxonomy(dataset_with_version),
+            info = paste0(red(dataset_id), "\t`join_taxonomy`")
+          )
+          expect_no_error(
+            join_methods(dataset_with_version),
+            info = paste0(red(dataset_id), "\t`join_methods`")
+          )
+          expect_no_error(
+            join_locations(dataset_with_version),
+            info = paste0(red(dataset_id), "\t`join_locations`")
+          )
+          expect_no_error(
+            join_contexts(dataset_with_version),
+            info = paste0(red(dataset_id), "\t`join_contexts`")
+          )
+          expect_no_error(
+            join_all(dataset_with_version),
+            info = paste0(red(dataset_id), "\t`join_all`")
+          )
+          expect_no_error(
+            as_wide_table(dataset_with_version),
+            info = paste0(red(dataset_id), "\t`as_wide_table`")
+          )
+
         }
       })
     }
