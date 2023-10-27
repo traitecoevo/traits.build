@@ -24,8 +24,9 @@ testthat::test_that("Test Dataset 1 builds correctly", {
     info = "Building Test Dataset 1")
 
   # Expected output
+  # XX have removed "taxa" and "taxonomic_updates" tables - not sure how we'll go about including best practise names in schema, yet not require all to be used
   tables <- c("traits", "locations", "contexts", "methods", "excluded_data",
-              "taxonomic_updates", "taxa", "contributors")
+              "contributors")
   expect_no_error(
     expected_output <-
       purrr::map(
