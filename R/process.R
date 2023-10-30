@@ -580,7 +580,7 @@ process_generate_method_ids <- function(metadata_traits) {
     dplyr::filter(!is.na(.data$trait_name)) %>%
     dplyr::select(dplyr::all_of(c("trait_name", "methods"))) %>%
     dplyr::distinct() %>%
-    # Group by traits to generate ids.
+    # Group by traits to generate ids
     # This handles instances where multiple methods used for a single trait within a dataset
     dplyr::group_by(.data$trait_name) %>%
     dplyr::mutate(method_id = process_generate_id(.data$methods, "")) %>%
@@ -632,7 +632,7 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
     ## They are both the unique set of values in the column in the data.csv file
     if (all(!c("find", "value") %in% names(out))) {
       out <- out %>%
-        # The following line shouldn't be neeeded, as we tested this was missing for the if statement above
+        # The following line shouldn't be needed, as we tested this was missing for the if statement above
         dplyr::select(-any_of(c("value"))) %>%
         dplyr::left_join(
           by = "var_in",
@@ -2055,7 +2055,10 @@ write_plaintext <- function(austraits, path) {
   RefManageR::WriteBib(austraits$sources, sprintf("%s/sources", path))
 
   # Save tables
-  for (v in c("traits", "locations", "contexts", "methods", "excluded_data", "taxonomic_updates", "taxa", "contributors")) {
+  for (v in c(
+    "traits", "locations", "contexts", "methods", "excluded_data",
+    "taxonomic_updates", "taxa", "contributors")
+  ) {
     readr::write_csv(austraits[[v]], sprintf("%s/%s.csv", path, v), na = "")
   }
 }
