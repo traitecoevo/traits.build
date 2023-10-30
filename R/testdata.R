@@ -890,7 +890,9 @@ dataset_test_worker <-
           # Test `austraits` functions
           # Testing per study, not on all studies combined (is this ideal?)
           # Check which functions should be tested
-          # Should I add `summarise_trait_means`, `bind_trait_values`, `separate_trait_values`
+          # Should I add `summarise_trait_means`, `bind_trait_values`, `separate_trait_values`?
+          # I didn't test `trait_pivot_longer` and `trait_pivot_wider` as they will be caught
+          # by the other duplicate rows test
           # I'm not testing whether the functions work as intended, just that they throw no error
 
           dataset_with_version <-
@@ -900,21 +902,15 @@ dataset_test_worker <-
             extract_dataset(dataset_with_version, dataset_id),
             info = paste0(red(dataset_id), "\t`extract_dataset`")
           )
+          taxon_name <- unique(dataset$traits$taxon_name)[1]
           expect_no_error(
             extract_taxa(dataset_with_version, taxon_name),
             info = paste0(red(dataset_id), "\t`extract_taxa`")
           )
+          trait_names <- unique(dataset$traits$trait_name)[1:3]
           expect_no_error(
             extract_trait(dataset_with_version, trait_names),
             info = paste0(red(dataset_id), "\t`extract_trait`")
-          )
-          expect_no_error(
-            trait_pivot_wider(dataset_with_version$traits),
-            info = paste0(red(dataset_id), "\t`trait_pivot_wider`")
-          )
-          expect_no_error(
-            trait_pivot_longer(dataset_with_version$traits),
-            info = paste0(red(dataset_id), "\t`trait_pivot_longer`")
           )
 
           # Test the `join_` functions in a loop
