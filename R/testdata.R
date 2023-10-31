@@ -713,7 +713,6 @@ dataset_test_worker <-
         }
 
         # Substitutions
-        ## TODO do the same for `taxonomic_updates` and `exclude_observations`?
         if (!is.na(metadata[["substitutions"]][1])) {
 
           expect_list_elements_exact_names(
@@ -764,7 +763,7 @@ dataset_test_worker <-
         # Taxonomic updates
         if (!is.na(metadata[["taxonomic_updates"]][1])) {
 
-          expect_list_elements_exact_names( # TODO: Test this function's output when fails
+          expect_list_elements_exact_names(
             metadata[["taxonomic_updates"]],
             schema$metadata$elements$taxonomic_updates$values %>% names(),
             info = paste0(red(f), "\ttaxonomic_update")
@@ -776,7 +775,6 @@ dataset_test_worker <-
           )
 
         }
-
 
         # Check that special characters do not make it into the data
         expect_no_error(
@@ -837,11 +835,11 @@ dataset_test_worker <-
             }
           }
         }
-        browser()
+
         # Excluded observations
         if (!is.na(metadata[["exclude_observations"]][1])) {
 
-          expect_list_elements_exact_names( # Test this function's output when fails
+          expect_list_elements_exact_names(
             metadata[["exclude_observations"]],
             schema$metadata$elements$exclude_observations$values %>% names(),
             info = paste0(red(f), "\texclude_observations")
@@ -865,6 +863,7 @@ dataset_test_worker <-
                 parsed_data %>% filter(trait_name == variable) %>% pull(value) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
+            # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
             } else {
               expect_is_in(
                 find_values, parsed_data %>% pull(variable) %>% unique(),
