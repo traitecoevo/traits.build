@@ -115,7 +115,7 @@ dataset_process <- function(filename_data_raw,
         "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
     )
 
-  # Replace location_name with a location_id
+  # Replace old `location_id` with a new `location_id`
   if (nrow(locations) > 0) {
     traits <-
       traits %>%
@@ -887,7 +887,7 @@ process_flag_excluded_observations <- function(data, metadata) {
 
     data <- data %>%
       dplyr::mutate(
-        error = ifelse(.data[[v]] %in% fix[[v]]$find,
+        error = ifelse(.data[[v]] %in% fix[[v]]$find, # This does not work for `trait_name`'s right now
         "Observation excluded in metadata", .data$error))
 
   data
