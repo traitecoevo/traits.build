@@ -42,7 +42,7 @@ basis_of_record:
      field_experiment: Traits were recorded on entities living under experimentally manipulated conditions in the field.
      captive_cultivated: Traits were recorded on entities living in a common garden, arboretum, or botanical or zoological garden.
      lab: Traits were recorded on entities growing in a lab, glasshouse or growth chamber.
-     preserved_specimen: Traits were recorded from specimens preserved in a collection, eg. herbarium or museum
+     preserved_specimen: Traits were recorded from specimens preserved in a collection, eg. herbarium or museum.
      literature: Traits were sourced from values reported in the literature, and where the basis of record is not otherwise known.
 
 #-------------------------------------------------------------
@@ -77,7 +77,7 @@ austraits:
         entity_context_id: &entity_context_id A unique integer identifier indicating specific contextual properties of an individual, possibly including the individual's sex or caste (for social insects).
         plot_context_id: &plot_context_id A unique integer identifier for a plot, where a plot is a distinct collection of organisms within a single geographic location, such as plants growing on different aspects or blocks in an experiment. The identifier links to specific information in the context table.
         treatment_context_id: &treatment_context_id A unique integer identifier for a treatment, where a treatment is any experimental manipulation to an organism's growing/living conditions. The identifier links to specific information in the context table.
-        collection_date: &collection_date Date sample was taken, in the format `yyyy-mm-dd`, `yyyy-mm` or `yyyy`, depending on the resoluton specified. Alternatively an overall range for the study can be indicating, with the starting and ending sample date sepatated by a `/`, as in 2010-10/2011-03
+        collection_date: &collection_date Date sample was taken, in the format `yyyy-mm-dd`, `yyyy-mm` or `yyyy`, depending on the resoluton specified. Alternatively an overall range for the study can be indicating, with the starting and ending sample date sepatated by a `/`, as in 2010-10/2011-03.
         measurement_remarks: &measurement_remarks Brief comments or notes accompanying the trait measurement.
         method_id: &method_id A unique integer identifier to distinguish between multiple sets of methods used to measure a single trait within the same dataset. The identifier links to specific information in the methods table.
         method_context_id: &method_context_id A unique integer identifier indicating a trait is measured multiple times on the same entity, with different methods used for each entry. This field is only used if a single trait is measured using multiple methods within the same dataset. The identifier links to specific information in the context table.
@@ -88,7 +88,7 @@ austraits:
       elements:
         dataset_id: *dataset_id
         location_id: *location_id
-        location_name: &location_name location name
+        location_name: &location_name The location name.
         location_property: The location characteristic being recorded. The name should include units of measurement, e.g. `MAT (C)`. Ideally we have at least the following variables for each location, `longitude (deg)`, `latitude (deg)`, `description`.
         value: The measured value of a location property.
     contexts:
@@ -383,7 +383,7 @@ metadata:
         context_property: The context property represented by the data in the column specified by `var_in`.
         category: The category of contextual data. Options are `plot` (a distinct collection of organisms within a single geographic location, such as plants growing on different aspects or blocks in an experiment), `treatment` (an experimental treatment), `entity_context` (contextual information to record about the entity the isn't documented elsewhere, including the entity's sex, caste), `temporal` (indicating when repeat observations are made on the same individual (or population, or taxon) across time) and `method` (indicating the same trait was measured on the same individual (or population, or taxon) using multiple methods).
         var_in: Name of column with contextual data in the original data submitted.
-        find: The contextual values in the original data submitted (optional)
+        find: The contextual values in the original data submitted (optional).
         value: The standardised contextual values, aligning syntax and wording with other studies.
         description: A description of the contextual values.
     traits:
@@ -417,12 +417,13 @@ metadata:
       values:
         find: *original_name
         replace: *taxon_name
-        reason: Records why the change was implemented, e.g. `typos`, `taxonomic synonyms`, and `standardising spellings`
+        reason: Records why the change was implemented, e.g. `typos`, `taxonomic synonyms`, and `standardising spellings`.
+        taxonomic_resolution: The taxonomic rank of the most specific name that can be aligned.
     exclude_observations:
       description: A table of observations to remove from the compilation.
       type: array
       values:
-        variable: A variable from the traits table, typically `taxon_name` or `location_name`
+        variable: A variable from the traits table, typically `taxon_name` or `location_name`.
         find: Value of variable to remove.
-        reason: Records why the data was removed, e.g. `exotic`
+        reason: Records why the data was removed, e.g. `exotic`.
     questions: A place to record any queries we have about the dataset (recorded as a named array), including notes on any additional traits that may have been collected in the study but have not been incorporated into AusTraits.
