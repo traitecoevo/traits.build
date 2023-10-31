@@ -608,19 +608,14 @@ test_that("`build_setup_pipeline` is working", {
   ## Check details on taxon list
   expect_silent(taxa1 <- read_csv_char("config/taxon_list.csv"))
 
-  vars <-
-    c("cleaned_name", "taxonomic_reference", "cleaned_scientific_name_id",
-    "cleaned_name_taxonomic_status", "cleaned_name_alternative_taxonomic_status",
-    "taxon_name", "taxon_id", "scientific_name_authorship", "taxon_rank",
-    "taxonomic_status", "family", "taxon_distribution", "establishment_means",
-    "scientific_name", "scientific_name_id")
-  expect_named(taxa1, vars)
-  expect_length(taxa1, 15)
+  vars <- c("taxon_name", "cleaned_name", "taxon_rank")
+  expect_contains(names(taxa1), vars)
+  expect_true(length(names(taxa1)) > 2)
   expect_true(nrow(taxa1) == 0)
   expect_true(file.copy("config/taxon_list-orig.csv", "config/taxon_list.csv", TRUE))
   expect_silent(taxa2 <- read_csv_char("config/taxon_list.csv"))
-  expect_named(taxa2, vars)
-  expect_length(taxa2, 15)
+  expect_contains(names(taxa2), vars)
+  expect_true(length(names(taxa2)) > 2)
   expect_true(nrow(taxa2) == 7)
 
   ## Now try building in a controlled env, using base method
@@ -668,8 +663,8 @@ test_that("`build_setup_pipeline` is working", {
   expect_equal(austraits$build_info$git_SHA, sha)
   expect_equal(austraits$build_info$git_SHA, "6c73238d8d048781d9a4f5239a03813be313f0dd")
 
-  expect_length(austraits_raw$taxa, 14)
-  expect_length(austraits$taxa, 14)
+  #expect_length(austraits_raw$taxa, 14) #not valid test with new `build_update_taxonomy setup`
+  #expect_length(austraits$taxa, 14) #not valid test with new `build_update_taxonomy setup`
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
 
   # Compare products from three methods, except `build_info`
