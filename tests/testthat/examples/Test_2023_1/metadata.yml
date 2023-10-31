@@ -31,6 +31,7 @@ dataset:
       mutate(across(`wood density (mg mm-3)`, as.character)) %>%
       mutate(
         wrong_trait_name = "test",
+        wrong_trait_name = ifelse(Species == "Trema aspera", "test excluded observation", wrong_trait_name),
         wood_density_dupe = `wood density (mg mm-3)`,
         no_unit_conversion = 2,
         LASA50_dupe = LASA50,
