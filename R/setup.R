@@ -872,7 +872,7 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
 #'
 #' @return `metadata.yml` file with taxonomic change added
 #' @export
-metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, taxonomic_resolution) {
+metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, taxonomic_resolution, overwrite = TRUE) {
 
   if (length(replace) > 1) {
     stop(sprintf(red("Cannot replace with two names! (for ") %+% green("'%s' ") %+% red("-> ") %+%
@@ -887,14 +887,28 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
   if (all(is.na(metadata[[set_name]]))) {
     data <- to_add
   } else {
-    data <- util_list_to_df2(metadata[[set_name]]) %>%
-            filter(!find == replace)
+    data <- util_list_to_df2(metadata[[set_name]]) 
     # Check if find record already exists for that trait
     if (find %in% data$find) {
-      message(sprintf(red("Substitution already exists for ") %+% green("'%s'"), find))
-      return(invisible())
+      # If overwrite set to false, don't add a new substitution
+      if (overwrite == FALSE) {
+        message(sprintf(red("Substitution already exists for ") %+% green("'%s'"), find))
+        return(invisible())
+      # Default is to overwrite existing substitution
+      } else {
+        message(sprintf(red("Existing substitution will be overwritten for ") %+% green("'%s'"), find))
+        return(invisible())
+        
+        data <- data %>% 
+                  filter(find != to_add$find) %>%
+                  dplyr::bind_rows(to_add) %>%
+                  filter(!find == replace) %>%
+                  arrange(.data$find)
+      }
     } else {
-      data <- dplyr::bind_rows(data, to_add) %>% dplyr::arrange(.data$find)
+      data <- dplyr::bind_rows(data, to_add) %>%
+            filter(!find == replace) %>%
+            arrange(.data$find)
     }
   }
 
@@ -906,6 +920,7 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
     blue(dataset_id), find, replace, reason)
   )
 
+  # Write metadata
   write_metadata_dataset(metadata, dataset_id)
 
 }
