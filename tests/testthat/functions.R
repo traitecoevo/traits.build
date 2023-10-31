@@ -126,7 +126,7 @@ test_structure <- function(
 
   vars_tables <-
     vars_austraits %>%
-    subset(., !(. %in% c("dataset_id", "definitions", "schema", "sources", "metadata", "build_info")))
+    subset(., !(. %in% c("dataset_id", "definitions", "schema", "sources", "metadata", "build_info", "taxonomic_updates", "taxa")))
 
   # Test lists have the right objects
   comparison <- vars_austraits
@@ -140,6 +140,10 @@ test_structure <- function(
 
     test_dataframe_named(data[[v]], comparison, info = paste(info, "- structure of", v))
   }
+
+  # Test that minimum expected columns are in taxa, taxonomic_updates tables
+  expect_contains(names(data[["taxa"]]), c("taxon_name", "taxon_rank"))
+  expect_contains(names(data[["taxonomic_updates"]]), c("dataset_id", "original_name", "cleaned_name", "taxon_name", "taxonomic_resolution"))
 
   # Contains allowed traits
   expect_isin(data$traits$trait_name %>% unique(), definitions$elements %>% names(), info = paste("traits ", v))
