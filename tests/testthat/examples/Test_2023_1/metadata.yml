@@ -71,6 +71,10 @@ locations:
     latitude (deg): .na
     longitude (deg): .na
     rainfall (mm): 3500
+  test_excluded_site:
+    description: test excluded site
+    latitude (deg): .na
+    longitude (deg): .na
 contexts:
 - context_property: plant sex
   category: entity_context
@@ -548,5 +552,14 @@ taxonomic_updates:
 exclude_observations:
 - variable: taxon_name
   find: Syzygium gustavioides
-  reason: Test exclusion
+  reason: Test taxon_name exclusion
+- variable: location_name
+  find: test_excluded_site
+  reason: Test location_name
+- variable: flowering_time
+  find: test excluded observation
+  reason: Test trait_name exclusion
+- variable: flowering_time
+  find: test excluded observation 2
+  reason: Test trait_name exclusion 2
 questions: .na
