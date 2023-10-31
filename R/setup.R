@@ -399,7 +399,7 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
         red("with variables ") %+% green("'%s'\n\t") %+% red("Please complete information in %s"),
       blue(dataset_id),
       paste(names(metadata$locations), collapse = "', '"),
-      ifelse(is.na(keep[1]),"latitude (deg)', 'longitude (deg)', 'description",paste(keep, collapse = "', '")),
+      ifelse(is.na(keep[1]), "latitude (deg)', 'longitude (deg)', 'description", paste(keep, collapse = "', '")),
       blue(dataset_id %>% metadata_path_dataset_id())
     )
   )
@@ -459,8 +459,8 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
     message(
       sprintf(
-        red("Existing context information detected, from the following columns in the dataset: ") %+% green("'%s'\n\t") %+%
-          red("Metadata is being appended; please review duplicates manually"),
+        red("Existing context information detected, from the following columns in the dataset: ") %+%
+        green("'%s'\n\t") %+% red("Metadata is being appended; please review duplicates manually"),
       contexts %>% purrr::map_chr(~.x[["var_in"]]) %>% paste(collapse = "', '"))
     )
   }
