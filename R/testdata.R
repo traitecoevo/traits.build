@@ -734,7 +734,7 @@ dataset_test_worker <-
           # Check for allowable values of categorical variables
           expect_no_error(
             x <- metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name),
-            info = paste0(red(f), "\tconverting substitutions to a dataframe and splitting by `trait_name`") # TODO: Check
+            info = paste0(red(f), "\tconverting substitutions to a dataframe and splitting by `trait_name`")
           )
 
           for (trait in names(x)) {
@@ -764,7 +764,7 @@ dataset_test_worker <-
         # Taxonomic updates
         if (!is.na(metadata[["taxonomic_updates"]][1])) {
 
-          expect_list_elements_exact_names( # Test this function's output when fails
+          expect_list_elements_exact_names( # TODO: Test this function's output when fails
             metadata[["taxonomic_updates"]],
             schema$metadata$elements$taxonomic_updates$values %>% names(),
             info = paste0(red(f), "\ttaxonomic_update")
@@ -850,26 +850,28 @@ dataset_test_worker <-
           # Check for allowable values of categorical variables
           expect_no_error(
             x <- metadata[["exclude_observations"]] %>% util_list_to_df2() %>% split(.$variable),
-            info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe and splitting by `variable`") # TODO: Check
+            info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe and splitting by `variable`")
           )
 
           for (variable in names(x)) {
 
-            find_values <- x[[variable]][["find"]]
+            find_values <- x[[variable]][["find"]] %>% unique()
 
             # If the variable to be excluded is a trait:
             if (variable %in% traits$trait_name) {
               expect_is_in(
-                unique(find_values),
+                find_values,
                 # Extract values from the data for that variable
-                data[[traits[["var_in"]][traits[["trait_name"]] == variable & !is.na(traits[["trait_name"]])]]],
+                parsed_data %>% filter(trait_name == variable) %>% pull(value) %>% unique(),
+                info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
+              )
+            } else {
+              expect_is_in(
+                find_values, parsed_data %>% pull(variable) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
             }
-
-
           }
-
         }
 
         ## Check config files contain all relevant columns
