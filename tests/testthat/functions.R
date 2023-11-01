@@ -139,7 +139,7 @@ test_structure <- function(
 
   # Test that minimum expected columns are in taxa, taxonomic_updates tables
   expect_contains(names(data[["taxa"]]), c("taxon_name", "taxon_rank"))
-  expect_contains(names(data[["taxonomic_updates"]]), c("dataset_id", "original_name", "cleaned_name", "taxon_name", "taxonomic_resolution"))
+  expect_contains(names(data[["taxonomic_updates"]]), c("dataset_id", "original_name", "aligned_name", "taxon_name", "taxonomic_resolution"))
 
   # Contains allowed traits
   expect_is_in(data$traits$trait_name %>% unique(), definitions$elements %>% names(), info = paste("traits ", v))

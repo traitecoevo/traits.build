@@ -1,4 +1,4 @@
-dataset_id,original_name,cleaned_name,taxonomic_resolution,taxon_name
+dataset_id,original_name,aligned_name,taxonomic_resolution,taxon_name
 Test_2023_4,Abildgaardia ovata,Abildgaardia ovata,,
 Test_2023_4,Acacia alpina,Acacia alpina,,
 Test_2023_4,Acacia beadleana,Acacia beadleana,,

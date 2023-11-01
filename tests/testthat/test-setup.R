@@ -608,7 +608,7 @@ test_that("`build_setup_pipeline` is working", {
   ## Check details on taxon list
   expect_silent(taxa1 <- read_csv_char("config/taxon_list.csv"))
 
-  vars <- c("taxon_name", "cleaned_name", "taxon_rank")
+  vars <- c("taxon_name", "aligned_name", "taxon_rank")
   expect_contains(names(taxa1), vars)
   expect_true(length(names(taxa1)) > 2)
   expect_true(nrow(taxa1) == 0)

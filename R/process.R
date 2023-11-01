@@ -196,11 +196,11 @@ dataset_process <- function(filename_data_raw,
     traits %>%
     dplyr::select(
       dplyr::all_of(
-        c("dataset_id", "original_name", cleaned_name = "taxon_name",
+        c("dataset_id", "original_name", aligned_name = "taxon_name",
           taxonomic_resolution = "taxonomic_resolution"))
     ) %>%
     dplyr::distinct() %>%
-    dplyr::arrange(.data$cleaned_name)
+    dplyr::arrange(.data$aligned_name)
 
   ## A temporary dataframe created to generate and bind `method_id`,
   ## for instances where the same trait is measured twice using different methods
@@ -248,7 +248,7 @@ dataset_process <- function(filename_data_raw,
     dplyr::select(-dplyr::all_of(c("unit_in"))),
     taxonomic_updates = taxonomic_updates,
     taxa = taxonomic_updates %>%
-      dplyr::select(dplyr::all_of(c(taxon_name = "cleaned_name"))) %>%
+      dplyr::select(dplyr::all_of(c(taxon_name = "aligned_name"))) %>%
       dplyr::distinct(),
     contributors = contributors,
     sources = sources,
@@ -1848,30 +1848,30 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
   columns_in_taxon_list <- names(taxa)
  
   # incoming table from austraits_raw is a list of all taxa for the study
-  # `original_name` and `cleaned_name` will be different if 
+  # `original_name` and `aligned_name` will be different if 
   # there were taxonomic_updates specified in metadata file  
   austraits_raw$taxonomic_updates <-
     austraits_raw$taxonomic_updates %>%
     dplyr::left_join(
-      by = "cleaned_name",
+      by = "aligned_name",
       taxa %>% dplyr::select(
-        dplyr::all_of(c("cleaned_name", "taxon_name"))
+        dplyr::all_of(c("aligned_name", "taxon_name"))
     )) %>%
     dplyr::distinct() %>%
-    dplyr::arrange(.data$cleaned_name)
+    dplyr::arrange(.data$aligned_name)
 
   austraits_raw$traits <-
     austraits_raw$traits %>%
-    dplyr::rename(dplyr::all_of(c("cleaned_name" = "taxon_name"))) %>%
-    dplyr::left_join(by = "cleaned_name",
-              taxa %>% dplyr::select(dplyr::all_of(c("cleaned_name", "taxon_name")))
+    dplyr::rename(dplyr::all_of(c("aligned_name" = "taxon_name"))) %>%
+    dplyr::left_join(by = "aligned_name",
+              taxa %>% dplyr::select(dplyr::all_of(c("aligned_name", "taxon_name")))
               ) %>%
     dplyr::select(dplyr::all_of(c("dataset_id", "taxon_name")), dplyr::everything()) %>%
-    # for taxa where there is no taxon_name to matched to a "cleaned_name", maintain the "cleaned_name" as the "taxon_name"
+    # for taxa where there is no taxon_name to matched to a "aligned_name", maintain the "aligned_name" as the "taxon_name"
     dplyr::mutate(
-      taxon_name = ifelse(is.na(.data$taxon_name), .data$cleaned_name, .data$taxon_name)#,
+      taxon_name = ifelse(is.na(.data$taxon_name), .data$aligned_name, .data$taxon_name)#,
     ) %>%
-    dplyr::select(-dplyr::all_of(c("cleaned_name")))
+    dplyr::select(-dplyr::all_of(c("aligned_name")))
 
   species_tmp <-
     austraits_raw$traits %>%
@@ -1882,8 +1882,8 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
       # If no taxonomic resolution is specified from taxonomic_updates, 
       # then the name's taxonomic resolution is the taxon_rank for the taxon name.
       taxonomic_resolution = ifelse(
-        .data$taxon_name %in% taxa$cleaned_name,
-        taxa$taxon_rank[match(.data$taxon_name, taxa$cleaned_name)],
+        .data$taxon_name %in% taxa$aligned_name,
+        taxa$taxon_rank[match(.data$taxon_name, taxa$aligned_name)],
         .data$taxonomic_resolution),
       taxon_rank = .data$taxonomic_resolution,
       name_to_match_to = taxon_name,

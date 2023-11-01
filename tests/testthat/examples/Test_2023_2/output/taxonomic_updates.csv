@@ -1,4 +1,4 @@
-dataset_id,original_name,cleaned_name,taxonomic_resolution,taxon_name
+dataset_id,original_name,aligned_name,taxonomic_resolution,taxon_name
 Test_2023_2,Acacia celsa,Acacia celsa,,Acacia celsa
 Test_2023_2,Acmena graveolens,Acmena graveolens,,
 Test_2023_2,Acronychia acidula,Acronychia acidula,,Acronychia acidula
