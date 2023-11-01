@@ -869,6 +869,7 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
 #' @param reason Reason for taxonomic change
 #' @param taxonomic_resolution The rank of the most specific taxon name (or scientific name)
 #' to which a submitted orignal name resolves
+#' @param overwrite Parameter indicating whether preexisting find-replace entries should be overwritten. Defaults to `true` 
 #'
 #' @return `metadata.yml` file with taxonomic change added
 #' @export
