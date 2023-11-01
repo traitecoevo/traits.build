@@ -461,7 +461,7 @@ test_that("`metadata_add_taxonomic_change` is working", {
 
   # Test if taxonomic substitution already exists
   expect_message(
-    metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution"),
+    metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution",overwrite=FALSE),
     ".*(?=Substitution already exists for )", perl = TRUE
   )
   # Expect that second substitution should not exist

@@ -869,10 +869,11 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
 #' @param reason Reason for taxonomic change
 #' @param taxonomic_resolution The rank of the most specific taxon name (or scientific name)
 #' to which a submitted orignal name resolves
+#' @param overwrite Parameter indicating whether preexisting find-replace entries should be overwritten. Defaults to `true` 
 #'
 #' @return `metadata.yml` file with taxonomic change added
 #' @export
-metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, taxonomic_resolution) {
+metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, taxonomic_resolution, overwrite = TRUE) {
 
   if (length(replace) > 1) {
     stop(sprintf(red("Cannot replace with two names! (for ") %+% green("'%s' ") %+% red("-> ") %+%
@@ -881,21 +882,36 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
   set_name <- "taxonomic_updates"
   metadata <- read_metadata_dataset(dataset_id)
 
-  to_add <- list(find = find, replace = replace, reason = reason, taxonomic_resolution = taxonomic_resolution)
+  to_add <- dplyr::tibble(find = find, replace = replace, reason = reason, taxonomic_resolution = taxonomic_resolution)
 
   # Add `set_name` category if it doesn't yet exist
   if (all(is.na(metadata[[set_name]]))) {
-    metadata[[set_name]] <- list()
+    data <- to_add
   } else {
+    data <- util_list_to_df2(metadata[[set_name]]) 
     # Check if find record already exists for that trait
-    data <- util_list_to_df2(metadata[[set_name]])
     if (find %in% data$find) {
-      message(sprintf(red("Substitution already exists for ") %+% green("'%s'"), find))
-      return(invisible())
+      # If overwrite set to false, don't add a new substitution
+      if (overwrite == FALSE) {
+        message(sprintf(red("Substitution already exists for ") %+% green("'%s'"), find))
+        return(invisible())
+      # Default is to overwrite existing substitution
+      } else {
+        message(sprintf(red("Existing substitution will be overwritten for ") %+% green("'%s'"), find))     
+        data <- data %>% 
+                  filter(find != to_add$find) %>%
+                  dplyr::bind_rows(to_add) %>%
+                  filter(!find == replace) %>%
+                  arrange(.data$find)
+      }
+    } else {
+      data <- dplyr::bind_rows(data, to_add) %>%
+            filter(!find == replace) %>%
+            arrange(.data$find)
     }
   }
 
-  metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
+  metadata[[set_name]] <- data
 
   message(
     sprintf(red("\tAdding taxonomic change in %s") %+% red(": ") %+% green("'%s'") %+% red(" -> ") %+%
@@ -903,6 +919,7 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
     blue(dataset_id), find, replace, reason)
   )
 
+  # Write metadata
   write_metadata_dataset(metadata, dataset_id)
 
 }
@@ -949,11 +966,11 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
       ))
     }
     # Write new taxonomic updates to metadata
-    metadata$taxonomic_updates <- existing_updates %>% dplyr::group_split(.data$find) %>% lapply(as.list)
+    metadata$taxonomic_updates <- existing_updates %>% arrange(.data$find) %>% filter(!find == replace)
   } else {
 
     # Read in dataframe of taxonomic changes, split into single-row lists, and add to metadata file
-    metadata$taxonomic_updates <- taxonomic_updates %>% dplyr::group_split(.data$find) %>% lapply(as.list)
+    metadata$taxonomic_updates <- taxonomic_updates %>% filter(!find == replace)
 
   }
 
