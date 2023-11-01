@@ -190,8 +190,6 @@ dataset_process <- function(filename_data_raw,
 
   # Record methods
   methods <- process_format_methods(metadata, dataset_id, sources, contributors)
-
-  excluded_taxa <- metadata$exclude_observations %>% util_list_to_df2()
   
   # Retrieve taxonomic details for known species
   taxonomic_updates <-
@@ -1900,7 +1898,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     util_df_convert_character() %>%
     # Merge in all data from taxa.
     dplyr::left_join(by = c("taxon_name"),
-      taxa %>% dplyr::select(-dplyr::any_of(dplyr::contains("clean"))) %>%
+      taxa %>% dplyr::select(-dplyr::any_of(dplyr::contains("align"))) %>%
               dplyr::distinct(taxon_name, .keep_all = TRUE) %>%
               util_df_convert_character()
     ) %>%
