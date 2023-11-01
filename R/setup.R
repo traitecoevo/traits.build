@@ -897,9 +897,7 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
         return(invisible())
       # Default is to overwrite existing substitution
       } else {
-        message(sprintf(red("Existing substitution will be overwritten for ") %+% green("'%s'"), find))
-        return(invisible())
-        
+        message(sprintf(red("Existing substitution will be overwritten for ") %+% green("'%s'"), find))     
         data <- data %>% 
                   filter(find != to_add$find) %>%
                   dplyr::bind_rows(to_add) %>%
