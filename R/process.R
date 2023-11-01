@@ -202,6 +202,22 @@ dataset_process <- function(filename_data_raw,
     dplyr::distinct() %>%
     dplyr::arrange(.data$aligned_name)
 
+  # Taxon names explicitly excluded in metadata also excluded from taxonomic updates table.
+  if (!is.na(metadata[["exclude_observations"]][1])) {
+    taxa_to_exclude <- 
+        metadata[["exclude_observations"]] %>%
+        traits.build::util_list_to_df2() %>%
+        dplyr::mutate(
+          find = stringr::str_split(find, ", ")
+          ) %>%
+        tidyr::unnest_longer(find) %>%
+        dplyr::filter(variable == "taxon_name")
+
+    taxonomic_updates <- 
+      taxonomic_updates %>%
+      dplyr::filter(!aligned_name %in% taxa_to_exclude$find)
+  }
+
   ## A temporary dataframe created to generate and bind `method_id`,
   ## for instances where the same trait is measured twice using different methods
 
