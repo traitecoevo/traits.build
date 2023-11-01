@@ -1243,11 +1243,11 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 
   if (!file.exists(filename)) {
     dplyr::tibble(
-      cleaned_name = character(),
-      taxonomic_reference = character(),
-      cleaned_scientific_name_id = character(),
-      cleaned_name_taxonomic_status = character(),
-      cleaned_name_alternative_taxonomic_status = character(),
+      aligned_name = character(),
+      taxonomic_dataset = character(),
+      aligned_scientific_name_id = character(),
+      aligned_name_taxonomic_status = character(),
+      aligned_name_alternative_taxonomic_status = character(),
       taxon_name = character(),
       taxon_id = character(),
       scientific_name_authorship = character(),

@@ -1,4 +1,4 @@
-dataset_id,original_name,cleaned_name,taxonomic_resolution,cleaned_scientific_name_id,cleaned_name_taxonomic_status,cleaned_name_alternative_taxonomic_status,taxon_id,taxon_name
+dataset_id,original_name,aligned_name,taxonomic_resolution,aligned_scientific_name_id,aligned_name_taxonomic_status,aligned_name_alternative_taxonomic_status,taxon_id,taxon_name
 Test_2023_1,Acacia celsa,Acacia celsa,Species,https://id.biodiversity.org.au/name/apni/154988,accepted,,https://id.biodiversity.org.au/taxon/apni/51436506,Acacia celsa
 Test_2023_1,Acmena graveolens,Acmena graveolens,,,,,,
 Test_2023_1,Acronychia acidula,Acronychia acidula,Species,https://id.biodiversity.org.au/name/apni/73794,accepted,,https://id.biodiversity.org.au/node/apni/2913200,Acronychia acidula
