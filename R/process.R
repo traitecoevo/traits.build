@@ -1903,7 +1903,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
               util_df_convert_character()
     ) %>%
     dplyr::arrange(.data$taxon_name) %>%
-    dplyr::select(-dplyr::any_of(c("name_to_match_to")))
+    dplyr::select(-dplyr::any_of(c("name_to_match_to", "aligned_name")))
 
   austraits_raw$taxa <-
     species_tmp %>%
