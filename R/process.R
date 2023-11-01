@@ -191,6 +191,16 @@ dataset_process <- function(filename_data_raw,
   # Record methods
   methods <- process_format_methods(metadata, dataset_id, sources, contributors)
 
+  # Create table of taxon_names that are explicitly excluded as we don't want these in the taxonomic_updates table
+  taxa_to_exclude <- 
+    metadata$exclude_observations %>%
+    traits.build::util_list_to_df2() %>%
+    dplyr::mutate(
+      find = stringr::str_split(.data$find, ", ")
+      ) %>%
+    tidyr::unnest_longer(.data$find) %>%
+    dplyr::filter(variable == "taxon_name")
+  
   # Retrieve taxonomic details for known species
   taxonomic_updates <-
     traits %>%
@@ -200,6 +210,7 @@ dataset_process <- function(filename_data_raw,
           taxonomic_resolution = "taxonomic_resolution"))
     ) %>%
     dplyr::distinct() %>%
+    dplyr::filter(!.data$aligned_name %in% taxa_to_exclude$find) %>%
     dplyr::arrange(.data$aligned_name)
 
   ## A temporary dataframe created to generate and bind `method_id`,
