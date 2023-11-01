@@ -1909,7 +1909,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     util_df_convert_character() %>%
     # Merge in all data from taxa.
     dplyr::left_join(by = c("taxon_name"),
-      taxa %>% dplyr::select(-dplyr::any_of(dplyr::contains("clean"))) %>%
+      taxa %>% dplyr::select(-dplyr::any_of(dplyr::contains("align"))) %>%
               dplyr::distinct(taxon_name, .keep_all = TRUE) %>%
               util_df_convert_character()
     ) %>%
