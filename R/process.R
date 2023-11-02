@@ -1811,11 +1811,11 @@ build_combine <- function(..., d = list(...)) {
   # Taxonomy
   taxonomic_updates <-
     combine("taxonomic_updates", d) %>%
-    dplyr::group_by(.data$original_name, .data$taxon_name, .data$taxonomic_resolution) %>%
+    dplyr::group_by(.data$original_name, .data$aligned_name, .data$taxon_name, .data$taxonomic_resolution) %>%
     dplyr::mutate(dataset_id = paste(.data$dataset_id, collapse = " ")) %>%
     dplyr::ungroup() %>%
     dplyr::distinct() %>%
-    dplyr::arrange(.data$original_name, .data$taxon_name, .data$taxonomic_resolution)
+    dplyr::arrange(.data$original_name, .data$aligned_name, .data$taxon_name, .data$taxonomic_resolution)
 
   # Metadata
   contributors <- combine("contributors", d)
