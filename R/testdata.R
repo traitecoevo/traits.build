@@ -41,7 +41,7 @@ dataset_test <-
 #' @inheritParams dataset_test
 #' @param schema Data schema
 #' @param definitions Trait defininitons
-#' @importFrom testthat local_edition compare expect test_that context expect_silent expect_no_warning
+#' @importFrom testthat local_edition compare expect test_that context expect_silent
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
 #' @importFrom austraits extract_dataset extract_taxa extract_trait trait_pivot_longer
@@ -256,6 +256,16 @@ dataset_test_worker <-
         is.null(error),
         sprintf("%s threw an error:\n\n" %+% red("%s"), info, paste(error, collapse = ",")))
       invisible(object)
+    }
+
+    expect_no_warning <- function(object, ..., info) {
+      warning <- tryCatch({
+        object
+        NULL
+      }, warning = function(w) {
+        w
+      })
+      expect(is.null(warning), info)
     }
 
     expect_list_elements_contains_names <- function(object, expected, info) {
@@ -1014,8 +1024,11 @@ dataset_test_worker <-
             extract_trait(dataset_with_version, trait_names),
             info = paste0(red(dataset_id), "\t`austraits::extract_trait`")
           )
-          # Rewrite `expect_no_warning` to have accessible message #TODO
-          expect_no_warning(dataset_wider <- trait_pivot_wider(dataset_with_version$traits))
+
+          expect_no_warning(
+            dataset_wider <- trait_pivot_wider(dataset_with_version$traits),
+            info = paste0(red(dataset_id), "\t`austraits::trait_pivot_wider` threw a warning; duplicate rows detected")
+          )
 
           # Test the `join_` functions in a loop
           functions <- c(
