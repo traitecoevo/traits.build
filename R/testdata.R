@@ -41,7 +41,7 @@ dataset_test <-
 #' @inheritParams dataset_test
 #' @param schema Data schema
 #' @param definitions Trait defininitons
-#' @importFrom testthat local_edition compare expect test_that context expect_silent
+#' @importFrom testthat local_edition compare expect test_that context expect_silent expect_no_warning
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
 #' @importFrom austraits extract_dataset extract_taxa extract_trait trait_pivot_longer
@@ -814,6 +814,7 @@ dataset_test_worker <-
         # Where missing, fill variables in traits table with values from locations
         # Trait metadata should probably have precedence -- right now trait metadata
         # is being read in during `process_parse_data` and getting overwritten here #TODO
+        # If process.R changes, this needs to be updated
         if (nrow(locations) > 0) {
           vars <- c("basis_of_record", "life_stage", "collection_date",
                     "measurement_remarks", "entity_type")
@@ -992,27 +993,26 @@ dataset_test_worker <-
           # Test `austraits` functions
           # Testing per study, not on all studies combined (is this ideal?)
           # I'm not testing whether the functions work as intended, just that they throw no error
-          # I didn't test `trait_pivot_longer` and `trait_pivot_wider` as they will be caught
-          # by the other duplicate rows test
-          # But we should test it even though there will be duplicate messages
 
           dataset_with_version <-
             build_add_version(dataset, util_get_version("config/metadata.yml"), util_get_SHA())
 
           expect_no_error(
             extract_dataset(dataset_with_version, dataset_id),
-            info = paste0(red(dataset_id), "\t`extract_dataset`")
+            info = paste0(red(dataset_id), "\t`austraits::extract_dataset`")
           )
           taxon_name <- unique(dataset$traits$taxon_name)[1]
           expect_no_error(
             extract_taxa(dataset_with_version, taxon_name),
-            info = paste0(red(dataset_id), "\t`extract_taxa`")
+            info = paste0(red(dataset_id), "\t`austraits::extract_taxa`")
           )
           trait_names <- unique(dataset$traits$trait_name)[1:3]
           expect_no_error(
             extract_trait(dataset_with_version, trait_names),
-            info = paste0(red(dataset_id), "\t`extract_trait`")
+            info = paste0(red(dataset_id), "\t`austraits::extract_trait`")
           )
+          # Rewrite `expect_no_warning` to have accessible message #TODO
+          expect_no_warning(dataset_wider <- trait_pivot_wider(dataset_with_version$traits))
 
           # Test the `join_` functions in a loop
           functions <- c(
