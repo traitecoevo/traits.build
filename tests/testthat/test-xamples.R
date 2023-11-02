@@ -24,9 +24,11 @@ testthat::test_that("Test Dataset 1 builds correctly", {
     info = "Building Test Dataset 1")
 
   # Expected output
+
   tables <- c("traits", "locations", "contexts", "methods", "excluded_data",
               "taxonomic_updates", "taxa", "contributors")
-  expect_no_error(
+
+    expect_no_error(
     expected_output <-
       purrr::map(
         tables, ~read_csv(sprintf("examples/Test_2023_1/output/%s.csv", .x), col_types = cols(.default = "c"))),

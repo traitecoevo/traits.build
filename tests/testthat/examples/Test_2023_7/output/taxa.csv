@@ -1,3 +1,3 @@
-taxon_name,taxonomic_reference,taxon_rank,trinomial,binomial,genus,family,taxon_distribution,establishment_means,taxonomic_status,scientific_name,scientific_name_authorship,taxon_id,scientific_name_id
-Eucalyptus miniata,,,,,Eucalyptus,,,,,,,,
-Eucalyptus tetrodonta,,,,,Eucalyptus,,,,,,,,
+taxon_name,taxonomic_dataset,taxon_rank,taxonomic_status,genus,binomial,trinomial,family,taxon_id,taxon_distribution
+Eucalyptus miniata,,,,,,,,,
+Eucalyptus tetrodonta,,,,,,,,,
