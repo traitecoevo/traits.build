@@ -262,7 +262,8 @@ dataset_process <- function(filename_data_raw,
     dplyr::filter(!is.na(.data$error)) %>%
     dplyr::select(dplyr::all_of(c("error")), everything()) %>%
     dplyr::select(-dplyr::all_of(c("unit_in"))),
-    taxonomic_updates = taxonomic_updates,
+    taxonomic_updates = taxonomic_updates %>%
+      dplyr::filter(aligned_name %in% traits$taxon_name),
     taxa = taxonomic_updates %>%
       dplyr::select(dplyr::all_of(c(taxon_name = "aligned_name"))) %>%
       dplyr::distinct(),
