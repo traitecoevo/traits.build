@@ -41,11 +41,7 @@ dataset_test <-
 #' @inheritParams dataset_test
 #' @param schema Data schema
 #' @param definitions Trait defininitons
-<<<<<<< HEAD
 #' @importFrom testthat local_edition compare expect test_that context expect_silent expect_no_warning
-=======
-#' @importFrom testthat local_edition compare expect test_that context expect_silent
->>>>>>> develop
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
 #' @importFrom austraits extract_dataset extract_taxa extract_trait trait_pivot_longer
@@ -249,11 +245,7 @@ dataset_test_worker <-
     }
 
     # Better than expect_silent as contains `info` and allows for complete failures
-<<<<<<< HEAD
-    expect_no_error <- function(object, regexp = NULL, ..., info) {
-=======
     expect_no_error <- function(object, ..., info) {
->>>>>>> develop
       error <- tryCatch({
         object
         NULL
@@ -263,27 +255,18 @@ dataset_test_worker <-
       expect(
         is.null(error),
         sprintf("%s threw an error:\n\n" %+% red("%s"), info, paste(error, collapse = ",")))
-<<<<<<< HEAD
       invisible(object)
-=======
-      invisible(NULL)
->>>>>>> develop
     }
 
     expect_list_elements_contains_names <- function(object, expected, info) {
       for (i in seq_along(object))
         expect_contains(names(object[[i]]), expected, info = paste(info, i))
-<<<<<<< HEAD
       invisible(object)
-=======
-      invisible(NULL)
->>>>>>> develop
     }
 
     expect_list_elements_allowed_names <- function(object, allowed, info, label) {
       for (i in seq_along(object))
         expect_allowed(names(object[[i]]), allowed, info = paste(info, i), label = "field names")
-<<<<<<< HEAD
       invisible(object)
     }
 
@@ -291,13 +274,9 @@ dataset_test_worker <-
       for (i in seq_along(object))
         expect_contains(names(object[[i]]), expected, info = paste(info, i))
         expect_allowed(names(object[[i]]), expected, info = paste(info, i), label = "field names")
+      invisible(object)
     }
 
-=======
-      invisible(NULL)
-    }
-
->>>>>>> develop
     expect_dataframe_valid <- function(data, info, label) {
       expect_not_NA(colnames(data), info, label)
       expect_allowed_text(colnames(data), info = info, label = label)
@@ -626,11 +605,7 @@ dataset_test_worker <-
         # Traits
         expect_list_elements_contains_names(
           metadata[["traits"]],
-<<<<<<< HEAD
           schema$metadata$elements$traits$elements[1:3] %>% names(), # Add `value_type` and `basis_of_value`
-=======
-          schema$metadata$elements$traits$elements[1:3] %>% names(),
->>>>>>> develop
           info = paste0(red(f), "\ttrait")
         )
 
@@ -742,23 +717,12 @@ dataset_test_worker <-
         ## TODO do the same for `taxonomic_updates` and `exclude_observations`?
         if (!is.na(metadata[["substitutions"]][1])) {
 
-<<<<<<< HEAD
           expect_list_elements_exact_names(
-=======
-          expect_list_elements_contains_names(
->>>>>>> develop
             metadata[["substitutions"]],
             schema$metadata$elements$substitutions$values %>% names(),
             info = paste0(red(f), "\tsubstitution")
           )
-<<<<<<< HEAD
-=======
-          expect_list_elements_allowed_names(
-            metadata[["substitutions"]],
-            schema$metadata$elements$substitutions$values %>% names(),
-            info = paste0(red(f), "\tsubstitution")
-          )
->>>>>>> develop
+
           trait_names <- sapply(metadata[["substitutions"]], "[[", "trait_name")
           expect_is_in(
             unique(trait_names), definitions$elements %>% names(),
@@ -772,11 +736,7 @@ dataset_test_worker <-
           # Check for allowable values of categorical variables
           expect_no_error(
             x <- metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name),
-<<<<<<< HEAD
             info = paste0(red(f), "\tconverting substitutions to a dataframe and splitting by `trait_name`")
-=======
-            info = paste0(red(f), "\tconverting substitutions to a dataframe and splitting by `trait_name`") # Check
->>>>>>> develop
           )
 
           for (trait in names(x)) {
@@ -988,20 +948,6 @@ dataset_test_worker <-
 
         }
 
-<<<<<<< HEAD
-=======
-        # Check that special characters do not make it into the data
-        expect_no_error(
-          parsed_data <- data %>%
-            process_parse_data(dataset_id, metadata, contexts, schema),
-          info = sprintf("%s\t`process_parse_data`", red(dataset_id)))
-
-        expect_allowed_text(
-          parsed_data$traits$value, is_data = TRUE,
-          info = sprintf("%s", red(files[1]))
-        )
-
->>>>>>> develop
         expect_false(
           nrow(metadata[["traits"]] %>% util_list_to_df2() %>% dplyr::filter(!is.na(.data$trait_name))) == 0,
           info = paste0(red(f), "\ttraits - only contain NA `trait_name`'s"))
@@ -1044,7 +990,6 @@ dataset_test_worker <-
                 nrow(),
               0, # Expect nrow() = 0
               info = sprintf("%s\tduplicate rows detected; `traits` table cannot pivot wider", red(dataset_id))
-<<<<<<< HEAD
             )
           }
 
@@ -1087,8 +1032,6 @@ dataset_test_worker <-
             expect_no_error(
               apply_function(f)(dataset_with_version),
               info = paste0(red(dataset_id), sprintf("\t`%s`", f))
-=======
->>>>>>> develop
             )
           }
         }
