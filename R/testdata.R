@@ -789,9 +789,7 @@ dataset_test_worker <-
         }
 
         ## Substitutions
-        ## TODO check no duplicate combinations of trait_name and find
-        ## TODO check no duplicate find values in taxonomic_updates
-        ## TODO check no duplicate combinations of variable and find in exclude_observations
+
         if (!is.na(metadata[["substitutions"]][1])) {
 
           expect_list_elements_exact_names(
@@ -809,18 +807,33 @@ dataset_test_worker <-
             info = paste0(red(f), "\tsubstitutions"), label = "`trait_name`'s"
           )
 
-          # Check for allowable values of categorical variables
           expect_no_error(
             x <- metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name),
-            info = paste0(red(f), "\tconverting substitutions to a dataframe and splitting by `trait_name`") # Check
+            info = paste0(red(f), "\tconverting substitutions to a dataframe and splitting by `trait_name`")
           )
 
+          # Check for allowable values of categorical variables
           for (trait in names(x)) {
 
-            if (!is.null(definitions$elements[[trait]]) &&
-                definitions$elements[[trait]]$type == "categorical") {
+            # First check no duplicate combinations of `find`
+            expect_equal(
+              x[[trait]] %>% group_by(find) %>% summarise(n = n()) %>% filter(n > 1) %>% nrow(),
+              0, info = sprintf(
+                "%s\tsubstitutions - duplicate `find` values detected: '%s'",
+                red(f),
+                paste(
+                  x[[trait]] %>% group_by(find) %>% summarise(n = n()) %>% filter(n > 1) %>%
+                    pull(find) %>% unique(),
+                  collapse = "', '")
+              )
+            )
 
+            # If trait is categorical
+            if (!is.null(definitions$elements[[trait]]) && definitions$elements[[trait]]$type == "categorical") {
+
+              # Check replacement values
               to_check <- x[[trait]]$replace %>% unique()
+              # Filter out `flowering_time` values from to-check list
               to_check <- to_check[!(grepl("^[YyNn]+$", to_check) & stringr::str_length(to_check) == 12)]
               allowable <- c(definitions$elements[[trait]]$allowed_values_levels %>% names(), NA)
               failing <- to_check[!(
@@ -840,7 +853,27 @@ dataset_test_worker <-
         }
 
         ## Taxonomic updates
+
         if (!is.na(metadata[["taxonomic_updates"]][1])) {
+
+          expect_no_error(
+            x <- metadata[["taxonomic_updates"]] %>% util_list_to_df2(),
+            info = paste0(red(f), "\tconverting `taxonomic_updates` to a dataframe")
+          )
+
+          # Check no duplicate `find` values
+          expect_equal(
+            x %>% group_by(find) %>% summarise(n = n()) %>% filter(n > 1) %>% nrow(),
+            0, info = sprintf(
+              "%s\ttaxonomic_updates - duplicate `find` values detected: '%s'",
+              red(f),
+              paste(
+                x %>% group_by(find) %>% summarise(n = n()) %>% filter(n > 1) %>%
+                  pull(find) %>% unique(),
+                collapse = "', '")
+            )
+          )
+
           expect_list_elements_exact_names(
             metadata[["taxonomic_updates"]],
             schema$metadata$elements$taxonomic_updates$values %>% names(),
@@ -916,7 +949,26 @@ dataset_test_worker <-
         }
 
         ## Excluded observations
+
         if (!is.na(metadata[["exclude_observations"]][1])) {
+
+          expect_no_error(
+            x <- metadata[["exclude_observations"]] %>% util_list_to_df2(),
+            info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe")
+          )
+
+          # Check no duplicate `find` values
+          expect_equal(
+            x %>% group_by(variable, find) %>% summarise(n = n()) %>% filter(n > 1) %>% nrow(),
+            0, info = sprintf(
+              "%s\texclude_observations - duplicate `find` values detected: '%s'",
+              red(f),
+              paste(
+                x %>% group_by(variable, find) %>% summarise(n = n()) %>% filter(n > 1) %>%
+                  pull(find) %>% unique(),
+                collapse = "', '")
+            )
+          )
 
           expect_list_elements_exact_names(
             metadata[["exclude_observations"]],
