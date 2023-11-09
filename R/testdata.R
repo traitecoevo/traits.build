@@ -387,7 +387,6 @@ dataset_test_worker <-
           metadata, schema$metadata$elements %>% names(),
           info = red(f), label = "metadata sections"
         )
-        ## TODO check no duplicate fields
 
         ## Custom R code
         txt <- metadata[["dataset"]][["custom_R_code"]]
@@ -790,18 +789,12 @@ dataset_test_worker <-
         }
 
         ## Substitutions
-        ## TODO do the same for `taxonomic_updates` and `exclude_observations`?
         ## TODO check no duplicate combinations of trait_name and find
         ## TODO check no duplicate find values in taxonomic_updates
         ## TODO check no duplicate combinations of variable and find in exclude_observations
         if (!is.na(metadata[["substitutions"]][1])) {
 
-          expect_list_elements_contains_names(
-            metadata[["substitutions"]],
-            schema$metadata$elements$substitutions$values %>% names(),
-            info = paste0(red(f), "\tsubstitution")
-          )
-          expect_list_elements_allowed_names(
+          expect_list_elements_exact_names(
             metadata[["substitutions"]],
             schema$metadata$elements$substitutions$values %>% names(),
             info = paste0(red(f), "\tsubstitution")
@@ -861,7 +854,7 @@ dataset_test_worker <-
 
         }
 
-        # Check that special characters do not make it into the data
+        ## Check that special characters do not make it into the data
         expect_no_error(
           parsed_data <- data %>%
             process_parse_data(dataset_id, metadata, contexts, schema),
@@ -872,7 +865,7 @@ dataset_test_worker <-
           info = sprintf("%s", red(files[1]))
         )
 
-        # Process data so that you can check excluded observations
+        ## Process data so that you can check excluded observations
         parsed_data <-
           parsed_data$traits %>%
           process_add_all_columns(
@@ -880,7 +873,7 @@ dataset_test_worker <-
               "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
           )
 
-        # Replace original `location_id` with a new `location_id`
+        ## Replace original `location_id` with a new `location_id`
         if (nrow(locations) > 0) {
           parsed_data <-
             parsed_data %>%
@@ -896,7 +889,7 @@ dataset_test_worker <-
             )
         }
 
-        # Where missing, fill variables in traits table with values from locations
+        ## Where missing, fill variables in traits table with values from locations
         # Trait metadata should probably have precedence -- right now trait metadata
         # is being read in during `process_parse_data` and getting overwritten here #TODO
         # If process.R changes, this needs to be updated
