@@ -68,9 +68,9 @@ dataset_test_worker <-
         expect(
           comp$equal,
           sprintf(
-            "%s - %s should not contain: %s",
+            "%s - %s should not contain: '%s'",
             info, label,
-            paste(object[!i], collapse = ", ")
+            paste(object[!i], collapse = "', '")
           ))
 
         invisible(object)
@@ -83,7 +83,7 @@ dataset_test_worker <-
       comp <- compare(all(i), TRUE, ...)
       expect(
         comp$equal,
-        sprintf("%s - does not contain: %s", info, paste(expected[!i], collapse = ", "))
+        sprintf("%s - does not contain: '%s'", info, paste(expected[!i], collapse = "', '"))
       )
 
       invisible(object)
@@ -541,27 +541,27 @@ dataset_test_worker <-
 
           # Check that unique context `value`'s only have one unique description
           expect_equal(
-            contexts %>% group_by(value) %>% summarise(n = n_distinct(description)) %>% filter(n > 1) %>%
-              nrow(),
+            contexts %>% group_by(context_property, value) %>% summarise(n = n_distinct(description)) %>%
+              filter(n > 1) %>% nrow(),
             0, info = sprintf(
               "%s\tcontexts - `value`'s should only have one unique description each: '%s'",
               red(f),
               paste(
-                contexts %>% group_by(value) %>% summarise(n = n_distinct(description)) %>% filter(n > 1) %>%
-                  pull(value) %>% unique(),
+                contexts %>% group_by(context_property, value) %>% summarise(n = n_distinct(description)) %>%
+                  filter(n > 1) %>% pull(value) %>% unique(),
                 collapse = "', '")
             )
           )
 
           # Check that there are no duplicate `find` fields
           expect_equal(
-            contexts %>% group_by(find) %>% summarise(n = n()) %>% filter(n > 1) %>%
+            contexts %>% group_by(context_property, find) %>% summarise(n = n()) %>% filter(n > 1) %>%
               nrow(),
             0, info = sprintf(
               "%s\tcontexts - duplicate `find` values detected: '%s'",
               red(f),
               paste(
-                contexts %>% group_by(find) %>% summarise(n = n()) %>% filter(n > 1) %>%
+                contexts %>% group_by(context_property, find) %>% summarise(n = n()) %>% filter(n > 1) %>%
                   pull(find) %>% unique(),
                 collapse = "', '")
             )
@@ -646,6 +646,8 @@ dataset_test_worker <-
           info = paste0(red(f), "\ttraits"),
           label = "`trait_name`'s"
         )
+
+        # Check no duplicate `var_in`'s
 
         # Now that traits loaded, check details of contexts match
         if (nrow(contexts > 0)) {
@@ -734,6 +736,9 @@ dataset_test_worker <-
 
         ## Substitutions
         ## TODO do the same for `taxonomic_updates` and `exclude_observations`?
+        ## TODO check no duplicate combinations of trait_name and find
+        ## TODO check no duplicate find values in taxonomic_updates
+        ## TODO check no duplicate combinations of variable and find in exclude_observations
         if (!is.na(metadata[["substitutions"]][1])) {
 
           expect_list_elements_contains_names(
