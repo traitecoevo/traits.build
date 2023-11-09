@@ -554,7 +554,18 @@ dataset_test_worker <-
           )
 
           # Check that there are no duplicate `find` fields
-
+          expect_equal(
+            contexts %>% group_by(find) %>% summarise(n = n()) %>% filter(n > 1) %>%
+              nrow(),
+            0, info = sprintf(
+              "%s\tcontexts - duplicate `find` values detected: '%s'",
+              red(f),
+              paste(
+                contexts %>% group_by(find) %>% summarise(n = n()) %>% filter(n > 1) %>%
+                  pull(find) %>% unique(),
+                collapse = "', '")
+            )
+          )
 
           for (i in seq_along(metadata$contexts)) {
 
