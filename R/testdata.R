@@ -558,17 +558,10 @@ dataset_test_worker <-
         }
 
         ## Contexts
-        filename_data <- paste0(path_data, "/", dataset_id, "/data.csv")
-
-        traits <-
-          # Read all columns as character type to prevent time data types from being reformatted
-          readr::read_csv(filename_data, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
-          process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
-
         expect_silent(
           contexts <-
             metadata$contexts %>%
-            process_format_contexts(dataset_id, traits)
+            process_format_contexts(dataset_id, data)
         )
 
         # Check context details load
