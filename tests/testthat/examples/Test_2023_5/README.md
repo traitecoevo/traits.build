@@ -10,8 +10,9 @@ This dataset is for testing:
 
 Test_2023_5 is a copy of Richards_2008 with the following modifications:
 - Added all `bibtype` options to the dataset via secondary/original sources
-- Subsetted to SLA and leaf lifespan data, added units column for both
-- Changed some values to bins in leaf lifespan data
+- Subsetted to SLA and added units column
+- Added some bin values in leaf lifespan data and add units column
 - Removed locations, contexts, and substitutions
+- Changed the `source_id` column and metadata to include more variety of sources
 
 See output/ for expected output files.
