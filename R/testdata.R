@@ -658,7 +658,7 @@ dataset_test_worker <-
         ## Traits
         expect_list_elements_contains_names(
           metadata[["traits"]],
-          schema$metadata$elements$traits$elements[1:3] %>% names(), # Add `value_type` and `basis_of_value` #TODO
+          c("var_in", "unit_in", "trait_name", "value_type", "basis_of_value"),
           info = paste0(red(f), "\ttrait")
         )
 
