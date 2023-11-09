@@ -387,6 +387,7 @@ dataset_test_worker <-
           metadata, schema$metadata$elements %>% names(),
           info = red(f), label = "metadata sections"
         )
+        ## TODO check no duplicate fields
 
         ## Custom R code
         txt <- metadata[["dataset"]][["custom_R_code"]]
@@ -739,31 +740,50 @@ dataset_test_worker <-
           }
         }
 
-        ## Check value types in metadata and any columns of data
+        ## Check metadata values are allowed for fields specified in traits metadata
+        metadata_fields <- c("entity_type", "value_type", "basis_of_value", "basis_of_record")
 
-        # XXXX TODO -- also check for entity type, basis of value and any other columns
-        # Note this only checks for `value_type` at the trait metadata level, which is appropriate for `value_type`
-        # but may not be appropriate for other fields on the TODO list
+        for (field in metadata_fields) {
 
-        if ("value_type" %in% names(traits)) {
+          if (field %in% names(traits)) {
 
-          i <- traits$value_type %in% names(data)
+            i <- traits[[field]] %in% names(data)
+            fixed <- traits[[field]][!i] %>% unique()
+            cols <- traits[[field]][i] %>% unique()
 
-          value_type_fixed <- traits$value_type[!i] %>% unique()
-          value_type_cols <- traits$value_type[i] %>% unique()
+            # Check fixed values in metadata are allowed
+            expect_is_in(
+              fixed, schema[[field]][["values"]] %>% names,
+              info = paste0(red(f), "\ttraits"), label = sprintf("`%s`", field)
+            )
 
-          expect_is_in(
-            value_type_fixed,
-            schema$value_type$values %>% names,
-            info = paste0(red(f), "\ttraits"), label = "value types"
-          )
+            # Check column values are allowed
+            if (length(cols) > 0) {
+              for (c in cols) {
+                expect_is_in(
+                  data[[c]] %>% unique(), schema[[c]][["values"]] %>% names,
+                  info = sprintf("%s\t'%s'", red(files[1]), c),
+                  label = sprintf("`%s` column", field)
+                )
+              }
+            }
+          }
 
-          if (length(value_type_cols) > 0) {
-            for (v in value_type_cols) {
+          ## Check metadata values are allowed for fields specified in dataset metadata
+          if (field %in% names(metadata[["dataset"]])) {
+
+            # If the metadata field is a column in the data
+            if (metadata[["dataset"]][[field]] %in% names(data)) {
               expect_is_in(
-                data[[v]] %>% unique(),
-                schema$value_type$values %>% names,
-                info = sprintf("%s\t%s", red(files[1]), v), label = "value type column"
+                data[[metadata[["dataset"]][[field]]]] %>% unique(), schema[[field]][["values"]] %>% names,
+                info = sprintf("%s\t'%s'", red(files[1]), metadata[["dataset"]][[field]]),
+                label = sprintf("`%s` column", field)
+              )
+            # Otherwise check fixed value
+            } else {
+              expect_is_in(
+                metadata[["dataset"]][[field]], schema[[field]][["values"]] %>% names,
+                info = paste0(red(f), "\tdataset"), label = sprintf("`%s`", field)
               )
             }
           }
