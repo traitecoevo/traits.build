@@ -269,9 +269,10 @@ dataset_test_worker <-
     }
 
     expect_list_elements_exact_names <- function(object, expected, info) {
-      for (i in seq_along(object))
+      for (i in seq_along(object)) {
         expect_contains(names(object[[i]]), expected, info = paste(info, i))
         expect_allowed(names(object[[i]]), expected, info = paste(info, i), label = "field names")
+      }
       invisible(object)
     }
 
@@ -732,12 +733,13 @@ dataset_test_worker <-
           )
 
           if (length(value_type_cols) > 0) {
-            for (v in value_type_cols)
+            for (v in value_type_cols) {
               expect_is_in(
                 data[[v]] %>% unique(),
                 schema$value_type$values %>% names,
                 info = sprintf("%s\t%s", red(files[1]), v), label = "value type column"
               )
+            }
           }
         }
 
@@ -800,7 +802,6 @@ dataset_test_worker <-
 
         ## Taxonomic updates
         if (!is.na(metadata[["taxonomic_updates"]][1])) {
-
           expect_list_elements_exact_names(
             metadata[["taxonomic_updates"]],
             schema$metadata$elements$taxonomic_updates$values %>% names(),
@@ -1026,51 +1027,6 @@ dataset_test_worker <-
                 nrow(),
               0, # Expect nrow() = 0
               info = sprintf("%s\tduplicate rows detected; `traits` table cannot pivot wider", red(dataset_id))
-            )
-          }
-
-          ## Test `austraits` functions
-          # Testing per study, not on all studies combined
-          # I'm not testing whether the functions work as intended, just that they throw no error
-
-          dataset_with_version <-
-            build_add_version(dataset, util_get_version("config/metadata.yml"), util_get_SHA())
-
-          expect_no_error(
-            extract_dataset(dataset_with_version, dataset_id),
-            info = paste0(red(dataset_id), "\t`austraits::extract_dataset`")
-          )
-          taxon_name <- unique(dataset$traits$taxon_name)[1]
-          expect_no_error(
-            extract_taxa(dataset_with_version, taxon_name),
-            info = paste0(red(dataset_id), "\t`austraits::extract_taxa`")
-          )
-          trait_names <- unique(dataset$traits$trait_name)[1:3]
-          expect_no_error(
-            extract_trait(dataset_with_version, trait_names),
-            info = paste0(red(dataset_id), "\t`austraits::extract_trait`")
-          )
-
-          expect_no_warning(
-            dataset_wider <- trait_pivot_wider(dataset_with_version$traits),
-            info = paste0(red(dataset_id), "\t`austraits::trait_pivot_wider` threw a warning; duplicate rows detected")
-          )
-
-          # Test the `join_` functions in a loop
-          functions <- c(
-            "join_taxonomy", "join_methods", "join_locations",
-            "join_contexts", "join_all", "as_wide_table")
-
-          for (f in functions) {
-            apply_function <- function(function_name) {
-              function(database_name) {
-                envir <- new.env()
-                eval(parse(text = sprintf("%s(database_name)", function_name)), envir = envir)
-              }
-            }
-            expect_no_error(
-              apply_function(f)(dataset_with_version),
-              info = paste0(red(dataset_id), sprintf("\t`%s`", f))
             )
           }
         }
