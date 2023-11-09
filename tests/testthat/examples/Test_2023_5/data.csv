@@ -1,46 +1,125 @@
-Species,species_abb,site,LMA (mg mm-2),Leaf nitrogen (mg mg-1),leaf size (mm2),wood density (mg mm-3),branch mass fraction,Seed mass (mg),LASA10,LASA250,LASA50,LASA1000
-Acacia celsa,acacel,Atherton,0.145,0.0214,2786,0.498,0.67,10.3,2977,7260,3722,6824
-Acronychia acidula,acraci,Atherton,0.085,0.0243,14302,0.525,0.48,,,7560,5541,9480
-Alphitonia petriei,alppet,Atherton,0.149,0.0163,6820,0.413,0.42,27.2,,4340,3313,4335
-Glochidion hylandii,glohyl,Atherton,0.106,0.0137,3209,0.566,0.41,10.41,1993,5075,5455,8664
-Homalanthus novoguineensis,omanov,Atherton,0.082,0.022,10682,0.319,0.47,7,,2136,2158,3307
-Melicope elleryana,melell,Atherton,0.075,0.0268,6955,0.346,0.58,1.61,,4201,2860,6119
-Neolitsea dealbata,neodea,Atherton,0.093,0.0164,5228,0.352,0.58,176.1,1686,2747,3049,7504
-Polyscias australiana,polaus,Atherton,0.079,0.0154,6806,0.397,0.42,8.35,,6008,,6700
-Psychotria sp Utchee Creek,psyspp,Atherton,0.108,0.0179,11157,0.582,0,23.09,,4977,2302,2037
-Rhodomyrtus trineura,rhotri,Atherton,0.129,0.0111,3401,0.763,0.34,,4321,3803,6088,6877
-Acmena graveolens,acmgra,Cape Tribulation,0.151,0.0155,5246,0.599,0.67,,,3057,2667,7156
-Aleurites rockinghamensis,aleroc,Cape Tribulation,0.113,0.0184,73984,0.28,0.02,7077,,4194,,6209
-Alstonia scholaris,alssch,Cape Tribulation,0.107,0.0223,6182,0.361,0.46,1.53,,1854,1682,3932
-Argyrodendron peralatum,argper,Cape Tribulation,0.244,0.0119,3201,0.726,0.71,433,,3832,1689,6718
-Atractocarpus hirtus,atrhir,Cape Tribulation,0.072,0.0157,11374,0.804,0.28,,,7143,6727,6103
-Brombya platynema,bropla,Cape Tribulation,0.106,0.0188,8218,0.603,0.33,,,4261,3531,5377
-Cardwellia sublimis,carsub,Cape Tribulation,0.127,0.0128,4352,0.603,0.56,582.3,,6315,4880,8282
-Castanospermum australe,casaus,Cape Tribulation,0.117,0.0237,2765,0.587,0.37,14851,,7329,,8869
-Cleistanthus myrianthus,clemyr,Cape Tribulation,0.078,0.0228,4828,0.588,0.56,,3720,6084,5233,8559
-Cryptocarya laevigata,crylae,Cape Tribulation,0.087,0.0156,2682,0.64,0.65,1281,1391,3297,4680,7588
-Cryptocarya mackinnoniana,crymac,Cape Tribulation,0.204,0.0152,10458,0.655,0.61,204,,3277,2325,8657
-Cryptocarya murrayi,crymur,Cape Tribulation,0.155,0.0167,9960,0.674,0.39,,2693,5543,4298,5451
-Dendrocnide moroides,denmor,Cape Tribulation,0.052,0.0312,26454,0.23,0.46,0.71,,2372,,2090
-Elaeocarpus grandis,elaang,Cape Tribulation,0.122,0.0187,2762,0.499,0.47,3699,,2598,1748,4635
-Endiandra leptodendron,endlep,Cape Tribulation,0.106,0.018,3987,0.611,0.68,,1492,2412,2783,7477
-Endiandra microneura,endmic,Cape Tribulation,0.151,0.0177,3377,0.623,0.61,,3573,6344,3354,6235
-Gillbeea adenopetala,gilade,Cape Tribulation,0.126,0.0096,3678,0.43,0.46,15,,2863,3160,6549
-Haplostichanthus sp Coop. Ck,hapspp,Cape Tribulation,0.072,0.022,4685,0.668,0.36,,2430,12304,3282,2992
-Harpullia rhyticarpa,harrhy,Cape Tribulation,0.076,0.0174,40876,0.621,0.01,,,8971,5922,4669
-Hernandia albiflora,heralb,Cape Tribulation,0.069,0.0195,3806,0.447,0.33,,3123,4145,4643,6086
-Ixora biflora,ixobif,Cape Tribulation,0.081,0.01,2760,0.843,0.55,41.5,5244,3892,1969,8094
-Lasianthus strigosus,lasstr,Cape Tribulation,0.055,0.0158,3313,0.684,0.15,7,1841,5100,2379,2731
-Litsea leefeana,litlee,Cape Tribulation,0.13,0.0144,3917,0.549,0.68,263.4,3984,4141,3816,9645
-Macaranga tanarius,mactan,Cape Tribulation,0.104,0.0205,46676,0.344,0,,,3377,,3901
-Mallotus mollissimus,malmol,Cape Tribulation,0.063,0.0352,16716,0.373,0.32,31.25,1788,5580,5163,7944
-Medicosma sessiliflora,medses,Cape Tribulation,0.106,0.0153,8164,0.69,0.65,,2844,9332,6514,10298
-Melastoma cyanoides,melaff,Cape Tribulation,0.046,0.0208,4009,0.381,0.6,0.07,2960,4057,4661,6637
-Myristica insipida,myrins,Cape Tribulation,0.106,0.0185,8379,0.433,0.51,1612,,6929,4852,9273
-Pittosporum rubiginosum,pitrub,Cape Tribulation,0.065,0.0143,9931,0.728,0.28,27.94,7428,7459,5265,6548
-Psychotria dallachiana,psydal,Cape Tribulation,0.079,0.0177,2495,0.612,0.33,,4290,5666,4916,4761
-Quassia baileyana,quabai,Cape Tribulation,0.086,0.023,9624,0.501,0.42,,,5867,3216,5719
-Rockinghamia angustifolia,rocang,Cape Tribulation,0.108,0.0158,10636,0.455,0.39,19.38,,5862,4611,6098
-Syzygium gustavioides,syzgus,Cape Tribulation,0.167,0.0129,3590,0.521,0.59,48000,2833,3121,3047,6584
-Syzygium sayeri,syzsay,Cape Tribulation,0.131,0.0137,2645,0.485,0.65,841,3929,5767,4939,9836
-Trema aspera,treasp,Cape Tribulation,0.053,0.0299,2071,0.357,0.53,5.12,3578,5291,5440,6695
+name_original,site,AusTraits_site_name,AusTraits_key,context,canopy_position,leaf_age,stand_maturity,wood_sample_type,plot_location,photosynthetic pathway,Nfixer,GF,DecEv,LfType,LfForm,SLA (cm2/g),leaf mass/stem mass,LMA (g/m2),leaf longevity,amass (nmol g-1 s-1),aarea (umolm-2s-1),gs (molm-2s-1),13-C,leaf_chlorophyll_umol_per_m2,height_range,height_max,n_mass_%,n_area,p_mass_%,p_area,k_mass_%,Ca_mass_g_per_kg,Mg_mass_g_per_kg,Na_mass_g_per_kg,S_mass_g_per_kg,Fe_mass_ppm,Mn_mass_ppm,Zn_mass_ppm,Cu_mass_ppm,B_mass_ppm,N_mass_wood_g_per_kg,P_mass_wood_g_per_kg,K_mass_wood_g_per_kg,Ca_mass_wood_g_per_kg,Mg_mass_wood_g_per_kg,Na_mass_wood_g_per_kg,N_mass_bark_g_per_kg,P_mass_bark_g_per_kg,K_mass_bark_g_per_kg,Ca_mass_bark_g_per_kg,Mg_mass_bark_g_per_kg,Na_mass_bark_g_per_kg,N_mass_senesced_leaves_%,P_mass_senesced_leaves_%,K_mass_senesced_leaves_%,Ca_mass_senesced_leaves_%,Mg_mass_senesced_leaves_%,N_mass_dead_wood_g_per_kg,P_mass_dead_wood_g_per_kg,K_mass_dead_wood_g_per_kg,Ca_mass_dead_wood_g_per_kg,Mg_mass_dead_wood_g_per_kg,Na_mass_dead_wood_g_per_kg
+Eucalyptus regnans,Adams1984_BigCkBasin,Adams_1984_Big Creek Basin,Adams_1984,,,,,,,C3,n,tree,E,B,S,,,,,,,,,,,,1.95,,0.09,,0.36,1.65,6.23,,,,,,,,3.5,0.3,,,,,,,,,,,,,,,,,,,,,
+Acacia dealbata,Adams1984_BigCkBasin,Adams_1984_Big Creek Basin,Adams_1984,,,,,,,C3,y,,E,B,,,,,,,,,,,,,2.46,,0.09,,0.54,0.63,3.93,,,,,,,,7.5,0.31,,,,,,,,,,,,,,,,,,,,,
+Acacia obliquinervia,Adams1984_BigCkBasin,Adams_1984_Big Creek Basin,Adams_1984,,,,,,,C3,y,,E,B,,,,,,,,,,,,,2.01,,0.07,,0.39,1.31,6.16,,,,,,,,5.9,0.24,,,,,,,,,,,,,,,,,,,,,
+Acacia verticillata,Adams1984_BigCkBasin,Adams_1984_Big Creek Basin,Adams_1984,,,,,,,C3,y,,E,B,,,,,,,,,,,,,1.99,,0.06,,0.43,1.27,11.75,,,,,,,,9.2,0.38,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus sieberi,Ahton1976_DrySclerophyll,Ashton_1976_dry sclerophyll,Ashton_1976,,,,,,,,,,,,,,,,,,,,,,,,,,0.044,,,,,,,,,,,,,,,,,,,,,,,,,0.011,,,,,,,,,
+Platylobium formosum,Ahton1976_DrySclerophyll,Ashton_1976_dry sclerophyll,Ashton_1976,,,,,,,,,,,,,,,,,,,,,,,,,,0.033,,,,,,,,,,,,,,,,,,,,,,,,,0.013,,,,,,,,,
+Atherosperma moschatum,Ahton1976_Rainforest,Ashton_1976_rainforest,Ashton_1976,,,,,,,,,,,,,,,,,,,,,,,,,,0.15,,,,,,,,,,,,,,,,,,,,,,,,,0.089,,,,,,,,,
+Nothofagus cunninghamii,Ahton1976_Rainforest,Ashton_1976_rainforest,Ashton_1976,,,,,,,,,,,,,,,,,,,,,,,,,,0.101,,,,,,,,,,,,,,,,,,,,,,,,,0.03,,,,,,,,,
+Eucalyptus regnans,Ahton1976_WetSclerophyll,Ashton_1976_wet sclerophyll,Ashton_1976,,,,,,,,,,,,,,,,,,,,,,,,,,0.095,,,,,,,,,,,,,,,,,,,,,,,,,0.023,,,,,,,,,
+Pomaderris aspera,Ahton1976_WetSclerophyll,Ashton_1976_wet sclerophyll,Ashton_1976,,,,,,,,,,,,,,,,,,,,,,,,,,0.08,,,,,,,,,,,,,,,,,,,,,,,,,0.021,,,,,,,,,
+Eucalyptus regnans,Ashton1975_WallabyCk,Ashton_1975_Wallaby Creek,Ashton_1975,immature_leaves,,immature leaves,,,,,,,,,,,,,,,,,,,,,1.744,,0.145,,1.245,2.2,2.52,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus regnans,Ashton1975_WallabyCk,Ashton_1975_Wallaby Creek,Ashton_1975,mature_leaves,,mature leaves,,,,,,,,,,,,,,,,,,,,,1.521,,0.117,,1.128,2.27,2.5,,,,,,,,,,,,,,,,,,,,0.33,0.035,0.286,0.559,0.197,,,,,,
+Eucalyptus regnans,Ashton1975_WallabyCk,Ashton_1975_Wallaby Creek,Ashton_1975,second_year_leaves,,second year leaves,,,,,,,,,,,,,,,,,,,,,0.988,,0.078,,0.573,5.73,3.17,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Olearia argophylla,Ashton1975_WallabyCk,Ashton_1975_Wallaby Creek,Ashton_1975,young_leaves,,young leaves,,,,,,,,,,,,,,,,,,,,,2.075,,0.395,,2.671,2.73,1.66,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Olearia argophylla,Ashton1975_WallabyCk,Ashton_1975_Wallaby Creek,Ashton_1975,mature_leaves,,mature leaves,,,,,,,,,,,,,,,,,,,,,1.527,,0.154,,1.78,5.3,1.83,,,,,,,,,,,,,,,,,,,,0.497,0.077,1.024,0.722,0.212,,,,,,
+Pomaderris aspera,Ashton1975_WallabyCk,Ashton_1975_Wallaby Creek,Ashton_1975,young_leaves,,young leaves,,,,,,,,,,,,,,,,,,,,,2.062,,0.416,,1.13,10.22,2.74,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Pomaderris aspera,Ashton1975_WallabyCk,Ashton_1975_Wallaby Creek,Ashton_1975,mature_leaves,,mature leaves,,,,,,,,,,,,,,,,,,,,,2.383,,0.18,,1.131,14.23,3.23,,,,,,,,,,,,,,,,,,,,1.122,0.046,0.405,1.423,0.355,,,,,,
+Eucalyptus obliqua,Attiwill1980_MtDisappointment,Attiwill_1980_Mt Disappointment,Attiwill_1980,branch_wood_smooth-barked_less_1.25_cm,,,,branch_wood_smooth-barked_less_1.25_cm,,C3,n,tree,E,B,S,,,,,,,,,,,,,,0.08,,0.45,3.85,3.6,,,,,,,,,0.4,2.9,6.6,3.25,,,0.15,2.82,4.45,2.34,,,,,,,,,,,,
+Eucalyptus obliqua,Attiwill1980_MtDisappointment,Attiwill_1980_Mt Disappointment,Attiwill_1980,branch_wood_smooth-branch_wood_barked_more_1.25_cm,,,,branch_wood_smooth-branch_wood_barked_more_1.25_cm,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.19,1.7,3.7,1.7,,,,,,,,,,,,,,,,,,
+Eucalyptus obliqua,Attiwill1980_MtDisappointment,Attiwill_1980_Mt Disappointment,Attiwill_1980,rough-barked,,,,rough-barked,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.15,1.12,2.05,0.74,,,,,,,,,,,,,,,,,,
+Eucalyptus obliqua,Attiwill1980_MtDisappointment,Attiwill_1980_Mt Disappointment,Attiwill_1980,sapwood,,,,sapwood,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.12,0.6,0.29,0.24,,,,,,,,,,,,,,,,,,
+Eucalyptus obliqua,Attiwill1980_MtDisappointment,Attiwill_1980_Mt Disappointment,Attiwill_1980,heartwood,,,,heartwood,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.016,0.075,0.085,0.055,,,,,,,,,,,,,,,,,,
+Acacia crassicarpa,Bell1985_Weipa,Bell_1985_Weipa,Bell_1985,,,,,,,,,,,,,,,,,,,,,,,,1.72,,0.05,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Acacia rothii,Bell1985_Weipa,Bell_1985_Weipa,Bell_1985,,,,,,,,,,,,,,,,,,,,,,,,1.82,,0.04,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Alstonia actinophylla,Bell1985_Weipa,Bell_1985_Weipa,Bell_1985,,,,,,,,,,,,,,,,,,,,,,,,1.78,,0.08,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Erythrophloeum chlorostachys,Bell1985_Weipa,Bell_1985_Weipa,Bell_1985,,,,,,,,,,,,,,,,,,,,,,,,1.95,,0.08,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus camadulensis,Bell1985_Weipa,Bell_1985_Weipa,Bell_1985,,,,,,,,,,,,,,,,,,,,,,,,1.11,,0.1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus tetrodonta,Bell1985_Weipa,Bell_1985_Weipa,Bell_1985,,,,,,,,,,,,,,,,,,,,,,,,0.9,,0.06,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Grevillea pteridifolia,Bell1985_Weipa,Bell_1985_Weipa,Bell_1985,,,,,,,,,,,,,,,,,,,,,,,,1.1,,0.05,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Melaleuca leucadendron,Bell1985_Weipa,Bell_1985_Weipa,Bell_1985,,,,,,,,,,,,,,,,,,,,,,,,0.78,,0.06,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Melaleuca viridiflora,Bell1985_Weipa,Bell_1985_Weipa,Bell_1985,,,,,,,,,,,,,,,,,,,,,,,,0.88,,0.05,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Banksia integrifolia,Bennett1996_Yanakie,Bennett_1996_Yanakie_Uc1.11,Bennett_1996,declining,,,declining,,,C3,n,tree,E,B,S,,,,20,,,,,,,,1.1,,0.04,,0.23,7.6,1.6,0.37,,77,67,5.7,1.9,,,,,,,,,,,,,,,,,,,,,,,,
+Banksia integrifolia,Bennett1996_Yanakie,Bennett_1996_Yanakie_Uc1.11,Bennett_1996,intermediate,,,intermediate,,,,,,,,,,,,,,,,,,,,1.2,,0.04,,0.28,8.6,1.9,0.41,,62,100,3.6,1,,,,,,,,,,,,,,,,,,,,,,,,
+Banksia integrifolia,Bennett1996_Yanakie,Bennett_1996_Yanakie_Uc1.23_pH7,Bennett_1997,declining,,,declining,,,,,,,,,,,,,,,,,,,,1,,0.04,,0.24,5.9,2.1,0.39,,67,551,4.7,1.8,,,,,,,,,,,,,,,,,,,,,,,,
+Banksia integrifolia,Bennett1996_Yanakie,Bennett_1996_Yanakie_Uc1.23_pH7,Bennett_1998,healthy,,,healthy,,,,,,,,,,,,,,,,,,,,0.9,,0.04,,0.28,13.5,2.2,0.28,,76,739,4.7,2,,,,,,,,,,,,,,,,,,,,,,,,
+Banksia integrifolia,Bennett1996_Yanakie,Bennett_1996_Yanakie_Uc1.23_pH6,Bennett_1999,declining,,,declining,,,,,,,,,,,,,,,,,,,,1.2,,0.04,,0.33,5.6,1.9,0.33,,63,652,4.9,1.9,,,,,,,,,,,,,,,,,,,,,,,,
+Banksia integrifolia,Bennett1996_Yanakie,Bennett_1996_Yanakie_Uc1.23_pH6,Bennett_2000,healthy,,,healthy,,,,,,,,,,,,,,,,,,,,1.1,,0.03,,0.3,8.4,1.9,0.44,,55,829,4.6,1.2,,,,,,,,,,,,,,,,,,,,,,,,
+Callitris glauca,BevegeandJohnston1978 _Millmerran,Bevege_1978_Millmerran,Bevege_1978,,,,,,,,,,,,,,,,,,,,,,,,1.05,,0.08,,0.39,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Casuarina leuhmanii,BevegeandJohnston1978 _Millmerran,Bevege_1978_Millmerran,Bevege_1978,,,,,,,,,,,,,,,,,,,,,,,,0.9,,0.07,,0.33,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus bancroftii,BevegeandJohnston1978 _Millmerran,Bevege_1978_Millmerran,Bevege_1978,,,,,,,,,,,,,,,,,,,,,,,,1.31,,0.06,,0.62,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus grandis,BirkandTurner1992_WeddingBells,Birk_1992_Wedding Bells,Birk_1992,branch_wood,,,,branch wood,,C3,n,tree,E,B,S,,,,,,,,,,,,1.56,,0.0835,,0.684,6,2.65,,,,,,,,5.5,0.43,4.9,6.68,,,2.4,0.165,4.12,19.1,1.807,,,,,,,,,,,,
+Eucalyptus grandis,BirkandTurner1992_WeddingBells,Birk_1992_Wedding Bells,Birk_1992,sapwood,,,,sapwood,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.3,0.009,1.81,0.65,,,,,,,,,,,,,,,,,,,
+Eucalyptus grandis,BirkandTurner1992_WeddingBells,Birk_1992_Wedding Bells,Birk_1992,heartwood,,,,heartwood,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,0.015,0.33,0.7,,,,,,,,,,,,,,,,,,,
+Eucalyptus globulus,Cromeretal1975_Morwell,Cromer_1975_Morwell,Cromer_1975,,,,,,,C3,n,tree,E,B,S,,,,,,,,,,,,1.4,,0.07,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus dives,Feller1980_MaroondahEO,Feller_1980_Maroondah_EO,Feller_1980,living_branches,,,,living branches,,C3,n,tree,E,B,S,,,,,,,,,,15-20,20,0.96,,0.06,,0.44,5.8,2.1,1.2,,,,,,,1.6,0.07,0.7,1.6,0.6,0.3,4.6,0.16,1.3,4.8,1.5,0.6,,,,,,1.6,0.05,0.2,1,0.2,0.1
+Eucalyptus dives,Feller1980_MaroondahEO,Feller_1980_Maroondah_EO,Feller_1980,stem_wood,,,,stem wood,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.5,0.03,0.3,0.3,0.1,0.2,,,,,,,,,,,,,,,,,
+Eucalyptus obliqua,Feller1980_MaroondahEO,Feller_1980_Maroondah_EO,Feller_1980,living_branches,,,,living branches,,C3,n,tree,E,B,S,,,,,,,,,,20-25,25,0.69,,0.053,,0.41,5.7,2.5,1.6,,,,,,,1.3,0.13,0.7,1.3,0.8,0.4,1.6,0.07,0.5,1.5,0.2,0.6,,,,,,1.6,0.08,0.3,1,0.9,0.4
+Eucalyptus obliqua,Feller1980_MaroondahEO,Feller_1980_Maroondah_EO,Feller_1980,stem_wood,,,,stem wood,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.8,0.02,0.1,0.3,0.1,0.1,,,,,,,,,,,,,,,,,
+Acacia dealbata,Feller1980_MaroondahER,Feller_1980_Maroondah_ER,Feller_1980,,,,,,,C3,y,tree,E,B,,,,,,,,,,,15-Oct,15,3.37,,0.17,,0.54,3.7,1.4,0.1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Acacia obliquinervia,Feller1980_MaroondahER,Feller_1980_Maroondah_ER,Feller_1980,,,,,,,C3,y,tree,E,B,,,,,,,,,,,15-Oct,15,2.08,,0.111,,0.53,2.3,1.7,0.5,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Acacia spp,Feller1980_MaroondahER,Feller_1980_Maroondah_ER,Feller_1980,branch_wood,,,,branch wood,,C3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2.3,0.11,0.7,0.7,0.3,0.1,6.2,0.21,2,7.3,1.1,0.2,,,,,,,,,,,
+Acacia spp,Feller1980_MaroondahER,Feller_1980_Maroondah_ER,Feller_1980,stem_wood,,,,stem wood,,C3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.6,0.16,0.4,0.4,0.2,0.2,,,,,,,,,,,,,,,,,
+Eucalyptus regnans,Feller1980_MaroondahER,Feller_1980_Maroondah_ER,Feller_1980,branch_wood,,,,branch wood,,C3,n,tree,E,B,S,,,,,,,,,,40-45,45,1.29,,0.105,,0.86,4.9,2.3,0.9,,,,,,,1.2,0.09,3.8,2.6,0.4,0.2,,,,,,,,,,,,,,,,,
+Eucalyptus regnans,Feller1980_MaroondahER,Feller_1980_Maroondah_ER,Feller_1980,stem_wood,,,,stem wood,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.2,0.02,1.8,0.3,0.2,0.1,1.3,0.16,3.6,6.3,1,0.6,,,,,,1.2,0.04,0.5,1.9,0.3,0.2
+Eucalyptus marginata,Hatch1955_Dwellingup,Hatch_1955_Dwellingup,Hatch_1955,,,,,,,C3,n,tree,E,B,S,,,,,,,,,,,,1.03,,0.09,,0.37,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus agglomerata,Hopmansetal1993_Maramingo,Hopmans_1993_Maramingo,Hopmans_1993,branch_wood&bark,,,,branch wood & bark,,C3,n,tree,E,B,S,,,,,,,,,,,,0.902,,0.043,,0.303,5.89,2.44,,0.91,47,490,6.1,2.4,24.2,0.71,0.03,0.33,0.34,0.13,,1.76,0.09,1.22,4.27,0.55,,,,,,,,,,,,
+Eucalyptus agglomerata,Hopmansetal1993_Maramingo,Hopmans_1993_Maramingo,Hopmans_1993,stem_wood&bark,,,,stem wood & bark,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.52,0.05,0.19,0.18,0.04,,1.21,0.06,0.29,1.5,0.12,,,,,,,,,,,,
+Eucalyptus muelleriana,Hopmansetal1993_Maramingo,Hopmans_1993_Maramingo,Hopmans_1993,branch_wood&bark,,,,branch wood & bark,,C3,n,tree,E,B,S,,,,,,,,,,,,1.052,,0.063,,0.345,5.73,2.86,,0.95,32,351,7.1,2.7,17.5,0.78,0.06,0.47,0.42,0.17,,2.56,0.22,2.55,8.81,1.38,,,,,,,,,,,,
+Eucalyptus muelleriana,Hopmansetal1993_Maramingo,Hopmans_1993_Maramingo,Hopmans_1993,stem_wood&bark,,,,stem wood & bark,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.8,0.04,0.14,0.15,0.03,,2.02,0.1,1.14,6.69,0.24,,,,,,,,,,,,
+Eucalyptus sieberi,Hopmansetal1993_Maramingo,Hopmans_1993_Maramingo,Hopmans_1993,branch_wood&bark,,,,branch wood & bark,,C3,n,tree,E,B,S,,,,,,,,,,,,0.964,,0.047,,0.342,4.09,2.06,,0.85,34,354,7.8,2.4,11.9,0.57,0.04,0.38,0.38,0.19,,1.73,0.16,1.72,5.84,1.18,,,,,,,,,,,,
+Eucalyptus sieberi,Hopmansetal1993_Maramingo,Hopmans_1993_Maramingo,Hopmans_1993,stem_wood&bark,,,,stem wood & bark,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.5,0.03,0.18,0.13,0.08,,1.22,0.07,0.66,1.77,0.23,,,,,,,,,,,,
+Eucalyptus dalrympleana,Lambert1979thesis_BagoSF,Lambert_1979_Bago State Forest,Lambert_1979,,,,,,,,,,,,,,,,,,,,,,,,1.26,,0.09,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus radiata,Lambert1979thesis_BagoSF,Lambert_1979_Bago State Forest,Lambert_1979,,,,,,,,,,,,,,,,,,,,,,,,1.59,,0.16,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus  dives,Lambert1979thesis_LidsdaleSF,Lambert_1979_Lidsdale State Forest,Lambert_1979,,,,,,,,,,,,,,,,,,,,,,,,1.25,,0.07,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus maculosa,Lambert1979thesis_LidsdaleSF,Lambert_1979_Lidsdale State Forest,Lambert_1979,,,,,,,,,,,,,,,,,,,,,,,,0.92,,0.06,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus rossi,Lambert1979thesis_LidsdaleSF,Lambert_1979_Lidsdale State Forest,Lambert_1979,,,,,,,,,,,,,,,,,,,,,,,,1.04,,0.05,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus rubida,Lambert1979thesis_LidsdaleSF,Lambert_1979_Lidsdale State Forest,Lambert_1979,,,,,,,,,,,,,,,,,,,,,,,,0.92,,0.06,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus grandis,Leuningetal1991_Toolara,Leuning_1991_Toolara,Leuning_1991,,,,,,,C3,n,tree,E,B,S,90,,,,,,,,,,,1.52,1.69,0.11,0.12,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus tereticornis,Marsh&Adams1995_Moormung,Marsh_1995_Moormung,Marsh_1995,reference_site,,,,,reference_site,,,,,,,,,,,,,,,,,,1.27,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus tereticornis,Marsh&Adams1995_Moormung,Marsh_1995_Moormung,Marsh_1995,roadside_adult_foliage,,adult foliage,,,roadside,,,,,,,,,,,,,,,,,,1.31,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus tereticornis,Marsh&Adams1995_Moormung,Marsh_1995_Moormung,Marsh_1995,roadside_epicormic_foliage,,epicormic foliage,,,roadside,,,,,,,,,,,,,,,,,,1.77,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus tereticornis,Marsh&Adams1995_Moormung,Marsh_1995_Moormung,Marsh_1995,pasture_adult_foliage,,adult foliage,,,pasture,,,,,,,,,,,,,,,,,,1.2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus tereticornis,Marsh&Adams1995_Moormung,Marsh_1995_Moormung,Marsh_1995,pasture_epicormic_foliage,,epicormic foliage,,,pasture,,,,,,,,,,,,,,,,,,1.46,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus tereticornis,Marsh&Adams1995_Moormung,Marsh_1995_Moormung,Marsh_1995,remnant_woodland_adult_foliage,,adult foliage,,,remnant woodland,,,,,,,,,,,,,,,,,,1.1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus tereticornis,Marsh&Adams1995_Moormung,Marsh_1995_Moormung,Marsh_1995,remnant_woodland_epicormic_foliage,,epicormic foliage,,,remnant woodland,,,,,,,,,,,,,,,,,,1.7,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Acacia dealbata,Meakinsunpub_Brindabella1,Meakins_0000_Brindabella_1,Meakins_0000,,,,,,,,,,,,,,,,,,,,,,,,2.4,,0.09,,0.12,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus fastigata,Meakinsunpub_Brindabella1,Meakins_0000_Brindabella_1,Meakins_0000,,,,,,,,,,,,,,,,,,,,,,,,1.5,,0.1,,0.13,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Pomaderris apetala,Meakinsunpub_Brindabella1,Meakins_0000_Brindabella_1,Meakins_0000,,,,,,,,,,,,,,,,,,,,,,,,2,,0.13,,0.1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Acacia melanoxylon,Meakinsunpub_Brindabella2,Meakins_0000_Brindabella_2,Meakins_0000,,,,,,,,,,,,,,,,,,,,,,,,2.8,,0.21,,0.89,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus delegatensis,Meakinsunpub_Brindabella2,Meakins_0000_Brindabella_2,Meakins_0000,,,,,,,,,,,,,,,,,,,,,,,,1.4,,0.1,,0.12,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Bedfordia salicina,Meakinsunpub_Brindabella3,Meakins_0000_Brindabella_3,Meakins_0000,,,,,,,,,,,,,,,,,,,,,,,,1.9,,0.19,,0.08,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus robertsonii,Meakinsunpub_Brindabella3,Meakins_0000_Brindabella_3,Meakins_0000,,,,,,,,,,,,,,,,,,,,,,,,1.4,,0.1,,0.12,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Acacia harpophylla,Mooreetal1967_Meandarra,Moore_1967_Meandarra,Moore_1967,,,,,,,,,,,,,,,,,,,,,,,,1.66,,0.062,,0.745,7.4,1.93,,0.16,,,14,9,,,,,,,,,,,,,,,,,,,,,,,,
+Geijera parviflora,Mooreetal1967_Meandarra,Moore_1967_Meandarra,Moore_1967,,,,,,,,,,,,,,,,,,,,,,,,1.64,,0.079,,1.346,8.5,1.62,,0.21,,,51,21,,,,,,,,,,,,,,,,,,,,,,,,
+Argyrodendron peralatum,Pearcy1987_CurtinFig,Pearcy_1987_Curtin_Fig,Pearcy_1987,canopy,canopy,,,,,C3,n,tree,E,B,C,,,245,,,9.4,170,,1108.014639,,,1.67,4.1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Argyrodendron peralatum,Pearcy1987_CurtinFig,Pearcy_1987_Curtin_Fig,Pearcy_1987,gap,gap,,,,,,,,,,,,,136,,,8.1,153,,716.292292,,,1.47,2,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Argyrodendron peralatum,Pearcy1987_CurtinFig,Pearcy_1987_Curtin_Fig,Pearcy_1987,understory,understory,,,,,,,,,,,,,114,,,5.7,108,,839.4050297,,,1.14,1.3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Araucaria cunninghamii,RichardsAustralia_Hooppineplantation25,Richards_2008_2_Hooppine_plantation_25,Richards_2008_2,,,,,,,C3,n,tree,E,N,S,,,,,,,,-30.92,,,,2.22,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Araucaria cunninghamii,RichardsAustralia_Hooppineplantation34,Richards_2008_2_Hooppine_plantation_34,Richards_2008_2,,,,,,,C3,n,tree,E,N,S,,,,,,,,-31.57,,,,2.29,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Araucaria cunninghamii,RichardsAustralia_Hooppineplantation50,Richards_2008_2_Hooppine_plantation_50,Richards_2008_2,,,,,,,C3,n,tree,E,N,S,,,,,,,,-30.33,,,,1.72,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Araucaria cunninghamii,RichardsAustralia_Hooppineplantation63,Richards_2008_2_Hooppine_plantation_63,Richards_2008_2,,,,,,,C3,n,tree,E,N,S,,,,,,,,-30.7,,,,1.68,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Grevillea robusta,RichardsAustralia_Maleny,Richards_2008_2_Maleny,Richards_2008_2,,,,,,,C3,n,tree,D,B,C,97.8,,,7.44,,12.91,73.3,-25.26,,,,2.04,2.09,0.08,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Castanospermum australe,RichardsAustralia_Maleny,Richards_2008_2_Maleny,Richards_2008_2,,,,,,,C3,,tree,E,B,C,123.1,,,12.12,,6.19,195.7,-27.37,,,,3,2.44,0.14,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Elaeocarpus angustifolius,RichardsAustralia_Maleny,Richards_2008_2_Maleny,Richards_2008_2,,,,,,,C3,n,tree,E,B,S,124.8,,,7.68,,12.09,228.6,-28.38,,,,2.56,2.05,0.21,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Gardenia actinocarpa,RichardsAustralia_NorthQueensland1,Richards_2008_2_North_Queensland_1,Richards_2008_2,,,,,,,C3,n,shrub,E,B,S,223,,,,,,,-33.33,,,,1.5,0.67,0.06,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Xanthostemon chrysanthus,RichardsAustralia_NorthQueensland1,Richards_2008_2_North_Queensland_1,Richards_2008_2,,,,,,,C3,n,tree,E,B,S,130,,,,,,,-32.89,,,,1.1,0.85,0.06,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Xanthostemon formosus,RichardsAustralia_NorthQueensland1,Richards_2008_2_North_Queensland_1,Richards_2008_2,,,,,,,C3,n,tree,E,B,S,159,,,,,,,-32.27,,,,1.1,0.69,0.05,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Archidendron kanisii,RichardsAustralia_NorthQueensland1,Richards_2008_2_North_Queensland_1,Richards_2008_2,,,,,,,C3,y,tree,E,B,S,181,,,,,,,-32.79,,,,2.2,1.22,0.06,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Archidendron whitei,RichardsAustralia_NorthQueensland2,Richards_2008_2_North_Queensland_2,Richards_2008_2,,,,,,,C3,,tree,E,B,S,230,,,,,,,-33.73,,,,2.8,1.22,0.08,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Gardenia ovularis,RichardsAustralia_NorthQueensland3,Richards_2008_2_North_Queensland_3,Richards_2008_2,,,,,,,C3,n,tree,E,B,S,168,,,,,,,-32.54,,,,1.5,0.89,0.07,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus grandis,TurnerandLambert1983_Conglomerate,Turner_1983_Conglomerate,Turner_1983,branch,,,,branch,,C3,n,tree,E,B,S,,,,,,,,,,,,1.47,,0.0895,,0.645,4.8,2.69,,,,,,,,3.2,0.29,3.2,2.2,1.97,,2.21,0.15,2.45,19.36,1.6,,,,,,,,,,,,
+Eucalyptus grandis,TurnerandLambert1983_Conglomerate,Turner_1983_Conglomerate,Turner_1983,sapwood,,,,sapwood,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.78,0.05,0.8,0.58,0.2,,,,,,,,,,,,,,,,,,
+Eucalyptus grandis,TurnerandLambert1983_Conglomerate,Turner_1983_Conglomerate,Turner_1983,heartwood,,,,heartwood,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.49,0.01,0.11,0.43,0.1,,,,,,,,,,,,,,,,,,
+Acacia aneura var. major,Schortemeyeretalunpub_NATT_Kunoth Paddock,Schortemeyer_0000_NATT_Kunoth Paddock,Schortemeyer_0000,,,,,,,,y,,,,,32.3,,,,80.8,,,,,,,1.75,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Acacia kempeana,Schortemeyeretalunpub_NATT_Kunoth Paddock,Schortemeyer_0000_NATT_Kunoth Paddock,Schortemeyer_0000,,,,,,,,y,,,,,39.3,,,,91,,,,,,,1.99,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Corymbia terminalis,Schortemeyeretalunpub_NATT_Kunoth Paddock,Schortemeyer_0000_NATT_Kunoth Paddock,Schortemeyer_0000,,,,,,,,n,,,,,36.2,,,,111,,,,,,,1.16,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Hakea suberea,Schortemeyeretalunpub_NATT_Kunoth Paddock,Schortemeyer_0000_NATT_Kunoth Paddock,Schortemeyer_0000,,,,,,,,n,,,,,20,,,,28.1,,,,,,,0.79,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Acacia lysiphloia,Schortemeyeretalunpub_NATT_Newcastle Waters,Schortemeyer_0000_NATT_Newcastle Waters,Schortemeyer_0000,,,,,,,,y,,,,,82.2,,,,152.1,,,,,,,2.04,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Acacia neurocarpa,Schortemeyeretalunpub_NATT_Newcastle Waters,Schortemeyer_0000_NATT_Newcastle Waters,Schortemeyer_0000,,,,,,,,y,,,,,64.3,,,,123.9,,,,,,,2.43,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Acacia shirleyi,Schortemeyeretalunpub_NATT_Newcastle Waters,Schortemeyer_0000_NATT_Newcastle Waters,Schortemeyer_0000,,,,,,,,y,,,,,57.3,,,,83.8,,,,,,,1.93,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Corymbia dichromophloia,Schortemeyeretalunpub_NATT_Newcastle Waters,Schortemeyer_0000_NATT_Newcastle Waters,Schortemeyer_0000,,,,,,,,n,,,,,51.6,,,,84,,,,,,,0.96,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus chlorophylla,Schortemeyeretalunpub_NATT_Newcastle Waters,Schortemeyer_0000_NATT_Newcastle Waters,Schortemeyer_0000,,,,,,,,n,,,,,41.7,,,,59.2,,,,,,,0.99,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Grevillea wickhamii ssp aprica,Schortemeyeretalunpub_NATT_Newcastle Waters,Schortemeyer_0000_NATT_Newcastle Waters,Schortemeyer_0000,,,,,,,,n,,,,,63.9,,,,92.7,,,,,,,1.58,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Acacia holosericea,Schortemeyeretalunpub_NATT_Katherine,Schortemeyer_0000_NATT_Katherine,Schortemeyer_0000,,,,,,,,y,,,,,75.9,,,,115.5,,,,,,,2.45,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Corymbia foelscheana,Schortemeyeretalunpub_NATT_Katherine,Schortemeyer_0000_NATT_Katherine,Schortemeyer_0000,,,,,,,,n,,,,,58.8,,,,74.5,,,,,,,1.16,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus patellaris,Schortemeyeretalunpub_NATT_Katherine,Schortemeyer_0000_NATT_Katherine,Schortemeyer_0000,,,,,,,,n,,,,,45.9,,,,51.2,,,,,,,0.9,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Grevillea dimidiata,Schortemeyeretalunpub_NATT_Katherine,Schortemeyer_0000_NATT_Katherine,Schortemeyer_0000,,,,,,,,n,,,,,51.8,,,,58.4,,,,,,,0.98,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Hakea arborescens,Schortemeyeretalunpub_NATT_Katherine,Schortemeyer_0000_NATT_Katherine,Schortemeyer_0000,,,,,,,,n,,,,,28,,,,49.4,,,,,,,0.76,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Acacia auriculiformis,Schortemeyeretalunpub_NATT_Berrimah,Schortemeyer_0000_NATT_Berrimah,Schortemeyer_0000,,,,,,,,y,,,,,134,,,,205.4,,,,,,,2.97,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Acacia holosericea,Schortemeyeretalunpub_NATT_Berrimah,Schortemeyer_0000_NATT_Berrimah,Schortemeyer_0000,,,,,,,,y,,,,,105.4,,,,193.9,,,,,,,3.09,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus miniata,Schortemeyeretalunpub_NATT_Berrimah,Schortemeyer_0000_NATT_Berrimah,Schortemeyer_0000,,,,,,,,n,,,,,73.6,,,,104.6,,,,,,,1.56,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Eucalyptus tetrodonta,Schortemeyeretalunpub_NATT_Berrimah,Schortemeyer_0000_NATT_Berrimah,Schortemeyer_0000,,,,,,,,n,,,,,56.5,,,,64.9,,,,,,,1.06,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Grevillea pteridifolia,Schortemeyeretalunpub_NATT_Berrimah,Schortemeyer_0000_NATT_Berrimah,Schortemeyer_0000,,,,,,,,n,,,,,51,,,,58.8,,,,,,,1.04,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Persoonia falcata,Schortemeyeretalunpub_NATT_Berrimah,Schortemeyer_0000_NATT_Berrimah,Schortemeyer_0000,,,,,,,,n,,,,,68.5,,,,71.7,,,,,,,1.26,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
