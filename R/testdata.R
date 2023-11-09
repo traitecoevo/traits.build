@@ -522,6 +522,39 @@ dataset_test_worker <-
               info = paste0(red(f), "\tlocation '", v, "'")
             )
           }
+
+          # Check `location_name`'s from metadata are in dataset and vice versa
+          expect_true(
+            !is.null(metadata[["dataset"]][["location_name"]]),
+            info = paste0(red(files[2]), "\tdataset - `location_name` is missing")
+          )
+
+          expect_contains(
+            names(data),
+            metadata[["dataset"]][["location_name"]],
+            info = paste0(
+              red(files[2]),
+              "\tdataset - `location_name` column not found in data")
+          )
+
+          v <- data[[metadata[["dataset"]][["location_name"]]]] %>% unique %>% na.omit
+          i <- v %in% names(metadata$locations)
+          expect_true(
+            all(i),
+            info = paste0(
+              red(f),
+              "\tlocations - location names from data file not present in metadata: ",
+              v[!i])
+          )
+
+          i <- names(metadata$locations) %in% v
+          expect_true(
+            all(i),
+            info = paste0(
+              red(f),
+              "\tlocations - location names from metadata not present in data file: ",
+              names(metadata$locations)[!i])
+          )
         }
 
         ## Contexts
@@ -947,44 +980,9 @@ dataset_test_worker <-
 
         ## For numeric trait data, check it looks reasonable & converts properly
 
-        ## Check `location_name`'s are in locations dataset
-        # Maybe move this to location section? #TODO
-        if (length(unlist(metadata[["locations"]])) > 1) {
 
-          expect_true(
-            !is.null(metadata[["dataset"]][["location_name"]]),
-            info = paste0(red(files[2]), "\tdataset - `location_name` is missing")
-          )
 
-          expect_contains(
-            names(data),
-            metadata[["dataset"]][["location_name"]],
-            info = paste0(
-              red(files[2]),
-              "\tdataset - `location_name` column not found in data")
-          )
-
-          v <- data[[metadata[["dataset"]][["location_name"]]]] %>% unique %>% na.omit
-          i <- v %in% names(metadata$locations)
-          expect_true(
-            all(i),
-            info = paste0(
-              red(f),
-              "\tlocations - location names from data file not present in metadata: ",
-              v[!i])
-          )
-
-          i <- names(metadata$locations) %in% v
-          expect_true(
-            all(i),
-            info = paste0(
-              red(f),
-              "\tlocations - location names from metadata not present in data file: ",
-              names(metadata$locations)[!i])
-          )
-
-        }
-
+        ## Check traits are not only NAs
         expect_false(
           nrow(metadata[["traits"]] %>% util_list_to_df2() %>% dplyr::filter(!is.na(.data$trait_name))) == 0,
           info = paste0(red(f), "\ttraits - only contain NA `trait_name`'s"))
