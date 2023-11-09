@@ -119,8 +119,8 @@ austraits:
         source_original_dataset_key: Citation key for the original dataset_id in sources; for compilations.  The key is typically formatted as `Surname_year`.
         source_original_dataset_citation: Citations for the original dataset_id in sources; for compilationse. This detail is generated from the original source in the metadata.
         data_collectors: &data_collectors The person (people) leading data collection for this study.
-        assistants: &assistants Names of additional people who played a more minor role in data collection for the study.
-        dataset_curators: &dataset_curators Names of AusTraits team member(s) who contacted the data collectors and added the study to the AusTraits repository.
+        assistants: &assistants Names of people who played a more minor role in data collection for the study.
+        dataset_curators: &dataset_curators Names of database team member(s) who contacted the data collectors and added the study to the database repository.
     excluded_data:
       description: A table of data that did not pass quality tests and so were excluded from the master dataset. The structure is identical to that presented in the `traits` table, only with an extra column called `error` indicating why the record was excluded. Common reasons are missing_unit_conversions, missing_value, and unsupported_trait_value.
       type: table
@@ -160,10 +160,6 @@ austraits:
         original_name: *original_name
         aligned_name: The taxon name without authorship after implementing automated syntax standardisation and spelling changes as well as manually encoded syntax alignments for this taxon in the metadata file for the corresponding `dataset_id`. This name has not yet been matched to the currently accepted (botanical) or valid (zoological) taxon name in cases where there are taxonomic synonyms, isonyms, orthographic variants, etc.
         taxonomic_resolution: &taxonomic_resolution The rank of the most specific taxon name (or scientific name) to which a submitted orignal name resolves.
-        aligned_scientific_name_id: An identifier for the aligned name before it is updated to the currently accepted name usage. This may be a global unique identifier or an identifier specific to the data set. Must be resolvable within this dataset.
-        aligned_name_taxonomic_status: The status of the use of the `aligned_name` as a label for a taxon. Requires taxonomic opinion to define the scope of a taxon. Rules of priority then are used to define the taxonomic status of the nomenclature contained in that scope, combined with the experts opinion. It must be linked to a specific taxonomic reference that defines the concept.
-        aligned_name_alternative_taxonomic_status: The taxonomic status of alternative taxonomic records with `aligned_name` as the accepted (botanical) or valid (zoological) taxon name.
-        taxon_id: &taxon_id An identifier for the set of taxon information (data associated with the taxon class). May be a global unique identifier or an identifier specific to the data set. Must be resolvable within this dataset.
         taxon_name: *taxon_name
     taxa:
       description: A table containing details on taxa associated with information in `traits`. Whenever possible, this information is sourced from curated taxon lists that include identifiers for each taxon. The information compiled in this table is released under a CC-BY3 license. Cross referencing between the two dataframes is possible using combinations of the variable `taxon_name`.
@@ -180,7 +176,6 @@ austraits:
         establishment_means: Statement about whether an organism or organisms have been introduced to a given place and time through the direct or indirect activity of modern humans.
         taxonomic_status: The status of the use of the scientificName as a label for the taxon in regard to the 'accepted (or valid) taxonomy'. The assigned taxonomic status must be linked to a specific taxonomic reference that defines the concept.
         scientific_name: The full scientific name, with authorship and date information if known.
-        scientific_name_authorship: The authorship information for the scientific name formatted according to the conventions of the applicable.
         taxon_id: *taxon_id
         scientific_name_id: An identifier for the set of taxon information (data associated with the taxon class). May be a global unique identifier or an identifier specific to the data set. Must be resolvable within this dataset.
     contributors:
