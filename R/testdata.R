@@ -268,6 +268,13 @@ dataset_test_worker <-
       invisible(NULL)
     }
 
+    expect_list_elements_exact_names <- function(object, expected, info) {
+      for (i in seq_along(object))
+        expect_contains(names(object[[i]]), expected, info = paste(info, i))
+        expect_allowed(names(object[[i]]), expected, info = paste(info, i), label = "field names")
+      invisible(object)
+    }
+
     expect_dataframe_valid <- function(data, info, label) {
       expect_not_NA(colnames(data), info, label)
       expect_allowed_text(colnames(data), info = info, label = label)
