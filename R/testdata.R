@@ -97,9 +97,9 @@ dataset_test_worker <-
       expect(
         comp$equal,
         sprintf(
-          "%s - %s include(s) invalid terms: %s",
+          "%s - %s include(s) invalid terms: '%s'",
           info, label,
-          paste(object[!i], collapse = ", ")
+          paste(object[!i], collapse = "', '")
         ))
 
       invisible(object)
@@ -167,7 +167,7 @@ dataset_test_worker <-
       x <- table(unlist(object))
       i <- x == 1
       comp <- compare(all(i), TRUE)
-      expect(comp$equal, sprintf("%s - %s not unique: %s", info, label, paste(names(x)[!i], collapse = ", ")))
+      expect(comp$equal, sprintf("%s - %s not unique: '%s'", info, label, paste(names(x)[!i], collapse = "', '")))
       invisible(object)
     }
 
@@ -498,15 +498,17 @@ dataset_test_worker <-
         )
 
         ## Locations
-        if (length(unlist(metadata[["locations"]])) > 1) {
-          expect_list(metadata[["locations"]], info = paste0(red(f), "\tlocations"))
 
-          expect_silent(
-            locations <-
-              metadata$locations %>%
-              process_format_locations(dataset_id, schema) %>%
-              process_add_all_columns(names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]))
+        expect_silent(
+          locations <-
+            metadata$locations %>%
+            process_format_locations(dataset_id, schema) %>%
+            process_add_all_columns(names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]))
           )
+
+        if (length(unlist(metadata[["locations"]])) > 1) {
+
+          expect_list(metadata[["locations"]], info = paste0(red(f), "\tlocations"))
 
           expect_dataframe_names_contain(
             locations,
@@ -709,17 +711,17 @@ dataset_test_worker <-
             # since `process_format_contexts` replaces NA `find` with `value`
             # Look for context values in `find` column
             i <- v %in% contextsub[["find"]]
-
+            # What if v is more than one element long? Will class(v) still be "hms"? #TODO
             expect_true(
               all(i),
               info = ifelse(
                 "hms" %in% class(v),
                 sprintf(
-                  "%s\tcontexts - context values of '%s' from data file not present in metadata contexts: %s\n\n'%s' has been detected as a time data type and reformatted\n\t-> Please make sure context metadata matches reformatting",
-                  red(f), j, v[!i], j),
+                  "%s\tcontexts - context values of '%s' from data file not present in metadata contexts: '%s'\n\n'%s' has been detected as a time data type and reformatted\n\t-> Please make sure context metadata matches reformatting",
+                  red(f), j, paste(v[!i], collapse = "', '"), j),
                 sprintf(
-                  "%s\tcontexts - context values of '%s' from data file not present in metadata: %s",
-                  red(f), j, v[!i]))
+                  "%s\tcontexts - context values of '%s' from data file not present in metadata: '%s'",
+                  red(f), j, paste(v[!i], collapse = "', '")))
             )
 
             i <- contextsub[["find"]] %in% v
@@ -729,11 +731,11 @@ dataset_test_worker <-
               info = ifelse(
                 !is.null(data[[j]]),
                 sprintf(
-                  "%s\tcontexts - values of '%s' in metadata not detected in context values from data file: %s",
-                  red(f), j, contextsub[["find"]][!i]),
+                  "%s\tcontexts - values of '%s' in metadata not detected in context values from data file: '%s'",
+                  red(f), j, paste(contextsub[["find"]][!i], collapse = "', '")),
                 sprintf(
-                  "%s\tcontexts - values of '%s' in metadata not detected in context values from traits metadata: %s",
-                  red(f), j, contextsub[["find"]][!i])
+                  "%s\tcontexts - values of '%s' in metadata not detected in context values from traits metadata: '%s'",
+                  red(f), j, paste(contextsub[["find"]][!i], collapse = "', '"))
               )
             )
           }
@@ -846,7 +848,7 @@ dataset_test_worker <-
                 info = sprintf(
                   "%s\tsubstitutions - `%s` has invalid replacement values",
                   red(f), trait),
-                label = failing %>% paste(collapse = ", ")
+                label = failing %>% paste(collapse = "', '")
               )
             }
           }
