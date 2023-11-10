@@ -67,6 +67,7 @@ dataset:
   taxon_name: name_original
   location_name: .na
   source_id: AusTraits_key
+  individual_id: individual_id
   description: Collection of trait data on Australian plants compiled by Anna Richards
     and Ian Wright from papers
   basis_of_record: field
@@ -83,7 +84,7 @@ traits:
 - var_in: SLA (cm2/g)
   unit_in: SLA_units
   trait_name: leaf_mass_per_area
-  entity_type: population
+  entity_type: individual
   value_type: mean
   basis_of_value: measurement
   replicates: unknown
@@ -91,7 +92,7 @@ traits:
 - var_in: leaf longevity
   unit_in: lifespan_units
   trait_name: leaf_lifespan
-  entity_type: population
+  entity_type: individual
   value_type: bin
   basis_of_value: measurement
   replicates: unknown

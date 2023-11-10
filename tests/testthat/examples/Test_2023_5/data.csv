@@ -1,31 +1,34 @@
-name_original,AusTraits_key,SLA (cm2/g),SLA_units,leaf longevity,lifespan_units
-Eucalyptus grandis,Leuning_1991,90,cm2/g,5--15,mo
-Grevillea robusta,Bell_1985,97.8,cm2/g,152--364.8,d
-Castanospermum australe,Bell_1985,123.1,cm2/g,,
-Elaeocarpus angustifolius,Bell_1985,124.8,cm2/g,,
-Gardenia actinocarpa,Bevege_1978,223,cm2/g,,
-Xanthostemon chrysanthus,Bevege_1978,130,cm2/g,,
-Xanthostemon formosus,Bevege_1978,159,cm2/g,,
-Archidendron kanisii,Bevege_1978,181,cm2/g,,
-Archidendron whitei,Bevege_1978,230,cm2/g,60--300,d
-Gardenia ovularis,Lambert_1979,168,cm2/g,,
-Acacia aneura var. major,Lambert_1979,32.3,cm2/g,,
-Acacia kempeana,Lambert_1979,39.3,cm2/g,,
-Corymbia terminalis,Lambert_1979,36.2,cm2/g,,
-Hakea suberea,Lambert_1979,20,cm2/g,,
-Acacia lysiphloia,Lambert_1979,82.2,cm2/g,,
-Acacia neurocarpa,Lambert_1979,64.3,cm2/g,,
-Acacia shirleyi,Lambert_1979,57.3,cm2/g,,
-Corymbia dichromophloia,Meakins_0000,51.6,cm2/g,,
-Eucalyptus chlorophylla,Meakins_0000,41.7,cm2/g,,
-Grevillea wickhamii ssp aprica,Meakins_0000,63.9,cm2/g,,
-Acacia holosericea,Meakins_0000,75.9,cm2/g,,
-Corymbia foelscheana,Meakins_0000,58.8,cm2/g,,
-Eucalyptus patellaris,Meakins_0000,45.9,cm2/g,,
-Grevillea dimidiata,Meakins_0000,51.8,cm2/g,,
-Hakea arborescens,Meakins_0000,28,cm2/g,,
-Acacia auriculiformis,Meakins_0000,134,cm2/g,,
-Eucalyptus miniata,Meakins_0000,73.6,cm2/g,,
-Eucalyptus tetrodonta,Meakins_0000,56.5,cm2/g,,
-Grevillea pteridifolia,Meakins_0000,51,cm2/g,,
-Persoonia falcata,Meakins_0000,68.5,cm2/g,,
+name_original,AusTraits_key,SLA (cm2/g),SLA_units,leaf longevity,lifespan_units,individual_id
+Eucalyptus grandis,Leuning_1991,90,cm2/g,5--15,mo,1
+Grevillea robusta,Bell_1985,97.8,cm2/g,152--364.8,d,1
+Castanospermum australe,Bell_1985,123.1,cm2/g,,,1
+Elaeocarpus angustifolius,Bell_1985,124.8,cm2/g,,,1
+Gardenia actinocarpa,Bevege_1978,223,cm2/g,,,1
+Xanthostemon chrysanthus,Bevege_1978,130,cm2/g,,,1
+Xanthostemon formosus,Bevege_1978,159,cm2/g,,,1
+Archidendron kanisii,Bevege_1978,181,cm2/g,,,1
+Archidendron whitei,Bevege_1978,230,cm2/g,60--300,d,1
+Gardenia ovularis,Lambert_1979,168,cm2/g,,,1
+Acacia aneura var. major,Lambert_1979,32.3,cm2/g,,,1
+Acacia kempeana,Lambert_1979,39.3,cm2/g,,,1
+Corymbia terminalis,Lambert_1979,36.2,cm2/g,,,1
+Hakea suberea,Lambert_1979,20,cm2/g,,,1
+Acacia lysiphloia,Lambert_1979,82.2,cm2/g,,,1
+Acacia neurocarpa,Lambert_1979,64.3,cm2/g,,,1
+Acacia shirleyi,Lambert_1979,57.3,cm2/g,,,1
+Corymbia dichromophloia,Meakins_0000,51.6,cm2/g,,,1
+Eucalyptus chlorophylla,Meakins_0000,41.7,cm2/g,,,1
+Grevillea wickhamii ssp aprica,Meakins_0000,63.9,cm2/g,,,1
+Acacia holosericea,Meakins_0000,105.4,cm2/g,,,1
+Acacia holosericea,Meakins_0000,75.9,cm2/g,,,2
+Corymbia foelscheana,Meakins_0000,58.8,cm2/g,,,1
+Corymbia foelscheana,Meakins_0000,62,cm2/g,,,2
+Corymbia foelscheana,Meakins_0000,55.7,cm2/g,,,3
+Eucalyptus patellaris,Meakins_0000,45.9,cm2/g,,,1
+Grevillea dimidiata,Meakins_0000,51.8,cm2/g,,,1
+Hakea arborescens,Meakins_0000,28,cm2/g,,,1
+Acacia auriculiformis,Meakins_0000,134,cm2/g,,,1
+Eucalyptus miniata,Meakins_0000,73.6,cm2/g,,,1
+Eucalyptus tetrodonta,Meakins_0000,56.5,cm2/g,,,1
+Grevillea pteridifolia,Meakins_0000,51,cm2/g,,,1
+Persoonia falcata,Meakins_0000,68.5,cm2/g,,,1

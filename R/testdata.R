@@ -712,7 +712,7 @@ dataset_test_worker <-
             # since `process_format_contexts` replaces NA `find` with `value`
             # Look for context values in `find` column
             i <- v %in% contextsub[["find"]]
-            # What if v is more than one element long? Will class(v) still be "hms"? #TODO
+
             expect_true(
               all(i),
               info = ifelse(
