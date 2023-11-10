@@ -1,0 +1,34 @@
+dataset_id,taxon_name,observation_id,trait_name,value,unit,entity_type,value_type,basis_of_value,replicates,basis_of_record,life_stage,population_id,individual_id,repeat_measurements_id,temporal_context_id,source_id,location_id,entity_context_id,plot_context_id,treatment_context_id,collection_date,measurement_remarks,method_id,method_context_id,original_name
+Test_2023_5,Acacia aneura var. major,01,leaf_mass_per_area,309.597523219814,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Lambert_1979,,,,,unknown/2009,context,01,,Acacia aneura var. major
+Test_2023_5,Acacia auriculiformis,02,leaf_mass_per_area,74.6268656716418,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Meakins_0000,,,,,unknown/2009,context,01,,Acacia auriculiformis
+Test_2023_5,Acacia holosericea,03,leaf_mass_per_area,131.752305665349,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Meakins_0000,,,,,unknown/2009,context,01,,Acacia holosericea
+Test_2023_5,Acacia kempeana,04,leaf_mass_per_area,254.452926208651,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Lambert_1979,,,,,unknown/2009,context,01,,Acacia kempeana
+Test_2023_5,Acacia lysiphloia,05,leaf_mass_per_area,121.654501216545,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Lambert_1979,,,,,unknown/2009,context,01,,Acacia lysiphloia
+Test_2023_5,Acacia neurocarpa,06,leaf_mass_per_area,155.52099533437,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Lambert_1979,,,,,unknown/2009,context,01,,Acacia neurocarpa
+Test_2023_5,Acacia shirleyi,07,leaf_mass_per_area,174.520069808028,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Lambert_1979,,,,,unknown/2009,context,01,,Acacia shirleyi
+Test_2023_5,Archidendron kanisii,08,leaf_mass_per_area,55.2486187845304,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Bevege_1978,,,,,unknown/2009,context,01,,Archidendron kanisii
+Test_2023_5,Archidendron whitei,09,leaf_lifespan,1.97260057797197--9.86300288985985,mo,population,bin,measurement,unknown,field,adult,pop_unk,,,,Bevege_1978,,,,,unknown/2009,context,01,,Archidendron whitei
+Test_2023_5,Archidendron whitei,09,leaf_mass_per_area,43.4782608695652,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Bevege_1978,,,,,unknown/2009,context,01,,Archidendron whitei
+Test_2023_5,Castanospermum australe,10,leaf_mass_per_area,81.2347684809098,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Bell_1985,,,,,unknown/2009,context,01,,Castanospermum australe
+Test_2023_5,Corymbia dichromophloia,11,leaf_mass_per_area,193.798449612403,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Meakins_0000,,,,,unknown/2009,context,01,,Corymbia dichromophloia
+Test_2023_5,Corymbia foelscheana,12,leaf_mass_per_area,170.068027210884,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Meakins_0000,,,,,unknown/2009,context,01,,Corymbia foelscheana
+Test_2023_5,Corymbia terminalis,13,leaf_mass_per_area,276.243093922652,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Lambert_1979,,,,,unknown/2009,context,01,,Corymbia terminalis
+Test_2023_5,Elaeocarpus angustifolius,14,leaf_mass_per_area,80.1282051282051,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Bell_1985,,,,,unknown/2009,context,01,,Elaeocarpus angustifolius
+Test_2023_5,Eucalyptus chlorophylla,15,leaf_mass_per_area,239.808153477218,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Meakins_0000,,,,,unknown/2009,context,01,,Eucalyptus chlorophylla
+Test_2023_5,Eucalyptus grandis,16,leaf_lifespan,5--15,mo,population,bin,measurement,unknown,field,adult,pop_unk,,,,Leuning_1991,,,,,unknown/2009,context,01,,Eucalyptus grandis
+Test_2023_5,Eucalyptus grandis,16,leaf_mass_per_area,111.111111111111,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Leuning_1991,,,,,unknown/2009,context,01,,Eucalyptus grandis
+Test_2023_5,Eucalyptus miniata,17,leaf_mass_per_area,135.869565217391,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Meakins_0000,,,,,unknown/2009,context,01,,Eucalyptus miniata
+Test_2023_5,Eucalyptus patellaris,18,leaf_mass_per_area,217.864923747277,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Meakins_0000,,,,,unknown/2009,context,01,,Eucalyptus patellaris
+Test_2023_5,Eucalyptus tetrodonta,19,leaf_mass_per_area,176.991150442478,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Meakins_0000,,,,,unknown/2009,context,01,,Eucalyptus tetrodonta
+Test_2023_5,Gardenia actinocarpa,20,leaf_mass_per_area,44.8430493273543,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Bevege_1978,,,,,unknown/2009,context,01,,Gardenia actinocarpa
+Test_2023_5,Gardenia ovularis,21,leaf_mass_per_area,59.5238095238095,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Lambert_1979,,,,,unknown/2009,context,01,,Gardenia ovularis
+Test_2023_5,Grevillea dimidiata,22,leaf_mass_per_area,193.050193050193,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Meakins_0000,,,,,unknown/2009,context,01,,Grevillea dimidiata
+Test_2023_5,Grevillea pteridifolia,23,leaf_mass_per_area,196.078431372549,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Meakins_0000,,,,,unknown/2009,context,01,,Grevillea pteridifolia
+Test_2023_5,Grevillea robusta,24,leaf_lifespan,4.99725479752899--11.9934115140696,mo,population,bin,measurement,unknown,field,adult,pop_unk,,,,Bell_1985,,,,,unknown/2009,context,01,,Grevillea robusta
+Test_2023_5,Grevillea robusta,24,leaf_mass_per_area,102.249488752556,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Bell_1985,,,,,unknown/2009,context,01,,Grevillea robusta
+Test_2023_5,Grevillea wickhamii ssp aprica,25,leaf_mass_per_area,156.494522691706,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Meakins_0000,,,,,unknown/2009,context,01,,Grevillea wickhamii ssp aprica
+Test_2023_5,Hakea arborescens,26,leaf_mass_per_area,357.142857142857,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Meakins_0000,,,,,unknown/2009,context,01,,Hakea arborescens
+Test_2023_5,Hakea lorea subsp. lorea,27,leaf_mass_per_area,500,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Lambert_1979,,,,,unknown/2009,context,01,,Hakea suberea
+Test_2023_5,Persoonia falcata,28,leaf_mass_per_area,145.985401459854,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Meakins_0000,,,,,unknown/2009,context,01,,Persoonia falcata
+Test_2023_5,Xanthostemon chrysanthus,29,leaf_mass_per_area,76.9230769230769,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Bevege_1978,,,,,unknown/2009,context,01,,Xanthostemon chrysanthus
+Test_2023_5,Xanthostemon formosus,30,leaf_mass_per_area,62.8930817610063,g/m2,population,mean,measurement,unknown,field,adult,pop_unk,,,,Bevege_1978,,,,,unknown/2009,context,01,,Xanthostemon formosus

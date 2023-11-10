@@ -65,7 +65,6 @@ dataset:
   custom_R_code: .na
   collection_date: unknown/2009
   taxon_name: name_original
-  measurement_remarks: context
   location_name: .na
   source_id: AusTraits_key
   description: Collection of trait data on Australian plants compiled by Anna Richards

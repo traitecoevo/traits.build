@@ -7,6 +7,7 @@ This dataset is for testing:
 - No locations or contexts
 - Units read in from a column (check unit conversions are working)
 - Bins and ranges have units that are converted correctly
+- Taxonomic updates #TODO
 
 Test_2023_5 is a copy of Richards_2008 with the following modifications:
 - Added all `bibtype` options to the dataset via secondary/original sources
