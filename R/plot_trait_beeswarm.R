@@ -1,5 +1,5 @@
-#' @title Beeswarm Trait distribution 
-#' @description Plots distribution of trait values by a  grouping variable using ggbeeswarm package  
+#' @title Beeswarm Trait distribution
+#' @description Plots distribution of trait values by a  grouping variable using ggbeeswarm package
 #'
 #' @param austraits austraits data object
 #' @param trait_name Name of trait to plot
@@ -9,7 +9,7 @@
 #'
 #' @export
 #'
-#' @examples 
+#' @examples
 #' \dontrun{
 #' austraits %>% plot_trait_distribution_beeswarm("wood_density", "dataset_id", "Westoby_2014")
 #' }
@@ -18,35 +18,35 @@
 
 #
 plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_category, highlight=NA, hide_ids = FALSE) {
-  
+
   # Subset data to this trait
-  austraits_trait <- 
-    austraits$traits %>% filter(trait_name == trait_name) %>% 
+  austraits_trait <-
+    austraits$traits %>% filter(trait_name == trait_name) %>%
     mutate(value = as.numeric(value))
-  
+
   my_shapes = c("_min" = 60, "_mean" = 16, "_max" =62, "unknown" = 18)
-  
+
   as_shape <- function(value_type) {
     p <- rep("unknown", length(value_type))
-    
+
     p[grepl("mean", value_type)] <- "_mean" #16
     p[grepl("min", value_type)] <- "_min" #60
     p[grepl("max", value_type)] <- "_max" #62
     factor(p, levels=names(my_shapes))
   }
-  
+
   tax_info <- austraits$taxa
-  
-  data <- 
+
+  data <-
     austraits_trait %>%
     dplyr::mutate(shapes = as_shape(value_type)) %>%
     dplyr::left_join(by = "taxon_name", tax_info)
-  
+
   # Define grouping variables and derivatives
   if(!y_axis_category %in% names(data)){
     stop("Incorrect grouping variable! Currently implemented for `family` or `dataset_id`")
   }
-  
+
   # define grouping variable, ordered by group-level by mean values
   # use log_value where possible
   if(min(data$value, na.rm=TRUE) > 0 ) {
@@ -55,27 +55,27 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
     data$value2 <- data$value
   }
   data$Group = forcats::fct_reorder(data[[y_axis_category]], data$value2, na.rm=TRUE)
-  
+
   n_group <- levels(data$Group) %>% length()
-  
+
   # set colour to be alternating
   data$colour = ifelse(data$Group %in% levels(data$Group)[seq(1, n_group, by=2)],
                        "a", "b")
-  
+
   # set colour of group to highlight
   if(!is.na(highlight) & highlight %in% data$Group) {
     data <- dplyr::mutate(data, colour = ifelse(Group %in% highlight, "c", colour))
   }
-  
+
   vals <- list(minimum = purrr::pluck(austraits, "definitions", trait_name, "allowed_values_min"),
            maximum = purrr::pluck(austraits, "definitions", trait_name, "allowed_values_max"))
-  
+
   range <- (vals$maximum/vals$minimum)
-  
+
   # Check range on y-axis
   y.text <- ifelse(n_group > 20, 0.75, 1)
   heights = c(1, max(1, n_group/7))
-  
+
   # Top plot - plain histogram of data
   p1 <-
     ggplot2::ggplot(data, ggplot2::aes(x=value)) +
@@ -107,11 +107,11 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
     ) #+
    # guides(colour=FALSE)
 
-  
+
   if(hide_ids) {
     p2 <- p2 + ggplot2::theme(axis.text.y = ggplot2::element_blank())
   }
-  
+
   #Sourced from https://gist.github.com/bbolker/5ba6a37d64b06a176e320b2b696b6733
   scientific_10 <- function(x,suppress_ones=TRUE) {
     s <- scales::scientific_format()(x)
@@ -123,7 +123,7 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
     if (suppress_ones) s2 <- gsub("1 %\\*% +","",s2)
     parse(text=s2)
   }
-  
+
   # Define scale on x-axis and transform to log if required
   if(vals$minimum !=0 & range > 20) {
     #log transformation
@@ -141,12 +141,12 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
     p1 <- p1 + ggplot2::scale_x_continuous(limits=c(vals$minimum, vals$maximum))
     p2 <- p2 + ggplot2::scale_x_continuous(limits=c(vals$minimum, vals$maximum)) +
       ggplot2::xlab(paste(trait_name, ' (', data$unit[1], ')'))
-    
+
   }
-  
+
   # combine plots
   # Might be a better way to do this with other packages?
-  
+
   f <- function(x) {suppressWarnings(ggplot2::ggplot_gtable(ggplot2::ggplot_build(x)))}
   p1 <- f(p1)
   p2 <- f(p2)

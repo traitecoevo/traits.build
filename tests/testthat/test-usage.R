@@ -6,5 +6,4 @@ austraits <- readRDS("test_austraits.rds")
 
 test_that("plots", {
   expect_invisible(austraits %>% plot_trait_distribution_beeswarm("wood_density", "dataset_id", "Test_2022"))
-}) 
-
+})
