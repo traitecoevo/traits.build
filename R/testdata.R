@@ -517,12 +517,19 @@ dataset_test_worker <-
           )
 
           for (v in names(metadata$locations)) {
+
             expect_list(metadata[["locations"]][[v]], info = paste0(red(f), "\tlocation ", v))
-            expect_contains(
-              names(metadata[["locations"]][[v]]),
-              c("latitude (deg)", "longitude (deg)"),
-              info = paste0(red(f), "\tlocation '", v, "'")
-            )
+
+            # If fields do not contain both 'latitude range (deg)' and 'longitude range (deg)'
+            if (!(all(c("latitude range (deg)", "longitude range (deg)") %in% names(metadata[["locations"]][[v]])))) {
+
+              # Check that it contains 'latitude (deg)' and 'longitude (deg)'
+              expect_contains(
+                names(metadata[["locations"]][[v]]),
+                c("latitude (deg)", "longitude (deg)"),
+                info = paste0(red(f), "\tlocation '", v, "'")
+              )
+            }
           }
 
           # Check `location_name`'s from metadata are in dataset and vice versa
