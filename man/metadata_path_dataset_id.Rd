@@ -4,10 +4,12 @@
 \alias{metadata_path_dataset_id}
 \title{Path to the `metadata.yml` file for specified `dataset_id`}
 \usage{
-metadata_path_dataset_id(dataset_id)
+metadata_path_dataset_id(dataset_id, path_data = "data")
 }
 \arguments{
 \item{dataset_id}{Identifier for a particular study in the database}
+
+\item{path_data}{Path to folder with data}
 }
 \value{
 A string
