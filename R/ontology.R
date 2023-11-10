@@ -1,24 +1,49 @@
 library(dplyr)
+library(rdflib)
+
 ontology_csv <- readr::read_csv("traits_build_ontology.csv")
 published_classes_csv <- readr::read_csv("traits_build_ontology_published_classes.csv")
 
 convert_to_triples <- function(ontology_csv, published_classes_csv) {
 
-published_classes_csv <- 
-    published_classes_csv %>%
-    dplyr::mutate(identifier2 = paste0(prefix,":",identifier))
-
-vocabularies <- 
-    published_classes_csv %>%
-    dplyr::select(dplyr::all_of(c("vocabulary", "prefix", "skos:inScheme"))) %>%
-    dplyr::distinct(vocabulary, .keep_all = TRUE)
+  published_classes_csv <- 
+      published_classes_csv %>%
+      dplyr::mutate(identifier2 = paste0(prefix,":",identifier))
   
-  # map in:
+  vocabularies <- 
+      published_classes_csv %>%
+      dplyr::select(dplyr::all_of(c("vocabulary", "prefix", "skos:inScheme"))) %>%
+      dplyr::distinct(vocabulary, .keep_all = TRUE)
+  
+  reformat_classes <-
+    published_classes_csv %>%
+      dplyr::select(dplyr::all_of(c(
+        "Entity", "skos:prefLabel", "dcterms:description", "rdfs:comment", "skos:inScheme"
+      ))) %>%
+      dplyr::rename(dplyr::all_of(c(
+        "Subject" = "Entity",
+        "<http://www.w3.org/2004/02/skos/core#prefLabel>" = "skos:prefLabel",
+        "<http://purl.org/dc/terms/description>" = "dcterms:description",
+        "<http://www.w3.org/2000/01/rdf-schema#comment>" = "rdfs:comment",
+        "<http://www.w3.org/2004/02/skos/core#inScheme>" = "skos:inScheme"
+      )))  %>%
+    tidyr::pivot_longer(cols = -Subject) %>% 
+    dplyr::rename(
+      Predicate = name,
+      Object = value
+    ) %>% 
+    dplyr::filter(!is.na(Object)) %>%
+    dplyr::mutate(
+      Subject = paste0("<",Subject,">"),
+      Object = ifelse(stringr::str_detect(Object,"inScheme"),paste0("<", Object, ">"), Object)
+      )
+
+# map in:
   #http://www.w3.org/2000/01/rdf-schema#label
   #owl:sameas
   
   reformatted_ontology <- 
-    ontology_csv %>%
+        ontology_csv %>%
       dplyr::select(-all_of(c("contextof"))) %>%
       dplyr::rename(all_of(c(
         "Subject" = "Class",
@@ -52,35 +77,73 @@ vocabularies <-
         "<http://www.w3.org/2000/01/rdf-schema#Datatype>" = "rdf:datatype"
       ))) %>%
     dplyr::mutate(
-      Subject = paste0("https://w3id.org/traits.build/",Subject)
+      Subject = paste0("<https://w3id.org/traits.build/",Subject,">")
     ) %>%
     tidyr::pivot_longer(cols = -Subject) %>% 
     dplyr::rename(
       Predicate = name,
-      Object = value
+      Object_tmp = value
     ) %>% 
-    dplyr::filter(!is.na(Object)) %>%
+    dplyr::filter(!is.na(Object_tmp)) %>%
     dplyr::mutate(
-      Object = stringr::str_split(Object, "\\;")
+      Object_tmp = stringr::str_split(Object_tmp, "\\;\\ ")
     ) %>%
-    tidyr::unnest_longer(Object) %>%
+    tidyr::unnest_longer(Object_tmp) %>%
     dplyr::mutate(
-      Object = stringr::str_trim(Object)
-    )
+      Object_tmp = stringr::str_trim(Object_tmp)
+    ) %>%
+    dplyr::mutate(
+      Object = ifelse(stringr::str_detect(Predicate, "description|[Ll]abel|[Cc]omment"), 
+                                  paste0("\"", Object_tmp, "\""), 
+                                  NA),
+      Object = ifelse(!stringr::str_detect(Object_tmp, "\\:") & !stringr::str_detect(Predicate, "description|label|comment")  & is.na(Object), 
+                       paste0("<https://w3id.org/traits.build/",stringr::str_trim(Object_tmp),">"), 
+                       Object),
+      Object = ifelse(stringr::str_detect(Object_tmp, "\\:") & is.na(Object),
+                       paste0("<", published_classes_csv$Entity[match(Object_tmp, published_classes_csv$identifier2)],">"), 
+                       Object),
+      Object = ifelse(stringr::str_detect(Predicate,"schema\\#Datatype"), 
+                       paste0("<", Object_tmp, ">"), 
+                       Object)
+      ) %>%
+    dplyr::select(-Object_tmp)
   
-  reformatted_ontology <- reformatted_ontology %>%
-    dplyr::mutate(
-      Object2 = ifelse(!stringr::str_detect(Object, "\\:") & 	!stringr::str_detect(Predicate, "description|label|comment"), 
-                       paste0("<https://w3id.org/traits.build/",stringr::str_trim(Object),">"), 
-                       NA),
-      Object2 = ifelse(!stringr::str_detect(Object, "\\:") & 	stringr::str_detect(Predicate, "description|label|comment"), 
-                         paste0(Object), 
-                         Object2),
-      Object2 = ifelse(stringr::str_detect(Predicate, "Datatype"), 
-                       paste0("<", Object,">"), 
-                       Object2),
-      Object2 = ifelse(stringr::str_detect(Object, "\\:"),
-                       paste0("<", published_classes_csv$Entity[match(Object, published_classes_csv$identifier2)],">"), 
-                       Object2)
-      )
+  triples <- 
+    reformatted_ontology %>%
+      bind_rows(reformat_classes) %>%   
+      #mutate(Object = iconv(Object, from="UTF-8", to="ASCII", sub="Unicode")) %>%
+      mutate(graph = ".")
+
+  triples
+}
+
+triples %>%
+  readr::write_delim("traits_build.nq", col_names=FALSE, escape="none", quote="none")
+
+triples %>%
+  select(-graph) %>%
+  readr::write_delim("traits_build.nt", col_names = FALSE, escape = "none", quote = "none")
+
+# prove this parses correctly
+true_triples <- read_nquads("traits_build.nq")
+
+# serialize to any format
+rdflib::rdf_serialize(true_triples, "traits_build.ttl",
+                      namespace = c(traits_build = "https://w3id.org/traits.build/",
+                                    dc = "http://purl.org/dc/elements/1.1/",
+                                    skos = "http://www.w3.org/2004/02/skos/core#",
+                                    dwcattributes = "http://rs.tdwg.org/dwc/terms/attributes/",
+                                    dwc = "http://rs.tdwg.org/dwc/terms/"
+                                    dcterms = "http://purl.org/dc/terms/",
+                                    ets = "http://terminologies.gfbio.org/terms/ETS/",
+                                    obo = "http://purl.obolibrary.org/obo/",
+                                    oboecore = "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#",
+                                    owl = "http://www.w3.org/2002/07/owl#",
+                                    rdfs = "http://www.w3.org/2000/01/rdf-schema#",
+                                    datacite = "http://purl.org/datacite/v4.4/",
+                                    SIO = "http://semanticscience.org/resource/",
+                                    gdmt = "http://vocab.fairdatacollective.org/gdmt/"
+)
+rdflib::rdf_serialize(true_triples, "APD.json", format="jsonld")
+
   
