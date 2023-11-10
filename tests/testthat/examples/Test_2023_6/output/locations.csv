@@ -1,0 +1,7 @@
+dataset_id,location_id,location_name,location_property,value
+Test_2023_6,01,location_1,description,First made-up location for testing
+Test_2023_6,01,location_1,latitude range (deg),-27.5 to -34.5
+Test_2023_6,01,location_1,longitude range (deg),114 to 122
+Test_2023_6,02,location_2,description,Second made-up location for testing
+Test_2023_6,02,location_2,latitude range (deg),-11 to -26
+Test_2023_6,02,location_2,longitude range (deg),129 to 138
