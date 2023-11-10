@@ -99,25 +99,7 @@ traits:
   methods: From Richards_2008_2 (unpublished); See original references, listed alphabetically
     under 'additional references'
 substitutions: .na
-taxonomic_updates:
-- find: Acacia spp
-  replace: Acacia sp. [Richards_2008]
-  reason: match_01. Rewording taxon with ending with `sp.` to indicate a genus-level
-    alignment with `APC accepted` name (2022-11-10)
-  taxonomic_resolution: genus
-- find: Casuarina leuhmanii
-  replace: Casuarina sp. [Casuarina leuhmanii; Richards_2008]
-  reason: match_20. Rewording name to be recognised as genus rank, with genus accepted
-    by APC (2022-11-10)
-  taxonomic_resolution: genus
-- find: Eucalyptus camadulensis
-  replace: Eucalyptus camaldulensis
-  reason: match_07_fuzzy. Fuzzy alignment with accepted canonical name in APC (2022-11-10)
-  taxonomic_resolution: species
-- find: Eucalyptus rossi
-  replace: Eucalyptus rossii
-  reason: match_07_fuzzy. Fuzzy alignment with accepted canonical name in APC (2022-11-10)
-  taxonomic_resolution: species
+taxonomic_updates: .na
 exclude_observations: .na
 questions:
   additional_traits: Birk_1992 - has all reported values for nutrient addition treatments
