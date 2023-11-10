@@ -584,28 +584,28 @@ dataset_test_worker <-
 
           # Check that unique context `value`'s only have one unique description
           expect_equal(
-            contexts %>% group_by(context_property, value) %>% summarise(n = n_distinct(description)) %>%
-              filter(n > 1) %>% nrow(),
+            contexts %>% dplyr::group_by(.data$context_property, .data$value) %>% dplyr::summarise(n = dplyr::n_distinct(.data$description)) %>%
+              filter(.data$n > 1) %>% nrow(),
             0, info = sprintf(
               "%s\tcontexts - `value`'s should only have one unique description each: '%s'",
               red(f),
               paste(
-                contexts %>% group_by(context_property, value) %>% summarise(n = n_distinct(description)) %>%
-                  filter(n > 1) %>% pull(value) %>% unique(),
+                contexts %>% dplyr::group_by(.data$context_property, .data$value) %>% dplyr::summarise(n = dplyr::n_distinct(.data$description)) %>%
+                  filter(.data$n > 1) %>% dplyr::pull(.data$value) %>% unique(),
                 collapse = "', '")
             )
           )
 
           # Check that there are no duplicate `find` fields
           expect_equal(
-            contexts %>% group_by(context_property, find) %>% summarise(n = n()) %>% filter(n > 1) %>%
+            contexts %>% dplyr::group_by(.data$context_property, .data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>%
               nrow(),
             0, info = sprintf(
               "%s\tcontexts - duplicate `find` values detected: '%s'",
               red(f),
               paste(
-                contexts %>% group_by(context_property, find) %>% summarise(n = n()) %>% filter(n > 1) %>%
-                  pull(find) %>% unique(),
+                contexts %>% dplyr::group_by(.data$context_property, .data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>%
+                  dplyr::pull(.data$find) %>% unique(),
                 collapse = "', '")
             )
           )
@@ -830,13 +830,13 @@ dataset_test_worker <-
 
             # First check no duplicate combinations of `find`
             expect_equal(
-              x[[trait]] %>% group_by(find) %>% summarise(n = n()) %>% filter(n > 1) %>% nrow(),
+              x[[trait]] %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
               0, info = sprintf(
                 "%s\tsubstitutions - duplicate `find` values detected: '%s'",
                 red(f),
                 paste(
-                  x[[trait]] %>% group_by(find) %>% summarise(n = n()) %>% filter(n > 1) %>%
-                    pull(find) %>% unique(),
+                  x[[trait]] %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>%
+                    dplyr::pull(.data$find) %>% unique(),
                   collapse = "', '")
               )
             )
@@ -876,13 +876,13 @@ dataset_test_worker <-
 
           # Check no duplicate `find` values
           expect_equal(
-            x %>% group_by(find) %>% summarise(n = n()) %>% filter(n > 1) %>% nrow(),
+            x %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
             0, info = sprintf(
               "%s\ttaxonomic_updates - duplicate `find` values detected: '%s'",
               red(f),
               paste(
-                x %>% group_by(find) %>% summarise(n = n()) %>% filter(n > 1) %>%
-                  pull(find) %>% unique(),
+                x %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>%
+                  dplyr::pull(.data$find) %>% unique(),
                 collapse = "', '")
             )
           )
@@ -972,13 +972,13 @@ dataset_test_worker <-
 
           # Check no duplicate `find` values
           expect_equal(
-            x %>% group_by(variable, find) %>% summarise(n = n()) %>% filter(n > 1) %>% nrow(),
+            x %>% dplyr::group_by(.data$variable, .data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
             0, info = sprintf(
               "%s\texclude_observations - duplicate `find` values detected: '%s'",
               red(f),
               paste(
-                x %>% group_by(variable, find) %>% summarise(n = n()) %>% filter(n > 1) %>%
-                  pull(find) %>% unique(),
+                x %>% dplyr::group_by(.data$variable, .data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>%
+                  dplyr::pull(.data$find) %>% unique(),
                 collapse = "', '")
             )
           )
@@ -1004,13 +1004,13 @@ dataset_test_worker <-
               expect_is_in(
                 find_values,
                 # Extract values from the data for that variable
-                parsed_data %>% filter(trait_name == variable) %>% pull(value) %>% unique(),
+                parsed_data %>% filter(.data$trait_name == variable) %>% dplyr::pull(.data$value) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
             # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
             } else {
               expect_is_in(
-                find_values, parsed_data %>% pull(variable) %>% unique(),
+                find_values, parsed_data %>% dplyr::pull(variable) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
             }

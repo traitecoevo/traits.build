@@ -208,14 +208,14 @@ dataset_process <- function(filename_data_raw,
         metadata[["exclude_observations"]] %>%
         traits.build::util_list_to_df2() %>%
         dplyr::mutate(
-          find = stringr::str_split(find, ", ")
+          find = stringr::str_split(.data$find, ", ")
           ) %>%
-        tidyr::unnest_longer(find) %>%
-        dplyr::filter(variable == "taxon_name")
+        tidyr::unnest_longer("find") %>%
+        dplyr::filter(.data$variable == "taxon_name")
 
     taxonomic_updates <-
       taxonomic_updates %>%
-      dplyr::filter(!aligned_name %in% taxa_to_exclude$find)
+      dplyr::filter(!.data$aligned_name %in% taxa_to_exclude$find)
   }
 
   ## A temporary dataframe created to generate and bind `method_id`,
@@ -263,7 +263,7 @@ dataset_process <- function(filename_data_raw,
     dplyr::select(dplyr::all_of(c("error")), everything()) %>%
     dplyr::select(-dplyr::all_of(c("unit_in"))),
     taxonomic_updates = taxonomic_updates %>%
-      dplyr::filter(aligned_name %in% traits$taxon_name),
+      dplyr::filter(.data$aligned_name %in% traits$taxon_name),
     taxa = taxonomic_updates %>%
       dplyr::select(dplyr::all_of(c(taxon_name = "aligned_name"))) %>%
       dplyr::distinct(),
@@ -1864,7 +1864,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
 
   columns_in_taxon_list <- names(taxa)
 
-  # incoming table from austraits_raw is a list of all taxa for the study
+  # Incoming table from `austraits_raw` is a list of all taxa for the study
   # `original_name` and `aligned_name` will be different if
   # there were taxonomic_updates specified in metadata file
   austraits_raw$taxonomic_updates <-
@@ -1884,7 +1884,8 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
               taxa %>% dplyr::select(dplyr::all_of(c("aligned_name", "taxon_name")))
               ) %>%
     dplyr::select(dplyr::all_of(c("dataset_id", "taxon_name")), dplyr::everything()) %>%
-    # for taxa where there is no taxon_name to matched to a "aligned_name", maintain the "aligned_name" as the "taxon_name"
+    # For taxa where there is no `taxon_name` to matched to a `aligned_name`,
+    # maintain the `aligned_name` as the `taxon_name`
     dplyr::mutate(
       taxon_name = ifelse(is.na(.data$taxon_name), .data$aligned_name, .data$taxon_name)#,
     ) %>%
@@ -1903,20 +1904,20 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
         taxa$taxon_rank[match(.data$taxon_name, taxa$aligned_name)],
         .data$taxonomic_resolution),
       taxon_rank = .data$taxonomic_resolution,
-      name_to_match_to = taxon_name,
-      # Create variable `name_to_match_to` which specifies the part of the taxon name to which matches can be made.
-      # This step requires taxon_rank.
-      name_to_match_to = stringr::str_replace(taxon_name, " \\[.+",""),
-      name_to_match_to = ifelse(!taxon_rank %in% c("species", "subspecies", "series", "variety", "form"),
-                                stringr::word(taxon_name,1), name_to_match_to)
+      name_to_match_to = .data$taxon_name,
+      # Create variable `name_to_match_to` which specifies the part of the taxon name to which matches can be made
+      # This step requires `taxon_rank`
+      name_to_match_to = stringr::str_replace(.data$taxon_name, " \\[.+", ""),
+      name_to_match_to = ifelse(!.data$taxon_rank %in% c("species", "subspecies", "series", "variety", "form"),
+                                stringr::word(.data$taxon_name, 1), .data$name_to_match_to)
     ) %>%
-    # Remove taxon_rank, as it is about to be merged back in, but matches will now be possible to more rows.
+    # Remove `taxon_rank`, as it is about to be merged back in, but matches will now be possible to more rows
     select(-dplyr::any_of(c("taxon_rank", "taxonomic_resolution"))) %>%
     util_df_convert_character() %>%
     # Merge in all data from taxa.
     dplyr::left_join(by = c("taxon_name"),
       taxa %>% dplyr::select(-dplyr::any_of(dplyr::contains("align"))) %>%
-              dplyr::distinct(taxon_name, .keep_all = TRUE) %>%
+              dplyr::distinct(.data$taxon_name, .keep_all = TRUE) %>%
               util_df_convert_character()
     ) %>%
     dplyr::arrange(.data$taxon_name) %>%
@@ -1929,7 +1930,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::distinct(.data$taxon_name, .keep_all = TRUE) %>%
     dplyr::select(dplyr::any_of(columns_in_taxon_list))
 
-  # Now `taxonomic_resolution` be removed from the traits table.
+  # Now `taxonomic_resolution` be removed from the traits table
   austraits_raw$traits <-
     austraits_raw$traits %>%
       dplyr::select(-dplyr::all_of(c("taxonomic_resolution")))
