@@ -749,7 +749,8 @@ dataset_test_worker <-
 
           if (field %in% names(traits)) {
 
-            i <- traits[[field]] %in% names(data)
+            not_allowed <- schema[[field]][["values"]] %>% names()
+            i <- traits[[field]] %in% names(data) & !(traits[[field]] %in% not_allowed)
             fixed <- traits[[field]][!i] %>% unique()
             cols <- traits[[field]][i] %>% unique()
 
@@ -763,7 +764,7 @@ dataset_test_worker <-
             if (length(cols) > 0) {
               for (c in cols) {
                 expect_is_in(
-                  data[[c]] %>% unique(), schema[[c]][["values"]] %>% names,
+                  data[[c]] %>% unique(), schema[[field]][["values"]] %>% names,
                   info = sprintf("%s\t'%s'", red(files[1]), c),
                   label = sprintf("`%s` column", field)
                 )
@@ -774,8 +775,10 @@ dataset_test_worker <-
           ## Check metadata values are allowed for fields specified in dataset metadata
           if (field %in% names(metadata[["dataset"]])) {
 
-            # If the metadata field is a column in the data
-            if (metadata[["dataset"]][[field]] %in% names(data)) {
+            not_allowed <- schema[[field]][["values"]] %>% names()
+
+            # If the metadata field is a column in the data (and not an accepted value of the field)
+            if (metadata[["dataset"]][[field]] %in% names(data) & !(metadata[["dataset"]][[field]] %in% not_allowed)) {
               expect_is_in(
                 data[[metadata[["dataset"]][[field]]]] %>% unique(), schema[[field]][["values"]] %>% names,
                 info = sprintf("%s\t'%s'", red(files[1]), metadata[["dataset"]][[field]]),
