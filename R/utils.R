@@ -230,9 +230,9 @@ read_metadata <- function(path) {
 #' @inheritParams metadata_path_dataset_id
 #'
 #' @return A list with contents of metadata for specified `dataset_id`
-read_metadata_dataset <- function(dataset_id) {
+read_metadata_dataset <- function(dataset_id, path_data = "data") {
   dataset_id %>%
-    metadata_path_dataset_id() %>%
+    metadata_path_dataset_id(path_data = path_data) %>%
     read_metadata()
 }
 
