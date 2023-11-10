@@ -93,7 +93,7 @@ traits:
   unit_in: lifespan_units
   trait_name: leaf_lifespan
   entity_type: population
-  value_type: mean
+  value_type: bin
   basis_of_value: measurement
   replicates: unknown
   methods: From Richards_2008_2 (unpublished); See original references, listed alphabetically
