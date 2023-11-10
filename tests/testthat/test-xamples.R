@@ -175,6 +175,41 @@ testthat::test_that("Test Dataset 4 builds correctly", {
 # If there are repeat measurements at the species level, the code works fine because `observation_id`
 # is the same across rows for a given species
 
+
+testthat::test_that("Test Dataset 5 builds correctly", {
+
+  # Test Dataset 5: Test_2023_5
+  # See README.md in examples/Test_2023_5 for details about this dataset
+
+  # Build dataset
+  expect_no_error(
+    Test_2023_5 <- test_build_dataset(
+      file.path(examples_dir, "Test_2023_5/metadata.yml"),
+      file.path(examples_dir, "Test_2023_5/data.csv"),
+      "Test Dataset 5", definitions, unit_conversions, schema, resource_metadata, taxon_list
+    ),
+    info = "Building Test Dataset 5")
+
+  # Expected output
+  tables <- c("traits", "locations", "contexts", "methods", "excluded_data",
+              "taxonomic_updates", "taxa", "contributors")
+  expect_no_error(
+    expected_output <-
+      purrr::map(
+        tables, ~read_csv(sprintf("examples/Test_2023_5/output/%s.csv", .x), col_types = cols(.default = "c"))),
+    info = "Reading in expected output tables"
+  )
+  # Todo: also load and test non-csv outputs
+  names(expected_output) <- tables
+
+  # Check all tables are equal to expected output tables
+  for (v in tables) {
+    expect_equal(Test_2023_4[[v]], expected_output[[v]])
+  }
+
+})
+
+
 testthat::test_that("Test Dataset 7 builds correctly", {
 
   # Test Dataset 7: Test_2023_7
