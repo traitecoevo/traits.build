@@ -1,13 +1,13 @@
 name_original,AusTraits_key,SLA (cm2/g),SLA_units,leaf longevity,lifespan_units
 Eucalyptus grandis,Leuning_1991,90,cm2/g,5--15,mo
-Grevillea robusta,Bell_1985,97.8,cm2/g,152--364.8,day
+Grevillea robusta,Bell_1985,97.8,cm2/g,152--364.8,d
 Castanospermum australe,Bell_1985,123.1,cm2/g,,
 Elaeocarpus angustifolius,Bell_1985,124.8,cm2/g,,
 Gardenia actinocarpa,Bevege_1978,223,cm2/g,,
 Xanthostemon chrysanthus,Bevege_1978,130,cm2/g,,
 Xanthostemon formosus,Bevege_1978,159,cm2/g,,
 Archidendron kanisii,Bevege_1978,181,cm2/g,,
-Archidendron whitei,Bevege_1978,230,cm2/g,60--300,day
+Archidendron whitei,Bevege_1978,230,cm2/g,60--300,d
 Gardenia ovularis,Lambert_1979,168,cm2/g,,
 Acacia aneura var. major,Lambert_1979,32.3,cm2/g,,
 Acacia kempeana,Lambert_1979,39.3,cm2/g,,
