@@ -695,11 +695,12 @@ dataset_test_worker <-
             info = paste0(red(files[1]), red(", "), red(files[2]), "\tdata and/or traits metadata")
           )
 
+          unique2 <- function(x) unique(x[!is.na(x)])
+
           for (j in unique(contexts[["var_in"]])) {
 
             contextsub <- contexts %>% filter(var_in == j)
 
-            unique2 <- function(x) unique(x[!is.na(x)])
             # Context values align either with a column of data or a column of traits table
             if (is.null(data[[j]])) {
               v <- traits[[j]] %>% unique2()
@@ -718,7 +719,7 @@ dataset_test_worker <-
                 "hms" %in% class(v),
                 sprintf(
                   "%s\tcontexts - context values of '%s' from data file not present in metadata contexts: '%s'\n\n'%s' has been detected as a time data type and reformatted\n\t-> Please make sure context metadata matches reformatting",
-                  red(f), j, paste(v[!i], collapse = "', '"), j),
+                  red(f), j, paste(as.character(v)[!i], collapse = "', '"), j),
                 sprintf(
                   "%s\tcontexts - context values of '%s' from data file not present in metadata: '%s'",
                   red(f), j, paste(v[!i], collapse = "', '")))
