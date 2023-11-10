@@ -899,14 +899,14 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
       } else {
         message(sprintf(red("Existing substitution will be overwritten for ") %+% green("'%s'"), find))     
         data <- data %>% 
-                  filter(find != to_add$find) %>%
+                  filter(.data$find != to_add$find) %>%
                   dplyr::bind_rows(to_add) %>%
-                  filter(!find == replace) %>%
+                  filter(!.data$find == replace) %>%
                   arrange(.data$find)
       }
     } else {
       data <- dplyr::bind_rows(data, to_add) %>%
-            filter(!find == replace) %>%
+            filter(!.data$find == replace) %>%
             arrange(.data$find)
     }
   }
@@ -971,7 +971,6 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
 
     # Read in dataframe of taxonomic changes, split into single-row lists, and add to metadata file
     metadata$taxonomic_updates <- taxonomic_updates %>% dplyr::filter(!.data$find == .data$replace)
-
   }
 
   # Write metadata
