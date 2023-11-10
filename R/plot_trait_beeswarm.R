@@ -22,7 +22,7 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
   # Subset data to this trait
   austraits_trait <-
     austraits$traits %>% filter(trait_name == trait_name) %>%
-    mutate(value = as.numeric(value))
+    mutate(value = as.numeric(.data$value))
 
   my_shapes = c("_min" = 60, "_mean" = 16, "_max" =62, "unknown" = 18)
 
@@ -39,7 +39,7 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
 
   data <-
     austraits_trait %>%
-    dplyr::mutate(shapes = as_shape(value_type)) %>%
+    dplyr::mutate(shapes = as_shape(.data$value_type)) %>%
     dplyr::left_join(by = "taxon_name", tax_info)
 
   # Define grouping variables and derivatives
@@ -64,7 +64,7 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
 
   # set colour of group to highlight
   if(!is.na(highlight) & highlight %in% data$Group) {
-    data <- dplyr::mutate(data, colour = ifelse(Group %in% highlight, "c", colour))
+    data <- dplyr::mutate(data, colour = ifelse(.data$Group %in% highlight, "c", .data$colour))
   }
 
   vals <- list(minimum = purrr::pluck(austraits, "definitions", trait_name, "allowed_values_min"),
@@ -78,7 +78,7 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
 
   # Top plot - plain histogram of data
   p1 <-
-    ggplot2::ggplot(data, ggplot2::aes(x=value)) +
+    ggplot2::ggplot(data, ggplot2::aes(x=.data$value)) +
     ggplot2::geom_histogram(ggplot2::aes(y = ..density..), color="darkgrey", fill="darkgrey", bins=50) +
     ggplot2::geom_density(color="black") +
     ggplot2::xlab("") + ggplot2::ylab("All data") +
@@ -92,7 +92,7 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
     )
   # Second plot -- dots by groups, using ggbeeswarm package
   p2 <-
-    ggplot2::ggplot(data, ggplot2::aes(x = value, y = Group, colour = colour, shape = shapes)) +
+    ggplot2::ggplot(data, ggplot2::aes(x = .data$value, y = .data$Group, colour = .data$colour, shape = .data$shapes)) +
     ggbeeswarm::geom_quasirandom(groupOnX=FALSE) +
     ggplot2::ylab(paste("By ", y_axis_category)) +
     # inclusion of custom shapes: for min, mean, unknown

@@ -29,6 +29,7 @@ Imports:
     kableExtra,
     magrittr,
     purrr,
+    forcats,
     RefManageR,
     rlang,
     rmarkdown,
@@ -49,6 +50,10 @@ Suggests:
     markdown,
     pkgdown,
     rcrossref,
+    ggplot2,
+    ggbeeswarm,
+    gridExtra, 
+    scales,
     zip,
     covr
 Remotes:
