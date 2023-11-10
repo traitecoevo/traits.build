@@ -23,6 +23,7 @@ Authors:
 \itemize{
   \item Elizabeth Wenk (\href{https://orcid.org/0000-0001-5640-5910}{ORCID}) [curator]
   \item Sophie Yang (\href{https://orcid.org/0000-0001-7328-345X}{ORCID}) [curator]
+  \item Fonti Kar (\href{https://orcid.org/0000-0002-2760-3974}{ORCID}) [contributor]
 }
 
 Other contributors:

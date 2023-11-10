@@ -654,6 +654,9 @@ test_that("`build_setup_pipeline` is working", {
   expect_silent(suppressMessages(austraits_raw <- remake::make("database_raw")))
   expect_silent(suppressMessages(austraits <- remake::make("database")))
 
+  # Save output for future tests on database
+  saveRDS(austraits, "test_austraits.rds")
+
   # Test that austraits_raw has no version number or git_SHA
   expect_null(austraits_raw$build_info$version)
   expect_null(austraits_raw$build_info$git_SHA)
@@ -705,7 +708,7 @@ test_that("reports and plots are produced", {
   # Not testing right now
   #expect_no_error(
     #p <-
-      #austraits::plot_trait_distribution_beeswarm(
+      #plot_trait_distribution_beeswarm(
         #austraits, "huber_value", "dataset_id", highlight = "Test_2022", hide_ids = TRUE)
   #)
   expect_silent(
