@@ -18,11 +18,11 @@
 
 #
 plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_category, highlight=NA, hide_ids = FALSE) {
-  # Determine version
-  version <- austraits$build_info$version %>% as.character()
   
   # Subset data to this trait
-  austraits_trait <- austraits$traits %>% filter(trait_name == trait_name)
+  austraits_trait <- 
+    austraits$traits %>% filter(trait_name == trait_name) %>% 
+    mutate(value = as.numeric(value))
   
   my_shapes = c("_min" = 60, "_mean" = 16, "_max" =62, "unknown" = 18)
   
@@ -35,10 +35,10 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
     factor(p, levels=names(my_shapes))
   }
   
-  tax_info  <- austraits_trait$taxa %>% dplyr::select(taxon_name, family)
+  tax_info <- austraits$taxa
   
   data <- 
-    austraits_trait$traits %>%
+    austraits_trait %>%
     dplyr::mutate(shapes = as_shape(value_type)) %>%
     dplyr::left_join(by = "taxon_name", tax_info)
   
@@ -67,8 +67,8 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
     data <- dplyr::mutate(data, colour = ifelse(Group %in% highlight, "c", colour))
   }
   
-  vals <- list(minimum = purrr::pluck(austraits_trait, "definitions", trait_name, "allowed_values_min"),
-           maximum = purrr::pluck(austraits_trait, "definitions", trait_name, "allowed_values_max"))
+  vals <- list(minimum = purrr::pluck(austraits, "definitions", trait_name, "allowed_values_min"),
+           maximum = purrr::pluck(austraits, "definitions", trait_name, "allowed_values_max"))
   
   range <- (vals$maximum/vals$minimum)
   

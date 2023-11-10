@@ -1,0 +1,10 @@
+
+
+austraits <- readRDS("test_austraits.rds")
+# This file tests usage of the database
+# Note, requires existnec of "test_austraits.rds", generated from `test-process.R`
+
+test_that("plots", {
+  expect_invisible(austraits %>% plot_trait_distribution_beeswarm("wood_density", "dataset_id", "Westoby_2014"))
+}) 
+

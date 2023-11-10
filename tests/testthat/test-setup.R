@@ -654,6 +654,9 @@ test_that("`build_setup_pipeline` is working", {
   expect_silent(suppressMessages(austraits_raw <- remake::make("database_raw")))
   expect_silent(suppressMessages(austraits <- remake::make("database")))
 
+  # Save output for future tests on database
+  saveRDS(austraits, "test_austraits.rds")
+
   # Test that austraits_raw has no version number or git_SHA
   expect_null(austraits_raw$build_info$version)
   expect_null(austraits_raw$build_info$git_SHA)
