@@ -9,7 +9,7 @@ metadata_path_dataset_id <- function(dataset_id) {
 
 #' Create a template of file `metadata.yml` for specified `dataset_id`
 #'
-#' Includes place-holders for major sections of the metadata
+#' Includes place-holders for major sections of the metadata.
 #'
 #' @inheritParams metadata_path_dataset_id
 #' @param path Location of file where output is saved
@@ -869,7 +869,7 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
 #' @param reason Reason for taxonomic change
 #' @param taxonomic_resolution The rank of the most specific taxon name (or scientific name)
 #' to which a submitted orignal name resolves
-#' @param overwrite Parameter indicating whether preexisting find-replace entries should be overwritten. Defaults to `true` 
+#' @param overwrite Parameter indicating whether preexisting find-replace entries should be overwritten. Defaults to `true`
 #'
 #' @return `metadata.yml` file with taxonomic change added
 #' @export
@@ -888,7 +888,7 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
   if (all(is.na(metadata[[set_name]]))) {
     data <- to_add
   } else {
-    data <- util_list_to_df2(metadata[[set_name]]) 
+    data <- util_list_to_df2(metadata[[set_name]])
     # Check if find record already exists for that trait
     if (find %in% data$find) {
       # If overwrite set to false, don't add a new substitution
@@ -897,8 +897,8 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
         return(invisible())
       # Default is to overwrite existing substitution
       } else {
-        message(sprintf(red("Existing substitution will be overwritten for ") %+% green("'%s'"), find))     
-        data <- data %>% 
+        message(sprintf(red("Existing substitution will be overwritten for ") %+% green("'%s'"), find))
+        data <- data %>%
                   filter(find != to_add$find) %>%
                   dplyr::bind_rows(to_add) %>%
                   filter(!find == replace) %>%
