@@ -56,7 +56,7 @@ check_pivot_wider <- function(dataset) {
 #' }
 #' @author Daniel Falster - daniel.falster@unsw.edu.au
 #' @export
-trait_pivot_wider <- function(traits) {
+db_traits_pivot_wider <- function(traits) {
 
   metadata_cols <- c("unit", "replicates", "measurement_remarks", "basis_of_value")
 
@@ -127,11 +127,14 @@ trait_pivot_wider <- function(traits) {
 #' @author Daniel Falster - daniel.falster@unsw.edu.au
 #' @author Fonti Kar - fonti.kar@unsw.edu.au
 #' @export
-trait_pivot_longer <- function(wide_data) {
+db_traits_pivot_longer <- function(wide_data) {
 
   wide_data %>%
     tidyr::pivot_longer(
-      cols = 20:ncol(.), # This is the start of the trait columns in wide format
+      # This is the start of the trait columns in wide format
+      # The previous columns are standard metadata and ID fields that do not change
+      # unless structural changes to traits.build occur
+      cols = 20:ncol(.),
       names_to = "trait_name",
       values_drop_na = TRUE
     )
