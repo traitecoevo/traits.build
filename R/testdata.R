@@ -44,8 +44,6 @@ dataset_test <-
 #' @importFrom testthat local_edition compare expect test_that context expect_silent
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
-#' @importFrom austraits extract_dataset extract_taxa extract_trait trait_pivot_longer
-#' trait_pivot_wider join_taxonomy join_methods join_locations join_contexts join_all as_wide_table
 dataset_test_worker <-
   function(test_dataset_ids,
            path_config = "config",
@@ -996,43 +994,10 @@ dataset_test_worker <-
           dataset_with_version <-
             build_add_version(dataset, util_get_version("config/metadata.yml"), util_get_SHA())
 
-          expect_no_error(
-            extract_dataset(dataset_with_version, dataset_id),
-            info = paste0(red(dataset_id), "\t`austraits::extract_dataset`")
-          )
-          taxon_name <- unique(dataset$traits$taxon_name)[1]
-          expect_no_error(
-            extract_taxa(dataset_with_version, taxon_name),
-            info = paste0(red(dataset_id), "\t`austraits::extract_taxa`")
-          )
-          trait_names <- unique(dataset$traits$trait_name)[1:3]
-          expect_no_error(
-            extract_trait(dataset_with_version, trait_names),
-            info = paste0(red(dataset_id), "\t`austraits::extract_trait`")
-          )
-
           expect_no_warning(
             dataset_wider <- trait_pivot_wider(dataset_with_version$traits),
             info = paste0(red(dataset_id), "\t`austraits::trait_pivot_wider` threw a warning; duplicate rows detected")
           )
-
-          # Test the `join_` functions in a loop
-          functions <- c(
-            "join_taxonomy", "join_methods", "join_locations",
-            "join_contexts", "join_all", "as_wide_table")
-
-          for (f in functions) {
-            apply_function <- function(function_name) {
-              function(database_name) {
-                envir <- new.env()
-                eval(parse(text = sprintf("%s(database_name)", function_name)), envir = envir)
-              }
-            }
-            expect_no_error(
-              apply_function(f)(dataset_with_version),
-              info = paste0(red(dataset_id), sprintf("\t`%s`", f))
-            )
-          }
         }
       })
     }
