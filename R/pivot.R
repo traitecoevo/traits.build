@@ -62,10 +62,10 @@ trait_pivot_wider <- function(traits) {
 
   # A check for if there are more than 1 value_type for a given taxon_name, observation_id and method
   check_value_type <- traits %>%
-    select(all_of(c(
+    select(dplyr::all_of(c(
       "trait_name", "value", "dataset_id", "observation_id", "method_id", "method_context_id",
       "repeat_measurements_id", "value_type"))) %>%
-    group_by(dataset_id, observation_id, method_id, method_context_id, repeat_measurements_id) %>%
+    dplyr::group_by(dataset_id, observation_id, method_id, method_context_id, repeat_measurements_id) %>%
     summarise(n_value_type = length(unique(value_type))) %>%
     arrange(observation_id) %>%
     dplyr::filter(n_value_type > 1)
@@ -73,9 +73,9 @@ trait_pivot_wider <- function(traits) {
   if (nrow(check_value_type) > 1) {
 
     traits %>%
-      select(-all_of(metadata_cols)) %>%
+      select(-dplyr::all_of(metadata_cols)) %>%
       # Sophie - what's the point of the group_by?
-      group_by(dataset_id, observation_id, method_id, method_context_id, repeat_measurements_id, value_type) %>%
+      dplyr::group_by(dataset_id, observation_id, method_id, method_context_id, repeat_measurements_id, value_type) %>%
       pivot_wider(names_from = trait_name, values_from = value) |>
       dplyr::ungroup()
 
@@ -84,9 +84,9 @@ trait_pivot_wider <- function(traits) {
     metadata_cols <- c(metadata_cols, "value_type")
 
     traits %>%
-      select(-all_of(metadata_cols)) %>%
+      select(-dplyr::all_of(metadata_cols)) %>%
       # Sophie - what's the point of the group_by?
-      group_by(dataset_id, observation_id, method_id, method_context_id, repeat_measurements_id) %>%
+      dplyr::group_by(dataset_id, observation_id, method_id, method_context_id, repeat_measurements_id) %>%
       pivot_wider(names_from = trait_name, values_from = value) |>
       dplyr::ungroup()
   }

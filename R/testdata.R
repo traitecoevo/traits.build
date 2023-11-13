@@ -872,13 +872,13 @@ dataset_test_worker <-
               expect_is_in(
                 find_values,
                 # Extract values from the data for that variable
-                parsed_data %>% filter(trait_name == variable) %>% pull(value) %>% unique(),
+                parsed_data %>% filter(.data$trait_name == variable) %>% dplyr::pull(.data$value) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
             # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
             } else {
               expect_is_in(
-                find_values, parsed_data %>% pull(variable) %>% unique(),
+                find_values, parsed_data %>% dplyr::pull(.data$variable) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
             }
