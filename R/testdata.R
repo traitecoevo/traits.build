@@ -878,7 +878,7 @@ dataset_test_worker <-
             # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
             } else {
               expect_is_in(
-                find_values, parsed_data %>% dplyr::pull(.data$variable) %>% unique(),
+                find_values, parsed_data %>% dplyr::pull(variable) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
             }
