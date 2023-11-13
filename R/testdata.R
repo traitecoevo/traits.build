@@ -999,11 +999,14 @@ dataset_test_worker <-
             info = paste0(red(dataset_id), "\t`trait_pivot_wider` threw a warning; duplicate rows detected")
           )
 
-          expect_no_warning(
-            dataset_longer <- trait_pivot_longer(dataset_with_version$traits),
-            info = paste0(red(dataset_id), "\t`trait_pivot_longer` threw a warning; duplicate rows detected")
-          )
-
+          if (exists("dataset_wider")) {
+            expect_no_warning(
+              expect_no_error(
+                dataset_longer <- trait_pivot_longer(dataset_wider),
+                info = paste0(red(dataset_id), "\t`trait_pivot_longer`")),
+              info = paste0(red(dataset_id), "\t`trait_pivot_longer` threw a warning")
+            )
+          }
         }
       })
     }
