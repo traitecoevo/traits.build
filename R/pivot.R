@@ -131,7 +131,7 @@ trait_pivot_longer <- function(wide_data) {
 
   wide_data %>%
     tidyr::pivot_longer(
-      cols = 20:ncol(.),
+      cols = 20:ncol(.), # This is the start of the trait columns in wide format
       names_to = "trait_name",
       values_drop_na = TRUE
     )
