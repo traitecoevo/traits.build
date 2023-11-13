@@ -983,22 +983,8 @@ dataset_test_worker <-
 
           # Check that dataset can pivot wider
           if (nrow(dataset$traits) > 0) {
-            expect_equal(
-              dataset$traits %>%
-                select(
-                  dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "value_type",
-                  "repeat_measurements_id", "method_id", "method_context_id"))
-                ) %>%
-                tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
-                tidyr::pivot_longer(cols = 7:ncol(.)) %>%
-                dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
-                select(
-                  dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates", "observation_id",
-                  "value_type")), everything()
-                ) %>%
-                filter(.data$number_of_duplicates > 1) %>%
-                nrow(),
-              0, # Expect nrow() = 0
+            expect_true(
+              dataset %>% check_pivot_wider(),
               info = sprintf("%s\tduplicate rows detected; `traits` table cannot pivot wider", red(dataset_id))
             )
           }

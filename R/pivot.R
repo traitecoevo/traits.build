@@ -9,7 +9,7 @@
 
 check_pivot_wider <- function(dataset) {
 
-  dataset$traits %>%
+  duplicates <- dataset$traits %>%
     select(
       dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "value_type",
       "repeat_measurements_id", "method_id", "method_context_id"))
@@ -23,5 +23,11 @@ check_pivot_wider <- function(dataset) {
     ) %>%
     filter(.data$number_of_duplicates > 1) %>%
     nrow()
+
+  if (duplicates == 0) {
+    invisible(TRUE)
+  } else {
+     invisible(FALSE)
+  }
 
 }
