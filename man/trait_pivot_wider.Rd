@@ -20,6 +20,11 @@ type of observation is denoted by various identifying columns (e.g `trait_name`,
 `observation_id`, etc.).
 This function converts the data into wide format so that each trait in its own column.
 }
+\details{
+`trait_pivot_wider` will return a single wide tibble; note that some meta-data columns
+(unit, replicates, measurement_remarks, basis_of_record, basis_of_value) will be excluded to
+produce a useful wide tibble.
+}
 \examples{
 \dontrun{
 data <- austraits$traits \%>\% filter(dataset_id == "Falster_2003")
