@@ -208,14 +208,14 @@ dataset_process <- function(filename_data_raw,
         metadata[["exclude_observations"]] %>%
         traits.build::util_list_to_df2() %>%
         dplyr::mutate(
-          find = stringr::str_split(find, ", ")
+          find = stringr::str_split(.data$find, ", ")
           ) %>%
-        tidyr::unnest_longer(find) %>%
-        dplyr::filter(variable == "taxon_name")
+        tidyr::unnest_longer(.data$find) %>%
+        dplyr::filter(.data$variable == "taxon_name")
 
     taxonomic_updates <- 
       taxonomic_updates %>%
-      dplyr::filter(!aligned_name %in% taxa_to_exclude$find)
+      dplyr::filter(!.data$aligned_name %in% taxa_to_exclude$find)
   }
 
   ## A temporary dataframe created to generate and bind `method_id`,
@@ -262,7 +262,8 @@ dataset_process <- function(filename_data_raw,
     dplyr::filter(!is.na(.data$error)) %>%
     dplyr::select(dplyr::all_of(c("error")), everything()) %>%
     dplyr::select(-dplyr::all_of(c("unit_in"))),
-    taxonomic_updates = taxonomic_updates,
+    taxonomic_updates = taxonomic_updates %>%
+      dplyr::filter(.data$aligned_name %in% traits$taxon_name),
     taxa = taxonomic_updates %>%
       dplyr::select(dplyr::all_of(c(taxon_name = "aligned_name"))) %>%
       dplyr::distinct(),
@@ -1824,11 +1825,11 @@ build_combine <- function(..., d = list(...)) {
   # Taxonomy
   taxonomic_updates <-
     combine("taxonomic_updates", d) %>%
-    dplyr::group_by(.data$original_name, .data$taxon_name, .data$taxonomic_resolution) %>%
+    dplyr::group_by(.data$original_name, .data$aligned_name, .data$taxon_name, .data$taxonomic_resolution) %>%
     dplyr::mutate(dataset_id = paste(.data$dataset_id, collapse = " ")) %>%
     dplyr::ungroup() %>%
     dplyr::distinct() %>%
-    dplyr::arrange(.data$original_name, .data$taxon_name, .data$taxonomic_resolution)
+    dplyr::arrange(.data$original_name, .data$aligned_name, .data$taxon_name, .data$taxonomic_resolution)
 
   # Metadata
   contributors <- combine("contributors", d)
@@ -1915,12 +1916,12 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
         taxa$taxon_rank[match(.data$taxon_name, taxa$aligned_name)],
         .data$taxonomic_resolution),
       taxon_rank = .data$taxonomic_resolution,
-      name_to_match_to = taxon_name,
+      name_to_match_to = .data$taxon_name,
       # Create variable `name_to_match_to` which specifies the part of the taxon name to which matches can be made.
       # This step requires taxon_rank.
-      name_to_match_to = stringr::str_replace(taxon_name, " \\[.+",""),
-      name_to_match_to = ifelse(!taxon_rank %in% c("species", "subspecies", "series", "variety", "form"), 
-                                stringr::word(taxon_name,1), name_to_match_to)
+      name_to_match_to = stringr::str_replace(.data$taxon_name, " \\[.+",""),
+      name_to_match_to = ifelse(!.data$taxon_rank %in% c("species", "subspecies", "series", "variety", "form"), 
+                                stringr::word(.data$taxon_name,1), .data$name_to_match_to)
     ) %>%
     # Remove taxon_rank, as it is about to be merged back in, but matches will now be possible to more rows.
     select(-dplyr::any_of(c("taxon_rank", "taxonomic_resolution"))) %>%
@@ -1928,7 +1929,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     # Merge in all data from taxa.
     dplyr::left_join(by = c("taxon_name"),
       taxa %>% dplyr::select(-dplyr::any_of(dplyr::contains("align"))) %>%
-              dplyr::distinct(taxon_name, .keep_all = TRUE) %>%
+              dplyr::distinct(.data$taxon_name, .keep_all = TRUE) %>%
               util_df_convert_character()
     ) %>%
     dplyr::arrange(.data$taxon_name) %>%
