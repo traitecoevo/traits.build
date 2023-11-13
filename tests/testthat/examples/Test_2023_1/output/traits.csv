@@ -214,17 +214,6 @@ Test_2023_1,Dendrocnide moroides,093,leaf_area,26454,mm2,population,mean,measure
 Test_2023_1,Dendrocnide moroides,093,leaf_mass_per_area,52,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Dendrocnide moroides
 Test_2023_1,Dendrocnide moroides,093,seed_dry_mass,0.71,mg,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Dendrocnide moroides
 Test_2023_1,Dendrocnide moroides,093,wood_density,0.23,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Dendrocnide moroides
-Test_2023_1,Elaeocarpus grandis,095,huber_value,0.000215749730312837,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Elaeocarpus grandis
-Test_2023_1,Elaeocarpus grandis,096,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
-Test_2023_1,Elaeocarpus grandis,097,huber_value,0.000215749730312837,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Elaeocarpus grandis
-Test_2023_1,Elaeocarpus grandis,098,huber_value,0.000384911470361817,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,02,02,Elaeocarpus grandis
-Test_2023_1,Elaeocarpus grandis,098,huber_value,0.0005720823798627,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,03,Elaeocarpus grandis
-Test_2023_1,Elaeocarpus grandis,098,huber_value,0.0005720823798627,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Elaeocarpus grandis
-Test_2023_1,Elaeocarpus grandis,098,leaf_N_per_dry_mass,18.7,mg/g,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
-Test_2023_1,Elaeocarpus grandis,098,leaf_area,2762,mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
-Test_2023_1,Elaeocarpus grandis,098,leaf_mass_per_area,122,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
-Test_2023_1,Elaeocarpus grandis,098,seed_dry_mass,3699,mg,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
-Test_2023_1,Elaeocarpus grandis,098,wood_density,0.499,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
 Test_2023_1,Endiandra leptodendron,100,huber_value,0.00013374348000535,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Endiandra leptodendron
 Test_2023_1,Endiandra leptodendron,101,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Endiandra leptodendron
 Test_2023_1,Endiandra leptodendron,102,huber_value,0.00013374348000535,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Endiandra leptodendron

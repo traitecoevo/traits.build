@@ -74,6 +74,7 @@ trait_pivot_wider <- function(traits) {
 
     traits %>%
       select(-all_of(metadata_cols)) %>%
+      # Sophie - what's the point of the group_by?
       group_by(dataset_id, observation_id, method_id, method_context_id, repeat_measurements_id, value_type) %>%
       pivot_wider(names_from = trait_name, values_from = value) |>
       dplyr::ungroup()

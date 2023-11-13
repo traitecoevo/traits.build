@@ -56,9 +56,11 @@ Missing unit conversion,Test_2023_1,Alstonia scholaris,042,seed_dry_mass,2,mass,
 Missing unit conversion,Test_2023_1,Alstonia scholaris,042,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Alstonia scholaris
 Trait name not in trait dictionary,Test_2023_1,Alstonia scholaris,042,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
 Trait name not in trait dictionary,Test_2023_1,Alstonia scholaris,042,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
+Observation excluded in metadata,Test_2023_1,Argyrodendron peralatum,045,flowering_time,test excluded observation,,individual,mode,expert_score,3,field,adult,10,01,,,,02,12,,01,,from Falster_2005_1,01,,Argyrodendron peralatum
 Missing unit conversion,Test_2023_1,Argyrodendron peralatum,047,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,12,,01,2004/2004,from Falster_2005_1,03,,Argyrodendron peralatum
 Missing unit conversion,Test_2023_1,Argyrodendron peralatum,047,wood_density,0.726,,species,mean,measurement,3,field,adult,,,,,,,12,,01,2004/2004,from Falster_2005_1,02,,Argyrodendron peralatum
 Trait name not in trait dictionary,Test_2023_1,Argyrodendron peralatum,047,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,12,,01,2004/2004,from Falster_2005_1,01,,Argyrodendron peralatum
+Observation excluded in metadata,Test_2023_1,Atractocarpus hirtus,050,flowering_time,test excluded observation 2,,individual,mode,expert_score,3,field,adult,10,01,,,,02,13,,01,,from Falster_2005_1,01,,Atractocarpus hirtus
 Missing unit conversion,Test_2023_1,Atractocarpus hirtus,052,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,13,,01,2004/2004,from Falster_2005_1,03,,Atractocarpus hirtus
 Missing unit conversion,Test_2023_1,Atractocarpus hirtus,052,wood_density,0.804,,species,mean,measurement,3,field,adult,,,,,,,13,,01,2004/2004,from Falster_2005_1,02,,Atractocarpus hirtus
 Trait name not in trait dictionary,Test_2023_1,Atractocarpus hirtus,052,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,13,,01,2004/2004,from Falster_2005_1,01,,Atractocarpus hirtus
@@ -95,9 +97,20 @@ Trait name not in trait dictionary,Test_2023_1,Cryptocarya murrayi,089,wrong_tra
 Missing unit conversion,Test_2023_1,Dendrocnide moroides,094,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Dendrocnide moroides
 Missing unit conversion,Test_2023_1,Dendrocnide moroides,094,wood_density,0.23,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Dendrocnide moroides
 Trait name not in trait dictionary,Test_2023_1,Dendrocnide moroides,094,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Dendrocnide moroides
-Missing unit conversion,Test_2023_1,Elaeocarpus grandis,099,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Elaeocarpus grandis
-Missing unit conversion,Test_2023_1,Elaeocarpus grandis,099,wood_density,0.499,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Elaeocarpus grandis
-Trait name not in trait dictionary,Test_2023_1,Elaeocarpus grandis,099,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,095,huber_value,4635,mm2{leaf}/mm2{sapwood},individual,mean,model_derived,5,field,adult,13,01,,,,03,,,,2002/2002,made-up measurement remarks,05,,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,096,leaf_length,40,mm,individual,mean,measurement,3,field,adult,13,01,,,,03,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,097,huber_value,4635,mm2{leaf}/mm2{sapwood},individual,raw,model_derived,5,field,adult,13,01,,,,03,,,,,made-up measurement remarks,04,01,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,098,huber_value,2598,mm2{leaf}/mm2{sapwood},population,mean,measurement,3,field,adult,13,,,,,03,,,,2004/2004,from Falster_2005_1,02,02,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,098,huber_value,1748,mm2{leaf}/mm2{sapwood},population,mean,measurement,3,field,adult,13,,,,,03,,,,2004/2004,from Falster_2005_1,03,03,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,098,huber_value,1748,mm2{leaf}/mm2{sapwood},population,mean,measurement,3,field,adult,13,,,,,03,,,,2004/2004,from Falster_2005_1,03,,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,098,leaf_N_per_dry_mass,0.0187,mg/mg,population,mean,measurement,3,field,adult,13,,,,,03,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,098,leaf_area,2762,mm2,population,mean,measurement,3,field,adult,13,,,,,03,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,098,leaf_mass_per_area,0.122,mg/mm2,population,mean,measurement,3,field,adult,13,,,,,03,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,098,seed_dry_mass,3699,mg,population,mean,measurement,3,field,adult,13,,,,,03,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,098,wood_density,0.499,mg/mm3,population,mean,measurement,3,field,adult,13,,,,,03,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,099,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,099,wood_density,0.499,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Elaeocarpus grandis
+Observation excluded in metadata,Test_2023_1,Elaeocarpus grandis,099,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Elaeocarpus grandis
 Missing unit conversion,Test_2023_1,Endiandra leptodendron,104,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Endiandra leptodendron
 Missing unit conversion,Test_2023_1,Endiandra leptodendron,104,wood_density,0.611,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Endiandra leptodendron
 Trait name not in trait dictionary,Test_2023_1,Endiandra leptodendron,104,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Endiandra leptodendron
@@ -195,4 +208,4 @@ Missing unit conversion,Test_2023_1,Syzygium sayeri,234,wood_density,0.485,,spec
 Trait name not in trait dictionary,Test_2023_1,Syzygium sayeri,234,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Syzygium sayeri
 Missing unit conversion,Test_2023_1,Trema aspera,239,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Trema aspera
 Missing unit conversion,Test_2023_1,Trema aspera,239,wood_density,0.357,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Trema aspera
-Trait name not in trait dictionary,Test_2023_1,Trema aspera,239,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Trait name not in trait dictionary,Test_2023_1,Trema aspera,239,wrong_trait_name,test excluded observation,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
