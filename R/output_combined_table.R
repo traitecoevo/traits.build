@@ -41,7 +41,7 @@ database_create_combined_table <- function(database) {
     tidyr::separate_longer_delim(link_vals, ", ") %>% distinct()
 
   reformat_contexts <- function(contexts_table, context_id) {
-    context_category <- gsub("_id", "s", context_id, fixed = TRUE)
+    context_category <- gsub("_id", "_properties", context_id, fixed = TRUE)
     out <- contexts_table %>%
       dplyr::filter(link_id == context_id) %>%
       dplyr::select(-link_id) %>%
