@@ -722,7 +722,6 @@ dataset_test_worker <-
         }
 
         # Substitutions
-        ## TODO do the same for `taxonomic_updates` and `exclude_observations`?
         if (!is.na(metadata[["substitutions"]][1])) {
 
           expect_list_elements_exact_names(
