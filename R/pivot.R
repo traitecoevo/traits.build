@@ -129,12 +129,12 @@ db_traits_pivot_wider <- function(traits) {
 #' @export
 db_traits_pivot_longer <- function(wide_data) {
 
+  # The start of the trait columns is after `original_name`
+  start_of_trait_cols <- which(names(wide_data) == "original_name") + 1
+
   wide_data %>%
     tidyr::pivot_longer(
-      # This is the start of the trait columns in wide format
-      # The previous columns are standard metadata and ID fields that do not change
-      # unless structural changes to traits.build occur
-      cols = 20:ncol(.),
+      cols = start_of_trait_cols:ncol(.),
       names_to = "trait_name",
       values_drop_na = TRUE
     )
