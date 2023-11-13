@@ -65,18 +65,22 @@ trait_pivot_wider <- function(traits) {
     select(dplyr::all_of(c(
       "trait_name", "value", "dataset_id", "observation_id", "method_id", "method_context_id",
       "repeat_measurements_id", "value_type"))) %>%
-    dplyr::group_by(dataset_id, observation_id, method_id, method_context_id, repeat_measurements_id) %>%
-    summarise(n_value_type = length(unique(value_type))) %>%
-    arrange(observation_id) %>%
-    dplyr::filter(n_value_type > 1)
+    dplyr::group_by(
+      .data$dataset_id, .data$observation_id, .data$method_id,
+      .data$method_context_id, .data$repeat_measurements_id) %>%
+    dplyr::summarise(n_value_type = length(unique(.data$value_type))) %>%
+    arrange(.data$observation_id) %>%
+    dplyr::filter(.data$n_value_type > 1)
 
   if (nrow(check_value_type) > 1) {
 
     traits %>%
       select(-dplyr::all_of(metadata_cols)) %>%
       # Sophie - what's the point of the group_by?
-      dplyr::group_by(dataset_id, observation_id, method_id, method_context_id, repeat_measurements_id, value_type) %>%
-      pivot_wider(names_from = trait_name, values_from = value) |>
+      dplyr::group_by(
+        .data$dataset_id, .data$observation_id, .data$method_id,
+        .data$method_context_id, .data$repeat_measurements_id, .data$value_type) %>%
+      tidyr::pivot_wider(names_from = "trait_name", values_from = "value") |>
       dplyr::ungroup()
 
   } else {
@@ -86,8 +90,10 @@ trait_pivot_wider <- function(traits) {
     traits %>%
       select(-dplyr::all_of(metadata_cols)) %>%
       # Sophie - what's the point of the group_by?
-      dplyr::group_by(dataset_id, observation_id, method_id, method_context_id, repeat_measurements_id) %>%
-      pivot_wider(names_from = trait_name, values_from = value) |>
+      dplyr::group_by(
+        .data$dataset_id, .data$observation_id, .data$method_id, .data$method_context_id,
+        .data$repeat_measurements_id) %>%
+      tidyr::pivot_wider(names_from = "trait_name", values_from = "value") |>
       dplyr::ungroup()
   }
 
