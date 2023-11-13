@@ -991,11 +991,8 @@ dataset_test_worker <-
           # Testing per study, not on all studies combined (is this ideal?)
           # I'm not testing whether the functions work as intended, just that they throw no error
 
-          dataset_with_version <-
-            build_add_version(dataset, util_get_version("config/metadata.yml"), util_get_SHA())
-
           expect_no_warning(
-            dataset_wider <- trait_pivot_wider(dataset_with_version$traits),
+            dataset_wider <- trait_pivot_wider(dataset$traits),
             info = paste0(red(dataset_id), "\t`trait_pivot_wider` threw a warning; duplicate rows detected")
           )
 
