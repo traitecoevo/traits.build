@@ -1,3 +1,3 @@
-taxon_name,taxonomic_dataset,taxon_rank,taxonomic_status,genus,binomial,trinomial,family,taxon_id,taxon_distribution
-Eucalyptus miniata,,,,,,,,,
-Eucalyptus tetrodonta,,,,,,,,,
+original_name,taxon_name,taxon_name_alternatives,genus,family,taxon_rank,taxonomic_dataset,taxonomic_status,subclass,taxon_distribution,scientific_name,taxon_id,taxon_ID_genus,scientific_name_id,canonical_name,cleaned_scientific_name_id,taxon_id_family,trinomial,binomial,establishment_means
+Eucalyptus miniata,Eucalyptus miniata,,Eucalyptus,Myrtaceae,species,APC,accepted,Magnoliidae,"WA, NT, Qld",Eucalyptus miniata A.Cunn. ex Schauer,https://id.biodiversity.org.au/node/apni/2889426,https://id.biodiversity.org.au/taxon/apni/51702982,https://id.biodiversity.org.au/name/apni/56460,Eucalyptus miniata,https://id.biodiversity.org.au/name/apni/56460,https://id.biodiversity.org.au/taxon/apni/51702983,,Eucalyptus miniata,native
+Eucalyptus tetrodonta,Eucalyptus tetrodonta,,Eucalyptus,Myrtaceae,species,APC,accepted,Magnoliidae,"WA, NT, Qld",Eucalyptus tetrodonta F.Muell.,https://id.biodiversity.org.au/node/apni/2905964,https://id.biodiversity.org.au/taxon/apni/51702982,https://id.biodiversity.org.au/name/apni/55572,Eucalyptus tetrodonta,https://id.biodiversity.org.au/name/apni/55572,https://id.biodiversity.org.au/taxon/apni/51702983,,Eucalyptus tetrodonta,native
