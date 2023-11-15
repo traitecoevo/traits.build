@@ -594,7 +594,9 @@ test_that("`build_setup_pipeline` is working", {
   expect_true(file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml", overwrite = TRUE))
 
   expect_no_error(zip::unzip("config/testgit.zip"))
-  expect_no_error(sha <- git2r::sha(git2r::last_commit()))
+  # Expect no error if not within a git repo
+  expect_no_error(sha <- util_get_SHA("../../.."))
+  expect_no_error(sha <- util_get_SHA())
   # Expect error if path or method is wrong
   expect_error(build_setup_pipeline(path = "Datas"))
   expect_error(build_setup_pipeline(method = "grrrr"))
@@ -665,6 +667,9 @@ test_that("`build_setup_pipeline` is working", {
   expect_type(austraits$build_info$git_SHA, "character")
   expect_equal(austraits$build_info$git_SHA, sha)
   expect_equal(austraits$build_info$git_SHA, "6c73238d8d048781d9a4f5239a03813be313f0dd")
+
+  # Test `traits.build`` version added to metadata
+  expect_equal(austraits$metadata$resource_type, "traits.build 0.9.0")
 
   #expect_length(austraits_raw$taxa, 14) #not valid test with new `build_update_taxonomy setup`
   #expect_length(austraits$taxa, 14) #not valid test with new `build_update_taxonomy setup`
