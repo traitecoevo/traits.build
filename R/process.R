@@ -1957,6 +1957,8 @@ build_add_version <- function(austraits, version, git_sha) {
     session_info = austraits$build_info$session_info
   )
 
+  austraits$metadata$resource_type <- sprintf("traits.build %s", austraits$build_info$session_info$otherPkgs$traits.build$Version)
+
   austraits
 }
 
