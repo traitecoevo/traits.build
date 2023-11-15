@@ -10,7 +10,7 @@ metadata_path_dataset_id <- function(dataset_id, path_data = "data") {
 
 #' Create a template of file `metadata.yml` for specified `dataset_id`
 #'
-#' Includes place-holders for major sections of the metadata
+#' Includes place-holders for major sections of the metadata.
 #'
 #' @inheritParams metadata_path_dataset_id
 #' @param path Location of file where output is saved

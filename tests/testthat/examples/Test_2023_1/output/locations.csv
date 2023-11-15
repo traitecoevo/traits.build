@@ -7,3 +7,6 @@ Test_2023_1,02,Cape Tribulation,latitude (deg),
 Test_2023_1,02,Cape Tribulation,longitude (deg),
 Test_2023_1,02,Cape Tribulation,elevation (m),25
 Test_2023_1,02,Cape Tribulation,rainfall (mm),3500
+Test_2023_1,03,test_excluded_site,description,test excluded site
+Test_2023_1,03,test_excluded_site,latitude (deg),
+Test_2023_1,03,test_excluded_site,longitude (deg),
