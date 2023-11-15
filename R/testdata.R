@@ -327,8 +327,8 @@ dataset_test_worker <-
       }, info = "`dataset_process`")
 
       expect_no_error({
-        build_dataset <- build_update_taxonomy(build_dataset_raw, taxon_list)
-      }, info = "`build_update_taxonomy`")
+        build_dataset <- dataset_update_taxonomy(build_dataset_raw, taxon_list)
+      }, info = "`dataset_update_taxonomy`")
 
       build_dataset
     }

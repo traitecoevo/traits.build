@@ -279,7 +279,7 @@ dataset_process <- function(filename_data_raw,
 #' Build dataset
 #'
 #' Build specified dataset. This function completes three steps, which can be executed separately if desired:
-#' `dataset_configure`, `dataset_process`, `build_update_taxonomy`
+#' `dataset_configure`, `dataset_process`, `dataset_update_taxonomy`
 #'
 #' @param filename_metadata Metadata yaml file for a given study
 #' @param filename_data_raw Raw `data.csv` file for any given study
@@ -319,7 +319,7 @@ dataset_build <- function(
   dataset_raw <- dataset_process(
     filename_data_raw, dataset_config, schema, resource_metadata, unit_conversion_functions,
     filter_missing_values = filter_missing_values)
-  dataset <- build_update_taxonomy(dataset_raw, taxon_list)
+  dataset <- dataset_update_taxonomy(dataset_raw, taxon_list)
 
   dataset
 }
@@ -1860,7 +1860,7 @@ build_combine <- function(..., d = list(...)) {
 #' @importFrom rlang .data
 #'
 #' @export
-build_update_taxonomy <- function(austraits_raw, taxa) {
+dataset_update_taxonomy <- function(austraits_raw, taxa) {
 
   columns_in_taxon_list <- names(taxa)
 

@@ -34,7 +34,7 @@ reference:
     - '`build_setup_pipeline`'
     - '`build_combine`'
     - '`build_add_version`'
-    - '`build_update_taxonomy`'
+    - '`dataset_update_taxonomy`'
     - '`dataset_build`'
     - '`dataset_configure`'
     - '`dataset_process`'
