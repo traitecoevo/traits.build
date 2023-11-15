@@ -666,8 +666,8 @@ test_that("`build_setup_pipeline` is working", {
   expect_equal(austraits$build_info$git_SHA, sha)
   expect_equal(austraits$build_info$git_SHA, "6c73238d8d048781d9a4f5239a03813be313f0dd")
 
-  #expect_length(austraits_raw$taxa, 14) #not valid test with new `build_update_taxonomy setup`
-  #expect_length(austraits$taxa, 14) #not valid test with new `build_update_taxonomy setup`
+  #expect_length(austraits_raw$taxa, 14) #not valid test with new `dataset_update_taxonomy setup`
+  #expect_length(austraits$taxa, 14) #not valid test with new `dataset_update_taxonomy setup`
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
 
   # Compare products from three methods, except `build_info`

@@ -38,7 +38,7 @@ List, AusTraits database object
 }
 \description{
 Build specified dataset. This function completes three steps, which can be executed separately if desired:
-`dataset_configure`, `dataset_process`, `build_update_taxonomy`
+`dataset_configure`, `dataset_process`, `dataset_update_taxonomy`
 }
 \examples{
 \dontrun{
