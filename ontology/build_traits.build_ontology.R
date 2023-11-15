@@ -68,6 +68,8 @@ convert_to_triples <- function(ontology_csv, published_classes_csv) {
         "<http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor>" = "oboe-core:characteristicFor",
         "<http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity>" = "oboe-core:ofEntity",
         "<http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasValue>" = "oboe-core:hasValue",
+        "<http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor>" = "oboe-core:measurementFor",
+        "<http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement>" = "oboe-core:hasMeasurement",
         "<http://purl.org/dc/terms/description>" = "dcterms:description",
         "<http://www.w3.org/2000/01/rdf-schema#comment>" = "rdfs:comment",
         "<http://www.w3.org/2000/01/rdf-schema#Datatype>" = "rdf:datatype"
