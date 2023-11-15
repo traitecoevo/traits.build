@@ -20,15 +20,15 @@ Test_2023_3,Alectryon oleifolius,018,fruit_width,10,mm,species,minimum,measureme
 Test_2023_3,Alectryon subdentatus,019,fruit_length,8,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to capsule,01,04,Alectryon subdentatus
 Test_2023_3,Amyema preissii,020,fruit_colour,pink white,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,04,Amyema preissii
 Test_2023_3,Angophora leiocarpa,021,fruit_width,11,mm,species,maximum,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,02,04,Angophora leiocarpa
-Test_2023_3,Capparis anomala,022,fruit_colour,purple,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,04,Apophyllum anomalum
+Test_2023_3,Apophyllum anomalum,022,fruit_colour,purple,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,04,Apophyllum anomalum
 Test_2023_3,Arbutus unedo,023,fruit_colour,red,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,04,Arbutus unedo
 Test_2023_3,Australina pusilla,024,fruit_length,1,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to achene,01,04,Australina pusilla
 Test_2023_3,Burmannia disticha,025,fruit_dehiscence,dehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,02,Burmannia disticha
 Test_2023_3,Bursaria spinosa subsp. spinosa,026,fruit_width,9,mm,species,maximum,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to capsules,02,04,Bursaria spinosa subsp. spinosa
 Test_2023_3,Calendula arvensis,027,fruit_length,15,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to achenes,01,04,Calendula arvensis
 Test_2023_3,Callistemon purpurascens,028,fruit_dehiscence,dehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,02,Callistemon purpurascens
-Test_2023_3,Carex pyrenaica var. cephalotes,029,fruit_width,1,mm,species,minimum,measurement,3,literature,adult,,,,,,,01,,,,Trait value refers to utricles,01,04,Carex cephalotes
-Test_2023_3,Carex pyrenaica var. cephalotes,030,fruit_length,2.5,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to utricles,01,04,Carex cephalotes
+Test_2023_3,Carex cephalotes,029,fruit_width,1,mm,species,minimum,measurement,3,literature,adult,,,,,,,01,,,,Trait value refers to utricles,01,04,Carex cephalotes
+Test_2023_3,Carex cephalotes,030,fruit_length,2.5,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to utricles,01,04,Carex cephalotes
 Test_2023_3,Carex leporina,031,fruit_length,3.5,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to utricles,01,04,Carex leporina
 Test_2023_3,Carex raleighii,032,fruit_length,2.5,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to utricles,01,04,Carex raleighii
 Test_2023_3,Carmichaelia exsul,033,fruit_length,10,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to pods,01,04,Carmichaelia exsul
@@ -61,7 +61,7 @@ Test_2023_3,Cyperus sculptus,058,fruit_length,1,mm,species,mean,measurement,3,li
 Test_2023_3,Dampiera fusca,059,fruit_colour,brown,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,04,Dampiera fusca
 Test_2023_3,Davidsonia johnsonii,060,fruit_length,30,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,01,04,Davidsonia johnsonii
 Test_2023_3,Daviesia arenaria,061,fruit_length,7,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to pod,01,04,Daviesia arenaria
-Test_2023_3,Solori involuta,062,fruit_dehiscence,indehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,02,Derris involuta
+Test_2023_3,Derris involuta,062,fruit_dehiscence,indehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,02,Derris involuta
 Test_2023_3,Dichromochlamys dentatifolia,063,fruit_length,1.8,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to achenes,01,04,Dichromochlamys dentatifolia
 Test_2023_3,Dillwynia cinerascens,064,fruit_length,5,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to pod,01,04,Dillwynia cinerascens
 Test_2023_3,Dillwynia floribunda,065,fruit_length,4,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to pod,01,04,Dillwynia floribunda
@@ -85,26 +85,26 @@ Test_2023_3,Eucalyptus dorrigoensis,082,fruit_length,5,mm,species,mean,measureme
 Test_2023_3,Eucalyptus leucoxylon subsp. pruinosa,083,fruit_dehiscence,dehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,04,Eucalyptus leucoxylon subsp. pruinosa
 Test_2023_3,Eucalyptus muelleriana,084,fruit_dehiscence,dehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,04,Eucalyptus muelleriana
 Test_2023_3,Eucalyptus nandewarica,085,fruit_length,3,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,01,04,Eucalyptus nandewarica
-Test_2023_3,Eucalyptus globoidea,086,fruit_length,8,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,01,04,Eucalyptus oblonga
+Test_2023_3,Eucalyptus oblonga,086,fruit_length,8,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,01,04,Eucalyptus oblonga
 Test_2023_3,Eucalyptus olida,087,fruit_length,5,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,01,04,Eucalyptus olida
 Test_2023_3,Eucalyptus pulverulenta,088,fruit_width,6,mm,species,minimum,measurement,3,literature,adult,,,,,,,01,,,,Trait value refers to fruit,01,04,Eucalyptus pulverulenta
 Test_2023_3,Eucalyptus recurva,089,fruit_length,4,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,01,04,Eucalyptus recurva
 Test_2023_3,Eucalyptus rossii,090,fruit_width,6,mm,species,maximum,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,02,04,Eucalyptus rossii
 Test_2023_3,Eucalyptus scias,091,fruit_dehiscence,dehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,04,Eucalyptus scias
 Test_2023_3,Eucalyptus viminalis,092,fruit_width,4,mm,species,minimum,measurement,3,literature,adult,,,,,,,01,,,,Trait value refers to fruit,01,04,Eucalyptus viminalis
-Test_2023_3,Eucalyptus globoidea,093,fruit_width,6,mm,species,minimum,measurement,3,literature,adult,,,,,,,01,,,,Trait value refers to fruit,01,04,Eucalyptus yangoura
+Test_2023_3,Eucalyptus yangoura,093,fruit_width,6,mm,species,minimum,measurement,3,literature,adult,,,,,,,01,,,,Trait value refers to fruit,01,04,Eucalyptus yangoura
 Test_2023_3,Eucalyptus youmanii,094,fruit_width,9,mm,species,minimum,measurement,3,literature,adult,,,,,,,01,,,,Trait value refers to fruit,01,04,Eucalyptus youmanii
 Test_2023_3,Eucalyptus youmanii,095,fruit_length,12,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,01,04,Eucalyptus youmanii
 Test_2023_3,Euphorbia inappendiculata var. queenslandica,096,fruit_length,1.5,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to capsule,01,04,Euphorbia inappendiculata var. queenslandica
 Test_2023_3,Exocarpos homalocladus,097,fruit_width,8,mm,species,maximum,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to drupe,02,04,Exocarpos homalocladus
 Test_2023_3,Exocarpos sparteus,098,fruit_length,5,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to drupe,01,04,Exocarpos sparteus
 Test_2023_3,Ficus henneana,099,fruit_length,15,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to figs,01,04,Ficus henneana
-Test_2023_3,Freesia leichtlinii subsp. leichtlinii x Freesia leichtlinii subsp. alba,100,fruit_colour,green,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,04,Freesia hybrid
+Test_2023_3,Freesia hybrid,100,fruit_colour,green,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,04,Freesia hybrid
 Test_2023_3,Freesia laxa,101,fruit_length,12,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to capsule,01,04,Freesia laxa
 Test_2023_3,Geijera salicifolia,102,fruit_width,6,mm,species,maximum,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,02,04,Geijera salicifolia
 Test_2023_3,Gentiana wingecarribiensis,103,fruit_dehiscence,dehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,02,Gentiana wingecarribiensis
 Test_2023_3,Geranium obtusisepalum,105,fruit_length,17,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,01,04,Geranium obtusisepalum
-Test_2023_3,Geranium purpureum,106,fruit_length,12,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,01,04,Geranium purpureum subsp. purpureum
+Test_2023_3,Geranium purpureum subsp. purpureum,106,fruit_length,12,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,01,04,Geranium purpureum subsp. purpureum
 Test_2023_3,Gompholobium grandiflorum,107,fruit_length,15,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to pod,01,04,Gompholobium grandiflorum
 Test_2023_3,Goodenia varia,108,fruit_length,10,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to fruit,01,04,Goodenia varia
 Test_2023_3,Gossia bidwillii,109,fruit_colour,black,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,04,Gossia bidwillii
@@ -117,7 +117,7 @@ Test_2023_3,Hibbertia crinita,115,fruit_dehiscence,dehiscent,,species,mean,exper
 Test_2023_3,Hibiscus brachysiphonius,116,fruit_length,15,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to capsule,01,04,Hibiscus brachysiphonius
 Test_2023_3,Hibiscus sturtii,117,fruit_dehiscence,dehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,02,Hibiscus sturtii
 Test_2023_3,Hypericum elodes,118,fruit_length,4,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to capsule,01,04,Hypericum elodes
-Test_2023_3,Pauridia glabella var. glabella,119,fruit_dehiscence,dehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,02,Hypoxis glabella var. glabella
+Test_2023_3,Hypoxis glabella var. glabella,119,fruit_dehiscence,dehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,02,Hypoxis glabella var. glabella
 Test_2023_3,Imperata cylindrica,120,fruit_length,1,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to caryopsis,01,04,Imperata cylindrica
 Test_2023_3,Indigofera triflora,121,fruit_length,30,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to pods,01,04,Indigofera triflora
 Test_2023_3,Ipomoea cairica,122,fruit_length,11,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to capsule,01,04,Ipomoea cairica
@@ -147,7 +147,7 @@ Test_2023_3,Myoporum boninense subsp. australe,146,fruit_length,10,mm,species,me
 Test_2023_3,Nicotiana glauca,147,fruit_length,13,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to capsule,01,04,Nicotiana glauca
 Test_2023_3,Nicotiana goodspeedii,148,fruit_length,5,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to capsule,01,04,Nicotiana goodspeedii
 Test_2023_3,Oxalis corniculata,149,fruit_width,1.5,mm,species,minimum,measurement,3,literature,adult,,,,,,,01,,,,Trait value refers to fruit,01,04,Oxalis corniculata
-Test_2023_3,Pandorea pandorana,150,fruit_dehiscence,dehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,04,Pandorea pandorana subsp. austrocaledonica
+Test_2023_3,Pandorea pandorana subsp. austrocaledonica,150,fruit_dehiscence,dehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,04,Pandorea pandorana subsp. austrocaledonica
 Test_2023_3,Paraserianthes lophantha,151,fruit_width,25,mm,species,maximum,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to pod,02,04,Paraserianthes lophantha
 Test_2023_3,Parentucellia latifolia,152,fruit_dehiscence,dehiscent,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,02,Parentucellia latifolia
 Test_2023_3,Phlegmatospermum cochlearinum,153,fruit_length,10,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to silicula,01,04,Phlegmatospermum cochlearinum
