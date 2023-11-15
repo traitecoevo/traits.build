@@ -75,26 +75,22 @@ db_traits_pivot_wider <- function(traits) {
   if (nrow(check_value_type) > 1) {
 
     traits %>%
-      select(-dplyr::all_of(metadata_cols)) %>%
-      # Sophie - what's the point of the group_by?
-      dplyr::group_by(
-        .data$dataset_id, .data$observation_id, .data$method_id,
-        .data$method_context_id, .data$repeat_measurements_id, .data$value_type) %>%
-      tidyr::pivot_wider(names_from = "trait_name", values_from = "value") |>
-      dplyr::ungroup()
+      tidyr::pivot_wider(
+        names_from = "trait_name",
+        values_from = "value",
+        id_cols = -dplyr::all_of(metadata_cols)
+      )
 
   } else {
 
     metadata_cols <- c(metadata_cols, "value_type")
 
     traits %>%
-      select(-dplyr::all_of(metadata_cols)) %>%
-      # Sophie - what's the point of the group_by?
-      dplyr::group_by(
-        .data$dataset_id, .data$observation_id, .data$method_id, .data$method_context_id,
-        .data$repeat_measurements_id) %>%
-      tidyr::pivot_wider(names_from = "trait_name", values_from = "value") |>
-      dplyr::ungroup()
+      tidyr::pivot_wider(
+        names_from = "trait_name",
+        values_from = "value",
+        id_cols = -dplyr::all_of(metadata_cols)
+      )
   }
 
 }
