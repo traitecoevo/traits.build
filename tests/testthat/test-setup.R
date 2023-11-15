@@ -669,7 +669,7 @@ test_that("`build_setup_pipeline` is working", {
   expect_equal(austraits$build_info$git_SHA, "6c73238d8d048781d9a4f5239a03813be313f0dd")
 
   # Test `traits.build`` version added to metadata
-  expect_equal(austraits$metadata$resource_type, "traits.build 0.9.0")
+  expect_equal(austraits$metadata$resource_type, sprintf("traits.build %s", packageVersion("traits.build")))
 
   #expect_length(austraits_raw$taxa, 14) #not valid test with new `build_update_taxonomy setup`
   #expect_length(austraits$taxa, 14) #not valid test with new `build_update_taxonomy setup`
