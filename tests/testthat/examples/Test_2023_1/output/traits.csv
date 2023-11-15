@@ -24,16 +24,16 @@ Test_2023_1,Acacia celsa,007,leaf_stomatal_conductance,0.7,mol{H2O}/m2/s,populat
 Test_2023_1,Acacia celsa,007,leaf_stomatal_conductance,0.66,mol{H2O}/m2/s,population,raw,measurement,1,field,adult,04,,04,,,02,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
 Test_2023_1,Acacia celsa,007,leaf_stomatal_conductance,0.3,mol{H2O}/m2/s,population,raw,measurement,1,field,adult,04,,05,,,02,,,,2004/2004,from Falster_2005_1,01,,Acacia celsa
 Test_2023_1,Acacia celsa,008,plant_growth_form,herb,,species,mode,expert_score,3,field,adult,,,,02,,,04,01,01,2004/2004,from Falster_2005_1,01,07,Acacia celsa
-Test_2023_1,Acmena graveolens,010,huber_value,0.000139742873113471,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,10,,,2002/2002,made-up measurement remarks,05,,Acmena graveolens
-Test_2023_1,Acmena graveolens,011,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,10,,,2004/2004,from Falster_2005_1,01,,Acmena graveolens
-Test_2023_1,Acmena graveolens,012,huber_value,0.000139742873113471,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,10,,,,made-up measurement remarks,04,01,Acmena graveolens
-Test_2023_1,Acmena graveolens,013,huber_value,0.000327118089630357,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,02,02,Acmena graveolens
-Test_2023_1,Acmena graveolens,013,huber_value,0.000374953130858643,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,03,03,Acmena graveolens
-Test_2023_1,Acmena graveolens,013,huber_value,0.000374953130858643,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,03,,Acmena graveolens
-Test_2023_1,Acmena graveolens,013,leaf_N_per_dry_mass,15.5,mg/g,population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,01,,Acmena graveolens
-Test_2023_1,Acmena graveolens,013,leaf_area,5246,mm2,population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,01,,Acmena graveolens
-Test_2023_1,Acmena graveolens,013,leaf_mass_per_area,151,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,01,,Acmena graveolens
-Test_2023_1,Acmena graveolens,013,wood_density,0.599,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,01,,Acmena graveolens
+Test_2023_1,Syzygium graveolens,010,huber_value,0.000139742873113471,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,10,,,2002/2002,made-up measurement remarks,05,,Acmena graveolens
+Test_2023_1,Syzygium graveolens,011,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,10,,,2004/2004,from Falster_2005_1,01,,Acmena graveolens
+Test_2023_1,Syzygium graveolens,012,huber_value,0.000139742873113471,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,10,,,,made-up measurement remarks,04,01,Acmena graveolens
+Test_2023_1,Syzygium graveolens,013,huber_value,0.000327118089630357,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,02,02,Acmena graveolens
+Test_2023_1,Syzygium graveolens,013,huber_value,0.000374953130858643,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,03,03,Acmena graveolens
+Test_2023_1,Syzygium graveolens,013,huber_value,0.000374953130858643,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,03,,Acmena graveolens
+Test_2023_1,Syzygium graveolens,013,leaf_N_per_dry_mass,15.5,mg/g,population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,01,,Acmena graveolens
+Test_2023_1,Syzygium graveolens,013,leaf_area,5246,mm2,population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,01,,Acmena graveolens
+Test_2023_1,Syzygium graveolens,013,leaf_mass_per_area,151,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,01,,Acmena graveolens
+Test_2023_1,Syzygium graveolens,013,wood_density,0.599,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,10,,,2004/2004,from Falster_2005_1,01,,Acmena graveolens
 Test_2023_1,Acronychia acidula,015,leaf_photosynthesis,5,umol/m2/s,individual,raw,measurement,1,field,adult,02,01,01,,,01,09,,,2004/2004,from Falster_2005_1,01,,Acronychia acidula
 Test_2023_1,Acronychia acidula,015,leaf_photosynthesis,3,umol/m2/s,individual,raw,measurement,1,field,adult,02,01,02,,,01,09,,,2004/2004,from Falster_2005_1,01,,Acronychia acidula
 Test_2023_1,Acronychia acidula,015,leaf_photosynthesis,2,umol/m2/s,individual,raw,measurement,1,field,adult,02,01,03,,,01,09,,,2004/2004,from Falster_2005_1,01,,Acronychia acidula
@@ -80,7 +80,7 @@ Test_2023_1,Alphitonia petriei,034,leaf_mass_per_area,149,g/m2,population,mean,m
 Test_2023_1,Alphitonia petriei,034,seed_dry_mass,27.2,mg,population,mean,measurement,3,field,adult,05,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
 Test_2023_1,Alphitonia petriei,034,seed_dry_mass,3--4,mg,population,bin,measurement,10,field,adult,05,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,02,,Alphitonia petriei
 Test_2023_1,Alphitonia petriei,034,wood_density,0.413,mg/mm3,population,mean,measurement,3,field,adult,05,,,02,,01,14,03,02,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
-Test_2023_1,Alphitonia petriei,035,plant_growth_form,mallee mallee shrub tree tree,,species,mode,expert_score,3,field,adult,,,,02,,,14,03,02,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
+Test_2023_1,Alphitonia petriei,035,plant_growth_form,mallee shrub tree,,species,mode,expert_score,3,field,adult,,,,02,,,14,03,02,2004/2004,from Falster_2005_1,01,,Alphitonia petriei
 Test_2023_1,Alstonia scholaris,037,huber_value,0.000254323499491353,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,02,,,,02,11,,,2002/2002,made-up measurement remarks,05,,Alstonia scholaris
 Test_2023_1,Alstonia scholaris,038,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,02,,,,02,11,,,2004/2004,from Falster_2005_1,01,,Alstonia scholaris
 Test_2023_1,Alstonia scholaris,039,huber_value,0.000254323499491353,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,02,,,,02,11,,,,made-up measurement remarks,04,01,Alstonia scholaris
@@ -271,17 +271,17 @@ Test_2023_1,Glochidion hylandii,118,leaf_area,3209,mm2,population,mean,measureme
 Test_2023_1,Glochidion hylandii,118,leaf_mass_per_area,106,g/m2,population,mean,measurement,3,field,adult,06,,,,,01,05,,02,2004/2004,from Falster_2005_1,01,11,Glochidion hylandii
 Test_2023_1,Glochidion hylandii,118,seed_dry_mass,10.41,mg,population,mean,measurement,3,field,adult,06,,,,,01,05,,02,2004/2004,from Falster_2005_1,01,11,Glochidion hylandii
 Test_2023_1,Glochidion hylandii,118,wood_density,0.566,mg/mm3,population,mean,measurement,3,field,adult,06,,,,,01,05,,02,2004/2004,from Falster_2005_1,01,11,Glochidion hylandii
-Test_2023_1,Haplostichanthus submontanus,120,huber_value,0.000334224598930481,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Haplostichanthus sp Coop. Ck
-Test_2023_1,Haplostichanthus submontanus,121,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
-Test_2023_1,Haplostichanthus submontanus,122,huber_value,0.000334224598930481,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Haplostichanthus sp Coop. Ck
-Test_2023_1,Haplostichanthus submontanus,123,huber_value,0.000411522633744856,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
-Test_2023_1,Haplostichanthus submontanus,123,huber_value,8.12743823146944e-05,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,02,02,Haplostichanthus sp Coop. Ck
-Test_2023_1,Haplostichanthus submontanus,123,huber_value,0.000304692260816575,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,03,Haplostichanthus sp Coop. Ck
-Test_2023_1,Haplostichanthus submontanus,123,huber_value,0.000304692260816575,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Haplostichanthus sp Coop. Ck
-Test_2023_1,Haplostichanthus submontanus,123,leaf_N_per_dry_mass,22,mg/g,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
-Test_2023_1,Haplostichanthus submontanus,123,leaf_area,4685,mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
-Test_2023_1,Haplostichanthus submontanus,123,leaf_mass_per_area,72,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
-Test_2023_1,Haplostichanthus submontanus,123,wood_density,0.668,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
+Test_2023_1,Polyalthia submontana,120,huber_value,0.000334224598930481,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Haplostichanthus sp Coop. Ck
+Test_2023_1,Polyalthia submontana,121,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
+Test_2023_1,Polyalthia submontana,122,huber_value,0.000334224598930481,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Haplostichanthus sp Coop. Ck
+Test_2023_1,Polyalthia submontana,123,huber_value,0.000411522633744856,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
+Test_2023_1,Polyalthia submontana,123,huber_value,8.12743823146944e-05,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,02,02,Haplostichanthus sp Coop. Ck
+Test_2023_1,Polyalthia submontana,123,huber_value,0.000304692260816575,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,03,Haplostichanthus sp Coop. Ck
+Test_2023_1,Polyalthia submontana,123,huber_value,0.000304692260816575,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Haplostichanthus sp Coop. Ck
+Test_2023_1,Polyalthia submontana,123,leaf_N_per_dry_mass,22,mg/g,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
+Test_2023_1,Polyalthia submontana,123,leaf_area,4685,mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
+Test_2023_1,Polyalthia submontana,123,leaf_mass_per_area,72,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
+Test_2023_1,Polyalthia submontana,123,wood_density,0.668,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Haplostichanthus sp Coop. Ck
 Test_2023_1,Harpullia rhyticarpa,125,huber_value,0.000214178624973228,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Harpullia rhyticarpa
 Test_2023_1,Harpullia rhyticarpa,126,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Harpullia rhyticarpa
 Test_2023_1,Harpullia rhyticarpa,127,huber_value,0.000214178624973228,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Harpullia rhyticarpa
@@ -328,18 +328,18 @@ Test_2023_1,Ixora biflora,143,leaf_area,2760,mm2,population,mean,measurement,3,f
 Test_2023_1,Ixora biflora,143,leaf_mass_per_area,81,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Ixora biflora
 Test_2023_1,Ixora biflora,143,seed_dry_mass,41.5,mg,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Ixora biflora
 Test_2023_1,Ixora biflora,143,wood_density,0.843,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Ixora biflora
-Test_2023_1,Lasianthus strigosus,145,huber_value,0.000366166239472721,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Lasianthus strigosus
-Test_2023_1,Lasianthus strigosus,146,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
-Test_2023_1,Lasianthus strigosus,147,huber_value,0.000366166239472721,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Lasianthus strigosus
-Test_2023_1,Lasianthus strigosus,148,huber_value,0.000543183052688756,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
-Test_2023_1,Lasianthus strigosus,148,huber_value,0.000196078431372549,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,02,02,Lasianthus strigosus
-Test_2023_1,Lasianthus strigosus,148,huber_value,0.000420344682639765,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,03,Lasianthus strigosus
-Test_2023_1,Lasianthus strigosus,148,huber_value,0.000420344682639765,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Lasianthus strigosus
-Test_2023_1,Lasianthus strigosus,148,leaf_N_per_dry_mass,15.8,mg/g,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
-Test_2023_1,Lasianthus strigosus,148,leaf_area,3313,mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
-Test_2023_1,Lasianthus strigosus,148,leaf_mass_per_area,55,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
-Test_2023_1,Lasianthus strigosus,148,seed_dry_mass,7,mg,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
-Test_2023_1,Lasianthus strigosus,148,wood_density,0.684,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
+Test_2023_1,Lasianthus chlorocarpus,145,huber_value,0.000366166239472721,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Lasianthus strigosus
+Test_2023_1,Lasianthus chlorocarpus,146,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
+Test_2023_1,Lasianthus chlorocarpus,147,huber_value,0.000366166239472721,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Lasianthus strigosus
+Test_2023_1,Lasianthus chlorocarpus,148,huber_value,0.000543183052688756,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
+Test_2023_1,Lasianthus chlorocarpus,148,huber_value,0.000196078431372549,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,02,02,Lasianthus strigosus
+Test_2023_1,Lasianthus chlorocarpus,148,huber_value,0.000420344682639765,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,03,Lasianthus strigosus
+Test_2023_1,Lasianthus chlorocarpus,148,huber_value,0.000420344682639765,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Lasianthus strigosus
+Test_2023_1,Lasianthus chlorocarpus,148,leaf_N_per_dry_mass,15.8,mg/g,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
+Test_2023_1,Lasianthus chlorocarpus,148,leaf_area,3313,mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
+Test_2023_1,Lasianthus chlorocarpus,148,leaf_mass_per_area,55,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
+Test_2023_1,Lasianthus chlorocarpus,148,seed_dry_mass,7,mg,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
+Test_2023_1,Lasianthus chlorocarpus,148,wood_density,0.684,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Lasianthus strigosus
 Test_2023_1,Litsea leefeana,150,huber_value,0.000103680663556247,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Litsea leefeana
 Test_2023_1,Litsea leefeana,151,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Litsea leefeana
 Test_2023_1,Litsea leefeana,152,huber_value,0.000103680663556247,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Litsea leefeana
@@ -476,16 +476,16 @@ Test_2023_1,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),208,leaf_area,11157
 Test_2023_1,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),208,leaf_mass_per_area,108,g/m2,population,mean,measurement,3,field,adult,09,,,,,01,02,02,,2004/2004,from Falster_2005_1,01,,Psychotria sp Utchee Creek
 Test_2023_1,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),208,seed_dry_mass,23.09,mg,population,mean,measurement,3,field,adult,09,,,,,01,02,02,,2004/2004,from Falster_2005_1,01,,Psychotria sp Utchee Creek
 Test_2023_1,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),208,wood_density,0.582,mg/mm3,population,mean,measurement,3,field,adult,09,,,,,01,02,02,,2004/2004,from Falster_2005_1,01,,Psychotria sp Utchee Creek
-Test_2023_1,Quassia baileyana,210,huber_value,0.000174855744011191,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Quassia baileyana
-Test_2023_1,Quassia baileyana,211,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
-Test_2023_1,Quassia baileyana,212,huber_value,0.000174855744011191,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Quassia baileyana
-Test_2023_1,Quassia baileyana,213,huber_value,0.000170444861087438,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,02,02,Quassia baileyana
-Test_2023_1,Quassia baileyana,213,huber_value,0.000310945273631841,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,03,Quassia baileyana
-Test_2023_1,Quassia baileyana,213,huber_value,0.000310945273631841,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Quassia baileyana
-Test_2023_1,Quassia baileyana,213,leaf_N_per_dry_mass,23,mg/g,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
-Test_2023_1,Quassia baileyana,213,leaf_area,9624,mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
-Test_2023_1,Quassia baileyana,213,leaf_mass_per_area,86,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
-Test_2023_1,Quassia baileyana,213,wood_density,0.501,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
+Test_2023_1,Samadera baileyana,210,huber_value,0.000174855744011191,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Quassia baileyana
+Test_2023_1,Samadera baileyana,211,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
+Test_2023_1,Samadera baileyana,212,huber_value,0.000174855744011191,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Quassia baileyana
+Test_2023_1,Samadera baileyana,213,huber_value,0.000170444861087438,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,02,02,Quassia baileyana
+Test_2023_1,Samadera baileyana,213,huber_value,0.000310945273631841,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,03,Quassia baileyana
+Test_2023_1,Samadera baileyana,213,huber_value,0.000310945273631841,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Quassia baileyana
+Test_2023_1,Samadera baileyana,213,leaf_N_per_dry_mass,23,mg/g,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
+Test_2023_1,Samadera baileyana,213,leaf_area,9624,mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
+Test_2023_1,Samadera baileyana,213,leaf_mass_per_area,86,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
+Test_2023_1,Samadera baileyana,213,wood_density,0.501,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Quassia baileyana
 Test_2023_1,Rhodomyrtus trineura,215,huber_value,0.00014541224371092,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,02,01,,,,01,15,,,2002/2002,made-up measurement remarks,05,,Rhodomyrtus trineura
 Test_2023_1,Rhodomyrtus trineura,216,leaf_length,40,mm,individual,mean,measurement,3,field,adult,02,01,,,,01,15,,,2004/2004,from Falster_2005_1,01,,Rhodomyrtus trineura
 Test_2023_1,Rhodomyrtus trineura,217,flowering_time,nnnnnnnnnnny,,individual,mode,expert_score,3,field,adult,02,01,,,,01,15,,,,from Falster_2005_1,01,,Rhodomyrtus trineura
@@ -522,15 +522,15 @@ Test_2023_1,Syzygium sayeri,233,leaf_area,2645,mm2,population,mean,measurement,3
 Test_2023_1,Syzygium sayeri,233,leaf_mass_per_area,131,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Syzygium sayeri
 Test_2023_1,Syzygium sayeri,233,seed_dry_mass,841,mg,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Syzygium sayeri
 Test_2023_1,Syzygium sayeri,233,wood_density,0.485,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Syzygium sayeri
-Test_2023_1,Trema aspera,235,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Trema aspera
-Test_2023_1,Trema aspera,236,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
-Test_2023_1,Trema aspera,237,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Trema aspera
-Test_2023_1,Trema aspera,238,huber_value,0.000279485746226942,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
-Test_2023_1,Trema aspera,238,huber_value,0.000189000189000189,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,02,02,Trema aspera
-Test_2023_1,Trema aspera,238,huber_value,0.000183823529411765,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,03,Trema aspera
-Test_2023_1,Trema aspera,238,huber_value,0.000183823529411765,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Trema aspera
-Test_2023_1,Trema aspera,238,leaf_N_per_dry_mass,29.9,mg/g,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
-Test_2023_1,Trema aspera,238,leaf_area,2071,mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
-Test_2023_1,Trema aspera,238,leaf_mass_per_area,53,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
-Test_2023_1,Trema aspera,238,seed_dry_mass,5.12,mg,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
-Test_2023_1,Trema aspera,238,wood_density,0.357,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,235,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,236,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,237,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,238,huber_value,0.000279485746226942,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,238,huber_value,0.000189000189000189,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,02,02,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,238,huber_value,0.000183823529411765,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,03,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,238,huber_value,0.000183823529411765,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,238,leaf_N_per_dry_mass,29.9,mg/g,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,238,leaf_area,2071,mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,238,leaf_mass_per_area,53,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,238,seed_dry_mass,5.12,mg,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,238,wood_density,0.357,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
