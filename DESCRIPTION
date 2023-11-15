@@ -5,11 +5,13 @@ Version: 0.9.0
 Maintainer: Daniel Falster <daniel.falster@unsw.edu.au>
 Authors@R: c(
     person(given = "Daniel", family = "Falster", role = c("cre", "aut"), email = "daniel.falster@unsw.edu.au", comment = c(ORCID = "0000-0002-9814-092X")),
-    person(given = "Elizabeth", family = "Wenk", role = c("cur", "aut"),  comment = c(ORCID = "0000-0001-5640-5910")),
+    person(given = "Elizabeth", family = "Wenk", role = c("cur", "aut"), comment = c(ORCID = "0000-0001-5640-5910")),
+    person(given = "Sophie", family = "Yang", role = c("cur", "aut"), comment = c(ORCID = "0000-0001-7328-345X")),
+    person(given = "Fonti", family = "Kar", role = c("aut", "ctb"), comment = c(ORCID = "0000-0002-2760-3974")),
     person("ARDC", role = c("fnd")),
     person("ARC", role = c("fnd"))
     )
-Description: This package enbales harmonising of data from diverse sources. The code was originally built to support AusTraits, an open-source compilation of data on the traits of Australian plant species. For more information on AusTraits go to https://austraits.org.
+Description: This package enables harmonising of data from diverse sources. The code was originally built to support AusTraits, an open-source compilation of data on the traits of Australian plant species. For more information on AusTraits go to https://austraits.org.
 BugReports: https://github.com/traitecoevo/traits.build/issues
 URL: http://traitecoevo.github.io/traits.build/
 License: BSD_2_clause + file LICENCE
@@ -27,8 +29,8 @@ Imports:
     kableExtra,
     magrittr,
     purrr,
+    forcats,
     RefManageR,
-    remake,
     rlang,
     rmarkdown,
     stringi,
@@ -38,7 +40,8 @@ Imports:
     whisker,
     yaml
 Suggests:
-    austraits,
+    furrr,
+    remake,
     leaflet,
     bibtex,
     knitr,
@@ -47,10 +50,13 @@ Suggests:
     markdown,
     pkgdown,
     rcrossref,
+    ggplot2,
+    ggbeeswarm,
+    gridExtra, 
+    scales,
     zip,
     covr
 Remotes:
-    traitecoevo/austraits@develop,
     richfitz/remake
 Encoding: UTF-8
 VignetteBuilder: knitr

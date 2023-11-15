@@ -6,7 +6,7 @@
 \alias{traits.build-package}
 \title{traits.build: Package used to build an AusTraits data resource}
 \description{
-This package enbales harmonising of data from diverse sources. The code was originally built to support AusTraits, an open-source compilation of data on the traits of Australian plant species. For more information on AusTraits go to https://austraits.org.
+This package enables harmonising of data from diverse sources. The code was originally built to support AusTraits, an open-source compilation of data on the traits of Australian plant species. For more information on AusTraits go to https://austraits.org.
 }
 \seealso{
 Useful links:
@@ -22,6 +22,8 @@ Useful links:
 Authors:
 \itemize{
   \item Elizabeth Wenk (\href{https://orcid.org/0000-0001-5640-5910}{ORCID}) [curator]
+  \item Sophie Yang (\href{https://orcid.org/0000-0001-7328-345X}{ORCID}) [curator]
+  \item Fonti Kar (\href{https://orcid.org/0000-0002-2760-3974}{ORCID}) [contributor]
 }
 
 Other contributors:

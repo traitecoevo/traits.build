@@ -1,11 +1,7 @@
 dataset_id,location_id,location_name,location_property,value
-Test_2023_1,01,Atherton,description,Tropical rain forest vegetation.
-Test_2023_1,01,Atherton,latitude (deg),-17.1166667
-Test_2023_1,01,Atherton,longitude (deg),145.65
-Test_2023_1,01,Atherton,elevation (m),800
-Test_2023_1,01,Atherton,rainfall (mm),2000
-Test_2023_1,02,Cape Tribulation,description,Complex mesophyll vine forest in tropical rain forest.
-Test_2023_1,02,Cape Tribulation,latitude (deg),
-Test_2023_1,02,Cape Tribulation,longitude (deg),
-Test_2023_1,02,Cape Tribulation,elevation (m),25
-Test_2023_1,02,Cape Tribulation,rainfall (mm),3500
+Test_2023_7,01,Howard Springs,description,eucalypt-dominated savannas
+Test_2023_7,01,Howard Springs,latitude (deg),-12.485
+Test_2023_7,01,Howard Springs,longitude (deg),131.146
+Test_2023_7,01,Howard Springs,elevation (m),37
+Test_2023_7,01,Howard Springs,"precipitation, MAP (mm)",1714
+Test_2023_7,01,Howard Springs,"temperature, MAT (C)",27.8

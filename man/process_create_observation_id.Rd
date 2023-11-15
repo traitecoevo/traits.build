@@ -4,10 +4,12 @@
 \alias{process_create_observation_id}
 \title{Create entity id}
 \usage{
-process_create_observation_id(data)
+process_create_observation_id(data, metadata)
 }
 \arguments{
 \item{data}{The traits table at the point where this function is called}
+
+\item{metadata}{Yaml file with metadata}
 }
 \value{
 Character string

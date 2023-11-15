@@ -1,5 +1,3 @@
-# Todo:
-# Fix `expect_no_error` and other functions not showing any error messages maybe on another branch
 
 test_that("`metadata_create_template` is working", {
   # Remove the metadata file if it exists before testing `metadata_create_template`
@@ -37,7 +35,7 @@ test_that("`metadata_create_template` is working with simulated user input", {
 
   # Check long format
   user_responses <- list(
-    data_is_long_format = TRUE,
+    data_is_long_format = TRUE, repeat_measurements_id = TRUE,
     taxon_name = "Species", trait_name = "trait_name", value = "value",
     location_name = NA, individual_id = "id", collection_date = "2008/2009"
   )
@@ -55,7 +53,9 @@ test_that("`metadata_create_template` is working with simulated user input", {
 
   expect_true(test_metadata$dataset$data_is_long_format)
   # Test metadata fields are equal to inputs in `user_responses`
-  fields <- c("taxon_name", "trait_name", "value", "location_name", "individual_id", "collection_date")
+  fields <- c(
+    "taxon_name", "trait_name", "value", "location_name", "individual_id",
+    "collection_date", "repeat_measurements_id")
   for (f in fields) {
     if (f == "location_name") {
       expect_equal(test_metadata[["dataset"]][[f]], "unknown")
@@ -92,6 +92,8 @@ test_that("`metadata_create_template` is working with simulated user input", {
       expect_equal(test_metadata[["dataset"]][[f]], user_responses[[f]])
     }
   }
+  # Expect `repeat_measurements_id` is null if not specified
+  expect_null(test_metadata[["dataset"]][["repeat_measurements_id"]])
 
  })
 
@@ -151,8 +153,8 @@ test_that("`metadata_add_source_doi` is working", {
   #writeLines(bib, "data/test.bib")
   #bib2 <- rcrossref::cr_cn(doi2)
   #writeLines(bib2, "data/test2.bib")
-  bib <- readLines("data/test.bib") %>% paste(collapse = "\n")
-  bib2 <- readLines("data/test2.bib") %>% paste(collapse = "\n")
+  bib <- readLines("data/test.bib", encoding = "UTF-8") %>% paste(collapse = "\n")
+  bib2 <- readLines("data/test2.bib", encoding = "UTF-8") %>% paste(collapse = "\n")
   expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib))
   expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi2, bib = bib2, type = "secondary"))
 
@@ -459,7 +461,7 @@ test_that("`metadata_add_taxonomic_change` is working", {
 
   # Test if taxonomic substitution already exists
   expect_message(
-    metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution"),
+    metadata_add_taxonomic_change("Test_2022", "flower", "tree", "leaves", "test resolution",overwrite=FALSE),
     ".*(?=Substitution already exists for )", perl = TRUE
   )
   # Expect that second substitution should not exist
@@ -544,12 +546,20 @@ testthat::test_that("`metadata_add_taxonomic_changes_list` is working", {
     taxonomic_resolution = c("species", "variety", "subspecies")
   )
   expect_silent(metadata_add_taxonomic_changes_list("Test_2022", taxonomic_changes))
-  expect_message(
-    metadata_add_taxonomic_changes_list("Test_2022", taxonomic_changes),
-    "Existing taxonomic updates have been overwritten"
+  extra_taxonomic_changes <- tibble::tibble(
+    find = c("species 1", "species 2", "species 4"),
+    replace = c("replaced species 1", "replaced species 2", "new 4"),
+    reason = c("taxonomy change", "another taxonomy change", "test reason 4"),
+    taxonomic_resolution = c("form", "species", "variety")
   )
-  # Expect that this function overwrites existing substitutions, so fourth substitutions should not exist
-  expect_error(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[4]])
+  expect_message(
+    metadata_add_taxonomic_changes_list("Test_2022", extra_taxonomic_changes),
+    ".*(?=already exist)", perl = TRUE
+  )
+  # Expect that this function appends to existing substitutions, so fourth substitutions should exist
+  expect_no_error(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[4]])
+  # but fifth substitution should not, because two of the substitutions already exist
+  expect_error(read_metadata("data/Test_2022/metadata.yml")$taxonomic_updates[[5]])
 })
 
 testthat::test_that("`metadata_find_taxonomic_change` is working", {
@@ -575,6 +585,8 @@ testthat::test_that("`metadata_find_taxonomic_change` is working", {
 test_that("`build_setup_pipeline` is working", {
 
   unlink("remake.yml")
+  unlink("build.R")
+  unlink("R/custom_R_code.R")
   unlink("config/taxon_list.csv")
   unlink(".git", recursive = TRUE)
   expect_false(file.exists("remake.yml"))
@@ -583,32 +595,67 @@ test_that("`build_setup_pipeline` is working", {
 
   expect_no_error(zip::unzip("config/testgit.zip"))
   expect_no_error(sha <- git2r::sha(git2r::last_commit()))
-  # Expect error if path name is wrong
+  # Expect error if path or method is wrong
   expect_error(build_setup_pipeline(path = "Datas"))
-  expect_silent(build_setup_pipeline())
-  expect_true(file.exists("remake.yml"))
-  expect_silent(yaml::read_yaml("remake.yml"))
+  expect_error(build_setup_pipeline(method = "grrrr"))
+
+  # Base workflow
+  expect_silent(suppressMessages(build_setup_pipeline(method = "base")))
+  expect_true(file.exists("build.R"))
   expect_true(file.exists("config/taxon_list.csv"))
+  expect_true(file.exists("R/custom_R_code.R"))
+
+  ## Check details on taxon list
   expect_silent(taxa1 <- read_csv_char("config/taxon_list.csv"))
 
-  vars <-
-    c("cleaned_name", "taxonomic_reference", "cleaned_scientific_name_id",
-    "cleaned_name_taxonomic_status", "cleaned_name_alternative_taxonomic_status",
-    "taxon_name", "taxon_id", "scientific_name_authorship", "taxon_rank",
-    "taxonomic_status", "family", "taxon_distribution", "establishment_means",
-    "scientific_name", "scientific_name_id")
-  expect_named(taxa1, vars)
-  expect_length(taxa1, 15)
+  vars <- c("taxon_name", "aligned_name", "taxon_rank")
+  expect_contains(names(taxa1), vars)
+  expect_true(length(names(taxa1)) > 2)
   expect_true(nrow(taxa1) == 0)
   expect_true(file.copy("config/taxon_list-orig.csv", "config/taxon_list.csv", TRUE))
   expect_silent(taxa2 <- read_csv_char("config/taxon_list.csv"))
-  expect_named(taxa2, vars)
-  expect_length(taxa2, 15)
+  expect_contains(names(taxa2), vars)
+  expect_true(length(names(taxa2)) > 2)
   expect_true(nrow(taxa2) == 7)
 
+  ## Now try building in a controlled env, using base method
+  base_tmp_env <- new.env()
+  expect_silent(suppressMessages(source("build.R", local = base_tmp_env)))
+
+  targets <- c(
+    "database", "database_raw", "definitions", "git_SHA", "resource_metadata", "schema", "taxon_list",
+    "Test_2022", "Test_2022_config", "Test_2022_raw", "unit_conversions", "version_number"
+  )
+  expect_equal(sort(names(base_tmp_env)), sort(targets))
+
+  # `furrr` workflow
+  furrr_tmp_env <- new.env()
+  expect_silent(suppressMessages(build_setup_pipeline(method = "furrr")))
+
+  expect_true(file.exists("build.R"))
+  expect_true(file.exists("config/taxon_list.csv"))
+  expect_true(file.exists("R/custom_R_code.R"))
+
+  expect_silent(suppressMessages(source("build.R", local = furrr_tmp_env)))
+
+  targets <- c(
+    "database", "database_raw", "dataset_ids", "f", "definitions", "git_SHA", "resource_metadata",
+    "schema", "sources", "taxon_list", "unit_conversions", "version_number"
+  )
+  expect_equal(sort(names(furrr_tmp_env)), sort(targets))
+
+  # Remake workflow
+  expect_silent(suppressMessages(build_setup_pipeline(method = "remake")))
+  expect_true(file.exists("remake.yml"))
+  expect_silent(yaml::read_yaml("remake.yml"))
+  expect_true(file.exists("config/taxon_list.csv"))
+
   unlink(".remake", recursive = TRUE)
-  expect_silent(suppressMessages(austraits_raw <- remake::make("austraits_raw")))
-  expect_silent(suppressMessages(austraits <- remake::make("austraits")))
+  expect_silent(suppressMessages(austraits_raw <- remake::make("database_raw")))
+  expect_silent(suppressMessages(austraits <- remake::make("database")))
+
+  # Save output for future tests on database
+  saveRDS(austraits, "test_austraits.rds")
 
   # Test that austraits_raw has no version number or git_SHA
   expect_null(austraits_raw$build_info$version)
@@ -619,27 +666,49 @@ test_that("`build_setup_pipeline` is working", {
   expect_equal(austraits$build_info$git_SHA, sha)
   expect_equal(austraits$build_info$git_SHA, "6c73238d8d048781d9a4f5239a03813be313f0dd")
 
-  expect_length(austraits_raw$taxa, 14)
-  expect_length(austraits$taxa, 14)
+  #expect_length(austraits_raw$taxa, 14) #not valid test with new `build_update_taxonomy setup`
+  #expect_length(austraits$taxa, 14) #not valid test with new `build_update_taxonomy setup`
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
+
+  # Compare products from three methods, except `build_info`
+  v <- setdiff(names(austraits), "build_info")
+  expect_equal(base_tmp_env$database[v], austraits[v])
+  expect_equal(furrr_tmp_env$database[v], austraits[v])
+
+  # Try building database with a different name with base method
+  expect_silent(suppressMessages(build_setup_pipeline(method = "base", database_name = "test_name")))
+
+  base_tmp_env <- new.env()
+  expect_silent(suppressMessages(source("build.R", local = base_tmp_env)))
+
+  targets <- c(
+    "test_name", "test_name_raw", "definitions", "git_SHA", "resource_metadata", "schema", "taxon_list",
+    "Test_2022", "Test_2022_config", "Test_2022_raw", "unit_conversions", "version_number"
+  )
+  expect_equal(sort(names(base_tmp_env)), sort(targets))
+
+  # Try building database with a different name with `remake` method
+  expect_silent(suppressMessages(build_setup_pipeline(method = "remake", database_name = "test_name")))
+  expect_silent(suppressMessages(test_name_raw <- remake::make("test_name_raw")))
+  expect_silent(suppressMessages(test_name <- remake::make("test_name")))
 })
 
 
-testthat::test_that("`build_find_taxon` is working", {
-  expect_silent(suppressMessages(austraits <- remake::make("austraits")))
+testthat::test_that("`dataset_find_taxon` is working", {
+  expect_silent(suppressMessages(austraits <- remake::make("test_name")))
   taxon <- c("Acacia celsa", "Acronychia acidula", "Aleurites rockinghamensis", "Syzygium sayeri")
-  expect_no_error(x <- build_find_taxon(taxon, austraits), label = "`build_find_taxon`")
+  expect_no_error(x <- dataset_find_taxon(taxon, austraits), label = "`dataset_find_taxon`")
   expect_equal(unname(x[[4]]), "Test_2022")
   expect_equal(names(x[[4]]), "Syzygium sayeri")
 })
 
 
 test_that("reports and plots are produced", {
-  expect_silent(suppressMessages(austraits <- remake::make("austraits")))
+  expect_silent(suppressMessages(austraits <- remake::make("test_name")))
   # Not testing right now
   #expect_no_error(
     #p <-
-      #austraits::plot_trait_distribution_beeswarm(
+      #plot_trait_distribution_beeswarm(
         #austraits, "huber_value", "dataset_id", highlight = "Test_2022", hide_ids = TRUE)
   #)
   expect_silent(
@@ -651,7 +720,7 @@ test_that("reports and plots are produced", {
 
 testthat::test_that("`dataset_test` is working", {
   # Expect error if no `dataset_ids` argument is input
-  expect_output(expect_error(dataset_test()))
+  expect_error(dataset_test())
   expect_silent(
     out <- dataset_test("Test_2022", reporter = testthat::SilentReporter))
   expect_in(

@@ -9,6 +9,7 @@ dataset_process(
   config_for_dataset,
   schema,
   resource_metadata,
+  unit_conversion_functions,
   filter_missing_values = TRUE
 )
 }
@@ -18,6 +19,10 @@ dataset_process(
 \item{config_for_dataset}{Config settings generated from `dataset_configure()`}
 
 \item{schema}{Schema for traits.build}
+
+\item{resource_metadata}{Metadata about the traits compilation read in from the config folder}
+
+\item{unit_conversion_functions}{`unit_conversion.csv` file read in from the config folder}
 
 \item{filter_missing_values}{Default filters missing values from the excluded data table;
 change to false to see the rows with missing values.}
@@ -33,7 +38,9 @@ study in the `remake.yml` file.
 \examples{
 \dontrun{
 dataset_process("data/Falster_2003/data.csv", dataset_configure("data/Falster_2003/metadata.yml",
-read_yaml("config/traits.yml"), get_unit_conversions("config/unit_conversions.csv")),
-get_schema())
+read_yaml("config/traits.yml")),
+get_schema(),
+get_schema("config/metadata.yml", "metadata"),
+get_unit_conversions("config/unit_conversions.csv"))
 }
 }

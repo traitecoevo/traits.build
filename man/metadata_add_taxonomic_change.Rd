@@ -9,7 +9,8 @@ metadata_add_taxonomic_change(
   find,
   replace,
   reason,
-  taxonomic_resolution
+  taxonomic_resolution,
+  overwrite = TRUE
 )
 }
 \arguments{
@@ -23,6 +24,8 @@ metadata_add_taxonomic_change(
 
 \item{taxonomic_resolution}{The rank of the most specific taxon name (or scientific name)
 to which a submitted orignal name resolves}
+
+\item{overwrite}{Parameter indicating whether preexisting find-replace entries should be overwritten. Defaults to `true`}
 }
 \value{
 `metadata.yml` file with taxonomic change added

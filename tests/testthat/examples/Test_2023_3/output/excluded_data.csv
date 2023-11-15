@@ -1,0 +1,4 @@
+error,dataset_id,taxon_name,observation_id,trait_name,value,unit,entity_type,value_type,basis_of_value,replicates,basis_of_record,life_stage,population_id,individual_id,repeat_measurements_id,temporal_context_id,source_id,location_id,entity_context_id,plot_context_id,treatment_context_id,collection_date,measurement_remarks,method_id,method_context_id,original_name
+Unsupported trait value,Test_2023_3,Gentianella barringtonensis,104,fruit_colour,brunneous,,species,mean,expert_score,,literature,adult,,,,,,,01,,,unknown/2022,,01,02,Gentianella barringtonensis
+Value out of allowable range,Test_2023_3,Lepidosperma gladiatum,132,fruit_length,3000,mm,species,mean,measurement,3,literature,adult,,,,,,,01,,,unknown/2022,Trait value refers to nut,01,04,Lepidosperma gladiatum
+Time can only contain Y & Ns,Test_2023_3,Sigesbeckia orientalis,180,flowering_time,nynnnnn134,,population,mode,expert_score,,literature,adult,01,,,,,02,01,,,unknown/2022,,01,04,Sigesbeckia orientalis

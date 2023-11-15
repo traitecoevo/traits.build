@@ -33,6 +33,19 @@ traits:
       allowed_values_min: 0.1
       allowed_values_max: 1.0e+07
       entity_URI: https://w3id.org/APD/traits/trait_0011211
+    leaf_length:
+      label: Leaf length
+      description: Length [PATO:0000122] of the leaf [PO:0025034] (including the petiole
+        [PO:0020038]), from the leaf apex [PO:0020137] to the leaf axil [PO:0009023]
+        (leaf base [PO:0020040]).;Length of a leaf or a leaf analogue, from the leaf
+        apex to the leaf axil (base), including the petiole.
+      comments: If a leaf analogue (leaflet, cladode, or phyllode) is measured instead
+        of a true leaf, this should be noted as a `context` or under `measurement_remarks`.
+      type: numeric
+      units: mm
+      allowed_values_min: 0.1
+      allowed_values_max: 100000.0
+      entity_URI: https://w3id.org/APD/traits/trait_0011213
     leaf_mass_per_area:
       label: Leaf mass per area
       description: A leaf morphology trait [TO:0000748] which is the ratio [PATO:0001470]
@@ -87,6 +100,43 @@ traits:
       allowed_values_min: 0.0
       allowed_values_max: 1.0
       entity_URI: https://w3id.org/APD/traits/trait_0011914
+    fruit_length:
+      label: Fruit length
+      description: A fruit morphology trait [TO:0002629] which is the length [PATO:0000122]
+        of a fresh [EnvThes:21976] fruit [PO:0009001] from the fruit proximal end
+        [PO:0008002] (base) to the fruit distal end [PO:0008001] (apex).;Linear dimension
+        from the base to the apex of a fresh fruit, even if this is not the longest
+        dimension.
+      type: numeric
+      units: mm
+      allowed_values_min: 0.01
+      allowed_values_max: 2000.0
+      entity_URI: https://w3id.org/APD/traits/trait_0012512
+    fruit_width:
+      label: Fruit width
+      description: A fruit morphology trait [TO:0002629] which is the width [PATO:0000921]
+        of a fresh [EnvThes:21976] fruit [PO:0009001], where width is the greatest
+        linear dimension [PATO:0001708] perpendicular to [PATO:0002434] to the fruit
+        length [PATO:0000122] and fruit height [PATO:0000119].;Greatest linear width
+        dimension of a fresh fruit, sometimes referred to as 'diameter' in fruits
+        where the width and height are identical; orthogonal to the fruit length,
+        the base-to-apex dimension.
+      type: numeric
+      units: mm
+      allowed_values_min: 0.01
+      allowed_values_max: 2000.0
+      entity_URI: https://w3id.org/APD/traits/trait_0012513
+    fruit_dehiscence:
+      label: Fruit dehiscence
+      description: A fruit morphology trait [TO:0002629] which indicates whether mature
+        [PATO:0001701] fruits [PO:0009001] are dehiscent [GO:0009900].;Binary variable,
+        dividing fruits into 'dehiscent' versus 'indehiscent' based on whether the
+        individual fruit units are dehiscent when mature.
+      type: categorical
+      allowed_values_levels:
+        dehiscent: Fruits are dehiscent when mature.
+        indehiscent: Fruits are indehiscent when mature.
+      entity_URI: https://w3id.org/APD/traits/trait_0012518
     fruit_colour:
       label: Fruit colour
       description: A fruit morphology trait [TO:0002629] which is the primary [NCIT:C25251]
@@ -127,29 +177,20 @@ traits:
       allowed_values_min: 1.0e-05
       allowed_values_max: 1000000.0
       entity_URI: https://w3id.org/APD/traits/trait_0012610
-    leaf_photosynthesis_Vcmax_per_area:
-      label: Leaf Vcmax per unit leaf area (Vcmax)
-      description: Maximum [NCIT:C25564] carboxylation [MOP:0000591] rate [PATO:0000161]
-        by the Rubisco complex [GO:0048492] in plant leaves [PO:0025034], recorded
-        per unit leaf [PO:0025034] area [PATO:0001323]. The value is a model parameter
-        [STATO:0000034] derived from the initial slope of a photosynthesis [GO:0015979]
-        A-ci response curve, the component that is carbon dioxide [CHEBI:16526] limited
-        and hence limited by Rubisco activity.;The apparent maximum rate of Rubisco
-        (ribulose 1,5-bisphosphate carboxylase/oxygenase) activity carboxylase activity
-        (carboxylation capacity), recorded per unit leaf dry mass. This is a model-derived
-        value, calculated from the portion of an A-ci response curve (curve showing
-        the photosynthetic response to increasing carbon dioxide concentrations) at
-        low carbon dioxide concentrations. This is the portion of the curve where
-        the photosynthetic rate is limited by the Rubisco activity.
-      comments: This trait is explicitly for Vcmax per leaf area measurements made
-        at a temperature other than 25 deg C. It is essential to record measurement
-        temperature as a context property as Vcmax is very sensitive to changes in
-        temperature. Measurements made at 25 deg C should be mapped to `leaf_photosynthesis_Vcmax_per_area_25C`
+    leaf_photosynthesis:
+      label: Leaf photosynthesis
+      description: Dummy trait definition to test response curves in Test Dataset 7.
       type: numeric
       units: umol/m2/s
-      allowed_values_min: 10.0
-      allowed_values_max: 300.0
-      entity_URI: https://w3id.org/APD/traits/trait_0020413
+      allowed_values_min: -5
+      allowed_values_max: 50
+    leaf_stomatal_conductance:
+      label: Leaf stomatal conductance
+      description: Second dummy trait definition to test response curves in Test Dataset 7.
+      type: numeric
+      units: mol{H2O}/m2/s
+      allowed_values_min: 0
+      allowed_values_max: 1
     plant_growth_form:
       label: Plant growth form
       description: A whole plant [PO:0000003] phenotype [NCIT:C16977] trait that summarises

@@ -3,7 +3,7 @@
 \name{process_generate_id}
 \alias{process_generate_id}
 \title{Function to generate sequence of integer ids from vector of names
-Determines number of 00s needed based on number of records.}
+Determines number of 00s needed based on number of records}
 \usage{
 process_generate_id(x, prefix, sort = FALSE)
 }
@@ -19,5 +19,5 @@ Vector of ids
 }
 \description{
 Function to generate sequence of integer ids from vector of names
-Determines number of 00s needed based on number of records.
+Determines number of 00s needed based on number of records
 }

@@ -1,0 +1,6 @@
+dataset_id,context_property,category,value,description,link_id,link_vals
+Test_2023_3,trait scoring method,method_context,scored_from_text,Trait value scored directly from taxon description.,method_context_id,04
+Test_2023_3,trait scoring method,method_context,inferred_from_species,Trait value inferred from species-level taxon description.,method_context_id,03
+Test_2023_3,trait scoring method,method_context,inferred_from_genus,Trait value inferred from genus-level taxon description.,method_context_id,02
+Test_2023_3,trait scoring method,method_context,inferred_from_family,Trait value inferred from family-level taxon description.,method_context_id,01
+Test_2023_3,entity measured,entity_context,fruit,,entity_context_id,01

@@ -55,7 +55,7 @@ metadata_create_template <- function(dataset_id,
   out$contributors <- out$contributors$elements
   out$contributors$data_collectors <- list(out$contributors$data_collectors$elements[collectors])
   out$contributors$data_collectors[[1]][] <- "unknown"
-  out$contributors[c("assistants", "austraits_curators")] <- "unknown"
+  out$contributors[c("assistants", "dataset_curators")] <- "unknown"
 
   out$dataset <-
     out$dataset$values[c("data_is_long_format", "custom_R_code", "collection_date", "taxon_name", "location_name",
@@ -96,9 +96,17 @@ metadata_create_template <- function(dataset_id,
           out[["dataset"]][[v]] <- tmp
         }
         if (v == "collection_date" && is.na(tmp)) {
-          collection_date <- readline(prompt = "Enter collection_date range in format '2007/2009': ")
+          collection_date <- readline(prompt = "\nEnter `collection_date` range in format '2007/2009': ")
           out[["dataset"]][[v]] <- collection_date
         }
+      }
+
+      # `repeat_measurements_id`
+      tmp <- menu(c("Yes", "No"), title = "\nDo all traits need `repeat_measurements_id`'s?")
+
+      if (tmp == 1) {
+        repeat_measurements_id <- TRUE
+        out[["dataset"]][["repeat_measurements_id"]] <- repeat_measurements_id
       }
 
     # Use `user_responses` to fill metadata fields
@@ -129,13 +137,19 @@ metadata_create_template <- function(dataset_id,
           out[["dataset"]][[v]] <- tmp
         }
       }
+
+      # `repeat_measurements_id`
+      if (!is.null(user_responses[["repeat_measurements_id"]]) && user_responses[["repeat_measurements_id"]] == TRUE) {
+        out[["dataset"]][["repeat_measurements_id"]] <- TRUE
+      }
+
     }
   }
 
   # Reorder elements in dataset
   order <- c("data_is_long_format", "custom_R_code", "collection_date", "taxon_name", "trait_name",
-             "value", "location_name", "individual_id", "description", "basis_of_record", "life_stage",
-             "sampling_strategy", "original_file", "notes")
+             "value", "location_name", "individual_id", "repeat_measurements_id", "description",
+             "basis_of_record", "life_stage", "sampling_strategy", "original_file", "notes")
 
   order <- order[which(order %in% names(out[["dataset"]]))]
   out[["dataset"]] <- out[["dataset"]][order]
@@ -158,7 +172,7 @@ metadata_create_template <- function(dataset_id,
 #'
 metadata_user_select_column <- function(column, choices) {
 
-  tmp <- utils::menu(choices, title = sprintf("Select column for `%s`", column))
+  tmp <- utils::menu(choices, title = sprintf("\nSelect column for `%s`", column))
 
   choices[tmp]
 }
@@ -360,8 +374,22 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
   }
 
   # Save and notify
+  location_data <-  location_data %>%
+    dplyr::select(dplyr::all_of(c(location_name, keep))) %>%
+    distinct()
+
+  # If user didn't select any variables to keep, so add defaults
+  if (is.na(keep[1])) {
+    location_data <-  location_data %>%
+    dplyr::mutate(
+      `latitude (deg)` = NA_character_,
+      `longitude (deg)` = NA_character_,
+      `description` = NA_character_,
+      )
+  }
+
   metadata$locations <- location_data %>%
-    dplyr::select(dplyr::all_of(keep)) %>%
+    dplyr::select(-dplyr::any_of("location_name")) %>%
     split(location_data[[location_name]]) %>%
     lapply(as.list)
 
@@ -371,10 +399,22 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
         red("with variables ") %+% green("'%s'\n\t") %+% red("Please complete information in %s"),
       blue(dataset_id),
       paste(names(metadata$locations), collapse = "', '"),
-      paste(keep, collapse = "', '"),
+      ifelse(is.na(keep[1]), "latitude (deg)', 'longitude (deg)', 'description", paste(keep, collapse = "', '")),
       blue(dataset_id %>% metadata_path_dataset_id())
     )
   )
+
+  if (nrow(location_data) != length(unique(location_data[[location_name]]))) {
+  message(
+    sprintf(
+      red("WARNING: The number of unique location names (%s), is less than the number rows of location data to add (%s). ") %+%
+        red("Manual editing is REQUIRED in %s to ensure each location has a single value for each location property."),
+      blue(length(unique(location_data[[location_name]]))),
+      blue(nrow(location_data)),
+      blue(dataset_id %>% metadata_path_dataset_id())
+    )
+  )
+  }
 
   write_metadata_dataset(metadata, dataset_id)
   return(invisible(metadata))
@@ -419,8 +459,8 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
     message(
       sprintf(
-        red("Existing context information detected, from the following columns in the dataset: ") %+% green("'%s'\n\t") %+%
-          red("Metadata is being appended; please review duplicates manually"),
+        red("Existing context information detected, from the following columns in the dataset: ") %+%
+        green("'%s'\n\t") %+% red("Metadata is being appended; please review duplicates manually"),
       contexts %>% purrr::map_chr(~.x[["var_in"]]) %>% paste(collapse = "', '"))
     )
   }
@@ -430,18 +470,22 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
     var_in <- metadata_user_select_names(
       paste("Indicate all columns that contain additional contextual data for ", dataset_id), v)
-    categories <- c("treatment", "plot", "temporal", "method", "entity_context")
+    categories <-
+      c("treatment_context", "plot_context", "temporal_context",
+        "method_context", "entity_context")
 
     for (i in seq_along(var_in)) {
 
       ii <- n_existing + i
       category <- metadata_user_select_names(
         paste("What category does context", var_in[i], "fit in?"), categories)
-      context_values <- data[[var_in[i]]] %>% unique() %>% na.omit()
+      context_values <- data[[var_in[i]]] %>% unique() %>% na.omit() %>% as.character()
 
       message(sprintf("\tThe following values exist for this context: %s", context_values %>% paste(collapse = ", ")))
 
       replace_needed <- readline(prompt = "Are replacement values required? (y/n) ")
+
+      description_needed <- readline(prompt = "Are descriptions required? (y/n) ")
 
       contexts[[ii]] <-
         list(
@@ -459,6 +503,18 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
         contexts[[ii]][["values"]][["value"]] <- "unknown"
       } else {
         contexts[[ii]][["values"]][["find"]] <- NULL
+      }
+
+      # Don't list the description field if no descriptions are required
+      if (tolower(description_needed) == "y") {
+        contexts[[ii]][["values"]][["description"]] <- "unknown"
+      } else {
+        contexts[[ii]][["values"]][["description"]] <- NULL
+      }
+    # If neither replacement values nor descriptions are required,
+    # there is no reason to list the values; these will be automatically read in later
+      if (tolower(replace_needed) == "n" && tolower(description_needed) == "n") {
+        contexts[[ii]][["values"]] <- NULL
       }
     }
 
@@ -813,10 +869,11 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
 #' @param reason Reason for taxonomic change
 #' @param taxonomic_resolution The rank of the most specific taxon name (or scientific name)
 #' to which a submitted orignal name resolves
+#' @param overwrite Parameter indicating whether preexisting find-replace entries should be overwritten. Defaults to `true` 
 #'
 #' @return `metadata.yml` file with taxonomic change added
 #' @export
-metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, taxonomic_resolution) {
+metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, taxonomic_resolution, overwrite = TRUE) {
 
   if (length(replace) > 1) {
     stop(sprintf(red("Cannot replace with two names! (for ") %+% green("'%s' ") %+% red("-> ") %+%
@@ -825,21 +882,36 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
   set_name <- "taxonomic_updates"
   metadata <- read_metadata_dataset(dataset_id)
 
-  to_add <- list(find = find, replace = replace, reason = reason, taxonomic_resolution = taxonomic_resolution)
+  to_add <- dplyr::tibble(find = find, replace = replace, reason = reason, taxonomic_resolution = taxonomic_resolution)
 
   # Add `set_name` category if it doesn't yet exist
   if (all(is.na(metadata[[set_name]]))) {
-    metadata[[set_name]] <- list()
+    data <- to_add
   } else {
+    data <- util_list_to_df2(metadata[[set_name]]) 
     # Check if find record already exists for that trait
-    data <- util_list_to_df2(metadata[[set_name]])
     if (find %in% data$find) {
-      message(sprintf(red("Substitution already exists for ") %+% green("'%s'"), find))
-      return(invisible())
+      # If overwrite set to false, don't add a new substitution
+      if (overwrite == FALSE) {
+        message(sprintf(red("Substitution already exists for ") %+% green("'%s'"), find))
+        return(invisible())
+      # Default is to overwrite existing substitution
+      } else {
+        message(sprintf(red("Existing substitution will be overwritten for ") %+% green("'%s'"), find))     
+        data <- data %>% 
+                  filter(.data$find != to_add$find) %>%
+                  dplyr::bind_rows(to_add) %>%
+                  filter(!.data$find == replace) %>%
+                  arrange(.data$find)
+      }
+    } else {
+      data <- dplyr::bind_rows(data, to_add) %>%
+            filter(!.data$find == replace) %>%
+            arrange(.data$find)
     }
   }
 
-  metadata[[set_name]] <- util_append_to_list(metadata[[set_name]], to_add)
+  metadata[[set_name]] <- data
 
   message(
     sprintf(red("\tAdding taxonomic change in %s") %+% red(": ") %+% green("'%s'") %+% red(" -> ") %+%
@@ -847,6 +919,7 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
     blue(dataset_id), find, replace, reason)
   )
 
+  # Write metadata
   write_metadata_dataset(metadata, dataset_id)
 
 }
@@ -869,10 +942,36 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
   metadata <- read_metadata_dataset(dataset_id)
 
   if (!all(is.na(metadata[["taxonomic_updates"]]))) {
-    message(red("Existing taxonomic updates have been overwritten"))
+
+    existing_updates <- metadata[["taxonomic_updates"]] %>% util_list_to_df2()
+    already_exist <- c()
+
+    for (i in seq_len(nrow(taxonomic_updates))) {
+      # Check if the taxonomic update already exists
+      if (taxonomic_updates[i, ]$find %in% existing_updates$find) {
+        # Overwrite existing taxonomic update if TRUE
+        existing_updates[which(existing_updates$find == taxonomic_updates[i, ]$find), ] <- taxonomic_updates[i, ]
+        already_exist <- c(already_exist, taxonomic_updates[i, ]$find)
+      } else {
+        # Otherwise, bind to end of existing taxonomic updates
+        existing_updates <- existing_updates %>% dplyr::bind_rows(taxonomic_updates[i, ])
+      }
+    }
+
+    if (length(already_exist) > 0) {
+      message(
+        sprintf(
+          green("%s") %+% red(" already exist(s) in `taxonomic_updates` and is being overwritten"),
+          paste(already_exist, collapse = ", ")
+      ))
+    }
+    # Write new taxonomic updates to metadata
+    metadata$taxonomic_updates <- existing_updates %>% dplyr::arrange(.data$find) %>% filter(!.data$find == .data$replace)
+  } else {
+
+    # Read in dataframe of taxonomic changes, split into single-row lists, and add to metadata file
+    metadata$taxonomic_updates <- taxonomic_updates %>% dplyr::filter(!.data$find == .data$replace)
   }
-  # Read in dataframe of taxonomic changes, split into single-row lists, and add to metadata file
-  metadata$taxonomic_updates <- taxonomic_updates %>% dplyr::group_split(.data$find) %>% lapply(as.list)
 
   # Write metadata
   write_metadata_dataset(metadata, dataset_id)
@@ -1022,7 +1121,7 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 
   f <- file.path("data", studies, "metadata.yml")
 
-  contents <- lapply(f, function(x) paste0(readLines(x), collapse = "\n"))
+  contents <- lapply(f, function(x) paste0(readLines(x, encoding = "UTF-8"), collapse = "\n"))
 
   if (!is.null(replace))
     txt <- sprintf("- find: %s\n  replace: %s", find, replace)
@@ -1062,15 +1161,27 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' `build_setup_pipeline` rewrites the `remake.yml` file to include new
 #' studies.
 #'
-#' @param template Template used to build
-#' @param path Path to folder with data
 #' @param dataset_ids `dataset_id`'s to include; by default includes all
+#' @param method Approach to use in build
+#' @param database_name Name of database to be built
+#' @param template Template used to build
+#' @param workers Number of workers/parallel processes to use when using
+#' method = "furrr"
 #'
 #' @return Updated `remake.yml` file
 #' @export
-build_setup_pipeline <- function(template = readLines(system.file("support", "remake.yml.whisker", package = "traits.build")),
-                                 path = "data",
-                                 dataset_ids = dir(path)) {
+build_setup_pipeline <- function(dataset_ids = dir("data"),
+                                 method = "base",
+                                 database_name = "database",
+                                 template = select_pipeline_template(method),
+                                 workers = 1
+                                 ) {
+
+  if (!method %in% c("base", "remake", "furrr")) {
+    stop(sprintf("Invalid method selected in `build_setup_pipeline`: %s", method))
+  }
+
+  path <- "data"
 
   if (!file.exists(path)) {
     stop("cannot find data directory: ", path)
@@ -1085,24 +1196,57 @@ build_setup_pipeline <- function(template = readLines(system.file("support", "re
 
   dataset_ids <- dataset_ids[has_both_files]
 
+  message(green(sprintf("Setting up build pipeline for %s studies, using `%s` method", length(dataset_ids), method)))
+
   vals <- list(
     dataset_ids = whisker::iteratelist(dataset_ids, value = "dataset_id"),
-    path = path
+    dataset_ids_vector =
+      sprintf("c(%s)", sprintf("'%s'", dataset_ids) %>% paste(collapse = ", ")),
+    path = path,
+    database_name = database_name,
+    workers = workers
     )
 
-  str <- whisker::whisker.render(template, vals)
-  writeLines(str, "remake.yml")
+  # Setup pipeline based on selected method for building
+  pipeline <- whisker::whisker.render(template, data = vals)
+
+  if (method == "base") {
+    writeLines(pipeline, "build.R")
+    message(green("\t-> build compilation using file `build.R`"))
+  }
+
+  if (method == "furrr") {
+    writeLines(pipeline, "build.R")
+    message(green("\t-> build compilation using file `build.R`"))
+
+    if (workers == 1) {
+      message(green("\nSpecify number of workers to use with the `workers` argument (default = 1)"))
+    }
+
+  }
+
+  if (method == "remake") {
+    writeLines(pipeline, "remake.yml")
+    message(green("\t-> build compilation using file `remake.yml`"))
+  }
+
+  # Check file R/custom_R_code.R exists
+  filename <- "R/custom_R_code.R"
+  if (!file.exists(filename)) {
+    dir.create("R", FALSE)
+    writeLines("\n# Put any functions you use in custom R code here\n\n", "R/custom_R_code.R")
+  }
 
   # Check taxon list exists
   filename <- "config/taxon_list.csv"
 
   if (!file.exists(filename)) {
     dplyr::tibble(
-      cleaned_name = character(),
-      taxonomic_reference = character(),
-      cleaned_scientific_name_id = character(),
-      cleaned_name_taxonomic_status = character(),
-      cleaned_name_alternative_taxonomic_status = character(),
+      aligned_name = character(),
+      taxonomic_dataset = character(),
+      aligned_scientific_name_id = character(),
+      aligned_name_taxonomic_status = character(),
+      aligned_name_alternative_taxonomic_status = character(),
       taxon_name = character(),
       taxon_id = character(),
       scientific_name_authorship = character(),
@@ -1118,6 +1262,19 @@ build_setup_pipeline <- function(template = readLines(system.file("support", "re
 }
 
 
+select_pipeline_template <- function(method) {
+
+  file <-
+  switch(method,
+    base = "build_base.whisker",
+    remake = "build_remake.whisker",
+    furrr = "build_furrr.whisker",
+    default = "build_base.whisker"
+  )
+
+  readLines(system.file("support", file, package = "traits.build"))
+}
+
 #' Find list of unique datasets within compilation containing specified taxa
 #'
 #' @param taxa A vector which contains species names
@@ -1128,7 +1285,7 @@ build_setup_pipeline <- function(template = readLines(system.file("support", "re
 #' @importFrom rlang .data
 #' @return List of unique datasets within compilation containing each taxon
 #' @export
-build_find_taxon <- function(taxa, austraits, original_name = FALSE) {
+dataset_find_taxon <- function(taxa, austraits, original_name = FALSE) {
 
   data <- austraits$traits
 

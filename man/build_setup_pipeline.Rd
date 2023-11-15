@@ -5,18 +5,24 @@
 \title{Update the `remake.yml` file with new studies}
 \usage{
 build_setup_pipeline(
-  template = readLines(system.file("support", "remake.yml.whisker", package =
-    "traits.build")),
-  path = "data",
-  dataset_ids = dir(path)
+  dataset_ids = dir("data"),
+  method = "base",
+  database_name = "database",
+  template = select_pipeline_template(method),
+  workers = 1
 )
 }
 \arguments{
+\item{dataset_ids}{`dataset_id`'s to include; by default includes all}
+
+\item{method}{Approach to use in build}
+
+\item{database_name}{Name of database to be built}
+
 \item{template}{Template used to build}
 
-\item{path}{Path to folder with data}
-
-\item{dataset_ids}{`dataset_id`'s to include; by default includes all}
+\item{workers}{Number of workers/parallel processes to use when using
+method = "furrr"}
 }
 \value{
 Updated `remake.yml` file

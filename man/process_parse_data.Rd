@@ -4,7 +4,7 @@
 \alias{process_parse_data}
 \title{Process a single dataset}
 \usage{
-process_parse_data(data, dataset_id, metadata, contexts)
+process_parse_data(data, dataset_id, metadata, contexts, schema)
 }
 \arguments{
 \item{data}{Tibble or dataframe containing the study data}
@@ -14,6 +14,8 @@ process_parse_data(data, dataset_id, metadata, contexts)
 \item{metadata}{Yaml file with metadata}
 
 \item{contexts}{Dataframe of contexts for this study}
+
+\item{schema}{Schema for traits.build}
 }
 \value{
 Tibble in long format with AusTraits formatted trait names, trait
