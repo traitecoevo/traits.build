@@ -724,12 +724,14 @@ skos:scopeNote
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "context property"@en ;
     rdfs:subClassOf oboe:Characteristic ;
+    owl:sameAs <https://w3id.org/traits.build/contexts$value> ;
+    skos:exactMatch <https://w3id.org/traits.build/contexts$value> ;
     skos:prefLabel "context property"@en .
 
 <https://w3id.org/traits.build/contexts$category>
     dcterms:description "The category of context property, with options being `plot`, `treatment`, `individual_context`, `temporal` and `method`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/contexts> ;
-    SIO:SIO_000254 <https://w3id.org/traits.build/contexts$context_property> ;
+    SIO:SIO_000254 <https://w3id.org/traits.build/context_property> ;
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "context property category"@en ;
     rdfs:subClassOf skos:scopeNote ;
@@ -738,6 +740,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/contexts$description>
     dcterms:description "Description of a specific context property value."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/contexts> ;
+    SIO:SIO_000628 <https://w3id.org/traits.build/context_property> ;
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "context property value description"@en ;
     rdfs:subClassOf dcterms:description ;
@@ -746,6 +749,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/contexts$link_id>
     dcterms:description "Variable indicating which identifier column in the traits table contains the specified `link_vals`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/contexts> ;
+    SIO:SIO_000628 <https://w3id.org/traits.build/entity_context_id>, <https://w3id.org/traits.build/method_context_id>, <https://w3id.org/traits.build/plot_context_id>, <https://w3id.org/traits.build/temporal_context_id>, <https://w3id.org/traits.build/treatment_context_id> ;
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#integer> ;
     rdfs:label "context propety link id"@en ;
     rdfs:subClassOf <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> ;
@@ -754,12 +758,14 @@ skos:scopeNote
 <https://w3id.org/traits.build/contexts$link_vals>
     dcterms:description "Unique integer identifiers that link between identifier columns in the `traits` table and the contextual properties/values in the `contexts` table."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/contexts> ;
+    SIO:SIO_000674 <https://w3id.org/traits.build/entity_context_property>, <https://w3id.org/traits.build/method_context_property>, <https://w3id.org/traits.build/plot_context_property>, <https://w3id.org/traits.build/temporal_context_property>, <https://w3id.org/traits.build/treatment_context_property> ;
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#integer> ;
     rdfs:label "context propety link vals"@en ;
     rdfs:subClassOf <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> ;
     skos:prefLabel "context propety link vals"@en .
 
 <https://w3id.org/traits.build/contexts$value>
+    oboe:measurementFor <https://w3id.org/traits.build/context_property> ;
     dcterms:description "The measured value of a context property."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/contexts> ;
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#string> ;
@@ -770,6 +776,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/contributor>
     dcterms:description "A person contributing to a dataset."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/contributors>, <https://w3id.org/traits.build/methods> ;
+    SIO:SIO_000628 <https://w3id.org/traits.build/observations_from_dataset> ;
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "contributor"@en ;
     owl:sameAs dcterms:contributor ;
@@ -863,6 +870,8 @@ skos:scopeNote
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "entity context property"@en ;
     rdfs:subClassOf oboe:Characteristic ;
+    owl:sameAs <https://w3id.org/traits.build/contexts$value> ;
+    skos:exactMatch <https://w3id.org/traits.build/contexts$value> ;
     skos:prefLabel "entity context property"@en .
 
 <https://w3id.org/traits.build/entity_type>
@@ -1005,6 +1014,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/locations$location_property>
     oboe:characteristicFor <https://w3id.org/traits.build/location> ;
+    oboe:hasValue <https://w3id.org/traits.build/locations$value> ;
     dcterms:description "The location characteristic being recorded. The name should include units of measurement, e.g. `MAT (C)`. Ideally we have at least the following variables for each location, `longitude (deg)`, `latitude (deg)`, `description`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/locations> ;
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#string> ;
@@ -1041,6 +1051,7 @@ skos:scopeNote
     skos:prefLabel "measurement"@en .
 
 <https://w3id.org/traits.build/measurement_of_entity_context_property>
+    oboe:measurementFor <https://w3id.org/traits.build/observation_of_entity_context> ;
     dcterms:description "A measurement made on an entity context property."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/entity_context_id> ;
@@ -1050,13 +1061,15 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/measurement_of_location_property>
     oboe:hasValue <https://w3id.org/traits.build/locations$value> ;
+    oboe:measurementFor <https://w3id.org/traits.build/observation_of_location>, <https://w3id.org/traits.build/observations_at_location> ;
     dcterms:description "A measurement made on a location property."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
-    rdfs:label "location property measurement"@en ;
+    rdfs:label "measurement of location property"@en ;
     rdfs:subClassOf oboe:Measurement ;
-    skos:prefLabel "location property measurement"@en .
+    skos:prefLabel "measurement of location property"@en .
 
 <https://w3id.org/traits.build/measurement_of_plot_context_property>
+    oboe:measurementFor <https://w3id.org/traits.build/observation_of_plot_context> ;
     dcterms:description "A measurement made on a plot context property."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/plot_context_id> ;
@@ -1065,6 +1078,7 @@ skos:scopeNote
     skos:prefLabel "measurement of plot context property"@en .
 
 <https://w3id.org/traits.build/measurement_of_temporal_context_property>
+    oboe:measurementFor <https://w3id.org/traits.build/observation_of_temporal_context> ;
     dcterms:description "A measurement made on a temporal context property."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/temporal_context_id> ;
@@ -1074,6 +1088,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/measurement_of_treatment_context_property>
     oboe:hasValue <https://w3id.org/traits.build/contexts$value> ;
+    oboe:measurementFor <https://w3id.org/traits.build/observation_of_treatment_context> ;
     dcterms:description "A measurement made on a treatment context property."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/treatment_context_id> ;
@@ -1111,6 +1126,8 @@ skos:scopeNote
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "method context property"@en ;
     rdfs:subClassOf oboe:Characteristic ;
+    owl:sameAs <https://w3id.org/traits.build/contexts$value> ;
+    skos:exactMatch <https://w3id.org/traits.build/contexts$value> ;
     skos:prefLabel "method context property"@en .
 
 <https://w3id.org/traits.build/method_id>
@@ -1126,6 +1143,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/methods$description>
     dcterms:description "A 1-2 sentence description of the purpose of the study."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/methods> ;
+    SIO:SIO_000628 <https://w3id.org/traits.build/methods$methods> ;
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "dataset description"@en ;
     rdfs:subClassOf dcterms:description ;
@@ -1160,51 +1178,66 @@ skos:scopeNote
     rdfs:subClassOf <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> ;
     skos:prefLabel "observation id"@en .
 
-<https://w3id.org/traits.build/observation_of_entity_context_property>
+<https://w3id.org/traits.build/observation_of_entity_context>
     oboe:characteristicFor <https://w3id.org/traits.build/entity_context_property> ;
+    oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_entity_context_property> ;
     oboe:ofEntity <https://w3id.org/traits.build/individual>, <https://w3id.org/traits.build/population>, <https://w3id.org/traits.build/taxon> ;
     dcterms:description "Observation where entity is a category of context indicating repeat observations have been made on an individual, population or species-level entity across time which might affect the entity's measured trait values."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/entity_context_id> ;
-    rdfs:label "observation of entity context property"@en ;
+    rdfs:label "observation of entity context"@en ;
     rdfs:subClassOf oboe:Observation ;
-    skos:prefLabel "observation of entity context property"@en .
+    skos:prefLabel "observation of entity context"@en .
 
-<https://w3id.org/traits.build/observation_of_plot_context_property>
+<https://w3id.org/traits.build/observation_of_location>
+    oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_location_property> ;
+    oboe:ofEntity <https://w3id.org/traits.build/location> ;
+    dcterms:description "Observation of location properties at a single location."@en ;
+    SIO:SIO_000602 SIO:SIO_000754 ;
+    SIO:SIO_000673 <https://w3id.org/traits.build/location_id> ;
+    rdfs:label "observation of location"@en ;
+    rdfs:subClassOf oboe:Observation ;
+    skos:prefLabel "observation of location"@en .
+
+<https://w3id.org/traits.build/observation_of_plot_context>
     oboe:characteristicFor <https://w3id.org/traits.build/plot_context_property> ;
+    oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_plot_context_property> ;
     oboe:ofEntity <https://w3id.org/traits.build/plot> ;
     dcterms:description "Observation where entity is a category of context indicating variation across plots at a single location might affect the trait values measured on individual or population-level entities."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/plot_context_id> ;
-    rdfs:label "observation of plot context property"@en ;
+    rdfs:label "observation of plot context"@en ;
     rdfs:subClassOf oboe:Observation ;
-    skos:prefLabel "observation of plot context property"@en .
+    skos:prefLabel "observation of plot context"@en .
 
-<https://w3id.org/traits.build/observation_of_temporal_context_property>
+<https://w3id.org/traits.build/observation_of_temporal_context>
     oboe:characteristicFor <https://w3id.org/traits.build/temporal_context_property> ;
+    oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_temporal_context_property> ;
     oboe:ofEntity <https://w3id.org/traits.build/temporal_context> ;
     dcterms:description "Observation where entity is a category of context indicating repeat observations have been made on a plot, which might affect the trait values measured on individual or population-level entities."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/temporal_context_id> ;
     rdfs:comment "Examples of temporal contexts are `sampling season`, `sampling time of day`, and sequential `observation numbers` without any linked categorical description."@en ;
-    rdfs:label "observation of temporal context property"@en ;
+    rdfs:label "observation of temporal context"@en ;
     rdfs:subClassOf oboe:Observation ;
-    skos:prefLabel "observation of temporal context property"@en .
+    skos:prefLabel "observation of temporal context"@en .
 
-<https://w3id.org/traits.build/observation_of_treatment_context_property>
+<https://w3id.org/traits.build/observation_of_treatment_context>
     oboe:characteristicFor <https://w3id.org/traits.build/treatment_context_property> ;
+    oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_treatment_context_property> ;
     oboe:ofEntity <https://w3id.org/traits.build/treatment> ;
     dcterms:description "Observation where entity is a context indicating experimental manipulations that might affect the trait values measured on an individual, population or species-level entities."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/treatment_context_id> ;
     rdfs:comment "Examples include growing temperature, growing CO2 concentrations, and nutrient amendments."@en ;
-    rdfs:label "observation of a treatment context property"@en ;
+    rdfs:label "observation of a treatment context"@en ;
     rdfs:subClassOf oboe:Observation ;
-    skos:prefLabel "observation of a treatment context property"@en .
+    skos:prefLabel "observation of a treatment context"@en .
 
 <https://w3id.org/traits.build/observations_at_location>
-    oboe:ofEntity <https://w3id.org/traits.build/location> ;
-    dcterms:description "Observation collection encompassing all observations at a single location."@en ;
+    oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_location_property>, <https://w3id.org/traits.build/trait_measurement> ;
+    oboe:ofEntity <https://w3id.org/traits.build/individual>, <https://w3id.org/traits.build/location>, <https://w3id.org/traits.build/population> ;
+    dcterms:description "Observation collection of location properties and organismal traits at a single location."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/location_id> ;
     rdfs:label "observations at location"@en ;
@@ -1212,6 +1245,7 @@ skos:scopeNote
     skos:prefLabel "observations at location"@en .
 
 <https://w3id.org/traits.build/observations_from_dataset>
+    oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_entity_context_property>, <https://w3id.org/traits.build/measurement_of_location_property>, <https://w3id.org/traits.build/measurement_of_plot_context_property>, <https://w3id.org/traits.build/measurement_of_temporal_context_property>, <https://w3id.org/traits.build/measurement_of_treatment_context_property>, <https://w3id.org/traits.build/trait_measurement> ;
     oboe:ofEntity <https://w3id.org/traits.build/??> ;
     dcterms:description "Observation collection encompassing all observations that comprise a dataset."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
@@ -1221,6 +1255,7 @@ skos:scopeNote
     skos:prefLabel "observations from dataset"@en .
 
 <https://w3id.org/traits.build/observations_from_source>
+    oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_entity_context_property>, <https://w3id.org/traits.build/measurement_of_location_property>, <https://w3id.org/traits.build/measurement_of_plot_context_property>, <https://w3id.org/traits.build/measurement_of_temporal_context_property>, <https://w3id.org/traits.build/measurement_of_treatment_context_property>, <https://w3id.org/traits.build/trait_measurement> ;
     oboe:ofEntity <https://w3id.org/traits.build/source> ;
     dcterms:description "Observation collection encompassing all observations for a single published or unpublished source."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
@@ -1230,6 +1265,7 @@ skos:scopeNote
     skos:prefLabel "observations from source"@en .
 
 <https://w3id.org/traits.build/observations_of_individual>
+    oboe:hasMeasurement <https://w3id.org/traits.build/trait_measurement> ;
     oboe:ofEntity <https://w3id.org/traits.build/individual> ;
     dcterms:description "Observation collection encompassing all observations on a single individual."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
@@ -1239,6 +1275,7 @@ skos:scopeNote
     skos:prefLabel "observations of individual"@en .
 
 <https://w3id.org/traits.build/observations_of_population>
+    oboe:hasMeasurement <https://w3id.org/traits.build/trait_measurement> ;
     oboe:ofEntity <https://w3id.org/traits.build/population> ;
     dcterms:description "Observation collection encompassing all observations on a single population."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
@@ -1248,6 +1285,7 @@ skos:scopeNote
     skos:prefLabel "observations of population"@en .
 
 <https://w3id.org/traits.build/observations_of_taxon>
+    oboe:hasMeasurement <https://w3id.org/traits.build/trait_measurement> ;
     oboe:ofEntity <https://w3id.org/traits.build/taxon> ;
     dcterms:description "Observation collection encompassing all observations on a single taxon within a single dataset."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
@@ -1269,9 +1307,9 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/plot>
     dcterms:description "A subdivision of a location, designated because some properties differ across plots within a location, which might cause differences in measured trait values between plots."@en ;
-    rdfs:label "plot"@en ;
+    rdfs:label "plot context"@en ;
     rdfs:subClassOf oboe:Entity, <https://w3id.org/traits.build/traits.build$context> ;
-    skos:prefLabel "plot"@en .
+    skos:prefLabel "plot context"@en .
 
 <https://w3id.org/traits.build/plot_context_id>
     dcterms:description "A unique integer identifier for a plot, where a plot is a distinct collection of organisms within a single geographic location, such as plants growing on different aspects or blocks in an experiment. The identifier links to specific information in the context table."@en ;
@@ -1290,6 +1328,8 @@ skos:scopeNote
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "plot context property"@en ;
     rdfs:subClassOf oboe:Characteristic ;
+    owl:sameAs <https://w3id.org/traits.build/contexts$value> ;
+    skos:exactMatch <https://w3id.org/traits.build/contexts$value> ;
     skos:prefLabel "plot context property"@en .
 
 <https://w3id.org/traits.build/population>
@@ -1331,6 +1371,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/sampling_strategy>
     dcterms:description "When available, this information is lifted verbatim from a published manuscript. For preserved specimens, this field ideally indicates which records were 'sampled' to measure a specific trait."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/methods> ;
+    SIO:SIO_000628 <https://w3id.org/traits.build/observations_from_dataset> ;
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "dataset sampling strategy"@en ;
     owl:sameAs dwc:samplingProtocol ;
@@ -1537,6 +1578,8 @@ skos:scopeNote
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "temporal context property"@en ;
     rdfs:subClassOf oboe:Characteristic ;
+    owl:sameAs <https://w3id.org/traits.build/contexts$value> ;
+    skos:exactMatch <https://w3id.org/traits.build/contexts$value> ;
     skos:prefLabel "temporal context property"@en .
 
 <https://w3id.org/traits.build/trait>
@@ -1563,6 +1606,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/trait_measurement>
     oboe:hasValue <https://w3id.org/traits.build/value> ;
+    oboe:measurementFor <https://w3id.org/traits.build/observation>, <https://w3id.org/traits.build/observations_at_location>, <https://w3id.org/traits.build/observations_from_dataset>, <https://w3id.org/traits.build/observations_from_source>, <https://w3id.org/traits.build/observations_of_individual>, <https://w3id.org/traits.build/observations_of_population>, <https://w3id.org/traits.build/observations_of_taxon> ;
     dcterms:description "A measurement made on a trait."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
     rdfs:label "trait measurement"@en ;
@@ -1657,9 +1701,9 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/treatment>
     dcterms:description "An experimental manipulation that subjects different individuals or populations to different conditions, which can lead to differences in measured trait values across treatments."@en ;
-    rdfs:label "treatment"@en ;
+    rdfs:label "treatment context"@en ;
     rdfs:subClassOf oboe:Entity, <https://w3id.org/traits.build/traits.build$context> ;
-    skos:prefLabel "treatment"@en .
+    skos:prefLabel "treatment context"@en .
 
 <https://w3id.org/traits.build/treatment_context_id>
     dcterms:description "A unique integer identifier for a treatment, where a treatment is any experimental manipulation to an organism's growing/living conditions. The identifier links to specific information in the context table."@en ;
@@ -1678,6 +1722,8 @@ skos:scopeNote
     rdfs:Datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "treatment context property"@en ;
     rdfs:subClassOf oboe:Characteristic ;
+    owl:sameAs <https://w3id.org/traits.build/contexts$value> ;
+    skos:exactMatch <https://w3id.org/traits.build/contexts$value> ;
     skos:prefLabel "treatment context property"@en .
 
 <https://w3id.org/traits.build/trinomial>

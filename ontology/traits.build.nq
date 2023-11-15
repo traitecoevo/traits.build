@@ -71,6 +71,12 @@
 <https://w3id.org/traits.build/observation> <http://www.w3.org/2000/01/rdf-schema#comment> "An observation is an assertion that an entity (e.g., biological organisms, geographic locations, or environmental features, among others) was observed by an observer. An observation primarily serves to group a set of measurements together into a single &quot;observation event&quot;. Observations are often made within a broader context. The context of an observation is given by other observations, implying that an observed entity (and specifically each corresponding measurement) contextualizes another observed entity (and its corresponding measurements). For example, an observation associated with a location may serve as context for an observation associated with an organism. In this case, the observed characteristic values of the location (such as humidity) are assumed constant for the corresponding measurements of the organism."@en .
 <https://w3id.org/traits.build/observation> <http://www.w3.org/2002/07/owl#sameAs> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation> .
 <https://w3id.org/traits.build/observations_from_dataset> <http://www.w3.org/2004/02/skos/core#prefLabel> "observations from dataset"@en .
+<https://w3id.org/traits.build/observations_from_dataset> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/trait_measurement> .
+<https://w3id.org/traits.build/observations_from_dataset> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_location_property> .
+<https://w3id.org/traits.build/observations_from_dataset> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_treatment_context_property> .
+<https://w3id.org/traits.build/observations_from_dataset> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_plot_context_property> .
+<https://w3id.org/traits.build/observations_from_dataset> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_entity_context_property> .
+<https://w3id.org/traits.build/observations_from_dataset> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_temporal_context_property> .
 <https://w3id.org/traits.build/observations_from_dataset> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection> .
 <https://w3id.org/traits.build/observations_from_dataset> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
 <https://w3id.org/traits.build/observations_from_dataset> <http://www.w3.org/2000/01/rdf-schema#label> "observations from dataset"@en .
@@ -78,6 +84,12 @@
 <https://w3id.org/traits.build/observations_from_dataset> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/??> .
 <https://w3id.org/traits.build/observations_from_dataset> <http://purl.org/dc/terms/description> "Observation collection encompassing all observations that comprise a dataset."@en .
 <https://w3id.org/traits.build/observations_from_source> <http://www.w3.org/2004/02/skos/core#prefLabel> "observations from source"@en .
+<https://w3id.org/traits.build/observations_from_source> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/trait_measurement> .
+<https://w3id.org/traits.build/observations_from_source> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_location_property> .
+<https://w3id.org/traits.build/observations_from_source> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_treatment_context_property> .
+<https://w3id.org/traits.build/observations_from_source> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_plot_context_property> .
+<https://w3id.org/traits.build/observations_from_source> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_entity_context_property> .
+<https://w3id.org/traits.build/observations_from_source> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_temporal_context_property> .
 <https://w3id.org/traits.build/observations_from_source> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection> .
 <https://w3id.org/traits.build/observations_from_source> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
 <https://w3id.org/traits.build/observations_from_source> <http://www.w3.org/2000/01/rdf-schema#label> "observations from source"@en .
@@ -85,6 +97,7 @@
 <https://w3id.org/traits.build/observations_from_source> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/source> .
 <https://w3id.org/traits.build/observations_from_source> <http://purl.org/dc/terms/description> "Observation collection encompassing all observations for a single published or unpublished source."@en .
 <https://w3id.org/traits.build/observations_of_taxon> <http://www.w3.org/2004/02/skos/core#prefLabel> "observations of taxon"@en .
+<https://w3id.org/traits.build/observations_of_taxon> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/trait_measurement> .
 <https://w3id.org/traits.build/observations_of_taxon> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection> .
 <https://w3id.org/traits.build/observations_of_taxon> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
 <https://w3id.org/traits.build/observations_of_taxon> <http://www.w3.org/2000/01/rdf-schema#label> "observations of taxon"@en .
@@ -93,13 +106,26 @@
 <https://w3id.org/traits.build/observations_of_taxon> <http://purl.org/dc/terms/description> "Observation collection encompassing all observations on a single taxon within a single dataset."@en .
 <https://w3id.org/traits.build/observations_of_taxon> <http://www.w3.org/2000/01/rdf-schema#comment> "An observation collection is a container for a set of observations."@en .
 <https://w3id.org/traits.build/observations_at_location> <http://www.w3.org/2004/02/skos/core#prefLabel> "observations at location"@en .
+<https://w3id.org/traits.build/observations_at_location> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_location_property> .
+<https://w3id.org/traits.build/observations_at_location> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/trait_measurement> .
 <https://w3id.org/traits.build/observations_at_location> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection> .
 <https://w3id.org/traits.build/observations_at_location> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
 <https://w3id.org/traits.build/observations_at_location> <http://www.w3.org/2000/01/rdf-schema#label> "observations at location"@en .
 <https://w3id.org/traits.build/observations_at_location> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build/location_id> .
 <https://w3id.org/traits.build/observations_at_location> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/location> .
-<https://w3id.org/traits.build/observations_at_location> <http://purl.org/dc/terms/description> "Observation collection encompassing all observations at a single location."@en .
+<https://w3id.org/traits.build/observations_at_location> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/population> .
+<https://w3id.org/traits.build/observations_at_location> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/individual> .
+<https://w3id.org/traits.build/observations_at_location> <http://purl.org/dc/terms/description> "Observation collection of location properties and organismal traits at a single location."@en .
+<https://w3id.org/traits.build/observation_of_location> <http://www.w3.org/2004/02/skos/core#prefLabel> "observation of location"@en .
+<https://w3id.org/traits.build/observation_of_location> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_location_property> .
+<https://w3id.org/traits.build/observation_of_location> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation> .
+<https://w3id.org/traits.build/observation_of_location> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
+<https://w3id.org/traits.build/observation_of_location> <http://www.w3.org/2000/01/rdf-schema#label> "observation of location"@en .
+<https://w3id.org/traits.build/observation_of_location> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build/location_id> .
+<https://w3id.org/traits.build/observation_of_location> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/location> .
+<https://w3id.org/traits.build/observation_of_location> <http://purl.org/dc/terms/description> "Observation of location properties at a single location."@en .
 <https://w3id.org/traits.build/observations_of_population> <http://www.w3.org/2004/02/skos/core#prefLabel> "observations of population"@en .
+<https://w3id.org/traits.build/observations_of_population> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/trait_measurement> .
 <https://w3id.org/traits.build/observations_of_population> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection> .
 <https://w3id.org/traits.build/observations_of_population> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
 <https://w3id.org/traits.build/observations_of_population> <http://www.w3.org/2000/01/rdf-schema#label> "observations of population"@en .
@@ -107,48 +133,53 @@
 <https://w3id.org/traits.build/observations_of_population> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/population> .
 <https://w3id.org/traits.build/observations_of_population> <http://purl.org/dc/terms/description> "Observation collection encompassing all observations on a single population."@en .
 <https://w3id.org/traits.build/observations_of_individual> <http://www.w3.org/2004/02/skos/core#prefLabel> "observations of individual"@en .
+<https://w3id.org/traits.build/observations_of_individual> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/trait_measurement> .
 <https://w3id.org/traits.build/observations_of_individual> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection> .
 <https://w3id.org/traits.build/observations_of_individual> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
 <https://w3id.org/traits.build/observations_of_individual> <http://www.w3.org/2000/01/rdf-schema#label> "observations of individual"@en .
 <https://w3id.org/traits.build/observations_of_individual> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build/individual_id> .
 <https://w3id.org/traits.build/observations_of_individual> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/individual> .
 <https://w3id.org/traits.build/observations_of_individual> <http://purl.org/dc/terms/description> "Observation collection encompassing all observations on a single individual."@en .
-<https://w3id.org/traits.build/observation_of_treatment_context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "observation of a treatment context property"@en .
-<https://w3id.org/traits.build/observation_of_treatment_context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation> .
-<https://w3id.org/traits.build/observation_of_treatment_context_property> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
-<https://w3id.org/traits.build/observation_of_treatment_context_property> <http://www.w3.org/2000/01/rdf-schema#label> "observation of a treatment context property"@en .
-<https://w3id.org/traits.build/observation_of_treatment_context_property> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build/treatment_context_id> .
-<https://w3id.org/traits.build/observation_of_treatment_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build/treatment_context_property> .
-<https://w3id.org/traits.build/observation_of_treatment_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/treatment> .
-<https://w3id.org/traits.build/observation_of_treatment_context_property> <http://purl.org/dc/terms/description> "Observation where entity is a context indicating experimental manipulations that might affect the trait values measured on an individual, population or species-level entities."@en .
-<https://w3id.org/traits.build/observation_of_treatment_context_property> <http://www.w3.org/2000/01/rdf-schema#comment> "Examples include growing temperature, growing CO2 concentrations, and nutrient amendments."@en .
-<https://w3id.org/traits.build/observation_of_plot_context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "observation of plot context property"@en .
-<https://w3id.org/traits.build/observation_of_plot_context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation> .
-<https://w3id.org/traits.build/observation_of_plot_context_property> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
-<https://w3id.org/traits.build/observation_of_plot_context_property> <http://www.w3.org/2000/01/rdf-schema#label> "observation of plot context property"@en .
-<https://w3id.org/traits.build/observation_of_plot_context_property> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build/plot_context_id> .
-<https://w3id.org/traits.build/observation_of_plot_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build/plot_context_property> .
-<https://w3id.org/traits.build/observation_of_plot_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/plot> .
-<https://w3id.org/traits.build/observation_of_plot_context_property> <http://purl.org/dc/terms/description> "Observation where entity is a category of context indicating variation across plots at a single location might affect the trait values measured on individual or population-level entities."@en .
-<https://w3id.org/traits.build/observation_of_entity_context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "observation of entity context property"@en .
-<https://w3id.org/traits.build/observation_of_entity_context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation> .
-<https://w3id.org/traits.build/observation_of_entity_context_property> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
-<https://w3id.org/traits.build/observation_of_entity_context_property> <http://www.w3.org/2000/01/rdf-schema#label> "observation of entity context property"@en .
-<https://w3id.org/traits.build/observation_of_entity_context_property> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build/entity_context_id> .
-<https://w3id.org/traits.build/observation_of_entity_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build/entity_context_property> .
-<https://w3id.org/traits.build/observation_of_entity_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/individual> .
-<https://w3id.org/traits.build/observation_of_entity_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/population> .
-<https://w3id.org/traits.build/observation_of_entity_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/taxon> .
-<https://w3id.org/traits.build/observation_of_entity_context_property> <http://purl.org/dc/terms/description> "Observation where entity is a category of context indicating repeat observations have been made on an individual, population or species-level entity across time which might affect the entity's measured trait values."@en .
-<https://w3id.org/traits.build/observation_of_temporal_context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "observation of temporal context property"@en .
-<https://w3id.org/traits.build/observation_of_temporal_context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation> .
-<https://w3id.org/traits.build/observation_of_temporal_context_property> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
-<https://w3id.org/traits.build/observation_of_temporal_context_property> <http://www.w3.org/2000/01/rdf-schema#label> "observation of temporal context property"@en .
-<https://w3id.org/traits.build/observation_of_temporal_context_property> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build/temporal_context_id> .
-<https://w3id.org/traits.build/observation_of_temporal_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build/temporal_context_property> .
-<https://w3id.org/traits.build/observation_of_temporal_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/temporal_context> .
-<https://w3id.org/traits.build/observation_of_temporal_context_property> <http://purl.org/dc/terms/description> "Observation where entity is a category of context indicating repeat observations have been made on a plot, which might affect the trait values measured on individual or population-level entities."@en .
-<https://w3id.org/traits.build/observation_of_temporal_context_property> <http://www.w3.org/2000/01/rdf-schema#comment> "Examples of temporal contexts are `sampling season`, `sampling time of day`, and sequential `observation numbers` without any linked categorical description."@en .
+<https://w3id.org/traits.build/observation_of_treatment_context> <http://www.w3.org/2004/02/skos/core#prefLabel> "observation of a treatment context"@en .
+<https://w3id.org/traits.build/observation_of_treatment_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_treatment_context_property> .
+<https://w3id.org/traits.build/observation_of_treatment_context> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation> .
+<https://w3id.org/traits.build/observation_of_treatment_context> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
+<https://w3id.org/traits.build/observation_of_treatment_context> <http://www.w3.org/2000/01/rdf-schema#label> "observation of a treatment context"@en .
+<https://w3id.org/traits.build/observation_of_treatment_context> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build/treatment_context_id> .
+<https://w3id.org/traits.build/observation_of_treatment_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build/treatment_context_property> .
+<https://w3id.org/traits.build/observation_of_treatment_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/treatment> .
+<https://w3id.org/traits.build/observation_of_treatment_context> <http://purl.org/dc/terms/description> "Observation where entity is a context indicating experimental manipulations that might affect the trait values measured on an individual, population or species-level entities."@en .
+<https://w3id.org/traits.build/observation_of_treatment_context> <http://www.w3.org/2000/01/rdf-schema#comment> "Examples include growing temperature, growing CO2 concentrations, and nutrient amendments."@en .
+<https://w3id.org/traits.build/observation_of_plot_context> <http://www.w3.org/2004/02/skos/core#prefLabel> "observation of plot context"@en .
+<https://w3id.org/traits.build/observation_of_plot_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_plot_context_property> .
+<https://w3id.org/traits.build/observation_of_plot_context> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation> .
+<https://w3id.org/traits.build/observation_of_plot_context> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
+<https://w3id.org/traits.build/observation_of_plot_context> <http://www.w3.org/2000/01/rdf-schema#label> "observation of plot context"@en .
+<https://w3id.org/traits.build/observation_of_plot_context> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build/plot_context_id> .
+<https://w3id.org/traits.build/observation_of_plot_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build/plot_context_property> .
+<https://w3id.org/traits.build/observation_of_plot_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/plot> .
+<https://w3id.org/traits.build/observation_of_plot_context> <http://purl.org/dc/terms/description> "Observation where entity is a category of context indicating variation across plots at a single location might affect the trait values measured on individual or population-level entities."@en .
+<https://w3id.org/traits.build/observation_of_entity_context> <http://www.w3.org/2004/02/skos/core#prefLabel> "observation of entity context"@en .
+<https://w3id.org/traits.build/observation_of_entity_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_entity_context_property> .
+<https://w3id.org/traits.build/observation_of_entity_context> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation> .
+<https://w3id.org/traits.build/observation_of_entity_context> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
+<https://w3id.org/traits.build/observation_of_entity_context> <http://www.w3.org/2000/01/rdf-schema#label> "observation of entity context"@en .
+<https://w3id.org/traits.build/observation_of_entity_context> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build/entity_context_id> .
+<https://w3id.org/traits.build/observation_of_entity_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build/entity_context_property> .
+<https://w3id.org/traits.build/observation_of_entity_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/individual> .
+<https://w3id.org/traits.build/observation_of_entity_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/population> .
+<https://w3id.org/traits.build/observation_of_entity_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/taxon> .
+<https://w3id.org/traits.build/observation_of_entity_context> <http://purl.org/dc/terms/description> "Observation where entity is a category of context indicating repeat observations have been made on an individual, population or species-level entity across time which might affect the entity's measured trait values."@en .
+<https://w3id.org/traits.build/observation_of_temporal_context> <http://www.w3.org/2004/02/skos/core#prefLabel> "observation of temporal context"@en .
+<https://w3id.org/traits.build/observation_of_temporal_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement> <https://w3id.org/traits.build/measurement_of_temporal_context_property> .
+<https://w3id.org/traits.build/observation_of_temporal_context> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation> .
+<https://w3id.org/traits.build/observation_of_temporal_context> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
+<https://w3id.org/traits.build/observation_of_temporal_context> <http://www.w3.org/2000/01/rdf-schema#label> "observation of temporal context"@en .
+<https://w3id.org/traits.build/observation_of_temporal_context> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build/temporal_context_id> .
+<https://w3id.org/traits.build/observation_of_temporal_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build/temporal_context_property> .
+<https://w3id.org/traits.build/observation_of_temporal_context> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build/temporal_context> .
+<https://w3id.org/traits.build/observation_of_temporal_context> <http://purl.org/dc/terms/description> "Observation where entity is a category of context indicating repeat observations have been made on a plot, which might affect the trait values measured on individual or population-level entities."@en .
+<https://w3id.org/traits.build/observation_of_temporal_context> <http://www.w3.org/2000/01/rdf-schema#comment> "Examples of temporal contexts are `sampling season`, `sampling time of day`, and sequential `observation numbers` without any linked categorical description."@en .
 <https://w3id.org/traits.build/measurement> <http://www.w3.org/2004/02/skos/core#prefLabel> "measurement"@en .
 <https://w3id.org/traits.build/measurement> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement> .
 <https://w3id.org/traits.build/measurement> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_001187> .
@@ -156,18 +187,28 @@
 <https://w3id.org/traits.build/measurement> <http://purl.org/dc/terms/description> "A measurement is an assertion that a characteristic of an entity had a particular value with respect to an observation event."@en .
 <https://w3id.org/traits.build/measurement> <http://www.w3.org/2002/07/owl#sameAs> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement> .
 <https://w3id.org/traits.build/trait_measurement> <http://www.w3.org/2004/02/skos/core#prefLabel> "trait measurement"@en .
+<https://w3id.org/traits.build/trait_measurement> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/observation> .
+<https://w3id.org/traits.build/trait_measurement> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/observations_from_dataset> .
+<https://w3id.org/traits.build/trait_measurement> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/observations_from_source> .
+<https://w3id.org/traits.build/trait_measurement> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/observations_of_taxon> .
+<https://w3id.org/traits.build/trait_measurement> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/observations_at_location> .
+<https://w3id.org/traits.build/trait_measurement> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/observations_of_population> .
+<https://w3id.org/traits.build/trait_measurement> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/observations_of_individual> .
 <https://w3id.org/traits.build/trait_measurement> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement> .
 <https://w3id.org/traits.build/trait_measurement> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_001187> .
 <https://w3id.org/traits.build/trait_measurement> <http://www.w3.org/2000/01/rdf-schema#label> "trait measurement"@en .
 <https://w3id.org/traits.build/trait_measurement> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasValue> <https://w3id.org/traits.build/value> .
 <https://w3id.org/traits.build/trait_measurement> <http://purl.org/dc/terms/description> "A measurement made on a trait."@en .
-<https://w3id.org/traits.build/measurement_of_location_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "location property measurement"@en .
+<https://w3id.org/traits.build/measurement_of_location_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "measurement of location property"@en .
+<https://w3id.org/traits.build/measurement_of_location_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/observation_of_location> .
+<https://w3id.org/traits.build/measurement_of_location_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/observations_at_location> .
 <https://w3id.org/traits.build/measurement_of_location_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement> .
 <https://w3id.org/traits.build/measurement_of_location_property> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_001187> .
-<https://w3id.org/traits.build/measurement_of_location_property> <http://www.w3.org/2000/01/rdf-schema#label> "location property measurement"@en .
+<https://w3id.org/traits.build/measurement_of_location_property> <http://www.w3.org/2000/01/rdf-schema#label> "measurement of location property"@en .
 <https://w3id.org/traits.build/measurement_of_location_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasValue> <https://w3id.org/traits.build/locations$value> .
 <https://w3id.org/traits.build/measurement_of_location_property> <http://purl.org/dc/terms/description> "A measurement made on a location property."@en .
 <https://w3id.org/traits.build/measurement_of_treatment_context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "measurement of treatment context property"@en .
+<https://w3id.org/traits.build/measurement_of_treatment_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/observation_of_treatment_context> .
 <https://w3id.org/traits.build/measurement_of_treatment_context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement> .
 <https://w3id.org/traits.build/measurement_of_treatment_context_property> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_001187> .
 <https://w3id.org/traits.build/measurement_of_treatment_context_property> <http://www.w3.org/2000/01/rdf-schema#label> "measurement of treatment context property"@en .
@@ -175,18 +216,21 @@
 <https://w3id.org/traits.build/measurement_of_treatment_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasValue> <https://w3id.org/traits.build/contexts$value> .
 <https://w3id.org/traits.build/measurement_of_treatment_context_property> <http://purl.org/dc/terms/description> "A measurement made on a treatment context property."@en .
 <https://w3id.org/traits.build/measurement_of_plot_context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "measurement of plot context property"@en .
+<https://w3id.org/traits.build/measurement_of_plot_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/observation_of_plot_context> .
 <https://w3id.org/traits.build/measurement_of_plot_context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement> .
 <https://w3id.org/traits.build/measurement_of_plot_context_property> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_001187> .
 <https://w3id.org/traits.build/measurement_of_plot_context_property> <http://www.w3.org/2000/01/rdf-schema#label> "measurement of plot context property"@en .
 <https://w3id.org/traits.build/measurement_of_plot_context_property> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build/plot_context_id> .
 <https://w3id.org/traits.build/measurement_of_plot_context_property> <http://purl.org/dc/terms/description> "A measurement made on a plot context property."@en .
 <https://w3id.org/traits.build/measurement_of_entity_context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "measurement of entity context property"@en .
+<https://w3id.org/traits.build/measurement_of_entity_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/observation_of_entity_context> .
 <https://w3id.org/traits.build/measurement_of_entity_context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement> .
 <https://w3id.org/traits.build/measurement_of_entity_context_property> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_001187> .
 <https://w3id.org/traits.build/measurement_of_entity_context_property> <http://www.w3.org/2000/01/rdf-schema#label> "measurement of entity context property"@en .
 <https://w3id.org/traits.build/measurement_of_entity_context_property> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build/entity_context_id> .
 <https://w3id.org/traits.build/measurement_of_entity_context_property> <http://purl.org/dc/terms/description> "A measurement made on an entity context property."@en .
 <https://w3id.org/traits.build/measurement_of_temporal_context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "measurement of temporal context property"@en .
+<https://w3id.org/traits.build/measurement_of_temporal_context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/observation_of_temporal_context> .
 <https://w3id.org/traits.build/measurement_of_temporal_context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement> .
 <https://w3id.org/traits.build/measurement_of_temporal_context_property> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_001187> .
 <https://w3id.org/traits.build/measurement_of_temporal_context_property> <http://www.w3.org/2000/01/rdf-schema#label> "measurement of temporal context property"@en .
@@ -226,15 +270,15 @@
 <https://w3id.org/traits.build/context> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity> .
 <https://w3id.org/traits.build/context> <http://www.w3.org/2000/01/rdf-schema#label> "context"@en .
 <https://w3id.org/traits.build/context> <http://purl.org/dc/terms/description> "The situation within which a trait measurement is made, which can help explain the measured trait value."@en .
-<https://w3id.org/traits.build/plot> <http://www.w3.org/2004/02/skos/core#prefLabel> "plot"@en .
+<https://w3id.org/traits.build/plot> <http://www.w3.org/2004/02/skos/core#prefLabel> "plot context"@en .
 <https://w3id.org/traits.build/plot> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity> .
 <https://w3id.org/traits.build/plot> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/traits.build/traits.build$context> .
-<https://w3id.org/traits.build/plot> <http://www.w3.org/2000/01/rdf-schema#label> "plot"@en .
+<https://w3id.org/traits.build/plot> <http://www.w3.org/2000/01/rdf-schema#label> "plot context"@en .
 <https://w3id.org/traits.build/plot> <http://purl.org/dc/terms/description> "A subdivision of a location, designated because some properties differ across plots within a location, which might cause differences in measured trait values between plots."@en .
-<https://w3id.org/traits.build/treatment> <http://www.w3.org/2004/02/skos/core#prefLabel> "treatment"@en .
+<https://w3id.org/traits.build/treatment> <http://www.w3.org/2004/02/skos/core#prefLabel> "treatment context"@en .
 <https://w3id.org/traits.build/treatment> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity> .
 <https://w3id.org/traits.build/treatment> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://w3id.org/traits.build/traits.build$context> .
-<https://w3id.org/traits.build/treatment> <http://www.w3.org/2000/01/rdf-schema#label> "treatment"@en .
+<https://w3id.org/traits.build/treatment> <http://www.w3.org/2000/01/rdf-schema#label> "treatment context"@en .
 <https://w3id.org/traits.build/treatment> <http://purl.org/dc/terms/description> "An experimental manipulation that subjects different individuals or populations to different conditions, which can lead to differences in measured trait values across treatments."@en .
 <https://w3id.org/traits.build/temporal_context> <http://www.w3.org/2004/02/skos/core#prefLabel> "temporal context"@en .
 <https://w3id.org/traits.build/temporal_context> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity> .
@@ -466,6 +510,7 @@
 <https://w3id.org/traits.build/locations$location_property> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/locations> .
 <https://w3id.org/traits.build/locations$location_property> <http://www.w3.org/2000/01/rdf-schema#label> "location property"@en .
 <https://w3id.org/traits.build/locations$location_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build/location> .
+<https://w3id.org/traits.build/locations$location_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasValue> <https://w3id.org/traits.build/locations$value> .
 <https://w3id.org/traits.build/locations$location_property> <http://purl.org/dc/terms/description> "The location characteristic being recorded. The name should include units of measurement, e.g. `MAT (C)`. Ideally we have at least the following variables for each location, `longitude (deg)`, `latitude (deg)`, `description`."@en .
 <https://w3id.org/traits.build/locations$location_property> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build/locations$value> <http://www.w3.org/2004/02/skos/core#prefLabel> "location property value"@en .
@@ -509,6 +554,7 @@
 <https://w3id.org/traits.build/elevation> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#decimal> .
 <https://w3id.org/traits.build/elevation> <http://www.w3.org/2002/07/owl#sameAs> <http://rs.tdwg.org/dwc/terms/verbatimElevation> .
 <https://w3id.org/traits.build/context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "context property"@en .
+<https://w3id.org/traits.build/context_property> <http://www.w3.org/2004/02/skos/core#exactMatch> <https://w3id.org/traits.build/contexts$value> .
 <https://w3id.org/traits.build/context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic> .
 <https://w3id.org/traits.build/context_property> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/contexts> .
 <https://w3id.org/traits.build/context_property> <http://www.w3.org/2000/01/rdf-schema#label> "context property"@en .
@@ -516,7 +562,9 @@
 <https://w3id.org/traits.build/context_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build/context_entity> .
 <https://w3id.org/traits.build/context_property> <http://purl.org/dc/terms/description> "The contextual characteristic being recorded. If applicable, name should include units of measurement, e.g. `CO2 concentration (ppm)`."@en .
 <https://w3id.org/traits.build/context_property> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/traits.build/context_property> <http://www.w3.org/2002/07/owl#sameAs> <https://w3id.org/traits.build/contexts$value> .
 <https://w3id.org/traits.build/treatment_context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "treatment context property"@en .
+<https://w3id.org/traits.build/treatment_context_property> <http://www.w3.org/2004/02/skos/core#exactMatch> <https://w3id.org/traits.build/contexts$value> .
 <https://w3id.org/traits.build/treatment_context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic> .
 <https://w3id.org/traits.build/treatment_context_property> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/contexts> .
 <https://w3id.org/traits.build/treatment_context_property> <http://www.w3.org/2000/01/rdf-schema#label> "treatment context property"@en .
@@ -524,7 +572,9 @@
 <https://w3id.org/traits.build/treatment_context_property> <http://semanticscience.org/resource/SIO_001096> <https://w3id.org/traits.build/context_property> .
 <https://w3id.org/traits.build/treatment_context_property> <http://purl.org/dc/terms/description> "A context characteristic indicating stratified treatments that might affect the trait values measured on an individual or population-level entity."@en .
 <https://w3id.org/traits.build/treatment_context_property> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/traits.build/treatment_context_property> <http://www.w3.org/2002/07/owl#sameAs> <https://w3id.org/traits.build/contexts$value> .
 <https://w3id.org/traits.build/plot_context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "plot context property"@en .
+<https://w3id.org/traits.build/plot_context_property> <http://www.w3.org/2004/02/skos/core#exactMatch> <https://w3id.org/traits.build/contexts$value> .
 <https://w3id.org/traits.build/plot_context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic> .
 <https://w3id.org/traits.build/plot_context_property> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/contexts> .
 <https://w3id.org/traits.build/plot_context_property> <http://www.w3.org/2000/01/rdf-schema#label> "plot context property"@en .
@@ -532,7 +582,9 @@
 <https://w3id.org/traits.build/plot_context_property> <http://semanticscience.org/resource/SIO_001096> <https://w3id.org/traits.build/context_property> .
 <https://w3id.org/traits.build/plot_context_property> <http://purl.org/dc/terms/description> "A context characteristic indicating stratified variation within a location that might affect the trait values measured on an individual or population-level entity."@en .
 <https://w3id.org/traits.build/plot_context_property> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/traits.build/plot_context_property> <http://www.w3.org/2002/07/owl#sameAs> <https://w3id.org/traits.build/contexts$value> .
 <https://w3id.org/traits.build/entity_context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "entity context property"@en .
+<https://w3id.org/traits.build/entity_context_property> <http://www.w3.org/2004/02/skos/core#exactMatch> <https://w3id.org/traits.build/contexts$value> .
 <https://w3id.org/traits.build/entity_context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic> .
 <https://w3id.org/traits.build/entity_context_property> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/contexts> .
 <https://w3id.org/traits.build/entity_context_property> <http://www.w3.org/2000/01/rdf-schema#label> "entity context property"@en .
@@ -540,7 +592,9 @@
 <https://w3id.org/traits.build/entity_context_property> <http://semanticscience.org/resource/SIO_001096> <https://w3id.org/traits.build/context_property> .
 <https://w3id.org/traits.build/entity_context_property> <http://purl.org/dc/terms/description> "A context characteristic indicating stratified variation across individuals or populations might affect the trait values measured."@en .
 <https://w3id.org/traits.build/entity_context_property> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/traits.build/entity_context_property> <http://www.w3.org/2002/07/owl#sameAs> <https://w3id.org/traits.build/contexts$value> .
 <https://w3id.org/traits.build/temporal_context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "temporal context property"@en .
+<https://w3id.org/traits.build/temporal_context_property> <http://www.w3.org/2004/02/skos/core#exactMatch> <https://w3id.org/traits.build/contexts$value> .
 <https://w3id.org/traits.build/temporal_context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic> .
 <https://w3id.org/traits.build/temporal_context_property> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/contexts> .
 <https://w3id.org/traits.build/temporal_context_property> <http://www.w3.org/2000/01/rdf-schema#label> "temporal context property"@en .
@@ -548,7 +602,9 @@
 <https://w3id.org/traits.build/temporal_context_property> <http://semanticscience.org/resource/SIO_001096> <https://w3id.org/traits.build/context_property> .
 <https://w3id.org/traits.build/temporal_context_property> <http://purl.org/dc/terms/description> "A context characteristic indicating stratified variation across time might affect the trait values measured."@en .
 <https://w3id.org/traits.build/temporal_context_property> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/traits.build/temporal_context_property> <http://www.w3.org/2002/07/owl#sameAs> <https://w3id.org/traits.build/contexts$value> .
 <https://w3id.org/traits.build/method_context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "method context property"@en .
+<https://w3id.org/traits.build/method_context_property> <http://www.w3.org/2004/02/skos/core#exactMatch> <https://w3id.org/traits.build/contexts$value> .
 <https://w3id.org/traits.build/method_context_property> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic> .
 <https://w3id.org/traits.build/method_context_property> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/contexts> .
 <https://w3id.org/traits.build/method_context_property> <http://www.w3.org/2000/01/rdf-schema#label> "method context property"@en .
@@ -556,14 +612,16 @@
 <https://w3id.org/traits.build/method_context_property> <http://semanticscience.org/resource/SIO_001096> <https://w3id.org/traits.build/context_property> .
 <https://w3id.org/traits.build/method_context_property> <http://purl.org/dc/terms/description> "A context characteristic indicating stratified variation in the protocol used to measure traits might affect the trait values measured."@en .
 <https://w3id.org/traits.build/method_context_property> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/traits.build/method_context_property> <http://www.w3.org/2002/07/owl#sameAs> <https://w3id.org/traits.build/contexts$value> .
 <https://w3id.org/traits.build/contexts$category> <http://www.w3.org/2004/02/skos/core#prefLabel> "context property category"@en .
 <https://w3id.org/traits.build/contexts$category> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.w3.org/2004/02/skos/core#scopeNote> .
 <https://w3id.org/traits.build/contexts$category> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/contexts> .
 <https://w3id.org/traits.build/contexts$category> <http://www.w3.org/2000/01/rdf-schema#label> "context property category"@en .
-<https://w3id.org/traits.build/contexts$category> <http://semanticscience.org/resource/SIO_000254> <https://w3id.org/traits.build/contexts$context_property> .
+<https://w3id.org/traits.build/contexts$category> <http://semanticscience.org/resource/SIO_000254> <https://w3id.org/traits.build/context_property> .
 <https://w3id.org/traits.build/contexts$category> <http://purl.org/dc/terms/description> "The category of context property, with options being `plot`, `treatment`, `individual_context`, `temporal` and `method`."@en .
 <https://w3id.org/traits.build/contexts$category> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build/contexts$value> <http://www.w3.org/2004/02/skos/core#prefLabel> "context property value"@en .
+<https://w3id.org/traits.build/contexts$value> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor> <https://w3id.org/traits.build/context_property> .
 <https://w3id.org/traits.build/contexts$value> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#MeasuredValue> .
 <https://w3id.org/traits.build/contexts$value> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://rs.tdwg.org/dwc/terms/measurementValue> .
 <https://w3id.org/traits.build/contexts$value> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/contexts> .
@@ -574,18 +632,29 @@
 <https://w3id.org/traits.build/contexts$description> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.org/dc/terms/description> .
 <https://w3id.org/traits.build/contexts$description> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/contexts> .
 <https://w3id.org/traits.build/contexts$description> <http://www.w3.org/2000/01/rdf-schema#label> "context property value description"@en .
+<https://w3id.org/traits.build/contexts$description> <http://semanticscience.org/resource/SIO_000628> <https://w3id.org/traits.build/context_property> .
 <https://w3id.org/traits.build/contexts$description> <http://purl.org/dc/terms/description> "Description of a specific context property value."@en .
 <https://w3id.org/traits.build/contexts$description> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build/contexts$link_id> <http://www.w3.org/2004/02/skos/core#prefLabel> "context propety link id"@en .
 <https://w3id.org/traits.build/contexts$link_id> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> .
 <https://w3id.org/traits.build/contexts$link_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/contexts> .
 <https://w3id.org/traits.build/contexts$link_id> <http://www.w3.org/2000/01/rdf-schema#label> "context propety link id"@en .
+<https://w3id.org/traits.build/contexts$link_id> <http://semanticscience.org/resource/SIO_000628> <https://w3id.org/traits.build/treatment_context_id> .
+<https://w3id.org/traits.build/contexts$link_id> <http://semanticscience.org/resource/SIO_000628> <https://w3id.org/traits.build/plot_context_id> .
+<https://w3id.org/traits.build/contexts$link_id> <http://semanticscience.org/resource/SIO_000628> <https://w3id.org/traits.build/entity_context_id> .
+<https://w3id.org/traits.build/contexts$link_id> <http://semanticscience.org/resource/SIO_000628> <https://w3id.org/traits.build/temporal_context_id> .
+<https://w3id.org/traits.build/contexts$link_id> <http://semanticscience.org/resource/SIO_000628> <https://w3id.org/traits.build/method_context_id> .
 <https://w3id.org/traits.build/contexts$link_id> <http://purl.org/dc/terms/description> "Variable indicating which identifier column in the traits table contains the specified `link_vals`."@en .
 <https://w3id.org/traits.build/contexts$link_id> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#integer> .
 <https://w3id.org/traits.build/contexts$link_vals> <http://www.w3.org/2004/02/skos/core#prefLabel> "context propety link vals"@en .
 <https://w3id.org/traits.build/contexts$link_vals> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> .
 <https://w3id.org/traits.build/contexts$link_vals> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/contexts> .
 <https://w3id.org/traits.build/contexts$link_vals> <http://www.w3.org/2000/01/rdf-schema#label> "context propety link vals"@en .
+<https://w3id.org/traits.build/contexts$link_vals> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build/treatment_context_property> .
+<https://w3id.org/traits.build/contexts$link_vals> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build/plot_context_property> .
+<https://w3id.org/traits.build/contexts$link_vals> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build/entity_context_property> .
+<https://w3id.org/traits.build/contexts$link_vals> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build/temporal_context_property> .
+<https://w3id.org/traits.build/contexts$link_vals> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build/method_context_property> .
 <https://w3id.org/traits.build/contexts$link_vals> <http://purl.org/dc/terms/description> "Unique integer identifiers that link between identifier columns in the `traits` table and the contextual properties/values in the `contexts` table."@en .
 <https://w3id.org/traits.build/contexts$link_vals> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#integer> .
 <https://w3id.org/traits.build/methods$methods> <http://www.w3.org/2004/02/skos/core#prefLabel> "methods"@en .
@@ -600,6 +669,7 @@
 <https://w3id.org/traits.build/methods$description> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.org/dc/terms/description> .
 <https://w3id.org/traits.build/methods$description> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/methods> .
 <https://w3id.org/traits.build/methods$description> <http://www.w3.org/2000/01/rdf-schema#label> "dataset description"@en .
+<https://w3id.org/traits.build/methods$description> <http://semanticscience.org/resource/SIO_000628> <https://w3id.org/traits.build/methods$methods> .
 <https://w3id.org/traits.build/methods$description> <http://purl.org/dc/terms/description> "A 1-2 sentence description of the purpose of the study."@en .
 <https://w3id.org/traits.build/methods$description> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build/methods$description> <http://www.w3.org/2002/07/owl#sameAs> <http://terminologies.gfbio.org/terms/ETS/datasetDescription> .
@@ -607,6 +677,7 @@
 <https://w3id.org/traits.build/sampling_strategy> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://rs.tdwg.org/dwc/terms/samplingProtocol> .
 <https://w3id.org/traits.build/sampling_strategy> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/methods> .
 <https://w3id.org/traits.build/sampling_strategy> <http://www.w3.org/2000/01/rdf-schema#label> "dataset sampling strategy"@en .
+<https://w3id.org/traits.build/sampling_strategy> <http://semanticscience.org/resource/SIO_000628> <https://w3id.org/traits.build/observations_from_dataset> .
 <https://w3id.org/traits.build/sampling_strategy> <http://purl.org/dc/terms/description> "When available, this information is lifted verbatim from a published manuscript. For preserved specimens, this field ideally indicates which records were 'sampled' to measure a specific trait."@en .
 <https://w3id.org/traits.build/sampling_strategy> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build/sampling_strategy> <http://www.w3.org/2002/07/owl#sameAs> <http://rs.tdwg.org/dwc/terms/samplingProtocol> .
@@ -664,6 +735,7 @@
 <https://w3id.org/traits.build/contributor> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/contributors> .
 <https://w3id.org/traits.build/contributor> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/methods> .
 <https://w3id.org/traits.build/contributor> <http://www.w3.org/2000/01/rdf-schema#label> "contributor"@en .
+<https://w3id.org/traits.build/contributor> <http://semanticscience.org/resource/SIO_000628> <https://w3id.org/traits.build/observations_from_dataset> .
 <https://w3id.org/traits.build/contributor> <http://purl.org/dc/terms/description> "A person contributing to a dataset."@en .
 <https://w3id.org/traits.build/contributor> <http://www.w3.org/2000/01/rdf-schema#Datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build/contributor> <http://www.w3.org/2002/07/owl#sameAs> <http://purl.org/dc/terms/contributor> .

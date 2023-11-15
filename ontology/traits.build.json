@@ -2057,6 +2057,12 @@
       "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
       },
+      "http://www.w3.org/2002/07/owl#sameAs": {
+        "@id": "https://w3id.org/traits.build/contexts$value"
+      },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": {
+        "@id": "https://w3id.org/traits.build/contexts$value"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "context property"
@@ -2072,7 +2078,7 @@
         "@id": "https://w3id.org/traits.build/contexts"
       },
       "http://semanticscience.org/resource/SIO_000254": {
-        "@id": "https://w3id.org/traits.build/contexts$context_property"
+        "@id": "https://w3id.org/traits.build/context_property"
       },
       "http://www.w3.org/2000/01/rdf-schema#Datatype": {
         "@id": "http://www.w3.org/2001/XMLSchema#string"
@@ -2098,6 +2104,9 @@
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build/contexts"
       },
+      "http://semanticscience.org/resource/SIO_000628": {
+        "@id": "https://w3id.org/traits.build/context_property"
+      },
       "http://www.w3.org/2000/01/rdf-schema#Datatype": {
         "@id": "http://www.w3.org/2001/XMLSchema#string"
       },
@@ -2122,6 +2131,23 @@
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build/contexts"
       },
+      "http://semanticscience.org/resource/SIO_000628": [
+        {
+          "@id": "https://w3id.org/traits.build/method_context_id"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/temporal_context_id"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/entity_context_id"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/plot_context_id"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/treatment_context_id"
+        }
+      ],
       "http://www.w3.org/2000/01/rdf-schema#Datatype": {
         "@id": "http://www.w3.org/2001/XMLSchema#integer"
       },
@@ -2146,6 +2172,23 @@
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build/contexts"
       },
+      "http://semanticscience.org/resource/SIO_000674": [
+        {
+          "@id": "https://w3id.org/traits.build/method_context_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/temporal_context_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/entity_context_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/plot_context_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/treatment_context_property"
+        }
+      ],
       "http://www.w3.org/2000/01/rdf-schema#Datatype": {
         "@id": "http://www.w3.org/2001/XMLSchema#integer"
       },
@@ -2163,6 +2206,9 @@
     },
     {
       "@id": "https://w3id.org/traits.build/contexts$value",
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor": {
+        "@id": "https://w3id.org/traits.build/context_property"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The measured value of a context property."
@@ -2204,6 +2250,9 @@
           "@id": "https://w3id.org/traits.build/contributors"
         }
       ],
+      "http://semanticscience.org/resource/SIO_000628": {
+        "@id": "https://w3id.org/traits.build/observations_from_dataset"
+      },
       "http://www.w3.org/2000/01/rdf-schema#Datatype": {
         "@id": "http://www.w3.org/2001/XMLSchema#string"
       },
@@ -2536,6 +2585,12 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
+      },
+      "http://www.w3.org/2002/07/owl#sameAs": {
+        "@id": "https://w3id.org/traits.build/contexts$value"
+      },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": {
+        "@id": "https://w3id.org/traits.build/contexts$value"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -3007,6 +3062,9 @@
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor": {
         "@id": "https://w3id.org/traits.build/location"
       },
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasValue": {
+        "@id": "https://w3id.org/traits.build/locations$value"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The location characteristic being recorded. The name should include units of measurement, e.g. `MAT (C)`. Ideally we have at least the following variables for each location, `longitude (deg)`, `latitude (deg)`, `description`."
@@ -3125,6 +3183,9 @@
     },
     {
       "@id": "https://w3id.org/traits.build/measurement_of_entity_context_property",
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor": {
+        "@id": "https://w3id.org/traits.build/observation_of_entity_context"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A measurement made on an entity context property."
@@ -3152,6 +3213,14 @@
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasValue": {
         "@id": "https://w3id.org/traits.build/locations$value"
       },
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor": [
+        {
+          "@id": "https://w3id.org/traits.build/observations_at_location"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/observation_of_location"
+        }
+      ],
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A measurement made on a location property."
@@ -3161,18 +3230,21 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
-        "@value": "location property measurement"
+        "@value": "measurement of location property"
       },
       "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
-        "@value": "location property measurement"
+        "@value": "measurement of location property"
       }
     },
     {
       "@id": "https://w3id.org/traits.build/measurement_of_plot_context_property",
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor": {
+        "@id": "https://w3id.org/traits.build/observation_of_plot_context"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A measurement made on a plot context property."
@@ -3197,6 +3269,9 @@
     },
     {
       "@id": "https://w3id.org/traits.build/measurement_of_temporal_context_property",
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor": {
+        "@id": "https://w3id.org/traits.build/observation_of_temporal_context"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A measurement made on a temporal context property."
@@ -3223,6 +3298,9 @@
       "@id": "https://w3id.org/traits.build/measurement_of_treatment_context_property",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasValue": {
         "@id": "https://w3id.org/traits.build/contexts$value"
+      },
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor": {
+        "@id": "https://w3id.org/traits.build/observation_of_treatment_context"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3342,6 +3420,12 @@
       "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
       },
+      "http://www.w3.org/2002/07/owl#sameAs": {
+        "@id": "https://w3id.org/traits.build/contexts$value"
+      },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": {
+        "@id": "https://w3id.org/traits.build/contexts$value"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "method context property"
@@ -3390,6 +3474,9 @@
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build/methods"
+      },
+      "http://semanticscience.org/resource/SIO_000628": {
+        "@id": "https://w3id.org/traits.build/methods$methods"
       },
       "http://www.w3.org/2000/01/rdf-schema#Datatype": {
         "@id": "http://www.w3.org/2001/XMLSchema#string"
@@ -3495,9 +3582,12 @@
       }
     },
     {
-      "@id": "https://w3id.org/traits.build/observation_of_entity_context_property",
+      "@id": "https://w3id.org/traits.build/observation_of_entity_context",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor": {
         "@id": "https://w3id.org/traits.build/entity_context_property"
+      },
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement": {
+        "@id": "https://w3id.org/traits.build/measurement_of_entity_context_property"
       },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": [
         {
@@ -3522,20 +3612,53 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
-        "@value": "observation of entity context property"
+        "@value": "observation of entity context"
       },
       "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
-        "@value": "observation of entity context property"
+        "@value": "observation of entity context"
       }
     },
     {
-      "@id": "https://w3id.org/traits.build/observation_of_plot_context_property",
+      "@id": "https://w3id.org/traits.build/observation_of_location",
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement": {
+        "@id": "https://w3id.org/traits.build/measurement_of_location_property"
+      },
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
+        "@id": "https://w3id.org/traits.build/location"
+      },
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "Observation of location properties at a single location."
+      },
+      "http://semanticscience.org/resource/SIO_000602": {
+        "@id": "http://semanticscience.org/resource/SIO_000754"
+      },
+      "http://semanticscience.org/resource/SIO_000673": {
+        "@id": "https://w3id.org/traits.build/location_id"
+      },
+      "http://www.w3.org/2000/01/rdf-schema#label": {
+        "@language": "en",
+        "@value": "observation of location"
+      },
+      "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
+        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "observation of location"
+      }
+    },
+    {
+      "@id": "https://w3id.org/traits.build/observation_of_plot_context",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor": {
         "@id": "https://w3id.org/traits.build/plot_context_property"
+      },
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement": {
+        "@id": "https://w3id.org/traits.build/measurement_of_plot_context_property"
       },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/plot"
@@ -3552,20 +3675,23 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
-        "@value": "observation of plot context property"
+        "@value": "observation of plot context"
       },
       "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
-        "@value": "observation of plot context property"
+        "@value": "observation of plot context"
       }
     },
     {
-      "@id": "https://w3id.org/traits.build/observation_of_temporal_context_property",
+      "@id": "https://w3id.org/traits.build/observation_of_temporal_context",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor": {
         "@id": "https://w3id.org/traits.build/temporal_context_property"
+      },
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement": {
+        "@id": "https://w3id.org/traits.build/measurement_of_temporal_context_property"
       },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/temporal_context"
@@ -3586,20 +3712,23 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
-        "@value": "observation of temporal context property"
+        "@value": "observation of temporal context"
       },
       "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
-        "@value": "observation of temporal context property"
+        "@value": "observation of temporal context"
       }
     },
     {
-      "@id": "https://w3id.org/traits.build/observation_of_treatment_context_property",
+      "@id": "https://w3id.org/traits.build/observation_of_treatment_context",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor": {
         "@id": "https://w3id.org/traits.build/treatment_context_property"
+      },
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement": {
+        "@id": "https://w3id.org/traits.build/measurement_of_treatment_context_property"
       },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/treatment"
@@ -3620,24 +3749,40 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
-        "@value": "observation of a treatment context property"
+        "@value": "observation of a treatment context"
       },
       "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
-        "@value": "observation of a treatment context property"
+        "@value": "observation of a treatment context"
       }
     },
     {
       "@id": "https://w3id.org/traits.build/observations_at_location",
-      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
-        "@id": "https://w3id.org/traits.build/location"
-      },
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement": [
+        {
+          "@id": "https://w3id.org/traits.build/trait_measurement"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/measurement_of_location_property"
+        }
+      ],
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": [
+        {
+          "@id": "https://w3id.org/traits.build/individual"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/population"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/location"
+        }
+      ],
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "Observation collection encompassing all observations at a single location."
+        "@value": "Observation collection of location properties and organismal traits at a single location."
       },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000754"
@@ -3659,6 +3804,26 @@
     },
     {
       "@id": "https://w3id.org/traits.build/observations_from_dataset",
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement": [
+        {
+          "@id": "https://w3id.org/traits.build/measurement_of_temporal_context_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/measurement_of_entity_context_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/measurement_of_plot_context_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/measurement_of_treatment_context_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/measurement_of_location_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/trait_measurement"
+        }
+      ],
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/??"
       },
@@ -3686,6 +3851,26 @@
     },
     {
       "@id": "https://w3id.org/traits.build/observations_from_source",
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement": [
+        {
+          "@id": "https://w3id.org/traits.build/measurement_of_temporal_context_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/measurement_of_entity_context_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/measurement_of_plot_context_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/measurement_of_treatment_context_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/measurement_of_location_property"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/trait_measurement"
+        }
+      ],
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/source"
       },
@@ -3713,6 +3898,9 @@
     },
     {
       "@id": "https://w3id.org/traits.build/observations_of_individual",
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement": {
+        "@id": "https://w3id.org/traits.build/trait_measurement"
+      },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/individual"
       },
@@ -3740,6 +3928,9 @@
     },
     {
       "@id": "https://w3id.org/traits.build/observations_of_population",
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement": {
+        "@id": "https://w3id.org/traits.build/trait_measurement"
+      },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/population"
       },
@@ -3767,6 +3958,9 @@
     },
     {
       "@id": "https://w3id.org/traits.build/observations_of_taxon",
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement": {
+        "@id": "https://w3id.org/traits.build/trait_measurement"
+      },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/taxon"
       },
@@ -3864,7 +4058,7 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
-        "@value": "plot"
+        "@value": "plot context"
       },
       "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
         {
@@ -3876,7 +4070,7 @@
       ],
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
-        "@value": "plot"
+        "@value": "plot context"
       }
     },
     {
@@ -3930,6 +4124,12 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
+      },
+      "http://www.w3.org/2002/07/owl#sameAs": {
+        "@id": "https://w3id.org/traits.build/contexts$value"
+      },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": {
+        "@id": "https://w3id.org/traits.build/contexts$value"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -4057,6 +4257,9 @@
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build/methods"
+      },
+      "http://semanticscience.org/resource/SIO_000628": {
+        "@id": "https://w3id.org/traits.build/observations_from_dataset"
       },
       "http://www.w3.org/2000/01/rdf-schema#Datatype": {
         "@id": "http://www.w3.org/2001/XMLSchema#string"
@@ -4755,6 +4958,12 @@
       "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
       },
+      "http://www.w3.org/2002/07/owl#sameAs": {
+        "@id": "https://w3id.org/traits.build/contexts$value"
+      },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": {
+        "@id": "https://w3id.org/traits.build/contexts$value"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "temporal context property"
@@ -4860,6 +5069,29 @@
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasValue": {
         "@id": "https://w3id.org/traits.build/value"
       },
+      "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor": [
+        {
+          "@id": "https://w3id.org/traits.build/observations_of_individual"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/observations_of_population"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/observations_at_location"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/observations_of_taxon"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/observations_from_source"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/observations_from_dataset"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/observation"
+        }
+      ],
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A measurement made on a trait."
@@ -5170,7 +5402,7 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
-        "@value": "treatment"
+        "@value": "treatment context"
       },
       "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
         {
@@ -5182,7 +5414,7 @@
       ],
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
-        "@value": "treatment"
+        "@value": "treatment context"
       }
     },
     {
@@ -5236,6 +5468,12 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#subClassOf": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
+      },
+      "http://www.w3.org/2002/07/owl#sameAs": {
+        "@id": "https://w3id.org/traits.build/contexts$value"
+      },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": {
+        "@id": "https://w3id.org/traits.build/contexts$value"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
