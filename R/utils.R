@@ -102,9 +102,10 @@ util_separate_and_sort <- function(x, sep = " ") {
   # For those cells, split, sort then combine
   x[i] <- x[i] %>%
       stringr::str_split(" ") %>%
-      lapply(function(xi) xi %>% sort() %>% paste(collapse = " ")) %>%
+      lapply(function(xi) xi %>% sort() %>% unique() %>% paste(collapse = " ")) %>%
       unlist()
   x
+
 }
 
 #'  Convert dataframe to list

@@ -190,7 +190,7 @@ dataset_process <- function(filename_data_raw,
 
   # Record methods
   methods <- process_format_methods(metadata, dataset_id, sources, contributors)
-  
+
   # Retrieve taxonomic details for known species
   taxonomic_updates <-
     traits %>%
@@ -204,7 +204,7 @@ dataset_process <- function(filename_data_raw,
 
   # Taxon names explicitly excluded in metadata also excluded from taxonomic updates table.
   if (!is.na(metadata[["exclude_observations"]][1])) {
-    taxa_to_exclude <- 
+    taxa_to_exclude <-
         metadata[["exclude_observations"]] %>%
         traits.build::util_list_to_df2() %>%
         dplyr::mutate(
@@ -213,7 +213,7 @@ dataset_process <- function(filename_data_raw,
         tidyr::unnest_longer(.data$find) %>%
         dplyr::filter(.data$variable == "taxon_name")
 
-    taxonomic_updates <- 
+    taxonomic_updates <-
       taxonomic_updates %>%
       dplyr::filter(!.data$aligned_name %in% taxa_to_exclude$find)
   }
@@ -279,7 +279,7 @@ dataset_process <- function(filename_data_raw,
 #' Build dataset
 #'
 #' Build specified dataset. This function completes three steps, which can be executed separately if desired:
-#' `dataset_configure`, `dataset_process`, `build_update_taxonomy`
+#' `dataset_configure`, `dataset_process`, `dataset_update_taxonomy`
 #'
 #' @param filename_metadata Metadata yaml file for a given study
 #' @param filename_data_raw Raw `data.csv` file for any given study
@@ -319,7 +319,7 @@ dataset_build <- function(
   dataset_raw <- dataset_process(
     filename_data_raw, dataset_config, schema, resource_metadata, unit_conversion_functions,
     filter_missing_values = filter_missing_values)
-  dataset <- build_update_taxonomy(dataset_raw, taxon_list)
+  dataset <- dataset_update_taxonomy(dataset_raw, taxon_list)
 
   dataset
 }
@@ -1873,13 +1873,13 @@ build_combine <- function(..., d = list(...)) {
 #' @importFrom rlang .data
 #'
 #' @export
-build_update_taxonomy <- function(austraits_raw, taxa) {
+dataset_update_taxonomy <- function(austraits_raw, taxa) {
 
   columns_in_taxon_list <- names(taxa)
- 
+
   # incoming table from austraits_raw is a list of all taxa for the study
-  # `original_name` and `aligned_name` will be different if 
-  # there were taxonomic_updates specified in metadata file  
+  # `original_name` and `aligned_name` will be different if
+  # there were taxonomic_updates specified in metadata file
   austraits_raw$taxonomic_updates <-
     austraits_raw$taxonomic_updates %>%
     dplyr::left_join(
@@ -1909,7 +1909,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::distinct() %>%
     util_df_convert_character() %>%
     dplyr::mutate(
-      # If no taxonomic resolution is specified from taxonomic_updates, 
+      # If no taxonomic resolution is specified from taxonomic_updates,
       # then the name's taxonomic resolution is the taxon_rank for the taxon name.
       taxonomic_resolution = ifelse(
         .data$taxon_name %in% taxa$aligned_name,
@@ -1920,7 +1920,7 @@ build_update_taxonomy <- function(austraits_raw, taxa) {
       # Create variable `name_to_match_to` which specifies the part of the taxon name to which matches can be made.
       # This step requires taxon_rank.
       name_to_match_to = stringr::str_replace(.data$taxon_name, " \\[.+",""),
-      name_to_match_to = ifelse(!.data$taxon_rank %in% c("species", "subspecies", "series", "variety", "form"), 
+      name_to_match_to = ifelse(!.data$taxon_rank %in% c("species", "subspecies", "series", "variety", "form"),
                                 stringr::word(.data$taxon_name,1), .data$name_to_match_to)
     ) %>%
     # Remove taxon_rank, as it is about to be merged back in, but matches will now be possible to more rows.
