@@ -253,19 +253,36 @@ dataset_test_worker <-
       expect(
         is.null(error),
         sprintf("%s threw an error:\n\n" %+% red("%s"), info, paste(error, collapse = ",")))
-      invisible(NULL)
+      invisible(object)
+    }
+
+    expect_no_warning <- function(object, ..., info) {
+      warning <- tryCatch({
+        object
+        NULL
+      }, warning = function(w) {
+        w
+      })
+      expect(is.null(warning), info)
     }
 
     expect_list_elements_contains_names <- function(object, expected, info) {
       for (i in seq_along(object))
         expect_contains(names(object[[i]]), expected, info = paste(info, i))
-      invisible(NULL)
+      invisible(object)
     }
 
     expect_list_elements_allowed_names <- function(object, allowed, info, label) {
       for (i in seq_along(object))
         expect_allowed(names(object[[i]]), allowed, info = paste(info, i), label = "field names")
-      invisible(NULL)
+      invisible(object)
+    }
+
+    expect_list_elements_exact_names <- function(object, expected, info) {
+      for (i in seq_along(object))
+        expect_contains(names(object[[i]]), expected, info = paste(info, i))
+        expect_allowed(names(object[[i]]), expected, info = paste(info, i), label = "field names")
+      invisible(object)
     }
 
     expect_dataframe_valid <- function(data, info, label) {
@@ -596,7 +613,7 @@ dataset_test_worker <-
         # Traits
         expect_list_elements_contains_names(
           metadata[["traits"]],
-          schema$metadata$elements$traits$elements[1:3] %>% names(),
+          schema$metadata$elements$traits$elements[1:3] %>% names(), # Add `value_type` and `basis_of_value`
           info = paste0(red(f), "\ttrait")
         )
 
@@ -705,19 +722,14 @@ dataset_test_worker <-
         }
 
         # Substitutions
-        ## TODO do the same for `taxonomic_updates` and `exclude_observations`?
         if (!is.na(metadata[["substitutions"]][1])) {
 
-          expect_list_elements_contains_names(
+          expect_list_elements_exact_names(
             metadata[["substitutions"]],
             schema$metadata$elements$substitutions$values %>% names(),
             info = paste0(red(f), "\tsubstitution")
           )
-          expect_list_elements_allowed_names(
-            metadata[["substitutions"]],
-            schema$metadata$elements$substitutions$values %>% names(),
-            info = paste0(red(f), "\tsubstitution")
-          )
+
           trait_names <- sapply(metadata[["substitutions"]], "[[", "trait_name")
           expect_is_in(
             unique(trait_names), definitions$elements %>% names(),
@@ -731,7 +743,7 @@ dataset_test_worker <-
           # Check for allowable values of categorical variables
           expect_no_error(
             x <- metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name),
-            info = paste0(red(f), "\tconverting substitutions to a dataframe and splitting by `trait_name`") # Check
+            info = paste0(red(f), "\tconverting substitutions to a dataframe and splitting by `trait_name`")
           )
 
           for (trait in names(x)) {
@@ -753,6 +765,120 @@ dataset_test_worker <-
                   "%s\tsubstitutions - `%s` has invalid replacement values",
                   red(f), trait),
                 label = failing %>% paste(collapse = ", ")
+              )
+            }
+          }
+        }
+
+        # Taxonomic updates
+        if (!is.na(metadata[["taxonomic_updates"]][1])) {
+
+          expect_list_elements_exact_names(
+            metadata[["taxonomic_updates"]],
+            schema$metadata$elements$taxonomic_updates$values %>% names(),
+            info = paste0(red(f), "\ttaxonomic_update")
+          )
+          taxon_names <- sapply(metadata[["taxonomic_updates"]], "[[", "find")
+          expect_is_in(
+            unique(taxon_names), data[[metadata[["dataset"]][["taxon_name"]]]] %>% unique(),
+            info = paste0(red(f), "\ttaxonomic_updates"), label = "`taxon_name`'s"
+          )
+
+        }
+
+        # Check that special characters do not make it into the data
+        expect_no_error(
+          parsed_data <- data %>%
+            process_parse_data(dataset_id, metadata, contexts, schema),
+          info = sprintf("%s\t`process_parse_data`", red(dataset_id)))
+
+        expect_allowed_text(
+          parsed_data$traits$value, is_data = TRUE,
+          info = sprintf("%s", red(files[1]))
+        )
+
+        # Process data so that you can check excluded observations
+        parsed_data <-
+          parsed_data$traits %>%
+          process_add_all_columns(
+            c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
+              "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
+          )
+
+        # Replace original `location_id` with a new `location_id`
+        if (nrow(locations) > 0) {
+          parsed_data <-
+            parsed_data %>%
+            dplyr::select(-dplyr::all_of(c("location_id"))) %>%
+            dplyr::left_join(
+              by = c("location_name"),
+              locations %>% dplyr::select(dplyr::all_of(c("location_name", "location_id"))) %>% dplyr::distinct()
+            )
+          parsed_data <-
+            parsed_data %>%
+            mutate(
+              location_id = ifelse(.data$entity_type == "species", NA_character_, .data$location_id)
+            )
+        }
+
+        # Where missing, fill variables in traits table with values from locations
+        # Trait metadata should probably have precedence -- right now trait metadata
+        # is being read in during `process_parse_data` and getting overwritten here #TODO
+        # If process.R changes, this needs to be updated
+        if (nrow(locations) > 0) {
+          vars <- c("basis_of_record", "life_stage", "collection_date",
+                    "measurement_remarks", "entity_type")
+
+          for (v in vars) {
+            # Merge into traits from location level
+            if (v %in% unique(locations$location_property)) {
+              traits_tmp <- parsed_data %>%
+                dplyr::left_join(
+                  by = "location_id",
+                  locations %>%
+                    tidyr::pivot_wider(names_from = "location_property", values_from = "value") %>%
+                    mutate(col_tmp = .data[[v]]) %>%
+                    dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
+                    stats::na.omit()
+                )
+              # Use location level value if present
+              parsed_data[[v]] <- ifelse(!is.na(traits_tmp[["col_tmp"]]), traits_tmp[["col_tmp"]], parsed_data[[v]])
+            }
+          }
+        }
+
+        # Excluded observations
+        if (!is.na(metadata[["exclude_observations"]][1])) {
+
+          expect_list_elements_exact_names(
+            metadata[["exclude_observations"]],
+            schema$metadata$elements$exclude_observations$values %>% names(),
+            info = paste0(red(f), "\texclude_observations")
+          )
+
+          # Check for allowable values of categorical variables
+          expect_no_error(
+            x <- metadata[["exclude_observations"]] %>% util_list_to_df2() %>% split(.$variable),
+            info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe and splitting by `variable`")
+          )
+
+          for (variable in names(x)) {
+
+            find_values <- x[[variable]][["find"]] %>% unique()
+
+            # If the variable to be excluded is a trait:
+            if (variable %in% traits$trait_name) {
+              expect_is_in(
+                find_values,
+                # Extract values from the data for that variable
+                parsed_data %>% filter(.data$trait_name == variable) %>% dplyr::pull(.data$value) %>% unique(),
+                info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
+              )
+            # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
+            } else {
+              expect_is_in(
+                find_values, parsed_data %>% dplyr::pull(variable) %>% unique(),
+                info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
             }
           }
@@ -829,17 +955,6 @@ dataset_test_worker <-
 
         }
 
-        # Check that special characters do not make it into the data
-        expect_no_error(
-          parsed_data <- data %>%
-            process_parse_data(dataset_id, metadata, contexts, schema),
-          info = sprintf("%s\t`process_parse_data`", red(dataset_id)))
-
-        expect_allowed_text(
-          parsed_data$traits$value, is_data = TRUE,
-          info = sprintf("%s", red(files[1]))
-        )
-
         expect_false(
           nrow(metadata[["traits"]] %>% util_list_to_df2() %>% dplyr::filter(!is.na(.data$trait_name))) == 0,
           info = paste0(red(f), "\ttraits - only contain NA `trait_name`'s"))
@@ -865,23 +980,27 @@ dataset_test_worker <-
 
           # Check that dataset can pivot wider
           if (nrow(dataset$traits) > 0) {
-            expect_equal(
-              dataset$traits %>%
-                select(
-                  dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "value_type",
-                  "repeat_measurements_id", "method_id", "method_context_id"))
-                ) %>%
-                tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
-                tidyr::pivot_longer(cols = 7:ncol(.)) %>%
-                dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
-                select(
-                  dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates", "observation_id",
-                  "value_type")), everything()
-                ) %>%
-                filter(.data$number_of_duplicates > 1) %>%
-                nrow(),
-              0, # Expect nrow() = 0
+            expect_true(
+              dataset %>% check_pivot_wider(),
               info = sprintf("%s\tduplicate rows detected; `traits` table cannot pivot wider", red(dataset_id))
+            )
+          }
+
+          # Test `austraits` functions
+          # Testing per study, not on all studies combined (is this ideal?)
+          # I'm not testing whether the functions work as intended, just that they throw no error
+
+          expect_no_warning(
+            dataset_wider <- db_traits_pivot_wider(dataset$traits),
+            info = paste0(red(dataset_id), "\t`db_traits_pivot_wider` threw a warning; duplicate rows detected")
+          )
+
+          if (exists("dataset_wider")) {
+            expect_no_warning(
+              expect_no_error(
+                dataset_longer <- db_traits_pivot_longer(dataset_wider),
+                info = paste0(red(dataset_id), "\t`db_traits_pivot_longer`")),
+              info = paste0(red(dataset_id), "\t`db_traits_pivot_longer` threw a warning")
             )
           }
         }

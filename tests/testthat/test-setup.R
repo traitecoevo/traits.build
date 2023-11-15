@@ -616,7 +616,7 @@ test_that("`build_setup_pipeline` is working", {
   expect_silent(taxa2 <- read_csv_char("config/taxon_list.csv"))
   expect_contains(names(taxa2), vars)
   expect_true(length(names(taxa2)) > 2)
-  expect_true(nrow(taxa2) == 7)
+  expect_true(nrow(taxa2) == 232)
 
   ## Now try building in a controlled env, using base method
   base_tmp_env <- new.env()
@@ -661,7 +661,7 @@ test_that("`build_setup_pipeline` is working", {
   expect_null(austraits_raw$build_info$version)
   expect_null(austraits_raw$build_info$git_SHA)
   # Test that austraits has version and git_SHA from testgit folder
-  expect_equal(austraits$build_info$version, "4.0.0")
+  expect_equal(austraits$build_info$version, "5.0.0")
   expect_type(austraits$build_info$git_SHA, "character")
   expect_equal(austraits$build_info$git_SHA, sha)
   expect_equal(austraits$build_info$git_SHA, "6c73238d8d048781d9a4f5239a03813be313f0dd")

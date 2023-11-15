@@ -21,15 +21,15 @@ Test_2023_2,Acacia celsa,006,leaf_N_per_dry_mass,21.4,mg/g,species,raw,measureme
 Test_2023_2,Acacia celsa,006,leaf_area,2786,mm2,species,raw,measurement,1,field,adult,,,,,Test_2022,,,,,2004-03,,01,,Acacia celsa
 Test_2023_2,Acacia celsa,006,leaf_mass_per_area,145,g/m2,species,raw,measurement,1,field,adult,,,,,Test_2022,,,,,2004-03,,01,,Acacia celsa
 Test_2023_2,Acacia celsa,006,wood_density,0.498,mg/mm3,species,raw,measurement,1,field,adult,,,,,Test_2022,,,,,2004-03,,01,,Acacia celsa
-Test_2023_2,Acmena graveolens,007,branch_mass_fraction,0.67,mg/mg,population,,,,field_experiment,juvenile,02,,,,Test_2002,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Acmena graveolens
-Test_2023_2,Acmena graveolens,007,huber_value,0.000139742873113471,mm2{sapwood}/mm2{leaf},population,mean,,,field_experiment,juvenile,02,,,,Test_2002,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Acmena graveolens
-Test_2023_2,Acmena graveolens,007,huber_value,0.000139742873113471,mm2{sapwood}/mm2{leaf},population,maximum,,,field_experiment,juvenile,02,,,,Test_2002,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Acmena graveolens
-Test_2023_2,Acmena graveolens,007,huber_value,0.000327118089630357,mm2{sapwood}/mm2{leaf},population,,,,field_experiment,juvenile,02,,,,Test_2002,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Acmena graveolens
-Test_2023_2,Acmena graveolens,007,huber_value,0.000374953130858643,mm2{sapwood}/mm2{leaf},population,,,,field_experiment,juvenile,02,,,,Test_2002,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Acmena graveolens
-Test_2023_2,Acmena graveolens,008,leaf_N_per_dry_mass,15.5,mg/g,species,,,,field,,,,,,Test_2002,,,,,,Test dataset-level measurement_remarks,01,,Acmena graveolens
-Test_2023_2,Acmena graveolens,008,leaf_area,5246,mm2,species,,,,field,,,,,,Test_2002,,,,,,Test dataset-level measurement_remarks,01,,Acmena graveolens
-Test_2023_2,Acmena graveolens,008,leaf_mass_per_area,151,g/m2,species,,measurement,,field,,,,,,Test_2002,,,,,,Test dataset-level measurement_remarks,01,,Acmena graveolens
-Test_2023_2,Acmena graveolens,008,wood_density,0.599,mg/mm3,species,,,,field,,,,,,Test_2002,,,,,,Test dataset-level measurement_remarks,01,,Acmena graveolens
+Test_2023_2,Syzygium graveolens,007,branch_mass_fraction,0.67,mg/mg,population,,,,field_experiment,juvenile,02,,,,Test_2002,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Acmena graveolens
+Test_2023_2,Syzygium graveolens,007,huber_value,0.000139742873113471,mm2{sapwood}/mm2{leaf},population,mean,,,field_experiment,juvenile,02,,,,Test_2002,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Acmena graveolens
+Test_2023_2,Syzygium graveolens,007,huber_value,0.000139742873113471,mm2{sapwood}/mm2{leaf},population,maximum,,,field_experiment,juvenile,02,,,,Test_2002,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Acmena graveolens
+Test_2023_2,Syzygium graveolens,007,huber_value,0.000327118089630357,mm2{sapwood}/mm2{leaf},population,,,,field_experiment,juvenile,02,,,,Test_2002,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Acmena graveolens
+Test_2023_2,Syzygium graveolens,007,huber_value,0.000374953130858643,mm2{sapwood}/mm2{leaf},population,,,,field_experiment,juvenile,02,,,,Test_2002,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Acmena graveolens
+Test_2023_2,Syzygium graveolens,008,leaf_N_per_dry_mass,15.5,mg/g,species,,,,field,,,,,,Test_2002,,,,,,Test dataset-level measurement_remarks,01,,Acmena graveolens
+Test_2023_2,Syzygium graveolens,008,leaf_area,5246,mm2,species,,,,field,,,,,,Test_2002,,,,,,Test dataset-level measurement_remarks,01,,Acmena graveolens
+Test_2023_2,Syzygium graveolens,008,leaf_mass_per_area,151,g/m2,species,,measurement,,field,,,,,,Test_2002,,,,,,Test dataset-level measurement_remarks,01,,Acmena graveolens
+Test_2023_2,Syzygium graveolens,008,wood_density,0.599,mg/mm3,species,,,,field,,,,,,Test_2002,,,,,,Test dataset-level measurement_remarks,01,,Acmena graveolens
 Test_2023_2,Acronychia acidula,009,branch_mass_fraction,0.48,mg/mg,population,raw,measurement,1,field,adult,01,,,,Test_2022,01,,,,,Made-up remarks for `branch_mass_fraction`,01,,Acronychia acidula
 Test_2023_2,Acronychia acidula,009,huber_value,0.000132275132275132,mm2{sapwood}/mm2{leaf},population,raw,measurement,1,field,adult,01,,,,Test_2022,01,,,,,,02,,Acronychia acidula
 Test_2023_2,Acronychia acidula,009,huber_value,0.000180472838837755,mm2{sapwood}/mm2{leaf},population,raw,measurement,1,field,adult,01,,,,Test_2022,01,,,,,,03,,Acronychia acidula
@@ -216,16 +216,16 @@ Test_2023_2,Glochidion hylandii,048,leaf_N_per_dry_mass,13.7,mg/g,species,mean,m
 Test_2023_2,Glochidion hylandii,048,leaf_area,3209,mm2,species,mean,measurement,3,field,adult,,,,,Test_2002,,,,,,,01,,Glochidion hylandii
 Test_2023_2,Glochidion hylandii,048,leaf_mass_per_area,106,g/m2,species,mean,measurement,3,field,adult,,,,,Test_2002,,,,,,,01,,Glochidion hylandii
 Test_2023_2,Glochidion hylandii,048,wood_density,0.566,mg/mm3,species,mean,measurement,3,field,adult,,,,,Test_2002,,,,,,,01,,Glochidion hylandii
-Test_2023_2,Haplostichanthus submontanus,049,branch_mass_fraction,0.36,mg/mg,population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Haplostichanthus sp Coop. Ck
-Test_2023_2,Haplostichanthus submontanus,049,huber_value,0.000411522633744856,mm2{sapwood}/mm2{leaf},population,mean,unknown,7,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Haplostichanthus sp Coop. Ck
-Test_2023_2,Haplostichanthus submontanus,049,huber_value,8.12743823146944e-05,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Haplostichanthus sp Coop. Ck
-Test_2023_2,Haplostichanthus submontanus,049,huber_value,0.000304692260816575,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Haplostichanthus sp Coop. Ck
-Test_2023_2,Haplostichanthus submontanus,049,huber_value,0.000334224598930481,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Haplostichanthus sp Coop. Ck
-Test_2023_2,Haplostichanthus submontanus,049,huber_value,0.000334224598930481,mm2{sapwood}/mm2{leaf},population,maximum,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Haplostichanthus sp Coop. Ck
-Test_2023_2,Haplostichanthus submontanus,050,leaf_N_per_dry_mass,22,mg/g,species,mean,unknown,2,field,,,,,,Test_2022,,,,,,,01,,Haplostichanthus sp Coop. Ck
-Test_2023_2,Haplostichanthus submontanus,050,leaf_area,4685,mm2,species,mean,unknown,2,field,,,,,,Test_2022,,,,,,,01,,Haplostichanthus sp Coop. Ck
-Test_2023_2,Haplostichanthus submontanus,050,leaf_mass_per_area,72,g/m2,species,mean,measurement,2,field,,,,,,Test_2022,,,,,,,01,,Haplostichanthus sp Coop. Ck
-Test_2023_2,Haplostichanthus submontanus,050,wood_density,0.668,mg/mm3,species,mean,unknown,2,field,,,,,,Test_2022,,,,,,,01,,Haplostichanthus sp Coop. Ck
+Test_2023_2,Polyalthia submontana,049,branch_mass_fraction,0.36,mg/mg,population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Haplostichanthus sp Coop. Ck
+Test_2023_2,Polyalthia submontana,049,huber_value,0.000411522633744856,mm2{sapwood}/mm2{leaf},population,mean,unknown,7,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Haplostichanthus sp Coop. Ck
+Test_2023_2,Polyalthia submontana,049,huber_value,8.12743823146944e-05,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Haplostichanthus sp Coop. Ck
+Test_2023_2,Polyalthia submontana,049,huber_value,0.000304692260816575,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Haplostichanthus sp Coop. Ck
+Test_2023_2,Polyalthia submontana,049,huber_value,0.000334224598930481,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Haplostichanthus sp Coop. Ck
+Test_2023_2,Polyalthia submontana,049,huber_value,0.000334224598930481,mm2{sapwood}/mm2{leaf},population,maximum,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Haplostichanthus sp Coop. Ck
+Test_2023_2,Polyalthia submontana,050,leaf_N_per_dry_mass,22,mg/g,species,mean,unknown,2,field,,,,,,Test_2022,,,,,,,01,,Haplostichanthus sp Coop. Ck
+Test_2023_2,Polyalthia submontana,050,leaf_area,4685,mm2,species,mean,unknown,2,field,,,,,,Test_2022,,,,,,,01,,Haplostichanthus sp Coop. Ck
+Test_2023_2,Polyalthia submontana,050,leaf_mass_per_area,72,g/m2,species,mean,measurement,2,field,,,,,,Test_2022,,,,,,,01,,Haplostichanthus sp Coop. Ck
+Test_2023_2,Polyalthia submontana,050,wood_density,0.668,mg/mm3,species,mean,unknown,2,field,,,,,,Test_2022,,,,,,,01,,Haplostichanthus sp Coop. Ck
 Test_2023_2,Harpullia rhyticarpa,051,branch_mass_fraction,0.01,mg/mg,population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Harpullia rhyticarpa
 Test_2023_2,Harpullia rhyticarpa,051,huber_value,0.000111470293166871,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Harpullia rhyticarpa
 Test_2023_2,Harpullia rhyticarpa,051,huber_value,0.000168861870989531,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Harpullia rhyticarpa
@@ -266,17 +266,17 @@ Test_2023_2,Ixora biflora,059,leaf_N_per_dry_mass,10,mg/g,species,mean,unknown,2
 Test_2023_2,Ixora biflora,059,leaf_area,2760,mm2,species,mean,unknown,2,field,adult,,,,,,,,,,,,01,,Ixora biflora
 Test_2023_2,Ixora biflora,059,leaf_mass_per_area,81,g/m2,species,mean,measurement,2,field,adult,,,,,,,,,,,,01,,Ixora biflora
 Test_2023_2,Ixora biflora,059,wood_density,0.843,mg/mm3,species,mean,unknown,2,field,adult,,,,,,,,,,,,01,,Ixora biflora
-Test_2023_2,Lasianthus strigosus,060,branch_mass_fraction,0.15,mg/mg,population,mean,unknown,2,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Lasianthus strigosus
-Test_2023_2,Lasianthus strigosus,060,huber_value,0.000543183052688756,mm2{sapwood}/mm2{leaf},population,mean,unknown,7,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Lasianthus strigosus
-Test_2023_2,Lasianthus strigosus,060,huber_value,0.000196078431372549,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Lasianthus strigosus
-Test_2023_2,Lasianthus strigosus,060,huber_value,0.000420344682639765,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Lasianthus strigosus
-Test_2023_2,Lasianthus strigosus,060,huber_value,0.000366166239472721,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Lasianthus strigosus
-Test_2023_2,Lasianthus strigosus,060,huber_value,0.000366166239472721,mm2{sapwood}/mm2{leaf},population,maximum,unknown,2,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Lasianthus strigosus
-Test_2023_2,Lasianthus strigosus,060,seed_dry_mass,7,mg,population,mean,unknown,unknown,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Lasianthus strigosus
-Test_2023_2,Lasianthus strigosus,061,leaf_N_per_dry_mass,15.8,mg/g,species,mean,unknown,2,field,adult,,,,,,,,,,,,01,,Lasianthus strigosus
-Test_2023_2,Lasianthus strigosus,061,leaf_area,3313,mm2,species,mean,unknown,2,field,adult,,,,,,,,,,,,01,,Lasianthus strigosus
-Test_2023_2,Lasianthus strigosus,061,leaf_mass_per_area,55,g/m2,species,mean,measurement,2,field,adult,,,,,,,,,,,,01,,Lasianthus strigosus
-Test_2023_2,Lasianthus strigosus,061,wood_density,0.684,mg/mm3,species,mean,unknown,2,field,adult,,,,,,,,,,,,01,,Lasianthus strigosus
+Test_2023_2,Lasianthus chlorocarpus,060,branch_mass_fraction,0.15,mg/mg,population,mean,unknown,2,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Lasianthus strigosus
+Test_2023_2,Lasianthus chlorocarpus,060,huber_value,0.000543183052688756,mm2{sapwood}/mm2{leaf},population,mean,unknown,7,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Lasianthus strigosus
+Test_2023_2,Lasianthus chlorocarpus,060,huber_value,0.000196078431372549,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Lasianthus strigosus
+Test_2023_2,Lasianthus chlorocarpus,060,huber_value,0.000420344682639765,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Lasianthus strigosus
+Test_2023_2,Lasianthus chlorocarpus,060,huber_value,0.000366166239472721,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Lasianthus strigosus
+Test_2023_2,Lasianthus chlorocarpus,060,huber_value,0.000366166239472721,mm2{sapwood}/mm2{leaf},population,maximum,unknown,2,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Lasianthus strigosus
+Test_2023_2,Lasianthus chlorocarpus,060,seed_dry_mass,7,mg,population,mean,unknown,unknown,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Lasianthus strigosus
+Test_2023_2,Lasianthus chlorocarpus,061,leaf_N_per_dry_mass,15.8,mg/g,species,mean,unknown,2,field,adult,,,,,,,,,,,,01,,Lasianthus strigosus
+Test_2023_2,Lasianthus chlorocarpus,061,leaf_area,3313,mm2,species,mean,unknown,2,field,adult,,,,,,,,,,,,01,,Lasianthus strigosus
+Test_2023_2,Lasianthus chlorocarpus,061,leaf_mass_per_area,55,g/m2,species,mean,measurement,2,field,adult,,,,,,,,,,,,01,,Lasianthus strigosus
+Test_2023_2,Lasianthus chlorocarpus,061,wood_density,0.684,mg/mm3,species,mean,unknown,2,field,adult,,,,,,,,,,,,01,,Lasianthus strigosus
 Test_2023_2,Litsea leefeana,062,branch_mass_fraction,0.68,mg/mg,population,mean,unknown,2,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Litsea leefeana
 Test_2023_2,Litsea leefeana,062,huber_value,0.000251004016064257,mm2{sapwood}/mm2{leaf},population,mean,unknown,7,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Litsea leefeana
 Test_2023_2,Litsea leefeana,062,huber_value,0.000241487563390485,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Litsea leefeana
@@ -399,15 +399,15 @@ Test_2023_2,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),089,leaf_N_per_dry_
 Test_2023_2,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),089,leaf_area,11157,mm2,species,mean,,,field,,,,,,Test_2002,,,,,,Test dataset-level measurement_remarks,01,,Psychotria sp Utchee Creek
 Test_2023_2,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),089,leaf_mass_per_area,108,g/m2,species,mean,measurement,,field,,,,,,Test_2002,,,,,,Test dataset-level measurement_remarks,01,,Psychotria sp Utchee Creek
 Test_2023_2,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),089,wood_density,0.582,mg/mm3,species,mean,,,field,,,,,,Test_2002,,,,,,Test dataset-level measurement_remarks,01,,Psychotria sp Utchee Creek
-Test_2023_2,Quassia baileyana,090,branch_mass_fraction,0.42,mg/mg,population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Quassia baileyana
-Test_2023_2,Quassia baileyana,090,huber_value,0.000170444861087438,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Quassia baileyana
-Test_2023_2,Quassia baileyana,090,huber_value,0.000310945273631841,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Quassia baileyana
-Test_2023_2,Quassia baileyana,090,huber_value,0.000174855744011191,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Quassia baileyana
-Test_2023_2,Quassia baileyana,090,huber_value,0.000174855744011191,mm2{sapwood}/mm2{leaf},population,maximum,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Quassia baileyana
-Test_2023_2,Quassia baileyana,091,leaf_N_per_dry_mass,23,mg/g,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Quassia baileyana
-Test_2023_2,Quassia baileyana,091,leaf_area,9624,mm2,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Quassia baileyana
-Test_2023_2,Quassia baileyana,091,leaf_mass_per_area,86,g/m2,species,mean,measurement,2,field,adult,,,,,Test_2022,,,,,,,01,,Quassia baileyana
-Test_2023_2,Quassia baileyana,091,wood_density,0.501,mg/mm3,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Quassia baileyana
+Test_2023_2,Samadera baileyana,090,branch_mass_fraction,0.42,mg/mg,population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Quassia baileyana
+Test_2023_2,Samadera baileyana,090,huber_value,0.000170444861087438,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Quassia baileyana
+Test_2023_2,Samadera baileyana,090,huber_value,0.000310945273631841,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Quassia baileyana
+Test_2023_2,Samadera baileyana,090,huber_value,0.000174855744011191,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Quassia baileyana
+Test_2023_2,Samadera baileyana,090,huber_value,0.000174855744011191,mm2{sapwood}/mm2{leaf},population,maximum,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Quassia baileyana
+Test_2023_2,Samadera baileyana,091,leaf_N_per_dry_mass,23,mg/g,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Quassia baileyana
+Test_2023_2,Samadera baileyana,091,leaf_area,9624,mm2,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Quassia baileyana
+Test_2023_2,Samadera baileyana,091,leaf_mass_per_area,86,g/m2,species,mean,measurement,2,field,adult,,,,,Test_2022,,,,,,,01,,Quassia baileyana
+Test_2023_2,Samadera baileyana,091,wood_density,0.501,mg/mm3,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Quassia baileyana
 Test_2023_2,Rhodomyrtus trineura,092,branch_mass_fraction,0.34,mg/mg,population,mean,,,field,,01,,,,Test_2002,01,,,,,Made-up remarks for `branch_mass_fraction`,01,,Rhodomyrtus trineura
 Test_2023_2,Rhodomyrtus trineura,092,huber_value,0.000231427910205971,mm2{sapwood}/mm2{leaf},population,mean,,7,field,,01,,,,Test_2002,01,,,,,Test dataset-level measurement_remarks,01,,Rhodomyrtus trineura
 Test_2023_2,Rhodomyrtus trineura,092,huber_value,0.000262950302392848,mm2{sapwood}/mm2{leaf},population,mean,,,field,,01,,,,Test_2002,01,,,,,Test dataset-level measurement_remarks,02,,Rhodomyrtus trineura
@@ -450,14 +450,14 @@ Test_2023_2,Syzygium sayeri,099,leaf_N_per_dry_mass,13.7,mg/g,species,mean,unkno
 Test_2023_2,Syzygium sayeri,099,leaf_area,2645,mm2,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium sayeri
 Test_2023_2,Syzygium sayeri,099,leaf_mass_per_area,131,g/m2,species,mean,measurement,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium sayeri
 Test_2023_2,Syzygium sayeri,099,wood_density,0.485,mg/mm3,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium sayeri
-Test_2023_2,Trema aspera,100,branch_mass_fraction,0.53,mg/mg,population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Trema aspera
-Test_2023_2,Trema aspera,100,huber_value,0.000279485746226942,mm2{sapwood}/mm2{leaf},population,mean,unknown,7,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Trema aspera
-Test_2023_2,Trema aspera,100,huber_value,0.000189000189000189,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Trema aspera
-Test_2023_2,Trema aspera,100,huber_value,0.000183823529411765,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Trema aspera
-Test_2023_2,Trema aspera,100,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Trema aspera
-Test_2023_2,Trema aspera,100,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},population,maximum,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Trema aspera
-Test_2023_2,Trema aspera,100,seed_dry_mass,5.12,mg,population,mean,unknown,unknown,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Trema aspera
-Test_2023_2,Trema aspera,101,leaf_N_per_dry_mass,29.9,mg/g,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
-Test_2023_2,Trema aspera,101,leaf_area,2071,mm2,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
-Test_2023_2,Trema aspera,101,leaf_mass_per_area,53,g/m2,species,mean,measurement,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
-Test_2023_2,Trema aspera,101,wood_density,0.357,mg/mm3,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,100,branch_mass_fraction,0.53,mg/mg,population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000279485746226942,mm2{sapwood}/mm2{leaf},population,mean,unknown,7,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000189000189000189,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000183823529411765,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},population,maximum,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,100,seed_dry_mass,5.12,mg,population,mean,unknown,unknown,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,101,leaf_N_per_dry_mass,29.9,mg/g,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,101,leaf_area,2071,mm2,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,101,leaf_mass_per_area,53,g/m2,species,mean,measurement,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,101,wood_density,0.357,mg/mm3,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
