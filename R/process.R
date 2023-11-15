@@ -191,6 +191,7 @@ dataset_process <- function(filename_data_raw,
   # Record methods
   methods <- process_format_methods(metadata, dataset_id, sources, contributors)
 
+
   # Retrieve taxonomic details for known species
   taxonomic_updates <-
     traits %>%
@@ -210,7 +211,7 @@ dataset_process <- function(filename_data_raw,
         dplyr::mutate(
           find = stringr::str_split(.data$find, ", ")
           ) %>%
-        tidyr::unnest_longer("find") %>%
+        tidyr::unnest_longer(.data$find) %>%
         dplyr::filter(.data$variable == "taxon_name")
 
     taxonomic_updates <-
