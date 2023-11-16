@@ -34,6 +34,12 @@
     <loc>http://traitecoevo.github.io/traits.build/reference/build_update_taxonomy.html</loc>
   </url>
   <url>
+    <loc>http://traitecoevo.github.io/traits.build/reference/check_pivot_duplicates.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/reference/check_pivot_wider.html</loc>
+  </url>
+  <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/create_tree_branch.html</loc>
   </url>
   <url>
@@ -56,6 +62,15 @@
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/dataset_test_worker.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/reference/dataset_update_taxonomy.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/reference/db_traits_pivot_longer.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/reference/db_traits_pivot_wider.html</loc>
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/get_schema.html</loc>
@@ -149,6 +164,9 @@
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/reference/plot_trait_distribution_beeswarm.html</loc>
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/process_add_all_columns.html</loc>
