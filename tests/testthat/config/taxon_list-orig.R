@@ -7,5 +7,6 @@
 # Then source "build.R" and "R/build_update_taxon_list.R" in "tests/testthat"
 # Run the function on the built test database with `replace = TRUE`
 # (Remove the tests from the data folder afterwards)
+# Replace config/taxon_list-orig.csv with config/taxon_list.csv
 
 build_update_taxon_list(database, read_csv("config/taxon_list.csv"), replace = TRUE)

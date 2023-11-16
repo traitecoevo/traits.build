@@ -191,6 +191,7 @@ dataset_process <- function(filename_data_raw,
   # Record methods
   methods <- process_format_methods(metadata, dataset_id, sources, contributors)
 
+
   # Retrieve taxonomic details for known species
   taxonomic_updates <-
     traits %>%
@@ -1902,7 +1903,7 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
 
   columns_in_taxon_list <- names(taxa)
 
-  # incoming table from austraits_raw is a list of all taxa for the study
+  # Incoming table from `austraits_raw` is a list of all taxa for the study
   # `original_name` and `aligned_name` will be different if
   # there were taxonomic_updates specified in metadata file
   austraits_raw$taxonomic_updates <-
@@ -1922,7 +1923,8 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
               taxa %>% dplyr::select(dplyr::all_of(c("aligned_name", "taxon_name")))
               ) %>%
     dplyr::select(dplyr::all_of(c("dataset_id", "taxon_name")), dplyr::everything()) %>%
-    # for taxa where there is no taxon_name to matched to a "aligned_name", maintain the "aligned_name" as the "taxon_name"
+    # For taxa where there is no `taxon_name` to matched to a `aligned_name`,
+    # maintain the `aligned_name` as the `taxon_name`
     dplyr::mutate(
       taxon_name = ifelse(is.na(.data$taxon_name), .data$aligned_name, .data$taxon_name)#,
     ) %>%
@@ -1942,13 +1944,13 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
         .data$taxonomic_resolution),
       taxon_rank = .data$taxonomic_resolution,
       name_to_match_to = .data$taxon_name,
-      # Create variable `name_to_match_to` which specifies the part of the taxon name to which matches can be made.
-      # This step requires taxon_rank.
-      name_to_match_to = stringr::str_replace(.data$taxon_name, " \\[.+",""),
+      # Create variable `name_to_match_to` which specifies the part of the taxon name to which matches can be made
+      # This step requires `taxon_rank`
+      name_to_match_to = stringr::str_replace(.data$taxon_name, " \\[.+", ""),
       name_to_match_to = ifelse(!.data$taxon_rank %in% c("species", "subspecies", "series", "variety", "form"),
-                                stringr::word(.data$taxon_name,1), .data$name_to_match_to)
+                                stringr::word(.data$taxon_name, 1), .data$name_to_match_to)
     ) %>%
-    # Remove taxon_rank, as it is about to be merged back in, but matches will now be possible to more rows.
+    # Remove `taxon_rank`, as it is about to be merged back in, but matches will now be possible to more rows
     select(-dplyr::any_of(c("taxon_rank", "taxonomic_resolution"))) %>%
     util_df_convert_character() %>%
     # Merge in all data from taxa.
@@ -1967,7 +1969,7 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::distinct(.data$taxon_name, .keep_all = TRUE) %>%
     dplyr::select(dplyr::any_of(columns_in_taxon_list))
 
-  # Now `taxonomic_resolution` be removed from the traits table.
+  # Now `taxonomic_resolution` be removed from the traits table
   austraits_raw$traits <-
     austraits_raw$traits %>%
       dplyr::select(-dplyr::all_of(c("taxonomic_resolution")))
@@ -2038,7 +2040,7 @@ write_plaintext <- function(austraits, path) {
 #'
 #' @return Tibble with duplicates and pivot columns
 #' @export
-check_duplicates <- function(
+check_pivot_duplicates <- function(
   database_object,
   dataset_ids = unique(database_object$traits$dataset_id)
 ) {

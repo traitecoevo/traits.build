@@ -417,8 +417,8 @@ metadata:
       values:
         find: *original_name
         replace: *taxon_name
-        reason: Records why the change was implemented, e.g. `typos`, `taxonomic synonyms`, and `standardising spellings`.
-        taxonomic_resolution: The taxonomic rank of the most specific name that can be aligned.
+        reason: Records why the change was implemented, e.g. `typos`, `taxonomic synonyms`, and `standardising spellings`
+        taxonomic_resolution: *taxonomic_resolution
     exclude_observations:
       description: A table of observations to remove from the compilation.
       type: array

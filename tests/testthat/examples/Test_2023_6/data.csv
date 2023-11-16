@@ -1,0 +1,37 @@
+name_original,AusTraits_key,SLA_units,lifespan_units,individual_id,trait_name,value,location_name
+Eucalyptus grandis,Leuning_1991,cm2/g,mo,1,SLA (cm2/g),90,location_1
+Eucalyptus grandis,Leuning_1991,cm2/g,mo,1,leaf longevity,5--15,location_2
+Grevillea robusta,Bell_1985,cm2/g,d,1,SLA (cm2/g),97.8,
+Grevillea robusta,Bell_1985,cm2/g,d,1,leaf longevity,152--364.8,
+Castanospermum australe,Bell_1985,cm2/g,NA,1,SLA (cm2/g),123.1,location_1
+Elaeocarpus angustifolius,Bell_1985,cm2/g,NA,1,SLA (cm2/g),124.8,location_1
+Gardenia actinocarpa,Bevege_1978,cm2/g,NA,1,SLA (cm2/g),223,location_1
+Xanthostemon chrysanthus,Bevege_1978,cm2/g,NA,1,SLA (cm2/g),130,location_1
+Xanthostemon formosus,Bevege_1978,cm2/g,NA,1,SLA (cm2/g),159,location_1
+Archidendron kanisii,Bevege_1978,cm2/g,NA,1,SLA (cm2/g),181,location_1
+Archidendron whitei,Bevege_1978,cm2/g,d,1,SLA (cm2/g),230,location_1
+Archidendron whitei,Bevege_1978,cm2/g,d,1,leaf longevity,60--300,location_1
+Gardenia ovularis,Lambert_1979,cm2/g,NA,1,SLA (cm2/g),168,location_1
+Acacia aneura var. major,Lambert_1979,cm2/g,NA,1,SLA (cm2/g),32.3,location_1
+Acacia kempeana,Lambert_1979,cm2/g,NA,1,SLA (cm2/g),39.3,location_1
+Corymbia terminalis,Lambert_1979,cm2/g,NA,1,SLA (cm2/g),36.2,location_1
+Hakea suberea,Lambert_1979,cm2/g,NA,1,SLA (cm2/g),20,location_1
+Acacia lysiphloia,Lambert_1979,cm2/g,NA,1,SLA (cm2/g),82.2,location_1
+Acacia neurocarpa,Lambert_1979,cm2/g,NA,1,SLA (cm2/g),64.3,location_1
+Acacia shirleyi,Lambert_1979,cm2/g,NA,1,SLA (cm2/g),57.3,location_1
+Corymbia dichromophloia,Meakins_0000,cm2/g,NA,1,SLA (cm2/g),51.6,location_1
+Eucalyptus chlorophylla,Meakins_0000,cm2/g,NA,1,SLA (cm2/g),41.7,location_1
+Grevillea wickhamii ssp aprica,Meakins_0000,cm2/g,NA,1,SLA (cm2/g),63.9,location_1
+Acacia holosericea,Meakins_0000,cm2/g,NA,1,SLA (cm2/g),105.4,location_1
+Acacia holosericea,Meakins_0000,cm2/g,NA,2,SLA (cm2/g),75.9,location_1
+Corymbia foelscheana,Meakins_0000,cm2/g,NA,1,SLA (cm2/g),58.8,location_1
+Corymbia foelscheana,Meakins_0000,cm2/g,NA,2,SLA (cm2/g),62,location_1
+Corymbia foelscheana,Meakins_0000,cm2/g,NA,3,SLA (cm2/g),55.7,location_1
+Eucalyptus patellaris,Meakins_0000,cm2/g,NA,1,SLA (cm2/g),45.9,location_1
+Grevillea dimidiata,Meakins_0000,cm2/g,NA,1,SLA (cm2/g),51.8,location_1
+Hakea arborescens,Meakins_0000,cm2/g,NA,1,SLA (cm2/g),28,location_1
+Acacia auriculiformis,Meakins_0000,cm2/g,NA,1,SLA (cm2/g),134,location_1
+Eucalyptus miniata,Meakins_0000,cm2/g,NA,1,SLA (cm2/g),73.6,location_1
+Eucalyptus tetrodonta,Meakins_0000,cm2/g,NA,1,SLA (cm2/g),56.5,location_1
+Grevillea pteridifolia,Meakins_0000,cm2/g,NA,1,SLA (cm2/g),51,location_1
+Persoonia falcata,Meakins_0000,cm2/g,NA,1,SLA (cm2/g),68.5,location_1

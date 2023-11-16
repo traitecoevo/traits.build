@@ -1,10 +1,11 @@
 #' Path to the `metadata.yml` file for specified `dataset_id`
 #'
 #' @param dataset_id Identifier for a particular study in the database
+#' @param path_data Path to folder with data
 #'
 #' @return A string
-metadata_path_dataset_id <- function(dataset_id) {
-  file.path("data", dataset_id, "metadata.yml")
+metadata_path_dataset_id <- function(dataset_id, path_data = "data") {
+  file.path(path_data, dataset_id, "metadata.yml")
 }
 
 #' Create a template of file `metadata.yml` for specified `dataset_id`
@@ -223,13 +224,13 @@ metadata_user_select_names <- function(title, vars) {
 #' @inheritParams metadata_path_dataset_id
 #'
 #' @export
-metadata_check_custom_R_code <- function(dataset_id) {
+metadata_check_custom_R_code <- function(dataset_id, path_data = "data") {
 
   # Read metadata
-  metadata <- read_metadata_dataset(dataset_id)
+  metadata <- read_metadata_dataset(dataset_id, path_data)
 
   # Load trait data and run `custom_R_code`
-  readr::read_csv(file.path("data", dataset_id, "data.csv"), col_types = cols(), guess_max = 100000) %>%
+  readr::read_csv(file.path(path_data, dataset_id, "data.csv"), col_types = cols(), guess_max = 100000) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
 
 }

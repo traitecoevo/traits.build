@@ -61,11 +61,13 @@ contributors:
     additional_role: contact
   dataset_curators: Ian Wright
 dataset:
-  data_is_long_format: no
+  data_is_long_format: yes
   custom_R_code: .na
   collection_date: unknown/2009
   taxon_name: name_original
-  location_name: .na
+  trait_name: trait_name
+  value: value
+  location_name: location_name
   source_id: AusTraits_key
   individual_id: individual_id
   description: Collection of trait data on Australian plants compiled by Anna Richards
@@ -78,7 +80,15 @@ dataset:
     papers or from more recent papers with very few data points; most recent/larger
     datasets within Ian and Anna's compilation are in AusTraits individually.
   notes: none
-locations: .na
+locations:
+  location_1:
+    latitude range (deg): -27.5 to -34.5
+    longitude range (deg): 114 to 122
+    description: First made-up location for testing
+  location_2:
+    latitude range (deg): -11 to -26
+    longitude range (deg): 129 to 138
+    description: Second made-up location for testing
 contexts: .na
 traits:
 - var_in: SLA (cm2/g)
@@ -87,7 +97,7 @@ traits:
   entity_type: individual
   value_type: mean
   basis_of_value: measurement
-  replicates: unknown
+  replicates: 3
   methods: unknown
 - var_in: leaf longevity
   unit_in: lifespan_units
@@ -95,7 +105,7 @@ traits:
   entity_type: individual
   value_type: bin
   basis_of_value: measurement
-  replicates: unknown
+  replicates: '5'
   methods: From Richards_2008_2 (unpublished); See original references, listed alphabetically
     under 'additional references'
 substitutions: .na
