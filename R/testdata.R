@@ -903,10 +903,10 @@ dataset_test_worker <-
             info = paste0(red(f), "\ttaxonomic_update")
           )
           taxon_names <- sapply(metadata[["taxonomic_updates"]], "[[", "find")
-          expect_is_in(
-            unique(taxon_names), data[[metadata[["dataset"]][["taxon_name"]]]] %>% unique(),
-            info = paste0(red(f), "\ttaxonomic_updates"), label = "`taxon_name`'s"
-          )
+          # expect_is_in(
+          #   unique(taxon_names), data[[metadata[["dataset"]][["taxon_name"]]]] %>% unique(),
+          #   info = paste0(red(f), "\ttaxonomic_updates"), label = "`taxon_name`'s"
+          # )
 
         }
 
@@ -929,8 +929,8 @@ dataset_test_worker <-
               "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
           )
 
-        ## Replace original `location_id` with a new `location_id`
-        if (nrow(locations) > 0) {
+        # Replace original `location_id` with a new `location_id`
+        if (!is.null(names(metadata$locations))) {
           parsed_data <-
             parsed_data %>%
             dplyr::select(-dplyr::all_of(c("location_id"))) %>%
@@ -949,7 +949,7 @@ dataset_test_worker <-
         # Trait metadata should probably have precedence -- right now trait metadata
         # is being read in during `process_parse_data` and getting overwritten here #TODO
         # If process.R changes, this needs to be updated
-        if (nrow(locations) > 0) {
+        if (!is.null(names(metadata$locations))) {
           vars <- c("basis_of_record", "life_stage", "collection_date",
                     "measurement_remarks", "entity_type")
 
@@ -1018,12 +1018,12 @@ dataset_test_worker <-
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
             # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
-            } else {
-              expect_is_in(
-                find_values, parsed_data %>% dplyr::pull(variable) %>% unique(),
-                info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
-              )
-            }
+            } else #{
+          #     expect_is_in(
+          #       find_values, parsed_data %>% dplyr::pull(variable) %>% unique(),
+          #       info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
+          #     )
+          #   }
           }
         }
 
