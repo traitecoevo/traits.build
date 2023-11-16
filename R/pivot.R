@@ -5,7 +5,6 @@
 #' @param dataset Built dataset with `test_build_dataset`
 #'
 #' @return Number of rows with duplicates preventing pivoting wider
-#' @export
 
 check_pivot_wider <- function(dataset) {
 
@@ -27,7 +26,7 @@ check_pivot_wider <- function(dataset) {
   if (duplicates == 0) {
     invisible(TRUE)
   } else {
-     invisible(FALSE)
+    invisible(FALSE)
   }
 
 }

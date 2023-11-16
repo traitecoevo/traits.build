@@ -54,7 +54,7 @@ expect_not_NA <- function(object, info = NULL, label = NULL) {
 
 
 expect_list <- function(data, info) {
-  expect_true(class(data) == "list", info = info)
+  expect_true("list" %in% class(data), info = info)
 }
 
 

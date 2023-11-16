@@ -47,5 +47,8 @@ util_get_version <- function(path =  "config/metadata.yml") {
 #' @return 40-digit SHA character string for the latest commit to the repository
 #' @export
 util_get_SHA <- function(path = ".") {
-  git2r::sha(git2r::last_commit(git2r::repository(path)))
+  sha <- tryCatch({
+      git2r::sha(git2r::last_commit(git2r::repository(path)))
+    }, error = function(cond) {NA})
+  sha
 }

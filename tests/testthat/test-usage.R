@@ -5,5 +5,7 @@ austraits <- readRDS("test_austraits.rds")
 # Note, requires existnec of "test_austraits.rds", generated from `test-process.R`
 
 test_that("plots", {
-  expect_invisible(suppressMessages(austraits %>% plot_trait_distribution_beeswarm("wood_density", "dataset_id", "Test_2022")))
+  expect_invisible(suppressMessages(
+    austraits %>% traits.build::plot_trait_distribution_beeswarm("wood_density", "dataset_id", "Test_2022")
+  ))
 })

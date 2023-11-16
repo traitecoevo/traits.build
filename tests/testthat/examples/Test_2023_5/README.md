@@ -3,15 +3,17 @@
 
 This dataset is for testing:
 - `individual_id` for wide datasets
-- Different `bibtype`s and secondary and original sources (also check methods table), with `source_id` column (check joining to methods table somewhere else?)
+- Different `bibtype`s and secondary and original sources (also check methods table), with `source_id` column
 - No locations or contexts
 - Units read in from a column (check unit conversions are working)
 - Bins and ranges have units that are converted correctly
 
-Lizzy recommends this dataset for testing units:
-*"And if you're hunting for a dataset with good info to test units & source_id, maybe take some snippets from Richards_2008. There are separate columns for SLA and LMA. You could take just the rows with data for one of those and then merge them into a single column with a second column for units. And have some dummy data that is a bin - like made up lifespan data with a required unit conversion from either a column or within the metadata."*
-
-Test_2023_5 is a copy of Falster_2005_1 (maybe change to Richards_2008) with the following modifications:
+Test_2023_5 is a copy of Richards_2008 with the following modifications:
+- Added `individual_id` column and changed `entity_type` to individual (made up some values to test `individual_id`)
 - Added all `bibtype` options to the dataset via secondary/original sources
+- Changed the `source_id` column and metadata to include more variety of sources
+- Removed locations, contexts, and substitutions
+- Subsetted to SLA and added units column
+- Added some bin values in leaf lifespan data and add units column
 
 See output/ for expected output files.
