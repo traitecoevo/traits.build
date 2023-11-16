@@ -708,7 +708,7 @@ test_that("reports and plots are produced", {
   # Not testing right now
   #expect_no_error(
     #p <-
-      #plot_trait_distribution_beeswarm(
+      #traits.build::plot_trait_distribution_beeswarm(
         #austraits, "huber_value", "dataset_id", highlight = "Test_2022", hide_ids = TRUE)
   #)
   expect_silent(

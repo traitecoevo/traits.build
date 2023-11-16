@@ -566,8 +566,8 @@ if (nrow(filter(data_study$excluded_data, error == "Value out of allowable range
     my_kable_styling() %>%
     writeLines()
 }
-
- plot_trait_distribution_beeswarm(austraits, trait, "dataset_id", highlight = dataset_id, hide_ids = TRUE)
+  browser()
+  traits.build::plot_trait_distribution_beeswarm(austraits, trait, "dataset_id", highlight = dataset_id, hide_ids = TRUE)
 
   writeLines(c(""))
 
