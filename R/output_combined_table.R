@@ -129,8 +129,18 @@ database_create_combined_table <- function(database) {
 # Add documentation
 #' @export
 database_unpack_combined_table <- function(combined_table) {
+  browser()
+  unique_location_properties <-
+    combined_table$location_properties %>%
+      unique() %>% str_extract_all("(?<=; ).+?(?=\\=)|^.+?(?=\\=)") %>%
+      unlist() %>% unique() %>% na.omit() %>% as.character()
   combined_table %>%
     # Need to make sure properties are all sorted the same
     # What if a location has different properties or even different number of properties?
-    tidyr::separate_wider_delim(cols = "location_properties", delim = "; ", names_sep = "")
+    tidyr::separate_wider_delim(
+      cols = "location_properties",
+      delim = "; ",
+      names = unique_location_properties
+  )
+
 }
