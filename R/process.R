@@ -270,6 +270,7 @@ dataset_process <- function(filename_data_raw,
 
 
   # Combine for final output
+  ret <- 
   list(
     traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "unit_in"))),
     locations = locations,
@@ -291,6 +292,10 @@ dataset_process <- function(filename_data_raw,
     metadata = metadata,
     build_info = list(session_info = utils::sessionInfo())
   )
+
+  class(ret) <- c("list", "traits.build")
+
+  ret
 }
 
 #' Build dataset
@@ -1863,7 +1868,7 @@ build_combine <- function(..., d = list(...)) {
                       )
               )
   
-  attr(ret, "class") <- c("list", "traits.build")
+  class(ret) <- c("list", "traits.build")
 
   ret
 }
