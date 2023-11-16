@@ -594,7 +594,9 @@ test_that("`build_setup_pipeline` is working", {
   expect_true(file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml", overwrite = TRUE))
 
   expect_no_error(zip::unzip("config/testgit.zip"))
-  expect_no_error(sha <- git2r::sha(git2r::last_commit()))
+  # Expect no error if not within a git repo
+  expect_no_error(sha <- util_get_SHA("../../.."))
+  expect_no_error(sha <- util_get_SHA())
   # Expect error if path or method is wrong
   expect_error(build_setup_pipeline(path = "Datas"))
   expect_error(build_setup_pipeline(method = "grrrr"))
@@ -666,8 +668,29 @@ test_that("`build_setup_pipeline` is working", {
   expect_equal(austraits$build_info$git_SHA, sha)
   expect_equal(austraits$build_info$git_SHA, "6c73238d8d048781d9a4f5239a03813be313f0dd")
 
+  # Check output lists have required parts
+  ## Todo add mode here
+
+  ## sources
+  
+  ## metadata
+
+  ## schema
+  expect_equal(austraits$schema, get_schema())
+
+  ## Compiled by traits.build
+  traits.build_tag <- last(austraits$metadata$related_identifiers)
+  expected_output <- list(
+    related_identifier_type = "url",
+    identifier = "https://github.com/traitecoevo/traits.build",
+    relation_type = "isCompiledBy",
+    resource_type = "software",
+    version = as.character(packageVersion("traits.build"))
+  )
+  expect_equal(traits.build_tag, expected_output)
   #expect_length(austraits_raw$taxa, 14) #not valid test with new `dataset_update_taxonomy setup`
   #expect_length(austraits$taxa, 14) #not valid test with new `dataset_update_taxonomy setup`
+
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
 
   # Compare products from three methods, except `build_info`
