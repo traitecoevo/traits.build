@@ -3,12 +3,12 @@
 #' @export
 database_create_combined_table <- function(database) {
 
-  location_latlon <- 
+  location_latlon <-
     database$locations %>%
       dplyr::filter(location_property %in% c("latitude (deg)", "longitude (deg)")) %>%
-      tidyr::pivot_wider(names_from = location_property, values_from = value)         
+      tidyr::pivot_wider(names_from = location_property, values_from = value)
 
-  location_properties <- 
+  location_properties <-
     database$locations %>%
       dplyr::filter(!location_property %in% c("latitude (deg)", "longitude (deg)")) %>%
       dplyr::mutate(
@@ -42,9 +42,9 @@ database_create_combined_table <- function(database) {
       dplyr::group_by(dataset_id) %>%
       dplyr::mutate(data_collectors = paste0(data_collectors, collapse = "; ")) %>%
       dplyr::ungroup() %>%
-      dplyr::distinct()  
+      dplyr::distinct()
 
-  contexts_tmp <- 
+  contexts_tmp <-
     database$contexts %>%
       dplyr::mutate(
         context_property = stringr::str_replace_all(context_property, "=", "-"),
@@ -67,7 +67,7 @@ database_create_combined_table <- function(database) {
 
     names(out)[which(names(out) == "value")] <- context_category
     names(out)[which(names(out) == "link_vals")] <- context_id
-    
+
     out
   }
 
@@ -107,4 +107,3 @@ database_create_combined_table <- function(database) {
 
   combined_table
 }
-  
