@@ -25,5 +25,5 @@ of variables, mainly for testing purposes}
 A yaml file template for metadata
 }
 \description{
-Includes place-holders for major sections of the metadata
+Includes place-holders for major sections of the metadata.
 }

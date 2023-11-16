@@ -16,7 +16,7 @@ taxon_list <- read_csv_char("config/taxon_list.csv")
 {{#dataset_ids}}
 {{dataset_id}}_config <- dataset_configure("{{path}}/{{dataset_id}}/metadata.yml", definitions)
 {{dataset_id}}_raw <- dataset_process("{{path}}/{{dataset_id}}/data.csv", {{dataset_id}}_config, schema, resource_metadata, unit_conversions)
-{{dataset_id}} <- build_update_taxonomy({{dataset_id}}_raw, taxon_list)
+{{dataset_id}} <- dataset_update_taxonomy({{dataset_id}}_raw, taxon_list)
 
 {{/dataset_ids}}
 

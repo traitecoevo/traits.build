@@ -1,19 +1,19 @@
 
 #' Build reports for listed datasets
 #'
-#' Builds a detailed report for every dataset with a unique `dataset_id`, based on the template Rmd file provided.  The reports are
-#' rendered as html files and saved in the specified output folder.
+#' Builds a detailed report for every dataset with a unique `dataset_id`, based on the template Rmd file provided.
+#' The reports are rendered as html files and saved in the specified output folder.
 #'
-#' @param dataset_id name of specific study/dataset
-#' @param austraits compiled austraits database
-#' @param overwrite logical value to determine whether to overwrite existing report,
-#' @param output_path location where rendered report will be saved
-#' @param input_file report script (.Rmd) file to build study report
-#' @param quiet An option to suppress printing during rendering from knitr, pandoc command line and others.
-#' @param keep keep intermediate Rmd file used?
+#' @param dataset_id Name of specific study/dataset
+#' @param austraits Compiled austraits database
+#' @param overwrite Logical value to determine whether to overwrite existing report
+#' @param output_path Location where rendered report will be saved
+#' @param input_file Report script (.Rmd) file to build study report
+#' @param quiet An option to suppress printing during rendering from knitr, pandoc command line and others
+#' @param keep Keep intermediate Rmd file used?
 #'
 #' @rdname dataset_report
-#' @return html file of the rendered report located in the specified output folder.
+#' @return Html file of the rendered report located in the specified output folder
 #' @export
 dataset_report <- function(dataset_id, austraits, overwrite = FALSE,
                            output_path = "export/reports",
@@ -41,7 +41,7 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
     dir.create(output_path, FALSE, TRUE)
   }
 
-  # filenames
+  # Filenames
   input_Rmd <- sprintf("tmp_%s_report.Rmd", dataset_id)
   output_html <- sprintf("%s/%s.html", output_path, dataset_id)
 
@@ -54,7 +54,7 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
     x[2] <- sprintf("title: Report on study `%s` from", dataset_id)
     writeLines(x, input_Rmd)
 
-    # knit and render. Note, call render directly
+    # Knit and render. Note, call render directly
     # in preference to knit, then render, as leaflet widget
     # requires this to work
     # Warning: result assigned but may not be used
@@ -82,7 +82,7 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
 
 #' Format table with kable and default styling for html
 #'
-#' @param ... arguments passed to `kableExtra::kable()`
+#' @param ... Arguments passed to `kableExtra::kable()`
 #' @importFrom rlang .data
 #' @export
 util_kable_styling_html <- function(...) {
@@ -94,6 +94,6 @@ util_kable_styling_html <- function(...) {
                   position = "left"
                   )
 
-    # hack to add margin to plot
+    # Hack to add margin to plot
     gsub('style="width: auto ', 'style="margin-left:30px; width: auto ', txt)
 }
