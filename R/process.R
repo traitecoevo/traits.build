@@ -115,7 +115,7 @@ dataset_process <- function(filename_data_raw,
         "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
     )
 
-  # Replace location_name with a location_id
+  # Replace old `location_id` with a new `location_id`
   if (nrow(locations) > 0) {
     traits <-
       traits %>%
@@ -301,7 +301,7 @@ dataset_process <- function(filename_data_raw,
 #' Build dataset
 #'
 #' Build specified dataset. This function completes three steps, which can be executed separately if desired:
-#' `dataset_configure`, `dataset_process`, `build_update_taxonomy`
+#' `dataset_configure`, `dataset_process`, `dataset_update_taxonomy`
 #'
 #' @param filename_metadata Metadata yaml file for a given study
 #' @param filename_data_raw Raw `data.csv` file for any given study
@@ -341,7 +341,7 @@ dataset_build <- function(
   dataset_raw <- dataset_process(
     filename_data_raw, dataset_config, schema, resource_metadata, unit_conversion_functions,
     filter_missing_values = filter_missing_values)
-  dataset <- build_update_taxonomy(dataset_raw, taxon_list)
+  dataset <- dataset_update_taxonomy(dataset_raw, taxon_list)
 
   dataset
 }
@@ -922,12 +922,25 @@ process_flag_excluded_observations <- function(data, metadata) {
 
   fix <- split(fix, fix$variable)
 
+  traits <- metadata$traits %>% util_list_to_df2
+
   for (v in names(fix))
 
-    data <- data %>%
-      dplyr::mutate(
-        error = ifelse(.data[[v]] %in% fix[[v]]$find,
-        "Observation excluded in metadata", .data$error))
+    if (v %in% traits$trait_name) {
+      data <- data %>%
+        dplyr::mutate(
+          error = ifelse(
+            .data$trait_name == v & .data$value %in% fix[[v]]$find,
+            "Observation excluded in metadata",
+            .data$error))
+    } else {
+      data <- data %>%
+        dplyr::mutate(
+          error = ifelse(
+            .data[[v]] %in% fix[[v]]$find,
+            "Observation excluded in metadata",
+            .data$error))
+    }
 
   data
 }
@@ -1885,7 +1898,7 @@ build_combine <- function(..., d = list(...)) {
 #' @importFrom rlang .data
 #'
 #' @export
-build_update_taxonomy <- function(austraits_raw, taxa) {
+dataset_update_taxonomy <- function(austraits_raw, taxa) {
 
   columns_in_taxon_list <- names(taxa)
 

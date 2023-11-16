@@ -1,46 +1,46 @@
 dataset_id,original_name,aligned_name,taxonomic_resolution,taxon_name
 Test_2023_2,Acacia celsa,Acacia celsa,,Acacia celsa
-Test_2023_2,Acmena graveolens,Acmena graveolens,,
+Test_2023_2,Acmena graveolens,Acmena graveolens,,Syzygium graveolens
 Test_2023_2,Acronychia acidula,Acronychia acidula,,Acronychia acidula
-Test_2023_2,Aleurites rockinghamensis,Aleurites rockinghamensis,,
+Test_2023_2,Aleurites rockinghamensis,Aleurites rockinghamensis,,Aleurites rockinghamensis
 Test_2023_2,Alphitonia petriei,Alphitonia petriei,,Alphitonia petriei
-Test_2023_2,Alstonia scholaris,Alstonia scholaris,,
-Test_2023_2,Argyrodendron peralatum,Argyrodendron peralatum,,
-Test_2023_2,Atractocarpus hirtus,Atractocarpus hirtus,,
-Test_2023_2,Brombya platynema,Brombya platynema,,
-Test_2023_2,Cardwellia sublimis,Cardwellia sublimis,,
-Test_2023_2,Castanospermum australe,Castanospermum australe,,
-Test_2023_2,Cleistanthus myrianthus,Cleistanthus myrianthus,,
-Test_2023_2,Cryptocarya laevigata,Cryptocarya laevigata,,
-Test_2023_2,Cryptocarya mackinnoniana,Cryptocarya mackinnoniana,,
-Test_2023_2,Cryptocarya murrayi,Cryptocarya murrayi,,
-Test_2023_2,Dendrocnide moroides,Dendrocnide moroides,,
-Test_2023_2,Elaeocarpus grandis,Elaeocarpus grandis,,
-Test_2023_2,Endiandra leptodendron,Endiandra leptodendron,,
-Test_2023_2,Endiandra microneura,Endiandra microneura,,
-Test_2023_2,Gillbeea adenopetala,Gillbeea adenopetala,,
+Test_2023_2,Alstonia scholaris,Alstonia scholaris,,Alstonia scholaris
+Test_2023_2,Argyrodendron peralatum,Argyrodendron peralatum,,Argyrodendron peralatum
+Test_2023_2,Atractocarpus hirtus,Atractocarpus hirtus,,Atractocarpus hirtus
+Test_2023_2,Brombya platynema,Brombya platynema,,Brombya platynema
+Test_2023_2,Cardwellia sublimis,Cardwellia sublimis,,Cardwellia sublimis
+Test_2023_2,Castanospermum australe,Castanospermum australe,,Castanospermum australe
+Test_2023_2,Cleistanthus myrianthus,Cleistanthus myrianthus,,Cleistanthus myrianthus
+Test_2023_2,Cryptocarya laevigata,Cryptocarya laevigata,,Cryptocarya laevigata
+Test_2023_2,Cryptocarya mackinnoniana,Cryptocarya mackinnoniana,,Cryptocarya mackinnoniana
+Test_2023_2,Cryptocarya murrayi,Cryptocarya murrayi,,Cryptocarya murrayi
+Test_2023_2,Dendrocnide moroides,Dendrocnide moroides,,Dendrocnide moroides
+Test_2023_2,Elaeocarpus grandis,Elaeocarpus grandis,,Elaeocarpus grandis
+Test_2023_2,Endiandra leptodendron,Endiandra leptodendron,,Endiandra leptodendron
+Test_2023_2,Endiandra microneura,Endiandra microneura,,Endiandra microneura
+Test_2023_2,Gillbeea adenopetala,Gillbeea adenopetala,,Gillbeea adenopetala
 Test_2023_2,Glochidion hylandii,Glochidion hylandii,,Glochidion hylandii
-Test_2023_2,Haplostichanthus sp Coop. Ck,Haplostichanthus submontanus,species,
-Test_2023_2,Harpullia rhyticarpa,Harpullia rhyticarpa,,
-Test_2023_2,Hernandia albiflora,Hernandia albiflora,,
-Test_2023_2,Homalanthus novoguineensis,Homalanthus novo-guineensis,species,
-Test_2023_2,Ixora biflora,Ixora biflora,,
-Test_2023_2,Lasianthus strigosus,Lasianthus strigosus,,
-Test_2023_2,Litsea leefeana,Litsea leefeana,,
-Test_2023_2,Macaranga tanarius,Macaranga tanarius,,
-Test_2023_2,Mallotus mollissimus,Mallotus mollissimus,,
-Test_2023_2,Medicosma sessiliflora,Medicosma sessiliflora,,
-Test_2023_2,Melastoma cyanoides,Melastoma cyanoides,,
+Test_2023_2,Haplostichanthus sp Coop. Ck,Haplostichanthus submontanus,species,Polyalthia submontana
+Test_2023_2,Harpullia rhyticarpa,Harpullia rhyticarpa,,Harpullia rhyticarpa
+Test_2023_2,Hernandia albiflora,Hernandia albiflora,,Hernandia albiflora
+Test_2023_2,Homalanthus novoguineensis,Homalanthus novo-guineensis,species,Homalanthus novo-guineensis
+Test_2023_2,Ixora biflora,Ixora biflora,,Ixora biflora
+Test_2023_2,Lasianthus strigosus,Lasianthus strigosus,,Lasianthus chlorocarpus
+Test_2023_2,Litsea leefeana,Litsea leefeana,,Litsea leefeana
+Test_2023_2,Macaranga tanarius,Macaranga tanarius,,Macaranga tanarius
+Test_2023_2,Mallotus mollissimus,Mallotus mollissimus,,Mallotus mollissimus
+Test_2023_2,Medicosma sessiliflora,Medicosma sessiliflora,,Medicosma sessiliflora
+Test_2023_2,Melastoma cyanoides,Melastoma cyanoides,,Melastoma cyanoides
 Test_2023_2,Melicope elleryana,Melicope elleryana,,Melicope elleryana
-Test_2023_2,Myristica insipida,Myristica insipida,,
-Test_2023_2,Neolitsea dealbata,Neolitsea dealbata,,
-Test_2023_2,Pittosporum rubiginosum,Pittosporum rubiginosum,,
-Test_2023_2,Polyscias australiana,Polyscias australiana,,
-Test_2023_2,Psychotria dallachiana,Psychotria dallachiana,,
-Test_2023_2,Psychotria sp Utchee Creek,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),species,
-Test_2023_2,Quassia baileyana,Quassia baileyana,,
-Test_2023_2,Rhodomyrtus trineura,Rhodomyrtus trineura,,
-Test_2023_2,Rockinghamia angustifolia,Rockinghamia angustifolia,,
-Test_2023_2,Syzygium gustavioides,Syzygium gustavioides,,
-Test_2023_2,Syzygium sayeri,Syzygium sayeri,,
-Test_2023_2,Trema aspera,Trema aspera,,
+Test_2023_2,Myristica insipida,Myristica insipida,,Myristica insipida
+Test_2023_2,Neolitsea dealbata,Neolitsea dealbata,,Neolitsea dealbata
+Test_2023_2,Pittosporum rubiginosum,Pittosporum rubiginosum,,Pittosporum rubiginosum
+Test_2023_2,Polyscias australiana,Polyscias australiana,,Polyscias australiana
+Test_2023_2,Psychotria dallachiana,Psychotria dallachiana,,Psychotria dallachiana
+Test_2023_2,Psychotria sp Utchee Creek,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),species,Psychotria sp. Utchee Creek (H.Flecker NQNC5313)
+Test_2023_2,Quassia baileyana,Quassia baileyana,,Samadera baileyana
+Test_2023_2,Rhodomyrtus trineura,Rhodomyrtus trineura,,Rhodomyrtus trineura
+Test_2023_2,Rockinghamia angustifolia,Rockinghamia angustifolia,,Rockinghamia angustifolia
+Test_2023_2,Syzygium gustavioides,Syzygium gustavioides,,Syzygium gustavioides
+Test_2023_2,Syzygium sayeri,Syzygium sayeri,,Syzygium sayeri
+Test_2023_2,Trema aspera,Trema aspera,,Trema tomentosa var. aspera

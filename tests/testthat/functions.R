@@ -107,8 +107,8 @@ test_build_dataset <- function(
   }, info = paste(info, "`dataset_process`"))
 
   expect_no_error({
-    build_dataset <- build_update_taxonomy(build_dataset_raw, taxon_list)
-  }, info = paste(info, "`build_update_taxonomy`"))
+    build_dataset <- dataset_update_taxonomy(build_dataset_raw, taxon_list)
+  }, info = paste(info, "`dataset_update_taxonomy`"))
 
   test_structure(build_dataset, info, schema, definitions, single_dataset = TRUE)
 
