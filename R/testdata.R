@@ -801,6 +801,7 @@ dataset_test_worker <-
                 info = sprintf("%s\t'%s'", red(files[1]), metadata[["dataset"]][[field]]),
                 label = sprintf("`%s` column", field)
               )
+
             # Otherwise check fixed value
             } else {
 
@@ -809,7 +810,7 @@ dataset_test_worker <-
                 fields_by_word, schema[[field]][["values"]] %>% names,
                 info = paste0(red(f), "\tdataset"), label = sprintf("`%s`", field)
               )
-              
+
             }
           }
         }
@@ -905,7 +906,7 @@ dataset_test_worker <-
           #   schema$metadata$elements$taxonomic_updates$values %>% names(),
           #   info = paste0(red(f), "\ttaxonomic_update")
           # )
-          
+
           # This test is commented out because the names in the metadata file already have some standardisations applied (i.e. changing the case of first word)
           # by the time the taxonomic updates are read in and therefore they aren't matching those in the data.csv file.
 
@@ -937,7 +938,6 @@ dataset_test_worker <-
           )
 
         # Replace original `location_id` with a new `location_id`
-
         if (!is.null(names(metadata$locations))) {
           parsed_data <-
             parsed_data %>%
@@ -978,7 +978,7 @@ dataset_test_worker <-
             }
           }
         }
-        
+
         ## Excluded observations
 
         if (!is.na(metadata[["exclude_observations"]][1])) {
@@ -1026,7 +1026,7 @@ dataset_test_worker <-
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
             }
-            # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields            
+            # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
           # This test is commented out because two fixes are requiried.
           # First, the names in the metadata file already have had some standardisations applied (i.e. changing the case of first word)
           # by the time the taxonomic updates are read in and therefore they aren't matching those in the data.csv file.
