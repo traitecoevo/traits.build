@@ -250,10 +250,28 @@ dataset_process <- function(filename_data_raw,
       traits %>% dplyr::filter(!(!is.na(.data$error) & (.data$error == "Missing value")))
   }
 
-  # Todo - resource_metadata
-  # - Add contributors
+  # Update metadata
+  metadata <- resource_metadata
+
+  if (is.null(metadata[["related_identifiers"]][1])) {
+    metadata[["related_identifiers"]] <- list()
+  }
+
+  metadata[["related_identifiers"]] <-
+    util_append_to_list(
+      metadata[["related_identifiers"]],
+      list(
+        related_identifier_type = "url",
+        identifier = "https://github.com/traitecoevo/traits.build",
+        relation_type = "isCompiledBy",
+        resource_type = "software",
+        version = as.character(packageVersion("traits.build"))
+      )
+    )
+
 
   # Combine for final output
+  ret <- 
   list(
     traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "unit_in"))),
     locations = locations,
@@ -272,9 +290,13 @@ dataset_process <- function(filename_data_raw,
     sources = sources,
     definitions = definitions,
     schema = schema,
-    metadata = resource_metadata,
+    metadata = metadata,
     build_info = list(session_info = utils::sessionInfo())
   )
+
+  class(ret) <- c("list", "traits.build")
+
+  ret
 }
 
 #' Build dataset
@@ -1859,6 +1881,9 @@ build_combine <- function(..., d = list(...)) {
                       session_info = utils::sessionInfo()
                       )
               )
+  
+  class(ret) <- c("list", "traits.build")
+
   ret
 }
 

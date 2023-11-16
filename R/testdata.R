@@ -305,7 +305,7 @@ dataset_test_worker <-
     }
 
     expect_list <- function(data, info) {
-      expect_true(class(data) == "list", info = sprintf("%s - is not a list", info))
+      expect_true("list" %in% class(data), info = sprintf("%s - is not a list", info))
     }
 
     expect_list_names_valid <- function(data, info, label) {
