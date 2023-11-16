@@ -249,8 +249,25 @@ dataset_process <- function(filename_data_raw,
       traits %>% dplyr::filter(!(!is.na(.data$error) & (.data$error == "Missing value")))
   }
 
-  # Todo - resource_metadata
-  # - Add contributors
+  # Update metadata
+  metadata <- resource_metadata
+
+  if (is.null(metadata[["related_identifiers"]][1])) {
+    metadata[["related_identifiers"]] <- list()
+  }
+
+  metadata[["related_identifiers"]] <-
+    util_append_to_list(
+      metadata[["related_identifiers"]],
+      list(
+        related_identifier_type = "url",
+        identifier = "https://github.com/traitecoevo/traits.build",
+        relation_type = "isCompiledBy",
+        resource_type = "software",
+        version = as.character(packageVersion("traits.build"))
+      )
+    )
+
 
   # Combine for final output
   list(
@@ -271,7 +288,7 @@ dataset_process <- function(filename_data_raw,
     sources = sources,
     definitions = definitions,
     schema = schema,
-    metadata = resource_metadata,
+    metadata = metadata,
     build_info = list(session_info = utils::sessionInfo())
   )
 }
@@ -1845,6 +1862,9 @@ build_combine <- function(..., d = list(...)) {
                       session_info = utils::sessionInfo()
                       )
               )
+  
+  attr(ret, "class") <- c("list", "traits.build")
+
   ret
 }
 
@@ -1956,8 +1976,6 @@ build_add_version <- function(austraits, version, git_sha) {
     git_SHA = git_sha,
     session_info = austraits$build_info$session_info
   )
-
-  austraits$metadata$resource_type <- sprintf("traits.build %s", austraits$build_info$session_info$otherPkgs$traits.build$Version)
 
   austraits
 }
