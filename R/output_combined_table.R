@@ -34,9 +34,18 @@ database_create_combined_table <- function(database) {
         additional_role = stringr::str_replace_all(additional_role, "<", "("),
         additional_role = stringr::str_replace_all(additional_role, ">", ")"),
         data_collectors = paste0(given_name, " ", last_name),
-        data_collectors = ifelse(!is.na(ORCID), paste0(data_collectors, " <ORCID:",ORCID), data_collectors),
-        data_collectors = ifelse(is.na(ORCID), paste0(data_collectors, " <affiliation:",affiliation), paste0(data_collectors, ";affiliation:",affiliation)),
-        data_collectors = ifelse(!is.na(additional_role), paste0(data_collectors, ";additional_role:",additional_role,">"), paste0(data_collectors,">"))
+        data_collectors = ifelse(
+          !is.na(ORCID),
+          paste0(data_collectors, " <ORCID:", ORCID),
+          data_collectors),
+        data_collectors = ifelse(
+          is.na(ORCID),
+          paste0(data_collectors, " <affiliation:", affiliation),
+          paste0(data_collectors, ";affiliation:", affiliation)),
+        data_collectors = ifelse(
+          !is.na(additional_role),
+          paste0(data_collectors, ";additional_role:", additional_role, ">"),
+          paste0(data_collectors, ">"))
       ) %>%
       dplyr::select(-dplyr::all_of(c("last_name", "given_name", "ORCID", "affiliation", "additional_role"))) %>%
       dplyr::group_by(dataset_id) %>%
@@ -53,7 +62,10 @@ database_create_combined_table <- function(database) {
         context_property = stringr::str_replace_all(context_property, ";", ","),
         value = stringr::str_replace_all(value, ";", ","),
         description = stringr::str_replace_all(description, "=", "-"),
-        value = ifelse(is.na(description), paste0(context_property, ":", value), paste0(context_property, ":", value, " <", description, ">"))
+        value = ifelse(
+          is.na(description),
+          paste0(context_property, ":", value),
+          paste0(context_property, ":", value, " <", description, ">"))
       ) %>%
     dplyr::select(-dplyr::all_of(c("description", "context_property", "category"))) %>%
     tidyr::separate_longer_delim(link_vals, ", ") %>% distinct()
@@ -100,7 +112,12 @@ database_create_combined_table <- function(database) {
       dplyr::left_join(location_latlon, by = c("dataset_id", "location_id")) %>%
       dplyr::left_join(location_properties, by = c("dataset_id", "location_id", "location_name")) %>%
       join_contexts(contexts_tmp) %>%
-      dplyr::left_join(database$methods %>% dplyr::select(-dplyr::all_of(c("data_collectors"))), by = c("dataset_id", "trait_name", "method_id")) %>%
+      dplyr::left_join(
+        database$methods %>%
+          dplyr::select(
+            -dplyr::all_of(c("data_collectors"))),
+            by = c("dataset_id", "trait_name", "method_id")
+      ) %>%
       dplyr::left_join(contributors, by = c("dataset_id")) %>%
       dplyr::left_join(database$taxa, by = c("taxon_name", "original_name")) %>%
       dplyr::left_join(database$taxonomic_updates, by = c("taxon_name", "dataset_id", "original_name"))
