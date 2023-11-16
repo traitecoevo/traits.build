@@ -2,7 +2,7 @@
 #' @description Plots distribution of trait values by a  grouping variable using ggbeeswarm package
 #'
 #' @param austraits austraits data object
-#' @param trait_name Name of trait to plot
+#' @param trait Name of trait to plot
 #' @param y_axis_category One of `dataset_id`, `family`
 #' @param highlight specify a group to highlight
 #' @param hide_ids add label on y_axis?
@@ -17,11 +17,11 @@
 #' @export
 
 #
-plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_category, highlight = NA, hide_ids = FALSE) {
+plot_trait_distribution_beeswarm <- function(austraits, trait, y_axis_category, highlight = NA, hide_ids = FALSE) {
 
   # Subset data to this trait
   austraits_trait <-
-    austraits$traits %>% dplyr::filter(.data$trait_name == trait_name) %>%
+    austraits$traits %>% dplyr::filter(.data$trait_name == trait) %>%
     dplyr::mutate(value = as.numeric(.data$value))
 
   my_shapes <- c("_min" = 60, "_mean" = 16, "_max" = 62, "unknown" = 18)
@@ -68,8 +68,8 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
     data <- dplyr::mutate(data, colour = ifelse(.data$Group %in% highlight, "c", .data$colour))
   }
 
-  vals <- list(minimum = purrr::pluck(austraits, "definitions", trait_name, "allowed_values_min"),
-           maximum = purrr::pluck(austraits, "definitions", trait_name, "allowed_values_max"))
+  vals <- list(minimum = purrr::pluck(austraits, "definitions", trait, "allowed_values_min"),
+           maximum = purrr::pluck(austraits, "definitions", trait, "allowed_values_max"))
 
   range <- (vals$maximum/vals$minimum)
 
@@ -134,14 +134,14 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
                     labels = scientific_10,
                     limits = c(vals$minimum, vals$maximum))
     p2 <- p2 +
-      ggplot2::scale_x_log10(name = paste(trait_name, " (", data$unit[1], ")"),
+      ggplot2::scale_x_log10(name = paste(trait, " (", data$unit[1], ")"),
                     breaks = scales::breaks_log(),
                     labels = scientific_10,
                     limits = c(vals$minimum, vals$maximum))
   } else {
     p1 <- p1 + ggplot2::scale_x_continuous(limits = c(vals$minimum, vals$maximum))
     p2 <- p2 + ggplot2::scale_x_continuous(limits = c(vals$minimum, vals$maximum)) +
-      ggplot2::xlab(paste(trait_name, " (", data$unit[1], ")"))
+      ggplot2::xlab(paste(trait, " (", data$unit[1], ")"))
 
   }
 

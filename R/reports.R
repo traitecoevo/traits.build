@@ -44,7 +44,7 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
   # Filenames
   input_Rmd <- sprintf("tmp_%s_report.Rmd", dataset_id)
   output_html <- sprintf("%s/%s.html", output_path, dataset_id)
-  traits.build::plot_trait_distribution_beeswarm(austraits, "leaf_mass_per_area", "dataset_id", highlight = dataset_id, hide_ids = TRUE)
+
   if (overwrite || !file.exists(output_html)) {
 
     message(sprintf("Building report for %s ", dataset_id))
