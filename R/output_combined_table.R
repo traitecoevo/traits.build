@@ -84,8 +84,7 @@ database_create_combined_table <- function(database) {
       join_contexts(contexts_tmp) %>%
       left_join(database$methods %>% dplyr::select(-dplyr::all_of(c("data_collectors"))), by = c("dataset_id", "trait_name", "method_id")) %>%
       left_join(database$taxa, by = c("taxon_name")) %>%
-      left_join(database$taxonomic_updates, by = c("taxon_name", "dataset_id", "original_name")) %>%
-      dplyr::select(-dplyr::all_of(c("location_id", "method_id", "method_context_id", "treatment_context_id", "plot_context_id", "temporal_context_id", "entity_context_id")))
+      left_join(database$taxonomic_updates, by = c("taxon_name", "dataset_id", "original_name"))
 
   combined_table
 }
