@@ -64,11 +64,12 @@ dataset:
 locations:
   Atherton:
     description: Tropical rain forest vegetation.
+    latitude (deg): .na
+    longitude (deg): .na
     elevation (m): 800
     rainfall (mm): 2000
   Cape Tribulation:
     description: Complex mesophyll vine forest in tropical rain forest.
-    elevation (m): 25
     latitude (deg): .na
     longitude (deg): .na
     rainfall (mm): 3500
