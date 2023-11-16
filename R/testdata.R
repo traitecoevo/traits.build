@@ -1112,6 +1112,20 @@ dataset_test_worker <-
               info = paste0(red(dataset_id), "\t`db_traits_pivot_longer` threw a warning")
             )
           }
+
+          expect_no_error(
+            combined_table <- database_create_combined_table(dataset),
+            info = paste0(red(dataset_id), "\t`database_create_combined_table`")
+          )
+
+          expect_equal(
+            nrow(combined_table), nrow(dataset$traits),
+            info = sprintf(
+              "%s\tnumber of rows of combined table not equal to rows of original traits table",
+              red(dataset_id)
+            )
+          )
+
         }
       })
     }
