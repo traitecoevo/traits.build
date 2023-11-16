@@ -2015,7 +2015,7 @@ write_plaintext <- function(austraits, path) {
 #'
 #' @return Tibble with duplicates and pivot columns
 #' @export
-check_duplicates <- function(
+check_pivot_duplicates <- function(
   database_object,
   dataset_ids = unique(database_object$traits$dataset_id)
 ) {
