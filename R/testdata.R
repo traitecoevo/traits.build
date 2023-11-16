@@ -773,7 +773,7 @@ dataset_test_worker <-
 
             # Check fixed values in metadata are allowed
             expect_is_in(
-              fixed, schema[[field]][["values"]] %>% names,
+              fixed, c("unknown", schema[[field]][["values"]] %>% names),
               info = paste0(red(f), "\ttraits"), label = sprintf("`%s`", field)
             )
 
@@ -781,7 +781,7 @@ dataset_test_worker <-
             if (length(cols) > 0) {
               for (c in cols) {
                 expect_is_in(
-                  data[[c]] %>% unique(), schema[[field]][["values"]] %>% names,
+                  data[[c]] %>% unique(), c("unknown", schema[[field]][["values"]] %>% names),
                   info = sprintf("%s\t'%s'", red(files[1]), c),
                   label = sprintf("`%s` column", field)
                 )
@@ -797,7 +797,7 @@ dataset_test_worker <-
             # If the metadata field is a column in the data (and not an accepted value of the field)
             if (metadata[["dataset"]][[field]] %in% names(data) & !(metadata[["dataset"]][[field]] %in% not_allowed)) {
               expect_is_in(
-                data[[metadata[["dataset"]][[field]]]] %>% unique(), schema[[field]][["values"]] %>% names,
+                data[[metadata[["dataset"]][[field]]]] %>% unique(), c("unknown", schema[[field]][["values"]] %>% names),
                 info = sprintf("%s\t'%s'", red(files[1]), metadata[["dataset"]][[field]]),
                 label = sprintf("`%s` column", field)
               )
@@ -806,7 +806,7 @@ dataset_test_worker <-
 
               fields_by_word <- stringr::str_split(metadata[["dataset"]][[field]], " ") %>% unlist()
               expect_is_in(
-                fields_by_word, schema[[field]][["values"]] %>% names,
+                fields_by_word, c("unknown", schema[[field]][["values"]] %>% names),
                 info = paste0(red(f), "\tdataset"), label = sprintf("`%s`", field)
               )
               
