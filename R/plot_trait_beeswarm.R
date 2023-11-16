@@ -54,7 +54,7 @@ plot_trait_distribution_beeswarm <- function(austraits, trait_name, y_axis_categ
   } else {
     data$value2 <- data$value
   }
-  browser()
+
   data$Group <- forcats::fct_reorder(data[[y_axis_category]], data$value2, na.rm = TRUE)
 
   n_group <- levels(data$Group) %>% length()

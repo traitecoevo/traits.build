@@ -40,7 +40,7 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
   if (!file.exists(output_path)) {
     dir.create(output_path, FALSE, TRUE)
   }
-  browser()
+
   # Filenames
   input_Rmd <- sprintf("tmp_%s_report.Rmd", dataset_id)
   output_html <- sprintf("%s/%s.html", output_path, dataset_id)
