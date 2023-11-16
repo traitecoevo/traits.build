@@ -107,3 +107,13 @@ database_create_combined_table <- function(database) {
 
   combined_table
 }
+
+
+# Add documentation
+#' @export
+database_unpack_combined_table <- function(combined_table) {
+  combined_table %>%
+    # Need to make sure properties are all sorted the same
+    # What if a location has different properties or even different number of properties?
+    tidyr::separate_wider_delim(cols = "location_properties", delim = "; ", names_sep = "")
+}
