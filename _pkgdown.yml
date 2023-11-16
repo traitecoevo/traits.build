@@ -67,7 +67,7 @@ reference:
     - '`dataset_find_taxon`'
 
   - title: Reading & writing files
-    desc: Enable reading and wring of various file types.
+    desc: Enable reading and writing of various file types.
     contents:
     - '`read_csv_char`'
     - '`read_metadata`'
