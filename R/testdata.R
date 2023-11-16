@@ -903,6 +903,8 @@ dataset_test_worker <-
             info = paste0(red(f), "\ttaxonomic_update")
           )
           taxon_names <- sapply(metadata[["taxonomic_updates"]], "[[", "find")
+          # This test is commented out because the names in the metadata file already have some standardisations applied (i.e. changing the case of first word)
+          # by the time the taxonomic updates are read in and therefore they aren't matching those in the data.csv file.
           # expect_is_in(
           #   unique(taxon_names), data[[metadata[["dataset"]][["taxon_name"]]]] %>% unique(),
           #   info = paste0(red(f), "\ttaxonomic_updates"), label = "`taxon_name`'s"
@@ -1017,8 +1019,14 @@ dataset_test_worker <-
                 parsed_data %>% filter(.data$trait_name == variable) %>% dplyr::pull(.data$value) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
-            # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
-            } #else {
+            }
+            # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields            
+          # This test is commented out because two fixes are requiried.
+          # First, the names in the metadata file already have had some standardisations applied (i.e. changing the case of first word)
+          # by the time the taxonomic updates are read in and therefore they aren't matching those in the data.csv file.
+          # Second, the match is not to `taxon_name` but to the column name in data.csv that maps to `taxon_name`
+
+          #  else {
           #     expect_is_in(
           #       find_values, parsed_data %>% dplyr::pull(variable) %>% unique(),
           #       info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
