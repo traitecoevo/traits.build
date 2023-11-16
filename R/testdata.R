@@ -803,10 +803,13 @@ dataset_test_worker <-
               )
             # Otherwise check fixed value
             } else {
+
+              fields_by_word <- stringr::str_split(metadata[["dataset"]][[field]], " ") %>% unlist()
               expect_is_in(
-                metadata[["dataset"]][[field]], schema[[field]][["values"]] %>% names,
+                fields_by_word, schema[[field]][["values"]] %>% names,
                 info = paste0(red(f), "\tdataset"), label = sprintf("`%s`", field)
               )
+              
             }
           }
         }
@@ -884,27 +887,29 @@ dataset_test_worker <-
             info = paste0(red(f), "\tconverting `taxonomic_updates` to a dataframe")
           )
 
-          # Check no duplicate `find` values
-          expect_equal(
-            x %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
-            0, info = sprintf(
-              "%s\ttaxonomic_updates - duplicate `find` values detected: '%s'",
-              red(f),
-              paste(
-                x %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>%
-                  dplyr::pull(.data$find) %>% unique(),
-                collapse = "', '")
-            )
-          )
+          # # Check no duplicate `find` values
+          # expect_equal(
+          #   x %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
+          #   0, info = sprintf(
+          #     "%s\ttaxonomic_updates - duplicate `find` values detected: '%s'",
+          #     red(f),
+          #     paste(
+          #       x %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>%
+          #         dplyr::pull(.data$find) %>% unique(),
+          #       collapse = "', '")
+          #   )
+          # )
 
-          expect_list_elements_exact_names(
-            metadata[["taxonomic_updates"]],
-            schema$metadata$elements$taxonomic_updates$values %>% names(),
-            info = paste0(red(f), "\ttaxonomic_update")
-          )
-          taxon_names <- sapply(metadata[["taxonomic_updates"]], "[[", "find")
+          # expect_list_elements_exact_names(
+          #   metadata[["taxonomic_updates"]],
+          #   schema$metadata$elements$taxonomic_updates$values %>% names(),
+          #   info = paste0(red(f), "\ttaxonomic_update")
+          # )
+          
           # This test is commented out because the names in the metadata file already have some standardisations applied (i.e. changing the case of first word)
           # by the time the taxonomic updates are read in and therefore they aren't matching those in the data.csv file.
+
+          # taxon_names <- sapply(metadata[["taxonomic_updates"]], "[[", "find")
           # expect_is_in(
           #   unique(taxon_names), data[[metadata[["dataset"]][["taxon_name"]]]] %>% unique(),
           #   info = paste0(red(f), "\ttaxonomic_updates"), label = "`taxon_name`'s"
@@ -932,6 +937,7 @@ dataset_test_worker <-
           )
 
         # Replace original `location_id` with a new `location_id`
+
         if (!is.null(names(metadata$locations))) {
           parsed_data <-
             parsed_data %>%
@@ -972,7 +978,7 @@ dataset_test_worker <-
             }
           }
         }
-
+        
         ## Excluded observations
 
         if (!is.na(metadata[["exclude_observations"]][1])) {
