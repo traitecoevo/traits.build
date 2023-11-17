@@ -4,7 +4,7 @@
 \name{traits.build-package}
 \alias{traits.build}
 \alias{traits.build-package}
-\title{traits.build: A workflow for harmonising trait data from diverse sources into a documented standard structure.}
+\title{traits.build: A workflow for harmonising trait data from diverse sources into a documented standard structure}
 \description{
 The `traits.build` package provides a workflow to harmonise trait data from diverse sources. The code was originally built to support AusTraits (see Falster et al 2021, \doi{10.1038/s41597-021-01006-6}, \url{https://github.com/traitecoevo/autraits.build}) and has been generalised here to support construction of other trait databases. For detailed instructions and examples see \url{https://traitecoevo.github.io/traits.build-book/}.
 }

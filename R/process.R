@@ -265,7 +265,7 @@ dataset_process <- function(filename_data_raw,
         identifier = "https://github.com/traitecoevo/traits.build",
         relation_type = "isCompiledBy",
         resource_type = "software",
-        version = as.character(packageVersion("traits.build"))
+        version = as.character(utils::packageVersion("traits.build"))
       )
     )
 

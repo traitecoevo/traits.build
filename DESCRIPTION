@@ -1,6 +1,6 @@
 Type: Package
 Package: traits.build
-Title: A workflow for harmonising trait data from diverse sources into a documented standard structure.
+Title: A workflow for harmonising trait data from diverse sources into a documented standard structure
 Version: 1.0.0.9000
 Maintainer: Daniel Falster <daniel.falster@unsw.edu.au>
 Authors@R: c(
@@ -52,7 +52,7 @@ Suggests:
     rcrossref,
     ggplot2,
     ggbeeswarm,
-    gridExtra, 
+    gridExtra,
     scales,
     zip,
     covr
