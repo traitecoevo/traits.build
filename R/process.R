@@ -265,34 +265,34 @@ dataset_process <- function(filename_data_raw,
         identifier = "https://github.com/traitecoevo/traits.build",
         relation_type = "isCompiledBy",
         resource_type = "software",
-        version = as.character(packageVersion("traits.build"))
+        version = as.character(utils::packageVersion("traits.build"))
       )
     )
 
 
   # Combine for final output
   ret <-
-  list(
-    traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "unit_in"))),
-    locations = locations,
-    contexts = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
-    methods = methods,
-    excluded_data = traits %>%
-    dplyr::filter(!is.na(.data$error)) %>%
-    dplyr::select(dplyr::all_of(c("error")), everything()) %>%
-    dplyr::select(-dplyr::all_of(c("unit_in"))),
-    taxonomic_updates = taxonomic_updates %>%
-      dplyr::filter(.data$aligned_name %in% traits$taxon_name),
-    taxa = taxonomic_updates %>%
-      dplyr::select(dplyr::all_of(c(taxon_name = "aligned_name"))) %>%
-      dplyr::distinct(),
-    contributors = contributors,
-    sources = sources,
-    definitions = definitions,
-    schema = schema,
-    metadata = metadata,
-    build_info = list(session_info = utils::sessionInfo())
-  )
+    list(
+      traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "unit_in"))),
+      locations = locations,
+      contexts = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
+      methods = methods,
+      excluded_data = traits %>%
+      dplyr::filter(!is.na(.data$error)) %>%
+      dplyr::select(dplyr::all_of(c("error")), everything()) %>%
+      dplyr::select(-dplyr::all_of(c("unit_in"))),
+      taxonomic_updates = taxonomic_updates %>%
+        dplyr::filter(.data$aligned_name %in% traits$taxon_name),
+      taxa = taxonomic_updates %>%
+        dplyr::select(dplyr::all_of(c(taxon_name = "aligned_name"))) %>%
+        dplyr::distinct(),
+      contributors = contributors,
+      sources = sources,
+      definitions = definitions,
+      schema = schema,
+      metadata = metadata,
+      build_info = list(session_info = utils::sessionInfo())
+    )
 
   class(ret) <- c("list", "traits.build")
 
@@ -1552,6 +1552,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
   # Implement any value changes as per substitutions
   if (!is.na(metadata[["substitutions"]][1])) {
+
     substitutions_table <- util_list_to_df2(metadata[["substitutions"]]) %>%
       dplyr::mutate(
         find = tolower(.data$find),
@@ -1567,8 +1568,8 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
       if (length(j) > 0) {
         out[["value"]][j] <- substitutions_table[["replace"]][i]
       }
-    }
 
+    }
   }
 
   list(

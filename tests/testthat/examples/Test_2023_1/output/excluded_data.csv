@@ -206,6 +206,18 @@ Observation excluded in metadata,Test_2023_1,Syzygium gustavioides,229,wrong_tra
 Missing unit conversion,Test_2023_1,Syzygium sayeri,234,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Syzygium sayeri
 Missing unit conversion,Test_2023_1,Syzygium sayeri,234,wood_density,0.485,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Syzygium sayeri
 Trait name not in trait dictionary,Test_2023_1,Syzygium sayeri,234,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Syzygium sayeri
-Missing unit conversion,Test_2023_1,Trema aspera,239,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Trema aspera
-Missing unit conversion,Test_2023_1,Trema aspera,239,wood_density,0.357,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Trema aspera
-Trait name not in trait dictionary,Test_2023_1,Trema aspera,239,wrong_trait_name,test excluded observation,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Missing unit conversion,Test_2023_1,Syzygium,236,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Syzygium
+Trait name not in trait dictionary,Test_2023_1,Syzygium,236,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Syzygium
+Observation excluded in metadata,Test_2023_1,Testexcluded sp2,237,leaf_mass_per_area,0.15,mg/mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Testexcluded sp2
+Observation excluded in metadata,Test_2023_1,Testexcluded sp2,238,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Testexcluded sp2
+Observation excluded in metadata,Test_2023_1,Testexcluded sp2,238,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Testexcluded sp2
+Missing unit conversion,Test_2023_1,Testupdated sp4 replaced,240,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Testupdated sp4
+Trait name not in trait dictionary,Test_2023_1,Testupdated sp4 replaced,240,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Testupdated sp4
+Missing unit conversion,Test_2023_1,Trema aspera,245,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,Trema aspera
+Missing unit conversion,Test_2023_1,Trema aspera,245,wood_density,0.357,,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,02,,Trema aspera
+Trait name not in trait dictionary,Test_2023_1,Trema aspera,245,wrong_trait_name,test excluded observation,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Observation excluded in metadata,Test_2023_1,Testexcluded sp.,246,leaf_mass_per_area,0.1,mg/mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,testexcluded sp
+Observation excluded in metadata,Test_2023_1,Testexcluded sp.,247,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,testexcluded sp
+Observation excluded in metadata,Test_2023_1,Testexcluded sp.,247,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,testexcluded sp
+Missing unit conversion,Test_2023_1,testupdated sp3 replaced,249,seed_dry_mass,2,mass,species,mean,measurement,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,03,,testupdated sp3
+Trait name not in trait dictionary,Test_2023_1,testupdated sp3 replaced,249,wrong_trait_name,test,,species,mode,expert_score,3,field,adult,,,,,,,,,,2004/2004,from Falster_2005_1,01,,testupdated sp3
