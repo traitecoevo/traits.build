@@ -272,27 +272,27 @@ dataset_process <- function(filename_data_raw,
 
   # Combine for final output
   ret <-
-  list(
-    traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "unit_in"))),
-    locations = locations,
-    contexts = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
-    methods = methods,
-    excluded_data = traits %>%
-    dplyr::filter(!is.na(.data$error)) %>%
-    dplyr::select(dplyr::all_of(c("error")), everything()) %>%
-    dplyr::select(-dplyr::all_of(c("unit_in"))),
-    taxonomic_updates = taxonomic_updates %>%
-      dplyr::filter(.data$aligned_name %in% traits$taxon_name),
-    taxa = taxonomic_updates %>%
-      dplyr::select(dplyr::all_of(c(taxon_name = "aligned_name"))) %>%
-      dplyr::distinct(),
-    contributors = contributors,
-    sources = sources,
-    definitions = definitions,
-    schema = schema,
-    metadata = metadata,
-    build_info = list(session_info = utils::sessionInfo())
-  )
+    list(
+      traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "unit_in"))),
+      locations = locations,
+      contexts = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
+      methods = methods,
+      excluded_data = traits %>%
+      dplyr::filter(!is.na(.data$error)) %>%
+      dplyr::select(dplyr::all_of(c("error")), everything()) %>%
+      dplyr::select(-dplyr::all_of(c("unit_in"))),
+      taxonomic_updates = taxonomic_updates %>%
+        dplyr::filter(.data$aligned_name %in% traits$taxon_name),
+      taxa = taxonomic_updates %>%
+        dplyr::select(dplyr::all_of(c(taxon_name = "aligned_name"))) %>%
+        dplyr::distinct(),
+      contributors = contributors,
+      sources = sources,
+      definitions = definitions,
+      schema = schema,
+      metadata = metadata,
+      build_info = list(session_info = utils::sessionInfo())
+    )
 
   class(ret) <- c("list", "traits.build")
 
