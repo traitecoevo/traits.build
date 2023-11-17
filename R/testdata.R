@@ -796,7 +796,7 @@ dataset_test_worker <-
 
             # If the metadata field is a column in the data (and not an accepted value of the field)
             if (metadata[["dataset"]][[field]] %in% names(data) & !(metadata[["dataset"]][[field]] %in% not_allowed)) {
-             
+
               expect_is_in(
                 stringr::str_split(data[[metadata[["dataset"]][[field]]]], " ") %>% unlist() %>% unique(), c("unknown", schema[[field]][["values"]] %>% names),
                 info = sprintf("%s\t'%s'", red(files[1]), metadata[["dataset"]][[field]]),
@@ -889,7 +889,7 @@ dataset_test_worker <-
             info = paste0(red(f), "\tconverting `taxonomic_updates` to a dataframe")
           )
 
-          # # Check no duplicate `find` values
+          # Check no duplicate `find` values
           # expect_equal(
           #   x %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
           #   0, info = sprintf(
@@ -984,40 +984,39 @@ dataset_test_worker <-
 
         if (!is.na(metadata[["exclude_observations"]][1])) {
 
-          expect_no_error(
-            x <- metadata[["exclude_observations"]] %>% util_list_to_df2(),
-            info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe")
-          )
-
-          # Check no duplicate `find` values
-          expect_equal(
-            x %>% dplyr::group_by(.data$variable, .data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
-            0, info = sprintf(
-              "%s\texclude_observations - duplicate `find` values detected: '%s'",
-              red(f),
-              paste(
-                x %>% dplyr::group_by(.data$variable, .data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>%
-                  dplyr::pull(.data$find) %>% unique(),
-                collapse = "', '")
-            )
-          )
-
           expect_list_elements_exact_names(
             metadata[["exclude_observations"]],
             schema$metadata$elements$exclude_observations$values %>% names(),
             info = paste0(red(f), "\texclude_observations")
           )
 
-          # Check for allowable values of categorical variables
           expect_no_error(
             x <- metadata[["exclude_observations"]] %>%
               util_list_to_df2() %>%
               tidyr::separate_longer_delim("find", delim = ", ") %>%
-              dplyr::mutate(find = str_squish(.data$find)) %>%
-              split(.$variable),
-            info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe and splitting by `variable`")
+              dplyr::mutate(find = str_squish(.data$find)),
+            info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe")
           )
 
+          # Check no duplicate `find` values
+          # expect_equal(
+          #   x %>% dplyr::group_by(.data$variable, .data$find) %>%
+          #     dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
+          #   0, info = sprintf(
+          #     "%s\texclude_observations - duplicate `find` values detected: '%s'",
+          #     red(f),
+          #     paste(
+          #       x %>% dplyr::group_by(.data$variable, .data$find) %>% dplyr::summarise(n = dplyr::n()) %>%
+          #         filter(.data$n > 1) %>% dplyr::pull(.data$find) %>% unique(),
+          #       collapse = "', '")
+          #   )
+          # )
+          expect_no_error(
+            x <- x %>% split(.$variable),
+            info = paste0(red(f), "\tsplitting `exclude_observations` by variable")
+          )
+
+          # Check for allowable values of categorical variables
           for (variable in names(x)) {
 
             find_values <- x[[variable]][["find"]] %>% unique()
@@ -1030,19 +1029,19 @@ dataset_test_worker <-
                 parsed_data %>% filter(.data$trait_name == variable) %>% dplyr::pull(.data$value) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
-            }
+            } #else {
             # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
           # This test is commented out because two fixes are requiried.
           # First, the names in the metadata file already have had some standardisations applied (i.e. changing the case of first word)
           # by the time the taxonomic updates are read in and therefore they aren't matching those in the data.csv file.
           # Second, the match is not to `taxon_name` but to the column name in data.csv that maps to `taxon_name`
 
-          #  else {
-          #     expect_is_in(
-          #       find_values, parsed_data %>% dplyr::pull(variable) %>% unique(),
-          #       info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
-          #     )
-          #   }
+
+                # expect_is_in(
+                  # find_values, parsed_data %>% dplyr::pull(variable) %>% unique(),
+                  # info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
+                # )
+              # }
           }
         }
 
