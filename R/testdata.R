@@ -910,10 +910,11 @@ dataset_test_worker <-
 
           # This test is commented out because the names in the metadata file already have some standardisations applied (i.e. changing the case of first word)
           # by the time the taxonomic updates are read in and therefore they aren't matching those in the data.csv file.
-
+          # Sophie - I don't see where the names in the metadata file get standardised but happy to leave it
+          # commented out for now as its purpose is to reduce metadata clutter but doesn't affect the output
            # taxon_names <- sapply(metadata[["taxonomic_updates"]], "[[", "find")
            # expect_is_in(
-           #   unique(taxon_names) %>% process_standardise_names(), data[[metadata[["dataset"]][["taxon_name"]]]] %>% unique() %>% process_standardise_names(),
+           #   unique(taxon_names), data[[metadata[["dataset"]][["taxon_name"]]]] %>% unique(),
            #   info = paste0(red(f), "\ttaxonomic_updates"), label = "`taxon_name`'s"
            # )
 
@@ -1029,12 +1030,14 @@ dataset_test_worker <-
                 parsed_data %>% filter(.data$trait_name == variable) %>% dplyr::pull(.data$value) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
-            } #else {
+            } else {
             # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
           # This test is commented out because two fixes are requiried.
           # First, the names in the metadata file already have had some standardisations applied (i.e. changing the case of first word)
           # by the time the taxonomic updates are read in and therefore they aren't matching those in the data.csv file.
           # Second, the match is not to `taxon_name` but to the column name in data.csv that maps to `taxon_name`
+          # Sophie - I don't believe the names have standardisation applied, and the match is being applied to parsed data,
+          # so `taxon_name` should be a column that exists
 
 
                 # expect_is_in(
