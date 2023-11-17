@@ -1010,7 +1010,11 @@ dataset_test_worker <-
 
           # Check for allowable values of categorical variables
           expect_no_error(
-            x <- metadata[["exclude_observations"]] %>% util_list_to_df2() %>% split(.$variable),
+            x <- metadata[["exclude_observations"]] %>%
+              util_list_to_df2() %>%
+              tidyr::separate_longer_delim("find", delim = ", ") %>%
+              dplyr::mutate(find = str_squish(.data$find)) %>%
+              split(.$variable),
             info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe and splitting by `variable`")
           )
 
