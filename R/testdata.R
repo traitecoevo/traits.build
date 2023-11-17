@@ -889,18 +889,18 @@ dataset_test_worker <-
             info = paste0(red(f), "\tconverting `taxonomic_updates` to a dataframe")
           )
 
-          # Check no duplicate `find` values
-          # expect_equal(
-          #   x %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
-          #   0, info = sprintf(
-          #     "%s\ttaxonomic_updates - duplicate `find` values detected: '%s'",
-          #     red(f),
-          #     paste(
-          #       x %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>%
-          #         dplyr::pull(.data$find) %>% unique(),
-          #       collapse = "', '")
-          #   )
-          # )
+          #Check no duplicate `find` values
+          expect_equal(
+            x %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
+            0, info = sprintf(
+              "%s\ttaxonomic_updates - duplicate `find` values detected: '%s'",
+              red(f),
+              paste(
+                x %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>%
+                  dplyr::pull(.data$find) %>% unique(),
+                collapse = "', '")
+            )
+          )
 
            expect_list_elements_exact_names(
              metadata[["taxonomic_updates"]],
@@ -911,11 +911,11 @@ dataset_test_worker <-
           # This test is commented out because the names in the metadata file already have some standardisations applied (i.e. changing the case of first word)
           # by the time the taxonomic updates are read in and therefore they aren't matching those in the data.csv file.
 
-           # taxon_names <- sapply(metadata[["taxonomic_updates"]], "[[", "find")
-           # expect_is_in(
-           #   unique(taxon_names) %>% process_standardise_names(), data[[metadata[["dataset"]][["taxon_name"]]]] %>% unique() %>% process_standardise_names(),
-           #   info = paste0(red(f), "\ttaxonomic_updates"), label = "`taxon_name`'s"
-           # )
+           taxon_names <- sapply(metadata[["taxonomic_updates"]], "[[", "find")
+           expect_is_in(
+             unique(taxon_names), data[[metadata[["dataset"]][["taxon_name"]]]] %>% unique(),
+             info = paste0(red(f), "\ttaxonomic_updates"), label = "`taxon_name`'s"
+           )
 
         }
 

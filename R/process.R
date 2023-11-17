@@ -1846,8 +1846,11 @@ build_combine <- function(..., d = list(...)) {
   names(d) <- sapply(d, "[[", "dataset_id")
 
   # Taxonomy
+
   taxonomic_updates <-
     combine("taxonomic_updates", d) %>%
+    # Because taxon names are standardised, hybrid genera mistakenly have the initial "x" turned into "X". Need to revert
+    dplyr::mutate(aligned_name,stringr::str_replace(.data$aligned_name,"^[Xx]\\s","x ")) %>%
     dplyr::group_by(.data$original_name, .data$aligned_name, .data$taxon_name, .data$taxonomic_resolution) %>%
     dplyr::mutate(dataset_id = paste(.data$dataset_id, collapse = " ")) %>%
     dplyr::ungroup() %>%
