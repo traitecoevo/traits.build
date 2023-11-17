@@ -896,7 +896,7 @@ dataset_test_worker <-
             info = paste0(red(f), "\tconverting `taxonomic_updates` to a dataframe")
           )
 
-          #Check no duplicate `find` values
+          # Check no duplicate `find` values
           expect_equal(
             x %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
             0, info = sprintf(
