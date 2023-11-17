@@ -1030,7 +1030,7 @@ dataset_test_worker <-
                 parsed_data %>% filter(.data$trait_name == variable) %>% dplyr::pull(.data$value) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
-            } else {
+            } # else {
             # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
           # This test is commented out because two fixes are requiried.
           # First, the names in the metadata file already have had some standardisations applied (i.e. changing the case of first word)
@@ -1039,10 +1039,9 @@ dataset_test_worker <-
           # Sophie - I don't believe the names have standardisation applied, and the match is being applied to parsed data,
           # so `taxon_name` should be a column that exists
 
-
                 # expect_is_in(
-                  # find_values, parsed_data %>% dplyr::pull(variable) %>% unique(),
-                  # info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
+                #   find_values, parsed_data %>% dplyr::pull(variable) %>% unique(),
+                #   info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
                 # )
               # }
           }
