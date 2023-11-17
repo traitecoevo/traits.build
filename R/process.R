@@ -271,7 +271,7 @@ dataset_process <- function(filename_data_raw,
 
 
   # Combine for final output
-  ret <- 
+  ret <-
   list(
     traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "unit_in"))),
     locations = locations,
@@ -1805,7 +1805,7 @@ process_taxonomic_updates <- function(data, metadata) {
     }
   }
 
-  # for any that haven't been updated, run script to standardize names
+  # For any that haven't been updated, run script to standardize names
   out[["taxon_name"]][to_update] <- process_standardise_names(out[["taxon_name"]][to_update])
 
   ## Return updated table
@@ -1881,7 +1881,7 @@ build_combine <- function(..., d = list(...)) {
                       session_info = utils::sessionInfo()
                       )
               )
-  
+
   class(ret) <- c("list", "traits.build")
 
   ret
