@@ -236,7 +236,7 @@ dataset_test_worker <-
       # Note c3 is needed because this is prefix for allowed UTF8 chars
       # Warning: Portable packages must use only ASCII characters in their R code
       # Sophie - could replace these with unicode like Lizzy did before?
-      exceptions <- c("ÁÅÀÂÄÆÃĀâíåæäãàáíÇčóöøéèłńl°êÜüùúû±µµ“”‘’-–—≈˜×")
+      exceptions <- c("ÁÅÀÂÄÆÃĀâíåæäãàáíÇčóöøéèłńl°êÜüùúû±µµ“”‘’-–—≈˜×≥≤")
 
       is_allowed <- i %in% charToRaw(exceptions)
       !(is_ascii | is_allowed)
