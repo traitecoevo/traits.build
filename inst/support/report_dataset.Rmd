@@ -514,11 +514,11 @@ for (trait in traits_numeric) {
 
 
   data_trait_study <- data_study$traits %>%
-    filter(trait_name == trait) %>%
+    filter(trait_name == trait, !value_type %in% c("bin", "range")) %>%
     mutate(value = as.numeric(value))
 
   data_trait_all <- austraits$traits %>%
-    filter(trait_name == trait) %>%
+    filter(trait_name == trait, !value_type %in% c("bin", "range")) %>%
     mutate(value = as.numeric(value))
 
   transforms <- metadata$traits %>% util_list_to_df2() %>% filter(trait_name == trait)
