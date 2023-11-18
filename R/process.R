@@ -57,7 +57,7 @@ dataset_configure <- function(
 #' @param resource_metadata Metadata about the traits compilation read in from the config folder
 #' @param unit_conversion_functions `unit_conversion.csv` file read in from the config folder
 #' @param filter_missing_values Default filters missing values from the excluded data table;
-#' change to false to see the rows with missing values.
+#' change to false to see the rows with missing values
 #'
 #' @return List, AusTraits database object
 #' @export
@@ -203,16 +203,16 @@ dataset_process <- function(filename_data_raw,
     dplyr::distinct() %>%
     dplyr::arrange(.data$aligned_name)
 
-  # Taxon names explicitly excluded in metadata also excluded from taxonomic updates table.
+  # Taxon names explicitly excluded in metadata also excluded from taxonomic updates table
   if (!is.na(metadata[["exclude_observations"]][1])) {
     taxa_to_exclude <-
-        metadata[["exclude_observations"]] %>%
-        traits.build::util_list_to_df2() %>%
-        dplyr::mutate(
-          find = stringr::str_split(.data$find, ", ")
-          ) %>%
-        tidyr::unnest_longer(.data$find) %>%
-        dplyr::filter(.data$variable == "taxon_name")
+      metadata[["exclude_observations"]] %>%
+      traits.build::util_list_to_df2() %>%
+      dplyr::mutate(
+        find = stringr::str_split(.data$find, ", ")
+        ) %>%
+      tidyr::unnest_longer(.data$find) %>%
+      dplyr::filter(.data$variable == "taxon_name")
 
     tmp <- taxa_to_exclude$find %>% process_standardise_names()
 
@@ -231,7 +231,7 @@ dataset_process <- function(filename_data_raw,
     process_generate_method_ids()
 
   # Ensure correct order of columns in traits table
-  # At this point, need to retain `taxonomic_resolution`, because taxa table & taxonomic_updates not yet assembled.
+  # At this point, need to retain `taxonomic_resolution`, because taxa table & taxonomic_updates not yet assembled
 
   traits <-
     traits %>%
@@ -314,7 +314,7 @@ dataset_process <- function(filename_data_raw,
 #' @param resource_metadata metadata for the compilation
 #' @param taxon_list Taxon list
 #' @param filter_missing_values Default filters missing values from the excluded data table;
-#' change to false to see the rows with missing values.
+#' change to false to see the rows with missing values
 #' @return List, AusTraits database object
 #' @export
 #'
@@ -449,7 +449,7 @@ process_create_observation_id <- function(data, metadata) {
   # There are 3 circumstances:
 
   # 1. There is an `individual_id` column read in through metadata$data
-  #    and `parsing_id` is equivalent to `individual_id`
+  #    and `parsing_id` is equivalent to `individual_id`.
   # 2. There is only a single observation for each individual,
   #    and therefore `parsing_id` values assigned based upon row number
   #    correctly identifies an individual. This includes instances where
@@ -1942,7 +1942,7 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
     util_df_convert_character() %>%
     dplyr::mutate(
       # If no taxonomic resolution is specified from taxonomic_updates,
-      # then the name's taxonomic resolution is the taxon_rank for the taxon name.
+      # then the name's taxonomic resolution is the taxon_rank for the taxon name
       taxonomic_resolution = ifelse(
         .data$taxon_name %in% taxa$aligned_name,
         taxa$taxon_rank[match(.data$taxon_name, taxa$aligned_name)],
@@ -1958,7 +1958,7 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
     # Remove `taxon_rank`, as it is about to be merged back in, but matches will now be possible to more rows
     select(-dplyr::any_of(c("taxon_rank", "taxonomic_resolution"))) %>%
     util_df_convert_character() %>%
-    # Merge in all data from taxa.
+    # Merge in all data from taxa
     dplyr::left_join(by = c("taxon_name"),
       taxa %>% dplyr::select(-dplyr::any_of(dplyr::contains("align"))) %>%
               dplyr::distinct(.data$taxon_name, .keep_all = TRUE) %>%
