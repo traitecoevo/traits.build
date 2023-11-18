@@ -214,9 +214,11 @@ dataset_process <- function(filename_data_raw,
         tidyr::unnest_longer(.data$find) %>%
         dplyr::filter(.data$variable == "taxon_name")
 
+    tmp <- taxa_to_exclude$find %>% process_standardise_names()
+
     taxonomic_updates <-
       taxonomic_updates %>%
-      dplyr::filter(!.data$aligned_name %in% taxa_to_exclude$find)
+      dplyr::filter(!.data$aligned_name %in% tmp)
   }
 
   ## A temporary dataframe created to generate and bind `method_id`,
@@ -1723,8 +1725,9 @@ process_standardise_names <- function(x) {
   }
 
   x %>%
-    ## Capitalise first letter
+    ## Capitalise first letter, but not hybrid `x` at start
     f("^([a-z])", "\\U\\1") %>%
+    f("^[Xx]\\s", "x ") %>%
 
     ## sp. not sp or spp
     f("\\ssp(\\s|$)", " sp.\\1") %>%
@@ -1850,8 +1853,6 @@ build_combine <- function(..., d = list(...)) {
 
   taxonomic_updates <-
     combine("taxonomic_updates", d) %>%
-    # Because taxon names are standardised, hybrid genera mistakenly have the initial "x" turned into "X". Need to revert
-    dplyr::mutate(aligned_name,stringr::str_replace(.data$aligned_name,"^[Xx]\\s","x ")) %>%
     dplyr::group_by(.data$original_name, .data$aligned_name, .data$taxon_name, .data$taxonomic_resolution) %>%
     dplyr::mutate(dataset_id = paste(.data$dataset_id, collapse = " ")) %>%
     dplyr::ungroup() %>%
@@ -1915,8 +1916,8 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::left_join(
       by = "aligned_name",
       taxa %>% dplyr::select(
-        dplyr::all_of(c("aligned_name", "taxon_name"))
-    )) %>%
+        c(dplyr::all_of(c("taxon_name")), dplyr::any_of(dplyr::contains("align"))))
+    ) %>%
     dplyr::distinct() %>%
     dplyr::arrange(.data$aligned_name)
 

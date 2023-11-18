@@ -915,9 +915,6 @@ dataset_test_worker <-
              info = paste0(red(f), "\ttaxonomic_update")
            )
 
-          # This test is commented out because the names in the metadata file already have some standardisations applied (i.e. changing the case of first word)
-          # by the time the taxonomic updates are read in and therefore they aren't matching those in the data.csv file.
-
            taxon_names <- sapply(metadata[["taxonomic_updates"]], "[[", "find")
            expect_is_in(
              unique(taxon_names), data[[metadata[["dataset"]][["taxon_name"]]]] %>% unique(),
