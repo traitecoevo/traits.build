@@ -1836,7 +1836,7 @@ build_combine <- function(..., d = list(...)) {
 
   # Combine sources and remove duplicates
   sources <- d %>% lapply("[[", "sources")
-  keys <- sources %>% lapply(names)  %>% unlist() %>% unique() %>% sort()
+  keys <- sources %>% lapply(names) %>% unlist() %>% unique() %>% sort()
   sources <- sources %>% purrr::reduce(c)
   sources <- sources[keys]
 
@@ -1882,9 +1882,7 @@ build_combine <- function(..., d = list(...)) {
               definitions = definitions,
               schema = d[[1]][["schema"]],
               metadata = metadata,
-              build_info = list(
-                      session_info = utils::sessionInfo()
-                      )
+              build_info = list(session_info = utils::sessionInfo())
               )
 
   class(ret) <- c("list", "traits.build")

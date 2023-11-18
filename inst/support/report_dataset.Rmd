@@ -443,7 +443,7 @@ if (nrow(subset(data_study$excluded_data, error != "Missing value")) > 0) {
   if (nrow(subset(data_study$excluded_data, error == "Unsupported trait value")) > 0) {
     data_study$excluded_data %>%
       filter(error == "Unsupported trait value") %>%
-      select(all_of("trait_name", "value")) %>%
+      select(all_of(c("trait_name", "value"))) %>%
       rename("value that is unaligned" = "value") %>%
       distinct() %>%
       arrange(trait_name, `value that is unaligned`) %>%
