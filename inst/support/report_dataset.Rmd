@@ -505,13 +505,11 @@ define_variable <- function(var, schema) {
 }
 
 
-
 writeLines(ifelse(length(traits_numeric) == 0,
         "No numerical traits data are currently available in this dataset",
         "We have recorded the following traits with continuous numerical values in this dataset. Plots are shown comparing the distribution of values in your study (blue) to those in other datasets within AusTraits (red, green). For each trait, please eyeball the information provided and let us know of any issues or updates where appropriate."))
 
 for (trait in traits_numeric) {
-
 
   data_trait_study <- data_study$traits %>%
     filter(trait_name == trait, !value_type %in% c("bin", "range")) %>%
@@ -756,7 +754,7 @@ empty_tibble_taxonomic_updates <-
   )
 
 tmp <- data_study$taxa %>%
-  select(one_of(names(schema$austraits$elements$taxa$elements))) %>%
+  select(any_of(names(schema$austraits$elements$taxa$elements))) %>%
   bind_rows(empty_tibble_taxa)
 
 if (nrow(tmp) < 10000) {
@@ -791,7 +789,7 @@ updated_taxa <- data_study$taxonomic_updates %>% select(-dataset_id) %>%
 data_study$taxa %>%
   filter(taxon_name %in% updated_taxa$taxon_name) %>%
   left_join(
-    by = c("taxon_name"),
+    by = c("taxon_name", "original_name"),
     updated_taxa %>%
       bind_rows(empty_tibble_taxonomic_updates) %>%
       select(original_name, taxon_name, aligned_name, aligned_name_taxon_id, aligned_name_taxonomic_status)
