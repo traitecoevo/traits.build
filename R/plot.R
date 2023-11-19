@@ -21,7 +21,11 @@ plot_trait_distribution_beeswarm <- function(austraits, trait, y_axis_category, 
 
   # Subset data to this trait
   austraits_trait <-
-    austraits$traits %>% dplyr::filter(.data$trait_name == trait) %>%
+    austraits$traits %>%
+    dplyr::filter(
+      .data$trait_name == trait,
+      !.data$value_type %in% c("bin", "range")
+    ) %>%
     dplyr::mutate(value = as.numeric(.data$value))
 
   my_shapes <- c("_min" = 60, "_mean" = 16, "_max" = 62, "unknown" = 18)
