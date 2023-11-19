@@ -171,7 +171,7 @@ dataset_test_worker <-
       invisible(object)
     }
 
-    expect_allowed_text <- function(object, is_data = FALSE, info, label) {
+    expect_allowed_text <- function(object, is_data = FALSE, is_col_names = FALSE, info, label) {
 
       if (length(object) > 0) {
 
@@ -187,9 +187,16 @@ dataset_test_worker <-
 
         txt <- "\n"
         for (i in which(check)) {
-          txt <- sprintf(
-            "%s\t- ln %s: %s\n",
-            txt, i, colour_characters(object[[i]], which(disallowed[[i]])))
+          if (is_col_names) {
+            txt <- sprintf(
+              "%s\t- col %s: %s\n",
+              txt, i, colour_characters(object[[i]], which(disallowed[[i]])))
+          } else {
+            txt <- sprintf(
+              "%s\t- ln %s: %s\n",
+              txt, i, colour_characters(object[[i]], which(disallowed[[i]])))
+          }
+
         }
 
         if (is_data) {
@@ -225,7 +232,7 @@ dataset_test_worker <-
       paste0(chars, collapse = "")
     }
 
-    check_disallowed_chars <- function(x, exceptions = c("ÁÅÀÂÄÆÃĀâíåæäãàáíÇčóöøéèłńl°êÜüùúû±µµ“”‘’-–—≈˜×")) {
+    check_disallowed_chars <- function(x, exceptions = c("ÁÅÀÂÄÆÃĀâíåæäãàáíÇčóöøéèłńl°êÜüùúû±µµ“”‘’-–—≈˜×≥≤")) {
 
       i <- charToRaw(x)
       # Allow all ascii text
@@ -236,7 +243,7 @@ dataset_test_worker <-
       # Note c3 is needed because this is prefix for allowed UTF8 chars
       # Warning: Portable packages must use only ASCII characters in their R code
       # Sophie - could replace these with unicode like Lizzy did before?
-      exceptions <- c("ÁÅÀÂÄÆÃĀâíåæäãàáíÇčóöøéèłńl°êÜüùúû±µµ“”‘’-–—≈˜×")
+      exceptions <- exceptions
 
       is_allowed <- i %in% charToRaw(exceptions)
       !(is_ascii | is_allowed)
@@ -288,7 +295,7 @@ dataset_test_worker <-
 
     expect_dataframe_valid <- function(data, info, label) {
       expect_not_NA(colnames(data), info, label)
-      expect_allowed_text(colnames(data), info = info, label = label)
+      expect_allowed_text(colnames(data), is_col_names = TRUE, info = info, label = label)
       expect_unique(colnames(data), info, label)
       expect_true(is.data.frame(data), info = sprintf("%s - is not a dataframe", info))
     }
@@ -773,7 +780,7 @@ dataset_test_worker <-
 
             # Check fixed values in metadata are allowed
             expect_is_in(
-              fixed, schema[[field]][["values"]] %>% names,
+              fixed, c("unknown", schema[[field]][["values"]] %>% names),
               info = paste0(red(f), "\ttraits"), label = sprintf("`%s`", field)
             )
 
@@ -781,7 +788,7 @@ dataset_test_worker <-
             if (length(cols) > 0) {
               for (c in cols) {
                 expect_is_in(
-                  data[[c]] %>% unique(), schema[[field]][["values"]] %>% names,
+                  stringr::str_split(data[[c]], " ") %>% unlist() %>% unique(), c("unknown", schema[[field]][["values"]] %>% names),
                   info = sprintf("%s\t'%s'", red(files[1]), c),
                   label = sprintf("`%s` column", field)
                 )
@@ -796,17 +803,22 @@ dataset_test_worker <-
 
             # If the metadata field is a column in the data (and not an accepted value of the field)
             if (metadata[["dataset"]][[field]] %in% names(data) & !(metadata[["dataset"]][[field]] %in% not_allowed)) {
+
               expect_is_in(
-                data[[metadata[["dataset"]][[field]]]] %>% unique(), schema[[field]][["values"]] %>% names,
+                stringr::str_split(data[[metadata[["dataset"]][[field]]]], " ") %>% unlist() %>% unique(), c("unknown", schema[[field]][["values"]] %>% names),
                 info = sprintf("%s\t'%s'", red(files[1]), metadata[["dataset"]][[field]]),
                 label = sprintf("`%s` column", field)
               )
+
             # Otherwise check fixed value
             } else {
+
+              fields_by_word <- stringr::str_split(metadata[["dataset"]][[field]], " ") %>% unlist()
               expect_is_in(
-                metadata[["dataset"]][[field]], schema[[field]][["values"]] %>% names,
+                fields_by_word, c("unknown", schema[[field]][["values"]] %>% names),
                 info = paste0(red(f), "\tdataset"), label = sprintf("`%s`", field)
               )
+
             }
           }
         }
@@ -897,16 +909,17 @@ dataset_test_worker <-
             )
           )
 
-          expect_list_elements_exact_names(
-            metadata[["taxonomic_updates"]],
-            schema$metadata$elements$taxonomic_updates$values %>% names(),
-            info = paste0(red(f), "\ttaxonomic_update")
-          )
-          taxon_names <- sapply(metadata[["taxonomic_updates"]], "[[", "find")
-          expect_is_in(
-            unique(taxon_names), data[[metadata[["dataset"]][["taxon_name"]]]] %>% unique(),
-            info = paste0(red(f), "\ttaxonomic_updates"), label = "`taxon_name`'s"
-          )
+           expect_list_elements_exact_names(
+             metadata[["taxonomic_updates"]],
+             schema$metadata$elements$taxonomic_updates$values %>% names(),
+             info = paste0(red(f), "\ttaxonomic_update")
+           )
+
+           taxon_names <- sapply(metadata[["taxonomic_updates"]], "[[", "find")
+           expect_is_in(
+             unique(taxon_names), data[[metadata[["dataset"]][["taxon_name"]]]] %>% unique(),
+             info = paste0(red(f), "\ttaxonomic_updates"), label = "`taxon_name`'s"
+           )
 
         }
 
@@ -929,8 +942,8 @@ dataset_test_worker <-
               "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
           )
 
-        ## Replace original `location_id` with a new `location_id`
-        if (nrow(locations) > 0) {
+        # Replace original `location_id` with a new `location_id`
+        if (!is.null(names(metadata$locations))) {
           parsed_data <-
             parsed_data %>%
             dplyr::select(-dplyr::all_of(c("location_id"))) %>%
@@ -949,7 +962,7 @@ dataset_test_worker <-
         # Trait metadata should probably have precedence -- right now trait metadata
         # is being read in during `process_parse_data` and getting overwritten here #TODO
         # If process.R changes, this needs to be updated
-        if (nrow(locations) > 0) {
+        if (!is.null(names(metadata$locations))) {
           vars <- c("basis_of_record", "life_stage", "collection_date",
                     "measurement_remarks", "entity_type")
 
@@ -975,36 +988,39 @@ dataset_test_worker <-
 
         if (!is.na(metadata[["exclude_observations"]][1])) {
 
-          expect_no_error(
-            x <- metadata[["exclude_observations"]] %>% util_list_to_df2(),
-            info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe")
-          )
-
-          # Check no duplicate `find` values
-          expect_equal(
-            x %>% dplyr::group_by(.data$variable, .data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
-            0, info = sprintf(
-              "%s\texclude_observations - duplicate `find` values detected: '%s'",
-              red(f),
-              paste(
-                x %>% dplyr::group_by(.data$variable, .data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>%
-                  dplyr::pull(.data$find) %>% unique(),
-                collapse = "', '")
-            )
-          )
-
           expect_list_elements_exact_names(
             metadata[["exclude_observations"]],
             schema$metadata$elements$exclude_observations$values %>% names(),
             info = paste0(red(f), "\texclude_observations")
           )
 
-          # Check for allowable values of categorical variables
           expect_no_error(
-            x <- metadata[["exclude_observations"]] %>% util_list_to_df2() %>% split(.$variable),
-            info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe and splitting by `variable`")
+            x <- metadata[["exclude_observations"]] %>%
+              util_list_to_df2() %>%
+              tidyr::separate_longer_delim("find", delim = ", ") %>%
+              dplyr::mutate(find = str_squish(.data$find)),
+            info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe")
           )
 
+          # Check no duplicate `find` values
+          expect_equal(
+            x %>% dplyr::group_by(.data$variable, .data$find) %>%
+              dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
+            0, info = sprintf(
+              "%s\texclude_observations - duplicate `find` values detected: '%s'",
+              red(f),
+              paste(
+                x %>% dplyr::group_by(.data$variable, .data$find) %>% dplyr::summarise(n = dplyr::n()) %>%
+                  filter(.data$n > 1) %>% dplyr::pull(.data$find) %>% unique(),
+                collapse = "', '")
+            )
+          )
+          expect_no_error(
+            x <- x %>% split(.$variable),
+            info = paste0(red(f), "\tsplitting `exclude_observations` by variable")
+          )
+
+          # Check for allowable values of categorical variables
           for (variable in names(x)) {
 
             find_values <- x[[variable]][["find"]] %>% unique()
@@ -1017,8 +1033,10 @@ dataset_test_worker <-
                 parsed_data %>% filter(.data$trait_name == variable) %>% dplyr::pull(.data$value) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
-            # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
+
             } else {
+
+            # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
               expect_is_in(
                 find_values, parsed_data %>% dplyr::pull(variable) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)

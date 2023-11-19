@@ -57,7 +57,7 @@ dataset_configure <- function(
 #' @param resource_metadata Metadata about the traits compilation read in from the config folder
 #' @param unit_conversion_functions `unit_conversion.csv` file read in from the config folder
 #' @param filter_missing_values Default filters missing values from the excluded data table;
-#' change to false to see the rows with missing values.
+#' change to false to see the rows with missing values
 #'
 #' @return List, AusTraits database object
 #' @export
@@ -203,20 +203,22 @@ dataset_process <- function(filename_data_raw,
     dplyr::distinct() %>%
     dplyr::arrange(.data$aligned_name)
 
-  # Taxon names explicitly excluded in metadata also excluded from taxonomic updates table.
+  # Taxon names explicitly excluded in metadata also excluded from taxonomic updates table
   if (!is.na(metadata[["exclude_observations"]][1])) {
     taxa_to_exclude <-
-        metadata[["exclude_observations"]] %>%
-        traits.build::util_list_to_df2() %>%
-        dplyr::mutate(
-          find = stringr::str_split(.data$find, ", ")
-          ) %>%
-        tidyr::unnest_longer(.data$find) %>%
-        dplyr::filter(.data$variable == "taxon_name")
+      metadata[["exclude_observations"]] %>%
+      traits.build::util_list_to_df2() %>%
+      dplyr::mutate(
+        find = stringr::str_split(.data$find, ", ")
+        ) %>%
+      tidyr::unnest_longer(.data$find) %>%
+      dplyr::filter(.data$variable == "taxon_name")
+
+    tmp <- taxa_to_exclude$find %>% process_standardise_names()
 
     taxonomic_updates <-
       taxonomic_updates %>%
-      dplyr::filter(!.data$aligned_name %in% taxa_to_exclude$find)
+      dplyr::filter(!.data$aligned_name %in% tmp)
   }
 
   ## A temporary dataframe created to generate and bind `method_id`,
@@ -229,7 +231,7 @@ dataset_process <- function(filename_data_raw,
     process_generate_method_ids()
 
   # Ensure correct order of columns in traits table
-  # At this point, need to retain `taxonomic_resolution`, because taxa table & taxonomic_updates not yet assembled.
+  # At this point, need to retain `taxonomic_resolution`, because taxa table & taxonomic_updates not yet assembled
 
   traits <-
     traits %>%
@@ -265,34 +267,34 @@ dataset_process <- function(filename_data_raw,
         identifier = "https://github.com/traitecoevo/traits.build",
         relation_type = "isCompiledBy",
         resource_type = "software",
-        version = as.character(packageVersion("traits.build"))
+        version = as.character(utils::packageVersion("traits.build"))
       )
     )
 
 
   # Combine for final output
-  ret <- 
-  list(
-    traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "unit_in"))),
-    locations = locations,
-    contexts = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
-    methods = methods,
-    excluded_data = traits %>%
-    dplyr::filter(!is.na(.data$error)) %>%
-    dplyr::select(dplyr::all_of(c("error")), everything()) %>%
-    dplyr::select(-dplyr::all_of(c("unit_in"))),
-    taxonomic_updates = taxonomic_updates %>%
-      dplyr::filter(.data$aligned_name %in% traits$taxon_name),
-    taxa = taxonomic_updates %>%
-      dplyr::select(dplyr::all_of(c(taxon_name = "aligned_name"))) %>%
-      dplyr::distinct(),
-    contributors = contributors,
-    sources = sources,
-    definitions = definitions,
-    schema = schema,
-    metadata = metadata,
-    build_info = list(session_info = utils::sessionInfo())
-  )
+  ret <-
+    list(
+      traits = traits %>% dplyr::filter(is.na(.data$error)) %>% dplyr::select(-dplyr::all_of(c("error", "unit_in"))),
+      locations = locations,
+      contexts = context_ids$contexts %>% dplyr::select(-dplyr::any_of(c("var_in"))),
+      methods = methods,
+      excluded_data = traits %>%
+      dplyr::filter(!is.na(.data$error)) %>%
+      dplyr::select(dplyr::all_of(c("error")), everything()) %>%
+      dplyr::select(-dplyr::all_of(c("unit_in"))),
+      taxonomic_updates = taxonomic_updates %>%
+        dplyr::filter(.data$aligned_name %in% traits$taxon_name),
+      taxa = taxonomic_updates %>%
+        dplyr::select(dplyr::all_of(c(taxon_name = "aligned_name"))) %>%
+        dplyr::distinct(),
+      contributors = contributors,
+      sources = sources,
+      definitions = definitions,
+      schema = schema,
+      metadata = metadata,
+      build_info = list(session_info = utils::sessionInfo())
+    )
 
   class(ret) <- c("list", "traits.build")
 
@@ -312,7 +314,7 @@ dataset_process <- function(filename_data_raw,
 #' @param resource_metadata metadata for the compilation
 #' @param taxon_list Taxon list
 #' @param filter_missing_values Default filters missing values from the excluded data table;
-#' change to false to see the rows with missing values.
+#' change to false to see the rows with missing values
 #' @return List, AusTraits database object
 #' @export
 #'
@@ -447,7 +449,7 @@ process_create_observation_id <- function(data, metadata) {
   # There are 3 circumstances:
 
   # 1. There is an `individual_id` column read in through metadata$data
-  #    and `parsing_id` is equivalent to `individual_id`
+  #    and `parsing_id` is equivalent to `individual_id`.
   # 2. There is only a single observation for each individual,
   #    and therefore `parsing_id` values assigned based upon row number
   #    correctly identifies an individual. This includes instances where
@@ -1552,6 +1554,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
   # Implement any value changes as per substitutions
   if (!is.na(metadata[["substitutions"]][1])) {
+
     substitutions_table <- util_list_to_df2(metadata[["substitutions"]]) %>%
       dplyr::mutate(
         find = tolower(.data$find),
@@ -1567,8 +1570,8 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
       if (length(j) > 0) {
         out[["value"]][j] <- substitutions_table[["replace"]][i]
       }
-    }
 
+    }
   }
 
   list(
@@ -1722,8 +1725,9 @@ process_standardise_names <- function(x) {
   }
 
   x %>%
-    ## Capitalise first letter
+    ## Capitalise first letter, but not hybrid `x` at start
     f("^([a-z])", "\\U\\1") %>%
+    f("^[Xx]\\s", "x ") %>%
 
     ## sp. not sp or spp
     f("\\ssp(\\s|$)", " sp.\\1") %>%
@@ -1805,7 +1809,7 @@ process_taxonomic_updates <- function(data, metadata) {
     }
   }
 
-  # for any that haven't been updated, run script to standardize names
+  # For any that haven't been updated, run script to standardize names
   out[["taxon_name"]][to_update] <- process_standardise_names(out[["taxon_name"]][to_update])
 
   ## Return updated table
@@ -1832,7 +1836,7 @@ build_combine <- function(..., d = list(...)) {
 
   # Combine sources and remove duplicates
   sources <- d %>% lapply("[[", "sources")
-  keys <- sources %>% lapply(names)  %>% unlist() %>% unique() %>% sort()
+  keys <- sources %>% lapply(names) %>% unlist() %>% unique() %>% sort()
   sources <- sources %>% purrr::reduce(c)
   sources <- sources[keys]
 
@@ -1846,6 +1850,7 @@ build_combine <- function(..., d = list(...)) {
   names(d) <- sapply(d, "[[", "dataset_id")
 
   # Taxonomy
+
   taxonomic_updates <-
     combine("taxonomic_updates", d) %>%
     dplyr::group_by(.data$original_name, .data$aligned_name, .data$taxon_name, .data$taxonomic_resolution) %>%
@@ -1877,11 +1882,9 @@ build_combine <- function(..., d = list(...)) {
               definitions = definitions,
               schema = d[[1]][["schema"]],
               metadata = metadata,
-              build_info = list(
-                      session_info = utils::sessionInfo()
-                      )
+              build_info = list(session_info = utils::sessionInfo())
               )
-  
+
   class(ret) <- c("list", "traits.build")
 
   ret
@@ -1911,8 +1914,8 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::left_join(
       by = "aligned_name",
       taxa %>% dplyr::select(
-        dplyr::all_of(c("aligned_name", "taxon_name"))
-    )) %>%
+        c(dplyr::all_of(c("taxon_name")), dplyr::any_of(dplyr::contains("align"))))
+    ) %>%
     dplyr::distinct() %>%
     dplyr::arrange(.data$aligned_name)
 
@@ -1937,7 +1940,7 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
     util_df_convert_character() %>%
     dplyr::mutate(
       # If no taxonomic resolution is specified from taxonomic_updates,
-      # then the name's taxonomic resolution is the taxon_rank for the taxon name.
+      # then the name's taxonomic resolution is the taxon_rank for the taxon name
       taxonomic_resolution = ifelse(
         .data$taxon_name %in% taxa$aligned_name,
         taxa$taxon_rank[match(.data$taxon_name, taxa$aligned_name)],
@@ -1953,7 +1956,7 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
     # Remove `taxon_rank`, as it is about to be merged back in, but matches will now be possible to more rows
     select(-dplyr::any_of(c("taxon_rank", "taxonomic_resolution"))) %>%
     util_df_convert_character() %>%
-    # Merge in all data from taxa.
+    # Merge in all data from taxa
     dplyr::left_join(by = c("taxon_name"),
       taxa %>% dplyr::select(-dplyr::any_of(dplyr::contains("align"))) %>%
               dplyr::distinct(.data$taxon_name, .keep_all = TRUE) %>%
