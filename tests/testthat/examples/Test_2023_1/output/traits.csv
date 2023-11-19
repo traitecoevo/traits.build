@@ -511,15 +511,18 @@ Test_2023_1,Syzygium sayeri,233,leaf_area,2645,mm2,population,mean,measurement,3
 Test_2023_1,Syzygium sayeri,233,leaf_mass_per_area,131,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Syzygium sayeri
 Test_2023_1,Syzygium sayeri,233,seed_dry_mass,841,mg,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Syzygium sayeri
 Test_2023_1,Syzygium sayeri,233,wood_density,0.485,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Syzygium sayeri
-Test_2023_1,Trema tomentosa var. aspera,235,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Trema aspera
-Test_2023_1,Trema tomentosa var. aspera,236,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
-Test_2023_1,Trema tomentosa var. aspera,237,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Trema aspera
-Test_2023_1,Trema tomentosa var. aspera,238,huber_value,0.000279485746226942,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
-Test_2023_1,Trema tomentosa var. aspera,238,huber_value,0.000189000189000189,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,02,02,Trema aspera
-Test_2023_1,Trema tomentosa var. aspera,238,huber_value,0.000183823529411765,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,03,Trema aspera
-Test_2023_1,Trema tomentosa var. aspera,238,huber_value,0.000183823529411765,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Trema aspera
-Test_2023_1,Trema tomentosa var. aspera,238,leaf_N_per_dry_mass,29.9,mg/g,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
-Test_2023_1,Trema tomentosa var. aspera,238,leaf_area,2071,mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
-Test_2023_1,Trema tomentosa var. aspera,238,leaf_mass_per_area,53,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
-Test_2023_1,Trema tomentosa var. aspera,238,seed_dry_mass,5.12,mg,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
-Test_2023_1,Trema tomentosa var. aspera,238,wood_density,0.357,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Syzygium,235,leaf_mass_per_area,100,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Syzygium
+Test_2023_1,Testupdated sp4 replaced,239,leaf_mass_per_area,75,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Testupdated sp4
+Test_2023_1,Trema tomentosa var. aspera,241,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},individual,mean,model_derived,5,field,adult,04,01,,,,02,,,,2002/2002,made-up measurement remarks,05,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,242,leaf_length,40,mm,individual,mean,measurement,3,field,adult,04,01,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,243,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},individual,raw,model_derived,5,field,adult,04,01,,,,02,,,,,made-up measurement remarks,04,01,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,244,huber_value,0.000279485746226942,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,244,huber_value,0.000189000189000189,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,02,02,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,244,huber_value,0.000183823529411765,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,03,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,244,huber_value,0.000183823529411765,mm2{sapwood}/mm2{leaf},population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,03,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,244,leaf_N_per_dry_mass,29.9,mg/g,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,244,leaf_area,2071,mm2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,244,leaf_mass_per_area,53,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,244,seed_dry_mass,5.12,mg,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,Trema tomentosa var. aspera,244,wood_density,0.357,mg/mm3,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,Trema aspera
+Test_2023_1,testupdated sp3 replaced,248,leaf_mass_per_area,50,g/m2,population,mean,measurement,3,field,adult,04,,,,,02,,,,2004/2004,from Falster_2005_1,01,,testupdated sp3

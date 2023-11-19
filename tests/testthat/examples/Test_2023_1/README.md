@@ -35,7 +35,9 @@ Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - Changed `trait_name` field for `branch_mass_fraction` to NA
 - Added a categorical trait, `plant_growth_form`, and time trait, `flowering_time`
 - Changed a numeric column `wood_density` to character type with `custom_R_code`
-- Excluded observation Syzygium gustavioides using `exclude_observations` in metadata
+- Excluded observation Syzygium gustavioides using `exclude_observations` in metadata, also excluded some dummy taxa (upper case first letter and lower case first letter)
+- Added a genus name by itself
+- Added taxonomic update for a dummy taxa (upper case first letter and lower case first letter)
 - Changed leaf nitrogen for Acronychia acidula to 100 for checking out of allowable range error, "unknown" should be an excluded value for `plant_growth_form` and there should be an invalid `flowering_time` value
 - Added substitutions for `plant_growth_form` and `flowering_time`
 - Added `leaf_photosynthesis`, `leaf_stomatal_conductance` and `leaf_stomatal_conductance_2` to test `repeat_measurements_id`, with another `leaf_stomatal_conductance_3` variable that doesn't specify `repeat_measurements_id`

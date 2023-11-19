@@ -31,7 +31,7 @@ dataset_build(
 \item{taxon_list}{Taxon list}
 
 \item{filter_missing_values}{Default filters missing values from the excluded data table;
-change to false to see the rows with missing values.}
+change to false to see the rows with missing values}
 }
 \value{
 List, AusTraits database object
