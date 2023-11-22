@@ -407,11 +407,11 @@ metadata:
         find: Contributor's trait value that needs to be changed.
         replace: AusTraits supported replacement value.
     taxonomic_updates:
-      description: A table of taxonomic name changes needed to align original names in the dataset with taxon names in the chosen taxonomic reference(s).
+      description: A table of taxonomic name changes needed to align original names in the dataset with aligned names in the chosen taxonomic reference(s).
       type: array
       values:
         find: *original_name
-        replace: *taxon_name
+        replace: *aligned_name
         reason: Records why the change was implemented, e.g. `typos`, `taxonomic synonyms`, and `standardising spellings`
     exclude_observations:
       description: A table of observations to remove from the compilation.
