@@ -31,12 +31,13 @@ dataset:
       mutate(across(`wood density (mg mm-3)`, as.character)) %>%
       mutate(
         wrong_trait_name = "test",
+        wrong_trait_name = ifelse(Species == "Trema aspera", "test excluded observation", wrong_trait_name),
         wood_density_dupe = `wood density (mg mm-3)`,
         no_unit_conversion = 2,
         LASA50_dupe = LASA50,
         LASA1000_dupe = LASA1000
       )
-  '
+    '
   collection_date: 2004/2004
   taxon_name: Species
   location_name: site
@@ -71,6 +72,10 @@ locations:
     latitude (deg): .na
     longitude (deg): .na
     rainfall (mm): 3500
+  test_excluded_site:
+    description: test excluded site
+    latitude (deg): .na
+    longitude (deg): .na
 contexts:
 - context_property: plant sex
   category: entity_context
@@ -548,8 +553,28 @@ taxonomic_updates:
   replace: Psychotria sp. Utchee Creek (H.Flecker NQNC5313)
   reason: Align to name in APC (D Falster, 2020.05.23)
   taxonomic_resolution: species
+- find: testupdated sp3
+  replace: testupdated sp3 replaced
+  reason: Align to name in APC
+  taxonomic_resolution: species
+- find: Testupdated sp4
+  replace: Testupdated sp4 replaced
+  reason: Align to name in APC
+  taxonomic_resolution: species
 exclude_observations:
 - variable: taxon_name
   find: Syzygium gustavioides
-  reason: Test exclusion
+  reason: Test taxon_name exclusion
+- variable: taxon_name
+  find: testexcluded sp, Testexcluded sp2
+  reason: Another taxon_name exclusion, with upper case and lower case first letters
+- variable: location_name
+  find: test_excluded_site
+  reason: Test location_name
+- variable: flowering_time
+  find: test excluded observation
+  reason: Test trait_name exclusion
+- variable: flowering_time
+  find: test excluded observation 2
+  reason: Test trait_name exclusion 2
 questions: .na

@@ -1,7 +1,12 @@
 
-# to generate taxon_list-orig.csv
-v1 <- read_csv("config/taxon_list.csv")
-v2 <- read_csv("tests//testthat/config/taxon_list-orig.csv")
-v1 %>%
-    filter(taxon_id %in% v2$taxon_id, taxonomic_status == "accepted") %>%
-    write_csv("tests/testthat/config/taxon_list-orig.csv")
+# To generate taxon_list-orig.csv
+
+# Use Lizzy's `R/build_update_taxon_list.R` function
+
+# First move the test datasets to the tests/testthat/data folder
+# Then source "build.R" and "R/build_update_taxon_list.R" in "tests/testthat"
+# Run the function on the built test database with `replace = TRUE`
+# (Remove the tests from the data folder afterwards)
+# Replace config/taxon_list-orig.csv with config/taxon_list.csv
+
+build_update_taxon_list(database, read_csv("config/taxon_list.csv"), replace = TRUE)

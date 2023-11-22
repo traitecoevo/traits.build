@@ -18,7 +18,7 @@ studies."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/ma
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traits.build</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
       </span>
     </div>
 
@@ -76,6 +76,7 @@ studies.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">build_setup_pipeline</span><span class="op">(</span></span>
 <span>  dataset_ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="st">"data"</span><span class="op">)</span>,</span>
 <span>  method <span class="op">=</span> <span class="st">"base"</span>,</span>
+<span>  database_name <span class="op">=</span> <span class="st">"database"</span>,</span>
 <span>  template <span class="op">=</span> <span class="fu">select_pipeline_template</span><span class="op">(</span><span class="va">method</span><span class="op">)</span>,</span>
 <span>  workers <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -89,6 +90,10 @@ studies.</p>
 
 <dt>method</dt>
 <dd><p>Approach to use in build</p></dd>
+
+
+<dt>database_name</dt>
+<dd><p>Name of database to be built</p></dd>
 
 
 <dt>template</dt>
@@ -115,7 +120,7 @@ method = "furrr"</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Daniel Falster, Elizabeth Wenk, ARDC, ARC.</p>
+  <p></p><p>Developed by Daniel Falster, Elizabeth Wenk, Sophie Yang, Fonti Kar, ARDC, ARC.</p>
 </div>
 
 <div class="pkgdown">

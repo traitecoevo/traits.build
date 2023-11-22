@@ -7,7 +7,7 @@
 util_kable_styling_html(...)
 }
 \arguments{
-\item{...}{arguments passed to `kableExtra::kable()`}
+\item{...}{Arguments passed to `kableExtra::kable()`}
 }
 \description{
 Format table with kable and default styling for html

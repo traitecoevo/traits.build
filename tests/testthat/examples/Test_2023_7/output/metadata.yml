@@ -5,7 +5,7 @@ description: AusTraits is a transformative database, containing measurements on 
   used to build the resource are also available on the project's GitHub repository,http://traitecoevo.github.io/traits.build.
   Further information on the project is available in the associated publication and
   at the project website https://austraits.org.
-version: 4.0.0
+version: 5.0.0
 doi: 10.5281/zenodo.5112001
 structure_URI: https://github.com/traitecoevo/traits.build
 geo_location:
@@ -21,6 +21,11 @@ related_identifiers:
   identifier: 10.1038/s41597-021-01006-6
   relation_type: isCitedBy
   resource_type: publication-article
+- related_identifier_type: url
+  identifier: https://github.com/traitecoevo/traits.build
+  relation_type: isCompiledBy
+  resource_type: software
+  version: 1.0.0.9000
 references: 'Falster, Gallagher et al (2021) *AusTraits, a curated plant trait database
   for the Australian flora*. Scientific Data 8: 254, https://doi.org/10.1038/s41597-021-01006-6'
 publisher: Zenodo

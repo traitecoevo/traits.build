@@ -443,7 +443,7 @@ if (nrow(subset(data_study$excluded_data, error != "Missing value")) > 0) {
   if (nrow(subset(data_study$excluded_data, error == "Unsupported trait value")) > 0) {
     data_study$excluded_data %>%
       filter(error == "Unsupported trait value") %>%
-      select(all_of("trait_name", "value")) %>%
+      select(all_of(c("trait_name", "value"))) %>%
       rename("value that is unaligned" = "value") %>%
       distinct() %>%
       arrange(trait_name, `value that is unaligned`) %>%
@@ -505,20 +505,18 @@ define_variable <- function(var, schema) {
 }
 
 
-
 writeLines(ifelse(length(traits_numeric) == 0,
         "No numerical traits data are currently available in this dataset",
         "We have recorded the following traits with continuous numerical values in this dataset. Plots are shown comparing the distribution of values in your study (blue) to those in other datasets within AusTraits (red, green). For each trait, please eyeball the information provided and let us know of any issues or updates where appropriate."))
 
 for (trait in traits_numeric) {
 
-
   data_trait_study <- data_study$traits %>%
-    filter(trait_name == trait) %>%
+    filter(trait_name == trait, !value_type %in% c("bin", "range")) %>%
     mutate(value = as.numeric(value))
 
   data_trait_all <- austraits$traits %>%
-    filter(trait_name == trait) %>%
+    filter(trait_name == trait, !value_type %in% c("bin", "range")) %>%
     mutate(value = as.numeric(value))
 
   transforms <- metadata$traits %>% util_list_to_df2() %>% filter(trait_name == trait)
@@ -567,7 +565,7 @@ if (nrow(filter(data_study$excluded_data, error == "Value out of allowable range
     writeLines()
 }
 
- austraits::plot_trait_distribution_beeswarm(austraits, trait, "dataset_id", highlight = dataset_id, hide_ids = TRUE)
+  traits.build::plot_trait_distribution_beeswarm(austraits, trait, "dataset_id", highlight = dataset_id, hide_ids = TRUE)
 
   writeLines(c(""))
 
@@ -735,15 +733,34 @@ schema$austraits$elements$taxa$elements %>%
 Clicking on the name will take you to the relevant taxonomic record in the APC or APNI, where known:
 
 ```{r taxon_list2, results='asis', echo=FALSE}
-taxa_columns <- names(data_study$taxa)
+
+empty_tibble_taxa <-
+  tibble::tibble(
+    taxon_id = NA_character_,
+    taxonomic_status = NA_character_,
+    taxonomic_dataset = NA_character_,
+    genus = NA_character_,
+    family = NA_character_,
+    binomial = NA_character_,
+    trinomial = NA_character_,
+    taxon_distribution = NA_character_,
+    establishment_means = NA_character_
+  )
+
+empty_tibble_taxonomic_updates <-
+  tibble::tibble(
+    aligned_name_taxon_id = NA_character_,
+    aligned_name_taxonomic_status = NA_character_
+  )
 
 tmp <- data_study$taxa %>%
-  select(one_of(names(schema$austraits$elements$taxa$elements)))
+  select(any_of(names(schema$austraits$elements$taxa$elements))) %>%
+  bind_rows(empty_tibble_taxa)
 
 if (nrow(tmp) < 10000) {
   tmp %>%
   mutate(
-    taxon_name = ifelse("taxon_id" %in% taxa_columns, as_link(taxon_id, taxon_name), taxon_name)
+    taxon_name = ifelse(!is.na(taxon_id), as_link(taxon_id, taxon_name), taxon_name)
     ) %>%
   mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   my_kable_styling()
@@ -766,24 +783,25 @@ Links on `aligned_name` and `taxon_name` take you to the APC or APNI record for 
 ```{r}
 taxa_columns <- names(data_study$taxa)
 
-data_study$taxonomic_updates %>% select(-dataset_id) %>%
-  filter(original_name != taxon_name) %>%
+updated_taxa <- data_study$taxonomic_updates %>% select(-dataset_id) %>%
+  filter(original_name != taxon_name)
+
+data_study$taxa %>%
+  filter(taxon_name %in% updated_taxa$taxon_name) %>%
+  left_join(
+    by = c("taxon_name", "original_name"),
+    updated_taxa %>%
+      bind_rows(empty_tibble_taxonomic_updates) %>%
+      select(original_name, taxon_name, aligned_name, aligned_name_taxon_id, aligned_name_taxonomic_status)
+  ) %>%
+  bind_rows(empty_tibble_taxa) %>%
   mutate(
-    taxon_id = ifelse("taxon_id" %in% taxa_columns, data_study$taxa$taxon_id[match(taxon_name, data_study$taxa$taxon_name)], NA),
-    aligned_name_taxonomic_status = ifelse("aligned_name_taxonomic_status" %in% taxa_columns, aligned_name_taxonomic_status, NA),
-    aligned_name_alternative_taxonomic_status = ifelse("aligned_name_alternative_taxonomic_status" %in% taxa_columns, aligned_name_alternative_taxonomic_status, ""),
     d1 = purrr::map2_dbl(original_name, aligned_name, ~adist(.x, .y)) %>% as.character() %>% str_replace("0", ""),
     d2 = purrr::map2_dbl(taxon_name, aligned_name, ~adist(.x, .y)) %>% as.character() %>% str_replace("0", ""),
-    aligned_name = ifelse("aligned_scientific_name_id" %in% taxa_columns, as_link(aligned_scientific_name_id, aligned_name), aligned_name),
-    taxon_name = ifelse("taxon_id" %in% taxa_columns, as_link(taxon_id, taxon_name), taxon_name),
-    aligned_name_alternative_taxonomic_status = replace_na(aligned_name_alternative_taxonomic_status, ""),
-    `status aligned name` = sprintf(
-      "%s %s", aligned_name_taxonomic_status,
-      ifelse(aligned_name_alternative_taxonomic_status == "",
-      "", paste("(", aligned_name_alternative_taxonomic_status, ")"))
-    )
+    aligned_name = ifelse(!is.na(aligned_name_taxon_id), as_link(aligned_name_taxon_id, aligned_name), aligned_name),
+    taxon_name = ifelse(!is.na(taxon_id), as_link(taxon_id, taxon_name), taxon_name)
   ) %>%
-  select(original_name, d1, aligned_name, d2, taxon_name, `status aligned name`) %>%
+  select(original_name, d1, aligned_name, d2, taxon_name, aligned_name_taxonomic_status) %>%
   mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   my_kable_styling()
 ```
@@ -793,14 +811,9 @@ data_study$taxonomic_updates %>% select(-dataset_id) %>%
 We were unable to find taxonomic matches for the following taxa in the data. Where genus and family are shown, the specified genus aligns with an accepted genus. The term `unplaced` appears as the `status` for names on the APNI list, but not yet reviewed by the APC.
 
 ```{r taxa_list3, results='asis', echo=FALSE}
-data_study$taxa %>%
+tmp %>%
   filter(is.na(taxon_id)) %>%
-  mutate(
-    genus = ifelse("genus" %in% taxa_columns, genus, NA),
-    binomial = ifelse("binomial" %in% taxa_columns, binomial, NA),
-    trinomial = ifelse("trinomial" %in% taxa_columns, trinomial, NA),
-  ) %>%
-  select(one_of(names(schema$austraits$elements$taxa$elements))) %>%
+  select(any_of(names(schema$austraits$elements$taxa$elements))) %>%
   dplyr::select(-dplyr::any_of(c("taxon_id", "scientific_name_id", "taxon_distribution", "establishment_means"))) %>%
   mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   my_kable_styling()
