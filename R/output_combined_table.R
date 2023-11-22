@@ -119,7 +119,7 @@ database_create_combined_table <- function(database) {
             by = c("dataset_id", "trait_name", "method_id")
       ) %>%
       dplyr::left_join(contributors, by = c("dataset_id")) %>%
-      dplyr::left_join(database$taxa, by = c("taxon_name", "original_name")) %>%
+      dplyr::left_join(database$taxa, by = c("taxon_name")) %>%
       dplyr::left_join(database$taxonomic_updates, by = c("taxon_name", "dataset_id", "original_name"))
 
   combined_table
