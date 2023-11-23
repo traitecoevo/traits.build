@@ -789,7 +789,7 @@ updated_taxa <- data_study$taxonomic_updates %>% select(-dataset_id) %>%
 data_study$taxa %>%
   filter(taxon_name %in% updated_taxa$taxon_name) %>%
   left_join(
-    by = c("taxon_name", "original_name"),
+    by = c("taxon_name"),
     updated_taxa %>%
       bind_rows(empty_tibble_taxonomic_updates) %>%
       select(original_name, taxon_name, aligned_name, aligned_name_taxon_id, aligned_name_taxonomic_status)
