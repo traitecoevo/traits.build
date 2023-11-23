@@ -371,7 +371,7 @@ if (length(context_properties) > 0) {
     for (i in seq_along(context_properties)) {
       var_in <- context_properties[[i]][["var_in"]][1]
 
-      writeLines(paste0("**", context_properties[[i]]$context_property[1], "**:", ifelse(is.null(var_in), "Added ",
+      writeLines(paste0("**", context_properties[[i]]$context_property[1], "**: ", ifelse(is.null(var_in), "Added ",
         paste0("Mapped from the column titled **", var_in, "** in your dataset ")), "with the category *", context_properties[[i]]$category[1], "*."))
 
       writeLines("\n\nThe following values exist for this context:\n")
