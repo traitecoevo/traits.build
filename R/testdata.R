@@ -682,6 +682,7 @@ dataset_test_worker <-
         }
 
         ## Traits
+
         expect_list_elements_contains_names(
           metadata[["traits"]],
           c("var_in", "unit_in", "trait_name", "value_type", "basis_of_value"),
@@ -707,7 +708,10 @@ dataset_test_worker <-
           label = "`trait_name`'s"
         )
 
-        # Check no duplicate `var_in`'s
+        # Check units are found in `unit_conversions.csv` #TODO
+
+        # Check no duplicate `var_in`'s #TODO
+        # For both traits and contexts
 
         # Now that traits loaded, check details of contexts match
         if (nrow(contexts > 0)) {
@@ -1061,9 +1065,8 @@ dataset_test_worker <-
         } else {
 
           # For wide datasets, expect variables in traits are headers in the data
-          values <- names(data)
           expect_is_in(
-            traits[["var_in"]], values,
+            traits[["var_in"]], names(data),
             info = paste0(red(files[2]), "\ttraits"), label = "`var_in`"
           )
 
@@ -1083,10 +1086,10 @@ dataset_test_worker <-
 
         ## Check traits are not only NAs
         expect_false(
-          nrow(metadata[["traits"]] %>% util_list_to_df2() %>% dplyr::filter(!is.na(.data$trait_name))) == 0,
+          nrow(traits %>% dplyr::filter(!is.na(.data$trait_name))) == 0,
           info = paste0(red(f), "\ttraits - only contain NA `trait_name`'s"))
 
-        if (nrow(metadata[["traits"]] %>% util_list_to_df2() %>% dplyr::filter(!is.na(.data$trait_name))) > 0) {
+        if (nrow(traits %>% dplyr::filter(!is.na(.data$trait_name))) > 0) {
 
           # Test build dataset
           expect_no_error(
