@@ -590,6 +590,27 @@ dataset_test_worker <-
             process_format_contexts(dataset_id, data)
         )
 
+        # Check that there are no duplicate `var_in` or `context_property` fields
+        context_properties <- sapply(metadata[["contexts"]], "[[", "context_property")
+        context_vars_in <- sapply(metadata[["contexts"]], "[[", "var_in")
+
+        expect_equal(
+          context_properties |> duplicated() |> sum(),
+          0,
+          info = sprintf(
+            "%s\tcontexts - duplicate `context_property` values detected: '%s'",
+            red(f),
+            paste(context_properties[duplicated(context_properties)], collapse = "', '"))
+        )
+        expect_equal(
+          context_vars_in |> duplicated() |> sum(),
+          0,
+          info =  sprintf(
+            "%s\tcontexts - duplicate `var_in` values detected: '%s'",
+            red(f),
+            paste(context_vars_in[duplicated(context_vars_in)], collapse = "', '"))
+        )
+
         # Check context details load
         if (nrow(contexts) > 0) {
 
@@ -598,6 +619,7 @@ dataset_test_worker <-
             c("context_property", "category", "var_in"),
             info = paste0(red(f), "\tcontexts"), label = "field names"
           )
+
 
           # Check that unique context `value`'s only have one unique description
           expect_equal(
@@ -708,7 +730,7 @@ dataset_test_worker <-
           label = "`trait_name`'s"
         )
 
-        # Check units are found in `unit_conversions.csv` #TODO
+        # Check units are found in `unit_conversions.csv`
         units <- read_csv("config/unit_conversions.csv")
         expect_is_in(
           traits$unit_in, units$unit_from,
@@ -716,8 +738,22 @@ dataset_test_worker <-
           label = "`unit_in`'s"
         )
 
-        # Check no duplicate `var_in`'s #TODO
-        # For both traits and contexts
+        # Check no duplicate `var_in`'s
+
+        expect_equal(
+          traits %>% dplyr::group_by(.data$var_in) %>% dplyr::summarise(n = dplyr::n()) %>%
+            filter(.data$n > 1) %>% nrow(),
+          0,
+          info = sprintf(
+            "%s\ttraits - duplicate `var_in` values detected: '%s'",
+            red(f),
+            paste(
+              traits %>% dplyr::group_by(.data$var_in) %>% dplyr::summarise(n = dplyr::n()) %>%
+                filter(.data$n > 1) %>% dplyr::pull(.data$var_in) %>% unique(),
+              collapse = "', '")
+          )
+        )
+
 
         # Now that traits loaded, check details of contexts match
         if (nrow(contexts > 0)) {
@@ -862,13 +898,14 @@ dataset_test_worker <-
 
             # First check no duplicate combinations of `find`
             expect_equal(
-              x[[trait]] %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>% nrow(),
+              x[[trait]] %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>%
+                filter(.data$n > 1) %>% nrow(),
               0, info = sprintf(
                 "%s\tsubstitutions - duplicate `find` values detected: '%s'",
                 red(f),
                 paste(
-                  x[[trait]] %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% filter(.data$n > 1) %>%
-                    dplyr::pull(.data$find) %>% unique(),
+                  x[[trait]] %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>%
+                    filter(.data$n > 1) %>% dplyr::pull(.data$find) %>% unique(),
                   collapse = "', '")
               )
             )
