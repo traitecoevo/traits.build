@@ -16,4 +16,4 @@ f <- function(filename) {
                     filename=filename)
 }
 
-f("traits_build_hex.png")
+f("traits_build_hex2.png")
