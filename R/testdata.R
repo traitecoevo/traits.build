@@ -709,6 +709,12 @@ dataset_test_worker <-
         )
 
         # Check units are found in `unit_conversions.csv` #TODO
+        units <- read_csv("config/unit_conversions.csv")
+        expect_is_in(
+          traits$unit_in, units$unit_from,
+          info = paste0(red(f), "\ttraits"),
+          label = "`unit_in`'s"
+        )
 
         # Check no duplicate `var_in`'s #TODO
         # For both traits and contexts
