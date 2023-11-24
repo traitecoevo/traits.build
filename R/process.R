@@ -2050,7 +2050,7 @@ check_pivot_duplicates <- function(
 
   # Check for duplicates
   database_object$traits %>%
-    filter(.data$dataset_id %in% dataset_ids) %>%
+    dplyr::filter(.data$dataset_id %in% dataset_ids) %>%
     select(
       # `taxon_name` and `original_name` are not needed for pivoting but are included for informative purposes
       dplyr::all_of(

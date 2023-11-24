@@ -900,15 +900,15 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
       } else {
         message(sprintf(red("Existing substitution will be overwritten for ") %+% green("'%s'"), find))
         data <- data %>%
-                  filter(.data$find != to_add$find) %>%
-                  dplyr::bind_rows(to_add) %>%
-                  filter(!.data$find == replace) %>%
-                  arrange(.data$find)
+          dplyr::filter(.data$find != to_add$find) %>%
+          dplyr::bind_rows(to_add) %>%
+          dplyr::filter(!.data$find == replace) %>%
+          arrange(.data$find)
       }
     } else {
       data <- dplyr::bind_rows(data, to_add) %>%
-            filter(!.data$find == replace) %>%
-            arrange(.data$find)
+        dplyr::filter(!.data$find == replace) %>%
+        arrange(.data$find)
     }
   }
 
