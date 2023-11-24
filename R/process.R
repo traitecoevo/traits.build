@@ -561,7 +561,7 @@ process_create_observation_id <- function(data, metadata) {
   if (!is.null(traits_table[["repeat_measurements_id"]])) {
 
     to_add_id <- traits_table %>%
-      filter(.data$repeat_measurements_id == TRUE) %>%
+      dplyr::filter(.data$repeat_measurements_id == TRUE) %>%
       dplyr::pull(.data$trait_name)
 
     i <- !is.na(data$value) & data$trait_name %in% to_add_id &
@@ -2060,10 +2060,10 @@ check_pivot_duplicates <- function(
     tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
     tidyr::pivot_longer(cols = 9:ncol(.)) %>%
     dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
-    select(
+    dplyr::select(
       dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates",
       "taxon_name", "original_name", "observation_id", "value_type")), everything()
     ) %>%
-    filter(.data$number_of_duplicates > 1)
+    dplyr::filter(.data$number_of_duplicates > 1)
 
 }

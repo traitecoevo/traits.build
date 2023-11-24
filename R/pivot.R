@@ -20,7 +20,7 @@ check_pivot_wider <- function(dataset) {
       dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates", "observation_id",
       "value_type")), everything()
     ) %>%
-    filter(.data$number_of_duplicates > 1) %>%
+    dplyr::filter(.data$number_of_duplicates > 1) %>%
     nrow()
 
   if (duplicates == 0) {
