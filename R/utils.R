@@ -268,12 +268,13 @@ write_metadata <- function(data, path, style_code = FALSE) {
   if (!is.na(data$dataset$custom_R_code)) {
 
     code <- data$dataset$custom_R_code
+    code <- stringr::str_trim(code, side = "left")
 
     if (style_code)
       code <- code %>% suppressWarnings(styler::style_text(transformers = .data$tidyverse_style(strict = TRUE)))
 
     txt <- gsub("custom_R_code: .na", code %>% paste(collapse = "\n") %>%
-                  paste0("custom_R_code:", .), txt, fixed = TRUE)
+                  paste0("custom_R_code: ", .), txt, fixed = TRUE)
   }
 
   if (!stringr::str_sub(txt, nchar(txt)) == "\n")
