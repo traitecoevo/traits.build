@@ -8,7 +8,7 @@ dataset_test(
   dataset_ids,
   path_config = "config",
   path_data = "data",
-  reporter = testthat::default_reporter()
+  reporter = testthat::CompactProgressReporter
 )
 }
 \arguments{

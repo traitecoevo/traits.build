@@ -10,8 +10,8 @@ targets:
 # Define generic targets
   all:
     depends:
-      - austraits
-      - export/data/curr/austraits.rds
+      - {{database_name}}
+      - export/data/curr/{{database_name}}.rds
 
 # Load data resources
   schema:
@@ -46,13 +46,13 @@ targets:
                  )
   {{dataset_id}}:
     command: >
-      build_update_taxonomy({{dataset_id}}_raw,
+      dataset_update_taxonomy({{dataset_id}}_raw,
                   taxon_list
                  )
 
 {{/dataset_ids}}
 
-  austraits_raw:
+  {{database_name}}_raw:
     command: >
       build_combine(
 {{#dataset_ids}}
@@ -70,9 +70,9 @@ targets:
       - .git/index
 
 # Combine all the source into one resource
-  austraits:
-    command: build_add_version(austraits_raw, version_number, git_SHA)
+  {{database_name}}:
+    command: build_add_version({{database_name}}_raw, version_number, git_SHA)
 
 # Save to file
-  export/data/curr/austraits.rds:
-    command: saveRDS(austraits, target_name)
+  export/data/curr/{{database_name}}.rds:
+    command: saveRDS({{database_name}}, target_name)

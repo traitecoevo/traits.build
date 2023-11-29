@@ -102,9 +102,10 @@ util_separate_and_sort <- function(x, sep = " ") {
   # For those cells, split, sort then combine
   x[i] <- x[i] %>%
       stringr::str_split(" ") %>%
-      lapply(function(xi) xi %>% sort() %>% paste(collapse = " ")) %>%
+      lapply(function(xi) xi %>% sort() %>% unique() %>% paste(collapse = " ")) %>%
       unlist()
   x
+
 }
 
 #'  Convert dataframe to list
@@ -230,9 +231,9 @@ read_metadata <- function(path) {
 #' @inheritParams metadata_path_dataset_id
 #'
 #' @return A list with contents of metadata for specified `dataset_id`
-read_metadata_dataset <- function(dataset_id) {
+read_metadata_dataset <- function(dataset_id, path_data = "data") {
   dataset_id %>%
-    metadata_path_dataset_id() %>%
+    metadata_path_dataset_id(path_data = path_data) %>%
     read_metadata()
 }
 

@@ -4,10 +4,12 @@
 \alias{read_metadata_dataset}
 \title{Read the `metadata.yml` file for specified `dataset_id`}
 \usage{
-read_metadata_dataset(dataset_id)
+read_metadata_dataset(dataset_id, path_data = "data")
 }
 \arguments{
 \item{dataset_id}{Identifier for a particular study in the database}
+
+\item{path_data}{Path to folder with data}
 }
 \value{
 A list with contents of metadata for specified `dataset_id`
