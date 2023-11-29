@@ -211,7 +211,7 @@ dataset_process <- function(filename_data_raw,
       dplyr::mutate(
         find = stringr::str_split(.data$find, ", ")
         ) %>%
-      tidyr::unnest_longer(.data$find) %>%
+      tidyr::unnest_longer("find") %>%
       dplyr::filter(.data$variable == "taxon_name")
 
     tmp <- taxa_to_exclude$find %>% process_standardise_names()
