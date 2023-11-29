@@ -1,5 +1,5 @@
 
-# The {traits.build} R package
+# The {traits.build} R package <img src="man/figures/traits_build_hex2.png" align="right" alt="" width="120" />
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/traitecoevo/traits.build/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/traitecoevo/traits.build/actions/workflows/R-CMD-check.yml)
