@@ -953,7 +953,7 @@ dataset_test_worker <-
             )
           parsed_data <-
             parsed_data %>%
-            mutate(
+            dplyr::mutate(
               location_id = ifelse(.data$entity_type == "species", NA_character_, .data$location_id)
             )
         }
@@ -974,7 +974,7 @@ dataset_test_worker <-
                   by = "location_id",
                   locations %>%
                     tidyr::pivot_wider(names_from = "location_property", values_from = "value") %>%
-                    mutate(col_tmp = .data[[v]]) %>%
+                    dplyr::mutate(col_tmp = .data[[v]]) %>%
                     dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
                     stats::na.omit()
                 )
