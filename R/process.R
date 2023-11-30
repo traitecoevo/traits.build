@@ -1954,7 +1954,7 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
                                 stringr::word(.data$taxon_name, 1), .data$name_to_match_to)
     ) %>%
     # Remove `taxon_rank`, as it is about to be merged back in, but matches will now be possible to more rows
-    select(-dplyr::any_of(c("taxon_rank", "taxonomic_resolution"))) %>%
+    dplyr::select(-dplyr::any_of(c("taxon_rank", "taxonomic_resolution"))) %>%
     util_df_convert_character() %>%
     # Merge in all data from taxa
     dplyr::left_join(by = c("taxon_name"),
@@ -2051,7 +2051,7 @@ check_pivot_duplicates <- function(
   # Check for duplicates
   database_object$traits %>%
     dplyr::filter(.data$dataset_id %in% dataset_ids) %>%
-    select(
+    dplyr::select(
       # `taxon_name` and `original_name` are not needed for pivoting but are included for informative purposes
       dplyr::all_of(
         c("dataset_id", "trait_name", "value", "taxon_name", "original_name", "observation_id",
