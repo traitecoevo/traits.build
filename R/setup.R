@@ -377,7 +377,7 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
   # Save and notify
   location_data <-  location_data %>%
     dplyr::select(dplyr::all_of(c(location_name, keep))) %>%
-    distinct()
+    dplyr::distinct()
 
   # If user didn't select any variables to keep, so add defaults
   if (is.na(keep[1])) {

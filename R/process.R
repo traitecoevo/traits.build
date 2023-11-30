@@ -126,7 +126,7 @@ dataset_process <- function(filename_data_raw,
       )
     traits <-
       traits %>%
-      mutate(
+      dplyr::mutate(
         location_id = ifelse(.data$entity_type == "species", NA_character_, .data$location_id)
       )
   }
@@ -147,7 +147,7 @@ dataset_process <- function(filename_data_raw,
             by = "location_id",
             locations %>%
               tidyr::pivot_wider(names_from = "location_property", values_from = "value") %>%
-              mutate(col_tmp = .data[[v]]) %>%
+              dplyr::mutate(col_tmp = .data[[v]]) %>%
               dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
               stats::na.omit()
           )
@@ -185,12 +185,10 @@ dataset_process <- function(filename_data_raw,
     process_format_contributors(dataset_id, schema)
 
   # Record sources
-  sources <- metadata$source %>%
-            lapply(util_list_to_bib) %>% purrr::reduce(c)
+  sources <- metadata$source %>% lapply(util_list_to_bib) %>% purrr::reduce(c)
 
   # Record methods
   methods <- process_format_methods(metadata, dataset_id, sources, contributors)
-
 
   # Retrieve taxonomic details for known species
   taxonomic_updates <-
@@ -985,7 +983,7 @@ util_check_disallowed_chars <- function(object) {
 process_flag_unsupported_characters <- function(data) {
 
   data <- data %>%
-    mutate(
+    dplyr::mutate(
       error = ifelse(is.na(.data$error) & util_check_disallowed_chars(.data$value),
       "Value contains unsupported characters", .data$error)
     )
