@@ -126,7 +126,7 @@ dataset_process <- function(filename_data_raw,
       )
     traits <-
       traits %>%
-      mutate(
+      dplyr::mutate(
         location_id = ifelse(.data$entity_type == "species", NA_character_, .data$location_id)
       )
   }
@@ -147,7 +147,7 @@ dataset_process <- function(filename_data_raw,
             by = "location_id",
             locations %>%
               tidyr::pivot_wider(names_from = "location_property", values_from = "value") %>%
-              mutate(col_tmp = .data[[v]]) %>%
+              dplyr::mutate(col_tmp = .data[[v]]) %>%
               dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
               stats::na.omit()
           )
@@ -185,12 +185,10 @@ dataset_process <- function(filename_data_raw,
     process_format_contributors(dataset_id, schema)
 
   # Record sources
-  sources <- metadata$source %>%
-            lapply(util_list_to_bib) %>% purrr::reduce(c)
+  sources <- metadata$source %>% lapply(util_list_to_bib) %>% purrr::reduce(c)
 
   # Record methods
   methods <- process_format_methods(metadata, dataset_id, sources, contributors)
-
 
   # Retrieve taxonomic details for known species
   taxonomic_updates <-
@@ -561,7 +559,7 @@ process_create_observation_id <- function(data, metadata) {
   if (!is.null(traits_table[["repeat_measurements_id"]])) {
 
     to_add_id <- traits_table %>%
-      filter(.data$repeat_measurements_id == TRUE) %>%
+      dplyr::filter(.data$repeat_measurements_id == TRUE) %>%
       dplyr::pull(.data$trait_name)
 
     i <- !is.na(data$value) & data$trait_name %in% to_add_id &
@@ -803,12 +801,12 @@ process_create_context_ids <- function(data, contexts) {
 
   contexts_finished <-
     contexts %>%
-    filter(!is.na(.data$value)) %>%
+    dplyr::filter(!is.na(.data$value)) %>%
     dplyr::left_join(
       id_link %>% dplyr::bind_rows(),
       by = c("context_property", "category", "value")
     ) %>%
-    distinct(dplyr::across(-dplyr::any_of("find")))
+    dplyr::distinct(dplyr::across(-dplyr::any_of("find")))
 
   list(
     contexts = contexts_finished %>% util_df_convert_character(),
@@ -985,7 +983,7 @@ util_check_disallowed_chars <- function(object) {
 process_flag_unsupported_characters <- function(data) {
 
   data <- data %>%
-    mutate(
+    dplyr::mutate(
       error = ifelse(is.na(.data$error) & util_check_disallowed_chars(.data$value),
       "Value contains unsupported characters", .data$error)
     )
@@ -1866,8 +1864,8 @@ build_combine <- function(..., d = list(...)) {
   metadata[["contributors"]] <-
     contributors %>%
     dplyr::select(-dplyr::any_of(c("dataset_id", "additional_role"))) %>%
-    distinct() %>%
-    arrange(.data$last_name, .data$given_name) %>%
+    dplyr::distinct() %>%
+    dplyr::arrange(.data$last_name, .data$given_name) %>%
     util_df_to_list()
 
   ret <- list(traits = combine("traits", d),
@@ -1954,7 +1952,7 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
                                 stringr::word(.data$taxon_name, 1), .data$name_to_match_to)
     ) %>%
     # Remove `taxon_rank`, as it is about to be merged back in, but matches will now be possible to more rows
-    select(-dplyr::any_of(c("taxon_rank", "taxonomic_resolution"))) %>%
+    dplyr::select(-dplyr::any_of(c("taxon_rank", "taxonomic_resolution"))) %>%
     util_df_convert_character() %>%
     # Merge in all data from taxa
     dplyr::left_join(by = c("taxon_name"),
@@ -2050,8 +2048,8 @@ check_pivot_duplicates <- function(
 
   # Check for duplicates
   database_object$traits %>%
-    filter(.data$dataset_id %in% dataset_ids) %>%
-    select(
+    dplyr::filter(.data$dataset_id %in% dataset_ids) %>%
+    dplyr::select(
       # `taxon_name` and `original_name` are not needed for pivoting but are included for informative purposes
       dplyr::all_of(
         c("dataset_id", "trait_name", "value", "taxon_name", "original_name", "observation_id",
@@ -2060,10 +2058,10 @@ check_pivot_duplicates <- function(
     tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
     tidyr::pivot_longer(cols = 9:ncol(.)) %>%
     dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
-    select(
+    dplyr::select(
       dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates",
       "taxon_name", "original_name", "observation_id", "value_type")), everything()
     ) %>%
-    filter(.data$number_of_duplicates > 1)
+    dplyr::filter(.data$number_of_duplicates > 1)
 
 }

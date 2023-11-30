@@ -9,18 +9,18 @@
 check_pivot_wider <- function(dataset) {
 
   duplicates <- dataset$traits %>%
-    select(
+    dplyr::select(
       dplyr::all_of(c("dataset_id", "trait_name", "value", "observation_id", "value_type",
       "repeat_measurements_id", "method_id", "method_context_id"))
     ) %>%
     tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
     tidyr::pivot_longer(cols = 7:ncol(.)) %>%
     dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
-    select(
+    dplyr::select(
       dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates", "observation_id",
       "value_type")), everything()
     ) %>%
-    filter(.data$number_of_duplicates > 1) %>%
+    dplyr::filter(.data$number_of_duplicates > 1) %>%
     nrow()
 
   if (duplicates == 0) {
@@ -61,14 +61,14 @@ db_traits_pivot_wider <- function(traits) {
 
   # A check for if there are more than 1 value_type for a given taxon_name, observation_id and method
   check_value_type <- traits %>%
-    select(dplyr::all_of(c(
+    dplyr::select(dplyr::all_of(c(
       "trait_name", "value", "dataset_id", "observation_id", "method_id", "method_context_id",
       "repeat_measurements_id", "value_type"))) %>%
     dplyr::group_by(
       .data$dataset_id, .data$observation_id, .data$method_id,
       .data$method_context_id, .data$repeat_measurements_id) %>%
     dplyr::summarise(n_value_type = length(unique(.data$value_type))) %>%
-    arrange(.data$observation_id) %>%
+    dplyr::arrange(.data$observation_id) %>%
     dplyr::filter(.data$n_value_type > 1)
 
   if (nrow(check_value_type) > 1) {
