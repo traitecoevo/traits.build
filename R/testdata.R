@@ -1127,7 +1127,7 @@ dataset_test_worker <-
 
 
 
-        ## Check traits are not only NAs
+        ## Check that not all trait names are NAs
         expect_false(
           nrow(traits %>% dplyr::filter(!is.na(.data$trait_name))) == 0,
           info = paste0(red(f), "\ttraits - only contain NA `trait_name`'s"))
