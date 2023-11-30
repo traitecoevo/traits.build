@@ -68,7 +68,7 @@ db_traits_pivot_wider <- function(traits) {
       .data$dataset_id, .data$observation_id, .data$method_id,
       .data$method_context_id, .data$repeat_measurements_id) %>%
     dplyr::summarise(n_value_type = length(unique(.data$value_type))) %>%
-    arrange(.data$observation_id) %>%
+    dplyr::arrange(.data$observation_id) %>%
     dplyr::filter(.data$n_value_type > 1)
 
   if (nrow(check_value_type) > 1) {

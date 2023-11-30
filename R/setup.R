@@ -903,12 +903,12 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
           dplyr::filter(.data$find != to_add$find) %>%
           dplyr::bind_rows(to_add) %>%
           dplyr::filter(!.data$find == replace) %>%
-          arrange(.data$find)
+          dplyr::arrange(.data$find)
       }
     } else {
       data <- dplyr::bind_rows(data, to_add) %>%
         dplyr::filter(!.data$find == replace) %>%
-        arrange(.data$find)
+        dplyr::arrange(.data$find)
     }
   }
 
@@ -967,7 +967,7 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
       ))
     }
     # Write new taxonomic updates to metadata
-    metadata$taxonomic_updates <- existing_updates %>% dplyr::arrange(.data$find) %>% filter(!.data$find == .data$replace)
+    metadata$taxonomic_updates <- existing_updates %>% dplyr::arrange(.data$find) %>% dplyr::filter(!.data$find == .data$replace)
   } else {
 
     # Read in dataframe of taxonomic changes, split into single-row lists, and add to metadata file

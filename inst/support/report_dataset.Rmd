@@ -255,9 +255,9 @@ new_question("(section `dataset`) Can you provide more detailed information for 
 
 ```{r, results='asis', echo=FALSE}
 missing <- metadata$dataset %>%
- util_list_to_df1() %>%
- filter(value == "unknown") %>%
- pull(key)
+  util_list_to_df1() %>%
+  filter(value == "unknown") %>%
+  pull(key)
 
 for (v in missing) {
   sprintf("(section `dataset`) Can you provide missing details for the variable `%s`?\n", v) %>%

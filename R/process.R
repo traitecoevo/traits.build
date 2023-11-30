@@ -803,12 +803,12 @@ process_create_context_ids <- function(data, contexts) {
 
   contexts_finished <-
     contexts %>%
-    filter(!is.na(.data$value)) %>%
+    dplyr::filter(!is.na(.data$value)) %>%
     dplyr::left_join(
       id_link %>% dplyr::bind_rows(),
       by = c("context_property", "category", "value")
     ) %>%
-    distinct(dplyr::across(-dplyr::any_of("find")))
+    dplyr::distinct(dplyr::across(-dplyr::any_of("find")))
 
   list(
     contexts = contexts_finished %>% util_df_convert_character(),
@@ -1866,8 +1866,8 @@ build_combine <- function(..., d = list(...)) {
   metadata[["contributors"]] <-
     contributors %>%
     dplyr::select(-dplyr::any_of(c("dataset_id", "additional_role"))) %>%
-    distinct() %>%
-    arrange(.data$last_name, .data$given_name) %>%
+    dplyr::distinct() %>%
+    dplyr::arrange(.data$last_name, .data$given_name) %>%
     util_df_to_list()
 
   ret <- list(traits = combine("traits", d),
