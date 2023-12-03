@@ -1,6 +1,17 @@
-
-
+#' Create combined traits.build table
+#'
+#' Create a single database output that merges together the information
+#' in all relational tables within a traits.build database.
+#' Trait measurements are still output in long format (1 row per trait value),
+#' but all measurement-related metadata (methods, location properties, context properties, contributors)
+#' are now included as additional columns in a single table.
+#'
+#' @param database A traits.build database
+#'
+#' @return
 #' @export
+#'
+#' @examples
 database_create_combined_table <- function(database) {
 
   location_latlon <-
@@ -123,24 +134,4 @@ database_create_combined_table <- function(database) {
       dplyr::left_join(database$taxonomic_updates, by = c("taxon_name", "dataset_id", "original_name"))
 
   combined_table
-}
-
-
-# Add documentation
-#' @export
-database_unpack_combined_table <- function(combined_table) {
-  browser()
-  unique_location_properties <-
-    combined_table$location_properties %>%
-      unique() %>% str_extract_all("(?<=; ).+?(?=\\=)|^.+?(?=\\=)") %>%
-      unlist() %>% unique() %>% na.omit() %>% as.character()
-  combined_table %>%
-    # Need to make sure properties are all sorted the same
-    # What if a location has different properties or even different number of properties?
-    tidyr::separate_wider_delim(
-      cols = "location_properties",
-      delim = "; ",
-      names = unique_location_properties
-  )
-
 }
