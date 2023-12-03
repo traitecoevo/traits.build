@@ -122,7 +122,7 @@ database_create_combined_table <- function(database) {
     database$traits %>%
       dplyr::left_join(location_latlon, by = c("dataset_id", "location_id")) %>%
       dplyr::left_join(location_properties, by = c("dataset_id", "location_id", "location_name")) %>%
-      join_contexts(contexts_tmp) %>%
+      austraits::join_contexts(contexts_tmp) %>%
       dplyr::left_join(
         database$methods %>%
           dplyr::select(
