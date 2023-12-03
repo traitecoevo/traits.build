@@ -377,7 +377,7 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
   # Save and notify
   location_data <-  location_data %>%
     dplyr::select(dplyr::all_of(c(location_name, keep))) %>%
-    distinct()
+    dplyr::distinct()
 
   # If user didn't select any variables to keep, so add defaults
   if (is.na(keep[1])) {
@@ -900,15 +900,15 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
       } else {
         message(sprintf(red("Existing substitution will be overwritten for ") %+% green("'%s'"), find))
         data <- data %>%
-                  filter(.data$find != to_add$find) %>%
-                  dplyr::bind_rows(to_add) %>%
-                  filter(!.data$find == replace) %>%
-                  arrange(.data$find)
+          dplyr::filter(.data$find != to_add$find) %>%
+          dplyr::bind_rows(to_add) %>%
+          dplyr::filter(!.data$find == replace) %>%
+          dplyr::arrange(.data$find)
       }
     } else {
       data <- dplyr::bind_rows(data, to_add) %>%
-            filter(!.data$find == replace) %>%
-            arrange(.data$find)
+        dplyr::filter(!.data$find == replace) %>%
+        dplyr::arrange(.data$find)
     }
   }
 
@@ -967,7 +967,7 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
       ))
     }
     # Write new taxonomic updates to metadata
-    metadata$taxonomic_updates <- existing_updates %>% dplyr::arrange(.data$find) %>% filter(!.data$find == .data$replace)
+    metadata$taxonomic_updates <- existing_updates %>% dplyr::arrange(.data$find) %>% dplyr::filter(!.data$find == .data$replace)
   } else {
 
     # Read in dataframe of taxonomic changes, split into single-row lists, and add to metadata file
