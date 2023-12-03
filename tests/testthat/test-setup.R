@@ -618,7 +618,7 @@ test_that("`build_setup_pipeline` is working", {
   expect_silent(taxa2 <- read_csv_char("config/taxon_list.csv"))
   expect_contains(names(taxa2), vars)
   expect_true(length(names(taxa2)) > 2)
-  expect_true(nrow(taxa2) == 258)
+  expect_true(nrow(taxa2) == 261)
 
   ## Now try building in a controlled env, using base method
   base_tmp_env <- new.env()
@@ -672,7 +672,7 @@ test_that("`build_setup_pipeline` is working", {
   ## Todo add mode here
 
   ## sources
-  
+
   ## metadata
 
   ## schema
