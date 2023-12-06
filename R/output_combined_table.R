@@ -79,7 +79,8 @@ database_create_combined_table <- function(database) {
           paste0(context_property, ":", value, " <", description, ">"))
       ) %>%
     dplyr::select(-dplyr::all_of(c("description", "context_property", "category"))) %>%
-    tidyr::separate_longer_delim(link_vals, ", ") %>% distinct()
+    tidyr::separate_longer_delim(link_vals, ", ") %>%
+    distinct()
 
   reformat_contexts <- function(contexts_table, context_id) {
     context_category <- gsub("_id", "_properties", context_id, fixed = TRUE)
@@ -90,7 +91,6 @@ database_create_combined_table <- function(database) {
 
     names(out)[which(names(out) == "value")] <- context_category
     names(out)[which(names(out) == "link_vals")] <- context_id
-
     out
   }
 
@@ -100,22 +100,22 @@ database_create_combined_table <- function(database) {
       by = c("dataset_id", "treatment_context_id"),
       reformat_contexts(contexts_tmp, "treatment_context_id")
     ) %>%
-      dplyr::left_join(
-        by = c("dataset_id", "plot_context_id"),
-        reformat_contexts(contexts_tmp, "plot_context_id")
-      ) %>%
-      dplyr::left_join(
-        by = c("dataset_id", "entity_context_id"),
-        reformat_contexts(contexts_tmp, "entity_context_id")
-      ) %>%
-      dplyr::left_join(
-        by = c("dataset_id", "temporal_context_id"),
-        reformat_contexts(contexts_tmp, "temporal_context_id")
-      ) %>%
-      dplyr::left_join(
-        by = c("dataset_id", "method_context_id"),
-        reformat_contexts(contexts_tmp, "method_context_id")
-      )
+    dplyr::left_join(
+      by = c("dataset_id", "plot_context_id"),
+      reformat_contexts(contexts_tmp, "plot_context_id")
+    ) %>%
+    dplyr::left_join(
+      by = c("dataset_id", "entity_context_id"),
+      reformat_contexts(contexts_tmp, "entity_context_id")
+    ) %>%
+    dplyr::left_join(
+      by = c("dataset_id", "temporal_context_id"),
+      reformat_contexts(contexts_tmp, "temporal_context_id")
+    ) %>%
+    dplyr::left_join(
+      by = c("dataset_id", "method_context_id"),
+      reformat_contexts(contexts_tmp, "method_context_id")
+    )
   }
 
   combined_table <-
@@ -124,10 +124,8 @@ database_create_combined_table <- function(database) {
       dplyr::left_join(location_properties, by = c("dataset_id", "location_id", "location_name")) %>%
       austraits::join_contexts(contexts_tmp) %>%
       dplyr::left_join(
-        database$methods %>%
-          dplyr::select(
-            -dplyr::all_of(c("data_collectors"))),
-            by = c("dataset_id", "trait_name", "method_id")
+        database$methods %>% dplyr::select(-dplyr::all_of(c("data_collectors"))),
+        by = c("dataset_id", "trait_name", "method_id")
       ) %>%
       dplyr::left_join(contributors, by = c("dataset_id")) %>%
       dplyr::left_join(database$taxa, by = c("taxon_name")) %>%
