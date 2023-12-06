@@ -72,7 +72,7 @@ database_create_combined_table <- function(database) {
         description = stringr::str_replace_all(description, "=", "-"),
         context_property = stringr::str_replace_all(context_property, ";", ","),
         value = stringr::str_replace_all(value, ";", ","),
-        description = stringr::str_replace_all(description, "=", "-"),
+        description = stringr::str_replace_all(description, ";", ","),
         value = ifelse(
           is.na(description),
           paste0(context_property, ":", value),
@@ -88,7 +88,6 @@ database_create_combined_table <- function(database) {
       dplyr::filter(link_id == context_id) %>%
       dplyr::select(-link_id) %>%
       dplyr::distinct(dataset_id, link_vals, .keep_all = TRUE)
-
     names(out)[which(names(out) == "value")] <- context_category
     names(out)[which(names(out) == "link_vals")] <- context_id
     out
