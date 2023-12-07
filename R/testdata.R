@@ -58,8 +58,6 @@ dataset_test_worker <-
 
     local_edition(2)
 
-    source("functions.R")
-
     # Run tests for each dataset
 
     for (dataset_id in test_dataset_ids) {

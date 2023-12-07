@@ -7,7 +7,7 @@ test_no_error <- function(object, info) {
   }, error = function(e) {
     e
   })
-  expect(
+  testthat::expect(
     is.null(error),
     sprintf("%s threw an error:\n\n" %+% red("%s"), info, paste(error, collapse = ",")))
   invisible(object)
@@ -21,7 +21,7 @@ test_no_warning <- function(object, info) {
   }, warning = function(w) {
     w
   })
-  expect(is.null(warning), info)
+  testthat::expect(is.null(warning), info)
 }
 
 
@@ -31,8 +31,8 @@ test_is_in <- function(object, expected, info, label, na.rm = TRUE) {
       object <- object[!is.na(object)]
     i <- object %in% expected
 
-    comp <- compare(all(i), TRUE)
-    expect(
+    comp <- testthat::compare(all(i), TRUE)
+    testthat::expect(
       comp$equal,
       sprintf(
         "%s - %s should not contain: '%s'",
@@ -48,8 +48,8 @@ test_contains <- function(object, expected, info) {
 
   i <- expected %in% object
 
-  comp <- compare(all(i), TRUE)
-  expect(
+  comp <- testthat::compare(all(i), TRUE)
+  testthat::expect(
     comp$equal,
     sprintf("%s - does not contain: '%s'", info, paste(expected[!i], collapse = "', '"))
   )
@@ -62,8 +62,8 @@ test_allowed <- function(object, allowed, info, label) {
 
   i <- object %in% allowed
 
-  comp <- compare(all(i), TRUE)
-  expect(
+  comp <- testthat::compare(all(i), TRUE)
+  testthat::expect(
     comp$equal,
     sprintf(
       "%s - %s include(s) invalid terms: '%s'",
@@ -77,33 +77,33 @@ test_allowed <- function(object, allowed, info, label) {
 
 test_equal <- function(object, expected, info) {
   i <- object == expected
-  comp <- compare(all(i), TRUE)
-  expect(comp$equal, info)
+  comp <- testthat::compare(all(i), TRUE)
+  testthat::expect(comp$equal, info)
 }
 
 
 test_true <- function(object, info) {
   i <- object == TRUE
-  comp <- compare(all(i), TRUE)
-  expect(comp$equal, info)
+  comp <- testthat::compare(all(i), TRUE)
+  testthat::expect(comp$equal, info)
 }
 
 
 test_false <- function(object, info) {
   i <- object == FALSE
-  comp <- compare(all(i), TRUE)
-  expect(comp$equal, info)
+  comp <- testthat::compare(all(i), TRUE)
+  testthat::expect(comp$equal, info)
 }
 
 
 test_named <- function(object, expected_names, info, label) {
 
   if (missing(expected_names)) {
-    expect(
+    testthat::expect(
       !identical(names(object), NULL),
       sprintf("%s - %s do not exist", info, label))
   } else {
-    expect(
+    testthat::expect(
       identical(names(object), expected_names),
       sprintf(
         "%s\tnames of %s (%s) don't match %s",
@@ -118,7 +118,7 @@ test_named <- function(object, expected_names, info, label) {
 
 test_type <- function(object, type, info, label) {
   stopifnot(is.character(type), length(type) == 1)
-  expect(
+  testthat::expect(
     identical(typeof(object), type),
     sprintf("%s - %s has type %s, not %s", info, label, typeof(object), type)
   )
@@ -127,15 +127,15 @@ test_type <- function(object, type, info, label) {
 
 test_not_NA <- function(object, info, label) {
   i <- !is.na(object)
-  comp <- compare(all(i), TRUE)
-  expect(comp$equal, sprintf("%s - %s contain(s) NAs", info, label))
+  comp <- testthat::compare(all(i), TRUE)
+  testthat::expect(comp$equal, sprintf("%s - %s contain(s) NAs", info, label))
   invisible(object)
 }
 
 
 test_length_zero <- function(object, info, label) {
-  comp <- compare(length(object), 0)
-  expect(comp$equal, sprintf("%s: %s", info, label))
+  comp <- testthat::compare(length(object), 0)
+  testthat::expect(comp$equal, sprintf("%s: %s", info, label))
   invisible(object)
 }
 
@@ -143,8 +143,8 @@ test_length_zero <- function(object, info, label) {
 test_unique <- function(object, info, label) {
   x <- table(unlist(object))
   i <- x == 1
-  comp <- compare(all(i), TRUE)
-  expect(comp$equal, sprintf("%s - %s not unique: '%s'", info, label, paste(names(x)[!i], collapse = "', '")))
+  comp <- testthat::compare(all(i), TRUE)
+  testthat::expect(comp$equal, sprintf("%s - %s not unique: '%s'", info, label, paste(names(x)[!i], collapse = "', '")))
   invisible(object)
 }
 
@@ -178,7 +178,7 @@ test_allowed_text <- function(object, is_data = FALSE, is_col_names = FALSE, inf
     }
 
     if (is_data) {
-      expect(
+      testthat::expect(
         identical(as.vector(all(!check)), TRUE),
         sprintf(
           "%s\tdisallowed characters in data detected: %s\n\tPlease replace using `custom_R_code`",
@@ -186,7 +186,7 @@ test_allowed_text <- function(object, is_data = FALSE, is_col_names = FALSE, inf
         )
       )
     } else {
-      expect(
+      testthat::expect(
         identical(as.vector(all(!check)), TRUE),
         sprintf("%s - disallowed characters in %s detected: \n%s", info, label, txt)
       )
