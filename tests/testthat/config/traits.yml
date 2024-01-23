@@ -277,6 +277,22 @@ traits:
         tussock: A subcategory of graminoid, which is a plant where many shoots from
           the basal meristem form prominent tufts.
       entity_URI: https://w3id.org/APD/traits/trait_0030010
+    leaf_lifespan:
+      label: Leaf lifespan
+      description: The duration [PATO:0001309] that an individual leaf [PO:0025034]
+        is attached to the stem [PO:0009047] and is physiologically functional [PATO:0001510].;Duration
+        of time that an individual leaf is attached to the stem and physiologically
+        functional; leaf longevity.
+      comments: Leaf lifespan is the inverse of the rate of leaf turnover. For some
+        species, leaflets or other portions of a leaf may be censused rather than
+        the entire leaf lamina. Leaf lifespan can be censused as either the rate of
+        shedding leaves (leaf death) or the rate of formation of new leaves (leaf
+        birth).
+      type: numeric
+      units: mo
+      allowed_values_min: 1.0
+      allowed_values_max: 1000.0
+      entity_URI: https://w3id.org/APD/traits/trait_0030025
     flowering_time:
       label: Flowering time, by month
       description: The months [UO:0000035] during which a plant [PO:0000003] has open

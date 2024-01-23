@@ -25,7 +25,7 @@ dataset_process(
 \item{unit_conversion_functions}{`unit_conversion.csv` file read in from the config folder}
 
 \item{filter_missing_values}{Default filters missing values from the excluded data table;
-change to false to see the rows with missing values.}
+change to false to see the rows with missing values}
 }
 \value{
 List, AusTraits database object

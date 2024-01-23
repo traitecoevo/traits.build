@@ -102,9 +102,10 @@ util_separate_and_sort <- function(x, sep = " ") {
   # For those cells, split, sort then combine
   x[i] <- x[i] %>%
       stringr::str_split(" ") %>%
-      lapply(function(xi) xi %>% sort() %>% paste(collapse = " ")) %>%
+      lapply(function(xi) xi %>% sort() %>% unique() %>% paste(collapse = " ")) %>%
       unlist()
   x
+
 }
 
 #'  Convert dataframe to list
@@ -230,9 +231,9 @@ read_metadata <- function(path) {
 #' @inheritParams metadata_path_dataset_id
 #'
 #' @return A list with contents of metadata for specified `dataset_id`
-read_metadata_dataset <- function(dataset_id) {
+read_metadata_dataset <- function(dataset_id, path_data = "data") {
   dataset_id %>%
-    metadata_path_dataset_id() %>%
+    metadata_path_dataset_id(path_data = path_data) %>%
     read_metadata()
 }
 
@@ -267,12 +268,13 @@ write_metadata <- function(data, path, style_code = FALSE) {
   if (!is.na(data$dataset$custom_R_code)) {
 
     code <- data$dataset$custom_R_code
+    code <- stringr::str_trim(code, side = "left")
 
     if (style_code)
       code <- code %>% suppressWarnings(styler::style_text(transformers = .data$tidyverse_style(strict = TRUE)))
 
     txt <- gsub("custom_R_code: .na", code %>% paste(collapse = "\n") %>%
-                  paste0("custom_R_code:", .), txt, fixed = TRUE)
+                  paste0("custom_R_code: ", .), txt, fixed = TRUE)
   }
 
   if (!stringr::str_sub(txt, nchar(txt)) == "\n")

@@ -5,10 +5,12 @@
 \title{Check the output of running `custom_R_code` specified in
 the metadata for specified `dataset_id`}
 \usage{
-metadata_check_custom_R_code(dataset_id)
+metadata_check_custom_R_code(dataset_id, path_data = "data")
 }
 \arguments{
 \item{dataset_id}{Identifier for a particular study in the database}
+
+\item{path_data}{Path to folder with data}
 }
 \description{
 Function to check the output of running `custom_R_code` specified in
