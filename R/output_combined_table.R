@@ -8,10 +8,11 @@
 #'
 #' @param database A traits.build database
 #'
-#' @return
+#' @return A table combining information in 7 traits.build relational tables: traits, locations, contexts, methods, taxa, taxonomic_updates, and contributors
 #' @export
 #'
 #' @examples
+#' combined_database_table <- database_create_combined_table(database)
 database_create_combined_table <- function(database) {
 
   location_latlon <-
