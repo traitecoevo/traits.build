@@ -22,7 +22,7 @@ convert_to_triples <- function(ontology_csv, published_classes_csv) {
       ))) %>%
       dplyr::rename(dplyr::all_of(c(
         "Subject" = "Entity",
-        "<http://www.w3.org/2004/02/skos/core#prefLabel>" = "skos:prefLabel",
+        "<http://www.w3.org/2004/02/skos/core#prefLabel>" = "skos:prefLabel", 
         "<http://purl.org/dc/terms/description>" = "dcterms:description",
         "<http://www.w3.org/2000/01/rdf-schema#comment>" = "rdfs:comment",
         "<http://www.w3.org/2004/02/skos/core#inScheme>" = "skos:inScheme"
@@ -44,6 +44,7 @@ convert_to_triples <- function(ontology_csv, published_classes_csv) {
       dplyr::rename(all_of(c(
         "Subject" = "Class",
         "<http://www.w3.org/2004/02/skos/core#prefLabel>" = "prefLabel",
+        "<http://www.w3.org/2004/02/skos/core#altLabel>" = "altLabel",
         "<http://www.w3.org/2004/02/skos/core#exactMatch>" = "exactMatch",
         "<http://www.w3.org/2008/05/skos#broader>" = "broader",
         "<http://semanticscience.org/resource/SIO_000602>" = "computational_entity",
