@@ -52,8 +52,8 @@ database_create_combined_table <- function(database) {
           data_collectors),
         data_collectors = ifelse(
           is.na(ORCID),
-          paste0(data_collectors, " <affiliation:", affiliation),
-          paste0(data_collectors, ";affiliation:", affiliation)),
+          paste0(data_collectors, " <affiliation=", affiliation),
+          paste0(data_collectors, ";affiliation=", affiliation)),
         data_collectors = ifelse(
           !is.na(additional_role),
           paste0(data_collectors, ";additional_role:", additional_role, ">"),
@@ -122,7 +122,7 @@ database_create_combined_table <- function(database) {
     database$traits %>%
       dplyr::left_join(location_latlon, by = c("dataset_id", "location_id")) %>%
       dplyr::left_join(location_properties, by = c("dataset_id", "location_id", "location_name")) %>%
-      austraits::join_contexts(contexts_tmp) %>%
+      join_contexts(contexts_tmp) %>%
       dplyr::left_join(
         database$methods %>% dplyr::select(-dplyr::all_of(c("data_collectors"))),
         by = c("dataset_id", "trait_name", "method_id")
