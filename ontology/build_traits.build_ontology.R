@@ -45,7 +45,7 @@ convert_to_triples <- function(ontology_csv, published_classes_csv) {
         "Subject" = "Class",
         "<http://www.w3.org/2004/02/skos/core#prefLabel>" = "prefLabel",
         "<http://www.w3.org/2004/02/skos/core#exactMatch>" = "exactMatch",
-        "<http://www.w3.org/2008/05/skos#narrower>" = "narrower",
+        "<http://www.w3.org/2008/05/skos#broader>" = "broader",
         "<http://semanticscience.org/resource/SIO_000602>" = "computational_entity",
         "<http://www.w3.org/2004/02/skos/core#closeMatch>" = "closeMatch",
         "<http://www.w3.org/2004/02/skos/core#relatedMatch>" = "relatedMatch",
