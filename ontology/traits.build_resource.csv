@@ -1,0 +1,14 @@
+Subject,Predicate,Object
+<https://w3id.org/traits.build>,<http://purl.org/dc/terms/description>,"""traits.build is an open-source R-scripted workflow for harmonizing trait data. The traits.build data model both documents the meaning of each of the columns output in each of the relational tables in a traits.build database and the semantic relationship between individual tables, columns, rows, and individual data cells. It adheres to the OBOE ontology (https://bioportal.bioontology.org/ontologies/OBOE) and draws upon previously published terms whenever possible, especially DarwinCore (https://dwc.tdwg.org/terms/) and the Ecological Trait-data Standard  (https://ecologicaltraitdata.github.io/ETS/). traits.build includes machine-readable formats and endpoints, allowing the traits to be readily re-used by other databases.""@en"
+<https://w3id.org/traits.build>,<http://purl.org/dc/terms/license>,"""<https://creativecommons.org/licenses/by/4.0/>""^^<xsd:anyURI>"
+<https://w3id.org/traits.build>,<http://purl.org/dc/terms/publisher>,"""<https://austraits.org/>""^^<xsd:anyURI>"
+<https://w3id.org/traits.build>,<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>,<http://www.w3.org/2004/02/skos/core#ConceptScheme>
+<https://w3id.org/traits.build>,<http://www.w3.org/2000/01/rdf-schema#label>,"""traits.build Data Model""@en"
+<https://w3id.org/traits.build>,<http://purl.org/dc/terms/license>,"""<https://creativecommons.org/licenses/by/4.0/>""^^<xsd:anyURI>"
+<https://w3id.org/traits.build>,<http://purl.org/dc/terms/publisher>,"""<https://austraits.org/>""^^<xsd:anyURI>"
+<https://w3id.org/traits.build>,<http://purl.org/dc/terms/title>,"""traits.build Data Model""@en"
+<https://w3id.org/traits.build>,<http://www.w3.org/2004/02/skos/core#prefLabel>,"""traits.build Data Model""@en"
+<https://w3id.org/traits.build>,<http://www.w3.org/2004/02/skos/core#hasTopConcept>,"""<https://w3id.org/traits.build>""^^<xsd:anyURI>"
+<https://w3id.org/traits.build>,<http://purl.org/dc/terms/creator>,"""Daniel Falster"""
+<https://w3id.org/traits.build>,<http://purl.org/dc/terms/creator>,"""Elizabeth Wenk"""
+<https://w3id.org/traits.build>,<http://purl.org/dc/terms/creator>,"""Sophie Yang"""

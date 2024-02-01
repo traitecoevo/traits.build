@@ -57,7 +57,10 @@ http://purl.org/dc/terms/description,description,"Description may include but is
 http://purl.org/dc/terms/bibliographicCitation,bibliographic citation,,DCMI Metadata Terms,dcterms,dcterms,bibliographic citation,,http://purl.org/dc/terms/
 http://purl.org/dc/terms/contributor,contributor,An entity responsible for making contributions to the resource.,DCMI Metadata Terms,dcterms,dcterms,contributor,,http://purl.org/dc/terms/
 http://purl.org/dc/terms/location,location,A spatial region or named place.,DCMI Metadata Terms,dcterms,dcterms,location,,http://purl.org/dc/terms/
-http://purl.org/dc/terms/identifier,identifier,,DCMI Metadata Terms,dcterms,dcterms,identifier,,
+http://purl.org/dc/terms/identifier,identifier,,DCMI Metadata Terms,dcterms,dcterms,identifier,,http://purl.org/dc/terms/
+http://purl.org/dc/terms/issued,issued,,DCMI Metadata Terms,dcterms,dcterms,issued,,http://purl.org/dc/terms/
+http://purl.org/dc/terms/created,created,,DCMI Metadata Terms,dcterms,dcterms,created,,http://purl.org/dc/terms/
+http://purl.org/dc/terms/creator,creator,An entity responsible for making contributions to the resource.,DCMI Metadata Terms,dcterms,dcterms,creator,,http://purl.org/dc/terms/
 http://semanticscience.org/resource/SIO_000673,has unique identifier,Has unique identifier is an inverse functional relation between an entity and an identifier that uniquely identifies it.  ,Semanticscience Integrated Ontology,SIO,SIO,SIO_000673,,http://semanticscience.org/resource/
 http://semanticscience.org/resource/SIO_000674,is unique identifier for,Is unique identifier for is a relation between an identifier and an entity that it uniquely identifies.,Semanticscience Integrated Ontology,SIO,SIO,SIO_000674,,http://semanticscience.org/resource/
 http://semanticscience.org/resource/SIO_000671,has identifier,A relation between an entity and an identifier.,Semanticscience Integrated Ontology,SIO,SIO,SIO_000671,,http://semanticscience.org/resource/
@@ -116,3 +119,4 @@ http://vocab.fairdatacollective.org/gdmt/IsCompiledBy,Is Compiled By,indicates B
 http://vocab.fairdatacollective.org/gdmt/HasMetadata,Has Metadata,indicates resource A has additional metadata B,Ontology for Generic Dataset Metadata Template,gdmt,gdmt,HasMetadata,,http://vocab.fairdatacollective.org/gdmt/
 http://vocab.fairdatacollective.org/gdmt/HasVersion,Has Version,indicates A has a version (B),Ontology for Generic Dataset Metadata Template,gdmt,gdmt,HasVersion,,http://vocab.fairdatacollective.org/gdmt/
 http://vocab.fairdatacollective.org/gdmt/IsMetadataFor,Is Metadata For,indicates additional metadata A for a resource B,Ontology for Generic Dataset Metadata Template,gdmt,gdmt,IsMetadataFor,,http://vocab.fairdatacollective.org/gdmt/
+http://www.w3.org/2004/02/skos/core#inScheme,is in scheme,Relates a resource (for example a concept) to a concept scheme in which it is included.,,,http://www.w3.org/2004/02/skos/core#,http://www.w3.org/2004/02/skos/core#,,

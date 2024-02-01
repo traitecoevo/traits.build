@@ -2,6 +2,7 @@ library(dplyr)
 library(rdflib)
 
 ontology_csv <- readr::read_csv("ontology/traits.build_ontology.csv")
+resource_triples <- readr::read_csv("ontology/traits.build_resource.csv")
 published_classes_csv <- readr::read_csv("ontology/traits.build_ontology_published_classes.csv")
 
 convert_to_triples <- function(ontology_csv, published_classes_csv) {
@@ -73,11 +74,13 @@ convert_to_triples <- function(ontology_csv, published_classes_csv) {
         "<http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement>" = "oboe-core:hasMeasurement",
         "<http://purl.org/dc/terms/description>" = "dcterms:description",
         "<http://www.w3.org/2000/01/rdf-schema#comment>" = "rdfs:comment",
-        "<http://www.w3.org/2000/01/rdf-schema#Datatype>" = "rdf:datatype"
+        "<http://www.w3.org/2000/01/rdf-schema#Datatype>" = "rdf:datatype",
+        "<http://purl.org/dc/terms/created>" = "dcterms:created"
       ))) %>%
     dplyr::mutate(
       `<http://www.w3.org/2000/01/rdf-schema#label>` = `<http://www.w3.org/2004/02/skos/core#prefLabel>`,
-      `<http://www.w3.org/2002/07/owl#sameAs>` = `<http://www.w3.org/2004/02/skos/core#exactMatch>`
+      `<http://www.w3.org/2002/07/owl#sameAs>` = `<http://www.w3.org/2004/02/skos/core#exactMatch>`,
+      `<http://www.w3.org/2004/02/skos/core#inScheme>` = "traits.build"
     ) %>%
     dplyr::mutate(
       Subject = paste0("<https://w3id.org/traits.build/",Subject,">")
@@ -107,13 +110,20 @@ convert_to_triples <- function(ontology_csv, published_classes_csv) {
                        Object),
       Object = ifelse(stringr::str_detect(Predicate,"schema\\#Datatype"), 
                        paste0("<", Object_tmp, ">"), 
-                       Object)
+                       Object),
+      Object = ifelse(stringr::str_detect(Predicate,"inScheme"), 
+                      "<https://w3id.org/traits.build/>", 
+                      Object),
+      Object = ifelse(stringr::str_detect(Predicate,"created"), 
+                      paste0("\"", Object_tmp, "\"", "^^<xsd:date>"),
+                      Object)
       ) %>%
     dplyr::select(-Object_tmp)
   
   triples <- 
     reformatted_ontology %>%
-      bind_rows(reformatted_classes) %>%   
+      bind_rows(reformatted_classes) %>%
+      bind_rows(resource_triples) %>%
       #mutate(Object = iconv(Object, from="UTF-8", to="ASCII", sub="Unicode")) %>%
       mutate(graph = ".")
 
