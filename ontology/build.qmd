@@ -1,0 +1,410 @@
+---
+title:  Workflow for building APD
+---
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(readr)
+library(stringr)
+library(rdflib)
+source("R/convert_to_triples.R")
+```
+
+Load data and create triples
+```{r}
+annotation_properties_csv <- read_csv("data/APD_annotation_properties.csv", show_col_types = FALSE)
+traits_csv <- read_csv("data/APD_traits_input.csv", show_col_types = FALSE) %>%
+  mutate(Entity = paste0("https://w3id.org/APD/traits/", identifier))
+glossary_csv <- read_csv("data/APD_glossary.csv", show_col_types = FALSE) %>%
+  mutate(Entity = paste0("https://w3id.org/APD/glossary/", identifier))
+published_classes_csv <- read_csv("data/published_classes.csv", show_col_types = FALSE)
+reviewers_csv <- read_csv("data/APD_reviewers.csv", show_col_types = FALSE)
+references_csv <- read_csv("data/APD_references.csv", show_col_types = FALSE)
+units_csv <- read_csv("data/APD_units.csv", show_col_types = FALSE)
+hierarchy_csv <- read_csv("data/APD_trait_hierarchy.csv", show_col_types = FALSE) %>%
+  mutate(Entity = paste0("https://w3id.org/APD/traits/", identifier))
+categorical_values_csv <- read_csv("data/APD_categorical_values_input.csv", show_col_types = FALSE) %>%
+  mutate(Entity = paste0("https://w3id.org/APD/traits/", identifier))
+APD_resource_csv <- read_csv("data/APD_resource.csv", show_col_types = FALSE)
+
+triples_df_tmp <- 
+  convert_to_triples(annotation_properties_csv, traits_csv, glossary_csv, published_classes_csv, reviewers_csv, references_csv, units_csv, hierarchy_csv, categorical_values_csv, APD_resource_csv)
+
+triples_df <- triples_df_tmp$triples_df
+triples_with_labels <- triples_df_tmp$triples_with_labels
+```
+
+Export various formats
+
+```{r}
+triples_with_labels %>%
+  dplyr::select(Subject, property, Predicate, value, Object, graph, Subject_stripped) %>%
+  write_csv("APD_triples.csv")
+
+triples_df %>%
+  write_delim("APD.nq", col_names=FALSE, escape="none", quote="none")
+
+triples_df %>%
+  select(-graph) %>%
+  write_delim("APD.nt", col_names = FALSE, escape = "none", quote = "none")
+
+# prove this parses correctly
+true_triples <- read_nquads("APD.nq")
+
+# serialize to any format
+rdflib::rdf_serialize(true_triples, "APD.ttl",
+                      namespace = c(APD = "https://w3id.org/APD/traits/",
+                                    APD_glossary = "https://w3id.org/APD/glossary/",
+                                    dc = "http://purl.org/dc/elements/1.1/",
+                                    skos = "http://www.w3.org/2004/02/skos/core#",
+                                    dwc = "http://rs.tdwg.org/dwc/terms/attributes/",
+                                    dcam = "http://purl.org/dc/dcam/",
+                                    dcterms = "http://purl.org/dc/terms/",
+                                    ets = "http://terminologies.gfbio.org/terms/ETS/",
+                                    obo = "http://purl.obolibrary.org/obo/",
+                                    oboecore = "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#",
+                                    ont = "https://w3id.org/iadopt/ont/",
+                                    owl = "http://www.w3.org/2002/07/owl#",
+                                    rdfs = "http://www.w3.org/2000/01/rdf-schema#",
+                                    uom = "https://w3id.org/uom/",
+                                    datacite = "http://purl.org/datacite/v4.4/",
+                                    xsd = "http://www.w3.org/2001/XMLSchema#",
+                                    Cerrado = "http://cerrado.linkeddata.es/ecology/",
+                                    CorVeg  = "http://linked.data.gov.au/def/corveg-cv/",
+                                    DCM = "http://dicom.nema.org/resources/ontology/DCM/",
+                                    EDAM = "http://edamontology.org/",
+                                    EFO = "http://www.ebi.ac.uk/efo/",
+                                    EnvThes = "http://vocabs.lter-europe.net/EnvThes/",
+                                    hupson = "http://scai.fraunhofer.de/HuPSON#",
+                                    IOBC = "http://purl.jp/bio/4/id/",
+                                    MESH = "http://purl.bioontology.org/ontology/MESH/",
+                                    odo = "http://purl.dataone.org/odo/",
+                                    ORCID = "https://orcid.org/",
+                                    SIO = "http://semanticscience.org/resource/",
+                                    SWEET = "http://sweetontology.net/")
+                                    )
+rdflib::rdf_serialize(true_triples, "APD.json", format="jsonld")
+```
+
+
+# Smoke-tests / example sparql queries
+```{r}
+# how many unique predicates?
+sparql <-
+'SELECT DISTINCT ?p
+ WHERE { ?s ?p ?c . }
+'
+rdf_query(true_triples, sparql)
+
+# how many unique reviewers are in the data?
+sparql <-
+'SELECT DISTINCT ?orcid ?label
+ WHERE { ?s <http://purl.org/datacite/v4.4/IsReviewedBy> ?orcid .
+         ?orcid <http://www.w3.org/2000/01/rdf-schema#label> ?label
+       }
+'
+
+unescape_unicode <- function(x) {
+  stringi::stri_unescape_unicode(gsub("<U\\+(....)>", "\\\\u\\1", x))
+}
+
+rdf_query(true_triples, sparql) %>%
+  mutate(label = unescape_unicode(label))
+
+
+# how many unique references are in the data?
+sparql <-
+  'SELECT DISTINCT ?id
+ WHERE { ?s <http://purl.org/dc/terms/references> ?id .
+       }
+'
+rdf_query(true_triples, sparql)
+
+
+sparql <-
+  'SELECT DISTINCT ?s
+ WHERE { ?s <http://www.w3.org/2000/01/rdf-schema#label> "plant trait" .
+       }
+'
+rdf_query(true_triples, sparql)
+```
+
+# Create a version of ouput for human access
+
+```{r}
+source("R/table.R")
+source("R/helpers.R")
+source("R/create_APD_trait_table.R")
+
+base_url_traits <- "https://w3id.org/APD/traits/"
+base_url_glossary <- "https://w3id.org/APD/glossary/"
+
+# todo - these files already read in above, update to reuse objects()
+APD_traits_input <- read_csv("data/APD_traits_input.csv", show_col_types = FALSE)
+APD_reviewers <- read_csv("data/APD_reviewers.csv", show_col_types = FALSE)
+APD_references <- read_csv("data/APD_references.csv", show_col_types = FALSE)
+APD_hierarchy <- read_csv("data/APD_trait_hierarchy.csv", show_col_types = FALSE)
+published_classes <- read_csv("data/published_classes.csv", show_col_types = FALSE)
+categorical <- read_csv("data/APD_categorical_values_input.csv", show_col_types = FALSE)
+
+# information direct from traits table
+core_traits <- 
+  APD_traits_input %>%
+  dplyr::select(dplyr::all_of(c(
+    "trait", "label", "description_encoded", "description", "comments", "type", "min", "max", "units", "constraints",
+    "created", "reviewed", "deprecated_trait_name", "identifier", "inScheme"
+  ))) %>%
+  dplyr::rename(dplyr::all_of(c(
+    "allowed_values_min" = "min",
+    "allowed_values_max" = "max",
+    "modified" = "reviewed",
+    "trait_type" = "type"
+  ))) %>%
+  # add label to trait type
+  dplyr::mutate(
+    Entity = paste0(inScheme, "/traits/", identifier),
+    trait_type = paste0(published_classes$label[match(trait_type, published_classes$identifier)], " [", trait_type, "]")
+  )
+
+# collapse traits table to include a single column for each property
+
+# collapse reviews, add ORCIDs
+reviewers <- 
+  APD_traits_input %>%
+  dplyr::select(trait, c(rev_01:rev_10)) %>%
+  tidyr::pivot_longer(cols = 2:11) %>%
+  dplyr::filter(!is.na(value)) %>%
+  dplyr::mutate(
+    value = ifelse(!is.na(value), paste0(value, " [", APD_reviewers$Entity[match(value, APD_reviewers$label)], "]"), NA)
+  ) %>%
+  group_by(trait) %>%
+  dplyr::mutate(reviewers = paste(value, collapse = "; ")) %>%
+  ungroup() %>%
+  dplyr::select(-dplyr::all_of(c("name", "value"))) %>%
+  dplyr::distinct()
+
+# collapse references, add DOIs
+references <- 
+  APD_traits_input %>%
+  dplyr::select(trait, c(ref_1:ref_5)) %>%
+  tidyr::pivot_longer(cols = 2:6) %>%
+  dplyr::filter(!is.na(value)) %>%
+  dplyr::mutate(
+    value = ifelse(!is.na(value), paste0(value, " [", APD_references$Entity[match(value, APD_references$label)], "]"), NA)
+  ) %>%
+  dplyr::group_by(trait) %>%
+  dplyr::mutate(references = paste(value, collapse = "; ")) %>%
+  dplyr::ungroup() %>%
+  dplyr::select(-dplyr::all_of(c("name", "value"))) %>%
+  dplyr::distinct()
+
+# collapse broader groupings
+hierarchy <- 
+  APD_traits_input %>%
+  dplyr::select(trait, c(category_1:category_4)) %>%
+  tidyr::pivot_longer(cols = 2:5) %>%
+  dplyr::filter(!is.na(value)) %>%
+  dplyr::mutate(
+    value = stringr::str_replace(value, "APD\\:", ""),
+    value = ifelse(!is.na(value), paste0(APD_hierarchy$label[match(value, APD_hierarchy$identifier)], " [", value, "]"), NA)
+  ) %>%
+  dplyr::group_by(trait) %>%
+  dplyr::mutate(trait_groupings = paste(value, collapse = "; ")) %>%
+  dplyr::ungroup() %>%
+  dplyr::select(-dplyr::all_of(c("name", "value"))) %>%
+  dplyr::distinct()
+
+# collapse structures measured; replace class identifiers with labels
+structure_measured <- 
+  APD_traits_input %>%
+  dplyr::select(trait, c(structure_1:structure_4)) %>%
+  tidyr::pivot_longer(cols = 2:5) %>%
+  dplyr::filter(!is.na(value)) %>%
+  dplyr::mutate(
+    value = ifelse(!is.na(value), paste0(published_classes$label[match(value, published_classes$identifier)], " [", value, "]"), NA)
+  ) %>%
+  dplyr::group_by(trait) %>%
+  dplyr::mutate(structure_measured = paste(value, collapse = "; ")) %>%
+  dplyr::ungroup() %>%
+  dplyr::select(-dplyr::all_of(c("name", "value"))) %>%
+  dplyr::distinct()
+
+# collapse characteristics measured; replace class identifiers with labels
+characteristic_measured <- 
+  APD_traits_input %>%
+  dplyr::select(trait, c(meas_char_1:meas_char_6)) %>%
+  tidyr::pivot_longer(cols = 2:7) %>%
+  dplyr::filter(!is.na(value)) %>%
+  dplyr::mutate(
+    value = ifelse(!is.na(value), paste0(published_classes$label[match(value, published_classes$identifier)], " [", value, "]"), NA)
+  ) %>%
+  dplyr::group_by(trait) %>%
+  dplyr::mutate(characteristic_measured = paste(value, collapse = "; ")) %>%
+  dplyr::ungroup() %>%
+  dplyr::select(-dplyr::all_of(c("name", "value"))) %>%
+  dplyr::distinct()
+
+# collapse keywords; replace class identifiers with labels
+keywords <- 
+  APD_traits_input %>%
+  dplyr::select(trait, c(keyword_1:keyword_10)) %>%
+  tidyr::pivot_longer(cols = 2:11) %>%
+  dplyr::filter(!is.na(value)) %>%
+  dplyr::mutate(
+    value = ifelse(!is.na(value), paste0(published_classes$label[match(value, published_classes$identifier)], " [", value, "]"), NA)
+  ) %>%
+  dplyr::group_by(trait) %>%
+  dplyr::mutate(keywords = paste(value, collapse = "; ")) %>%
+  dplyr::ungroup() %>%
+  dplyr::select(-dplyr::all_of(c("name", "value"))) %>%
+  dplyr::distinct()
+
+#
+exact1 <- 
+  APD_traits_input %>%
+  dplyr::select(trait, c(exact_other1)) %>%
+  dplyr::filter(!is.na(exact_other1)) %>%
+  dplyr::mutate(
+    exact_other1 = paste0(
+      published_classes$label[match(exact_other1, published_classes$identifier)], " [",
+      published_classes$Entity[match(exact_other1, published_classes$identifier)], "]"
+    )
+  ) %>%
+  dplyr::rename(value = exact_other1)
+
+exact <- 
+  APD_traits_input %>%
+  dplyr::select(trait, exact_TOP, exact_TRY, exact_LEDA, exact_GIFT, exact_BIEN, exact_BROT, PalmTraits_exact) %>%
+  tidyr::pivot_longer(cols = 2:8) %>%
+  filter(!is.na(value)) %>%
+  bind_rows(exact1) %>%
+  dplyr::group_by(trait) %>%
+  dplyr::mutate(exact_match = paste(value, collapse = "; ")) %>%
+  dplyr::ungroup() %>%
+  dplyr::select(-dplyr::all_of(c("name", "value"))) %>%
+  dplyr::distinct()
+
+close1 <- 
+  APD_traits_input %>%
+  dplyr::select(trait, c(close_other1)) %>%
+  dplyr::filter(!is.na(close_other1)) %>%
+  dplyr::mutate(
+    close_other1 = paste0(
+      published_classes$label[match(close_other1, published_classes$identifier)], " [",
+      published_classes$Entity[match(close_other1, published_classes$identifier)], "]"
+    )
+  ) %>%
+  dplyr::rename(value = close_other1)
+
+close2 <- 
+  APD_traits_input %>%
+  dplyr::select(trait, c(close_other2)) %>%
+  dplyr::filter(!is.na(close_other2)) %>%
+  dplyr::mutate(
+    close_other2 = paste0(
+      published_classes$label[match(close_other2, published_classes$identifier)], " [",
+      published_classes$Entity[match(close_other2, published_classes$identifier)], "]"
+    )
+  ) %>%
+  dplyr::rename(value = close_other2)
+
+close <- 
+  APD_traits_input %>%
+  dplyr::select(trait, close_TOP, close_TRY, close_LEDA, close_GIFT, close_BIEN, close_BROT, PalmTraits_close) %>%
+  tidyr::pivot_longer(cols = 2:8) %>%
+  dplyr::filter(!is.na(value)) %>%
+  bind_rows(close1) %>%
+  bind_rows(close2) %>%
+  dplyr::group_by(trait) %>%
+  dplyr::mutate(close_match = paste(value, collapse = "; ")) %>%
+  dplyr::ungroup() %>%
+  dplyr::select(-dplyr::all_of(c("name", "value"))) %>%
+  dplyr::distinct()
+
+related1 <- 
+  APD_traits_input %>%
+  dplyr::select(trait, c(related_other)) %>%
+  dplyr::filter(!is.na(related_other)) %>%
+  dplyr::mutate(
+    related_other = paste0(
+      published_classes$label[match(related_other, published_classes$identifier)], " [",
+      published_classes$Entity[match(related_other, published_classes$identifier)], "]"
+    )
+  ) %>%
+  dplyr::rename(value = related_other)
+
+related <- 
+  APD_traits_input %>%
+  dplyr::select(trait, related_TOP, related_TOP2, related_TRY, related_LEDA, related_GIFT, related_BIEN, related_BROT) %>%
+  tidyr::pivot_longer(cols = 2:8) %>%
+  dplyr::filter(!is.na(value)) %>%
+  bind_rows(related1) %>%
+  dplyr::group_by(trait) %>%
+  dplyr::mutate(related_match = paste(value, collapse = "; ")) %>%
+  dplyr::ungroup() %>%
+  dplyr::select(-dplyr::all_of(c("name", "value"))) %>%
+  dplyr::distinct()
+
+# categorical trait values
+categorical %>%
+  mutate(
+    description = stringr::str_split(description, "[:space:]\\(Synonym\\, |[:space:]\\(Synonyms\\, ")
+  ) %>%
+  tidyr::unnest_wider(description, names_sep = "_") %>%
+  dplyr::mutate(description_2 = stringr::str_replace(description_2, "\\)$", "")) %>%
+  dplyr::rename(
+    allowed_values_levels = label,
+    trait = trait_name,
+    categorical_trait_description = description_1,
+    categorical_trait_synonyms = description_2,
+    categorical_trait_identifier = identifier
+  ) %>%
+  dplyr::select(allowed_values_levels, trait, categorical_trait_description, categorical_trait_synonyms, categorical_trait_identifier) %>%
+  write_csv("APD_categorical_values.csv")
+
+# join together pieces
+core_traits %>%
+  dplyr::left_join(hierarchy, by = c("trait")) %>%
+  dplyr::left_join(structure_measured, by = c("trait")) %>%
+  dplyr::left_join(characteristic_measured, by = c("trait")) %>%
+  dplyr::left_join(keywords, by = c("trait")) %>%
+  dplyr::left_join(references, by = c("trait")) %>%
+  dplyr::left_join(reviewers, by = c("trait")) %>%
+  dplyr::left_join(exact, by = c("trait")) %>%
+  dplyr::left_join(close, by = c("trait")) %>%
+  dplyr::left_join(related, by = c("trait")) %>%
+  # sort columns
+  dplyr::select(dplyr::all_of(c(
+    "Entity", "trait", "label", "description", "comments", "trait_type", "allowed_values_min", "allowed_values_max", "units",
+    "constraints", "trait_groupings", "structure_measured", "characteristic_measured", "keywords",
+    "references", "reviewers", "created", "modified",
+    "exact_match", "close_match", "related_match",
+    "description_encoded", "deprecated_trait_name", "identifier", "inScheme"
+  ))) %>%
+  write_csv("APD_traits.csv")
+```
+
+# Build the website
+```{r}
+quarto::quarto_render()
+```
+
+# Website
+
+Put a copy of latest in release folder in both `release` and `docs/release` folders
+
+```{r}
+version <- rmarkdown::yaml_front_matter("index.qmd")$params$version
+
+files <- c("APD.json", "APD.nq", "APD.nt", "APD.ttl", "APD_traits.csv", "APD_categorical_values.csv", "index.html")
+
+for(p in c("release", "docs/release")) {
+  to_path <- file.path(p, version)
+  dir.create(to_path, FALSE, TRUE)
+  purrr::walk(files, ~ file.copy(file.path("docs", .x), file.path(to_path, .x), overwrite = TRUE))
+}
+```
+
+
+

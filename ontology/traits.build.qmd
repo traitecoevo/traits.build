@@ -1,0 +1,259 @@
+---
+title:  The AusTraits Plant Dictionary (APD) Ontology
+params:
+  version: 0.1.0
+  previous_version: 0.1.0
+format: 
+  html:
+    smooth-scroll: true
+    toc: true
+    toc-expand: 1
+    embed-resources: true
+---
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+version <- params$version
+
+link_version <- function(v) sprintf("<https://w3id.org/traits.build/release/%s/index.html>", v)
+```
+## Release `r version`
+
+<dl>
+<dt> **Latest version**:</dt> <dd><https://w3id.org/APD/index.html> </dd>
+<dt> **This version**:</dt> <dd>`r link_version(params$version)`  </dd>
+<dt> **Previous version**:</dt> <dd>`r link_version(params$previous_version)` </dd>
+<dt> **Authors**: </dt> <dd>[Elizabeth Wenk](https://orcid.org/0000-0001-5640-5910), [Daniel Falster](https://orcid.org/0000-0002-9814-092X) </dd>
+<dt>**Contributors**:</dt> <dd> 
+  [David Coleman](https://orcid.org/0000-0002-1773-6597)
+  [Sophie Yang](https://orcid.org/0000-0001-7328-345X)</dd>
+
+</dd>
+
+<dt>Serializations:</dt> <dd>
+<span><a href="traits.build.json" target="_blank"><img src="https://img.shields.io/badge/Format-JSON_LD-blue.svg" alt="JSON-LD"></a> </span>
+<span><a href="traits.build.nt" target="_blank"><img src="https://img.shields.io/badge/Format-N_Triples-blue.svg" alt="N-Triples"></a> </span>
+<span><a href="traits.build.nq" target="_blank"><img src="https://img.shields.io/badge/Format-N_Quads-blue.svg" alt="N-Quads"></a> </span>
+<span><a href="traits.build.ttl" target="_blank"><img src="https://img.shields.io/badge/Format-TTL-blue.svg" alt="TTL"></a> </span></dd>
+
+<dt>License: </dt> <dd><a href="http://purl.org/NET/rdflicense/cc-by4.0" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY%204.0-blue.svg" alt="http://purl.org/NET/rdflicense/cc-by4.0"></a> </dd>
+<!-- <dt>Visualization:</dt><dd><a href="webvowl/index.html#" target="_blank"><img src="https://img.shields.io/badge/Visualize_with-WebVowl-blue.svg" alt="Visualize with WebVowl"></a></dd> -->
+<!-- <dt>Vocabulary service:</dt> <dd> 
+<span><a href="https://vocabs.ardc.edu.au/viewById/649" target="_blank"><img src="https://img.shields.io/badge/ARDC-RVA-blue.svg" alt="JSON-LD"></a> </span> </dd> -->
+
+<dt>Source:</dt> <dd>
+<span><a href="https://doi.org/10.5281/zenodo.8040789" target="_blank"><img src="https://img.shields.io/badge/DOI-10.5281/zenodo.8040789-blue.svg" alt="10.5281/zenodo.8040789"></a> </span>
+
+<span><a href="https://github.com/traitecoevo/traits.build" target="_blank"><img src="https://img.shields.io/badge/Github-traitecoevo/traits.build-blue.svg" alt="JSON-LD"></a> </span>
+</dd>
+
+
+<dt>Contributing:</dt> <dd>
+ [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/traitecoevo/traits.build/issues) </dd>
+
+<dt>Cite as:</dt> <dd> XXX </dd> 
+
+</dl>
+
+<!-- Examples:
+https://i-adopt.github.io/index.html
+https://www.w3.org/2009/08/skos-reference/skos.html
+https://terminologies.gfbio.org/terms/ets/pages/#expectedunit
+
+gt package: https://gt.rstudio.com/
+-->
+
+
+```{r, include=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
+library(knitr)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(gt)
+library(purrr)
+
+source("helpers.R")
+
+triples_with_labels <-
+  read_csv("output/ontology/build_triples.csv")
+
+base_url_traits <- "https://w3id.org/traits.build/traits/"
+base_url_glossary <- "https://w3id.org/traits.build/glossary/"
+
+if (knitr::is_html_output()) {
+  print_table <- print_table_html
+} else if (knitr::is_latex_output()) {
+  print_table <- print_table_pdf
+} else {
+  print_table <- print_table_docx
+}
+```
+
+# Abstract
+This document describes the schema available from the APD namespace. The APD offers detailed descriptions for more than 500 plant trait concepts. It includes trait focused on plant morphology, plant nutrient concentrations, plant physiology, plant life history, and plant fire response. The definitions will be useful to researchers from diverse disciplines, including plant functional ecology, plant taxonomy, and conservation biology. All trait concepts are supported by comprehensive metadata including trait descriptions, allowable trait values, allowable ranges, preferred units, keywords, references, and links to matches in a selection of trait databases. The traits describe here also fully support the AusTraits plant trait database, <doi.org/10.5281/zenodo.3568417>.
+
+# Table of Contents 
+
+1. [Introduction](#introduction)
+2. [Trait groups](#trait-groupings): Hierarchical trait groupings, included to enhance trait findability.
+3. [Trait concepts](#trait-concepts): Traits defined within the vocabulary.
+4. [Values for categorical traits](#values-for-categorical-traits): Allowed categorical trait values to support the defined trait concepts.
+5. [Glossary](#glossary): Terms used as keywords that were not available in other published vocabularies.
+6. [Acknowledgements](#acknowledgements)
+
+# 1. Introduction
+
+The APD is a compilation of the traits concepts used by AusTraits, a database of Australian plant traits. APD includes definitions for nearly 500 traits pertaining to plant functional ecology and plant morphology. The metadata for each trait concept has been reviewed by multiple people. Metadata includes a trait definition, accepted units and ranges (for numeric traits), allowable values (for categorical traits), keywords and trait groupings to enhance trait findability, references, and links to identical/similar traits in other trait databases. APD will be published in a machine-readable format (rdf representation), allowing the traits to be readily re-used by other databases. This is a human-friendly output, with embedded links to the references, other trait databases and keywords/concepts borrowed from other ontologies.
+
+The APD is a community resource and we welcome any suggestions for edits, including additional key references for each trait or other trait databases for which we should add links. 
+
+# 2. Trait groups
+
+The APD Trait groups express broad trait groupings, with each trait concept mapped into one or more trait groups as `narrower` concepts.
+
+```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+trait_groupings <- 
+  triples_with_labels %>% 
+    filter(Predicate == "http://www.w3.org/2000/01/rdf-schema#label") %>%
+    filter(stringr::str_detect(Subject, "trait_group_")) %>%
+    select(identifier = Subject)
+
+to_match_tmp <- triples_with_labels %>%
+  filter(Subject_stripped %in% trait_groupings$identifier) %>%
+  filter(property == "label") %>%
+  select(Subject_stripped, value)
+ 
+for (thistrait in trait_groupings$identifier) {
+  
+  # creating header makes anchor using header name. Aslo create an anchor using trait_ID
+  term_to_display <- to_match_tmp$value[match(thistrait,to_match_tmp$Subject_stripped)]
+  anchor <- gsub(base_url_traits, "", thistrait, fixed = TRUE)
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
+
+  out <- 
+    create_APD_trait_hierarchy_table(thistrait, triples_with_labels)
+
+  out %>% print_table()#150, 500)
+}
+```
+# 3. Trait concepts
+
+The APD Trait concepts express the traits defined by the APT.
+
+```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+list_of_traits <- 
+  triples_with_labels %>% 
+    filter(Predicate == "http://www.w3.org/2000/01/rdf-schema#label") %>%
+    filter(stringr::str_detect(Subject, "trait_[:digit:]")) %>%
+    select(identifier = Subject)
+
+to_match_tmp <- triples_with_labels %>%
+  filter(Subject_stripped %in% list_of_traits$identifier) %>%
+  filter(property == "label") %>%
+  select(Subject_stripped, value)
+ 
+for (thistrait in list_of_traits[[1]]) {
+  
+  # creating header makes anchor using header name. Aslo create an anchor using trait_ID
+  term_to_display <- to_match_tmp$value[match(thistrait,to_match_tmp$Subject_stripped)]
+  anchor <- gsub(base_url_traits, "", thistrait, fixed = TRUE)
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
+
+  out <- 
+    create_APD_trait_table(thistrait, triples_with_labels)
+
+  out %>% print_table()#150, 600)
+}
+```
+
+
+# 4. Values for categorical traits
+
+This section of the ontology expresses allowed categorical trait values for each trait concept. These terms are each defined and linked to a single trait concept to reduce ambiguity.
+
+```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+categorical_allowed <- 
+  triples_with_labels %>% 
+  filter(!stringr::str_detect(Subject, "trait_[:digit:]")) %>%
+  filter(!stringr::str_detect(Subject, "trait_group")) %>%
+  filter(stringr::str_detect(Subject, "APD\\/traits\\/[:alpha:]")) %>%
+  filter(Predicate == "http://www.w3.org/2004/02/skos/core#broader") %>%
+  select(identifier = Subject, Object) %>%
+  arrange(Object)
+
+  to_match_tmp <- triples_with_labels %>% 
+    filter(Subject_stripped %in% categorical_allowed$identifier) %>%
+    filter(property == "label") %>%
+    select(Subject_stripped, value)
+  
+  tmp_categorical2 <- triples_with_labels %>%
+    filter(Subject_stripped %in% to_match_tmp$Subject_stripped) %>%
+    filter(property == "has broader") %>%
+    select(Subject_stripped, trait_name = value) %>%
+    left_join(to_match_tmp) %>%
+    left_join(categorical_allowed %>% rename(Subject_stripped = identifier)) %>%
+    arrange(Object)
+ 
+  traits_names_tmp <- tmp_categorical2 %>%
+    distinct(trait_name)
+
+for (thistrait in traits_names_tmp$trait_name) {
+
+  writeLines(paste0("\n## ", thistrait, "\n\n"))
+  
+  tmp_cat_select <- tmp_categorical2 %>% 
+    filter(trait_name == thistrait)
+  
+  cat_for_trait <- as.data.frame(categorical_allowed) %>% filter(categorical_allowed$identifier %in% tmp_cat_select$Subject_stripped)
+  
+  for (cat_val in cat_for_trait$identifier) {
+  
+  # creating header makes anchor using header name. Aslo create an anchor using trait_ID
+  term_to_display <- to_match_tmp$value[match(cat_val, to_match_tmp$Subject_stripped)]
+  anchor <- gsub(base_url_traits, "", cat_val, fixed = TRUE)    
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
+
+  out <- 
+      create_APD_categorical_values_table(anchor, triples_with_labels)
+  
+  out %>% print_table()#150, 500)
+  }
+  
+}
+  
+```
+
+# 5. Glossary
+
+This section of the ontology includes terminology used within trait concept descriptions that are not defined by other resources.
+
+```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+
+glossary_terms <- 
+  triples_with_labels %>% 
+  filter(Predicate == "http://www.w3.org/2000/01/rdf-schema#label") %>%
+  filter(stringr::str_detect(Subject, "glossary_")) %>%
+  select(identifier = Subject)
+
+for (thistrait in glossary_terms$identifier) {
+  
+  to_match_tmp <- triples_with_labels %>% 
+    filter(Subject_stripped %in% glossary_terms$identifier) %>%
+    filter(property == "label") %>%
+    select(Subject_stripped, value)
+
+  # creating header makes anchor using header name. Aslo create an anchor using trait_ID  
+  term_to_display <- to_match_tmp$value[match(thistrait, to_match_tmp$Subject_stripped)]
+  anchor <- gsub(base_url_glossary, "", thistrait, fixed = TRUE)
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
+
+  out <- 
+    create_APD_trait_glossary_table(thistrait, triples_with_labels)
+
+  out %>% print_table()#150, 500)
+}
+```
+
+# 6. Acknowledgements
+
+We are grateful to S Cox, J Smillie, K Levett, M Barlow, and C Brady for useful conversations. The AusTraits project received investment (<https://doi.org/10.47486/TD044>, <https://doi.org/10.47486/DP720>) from the Australian Research Data Commons (ARDC). The ARDC is funded by the National Collaborative Research Infrastructure Strategy (NCRIS). 
+
