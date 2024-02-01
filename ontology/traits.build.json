@@ -319,6 +319,30 @@
       }
     },
     {
+      "@id": "http://purl.org/dc/terms/created",
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "created"
+      }
+    },
+    {
+      "@id": "http://purl.org/dc/terms/creator",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "An entity responsible for making contributions to the resource."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "creator"
+      }
+    },
+    {
       "@id": "http://purl.org/dc/terms/description",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -334,9 +358,22 @@
     },
     {
       "@id": "http://purl.org/dc/terms/identifier",
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://purl.org/dc/terms/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "identifier"
+      }
+    },
+    {
+      "@id": "http://purl.org/dc/terms/issued",
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "issued"
       }
     },
     {
@@ -1601,7 +1638,48 @@
       }
     },
     {
+      "@id": "https://w3id.org/traits.build",
+      "@type": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+      "http://purl.org/dc/terms/creator": [
+        "Sophie Yang",
+        "Elizabeth Wenk",
+        "Daniel Falster"
+      ],
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "traits.build is an open-source R-scripted workflow for harmonizing trait data. The traits.build data model both documents the meaning of each of the columns output in each of the relational tables in a traits.build database and the semantic relationship between individual tables, columns, rows, and individual data cells. It adheres to the OBOE ontology (https://bioportal.bioontology.org/ontologies/OBOE) and draws upon previously published terms whenever possible, especially DarwinCore (https://dwc.tdwg.org/terms/) and the Ecological Trait-data Standard  (https://ecologicaltraitdata.github.io/ETS/). traits.build includes machine-readable formats and endpoints, allowing the traits to be readily re-used by other databases."
+      },
+      "http://purl.org/dc/terms/license": {
+        "@type": "xsd:anyURI",
+        "@value": "<https://creativecommons.org/licenses/by/4.0/>"
+      },
+      "http://purl.org/dc/terms/publisher": {
+        "@type": "xsd:anyURI",
+        "@value": "<https://austraits.org/>"
+      },
+      "http://purl.org/dc/terms/title": {
+        "@language": "en",
+        "@value": "traits.build Data Model"
+      },
+      "http://www.w3.org/2000/01/rdf-schema#label": {
+        "@language": "en",
+        "@value": "traits.build Data Model"
+      },
+      "http://www.w3.org/2004/02/skos/core#hasTopConcept": {
+        "@type": "xsd:anyURI",
+        "@value": "<https://w3id.org/traits.build>"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "traits.build Data Model"
+      }
+    },
+    {
       "@id": "https://w3id.org/traits.build/ORCID",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "ORCID (Open Researcher and Contributor ID) for the data collector, if available."
@@ -1632,6 +1710,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://purl.obolibrary.org/obo/IAO_0000708"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "ORCID identifier"
@@ -1642,6 +1723,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/additional_role",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Any additional roles the data collector had in the study, a field most frequently used to identify which data contributor is the contact person for the dataset."
@@ -1672,6 +1757,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://vocab.fairdatacollective.org/gdmt/ContributorRole"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "additional role"
@@ -1679,6 +1767,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/affiliation",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Affiliation of data collector."
@@ -1709,6 +1801,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://vocab.fairdatacollective.org/gdmt/hasContributorAffiliation"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "affiliation"
@@ -1716,6 +1811,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/aligned_name",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The taxon name without authorship after implementing automated syntax standardisation and spelling changes as well as manually encoded syntax alignments for this taxon in the metadata file for the corresponding `dataset_id`. This name has not yet been matched to the currently accepted (botanical) or valid (zoological) taxon name in cases where there are taxonomic synonyms, isonyms, orthographic variants, etc."
@@ -1746,6 +1845,9 @@
         "@language": "en",
         "@value": "aligned_name"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "aligned name"
@@ -1761,6 +1863,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/allowed_values_levels",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Allowed trait values for a categorical trait, including a brief description of the value."
@@ -1801,6 +1907,9 @@
           "@id": "http://www.w3.org/2004/02/skos/core#narrower"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "allowed categorical values"
@@ -1808,6 +1917,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/allowed_values_max",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "An upper boundary for accepted numerical values."
@@ -1838,6 +1951,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/maxAllowedValue"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "max allowed values"
@@ -1845,6 +1961,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/allowed_values_min",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A lower boundary for accepted numerical values."
@@ -1875,6 +1995,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/minAllowedValue"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "min allowed values"
@@ -1882,6 +2005,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/assistants",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "People who played a more minor role in data collection for the study."
@@ -1912,6 +2039,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://vocab.fairdatacollective.org/gdmt/RelatedPerson"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "assistants"
@@ -1922,6 +2052,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/basis_of_record",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A categorical variable specifying from which kind of specimen traits were recorded."
@@ -1946,6 +2080,9 @@
       "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/basisOfRecord"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "basis of record"
@@ -1953,6 +2090,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/basis_of_value",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A categorical variable describing how the trait value was obtained."
@@ -1980,6 +2121,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#MeasurementType"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "basis of value"
@@ -1987,6 +2131,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/binomial",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The species-level taxon name match for an original name. This column is assigned `na` for taxon name that are at a broader taxonomic_resolution."
@@ -2011,6 +2159,9 @@
         "@language": "en",
         "@value": "binomial"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "binomial"
@@ -2031,6 +2182,10 @@
       "@id": "https://w3id.org/traits.build/collection_date",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor": {
         "@id": "https://w3id.org/traits.build/observation"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2059,6 +2214,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/eventDate"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "collection date"
@@ -2074,6 +2232,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/comments",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Additional notes about the scope of the trait or acceptable methods."
@@ -2114,6 +2276,9 @@
           "@id": "http://www.w3.org/2000/01/rdf-schema#comment"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "comments"
@@ -2121,6 +2286,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/context",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The situation within which a trait measurement is made, which can help explain the measured trait value."
@@ -2136,6 +2305,9 @@
         "@language": "en",
         "@value": "context"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "context"
@@ -2148,6 +2320,10 @@
       "@id": "https://w3id.org/traits.build/context_property",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor": {
         "@id": "https://w3id.org/traits.build/context_entity"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2179,6 +2355,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "https://w3id.org/traits.build/contexts_value"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "context property"
@@ -2189,6 +2368,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/contexts_category",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The category of context property, with options being `plot`, `treatment`, `individual_context`, `temporal` and `method`."
@@ -2213,6 +2396,9 @@
         "@language": "en",
         "@value": "category"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "context property category"
@@ -2223,6 +2409,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/contexts_description",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Description of a specific context property value."
@@ -2247,6 +2437,9 @@
         "@language": "en",
         "@value": "description"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "context property value description"
@@ -2257,6 +2450,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/contexts_link_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Variable indicating which identifier column in the traits table contains the specified `link_vals`."
@@ -2295,6 +2492,9 @@
         "@language": "en",
         "@value": "link_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "context propety link id"
@@ -2305,6 +2505,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/contexts_link_vals",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Unique integer identifiers that link between identifier columns in the `traits` table and the contextual properties/values in the `contexts` table."
@@ -2343,6 +2547,9 @@
         "@language": "en",
         "@value": "link_vals"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "context propety link vals"
@@ -2355,6 +2562,10 @@
       "@id": "https://w3id.org/traits.build/contexts_value",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor": {
         "@id": "https://w3id.org/traits.build/context_property"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2377,6 +2588,9 @@
         "@language": "en",
         "@value": "value"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "context property value"
@@ -2392,6 +2606,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/contributor",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A person contributing to a dataset."
@@ -2427,6 +2645,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://purl.org/dc/terms/contributor"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "contributor"
@@ -2434,6 +2655,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/data_collector",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Person contributing to a dataset as a data collector."
@@ -2488,6 +2713,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://vocab.fairdatacollective.org/gdmt/DataCollector"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "data collector"
@@ -2498,6 +2726,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/dataset",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "13 relational tables and lists containing all data about a dataset."
@@ -2522,6 +2754,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "dataset"
@@ -2529,6 +2764,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/dataset_curators",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Database team member(s) who contacted the data collectors and added the study to the database repository."
@@ -2559,6 +2798,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://vocab.fairdatacollective.org/gdmt/DataCurator"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "dataset curators"
@@ -2569,6 +2811,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/dataset_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Primary identifier for each study contributed to AusTraits, most often these are scientific papers, books, or online resources. By default this should be the name of the first author and year of publication, e.g. `Falster_2005`."
@@ -2610,6 +2856,9 @@
         "@language": "en",
         "@value": "dataset_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "dataset id"
@@ -2620,6 +2869,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/description",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A short description, generally ranging from 1-3 sentences that clearly indicates the trait’s scope."
@@ -2660,6 +2913,9 @@
           "@id": "http://terminologies.gfbio.org/terms/ETS/traitDescription"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "description"
@@ -2669,6 +2925,10 @@
       "@id": "https://w3id.org/traits.build/elevation",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor": {
         "@id": "https://w3id.org/traits.build/location"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2700,6 +2960,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/verbatimElevation"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "elevation (m)"
@@ -2715,6 +2978,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/entity",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "An entity is an object (e.g., a tree, a community, an ecological process). Entities constitute the foci of observations, i.e., every observation is of exactly one entity."
@@ -2733,6 +3000,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "entity"
@@ -2740,6 +3010,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/entity_context_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A unique integer identifier indicating specific contextual properties of an individual, possibly including the individual's sex or caste (for social insects)."
@@ -2764,6 +3038,9 @@
         "@language": "en",
         "@value": "entity_context_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "entity context id"
@@ -2774,6 +3051,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/entity_context_property",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A context characteristic indicating stratified variation across individuals or populations might affect the trait values measured."
@@ -2807,6 +3088,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "https://w3id.org/traits.build/contexts_value"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "entity context property"
@@ -2817,6 +3101,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/entity_type",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A categorical variable specifying the entity corresponding to the trait values recorded."
@@ -2838,6 +3126,9 @@
         "@language": "en",
         "@value": "entity_type"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "entity type"
@@ -2845,6 +3136,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/establishment_means",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Statement about whether an organism or organisms have been introduced to a given place and time through the direct or indirect activity of modern humans."
@@ -2875,6 +3170,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/establishmentMeans"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "establishment means"
@@ -2882,6 +3180,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/family",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Family of the taxon."
@@ -2912,6 +3214,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/family"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "family"
@@ -2927,6 +3232,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/genus",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Genus of the taxon without authorship."
@@ -2957,6 +3266,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/genus"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "genus"
@@ -2972,6 +3284,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/given_name",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Given names of the data collector."
@@ -3002,6 +3318,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://purl.obolibrary.org/obo/IAO_0020016"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "given name"
@@ -3014,6 +3333,10 @@
       "@id": "https://w3id.org/traits.build/individual",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasContext": {
         "@id": "https://w3id.org/traits.build/life_stage"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3036,6 +3359,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://purl.obolibrary.org/obo/OBI_0100026"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "individual"
@@ -3046,6 +3372,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/individual_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A unique integer identifier for an individual, with individuals numbered sequentially within each dataset by taxon by population grouping. Most often each row of data represents an individual, but in some datasets trait data collected on a single individual is presented across multiple rows of data, such as if the same trait is measured using different methods or the same individual is measured repeatedly across time."
@@ -3070,6 +3400,9 @@
         "@language": "en",
         "@value": "individual_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "individual id"
@@ -3080,6 +3413,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/label",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A concise English label for the trait."
@@ -3126,6 +3463,9 @@
           "@id": "http://www.w3.org/2000/01/rdf-schema#label"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "label"
@@ -3133,6 +3473,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/last_name",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Last name of the data collector."
@@ -3163,6 +3507,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://purl.obolibrary.org/obo/IAO_0020017"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "last name"
@@ -3175,6 +3522,10 @@
       "@id": "https://w3id.org/traits.build/latitude",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor": {
         "@id": "https://w3id.org/traits.build/location"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3206,6 +3557,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/decimalLatitude"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "latitude (deg)"
@@ -3223,6 +3577,10 @@
       "@id": "https://w3id.org/traits.build/life_stage",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor": {
         "@id": "https://w3id.org/traits.build/observation_of_entity_context"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3251,6 +3609,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/lifeStage"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "life stage"
@@ -3266,6 +3627,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/location",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A spatial region or named place."
@@ -3290,6 +3655,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://purl.org/dc/terms/location"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "location"
@@ -3300,6 +3668,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/location_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A unique integer identifier for a location, with locations numbered sequentially within a dataset. The identifier links to specific information in the location table."
@@ -3329,6 +3701,9 @@
         "@language": "en",
         "@value": "location_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "location id"
@@ -3339,6 +3714,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/location_name",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The location name used by the data contributor or a generic location name designated by AusTraits when one is not provided."
@@ -3359,6 +3738,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "location_name"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -3381,6 +3763,10 @@
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasValue": {
         "@id": "https://w3id.org/traits.build/locations_value"
       },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The location characteristic being recorded. The name should include units of measurement, e.g. `MAT (C)`. Ideally we have at least the following variables for each location, `longitude (deg)`, `latitude (deg)`, `description`."
@@ -3402,6 +3788,9 @@
         "@language": "en",
         "@value": "location_property"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "location property"
@@ -3412,6 +3801,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/locations_value",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The measured value of a location property."
@@ -3433,6 +3826,9 @@
         "@language": "en",
         "@value": "value"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "location property value"
@@ -3450,6 +3846,10 @@
       "@id": "https://w3id.org/traits.build/longitude",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor": {
         "@id": "https://w3id.org/traits.build/location"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3481,6 +3881,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/decimalLongitude"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "longitude (deg)"
@@ -3496,6 +3899,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/measurement",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A measurement is an assertion that a characteristic of an entity had a particular value with respect to an observation event."
@@ -3517,6 +3924,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "measurement"
@@ -3526,6 +3936,10 @@
       "@id": "https://w3id.org/traits.build/measurement_of_entity_context_property",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor": {
         "@id": "https://w3id.org/traits.build/observation_of_entity_context"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3544,6 +3958,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "measurement_of_entity_context_property"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -3566,6 +3983,10 @@
           "@id": "https://w3id.org/traits.build/observation_of_location"
         }
       ],
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A measurement made on a location property."
@@ -3581,6 +4002,9 @@
         "@language": "en",
         "@value": "measurement_of_location_property"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "measurement of location property"
@@ -3593,6 +4017,10 @@
       "@id": "https://w3id.org/traits.build/measurement_of_plot_context_property",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor": {
         "@id": "https://w3id.org/traits.build/observation_of_plot_context"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3612,6 +4040,9 @@
         "@language": "en",
         "@value": "measurement_of_plot_context_property"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "measurement of plot context property"
@@ -3624,6 +4055,10 @@
       "@id": "https://w3id.org/traits.build/measurement_of_temporal_context_property",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor": {
         "@id": "https://w3id.org/traits.build/observation_of_temporal_context"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3643,6 +4078,9 @@
         "@language": "en",
         "@value": "measurement_of_temporal_context_property"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "measurement of temporal context property"
@@ -3658,6 +4096,10 @@
       },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor": {
         "@id": "https://w3id.org/traits.build/observation_of_treatment_context"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3677,6 +4119,9 @@
         "@language": "en",
         "@value": "measurement_of_treatment_context_property"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "measurement of treatment context property"
@@ -3687,6 +4132,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/measurement_remarks",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Brief comments or notes accompanying the trait measurement."
@@ -3708,6 +4157,9 @@
         "@language": "en",
         "@value": "measurement_remarks"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "measurement remarks"
@@ -3718,6 +4170,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/method_context",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A compment of a trait measurement protocol that is changed between individual trait measurements and might cause the measured trait values of individuals or populations to change."
@@ -3732,6 +4188,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "method_context"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -3748,6 +4207,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/method_context_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A unique integer identifier indicating a trait is measured multiple times on the same entity, with different methods used for each entry. This field is only used if a single trait is measured using multiple methods within the same dataset. The identifier links to specific information in the context table."
@@ -3769,6 +4232,9 @@
         "@language": "en",
         "@value": "method_context_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "method context id"
@@ -3779,6 +4245,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/method_context_property",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A context characteristic indicating stratified variation in the protocol used to measure traits might affect the trait values measured."
@@ -3812,6 +4282,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "https://w3id.org/traits.build/contexts_value"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "method context property"
@@ -3822,6 +4295,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/method_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A unique integer identifier to distinguish between multiple sets of methods used to measure a single trait within the same dataset. The identifier links to specific information in the methods table."
@@ -3854,6 +4331,9 @@
         "@language": "en",
         "@value": "method_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "method id"
@@ -3864,6 +4344,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/methods_description",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A 1-2 sentence description of the purpose of the study."
@@ -3894,6 +4378,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/datasetDescription"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "dataset description"
@@ -3904,6 +4391,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/methods_methods",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A textual description of the methods used to collect the trait data. Whenever available, methods are taken near-verbatim from the referenced source. Methods can include descriptions such as 'measured on botanical collections', 'data from the literature', or a detailed description of the field or lab methods used to collect the data."
@@ -3928,6 +4419,9 @@
       "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Protocol"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "methods"
@@ -3938,6 +4432,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/observation",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "An Observation is a collection of measurements made at a single point in time. In traits.build it is the subset of rows within the traits data that are made on the same entity and share the same observation_id."
@@ -3966,6 +4464,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "observation"
@@ -3973,6 +4474,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/observation_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A unique integral identifier for the observation, where an observation is all measurements made on an individual at a single point in time. It is important for joining traits coming from the same `observation_id`. Within each dataset, observation_id's are unique combinations of `taxon_name`, `population_id`, `individual_id`, and `temporal_context_id`."
@@ -3993,6 +4498,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "observation_id"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -4021,6 +4529,10 @@
           "@id": "https://w3id.org/traits.build/individual"
         }
       ],
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Observation where entity is a category of context indicating repeat observations have been made on an individual, population or species-level entity across time which might affect the entity's measured trait values."
@@ -4039,6 +4551,9 @@
         "@language": "en",
         "@value": "observation_of_entity_context"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "observation of entity context"
@@ -4054,6 +4569,10 @@
       },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/location"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4072,6 +4591,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "observation_of_location"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -4092,6 +4614,10 @@
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/plot"
       },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Observation where entity is a category of context indicating variation across plots at a single location might affect the trait values measured on individual or population-level entities."
@@ -4109,6 +4635,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "observation_of_plot_context"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -4128,6 +4657,10 @@
       },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/temporal_context"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4151,6 +4684,9 @@
         "@language": "en",
         "@value": "observation_of_temporal_context"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "observation of temporal context"
@@ -4169,6 +4705,10 @@
       },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/treatment"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4191,6 +4731,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "observation_of_treatment_context"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -4221,6 +4764,10 @@
           "@id": "https://w3id.org/traits.build/location"
         }
       ],
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Observation collection of location properties and organismal traits at a single location."
@@ -4238,6 +4785,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "observations_at_location"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -4272,6 +4822,10 @@
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/dataset"
       },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Observation collection encompassing all observations that comprise a dataset."
@@ -4289,6 +4843,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "observations_from_dataset"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -4323,6 +4880,10 @@
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/source"
       },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Observation collection encompassing all observations for a single published or unpublished source."
@@ -4341,6 +4902,9 @@
         "@language": "en",
         "@value": "observations_from_source"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "observations from source"
@@ -4356,6 +4920,10 @@
       },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/individual"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4375,6 +4943,9 @@
         "@language": "en",
         "@value": "observations_of_individual"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "observations of individual"
@@ -4390,6 +4961,10 @@
       },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/population"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4409,6 +4984,9 @@
         "@language": "en",
         "@value": "observations_of_population"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "observations of population"
@@ -4424,6 +5002,10 @@
       },
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity": {
         "@id": "https://w3id.org/traits.build/taxon"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4447,6 +5029,9 @@
         "@language": "en",
         "@value": "observations_of_taxon"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "observations of taxon"
@@ -4457,6 +5042,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/original_name",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Name given to taxon in the original data supplied by the authors."
@@ -4503,6 +5092,9 @@
         "@language": "en",
         "@value": "original_name"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": [
         {
           "@language": "en",
@@ -4524,6 +5116,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/plot",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A subdivision of a location, designated because some properties differ across plots within a location, which might cause differences in measured trait values between plots."
@@ -4538,6 +5134,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "plot"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -4554,6 +5153,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/plot_context_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A unique integer identifier for a plot, where a plot is a distinct collection of organisms within a single geographic location, such as plants growing on different aspects or blocks in an experiment. The identifier links to specific information in the context table."
@@ -4578,6 +5181,9 @@
         "@language": "en",
         "@value": "plot_context_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "plot context id"
@@ -4588,6 +5194,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/plot_context_property",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A context characteristic indicating stratified variation within a location that might affect the trait values measured on an individual or population-level entity."
@@ -4621,6 +5231,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "https://w3id.org/traits.build/contexts_value"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "plot context property"
@@ -4633,6 +5246,10 @@
       "@id": "https://w3id.org/traits.build/population",
       "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasContext": {
         "@id": "https://w3id.org/traits.build/life_stage"
+      },
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4655,6 +5272,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://purl.obolibrary.org/obo/PCO_0000001"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "population"
@@ -4665,6 +5285,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/population_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A unique integer identifier for a population, where a population is defined as individuals growing in the same location (location_id /location_name) and plot (plot_context_id, a context category) and being subjected to the same treatment (treatment_context_id, a context category)."
@@ -4689,6 +5313,9 @@
         "@language": "en",
         "@value": "population_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "population id"
@@ -4699,6 +5326,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/repeat_measurements_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A unique integer identifier for repeat measurements of a trait that comprise a single observation, such as a response curve."
@@ -4728,6 +5359,9 @@
         "@language": "en",
         "@value": "repeat_measurements_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "repeat measurements id"
@@ -4738,6 +5372,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/replicates",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Number of replicate measurements that comprise a recorded trait measurement. A numeric value (or range) is ideal and appropriate if the value type is a `mean`, `median`, `min` or  `max`. For these value types, if replication is unknown the entry should be `unknown`. If the value type is `raw_value` the replicate value should be 1. If the trait is categorical or the value indicates a measurement for an entire species (or other taxon) replicate value should be `.na`."
@@ -4765,6 +5403,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/individualCount"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "replicates"
@@ -4772,6 +5413,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/sampling_strategy",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "When available, this information is lifted verbatim from a published manuscript. For preserved specimens, this field ideally indicates which records were 'sampled' to measure a specific trait."
@@ -4802,6 +5447,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/samplingProtocol"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "dataset sampling strategy"
@@ -4809,6 +5457,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/scientific_name",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The full scientific name, with authorship and date information if known."
@@ -4842,6 +5494,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/scientificName"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "scientific name"
@@ -4849,6 +5504,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/scientific_name_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "An identifier for the set of taxon information (data associated with the taxon class). May be a global unique identifier or an identifier specific to the data set. Must be resolvable within this dataset."
@@ -4879,6 +5538,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/scientificNameID"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "scientific name id"
@@ -4889,6 +5551,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/source_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "For datasets that are compilations, an identifier for the original data source."
@@ -4918,6 +5584,9 @@
         "@language": "en",
         "@value": "source_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "source id"
@@ -4928,6 +5597,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/source_original_dataset_citation",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Citations for the original dataset_id in sources, for compilationse. This detail is generated from the original source in the metadata."
@@ -4955,6 +5628,9 @@
         "@language": "en",
         "@value": "source_original_dataset_citation"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "source original dataset citation"
@@ -4965,6 +5641,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/source_original_dataset_key",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Citation key for the original dataset_id in sources, for compilations.  The key is typically formatted as `Surname_year`."
@@ -4995,6 +5675,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "https://w3id.org/traits.build/source_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "source original dataset key"
@@ -5005,6 +5688,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/source_primary_citation",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Citation for the primary source. This detail is generated from the primary source in the metadata."
@@ -5032,6 +5719,9 @@
         "@language": "en",
         "@value": "source_primary_citation"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "source primary citation"
@@ -5042,6 +5732,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/source_primary_key",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Citation key for the primary source in `sources`. The key is typically formatted as `Surname_year`."
@@ -5072,6 +5766,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "https://w3id.org/traits.build/dataset_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "source primary key"
@@ -5082,6 +5779,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/source_secondary_citation",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Citations for the secondary source. This detail is generated from the secondary source in the metadata."
@@ -5109,6 +5810,9 @@
         "@language": "en",
         "@value": "source_secondary_citation"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "source secondary citation"
@@ -5119,6 +5823,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/source_secondary_key",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Citation key for the secondary source in `sources`.  The key is typically formatted as `Surname_year`."
@@ -5143,6 +5851,9 @@
         "@language": "en",
         "@value": "source_secondary_key"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "source secondary key"
@@ -5153,6 +5864,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/taxon",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": [
         {
           "@language": "en",
@@ -5230,6 +5945,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/Taxon"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "taxon"
@@ -5245,6 +5963,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/taxon_distribution",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Known distribution of the taxon, by Australian state."
@@ -5269,6 +5991,9 @@
         "@language": "en",
         "@value": "taxon_distribution"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "taxon distribution"
@@ -5276,6 +6001,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/taxon_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "An identifier for the set of taxon information (data associated with the taxon class). May be a global unique identifier or an identifier specific to the data set. Must be resolvable within this dataset."
@@ -5306,6 +6035,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/taxonID"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "taxon id"
@@ -5316,6 +6048,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/taxon_name",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Scientific name of the taxon on which traits were sampled, without authorship. When possible, this is the currently accepted (botanical) or valid (zoological) scientific name, but might also be a higher taxonomic level."
@@ -5373,6 +6109,9 @@
       "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/acceptedNameUsage"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "taxon name"
@@ -5388,6 +6127,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/taxon_rank",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The taxonomic rank of the most specific name in the scientific name."
@@ -5422,6 +6165,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/taxonRank"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "taxon rank"
@@ -5429,6 +6175,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/taxonomic_dataset",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Name of the taxonomy (tree) that contains this concept. ie. APC, AusMoss etc."
@@ -5459,6 +6209,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/nomenclaturalCode"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "taxonomic dataset"
@@ -5466,6 +6219,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/taxonomic_resolution",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The rank of the most specific taxon name (or scientific name) to which a submitted orignal name resolves."
@@ -5490,6 +6247,9 @@
         "@language": "en",
         "@value": "taxonomic_resolution"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "taxonomic resolution"
@@ -5500,6 +6260,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/taxonomic_status",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The status of the use of the scientificName as a label for the taxon in regard to the 'accepted (or valid) taxonomy'. The assigned taxonomic status must be linked to a specific taxonomic reference that defines the concept."
@@ -5530,6 +6294,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/taxonomicStatus"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "taxonomic status"
@@ -5537,6 +6304,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/temporal_context",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A situation or process that varies across time and might cause the measured trait values of individuals or populations to change across time."
@@ -5551,6 +6322,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "temporal_context"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -5567,6 +6341,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/temporal_context_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A unique integer identifier assigned where repeat observations are made on the same individual (or population, or taxon) across time. The identifier links to specific information in the context table."
@@ -5591,6 +6369,9 @@
         "@language": "en",
         "@value": "temporal_context_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "temporal context id"
@@ -5601,6 +6382,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/temporal_context_property",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A context characteristic indicating stratified variation across time might affect the trait values measured."
@@ -5634,6 +6419,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "https://w3id.org/traits.build/contexts_value"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "temporal context property"
@@ -5644,6 +6432,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/trait",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A collection of trait values pertaining to a distinct characteristic of a specific part of an organism (cell, tissue, organ, or whole organism)."
@@ -5699,6 +6491,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Standard"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "trait concept"
@@ -5706,6 +6501,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/trait_concept_URI",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Unique identifier of the trait according to a public ontology, or a user-provided thesaurus of traits."
@@ -5746,6 +6545,9 @@
           "@id": "http://terminologies.gfbio.org/terms/ETS/traitID"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "trait identifier"
@@ -5779,6 +6581,10 @@
           "@id": "https://w3id.org/traits.build/observation"
         }
       ],
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A measurement made on a trait."
@@ -5794,6 +6600,9 @@
         "@language": "en",
         "@value": "trait_measurement"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "trait measurement"
@@ -5804,6 +6613,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/trait_name",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Name of the trait sampled. Allowable values specified in the table `definitions`."
@@ -5846,6 +6659,9 @@
           "@id": "http://www.w3.org/2004/02/skos/core#altLabel"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "trait name"
@@ -5853,6 +6669,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/trait_value",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The measured value of a trait."
@@ -5877,6 +6697,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/traitValue"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "value"
@@ -5892,6 +6715,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/traits.build",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A database containing 13 relational tables and lists."
@@ -5907,6 +6734,9 @@
         "@language": "en",
         "@value": "traits.build"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "traits database"
@@ -5914,6 +6744,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/traits.build-contexts",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A table containing observations of contextual characteristics associated with information in `traits`. Cross referencing between the two dataframes is possible using combinations of the variables `dataset_id`, `link_id`, and `link_vals`."
@@ -5929,6 +6763,9 @@
         "@language": "en",
         "@value": "contexts"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "contexts table"
@@ -5936,6 +6773,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/traits.build-contributors",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A table of people contributing to each study."
@@ -5951,6 +6792,9 @@
         "@language": "en",
         "@value": "contributors"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "contributors table"
@@ -5958,6 +6802,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/traits.build-definitions",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A list containing trait concept descriptions used to build the database."
@@ -5979,6 +6827,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/Traitdata"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "definitions table"
@@ -5986,6 +6837,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/traits.build-locations",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A table containing observations of location/site characteristics associated with information in `traits`. Cross referencing between the two dataframes is possible using combinations of the variables `dataset_id`, `location_name`."
@@ -6005,6 +6860,9 @@
         "@language": "en",
         "@value": "locations"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "locations table"
@@ -6015,6 +6873,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/traits.build-metadata",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A list containing database metadata."
@@ -6033,6 +6895,9 @@
       "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/Metadata"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "metadata table"
@@ -6040,6 +6905,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/traits.build-methods",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A table containing details on methods with which data were collected, including time frame and source. Cross referencing with the `traits` table is possible using combinations of the variables `dataset_id`, `trait_name`."
@@ -6055,6 +6924,9 @@
         "@language": "en",
         "@value": "methods"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "methods table"
@@ -6065,6 +6937,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/traits.build-sources",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A list containing citation details for all database sources."
@@ -6080,6 +6956,9 @@
         "@language": "en",
         "@value": "sources"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "sources table"
@@ -6087,6 +6966,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/traits.build-taxa",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A table containing details on taxa associated with information in `traits`. Whenever possible, this information is sourced from curated taxon lists that include identifiers for each taxon. The information compiled in this table is released under a CC-BY3 license. Cross referencing between the two dataframes is possible using combinations of the variable `taxon_name`."
@@ -6108,6 +6991,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/Taxon"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "taxa table"
@@ -6115,6 +7001,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/traits.build-taxonomic_updates",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A table of all taxonomic changes implemented in the construction of AusTraits. Changes are determined by comparing the originally submitted taxon name against the taxonomic names listed in the taxonomic reference files, best placed in a subfolder in the `config` folder . Cross referencing with the `traits` table is possible using combinations of the variables `dataset_id` and `taxon_name`."
@@ -6130,6 +7020,9 @@
         "@language": "en",
         "@value": "traits.build-taxonomic_updates"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "taxonomic updates table"
@@ -6137,6 +7030,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/traits.build-traits",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A table containing measurements of traits."
@@ -6162,6 +7059,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/Traitdata"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "traits table"
@@ -6177,6 +7077,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/treatment",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "An experimental manipulation that subjects different individuals or populations to different conditions, which can lead to differences in measured trait values across treatments."
@@ -6191,6 +7095,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "treatment"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -6207,6 +7114,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/treatment_context_id",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A unique integer identifier for a treatment, where a treatment is any experimental manipulation to an organism's growing/living conditions. The identifier links to specific information in the context table."
@@ -6231,6 +7142,9 @@
         "@language": "en",
         "@value": "treatment_context_id"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "treatment context id"
@@ -6241,6 +7155,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/treatment_context_property",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A context characteristic indicating stratified treatments that might affect the trait values measured on an individual or population-level entity."
@@ -6274,6 +7192,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "https://w3id.org/traits.build/contexts_value"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "treatment context property"
@@ -6284,6 +7205,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/trinomial",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The infraspecific taxon name match for an original name. This column is assigned `na` for taxon name that are at a broader taxonomic_resolution."
@@ -6308,6 +7233,9 @@
         "@language": "en",
         "@value": "trinomial"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "trinomial"
@@ -6326,6 +7254,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/type",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Type of trait, specifying if traits are categorical, numeric, or ordinal."
@@ -6356,6 +7288,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/valueType"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "type"
@@ -6363,6 +7298,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/unit",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Units of the sampled trait value after aligning with AusTraits standards."
@@ -6397,6 +7336,9 @@
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Unit"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "unit"
@@ -6404,6 +7346,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/units",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The preferred units for the trait, conforming to the Unified Code for Units of Measure (UCUM). There are often two entries for units, one that is a string and the second which links to a units of measurement axiom."
@@ -6434,6 +7380,9 @@
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/expectedUnit"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "units"
@@ -6441,6 +7390,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/value_type",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01/02/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A categorical variable describing the statistical nature of the trait value recorded."
@@ -6467,6 +7420,9 @@
       },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#BaseCharacteristicQualifier"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
