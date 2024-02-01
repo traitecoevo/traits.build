@@ -1,9 +1,12 @@
 library(dplyr)
 library(rdflib)
 
-ontology_csv <- readr::read_csv("ontology/traits.build_ontology.csv")
-resource_triples <- readr::read_csv("ontology/traits.build_resource.csv")
-published_classes_csv <- readr::read_csv("ontology/traits.build_ontology_published_classes.csv")
+output_path <- "ontology/output/ontology"
+data_path <- "ontology/data"
+
+ontology_csv <- readr::read_csv(file.path(data_path, "traits.build_ontology.csv"))
+resource_triples <- readr::read_csv(file.path(data_path, "traits.build_resource.csv"))
+published_classes_csv <- readr::read_csv(file.path(data_path, "traits.build_ontology_published_classes.csv"))
 
 convert_to_triples <- function(ontology_csv, published_classes_csv) {
 
@@ -130,21 +133,23 @@ convert_to_triples <- function(ontology_csv, published_classes_csv) {
   triples
 }
 
-triples %>%
-  readr::write_csv("ontology/traits.build_triples.csv")
+triples <- convert_to_triples(ontology_csv, published_classes_csv)
 
 triples %>%
-  readr::write_delim("ontology/traits.build.nq", col_names=FALSE, escape="none", quote="none")
+  readr::write_csv(file.path(output_path, "build_triples.csv"))
+
+triples %>%
+  readr::write_delim(file.path(output_path, "traits.build.nq"), col_names=FALSE, escape="none", quote="none")
 
 triples %>%
   select(-graph) %>%
-  readr::write_delim("ontology/traits.build.nt", col_names = FALSE, escape = "none", quote = "none")
+  readr::write_delim(file.path(output_path, "traits.build.nt"), col_names = FALSE, escape = "none", quote = "none")
 
 # prove this parses correctly
-true_triples <- read_nquads("ontology/traits.build.nq")
+true_triples <- read_nquads(file.path(output_path, "traits.build.nq"))
 
 # serialize to any format
-rdflib::rdf_serialize(true_triples, "ontology/traits.build.ttl",
+rdflib::rdf_serialize(true_triples, file.path(output_path, "traits.build.ttl"),
                       namespace = c(traits.build = "https://w3id.org/traits.build/",
                                     dc = "http://purl.org/dc/elements/1.1/",
                                     skos = "http://www.w3.org/2004/02/skos/core#",
@@ -160,6 +165,5 @@ rdflib::rdf_serialize(true_triples, "ontology/traits.build.ttl",
                                     SIO = "http://semanticscience.org/resource/",
                                     gdmt = "http://vocab.fairdatacollective.org/gdmt/")
 )
-rdflib::rdf_serialize(true_triples, "ontology/traits.build.json", format="jsonld")
+rdflib::rdf_serialize(true_triples, file.path(output_path, "traits.build.json"), format="jsonld")
 
-  
