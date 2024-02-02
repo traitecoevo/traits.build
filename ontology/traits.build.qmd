@@ -1,5 +1,5 @@
 ---
-title:  The AusTraits Plant Dictionary (APD) Ontology
+title:  traits.build Data Model
 params:
   version: 0.1.0
   previous_version: 0.1.0
@@ -16,44 +16,68 @@ version <- params$version
 
 link_version <- function(v) sprintf("<https://w3id.org/traits.build/release/%s/index.html>", v)
 ```
+
 ## Release `r version`
 
 <dl>
-<dt> **Latest version**:</dt> <dd><https://w3id.org/APD/index.html> </dd>
-<dt> **This version**:</dt> <dd>`r link_version(params$version)`  </dd>
-<dt> **Previous version**:</dt> <dd>`r link_version(params$previous_version)` </dd>
-<dt> **Authors**: </dt> <dd>[Elizabeth Wenk](https://orcid.org/0000-0001-5640-5910), [Daniel Falster](https://orcid.org/0000-0002-9814-092X) </dd>
-<dt>**Contributors**:</dt> <dd> 
-  [David Coleman](https://orcid.org/0000-0002-1773-6597)
-  [Sophie Yang](https://orcid.org/0000-0001-7328-345X)</dd>
+
+<dt>**Latest version**:</dt>
+
+<dd><https://w3id.org/traits.build/index.html></dd>
+
+<dt>**This version**:</dt>
+
+<dd>`r link_version(params$version)`</dd>
+
+<dt>**Previous version**:</dt>
+
+<dd>`r link_version(params$previous_version)`</dd>
+
+<dt>**Authors**:</dt>
+
+<dd>[Elizabeth Wenk](https://orcid.org/0000-0001-5640-5910), [Daniel Falster](https://orcid.org/0000-0002-9814-092X)</dd>
+
+<dt>**Contributors**:</dt>
+
+<dd>[David Coleman](https://orcid.org/0000-0002-1773-6597) [Sophie Yang](https://orcid.org/0000-0001-7328-345X)</dd>
 
 </dd>
 
-<dt>Serializations:</dt> <dd>
-<span><a href="traits.build.json" target="_blank"><img src="https://img.shields.io/badge/Format-JSON_LD-blue.svg" alt="JSON-LD"></a> </span>
-<span><a href="traits.build.nt" target="_blank"><img src="https://img.shields.io/badge/Format-N_Triples-blue.svg" alt="N-Triples"></a> </span>
-<span><a href="traits.build.nq" target="_blank"><img src="https://img.shields.io/badge/Format-N_Quads-blue.svg" alt="N-Quads"></a> </span>
-<span><a href="traits.build.ttl" target="_blank"><img src="https://img.shields.io/badge/Format-TTL-blue.svg" alt="TTL"></a> </span></dd>
+<dt>Serializations:</dt>
 
-<dt>License: </dt> <dd><a href="http://purl.org/NET/rdflicense/cc-by4.0" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY%204.0-blue.svg" alt="http://purl.org/NET/rdflicense/cc-by4.0"></a> </dd>
+<dd><a href="traits.build.json" target="_blank"><img src="https://img.shields.io/badge/Format-JSON_LD-blue.svg" alt="JSON-LD"/></a> <a href="traits.build.nt" target="_blank"><img src="https://img.shields.io/badge/Format-N_Triples-blue.svg" alt="N-Triples"/></a> <a href="traits.build.nq" target="_blank"><img src="https://img.shields.io/badge/Format-N_Quads-blue.svg" alt="N-Quads"/></a> <a href="traits.build.ttl" target="_blank"><img src="https://img.shields.io/badge/Format-TTL-blue.svg" alt="TTL"/></a></dd>
+
+<dt>License:</dt>
+
+<dd><a href="http://purl.org/NET/rdflicense/cc-by4.0" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY%204.0-blue.svg" alt="http://purl.org/NET/rdflicense/cc-by4.0"/></a></dd>
+
 <!-- <dt>Visualization:</dt><dd><a href="webvowl/index.html#" target="_blank"><img src="https://img.shields.io/badge/Visualize_with-WebVowl-blue.svg" alt="Visualize with WebVowl"></a></dd> -->
+
+```{=html}
 <!-- <dt>Vocabulary service:</dt> <dd> 
 <span><a href="https://vocabs.ardc.edu.au/viewById/649" target="_blank"><img src="https://img.shields.io/badge/ARDC-RVA-blue.svg" alt="JSON-LD"></a> </span> </dd> -->
+```
+<dt>Source:</dt>
 
-<dt>Source:</dt> <dd>
-<span><a href="https://doi.org/10.5281/zenodo.8040789" target="_blank"><img src="https://img.shields.io/badge/DOI-10.5281/zenodo.8040789-blue.svg" alt="10.5281/zenodo.8040789"></a> </span>
+<dd>
 
-<span><a href="https://github.com/traitecoevo/traits.build" target="_blank"><img src="https://img.shields.io/badge/Github-traitecoevo/traits.build-blue.svg" alt="JSON-LD"></a> </span>
+<a href="https://doi.org/10.5281/zenodo.8040789" target="_blank"><img src="https://img.shields.io/badge/DOI-10.5281/zenodo.8040789-blue.svg" alt="10.5281/zenodo.8040789"/></a>
+
+<a href="https://github.com/traitecoevo/traits.build" target="_blank"><img src="https://img.shields.io/badge/Github-traitecoevo/traits.build-blue.svg" alt="JSON-LD"/></a>
+
 </dd>
 
+<dt>Contributing:</dt>
 
-<dt>Contributing:</dt> <dd>
- [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/traitecoevo/traits.build/issues) </dd>
+<dd>[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/traitecoevo/traits.build/issues)</dd>
 
-<dt>Cite as:</dt> <dd> XXX </dd> 
+<dt>Cite as:</dt>
+
+<dd>XXX</dd>
 
 </dl>
 
+```{=html}
 <!-- Examples:
 https://i-adopt.github.io/index.html
 https://www.w3.org/2009/08/skos-reference/skos.html
@@ -61,8 +85,7 @@ https://terminologies.gfbio.org/terms/ets/pages/#expectedunit
 
 gt package: https://gt.rstudio.com/
 -->
-
-
+```
 ```{r, include=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
 library(knitr)
 library(readr)
@@ -72,12 +95,12 @@ library(gt)
 library(purrr)
 
 source("helpers.R")
+source("create_term_table.R")
 
 triples_with_labels <-
   read_csv("output/ontology/build_triples.csv")
 
-base_url_traits <- "https://w3id.org/traits.build/traits/"
-base_url_glossary <- "https://w3id.org/traits.build/glossary/"
+base_url <- "https://w3id.org/traits.build/"
 
 if (knitr::is_html_output()) {
   print_table <- print_table_html
@@ -89,171 +112,166 @@ if (knitr::is_html_output()) {
 ```
 
 # Abstract
-This document describes the schema available from the APD namespace. The APD offers detailed descriptions for more than 500 plant trait concepts. It includes trait focused on plant morphology, plant nutrient concentrations, plant physiology, plant life history, and plant fire response. The definitions will be useful to researchers from diverse disciplines, including plant functional ecology, plant taxonomy, and conservation biology. All trait concepts are supported by comprehensive metadata including trait descriptions, allowable trait values, allowable ranges, preferred units, keywords, references, and links to matches in a selection of trait databases. The traits describe here also fully support the AusTraits plant trait database, <doi.org/10.5281/zenodo.3568417>.
 
-# Table of Contents 
+This document presents the traits.build data model (data standard), formally published within the w3id.org/traits.build namespace. The traits.build ontology documents the output structure of a database built using the {traits.build} R package. It terms are both the output variables in each of the databases's relational tables and additional conceptual terms inherent to the database structure. The ontology describes these terms and the semantic relationships between them. The traits.build data model adheres to the [OBOE ontology](https://bioportal.bioontology.org/ontologies/OBOE) and draws upon previously published terms whenever possible, especially [DarwinCore](https://dwc.tdwg.org/terms/) and the [Ecological Trait-data Standard](https://ecologicaltraitdata.github.io/ETS/).
 
-1. [Introduction](#introduction)
-2. [Trait groups](#trait-groupings): Hierarchical trait groupings, included to enhance trait findability.
-3. [Trait concepts](#trait-concepts): Traits defined within the vocabulary.
-4. [Values for categorical traits](#values-for-categorical-traits): Allowed categorical trait values to support the defined trait concepts.
-5. [Glossary](#glossary): Terms used as keywords that were not available in other published vocabularies.
-6. [Acknowledgements](#acknowledgements)
+# Table of Contents
 
-# 1. Introduction
+1.  [Introduction](#introduction)
+2.  [traits.build data model](#data-model): The terms within the formal traits.build ontology
+3.  [Acknowledgements](#acknowledgements)
 
-The APD is a compilation of the traits concepts used by AusTraits, a database of Australian plant traits. APD includes definitions for nearly 500 traits pertaining to plant functional ecology and plant morphology. The metadata for each trait concept has been reviewed by multiple people. Metadata includes a trait definition, accepted units and ranges (for numeric traits), allowable values (for categorical traits), keywords and trait groupings to enhance trait findability, references, and links to identical/similar traits in other trait databases. APD will be published in a machine-readable format (rdf representation), allowing the traits to be readily re-used by other databases. This is a human-friendly output, with embedded links to the references, other trait databases and keywords/concepts borrowed from other ontologies.
+# 1. Introduction {#introduction}
 
-The APD is a community resource and we welcome any suggestions for edits, including additional key references for each trait or other trait databases for which we should add links. 
+A database must be accompanied by a published data model to be: 1) efficiently and accurately interpreted and used by researchers; and 2) easily integrated with other databases. A published data model should be machine-readable for easy integration into future data products, yet also tractable to human readers. A data model (a.k.a. data standard, ontology) must document the meanings behind each database output variable and should also record the semantic relationships between columns. For instance, within the traits.build ontology, indicating that `observation_id` is an identifier for a unique `observation`.
 
-# 2. Trait groups
+To the extent possible, a data model should draw upon previously published vocabularies and ontologies, explicitly indicating when terms within the data model are identical to those used by other databases (or other bioinformatics outputs). For instance, the traits.build data standard maps terms related to taxonomy and species occurrences to [DarwinCore](https://dwc.tdwg.org/terms/) and terms related to trait measurements to the [Ecological Trait-data Standard](https://ecologicaltraitdata.github.io/ETS/). The semantic relationships between terms adhere to the [OBOE ontology](https://bioportal.bioontology.org/ontologies/OBOE), a generic relational ontology developed explicitly for documenting ecological trait observations and the context properties that are essential to document for ecological data. It further draws upon properties defined by the Semanticscience Integrated Ontology (https://bioportal.bioontology.org/ontologies/SIO) to describe relationships between terms.
 
-The APD Trait groups express broad trait groupings, with each trait concept mapped into one or more trait groups as `narrower` concepts.
+Within the traits.build ontology, there are 5 main categories of terms, differentiated based on whether they are database tables, rows, or columns:
 
-```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
-trait_groupings <- 
-  triples_with_labels %>% 
-    filter(Predicate == "http://www.w3.org/2000/01/rdf-schema#label") %>%
-    filter(stringr::str_detect(Subject, "trait_group_")) %>%
-    select(identifier = Subject)
+1.  **Database tables:** The relational tables (traits, contexts, locations, methods, taxa, contributors, taxonomic_updates). These terms are all mapped as having the property [computational entity](http://semanticscience.org/resource/SIO_000602) = [database table](http://semanticscience.org/resource/SIO_000754)\
+2.  **Database table columns:** The columns within these relational tables, all mapped as being organised into one (or more) of the tables using [dwc-attributes:organisedInClass](http://rs.tdwg.org/dwc/terms/attributes/organizedInClass). These terms are all mapped as having the property [computational entity](http://semanticscience.org/resource/SIO_000602) = [database column](http://semanticscience.org/resource/SIO_000757)\
+3.  **Database table entries:** Single, implicitly structured data items in a table. These terms are all types of [oboe-core:Entity](http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity), objects that are the foci for an [oboe-core:observation](http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation). These terms are all mapped as having the property [computational entity](http://semanticscience.org/resource/SIO_000602) = [database entry](http://semanticscience.org/resource/SIO_000756)\
+4.  **Clusters of rows within a database table:** Collections of rows within a table that represent either [observations](http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation) or [observation collections](http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection). These terms are all mapped as having the property [computational entity](http://semanticscience.org/resource/SIO_000602) = [database table](http://semanticscience.org/resource/SIO_000754).\
+5.  **Individual rows within a database table:** Individual rows within a table that are [measurements](http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement). These terms are all mapped as having the property [computational entity](http://semanticscience.org/resource/SIO_000602) = [database row](http://semanticscience.org/resource/SIO_001187).
 
-to_match_tmp <- triples_with_labels %>%
-  filter(Subject_stripped %in% trait_groupings$identifier) %>%
-  filter(property == "label") %>%
-  select(Subject_stripped, value)
- 
-for (thistrait in trait_groupings$identifier) {
-  
-  # creating header makes anchor using header name. Aslo create an anchor using trait_ID
-  term_to_display <- to_match_tmp$value[match(thistrait,to_match_tmp$Subject_stripped)]
-  anchor <- gsub(base_url_traits, "", thistrait, fixed = TRUE)
-  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
+# 2. Traits.build data model
 
-  out <- 
-    create_APD_trait_hierarchy_table(thistrait, triples_with_labels)
+##    Database
 
-  out %>% print_table()#150, 500)
-}
-```
-# 3. Trait concepts
-
-The APD Trait concepts express the traits defined by the APT.
+The traits.build resource
 
 ```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
-list_of_traits <- 
+database_overview <- 
   triples_with_labels %>% 
-    filter(Predicate == "http://www.w3.org/2000/01/rdf-schema#label") %>%
-    filter(stringr::str_detect(Subject, "trait_[:digit:]")) %>%
-    select(identifier = Subject)
+    filter(Subject == "<https://w3id.org/traits.build>")
 
-to_match_tmp <- triples_with_labels %>%
-  filter(Subject_stripped %in% list_of_traits$identifier) %>%
-  filter(property == "label") %>%
-  select(Subject_stripped, value)
- 
-for (thistrait in list_of_traits[[1]]) {
-  
-  # creating header makes anchor using header name. Aslo create an anchor using trait_ID
-  term_to_display <- to_match_tmp$value[match(thistrait,to_match_tmp$Subject_stripped)]
-  anchor <- gsub(base_url_traits, "", thistrait, fixed = TRUE)
-  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
-
-  out <- 
-    create_APD_trait_table(thistrait, triples_with_labels)
-
-  out %>% print_table()#150, 600)
+for (i in seq_along(1:nrow(database_overview))) {
+      database_overview$property[i] <- make_link(database_overview$Predicate_labels[i], database_overview$predicate_tmp[i])
+      database_overview$value[i] <- make_link(database_overview$Object_labels[i], database_overview$object_tmp[i])
+      database_overview$value[i] <- ifelse(stringr::str_detect(database_overview$Object[i], "http"), database_overview$value[i], database_overview$Object_labels[i])
 }
+
+tmp <- database_overview %>%
+  select(name = property, description = value)
+
+tmp %>%
+  print_table()
 ```
 
+##    Database Tables
 
-# 4. Values for categorical traits
-
-This section of the ontology expresses allowed categorical trait values for each trait concept. These terms are each defined and linked to a single trait concept to reduce ambiguity.
-
-```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
-categorical_allowed <- 
-  triples_with_labels %>% 
-  filter(!stringr::str_detect(Subject, "trait_[:digit:]")) %>%
-  filter(!stringr::str_detect(Subject, "trait_group")) %>%
-  filter(stringr::str_detect(Subject, "APD\\/traits\\/[:alpha:]")) %>%
-  filter(Predicate == "http://www.w3.org/2004/02/skos/core#broader") %>%
-  select(identifier = Subject, Object) %>%
-  arrange(Object)
-
-  to_match_tmp <- triples_with_labels %>% 
-    filter(Subject_stripped %in% categorical_allowed$identifier) %>%
-    filter(property == "label") %>%
-    select(Subject_stripped, value)
-  
-  tmp_categorical2 <- triples_with_labels %>%
-    filter(Subject_stripped %in% to_match_tmp$Subject_stripped) %>%
-    filter(property == "has broader") %>%
-    select(Subject_stripped, trait_name = value) %>%
-    left_join(to_match_tmp) %>%
-    left_join(categorical_allowed %>% rename(Subject_stripped = identifier)) %>%
-    arrange(Object)
- 
-  traits_names_tmp <- tmp_categorical2 %>%
-    distinct(trait_name)
-
-for (thistrait in traits_names_tmp$trait_name) {
-
-  writeLines(paste0("\n## ", thistrait, "\n\n"))
-  
-  tmp_cat_select <- tmp_categorical2 %>% 
-    filter(trait_name == thistrait)
-  
-  cat_for_trait <- as.data.frame(categorical_allowed) %>% filter(categorical_allowed$identifier %in% tmp_cat_select$Subject_stripped)
-  
-  for (cat_val in cat_for_trait$identifier) {
-  
-  # creating header makes anchor using header name. Aslo create an anchor using trait_ID
-  term_to_display <- to_match_tmp$value[match(cat_val, to_match_tmp$Subject_stripped)]
-  anchor <- gsub(base_url_traits, "", cat_val, fixed = TRUE)    
-  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
-
-  out <- 
-      create_APD_categorical_values_table(anchor, triples_with_labels)
-  
-  out %>% print_table()#150, 500)
-  }
-  
-}
-  
-```
-
-# 5. Glossary
-
-This section of the ontology includes terminology used within trait concept descriptions that are not defined by other resources.
+The traits.build output tables
 
 ```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
 
-glossary_terms <- 
-  triples_with_labels %>% 
-  filter(Predicate == "http://www.w3.org/2000/01/rdf-schema#label") %>%
-  filter(stringr::str_detect(Subject, "glossary_")) %>%
-  select(identifier = Subject)
+database_tables <-
+  triples_with_labels %>%
+    filter(stringr::str_detect(Subject, "w3id.org/traits.build/traits.build-"))
 
-for (thistrait in glossary_terms$identifier) {
+remaining <-
+  triples_with_labels %>%
+  filter(!Subject %in% database_tables$Subject)
+
+for (thistrait in database_tables$subject_tmp) {
   
-  to_match_tmp <- triples_with_labels %>% 
-    filter(Subject_stripped %in% glossary_terms$identifier) %>%
-    filter(property == "label") %>%
-    select(Subject_stripped, value)
-
-  # creating header makes anchor using header name. Aslo create an anchor using trait_ID  
-  term_to_display <- to_match_tmp$value[match(thistrait, to_match_tmp$Subject_stripped)]
-  anchor <- gsub(base_url_glossary, "", thistrait, fixed = TRUE)
+  # creating header makes anchor using header name. Also create an anchor using identifier
+  term_to_display <- database_tables$Subject_labels
+  anchor <- paste0(base_url, thistrait)
   writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
 
   out <- 
-    create_APD_trait_glossary_table(thistrait, triples_with_labels)
+    create_term_table(thistrait, triples_with_labels)
 
-  out %>% print_table()#150, 500)
+  out %>% print_table()
+}
+```
+##    Database Table Columns
+
+Columns within the traits.build output tables
+
+```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+
+organised_tmp <- 
+  remaining %>% 
+  filter(stringr::str_detect(Predicate, "organizedInClass")) %>%
+  distinct(Subject)
+
+database_columns <-
+  remaining %>%
+    filter(Subject %in% organised_tmp$Subject)
+
+remaining <-
+  remaining %>%
+    filter(!Subject %in% organised_tmp$Subject)
+
+for (thistrait in database_columns$subject_tmp) {
+  
+  # creating header makes anchor using header name. Also create an anchor using identifier
+  term_to_display <- database_columns$Subject_labels
+  anchor <- paste0(base_url, thistrait)
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
+
+  out <- 
+    create_term_table(thistrait, triples_with_labels)
+
+  out %>% print_table()
 }
 ```
 
-# 6. Acknowledgements
+##    Database Table Entries
 
-We are grateful to S Cox, J Smillie, K Levett, M Barlow, and C Brady for useful conversations. The AusTraits project received investment (<https://doi.org/10.47486/TD044>, <https://doi.org/10.47486/DP720>) from the Australian Research Data Commons (ARDC). The ARDC is funded by the National Collaborative Research Infrastructure Strategy (NCRIS). 
+Single, implicitly structured data items in a table. 
 
+```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+
+entries_tmp <- 
+  remaining %>% 
+  filter(stringr::str_detect(Object, "SIO_000756")) %>%
+  distinct(Subject)
+
+database_table_entries <-
+  remaining %>%
+    filter(Subject %in% entries_tmp$Subject)
+
+remaining <-
+  remaining %>%
+    filter(!Subject %in% entries_tmp$Subject)
+
+for (thistrait in database_table_entries$subject_tmp) {
+  
+  # creating header makes anchor using header name. Also create an anchor using identifier
+  term_to_display <- database_table_entries$Subject_labels
+  anchor <- paste0(base_url, thistrait)
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
+
+  out <- 
+    create_term_table(thistrait, triples_with_labels)
+
+  out %>% print_table()
+}
+```
+
+##  Rows within a database table
+
+Rows or clusters of rows within a database table that represent measurements, observations or observation collections.
+
+```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+
+for (thistrait in remaining$subject_tmp) {
+  
+  # creating header makes anchor using header name. Also create an anchor using identifier
+  term_to_display <- database_table_entries$Subject_labels
+  anchor <- paste0(base_url, thistrait)
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
+
+  out <- 
+    create_term_table(thistrait, triples_with_labels)
+
+  out %>% print_table()
+}
+```
+
+# 3. Acknowledgements {#acknowledgements}
+
+We are grateful to S Cox, J Smillie, K Levett, M Barlow, and C Brady for useful conversations. The AusTraits project received investment (<https://doi.org/10.47486/TD044>, <https://doi.org/10.47486/DP720>) from the Australian Research Data Commons (ARDC). The ARDC is funded by the National Collaborative Research Infrastructure Strategy (NCRIS).
