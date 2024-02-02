@@ -173,15 +173,15 @@ remaining <-
   triples_with_labels %>%
   filter(!Subject %in% database_tables$Subject)
 
-for (thistrait in database_tables$subject_tmp) {
+for (thisterm in database_tables$subject_tmp) {
   
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- database_tables$Subject_labels
-  anchor <- paste0(base_url, thistrait)
+  anchor <- paste0(base_url, thisterm)
   writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
 
   out <- 
-    create_term_table(thistrait, triples_with_labels)
+    create_term_table(thisterm, triples_with_labels)
 
   out %>% print_table()
 }
@@ -205,15 +205,15 @@ remaining <-
   remaining %>%
     filter(!Subject %in% organised_tmp$Subject)
 
-for (thistrait in database_columns$subject_tmp) {
+for (thisterm in database_columns$subject_tmp) {
   
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- database_columns$Subject_labels
-  anchor <- paste0(base_url, thistrait)
+  anchor <- paste0(base_url, thisterm)
   writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
 
   out <- 
-    create_term_table(thistrait, triples_with_labels)
+    create_term_table(thisterm, triples_with_labels)
 
   out %>% print_table()
 }
@@ -238,15 +238,15 @@ remaining <-
   remaining %>%
     filter(!Subject %in% entries_tmp$Subject)
 
-for (thistrait in database_table_entries$subject_tmp) {
+for (thisterm in database_table_entries$subject_tmp) {
   
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- database_table_entries$Subject_labels
-  anchor <- paste0(base_url, thistrait)
+  anchor <- paste0(base_url, thisterm)
   writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
 
   out <- 
-    create_term_table(thistrait, triples_with_labels)
+    create_term_table(thisterm, triples_with_labels)
 
   out %>% print_table()
 }
@@ -258,15 +258,15 @@ Rows or clusters of rows within a database table that represent measurements, ob
 
 ```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
 
-for (thistrait in remaining$subject_tmp) {
+for (thisterm in remaining$subject_tmp) {
   
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- database_table_entries$Subject_labels
-  anchor <- paste0(base_url, thistrait)
+  anchor <- paste0(base_url, thisterm)
   writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
 
   out <- 
-    create_term_table(thistrait, triples_with_labels)
+    create_term_table(thisterm, triples_with_labels)
 
   out %>% print_table()
 }

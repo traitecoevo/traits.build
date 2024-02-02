@@ -318,7 +318,6 @@ create_term_table <- function(thisterm, triples) {
               datatype_tmp$property_link,
               datatype_tmp$value_link
       )
-    
   
   output
 }
