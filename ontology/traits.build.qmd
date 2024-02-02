@@ -86,6 +86,7 @@ https://terminologies.gfbio.org/terms/ets/pages/#expectedunit
 gt package: https://gt.rstudio.com/
 -->
 ```
+
 ```{r, include=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
 library(knitr)
 library(readr)
@@ -173,7 +174,7 @@ remaining <-
   triples_with_labels %>%
   filter(!Subject %in% database_tables$Subject)
 
-for (thisterm in database_tables$subject_tmp) {
+for (thisterm in unique(database_tables$subject_tmp)) {
   
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- database_tables$Subject_labels
@@ -205,7 +206,7 @@ remaining <-
   remaining %>%
     filter(!Subject %in% organised_tmp$Subject)
 
-for (thisterm in database_columns$subject_tmp) {
+for (thisterm in unique(database_columns$subject_tmp)) {
   
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- database_columns$Subject_labels

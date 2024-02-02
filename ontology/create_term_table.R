@@ -1,10 +1,10 @@
 
 add_row <- function(data, name, description) {
-  #if(!("html" %in% class(name)))
-  #  name <- gt::html(name)
-  #if (!("html" %in% class(description))) {
-  #  description <- gt::html(description)
-  #}
+  if(!("html" %in% class(name)))
+    name <- gt::html(name)
+  if (!("html" %in% class(description))) {
+    description <- gt::html(description)
+  }
 
   bind_rows(
     data, 
