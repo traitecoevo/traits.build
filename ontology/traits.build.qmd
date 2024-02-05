@@ -142,21 +142,21 @@ Within the traits.build ontology, there are 5 main categories of terms, differen
 
 The traits.build resource
 
-```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
 database_overview <- 
   triples_with_labels %>% 
-    filter(Subject == "<https://w3id.org/traits.build>")
+  filter(Subject == "<https://w3id.org/traits.build>") %>%
+  mutate()
 
-for (i in seq_along(1:nrow(database_overview))) {
-      database_overview$property[i] <- make_link(database_overview$Predicate_labels[i], database_overview$predicate_tmp[i])
-      database_overview$value[i] <- make_link(database_overview$Object_labels[i], database_overview$object_tmp[i])
-      database_overview$value[i] <- ifelse(stringr::str_detect(database_overview$Object[i], "http"), database_overview$value[i], database_overview$Object_labels[i])
+for (i in seq_len(nrow(database_overview))) {
+  database_overview$property[i] <- make_link(database_overview$Predicate_labels[i], database_overview$predicate_tmp[i])
+  database_overview$value[i] <- ifelse(stringr::str_detect(database_overview$Object[i], "http"), 
+                                       make_link(database_overview$Object_labels[i], database_overview$object_tmp[i]),
+                                       database_overview$Object_labels[i])
 }
 
-tmp <- database_overview %>%
-  select(name = property, description = value)
-
-tmp %>%
+database_overview %>%
+  select(name = property, description = value) %>%
   print_table()
 ```
 
@@ -164,7 +164,7 @@ tmp %>%
 
 The traits.build output tables
 
-```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
 
 database_tables <-
   triples_with_labels %>%
@@ -174,17 +174,17 @@ remaining <-
   triples_with_labels %>%
   filter(!Subject %in% database_tables$Subject)
 
-for (thisterm in unique(database_tables$subject_tmp)) {
+data_tables_sub <- split(database_tables, database_tables$subject_tmp)
+
+for (thisterm in names(data_tables_sub)) {
   
   # creating header makes anchor using header name. Also create an anchor using identifier
-  term_to_display <- database_tables$Subject_labels
+  term_to_display <- data_tables_sub[[thisterm]]$Subject_labels[1]
   anchor <- paste0(base_url, thisterm)
   writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
 
-  out <- 
-    create_term_table(thisterm, triples_with_labels)
-
-  out %>% print_table()
+  create_term_table(thisterm, data_tables_sub[[thisterm]]) %>% 
+    print_table()
 }
 ```
 ##    Database Table Columns
@@ -213,10 +213,7 @@ for (thisterm in unique(database_columns$subject_tmp)) {
   anchor <- paste0(base_url, thisterm)
   writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
 
-  out <- 
-    create_term_table(thisterm, triples_with_labels)
-
-  out %>% print_table()
+  create_term_table(thisterm, triples_with_labels) %>% print_table()
 }
 ```
 
@@ -239,17 +236,15 @@ remaining <-
   remaining %>%
     filter(!Subject %in% entries_tmp$Subject)
 
-for (thisterm in database_table_entries$subject_tmp) {
+for (thisterm in unique(database_table_entries$subject_tmp) ) {
   
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- database_table_entries$Subject_labels
   anchor <- paste0(base_url, thisterm)
   writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
 
-  out <- 
-    create_term_table(thisterm, triples_with_labels)
-
-  out %>% print_table()
+  create_term_table(thisterm, triples_with_labels) %>% 
+    print_table()
 }
 ```
 
@@ -259,17 +254,15 @@ Rows or clusters of rows within a database table that represent measurements, ob
 
 ```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
 
-for (thisterm in remaining$subject_tmp) {
+for (thisterm in unique(remaining$subject_tmp)) {
   
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- database_table_entries$Subject_labels
   anchor <- paste0(base_url, thisterm)
   writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
 
-  out <- 
-    create_term_table(thisterm, triples_with_labels)
-
-  out %>% print_table()
+  create_term_table(thisterm, triples_with_labels) %>% 
+    print_table()
 }
 ```
 

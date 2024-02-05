@@ -209,6 +209,7 @@ rdflib::rdf_serialize(true_triples, file.path(output_path, "traits.build.json"),
 
 
 # Put a copy of ontology in place found by pkgdown
+
 ```{r}
 rmarkdown::render("ontology/traits.build.qmd", output_format = "html_document", output_file = "traits.build.html", output_dir = "ontology/output/ontology")
 
