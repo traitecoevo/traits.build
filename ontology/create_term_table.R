@@ -61,10 +61,14 @@ create_term_table <- function(thisterm, triples) {
     comments_tmp <- trait_i %>% filter(Predicate_labels == "comment")
     
     output <-
-      add_row(output, 
-              comments_tmp$property_link, 
-              comments_tmp$value_link
-              )
+      if (purrr::is_empty(comments_tmp$value_link)) {
+        output
+      } else {
+        add_row(output, 
+                comments_tmp$property_link, 
+                comments_tmp$value_link
+                )
+      }
   
   # computational entity
     computational_entity <- trait_i %>% filter(Predicate_labels == "computational entity")
@@ -215,7 +219,7 @@ create_term_table <- function(thisterm, triples) {
       } else {
         add_row(output,
                 make_link("has value", "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasValue"),
-                has_value$value_link
+                print_list2(has_value$value_link)
         )
       }
     
@@ -228,7 +232,7 @@ create_term_table <- function(thisterm, triples) {
       } else {
         add_row(output,
                 make_link("has measurement", "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement"),
-                has_measurement$value_link
+                print_list2(has_measurement$value_link)
         )
       }
     
@@ -241,7 +245,7 @@ create_term_table <- function(thisterm, triples) {
       } else {
         add_row(output,
                 make_link("measurement for", "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#measurementFor"),
-                measurement_for$value_link
+                print_list2(measurement_for$value_link)
         )
       }
     

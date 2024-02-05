@@ -196,26 +196,30 @@ for (thisterm in names(data_tables_sub)) {
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- data_tables_sub[[thisterm]]$Subject_labels[1]
   anchor <- paste0(base_url, thisterm)
-  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
 
   create_term_table(thisterm, data_tables_sub[[thisterm]]) %>% 
     print_table()
 }
 ```
+
 ##    Database Table Columns
 
 Columns within the traits.build output tables
 
-```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
 
 organised_tmp <- 
   remaining %>% 
   filter(stringr::str_detect(Predicate, "organizedInClass")) %>%
-  distinct(Subject)
+  distinct(Subject, Object_labels) %>%
+  rename(tables = Object_labels)
 
 database_columns <-
   remaining %>%
-    filter(Subject %in% organised_tmp$Subject)
+    filter(Subject %in% organised_tmp$Subject) %>%
+    left_join(organised_tmp) %>%
+    arrange(tables)
 
 remaining <-
   remaining %>%
@@ -228,9 +232,10 @@ for (thisterm in names(database_columns_sub)) {
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- database_columns_sub[[thisterm]]$Subject_labels[1]
   anchor <- paste0(base_url, thisterm)
-  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
 
-  create_term_table(thisterm, database_columns_sub[[thisterm]]) %>% print_table()
+  create_term_table(thisterm, database_columns_sub[[thisterm]]) %>% 
+    print_table_html()
 }
 ```
 
@@ -238,7 +243,7 @@ for (thisterm in names(database_columns_sub)) {
 
 Single, implicitly structured data items in a table. 
 
-```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
 
 entries_tmp <- 
   remaining %>% 
@@ -253,14 +258,16 @@ remaining <-
   remaining %>%
     filter(!Subject %in% entries_tmp$Subject)
 
-for (thisterm in unique(database_table_entries$subject_tmp) ) {
+database_entries_sub <- split(database_table_entries, database_table_entries$subject_tmp)
+
+for (thisterm in names(database_entries_sub)) {
   
   # creating header makes anchor using header name. Also create an anchor using identifier
-  term_to_display <- database_table_entries$Subject_labels
+  term_to_display <- database_entries_sub[[thisterm]]$Subject_labels[1]
   anchor <- paste0(base_url, thisterm)
-  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
 
-  create_term_table(thisterm, triples_with_labels) %>% 
+  create_term_table(thisterm, database_entries_sub[[thisterm]]) %>% 
     print_table()
 }
 ```
@@ -269,16 +276,23 @@ for (thisterm in unique(database_table_entries$subject_tmp) ) {
 
 Rows or clusters of rows within a database table that represent measurements, observations or observation collections.
 
-```{r, eval = FALSE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
 
-for (thisterm in unique(remaining$subject_tmp)) {
+remaining <-
+  remaining %>% 
+  filter(stringr::str_detect(Subject, "traits.build")) %>%
+  filter(Subject != "traits.build")
+
+database_rows_sub <- split(remaining, remaining$subject_tmp)
+
+for (thisterm in names(database_rows_sub)) {
   
   # creating header makes anchor using header name. Also create an anchor using identifier
-  term_to_display <- database_table_entries$Subject_labels
+  term_to_display <- database_rows_sub[[thisterm]]$Subject_labels[1]
   anchor <- paste0(base_url, thisterm)
-  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
 
-  create_term_table(thisterm, triples_with_labels) %>% 
+  create_term_table(thisterm, database_rows_sub[[thisterm]]) %>% 
     print_table()
 }
 ```
