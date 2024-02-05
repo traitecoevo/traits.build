@@ -225,17 +225,31 @@ remaining <-
   remaining %>%
     filter(!Subject %in% organised_tmp$Subject)
 
-database_columns_sub <- split(database_columns, database_columns$subject_tmp)
+database_columns_sub_0 <- split(database_columns, database_columns$tables)
 
-for (thisterm in names(database_columns_sub)) {
+for (i in seq_along(1:nrow(database_columns_sub_0))) {
+
+  database_tables <-
+    database_tables %>% 
+      distinct(subject_tmp, Subject_labels) %>%
+      mutate(anchor = paste0(base_url, subject_tmp))
   
-  # creating header makes anchor using header name. Also create an anchor using identifier
-  term_to_display <- database_columns_sub[[thisterm]]$Subject_labels[1]
-  anchor <- paste0(base_url, thisterm)
-  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
-
-  create_term_table(thisterm, database_columns_sub[[thisterm]]) %>% 
-    print_table_html()
+  anchor <- database_tables$anchor[match(names(database_columns_sub_0)[[i]],database_tables$Subject_labels)]
+  
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, names(database_columns_sub_0)[[i]]))
+  
+  database_columns_sub <- split(database_columns_sub_0[[i]], database_columns_sub_0[[i]]$subject_tmp)
+  
+  for (thisterm in names(database_columns_sub)) {
+    
+    # creating header makes anchor using header name. Also create an anchor using identifier
+    term_to_display <- database_columns_sub[[thisterm]]$Subject_labels[1]
+    anchor <- paste0(base_url, thisterm)
+    writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
+  
+    create_term_table(thisterm, database_columns_sub[[thisterm]]) %>% 
+      print_table_html()
+  }
 }
 ```
 
@@ -281,7 +295,7 @@ Rows or clusters of rows within a database table that represent measurements, ob
 remaining <-
   remaining %>% 
   filter(stringr::str_detect(Subject, "traits.build")) %>%
-  filter(Subject != "traits.build")
+  filter(Subject != "<https://w3id.org/traits.build>")
 
 database_rows_sub <- split(remaining, remaining$subject_tmp)
 
