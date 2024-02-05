@@ -209,20 +209,15 @@ rdflib::rdf_serialize(true_triples, file.path(output_path, "traits.build.json"),
 
 
 # Put a copy of ontology in place found by pkgdown
-
-```{r}
-rmarkdown::render("ontology/traits.build.qmd", output_format = "html_document", output_file = "traits.build.html", output_dir = "ontology/output/ontology")
-
+quarto::quarto_render("ontology/traits.build.qmd", output_format = "html")
 version <- rmarkdown::yaml_front_matter("ontology/traits.build.qmd")$params$version
 
-files <- c("traits.build.json", "traits.build.nq", "traits.build.nt", "traits.build.ttl", "traits.build.html")
+file.copy("ontology/traits.build.html", "ontology/output/ontology/traits.build.html", overwrite = TRUE)
+unlink("ontology/traits.build.html")
 
+# Copy into folder for specific release
+files <- c("traits.build.json", "traits.build.nq", "traits.build.nt", "traits.build.ttl", "traits.build.html")
 to_path <- file.path("ontology/output/ontology/release", version)
 dir.create(to_path, FALSE, TRUE)
 purrr::walk(files, ~ file.copy(file.path("ontology/output/ontology", .x), file.path(to_path, .x), overwrite = TRUE))
-
-```
-
-
-
 

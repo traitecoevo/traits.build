@@ -7,7 +7,7 @@ format:
   html:
     smooth-scroll: true
     toc: true
-    toc-expand: 1
+    toc-expand: 2
     embed-resources: true
 ---
 
@@ -227,7 +227,7 @@ remaining <-
 
 database_columns_sub_0 <- split(database_columns, database_columns$tables)
 
-for (i in seq_along(1:nrow(database_columns_sub_0))) {
+for (i in seq_len(length(database_columns_sub_0))) {
 
   database_tables <-
     database_tables %>% 
