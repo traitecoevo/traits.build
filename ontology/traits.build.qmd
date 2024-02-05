@@ -148,15 +148,30 @@ database_overview <-
   filter(Subject == "<https://w3id.org/traits.build>") %>%
   mutate()
 
+output <- tibble(name =  list(), description = list())
+
 for (i in seq_len(nrow(database_overview))) {
-  database_overview$property[i] <- make_link(database_overview$Predicate_labels[i], database_overview$predicate_tmp[i])
-  database_overview$value[i] <- ifelse(stringr::str_detect(database_overview$Object[i], "http"), 
+  name <- make_link(database_overview$Predicate_labels[i], database_overview$predicate_tmp[i])
+  description <- ifelse(stringr::str_detect(database_overview$object_tmp[i], "http"), 
                                        make_link(database_overview$Object_labels[i], database_overview$object_tmp[i]),
                                        database_overview$Object_labels[i])
+  if(!("html" %in% class(name)))
+    name <- gt::html(name)
+  if (!("html" %in% class(description))) {
+    description <- gt::html(description)
+  }
+  
+  output <- 
+    bind_rows(
+      output, 
+      tibble(name = list(name), description = list(description))
+    )
+  
+  output
+  
 }
 
-database_overview %>%
-  select(name = property, description = value) %>%
+output %>%
   print_table()
 ```
 
@@ -206,14 +221,16 @@ remaining <-
   remaining %>%
     filter(!Subject %in% organised_tmp$Subject)
 
-for (thisterm in unique(database_columns$subject_tmp)) {
+database_columns_sub <- split(database_columns, database_columns$subject_tmp)
+
+for (thisterm in names(database_columns_sub)) {
   
   # creating header makes anchor using header name. Also create an anchor using identifier
-  term_to_display <- database_columns$Subject_labels
+  term_to_display <- database_columns_sub[[thisterm]]$Subject_labels[1]
   anchor <- paste0(base_url, thisterm)
   writeLines(sprintf('\n\n <span id="%s"> </span>\n\n## %s ', anchor, term_to_display))
 
-  create_term_table(thisterm, triples_with_labels) %>% print_table()
+  create_term_table(thisterm, database_columns_sub[[thisterm]]) %>% print_table()
 }
 ```
 
