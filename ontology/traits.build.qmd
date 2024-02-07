@@ -186,14 +186,18 @@ database_tables <-
   triples_with_labels %>%
     filter(stringr::str_detect(Subject, "w3id.org/traits.build/traits.build-"))
 
+# subtract terms that will appear in this section's tables from "remaining", so that next section below only considers "not yet shown" terms
 remaining <-
   triples_with_labels %>%
   filter(!Subject %in% database_tables$Subject)
 
+# load traits.build schema
 y <- traits.build::get_schema()
 
+# create vector of table names from traits.build schema
 table_tmp <- names(y$austraits$elements) %>% as.vector()
 
+# create table of all tables within traits.build output, adding labels in various syntaxes and number tables as they appear in schema
 table_seq <- 
   database_tables$Subject_labels[match(table_tmp,database_tables$object_tmp)] %>%
   as.data.frame() %>%
@@ -203,11 +207,13 @@ table_seq <-
     term = database_tables$subject_tmp[match(table_tmp,database_tables$object_tmp)]
   )
 
+# add table-counter created above to triples pertaining to database tables, since database_tables most usefully split by number
 database_tables <- 
   database_tables %>%
   dplyr::left_join(table_seq) %>%  
   dplyr::arrange(row_n)
 
+# split triples table by `row_n` to retain tables in same sequence as traits.build schema and traits.build output
 data_tables_sub <- split(database_tables, database_tables$row_n)
 
 for (k in seq_along(1:length(data_tables_sub))) {
@@ -229,12 +235,14 @@ Columns within the traits.build output tables
 
 ```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
 
+# create table of all `organizedInClass` terms (objects)
 organised_tmp <- 
   remaining %>% 
   filter(stringr::str_detect(Predicate, "organizedInClass")) %>%
   distinct(Subject, Object_labels) %>%
   rename(tables = Object_labels) 
 
+# create table of all distinct database table terms (objects)
 database_tables <-
   database_tables %>% 
     distinct(subject_tmp, Subject_labels, row_n) %>%
@@ -243,6 +251,7 @@ database_tables <-
       alt_label = stringr::str_replace(subject_tmp, "traits.build-", "")
     )
 
+# from triples output not yet output to website, subset those terms that are columns in a database table; these are identified as being terms for which `organizedInClass` is mapped
 database_columns <-
   remaining %>%
     filter(Subject %in% organised_tmp$Subject) %>%
@@ -253,52 +262,53 @@ database_columns <-
       ) %>%
     dplyr::left_join(database_tables %>% select(tables = Subject_labels, row_n, alt_table_label = alt_label))
 
+# again, subtract terms that will appear in this section's tables from "remaining", so that next section below only considers "not yet shown" terms
 remaining <-
   remaining %>%
     filter(!Subject %in% organised_tmp$Subject)
 
+# split triples table by `row_n` to retain tables in same sequence as traits.build schema and traits.build output
 database_columns_sub_0 <- split(database_columns, database_columns$row_n)
 
-tmp <- 
-  unique(database_columns$row_n) %>%
-  sort() %>%
-  as.data.frame() %>%
-  rename(table_seq = 1) %>%
-  mutate(row_seq = dplyr::row_number())
-
-for (i in seq_along(1:length(tmp))) {
-  anchor <- database_tables$anchor[match(names(database_columns_sub_0)[[i]], database_tables$row_n)] #English label to print
-  schema_label <- database_tables$alt_label[match(names(database_columns_sub_0)[[i]] %>% as.numeric(), database_tables$row_n)] #schema label to extract columns from table
+for (i in seq_along(1:length(database_columns_sub_0))) {
   
-  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, schema_label))
+  table_label <- database_tables$Subject_labels[match(names(database_columns_sub_0)[[i]] %>% as.numeric(), database_tables$row_n)]
   
+  writeLines(sprintf('\n\n ### %s ', table_label))
+  
+ # create vector of terms within each table from traits.build schema, to keep terms in order
   column_seq_vec <- 
-    y$austraits$elements[[schema_label]]$elements %>%
+    y$austraits$elements[[table_label]]$elements %>%
     names() %>%
     as.vector()
   
+ # create vector of terms within ontology that are matched to the specific table; use `altLabel` since that matches schema
   alt_column_labels <- 
     database_columns_sub_0[[i]] %>%
       filter(predicate_tmp == "http://www.w3.org/2004/02/skos/core#altLabel") %>% 
-      select(schema_label = object_tmp, subject_tmp)
+      select(table_label = object_tmp, subject_tmp)
 
+ # amend above list, to add ontology terms (as in `trait_value` instead of `value) and fiter so that it only includes terms not also in schema
   columns_extra <- 
     database_columns_sub_0[[i]] %>%
     distinct(subject_tmp) %>%
     left_join(alt_column_labels) %>%
-    filter(!schema_label %in% column_seq_vec) %>%
+    filter(!table_label %in% column_seq_vec) %>%
     distinct() %>%
     select(subject_tmp)
   
   columns_extra <- columns_extra$subject_tmp %>% as.vector()
   
-  column_seq_vec <- c(column_seq_vec, columns_extra)
+  # create a single vector with schema terms + any extras from ontology
+   column_seq_vec <- c(column_seq_vec, columns_extra)
 
+  # rename terms from schema to names from ontology 
   column_seq <- 
     database_columns_sub_0[[i]]$Subject_labels[match(column_seq_vec,database_columns_sub_0[[i]]$object_tmp)] %>%
     as.data.frame() %>%
     rename(Subject_labels = 1) 
   
+  # add row numbers, to allow splitting
   column_seq <- column_seq %>%
     rename(Subject_labels = 1) %>%
     mutate(
@@ -310,8 +320,10 @@ for (i in seq_along(1:length(tmp))) {
   database_columns_sub_0[[i]] <- 
     database_columns_sub_0[[i]] %>%
     dplyr::left_join(column_seq) %>%  
-    dplyr::arrange(row_n)
+    dplyr::arrange(row_n) # arranging by row number, but I think this is overwritten by `split`
   
+  # split triples pertaining to a specific table's terms, based on the sequence of columns in traits.build output
+  # needs to use numbers, because `split` re-alphabetises input based on split term
   database_columns_sub <- split(database_columns_sub_0[[i]], database_columns_sub_0[[i]]$row_n_col)
   
   for (j in seq_along(1:length(database_columns_sub))) {
@@ -343,6 +355,7 @@ database_table_entries <-
   remaining %>%
     filter(Subject %in% entries_tmp$Subject)
 
+# again, subtract terms that will appear in this section's tables from "remaining", so that next section below only considers "not yet shown" terms
 remaining <-
   remaining %>%
     filter(!Subject %in% entries_tmp$Subject)
