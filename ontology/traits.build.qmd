@@ -94,6 +94,7 @@ library(tidyr)
 library(dplyr)
 library(gt)
 library(purrr)
+library(traits.build)
 
 source("helpers.R")
 source("create_term_table.R")
@@ -189,16 +190,35 @@ remaining <-
   triples_with_labels %>%
   filter(!Subject %in% database_tables$Subject)
 
-data_tables_sub <- split(database_tables, database_tables$subject_tmp)
+y <- traits.build::get_schema()
 
-for (thisterm in names(data_tables_sub)) {
+table_tmp <- names(y$austraits$elements) %>% as.vector()
+
+table_seq <- 
+  database_tables$Subject_labels[match(table_tmp,database_tables$object_tmp)] %>%
+  as.data.frame() %>%
+  rename(Subject_labels = 1) %>%
+  mutate(
+    row_n = row_number(),
+    term = database_tables$subject_tmp[match(table_tmp,database_tables$object_tmp)]
+  )
+
+database_tables <- 
+  database_tables %>%
+  dplyr::left_join(table_seq) %>%  
+  dplyr::arrange(row_n)
+
+data_tables_sub <- split(database_tables, database_tables$row_n)
+
+for (k in seq_along(1:length(data_tables_sub))) {
   
   # creating header makes anchor using header name. Also create an anchor using identifier
-  term_to_display <- data_tables_sub[[thisterm]]$Subject_labels[1]
-  anchor <- paste0(base_url, thisterm)
+  term_to_display <- data_tables_sub[[k]]$Subject_labels[1]
+  anchor <- paste0(base_url, data_tables_sub[[k]]$term[1])
   writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
+  thisterm <- table_seq$term[[k]]
 
-  create_term_table(thisterm, data_tables_sub[[thisterm]]) %>% 
+  create_term_table(thisterm, data_tables_sub[[k]]) %>% 
     print_table()
 }
 ```
@@ -213,42 +233,97 @@ organised_tmp <-
   remaining %>% 
   filter(stringr::str_detect(Predicate, "organizedInClass")) %>%
   distinct(Subject, Object_labels) %>%
-  rename(tables = Object_labels)
+  rename(tables = Object_labels) 
+
+database_tables <-
+  database_tables %>% 
+    distinct(subject_tmp, Subject_labels, row_n) %>%
+    mutate(
+      anchor = paste0(base_url, subject_tmp),
+      alt_label = stringr::str_replace(subject_tmp, "traits.build-", "")
+    )
 
 database_columns <-
   remaining %>%
     filter(Subject %in% organised_tmp$Subject) %>%
-    left_join(organised_tmp) %>%
-    arrange(tables)
+    dplyr::left_join(organised_tmp) %>%
+    mutate(
+      Subject = stringr::str_replace(Subject, "<", ""),
+      Subject = stringr::str_replace(Subject, ">", "")
+      ) %>%
+    dplyr::left_join(database_tables %>% select(tables = Subject_labels, row_n, alt_table_label = alt_label))
 
 remaining <-
   remaining %>%
     filter(!Subject %in% organised_tmp$Subject)
 
-database_columns_sub_0 <- split(database_columns, database_columns$tables)
+database_columns_sub_0 <- split(database_columns, database_columns$row_n)
 
-for (i in seq_len(length(database_columns_sub_0))) {
+tmp <- 
+  unique(database_columns$row_n) %>%
+  sort() %>%
+  as.data.frame() %>%
+  rename(table_seq = 1) %>%
+  mutate(row_seq = dplyr::row_number())
 
-  database_tables <-
-    database_tables %>% 
-      distinct(subject_tmp, Subject_labels) %>%
-      mutate(anchor = paste0(base_url, subject_tmp))
+for (i in seq_along(1:length(tmp))) {
+  anchor <- database_tables$anchor[match(names(database_columns_sub_0)[[i]], database_tables$row_n)] #English label to print
+  schema_label <- database_tables$alt_label[match(names(database_columns_sub_0)[[i]] %>% as.numeric(), database_tables$row_n)] #schema label to extract columns from table
   
-  anchor <- database_tables$anchor[match(names(database_columns_sub_0)[[i]],database_tables$Subject_labels)]
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, schema_label))
   
-  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, names(database_columns_sub_0)[[i]]))
+  column_seq_vec <- 
+    y$austraits$elements[[schema_label]]$elements %>%
+    names() %>%
+    as.vector()
   
-  database_columns_sub <- split(database_columns_sub_0[[i]], database_columns_sub_0[[i]]$subject_tmp)
+  alt_column_labels <- 
+    database_columns_sub_0[[i]] %>%
+      filter(predicate_tmp == "http://www.w3.org/2004/02/skos/core#altLabel") %>% 
+      select(schema_label = object_tmp, subject_tmp)
+
+  columns_extra <- 
+    database_columns_sub_0[[i]] %>%
+    distinct(subject_tmp) %>%
+    left_join(alt_column_labels) %>%
+    filter(!schema_label %in% column_seq_vec) %>%
+    distinct() %>%
+    select(subject_tmp)
   
-  for (thisterm in names(database_columns_sub)) {
+  columns_extra <- columns_extra$subject_tmp %>% as.vector()
+  
+  column_seq_vec <- c(column_seq_vec, columns_extra)
+
+  column_seq <- 
+    database_columns_sub_0[[i]]$Subject_labels[match(column_seq_vec,database_columns_sub_0[[i]]$object_tmp)] %>%
+    as.data.frame() %>%
+    rename(Subject_labels = 1) 
+  
+  column_seq <- column_seq %>%
+    rename(Subject_labels = 1) %>%
+    mutate(
+      row_n_col = row_number(),
+      term = database_columns_sub_0[[i]]$subject_tmp[match(column_seq_vec,database_columns_sub_0[[i]]$object_tmp)]
+    ) %>%
+    filter(!is.na(Subject_labels)) 
+  
+  database_columns_sub_0[[i]] <- 
+    database_columns_sub_0[[i]] %>%
+    dplyr::left_join(column_seq) %>%  
+    dplyr::arrange(row_n)
+  
+  database_columns_sub <- split(database_columns_sub_0[[i]], database_columns_sub_0[[i]]$row_n_col)
+  
+  for (j in seq_along(1:length(database_columns_sub))) {
     
     # creating header makes anchor using header name. Also create an anchor using identifier
-    term_to_display <- database_columns_sub[[thisterm]]$Subject_labels[1]
-    anchor <- paste0(base_url, thisterm)
+    term_to_display <- database_columns_sub[[j]]$Subject_labels[1]
+    anchor <- paste0(base_url, database_columns_sub[[j]]$subject_tmp[1])
     writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
-  
-    create_term_table(thisterm, database_columns_sub[[thisterm]]) %>% 
-      print_table_html()
+    thisterm <- column_seq$term[[j]]
+    
+    create_term_table(thisterm, database_columns_sub[[j]]) %>% 
+    print_table()
   }
 }
 ```
