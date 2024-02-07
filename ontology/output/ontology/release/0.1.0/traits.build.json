@@ -1073,6 +1073,17 @@
       }
     },
     {
+      "@id": "http://semanticscience.org/resource/SIO_001330",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "Metadata is data that provides information about data."
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "metadata"
+      }
+    },
+    {
       "@id": "http://terminologies.gfbio.org/terms/ETS/MeasurementOrFact",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -1893,7 +1904,7 @@
       "@id": "https://w3id.org/traits.build/ORCID",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -1940,7 +1951,7 @@
       "@id": "https://w3id.org/traits.build/additional_role",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -1984,7 +1995,7 @@
       "@id": "https://w3id.org/traits.build/affiliation",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2028,7 +2039,7 @@
       "@id": "https://w3id.org/traits.build/aligned_name",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2080,7 +2091,7 @@
       "@id": "https://w3id.org/traits.build/allowed_values_levels",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2134,7 +2145,7 @@
       "@id": "https://w3id.org/traits.build/allowed_values_max",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2178,7 +2189,7 @@
       "@id": "https://w3id.org/traits.build/allowed_values_min",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2222,7 +2233,7 @@
       "@id": "https://w3id.org/traits.build/assistants",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2269,7 +2280,7 @@
       "@id": "https://w3id.org/traits.build/basis_of_record",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2307,7 +2318,7 @@
       "@id": "https://w3id.org/traits.build/basis_of_value",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2348,7 +2359,7 @@
       "@id": "https://w3id.org/traits.build/binomial",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2400,7 +2411,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2449,7 +2460,7 @@
       "@id": "https://w3id.org/traits.build/comments",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2503,7 +2514,7 @@
       "@id": "https://w3id.org/traits.build/context",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2538,7 +2549,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2585,7 +2596,7 @@
       "@id": "https://w3id.org/traits.build/contexts_category",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2626,7 +2637,7 @@
       "@id": "https://w3id.org/traits.build/contexts_description",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2772,7 +2783,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2815,7 +2826,7 @@
       "@id": "https://w3id.org/traits.build/contributor",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2864,7 +2875,7 @@
       "@id": "https://w3id.org/traits.build/data_collector",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2935,7 +2946,7 @@
       "@id": "https://w3id.org/traits.build/dataset",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -2973,7 +2984,7 @@
       "@id": "https://w3id.org/traits.build/dataset_curators",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3020,7 +3031,7 @@
       "@id": "https://w3id.org/traits.build/dataset_id",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3078,7 +3089,7 @@
       "@id": "https://w3id.org/traits.build/description",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3135,7 +3146,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3187,7 +3198,7 @@
       "@id": "https://w3id.org/traits.build/entity",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3259,7 +3270,7 @@
       "@id": "https://w3id.org/traits.build/entity_context_property",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3309,7 +3320,7 @@
       "@id": "https://w3id.org/traits.build/entity_type",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3344,7 +3355,7 @@
       "@id": "https://w3id.org/traits.build/establishment_means",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3388,7 +3399,7 @@
       "@id": "https://w3id.org/traits.build/family",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3440,7 +3451,7 @@
       "@id": "https://w3id.org/traits.build/genus",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3492,7 +3503,7 @@
       "@id": "https://w3id.org/traits.build/given_name",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3542,7 +3553,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3617,7 +3628,7 @@
       "@id": "https://w3id.org/traits.build/label",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3677,7 +3688,7 @@
       "@id": "https://w3id.org/traits.build/last_name",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3727,7 +3738,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3782,7 +3793,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3831,7 +3842,7 @@
       "@id": "https://w3id.org/traits.build/location",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3914,7 +3925,7 @@
       "@id": "https://w3id.org/traits.build/location_name",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3963,7 +3974,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4001,7 +4012,7 @@
       "@id": "https://w3id.org/traits.build/locations_value",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4047,7 +4058,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4099,7 +4110,7 @@
       "@id": "https://w3id.org/traits.build/measurement",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4137,7 +4148,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4183,7 +4194,7 @@
       ],
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4218,7 +4229,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4256,7 +4267,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4297,7 +4308,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4332,7 +4343,7 @@
       "@id": "https://w3id.org/traits.build/measurement_remarks",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4370,7 +4381,7 @@
       "@id": "https://w3id.org/traits.build/method_context",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4441,7 +4452,7 @@
       "@id": "https://w3id.org/traits.build/method_context_property",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4536,7 +4547,7 @@
       "@id": "https://w3id.org/traits.build/methods_description",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4583,7 +4594,7 @@
       "@id": "https://w3id.org/traits.build/methods_methods",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4624,7 +4635,7 @@
       "@id": "https://w3id.org/traits.build/observation",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4666,7 +4677,7 @@
       "@id": "https://w3id.org/traits.build/observation_id",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4721,7 +4732,7 @@
       ],
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4762,7 +4773,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4806,7 +4817,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4850,7 +4861,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4898,7 +4909,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4956,7 +4967,7 @@
       ],
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5014,7 +5025,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5072,7 +5083,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5113,7 +5124,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5154,7 +5165,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5195,7 +5206,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5234,7 +5245,7 @@
       "@id": "https://w3id.org/traits.build/original_name",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5308,7 +5319,7 @@
       "@id": "https://w3id.org/traits.build/plot",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5382,7 +5393,7 @@
       "@id": "https://w3id.org/traits.build/plot_context_property",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5435,7 +5446,7 @@
       },
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5589,7 +5600,7 @@
       "@id": "https://w3id.org/traits.build/sampling_strategy",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5633,7 +5644,7 @@
       "@id": "https://w3id.org/traits.build/scientific_name",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5680,7 +5691,7 @@
       "@id": "https://w3id.org/traits.build/scientific_name_id",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5727,7 +5738,7 @@
       "@id": "https://w3id.org/traits.build/source_id",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5773,7 +5784,7 @@
       "@id": "https://w3id.org/traits.build/source_original_dataset_citation",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5817,7 +5828,7 @@
       "@id": "https://w3id.org/traits.build/source_original_dataset_key",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5864,7 +5875,7 @@
       "@id": "https://w3id.org/traits.build/source_primary_citation",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5908,7 +5919,7 @@
       "@id": "https://w3id.org/traits.build/source_primary_key",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5955,7 +5966,7 @@
       "@id": "https://w3id.org/traits.build/source_secondary_citation",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5999,7 +6010,7 @@
       "@id": "https://w3id.org/traits.build/source_secondary_key",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6040,7 +6051,7 @@
       "@id": "https://w3id.org/traits.build/taxon",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": [
         {
@@ -6139,7 +6150,7 @@
       "@id": "https://w3id.org/traits.build/taxon_distribution",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6177,7 +6188,7 @@
       "@id": "https://w3id.org/traits.build/taxon_id",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6224,7 +6235,7 @@
       "@id": "https://w3id.org/traits.build/taxon_name",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6303,7 +6314,7 @@
       "@id": "https://w3id.org/traits.build/taxon_rank",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6351,7 +6362,7 @@
       "@id": "https://w3id.org/traits.build/taxonomic_dataset",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6395,7 +6406,7 @@
       "@id": "https://w3id.org/traits.build/taxonomic_resolution",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6436,7 +6447,7 @@
       "@id": "https://w3id.org/traits.build/taxonomic_status",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6480,7 +6491,7 @@
       "@id": "https://w3id.org/traits.build/temporal_context",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6554,7 +6565,7 @@
       "@id": "https://w3id.org/traits.build/temporal_context_property",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6604,7 +6615,7 @@
       "@id": "https://w3id.org/traits.build/trait",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6673,7 +6684,7 @@
       "@id": "https://w3id.org/traits.build/trait_concept_URI",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6753,7 +6764,7 @@
       ],
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6785,7 +6796,7 @@
       "@id": "https://w3id.org/traits.build/trait_name",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6841,7 +6852,7 @@
       "@id": "https://w3id.org/traits.build/trait_value",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6884,10 +6895,35 @@
       }
     },
     {
+      "@id": "https://w3id.org/traits.build/traits.build-build_info",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A description of the computing environment used to create this version of the dataset, including version number, git commit and R session_info."
+      },
+      "http://semanticscience.org/resource/SIO_000602": {
+        "@id": "http://semanticscience.org/resource/SIO_001330"
+      },
+      "http://www.w3.org/2000/01/rdf-schema#label": {
+        "@language": "en",
+        "@value": "build info"
+      },
+      "http://www.w3.org/2004/02/skos/core#altLabel": {
+        "@language": "en",
+        "@value": "build_info"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "build info"
+      }
+    },
+    {
       "@id": "https://w3id.org/traits.build/traits.build-contexts",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6916,7 +6952,7 @@
       "@id": "https://w3id.org/traits.build/traits.build-contributors",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6945,7 +6981,7 @@
       "@id": "https://w3id.org/traits.build/traits.build-definitions",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6977,10 +7013,39 @@
       }
     },
     {
+      "@id": "https://w3id.org/traits.build/traits.build-excluded_data",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "02/01/24"
+      },
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A table of data that did not pass quality tests and so were excluded from the master dataset. The structure is identical to that presented in the `traits` table, only with an extra column called `error` indicating why the record was excluded. Common reasons are missing_unit_conversions, missing_value, and unsupported_trait_value."
+      },
+      "http://semanticscience.org/resource/SIO_000602": {
+        "@id": "http://semanticscience.org/resource/SIO_000754"
+      },
+      "http://www.w3.org/2000/01/rdf-schema#label": {
+        "@language": "en",
+        "@value": "excluded data table"
+      },
+      "http://www.w3.org/2004/02/skos/core#altLabel": {
+        "@language": "en",
+        "@value": "excluded_data"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "excluded data table"
+      }
+    },
+    {
       "@id": "https://w3id.org/traits.build/traits.build-locations",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7016,14 +7081,14 @@
       "@id": "https://w3id.org/traits.build/traits.build-metadata",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A list containing database metadata."
       },
       "http://semanticscience.org/resource/SIO_000602": {
-        "@id": "http://semanticscience.org/resource/SIO_000754"
+        "@id": "http://semanticscience.org/resource/SIO_001330"
       },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
@@ -7048,7 +7113,7 @@
       "@id": "https://w3id.org/traits.build/traits.build-methods",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7077,10 +7142,35 @@
       }
     },
     {
+      "@id": "https://w3id.org/traits.build/traits.build-schema",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A copy of the schema for all tables and terms. Information included here was used to process data and generate any documentation for the study."
+      },
+      "http://semanticscience.org/resource/SIO_000602": {
+        "@id": "http://semanticscience.org/resource/SIO_001330"
+      },
+      "http://www.w3.org/2000/01/rdf-schema#label": {
+        "@language": "en",
+        "@value": "schema"
+      },
+      "http://www.w3.org/2004/02/skos/core#altLabel": {
+        "@language": "en",
+        "@value": "schema"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "schema"
+      }
+    },
+    {
       "@id": "https://w3id.org/traits.build/traits.build-sources",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7109,7 +7199,7 @@
       "@id": "https://w3id.org/traits.build/traits.build-taxa",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7144,7 +7234,7 @@
       "@id": "https://w3id.org/traits.build/traits.build-taxonomic_updates",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7159,7 +7249,7 @@
       },
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
-        "@value": "traits.build-taxonomic_updates"
+        "@value": "taxonomic_updates"
       },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build/"
@@ -7173,7 +7263,7 @@
       "@id": "https://w3id.org/traits.build/traits.build-traits",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7220,7 +7310,7 @@
       "@id": "https://w3id.org/traits.build/treatment",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7294,7 +7384,7 @@
       "@id": "https://w3id.org/traits.build/treatment_context_property",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7344,7 +7434,7 @@
       "@id": "https://w3id.org/traits.build/trinomial",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7393,7 +7483,7 @@
       "@id": "https://w3id.org/traits.build/type",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7437,7 +7527,7 @@
       "@id": "https://w3id.org/traits.build/unit",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7485,7 +7575,7 @@
       "@id": "https://w3id.org/traits.build/units",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7529,7 +7619,7 @@
       "@id": "https://w3id.org/traits.build/value_type",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
-        "@value": "01/02/24"
+        "@value": "02/01/24"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
