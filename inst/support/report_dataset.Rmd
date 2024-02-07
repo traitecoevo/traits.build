@@ -255,9 +255,9 @@ new_question("(section `dataset`) Can you provide more detailed information for 
 
 ```{r, results='asis', echo=FALSE}
 missing <- metadata$dataset %>%
- util_list_to_df1() %>%
- filter(value == "unknown") %>%
- pull(key)
+  util_list_to_df1() %>%
+  filter(value == "unknown") %>%
+  pull(key)
 
 for (v in missing) {
   sprintf("(section `dataset`) Can you provide missing details for the variable `%s`?\n", v) %>%
@@ -371,7 +371,7 @@ if (length(context_properties) > 0) {
     for (i in seq_along(context_properties)) {
       var_in <- context_properties[[i]][["var_in"]][1]
 
-      writeLines(paste0("**", context_properties[[i]]$context_property[1], "**:", ifelse(is.null(var_in), "Added ",
+      writeLines(paste0("**", context_properties[[i]]$context_property[1], "**: ", ifelse(is.null(var_in), "Added ",
         paste0("Mapped from the column titled **", var_in, "** in your dataset ")), "with the category *", context_properties[[i]]$category[1], "*."))
 
       writeLines("\n\nThe following values exist for this context:\n")
@@ -789,7 +789,7 @@ updated_taxa <- data_study$taxonomic_updates %>% select(-dataset_id) %>%
 data_study$taxa %>%
   filter(taxon_name %in% updated_taxa$taxon_name) %>%
   left_join(
-    by = c("taxon_name", "original_name"),
+    by = c("taxon_name"),
     updated_taxa %>%
       bind_rows(empty_tibble_taxonomic_updates) %>%
       select(original_name, taxon_name, aligned_name, aligned_name_taxon_id, aligned_name_taxonomic_status)
