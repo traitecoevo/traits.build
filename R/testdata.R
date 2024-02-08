@@ -591,8 +591,14 @@ dataset_test_worker <-
         )
 
         # Check that there are no duplicate `var_in` or `context_property` fields
-        context_properties <- sapply(metadata[["contexts"]], "[[", "context_property")
-        context_vars_in <- sapply(metadata[["contexts"]], "[[", "var_in")
+
+        if(is.na(metadata[["contexts"]])) {
+          context_properties <- metadata[["contexts"]]
+          context_vars_in <- metadata[["contexts"]]
+        } else {
+          context_properties <- sapply(metadata[["contexts"]], "[[", "context_property")
+          context_vars_in <- sapply(metadata[["contexts"]], "[[", "var_in")
+        }
 
         expect_equal(
           context_properties |> duplicated() |> sum(),
