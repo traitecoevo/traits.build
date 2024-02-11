@@ -220,3 +220,7 @@ to_path <- file.path("ontology/output/ontology/release", version)
 dir.create(to_path, FALSE, TRUE)
 purrr::walk(files, ~ file.copy(file.path("ontology/output/ontology", .x), file.path(to_path, .x), overwrite = TRUE))
 
+# **IMPORTANT FINAL STEP**
+# After generating the files within the ontology folder, 
+# a copy of the files needs to be copied across to build the website using:
+# pkgdown::build_site()
