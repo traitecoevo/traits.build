@@ -267,28 +267,32 @@ remaining <-
   remaining %>%
     filter(!Subject %in% organised_tmp$Subject)
 
+# create vector that includes columns already displayed, to avoid column names like `dataset_id` appearing many times in website
+terms_already_displayed <- vector()
+
 # split triples table by `row_n` to retain tables in same sequence as traits.build schema and traits.build output
 database_columns_sub_0 <- split(database_columns, database_columns$row_n)
 
 for (i in seq_along(1:length(database_columns_sub_0))) {
   
   table_label <- database_tables$Subject_labels[match(names(database_columns_sub_0)[[i]] %>% as.numeric(), database_tables$row_n)]
-  
-  writeLines(sprintf('\n\n### %s ', table_label))
-  
+  table_label_alt <- database_tables$alt_label[match(names(database_columns_sub_0)[[i]] %>% as.numeric(), database_tables$row_n)]
+
  # create vector of terms within each table from traits.build schema, to keep terms in order
   column_seq_vec <- 
-    y$austraits$elements[[table_label]]$elements %>%
+    y$austraits$elements[[table_label_alt]]$elements %>%
     names() %>%
     as.vector()
   
- # create vector of terms within ontology that are matched to the specific table; use `altLabel` since that matches schema
+  column_seq_vec <- column_seq_vec  %>% subset(! column_seq_vec %in% terms_already_displayed)
+    
+   # create vector of terms within ontology that are matched to the specific table; use `altLabel` since that matches schema
   alt_column_labels <- 
     database_columns_sub_0[[i]] %>%
       filter(predicate_tmp == "http://www.w3.org/2004/02/skos/core#altLabel") %>% 
       select(table_label = object_tmp, subject_tmp)
 
- # amend above list, to add ontology terms (as in `trait_value` instead of `value) and fiter so that it only includes terms not also in schema
+ # amend above list, to add ontology terms (as in `trait_value` instead of `value) and filter so that it only includes terms not also in schema
   columns_extra <- 
     database_columns_sub_0[[i]] %>%
     distinct(subject_tmp) %>%
@@ -299,9 +303,17 @@ for (i in seq_along(1:length(database_columns_sub_0))) {
   
   columns_extra <- columns_extra$subject_tmp %>% as.vector()
   
+  columns_extra <- columns_extra  %>% subset(! columns_extra %in% terms_already_displayed)
+  
   # create a single vector with schema terms + any extras from ontology
-   column_seq_vec <- c(column_seq_vec, columns_extra)
-
+  column_seq_vec <- c(column_seq_vec, columns_extra)
+  
+  # only print table label if there are terms to print
+  
+  if (length(column_seq_vec) != 0) {
+    writeLines(sprintf('\n\n### %s ', table_label))
+  }
+    
   # rename terms from schema to names from ontology 
   column_seq <- 
     database_columns_sub_0[[i]]$Subject_labels[match(column_seq_vec,database_columns_sub_0[[i]]$object_tmp)] %>%
@@ -320,22 +332,31 @@ for (i in seq_along(1:length(database_columns_sub_0))) {
   database_columns_sub_0[[i]] <- 
     database_columns_sub_0[[i]] %>%
     dplyr::left_join(column_seq) %>%  
-    dplyr::arrange(row_n) # arranging by row number, but I think this is overwritten by `split`
+    # arranging by row number, but I think this is overwritten by `split`
+    dplyr::arrange(row_n) %>% 
+    # omit terms that have already appeared as part of a different table's output
+    dplyr::filter(!database_columns_sub_0[[i]]$subject_tmp %in% terms_already_displayed)
   
   # split triples pertaining to a specific table's terms, based on the sequence of columns in traits.build output
   # needs to use numbers, because `split` re-alphabetises input based on split term
   database_columns_sub <- split(database_columns_sub_0[[i]], database_columns_sub_0[[i]]$row_n_col)
   
-  for (j in seq_along(1:length(database_columns_sub))) {
+  if (length(column_seq_vec) != 0) {
     
-    # creating header makes anchor using header name. Also create an anchor using identifier
-    term_to_display <- database_columns_sub[[j]]$Subject_labels[1]
-    anchor <- paste0(base_url, database_columns_sub[[j]]$subject_tmp[1])
-    writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
-    thisterm <- column_seq$term[[j]]
-    
-    create_term_table(thisterm, database_columns_sub[[j]]) %>% 
-    print_table()
+    for (j in seq_along(1:length(database_columns_sub))) {
+      
+      # creating header makes anchor using header name. Also create an anchor using identifier
+      term_to_display <- database_columns_sub[[j]]$Subject_labels[1]
+      anchor <- paste0(base_url, database_columns_sub[[j]]$subject_tmp[1])
+      writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
+      thisterm <- column_seq$term[[j]]
+      
+      create_term_table(thisterm, database_columns_sub[[j]]) %>% 
+      print_table()
+      
+      terms_already_displayed <- unique(c(terms_already_displayed, database_columns_sub_0[[i]]$subject_tmp))
+      terms_already_displayed
+    }
   }
 }
 ```
