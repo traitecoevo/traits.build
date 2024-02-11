@@ -977,7 +977,7 @@ skos:scopeNote
     skos:inScheme <https://w3id.org/traits.build/> ;
     skos:prefLabel "contributor"@en .
 
-<https://w3id.org/traits.build/data_collector>
+<https://w3id.org/traits.build/data_collectors>
     dcterms:created "02/01/24"^^<xsd:date> ;
     dcterms:description "Person contributing to a dataset as a data collector."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contributors>, <https://w3id.org/traits.build/traits.build-methods> ;
@@ -986,13 +986,13 @@ skos:scopeNote
     SIO:SIO_000673 <https://w3id.org/traits.build/ORCID>, <https://w3id.org/traits.build/given_name>, <https://w3id.org/traits.build/last_name> ;
     SIO:SIO_001096 <https://w3id.org/traits.build/contributor> ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
-    rdfs:label "data collector"@en ;
+    rdfs:label "data collectors"@en ;
     owl:sameAs gdmt:DataCollector ;
-    skos:altLabel "data_collector"@en ;
+    skos:altLabel "data_collectors"@en ;
     skos:broader dcterms:contributor ;
     skos:exactMatch gdmt:DataCollector ;
     skos:inScheme <https://w3id.org/traits.build/> ;
-    skos:prefLabel "data collector"@en .
+    skos:prefLabel "data collectors"@en .
 
 <https://w3id.org/traits.build/dataset>
     dcterms:created "02/01/24"^^<xsd:date> ;
@@ -1676,7 +1676,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/original_name>
     dcterms:created "02/01/24"^^<xsd:date> ;
     dcterms:description "Name given to taxon in the original data supplied by the authors."@en ;
-    dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa>, <https://w3id.org/traits.build/traits.build-taxonomic_updates>, <https://w3id.org/traits.build/traits.build-traits> ;
+    dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxonomic_updates>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
     SIO:SIO_000642 <https://w3id.org/traits.build/aligned_name>, <https://w3id.org/traits.build/taxon_name> ;
     SIO:SIO_000672 <https://w3id.org/traits.build/taxon> ;
@@ -2139,6 +2139,7 @@ skos:scopeNote
     skos:prefLabel "value"@en .
 
 <https://w3id.org/traits.build/traits.build-build_info>
+    dcterms:created "02/01/24"^^<xsd:date> ;
     dcterms:description "A description of the computing environment used to create this version of the dataset, including version number, git commit and R session_info."@en ;
     SIO:SIO_000602 SIO:SIO_001330 ;
     rdfs:label "build info"@en ;
@@ -2216,6 +2217,7 @@ skos:scopeNote
     skos:relatedMatch ets:MeasurementOrFact .
 
 <https://w3id.org/traits.build/traits.build-schema>
+    dcterms:created "02/01/24"^^<xsd:date> ;
     dcterms:description "A copy of the schema for all tables and terms. Information included here was used to process data and generate any documentation for the study."@en ;
     SIO:SIO_000602 SIO:SIO_001330 ;
     rdfs:label "schema"@en ;

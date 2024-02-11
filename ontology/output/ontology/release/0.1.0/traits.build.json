@@ -2872,7 +2872,7 @@
       }
     },
     {
-      "@id": "https://w3id.org/traits.build/data_collector",
+      "@id": "https://w3id.org/traits.build/data_collectors",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
         "@value": "02/01/24"
@@ -2919,14 +2919,14 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
-        "@value": "data collector"
+        "@value": "data collectors"
       },
       "http://www.w3.org/2002/07/owl#sameAs": {
         "@id": "http://vocab.fairdatacollective.org/gdmt/DataCollector"
       },
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
-        "@value": "data_collector"
+        "@value": "data_collectors"
       },
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://purl.org/dc/terms/contributor"
@@ -2939,7 +2939,7 @@
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
-        "@value": "data collector"
+        "@value": "data collectors"
       }
     },
     {
@@ -5253,9 +5253,6 @@
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": [
         {
-          "@id": "https://w3id.org/traits.build/traits.build-taxa"
-        },
-        {
           "@id": "https://w3id.org/traits.build/traits.build-taxonomic_updates"
         },
         {
@@ -6896,6 +6893,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/traits.build-build_info",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "02/01/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A description of the computing environment used to create this version of the dataset, including version number, git commit and R session_info."
@@ -7143,6 +7144,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build/traits.build-schema",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "02/01/24"
+      },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A copy of the schema for all tables and terms. Information included here was used to process data and generate any documentation for the study."
