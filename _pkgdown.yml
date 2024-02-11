@@ -23,7 +23,7 @@ navbar:
     href: https://traitecoevo.github.io/traits.build-book/
   - text: Ontology
     icon: fa-book
-    href: ontology/traits.build.html
+    href: ontology/index.html
   - text: News
     href: news/index.html
   right:
