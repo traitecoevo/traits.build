@@ -1079,7 +1079,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/entity_context_id>
     dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier indicating specific contextual properties of an individual, possibly including the individual's sex or caste (for social insects)."@en ;
-    dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
+    dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
     SIO:SIO_000674 <https://w3id.org/traits.build/measurement_of_entity_context_property> ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#int> ;
@@ -1438,7 +1438,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/method_context_id>
     dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier indicating a trait is measured multiple times on the same entity, with different methods used for each entry. This field is only used if a single trait is measured using multiple methods within the same dataset. The identifier links to specific information in the context table."@en ;
-    dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
+    dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#int> ;
     rdfs:label "method context id"@en ;
@@ -1685,14 +1685,12 @@ skos:scopeNote
     dcterms:description "Name given to taxon in the original data supplied by the authors."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxonomic_updates>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
-    SIO:SIO_000642 <https://w3id.org/traits.build/aligned_name>, <https://w3id.org/traits.build/taxon_name> ;
-    SIO:SIO_000672 <https://w3id.org/traits.build/taxon> ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
-    rdfs:label "original name"@en, "original taxon name"@en ;
+    rdfs:label "original taxon name"@en ;
     skos:altLabel "original_name"@en ;
     skos:broader rdfs:label, skos:prefLabel ;
     skos:inScheme <https://w3id.org/traits.build/> ;
-    skos:prefLabel "original name"@en, "original taxon name"@en .
+    skos:prefLabel "original taxon name"@en .
 
 <https://w3id.org/traits.build/plot>
     dcterms:created "01 February 2024"^^<xsd:date> ;
@@ -1707,7 +1705,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/plot_context_id>
     dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier for a plot, where a plot is a distinct collection of organisms within a single geographic location, such as plants growing on different aspects or blocks in an experiment. The identifier links to specific information in the context table."@en ;
-    dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
+    dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
     SIO:SIO_000674 <https://w3id.org/traits.build/measurement_of_plot_context_property> ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#int> ;
@@ -2057,7 +2055,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/temporal_context_id>
     dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier assigned where repeat observations are made on the same individual (or population, or taxon) across time. The identifier links to specific information in the context table."@en ;
-    dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
+    dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
     SIO:SIO_000674 <https://w3id.org/traits.build/measurement_of_temporal_context_property> ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#int> ;
@@ -2292,7 +2290,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/treatment_context_id>
     dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier for a treatment, where a treatment is any experimental manipulation to an organism's growing/living conditions. The identifier links to specific information in the context table."@en ;
-    dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
+    dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
     SIO:SIO_000674 <https://w3id.org/traits.build/measurement_of_treatment_context_property> ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#int> ;

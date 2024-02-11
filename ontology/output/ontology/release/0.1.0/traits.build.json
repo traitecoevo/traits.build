@@ -3247,9 +3247,14 @@
         "@language": "en",
         "@value": "A unique integer identifier indicating specific contextual properties of an individual, possibly including the individual's sex or caste (for social insects)."
       },
-      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
-        "@id": "https://w3id.org/traits.build/traits.build-traits"
-      },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": [
+        {
+          "@id": "https://w3id.org/traits.build/traits.build-contexts"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/traits.build-traits"
+        }
+      ],
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000757"
       },
@@ -4444,9 +4449,14 @@
         "@language": "en",
         "@value": "A unique integer identifier indicating a trait is measured multiple times on the same entity, with different methods used for each entry. This field is only used if a single trait is measured using multiple methods within the same dataset. The identifier links to specific information in the context table."
       },
-      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
-        "@id": "https://w3id.org/traits.build/traits.build-traits"
-      },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": [
+        {
+          "@id": "https://w3id.org/traits.build/traits.build-contexts"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/traits.build-traits"
+        }
+      ],
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000757"
       },
@@ -5290,30 +5300,13 @@
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000757"
       },
-      "http://semanticscience.org/resource/SIO_000642": [
-        {
-          "@id": "https://w3id.org/traits.build/taxon_name"
-        },
-        {
-          "@id": "https://w3id.org/traits.build/aligned_name"
-        }
-      ],
-      "http://semanticscience.org/resource/SIO_000672": {
-        "@id": "https://w3id.org/traits.build/taxon"
-      },
       "http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype": {
         "@id": "http://www.w3.org/2001/XMLSchema#string"
       },
-      "http://www.w3.org/2000/01/rdf-schema#label": [
-        {
-          "@language": "en",
-          "@value": "original name"
-        },
-        {
-          "@language": "en",
-          "@value": "original taxon name"
-        }
-      ],
+      "http://www.w3.org/2000/01/rdf-schema#label": {
+        "@language": "en",
+        "@value": "original taxon name"
+      },
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "original_name"
@@ -5329,16 +5322,10 @@
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build/"
       },
-      "http://www.w3.org/2004/02/skos/core#prefLabel": [
-        {
-          "@language": "en",
-          "@value": "original name"
-        },
-        {
-          "@language": "en",
-          "@value": "original taxon name"
-        }
-      ]
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "original taxon name"
+      }
     },
     {
       "@id": "https://w3id.org/traits.build/plot",
@@ -5387,9 +5374,14 @@
         "@language": "en",
         "@value": "A unique integer identifier for a plot, where a plot is a distinct collection of organisms within a single geographic location, such as plants growing on different aspects or blocks in an experiment. The identifier links to specific information in the context table."
       },
-      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
-        "@id": "https://w3id.org/traits.build/traits.build-traits"
-      },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": [
+        {
+          "@id": "https://w3id.org/traits.build/traits.build-contexts"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/traits.build-traits"
+        }
+      ],
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000757"
       },
@@ -6575,9 +6567,14 @@
         "@language": "en",
         "@value": "A unique integer identifier assigned where repeat observations are made on the same individual (or population, or taxon) across time. The identifier links to specific information in the context table."
       },
-      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
-        "@id": "https://w3id.org/traits.build/traits.build-traits"
-      },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": [
+        {
+          "@id": "https://w3id.org/traits.build/traits.build-contexts"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/traits.build-traits"
+        }
+      ],
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000757"
       },
@@ -7406,9 +7403,14 @@
         "@language": "en",
         "@value": "A unique integer identifier for a treatment, where a treatment is any experimental manipulation to an organism's growing/living conditions. The identifier links to specific information in the context table."
       },
-      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
-        "@id": "https://w3id.org/traits.build/traits.build-traits"
-      },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": [
+        {
+          "@id": "https://w3id.org/traits.build/traits.build-contexts"
+        },
+        {
+          "@id": "https://w3id.org/traits.build/traits.build-traits"
+        }
+      ],
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000757"
       },

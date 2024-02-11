@@ -651,6 +651,7 @@
 <https://w3id.org/traits.build/treatment_context_id> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> .
 <https://w3id.org/traits.build/treatment_context_id> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
 <https://w3id.org/traits.build/treatment_context_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/traits.build-traits> .
+<https://w3id.org/traits.build/treatment_context_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/traits.build-contexts> .
 <https://w3id.org/traits.build/treatment_context_id> <http://www.w3.org/2000/01/rdf-schema#label> "treatment context id"@en .
 <https://w3id.org/traits.build/treatment_context_id> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build/measurement_of_treatment_context_property> .
 <https://w3id.org/traits.build/treatment_context_id> <http://purl.org/dc/terms/description> "A unique integer identifier for a treatment, where a treatment is any experimental manipulation to an organism's growing/living conditions. The identifier links to specific information in the context table."@en .
@@ -662,6 +663,7 @@
 <https://w3id.org/traits.build/plot_context_id> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> .
 <https://w3id.org/traits.build/plot_context_id> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
 <https://w3id.org/traits.build/plot_context_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/traits.build-traits> .
+<https://w3id.org/traits.build/plot_context_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/traits.build-contexts> .
 <https://w3id.org/traits.build/plot_context_id> <http://www.w3.org/2000/01/rdf-schema#label> "plot context id"@en .
 <https://w3id.org/traits.build/plot_context_id> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build/measurement_of_plot_context_property> .
 <https://w3id.org/traits.build/plot_context_id> <http://purl.org/dc/terms/description> "A unique integer identifier for a plot, where a plot is a distinct collection of organisms within a single geographic location, such as plants growing on different aspects or blocks in an experiment. The identifier links to specific information in the context table."@en .
@@ -673,6 +675,7 @@
 <https://w3id.org/traits.build/entity_context_id> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> .
 <https://w3id.org/traits.build/entity_context_id> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
 <https://w3id.org/traits.build/entity_context_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/traits.build-traits> .
+<https://w3id.org/traits.build/entity_context_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/traits.build-contexts> .
 <https://w3id.org/traits.build/entity_context_id> <http://www.w3.org/2000/01/rdf-schema#label> "entity context id"@en .
 <https://w3id.org/traits.build/entity_context_id> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build/measurement_of_entity_context_property> .
 <https://w3id.org/traits.build/entity_context_id> <http://purl.org/dc/terms/description> "A unique integer identifier indicating specific contextual properties of an individual, possibly including the individual's sex or caste (for social insects)."@en .
@@ -684,6 +687,7 @@
 <https://w3id.org/traits.build/temporal_context_id> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> .
 <https://w3id.org/traits.build/temporal_context_id> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
 <https://w3id.org/traits.build/temporal_context_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/traits.build-traits> .
+<https://w3id.org/traits.build/temporal_context_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/traits.build-contexts> .
 <https://w3id.org/traits.build/temporal_context_id> <http://www.w3.org/2000/01/rdf-schema#label> "temporal context id"@en .
 <https://w3id.org/traits.build/temporal_context_id> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build/measurement_of_temporal_context_property> .
 <https://w3id.org/traits.build/temporal_context_id> <http://purl.org/dc/terms/description> "A unique integer identifier assigned where repeat observations are made on the same individual (or population, or taxon) across time. The identifier links to specific information in the context table."@en .
@@ -695,6 +699,7 @@
 <https://w3id.org/traits.build/method_context_id> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> .
 <https://w3id.org/traits.build/method_context_id> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
 <https://w3id.org/traits.build/method_context_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/traits.build-traits> .
+<https://w3id.org/traits.build/method_context_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/traits.build-contexts> .
 <https://w3id.org/traits.build/method_context_id> <http://www.w3.org/2000/01/rdf-schema#label> "method context id"@en .
 <https://w3id.org/traits.build/method_context_id> <http://purl.org/dc/terms/description> "A unique integer identifier indicating a trait is measured multiple times on the same entity, with different methods used for each entry. This field is only used if a single trait is measured using multiple methods within the same dataset. The identifier links to specific information in the context table."@en .
 <https://w3id.org/traits.build/method_context_id> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#int> .
@@ -1206,20 +1211,6 @@
 <https://w3id.org/traits.build/additional_role> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date> .
 <https://w3id.org/traits.build/additional_role> <http://www.w3.org/2002/07/owl#sameAs> <http://vocab.fairdatacollective.org/gdmt/ContributorRole> .
 <https://w3id.org/traits.build/additional_role> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build/> .
-<https://w3id.org/traits.build/original_name> <http://www.w3.org/2004/02/skos/core#prefLabel> "original name"@en .
-<https://w3id.org/traits.build/original_name> <http://www.w3.org/2004/02/skos/core#altLabel> "original_name"@en .
-<https://w3id.org/traits.build/original_name> <http://www.w3.org/2004/02/skos/core#broader> <http://www.w3.org/2000/01/rdf-schema#label> .
-<https://w3id.org/traits.build/original_name> <http://www.w3.org/2004/02/skos/core#broader> <http://www.w3.org/2004/02/skos/core#prefLabel> .
-<https://w3id.org/traits.build/original_name> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
-<https://w3id.org/traits.build/original_name> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build/traits.build-taxonomic_updates> .
-<https://w3id.org/traits.build/original_name> <http://www.w3.org/2000/01/rdf-schema#label> "original name"@en .
-<https://w3id.org/traits.build/original_name> <http://semanticscience.org/resource/SIO_000672> <https://w3id.org/traits.build/taxon> .
-<https://w3id.org/traits.build/original_name> <http://semanticscience.org/resource/SIO_000642> <https://w3id.org/traits.build/aligned_name> .
-<https://w3id.org/traits.build/original_name> <http://semanticscience.org/resource/SIO_000642> <https://w3id.org/traits.build/taxon_name> .
-<https://w3id.org/traits.build/original_name> <http://purl.org/dc/terms/description> "Name given to taxon in the original data supplied by the authors."@en .
-<https://w3id.org/traits.build/original_name> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
-<https://w3id.org/traits.build/original_name> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date> .
-<https://w3id.org/traits.build/original_name> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build/> .
 <https://w3id.org/traits.build/taxonomic_dataset> <http://www.w3.org/2004/02/skos/core#prefLabel> "taxonomic dataset"@en .
 <https://w3id.org/traits.build/taxonomic_dataset> <http://www.w3.org/2004/02/skos/core#altLabel> "taxonomic_dataset"@en .
 <https://w3id.org/traits.build/taxonomic_dataset> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://rs.tdwg.org/dwc/terms/nomenclaturalCode> .
