@@ -679,7 +679,7 @@ skos:scopeNote
     skos:prefLabel "scope note"@en .
 
 <https://w3id.org/traits.build>
-    dcterms:created "01/02/24^^<xsd:date>" ;
+    dcterms:created "01 February 2024^^<xsd:date>" ;
     dcterms:creator "Daniel Falster", "Elizabeth Wenk", "Sophie Yang" ;
     dcterms:description "A database of 13 relational tables build using the {traits.build} R-packge for harmonizing trait data." ;
     dcterms:license "<https://creativecommons.org/licenses/by/4.0/>"^^<xsd:anyURI> ;
@@ -692,7 +692,7 @@ skos:scopeNote
     skos:prefLabel "traits.build database"@en .
 
 <https://w3id.org/traits.build/ORCID>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "ORCID (Open Researcher and Contributor ID) for the data collector, if available."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contributors> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -707,7 +707,7 @@ skos:scopeNote
     skos:prefLabel "ORCID identifier"@en .
 
 <https://w3id.org/traits.build/additional_role>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Any additional roles the data collector had in the study, a field most frequently used to identify which data contributor is the contact person for the dataset."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contributors> ;
     SIO:SIO_000254 <https://w3id.org/traits.build/contributor> ;
@@ -721,7 +721,7 @@ skos:scopeNote
     skos:prefLabel "additional role"@en .
 
 <https://w3id.org/traits.build/affiliation>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Affiliation of data collector."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contributors> ;
     SIO:SIO_000254 <https://w3id.org/traits.build/contributor> ;
@@ -735,7 +735,7 @@ skos:scopeNote
     skos:prefLabel "affiliation"@en .
 
 <https://w3id.org/traits.build/aligned_name>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The taxon name without authorship after implementing automated syntax standardisation and spelling changes as well as manually encoded syntax alignments for this taxon in the metadata file for the corresponding `dataset_id`. This name has not yet been matched to the currently accepted (botanical) or valid (zoological) taxon name in cases where there are taxonomic synonyms, isonyms, orthographic variants, etc."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxonomic_updates> ;
     SIO:SIO_000223 <https://w3id.org/traits.build/taxonomic_resolution> ;
@@ -750,7 +750,7 @@ skos:scopeNote
     skos:prefLabel "aligned name"@en .
 
 <https://w3id.org/traits.build/allowed_values_levels>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Allowed trait values for a categorical trait, including a brief description of the value."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-definitions> ;
     SIO:SIO_000224 <https://w3id.org/traits.build/trait> ;
@@ -764,7 +764,7 @@ skos:scopeNote
     skos:prefLabel "allowed categorical values"@en .
 
 <https://w3id.org/traits.build/allowed_values_max>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "An upper boundary for accepted numerical values."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-definitions> ;
     SIO:SIO_000224 <https://w3id.org/traits.build/trait> ;
@@ -778,7 +778,7 @@ skos:scopeNote
     skos:prefLabel "max allowed values"@en .
 
 <https://w3id.org/traits.build/allowed_values_min>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A lower boundary for accepted numerical values."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-definitions> ;
     SIO:SIO_000224 <https://w3id.org/traits.build/trait> ;
@@ -792,7 +792,7 @@ skos:scopeNote
     skos:prefLabel "min allowed values"@en .
 
 <https://w3id.org/traits.build/assistants>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "People who played a more minor role in data collection for the study."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-methods> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -807,7 +807,7 @@ skos:scopeNote
     skos:prefLabel "assistants"@en .
 
 <https://w3id.org/traits.build/basis_of_record>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A categorical variable specifying from which kind of specimen traits were recorded."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -819,7 +819,7 @@ skos:scopeNote
     skos:prefLabel "basis of record"@en .
 
 <https://w3id.org/traits.build/basis_of_value>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A categorical variable describing how the trait value was obtained."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -832,7 +832,7 @@ skos:scopeNote
     skos:prefLabel "basis of value"@en .
 
 <https://w3id.org/traits.build/binomial>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The species-level taxon name match for an original name. This column is assigned `na` for taxon name that are at a broader taxonomic_resolution."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -847,7 +847,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/collection_date>
     oboe:characteristicFor <https://w3id.org/traits.build/observation> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Date sample was taken, in the format `yyyy-mm-dd`, `yyyy-mm` or `yyyy`, depending on the resoluton specified. Alternatively an overall range for the study can be indicating, with the starting and ending sample date sepatated by a `/`, as in 2010-10/2011-03"@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -861,7 +861,7 @@ skos:scopeNote
     skos:prefLabel "collection date"@en .
 
 <https://w3id.org/traits.build/comments>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Additional notes about the scope of the trait or acceptable methods."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-definitions> ;
     SIO:SIO_000254 <https://w3id.org/traits.build/trait> ;
@@ -875,7 +875,7 @@ skos:scopeNote
     skos:prefLabel "comments"@en .
 
 <https://w3id.org/traits.build/context>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The situation within which a trait measurement is made, which can help explain the measured trait value."@en ;
     SIO:SIO_000602 SIO:SIO_000756 ;
     rdfs:label "context"@en ;
@@ -886,7 +886,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/context_property>
     oboe:characteristicFor <https://w3id.org/traits.build/context> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The contextual characteristic being recorded. If applicable, name should include units of measurement, e.g. `CO2 concentration (ppm)`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts> ;
     SIO:SIO_000255 <https://w3id.org/traits.build/contexts_category> ;
@@ -901,7 +901,7 @@ skos:scopeNote
     skos:prefLabel "context property"@en .
 
 <https://w3id.org/traits.build/contexts_category>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The category of context property, with options being `plot`, `treatment`, `individual_context`, `temporal` and `method`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts> ;
     SIO:SIO_000254 <https://w3id.org/traits.build/context_property> ;
@@ -914,7 +914,7 @@ skos:scopeNote
     skos:prefLabel "context property category"@en .
 
 <https://w3id.org/traits.build/contexts_description>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Description of a specific context property value."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -927,6 +927,7 @@ skos:scopeNote
     skos:prefLabel "context property value description"@en .
 
 <https://w3id.org/traits.build/contexts_link_id>
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Variable indicating which identifier column in the traits table contains the specified `link_vals`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -939,6 +940,7 @@ skos:scopeNote
     skos:prefLabel "context propety link id"@en .
 
 <https://w3id.org/traits.build/contexts_link_vals>
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Unique integer identifiers that link between identifier columns in the `traits` table and the contextual properties/values in the `contexts` table."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -952,7 +954,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/contexts_value>
     oboe:measurementFor <https://w3id.org/traits.build/context_property> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The measured value of a context property."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -964,7 +966,7 @@ skos:scopeNote
     skos:prefLabel "context property value"@en .
 
 <https://w3id.org/traits.build/contributor>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A person contributing to a dataset."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contributors>, <https://w3id.org/traits.build/traits.build-methods> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -978,7 +980,7 @@ skos:scopeNote
     skos:prefLabel "contributor"@en .
 
 <https://w3id.org/traits.build/data_collectors>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Person contributing to a dataset as a data collector."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contributors>, <https://w3id.org/traits.build/traits.build-methods> ;
     SIO:SIO_000255 <https://w3id.org/traits.build/additional_role>, <https://w3id.org/traits.build/affiliation> ;
@@ -995,7 +997,7 @@ skos:scopeNote
     skos:prefLabel "data collectors"@en .
 
 <https://w3id.org/traits.build/dataset>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "13 relational tables and lists containing all data about a dataset."@en ;
     SIO:SIO_000602 SIO:SIO_000750 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/dataset_id> ;
@@ -1007,7 +1009,7 @@ skos:scopeNote
     skos:prefLabel "dataset"@en .
 
 <https://w3id.org/traits.build/dataset_curators>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Database team member(s) who contacted the data collectors and added the study to the database repository."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-methods> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1022,7 +1024,7 @@ skos:scopeNote
     skos:prefLabel "dataset curators"@en .
 
 <https://w3id.org/traits.build/dataset_id>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Primary identifier for each study contributed to AusTraits, most often these are scientific papers, books, or online resources. By default this should be the name of the first author and year of publication, e.g. `Falster_2005`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts>, <https://w3id.org/traits.build/traits.build-contributors>, <https://w3id.org/traits.build/traits.build-locations>, <https://w3id.org/traits.build/traits.build-methods>, <https://w3id.org/traits.build/traits.build-sources>, <https://w3id.org/traits.build/traits.build-taxonomic_updates>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1034,7 +1036,7 @@ skos:scopeNote
     skos:prefLabel "dataset id"@en .
 
 <https://w3id.org/traits.build/description>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A short description, generally ranging from 1-3 sentences that clearly indicates the trait’s scope."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-definitions> ;
     SIO:SIO_000254 <https://w3id.org/traits.build/trait> ;
@@ -1049,7 +1051,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/elevation>
     oboe:characteristicFor <https://w3id.org/traits.build/location> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The elevation above mean sea level in meters."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-locations> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1064,7 +1066,7 @@ skos:scopeNote
     skos:prefLabel "elevation (m)"@en .
 
 <https://w3id.org/traits.build/entity>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "An entity is an object (e.g., a tree, a community, an ecological process). Entities constitute the foci of observations, i.e., every observation is of exactly one entity."@en ;
     SIO:SIO_000602 SIO:SIO_000756 ;
     rdfs:label "entity"@en ;
@@ -1075,6 +1077,7 @@ skos:scopeNote
     skos:prefLabel "entity"@en .
 
 <https://w3id.org/traits.build/entity_context_id>
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier indicating specific contextual properties of an individual, possibly including the individual's sex or caste (for social insects)."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1087,7 +1090,7 @@ skos:scopeNote
     skos:prefLabel "entity context id"@en .
 
 <https://w3id.org/traits.build/entity_context_property>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A context characteristic indicating stratified variation across individuals or populations might affect the trait values measured."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1103,7 +1106,7 @@ skos:scopeNote
     skos:prefLabel "entity context property"@en .
 
 <https://w3id.org/traits.build/entity_type>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A categorical variable specifying the entity corresponding to the trait values recorded."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1114,7 +1117,7 @@ skos:scopeNote
     skos:prefLabel "entity type"@en .
 
 <https://w3id.org/traits.build/establishment_means>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Statement about whether an organism or organisms have been introduced to a given place and time through the direct or indirect activity of modern humans."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa> ;
     SIO:SIO_000224 <https://w3id.org/traits.build/taxon> ;
@@ -1128,7 +1131,7 @@ skos:scopeNote
     skos:prefLabel "establishment means"@en .
 
 <https://w3id.org/traits.build/family>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Family of the taxon."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1143,7 +1146,7 @@ skos:scopeNote
     skos:prefLabel "family"@en .
 
 <https://w3id.org/traits.build/genus>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Genus of the taxon without authorship."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1158,7 +1161,7 @@ skos:scopeNote
     skos:prefLabel "genus"@en .
 
 <https://w3id.org/traits.build/given_name>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Given names of the data collector."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contributors> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1174,7 +1177,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/individual>
     oboe:hasContext <https://w3id.org/traits.build/life_stage> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "An individual living organism."@en ;
     SIO:SIO_000602 SIO:SIO_000756 ;
     rdfs:label "individual"@en ;
@@ -1186,6 +1189,7 @@ skos:scopeNote
     skos:prefLabel "individual"@en .
 
 <https://w3id.org/traits.build/individual_id>
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier for an individual, with individuals numbered sequentially within each dataset by taxon by population grouping. Most often each row of data represents an individual, but in some datasets trait data collected on a single individual is presented across multiple rows of data, such as if the same trait is measured using different methods or the same individual is measured repeatedly across time."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1198,7 +1202,7 @@ skos:scopeNote
     skos:prefLabel "individual id"@en .
 
 <https://w3id.org/traits.build/label>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A concise English label for the trait."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-definitions> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1212,7 +1216,7 @@ skos:scopeNote
     skos:prefLabel "label"@en .
 
 <https://w3id.org/traits.build/last_name>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Last name of the data collector."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contributors> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1228,7 +1232,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/latitude>
     oboe:characteristicFor <https://w3id.org/traits.build/location> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The geographic latitude (in decimal degrees, using the spatial reference system given in geodeticDatum) of the geographic center of a Location. Positive values are north of the Equator, negative values are south of it. Legal values lie between -90 and 90, inclusive."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-locations> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1244,7 +1248,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/life_stage>
     oboe:characteristicFor <https://w3id.org/traits.build/observation_of_entity_context> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A field to indicate the life stage or age class of the entity measured. Standard values are `adult`, `sapling`, `seedling` and `juvenile`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1258,7 +1262,7 @@ skos:scopeNote
     skos:prefLabel "life stage"@en .
 
 <https://w3id.org/traits.build/location>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A spatial region or named place."@en ;
     SIO:SIO_000602 SIO:SIO_000756 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/location_id> ;
@@ -1271,6 +1275,7 @@ skos:scopeNote
     skos:prefLabel "location"@en .
 
 <https://w3id.org/traits.build/location_id>
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier for a location, with locations numbered sequentially within a dataset. The identifier links to specific information in the location table."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-locations>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1283,7 +1288,7 @@ skos:scopeNote
     skos:prefLabel "location id"@en .
 
 <https://w3id.org/traits.build/location_name>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The location name used by the data contributor or a generic location name designated by AusTraits when one is not provided."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-locations> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1297,7 +1302,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/location_property>
     oboe:characteristicFor <https://w3id.org/traits.build/location> ;
     oboe:hasValue <https://w3id.org/traits.build/locations_value> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The location characteristic being recorded. The name should include units of measurement, e.g. `MAT (C)`. Ideally we have at least the following variables for each location, `longitude (deg)`, `latitude (deg)`, `description`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-locations> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1309,7 +1314,7 @@ skos:scopeNote
     skos:prefLabel "location property"@en .
 
 <https://w3id.org/traits.build/locations_value>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The measured value of a location property."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-locations> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1322,7 +1327,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/longitude>
     oboe:characteristicFor <https://w3id.org/traits.build/location> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The geographic longitude (in decimal degrees, using the spatial reference system given in dwc:geodeticDatum) of the geographic center of a dcterms:Location. Positive values are east of the Greenwich Meridian, negative values are west of it. Legal values lie between -180 and 180, inclusive."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-locations> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1337,7 +1342,7 @@ skos:scopeNote
     skos:prefLabel "longitude (deg)"@en .
 
 <https://w3id.org/traits.build/measurement>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A measurement is an assertion that a characteristic of an entity had a particular value with respect to an observation event."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
     rdfs:label "measurement"@en ;
@@ -1349,7 +1354,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/measurement_of_entity_context_property>
     oboe:measurementFor <https://w3id.org/traits.build/observation_of_entity_context> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A measurement made on an entity context property."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/entity_context_id> ;
@@ -1362,7 +1367,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/measurement_of_location_property>
     oboe:hasValue <https://w3id.org/traits.build/locations_value> ;
     oboe:measurementFor <https://w3id.org/traits.build/observation_of_location>, <https://w3id.org/traits.build/observations_at_location> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A measurement made on a location property."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
     rdfs:label "measurement of location property"@en ;
@@ -1373,7 +1378,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/measurement_of_plot_context_property>
     oboe:measurementFor <https://w3id.org/traits.build/observation_of_plot_context> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A measurement made on a plot context property."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/plot_context_id> ;
@@ -1385,7 +1390,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/measurement_of_temporal_context_property>
     oboe:measurementFor <https://w3id.org/traits.build/observation_of_temporal_context> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A measurement made on a temporal context property."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/temporal_context_id> ;
@@ -1398,7 +1403,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/measurement_of_treatment_context_property>
     oboe:hasValue <https://w3id.org/traits.build/contexts_value> ;
     oboe:measurementFor <https://w3id.org/traits.build/observation_of_treatment_context> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A measurement made on a treatment context property."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/treatment_context_id> ;
@@ -1409,7 +1414,7 @@ skos:scopeNote
     skos:prefLabel "measurement of treatment context property"@en .
 
 <https://w3id.org/traits.build/measurement_remarks>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Brief comments or notes accompanying the trait measurement."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1421,7 +1426,7 @@ skos:scopeNote
     skos:prefLabel "measurement remarks"@en .
 
 <https://w3id.org/traits.build/method_context>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A compment of a trait measurement protocol that is changed between individual trait measurements and might cause the measured trait values of individuals or populations to change."@en ;
     SIO:SIO_000602 SIO:SIO_000756 ;
     rdfs:label "method context"@en ;
@@ -1431,6 +1436,7 @@ skos:scopeNote
     skos:prefLabel "method context"@en .
 
 <https://w3id.org/traits.build/method_context_id>
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier indicating a trait is measured multiple times on the same entity, with different methods used for each entry. This field is only used if a single trait is measured using multiple methods within the same dataset. The identifier links to specific information in the context table."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1442,7 +1448,7 @@ skos:scopeNote
     skos:prefLabel "method context id"@en .
 
 <https://w3id.org/traits.build/method_context_property>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A context characteristic indicating stratified variation in the protocol used to measure traits might affect the trait values measured."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1458,6 +1464,7 @@ skos:scopeNote
     skos:prefLabel "method context property"@en .
 
 <https://w3id.org/traits.build/method_id>
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier to distinguish between multiple sets of methods used to measure a single trait within the same dataset. The identifier links to specific information in the methods table."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-methods>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1471,7 +1478,7 @@ skos:scopeNote
     skos:prefLabel "method id"@en .
 
 <https://w3id.org/traits.build/methods_description>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A 1-2 sentence description of the purpose of the study."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-methods> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1486,7 +1493,7 @@ skos:scopeNote
     skos:prefLabel "dataset description"@en .
 
 <https://w3id.org/traits.build/methods_methods>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A textual description of the methods used to collect the trait data. Whenever available, methods are taken near-verbatim from the referenced source. Methods can include descriptions such as 'measured on botanical collections', 'data from the literature', or a detailed description of the field or lab methods used to collect the data."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-methods> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1499,7 +1506,7 @@ skos:scopeNote
     skos:prefLabel "methods"@en .
 
 <https://w3id.org/traits.build/observation>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "An Observation is a collection of measurements made at a single point in time. In traits.build it is the subset of rows within the traits data that are made on the same entity and share the same observation_id."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/observation_id> ;
@@ -1512,7 +1519,7 @@ skos:scopeNote
     skos:prefLabel "observation"@en .
 
 <https://w3id.org/traits.build/observation_id>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integral identifier for the observation, where an observation is all measurements made on an individual at a single point in time. It is important for joining traits coming from the same `observation_id`. Within each dataset, observation_id's are unique combinations of `taxon_name`, `population_id`, `individual_id`, and `temporal_context_id`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1527,7 +1534,7 @@ skos:scopeNote
     oboe:characteristicFor <https://w3id.org/traits.build/entity_context_property> ;
     oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_entity_context_property> ;
     oboe:ofEntity <https://w3id.org/traits.build/individual>, <https://w3id.org/traits.build/population>, <https://w3id.org/traits.build/taxon> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Observation where entity is a category of context indicating repeat observations have been made on an individual, population or species-level entity across time which might affect the entity's measured trait values."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/entity_context_id> ;
@@ -1540,7 +1547,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/observation_of_location>
     oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_location_property> ;
     oboe:ofEntity <https://w3id.org/traits.build/location> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Observation of location properties at a single location."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/location_id> ;
@@ -1554,7 +1561,7 @@ skos:scopeNote
     oboe:characteristicFor <https://w3id.org/traits.build/plot_context_property> ;
     oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_plot_context_property> ;
     oboe:ofEntity <https://w3id.org/traits.build/plot> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Observation where entity is a category of context indicating variation across plots at a single location might affect the trait values measured on individual or population-level entities."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/plot_context_id> ;
@@ -1568,7 +1575,7 @@ skos:scopeNote
     oboe:characteristicFor <https://w3id.org/traits.build/temporal_context_property> ;
     oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_temporal_context_property> ;
     oboe:ofEntity <https://w3id.org/traits.build/temporal_context> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Observation where entity is a category of context indicating repeat observations have been made on a plot, which might affect the trait values measured on individual or population-level entities."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/temporal_context_id> ;
@@ -1583,7 +1590,7 @@ skos:scopeNote
     oboe:characteristicFor <https://w3id.org/traits.build/treatment_context_property> ;
     oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_treatment_context_property> ;
     oboe:ofEntity <https://w3id.org/traits.build/treatment> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Observation where entity is a context indicating experimental manipulations that might affect the trait values measured on an individual, population or species-level entities."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/treatment_context_id> ;
@@ -1597,7 +1604,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/observations_at_location>
     oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_location_property>, <https://w3id.org/traits.build/trait_measurement> ;
     oboe:ofEntity <https://w3id.org/traits.build/individual>, <https://w3id.org/traits.build/location>, <https://w3id.org/traits.build/population> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Observation collection of location properties and organismal traits at a single location."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/location_id> ;
@@ -1610,7 +1617,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/observations_from_dataset>
     oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_entity_context_property>, <https://w3id.org/traits.build/measurement_of_location_property>, <https://w3id.org/traits.build/measurement_of_plot_context_property>, <https://w3id.org/traits.build/measurement_of_temporal_context_property>, <https://w3id.org/traits.build/measurement_of_treatment_context_property>, <https://w3id.org/traits.build/trait_measurement> ;
     oboe:ofEntity <https://w3id.org/traits.build/dataset> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Observation collection encompassing all observations that comprise a dataset."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/dataset_id> ;
@@ -1623,7 +1630,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/observations_from_source>
     oboe:hasMeasurement <https://w3id.org/traits.build/measurement_of_entity_context_property>, <https://w3id.org/traits.build/measurement_of_location_property>, <https://w3id.org/traits.build/measurement_of_plot_context_property>, <https://w3id.org/traits.build/measurement_of_temporal_context_property>, <https://w3id.org/traits.build/measurement_of_treatment_context_property>, <https://w3id.org/traits.build/trait_measurement> ;
     oboe:ofEntity <https://w3id.org/traits.build/source_primary_citation> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Observation collection encompassing all observations for a single published or unpublished source."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/source_id> ;
@@ -1636,7 +1643,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/observations_of_individual>
     oboe:hasMeasurement <https://w3id.org/traits.build/trait_measurement> ;
     oboe:ofEntity <https://w3id.org/traits.build/individual> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Observation collection encompassing all observations on a single individual."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/individual_id> ;
@@ -1649,7 +1656,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/observations_of_population>
     oboe:hasMeasurement <https://w3id.org/traits.build/trait_measurement> ;
     oboe:ofEntity <https://w3id.org/traits.build/population> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Observation collection encompassing all observations on a single population."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/population_id> ;
@@ -1662,7 +1669,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/observations_of_taxon>
     oboe:hasMeasurement <https://w3id.org/traits.build/trait_measurement> ;
     oboe:ofEntity <https://w3id.org/traits.build/taxon> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Observation collection encompassing all observations on a single taxon within a single dataset."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     SIO:SIO_000673 <https://w3id.org/traits.build/taxon_name> ;
@@ -1674,7 +1681,7 @@ skos:scopeNote
     skos:prefLabel "observations of taxon"@en .
 
 <https://w3id.org/traits.build/original_name>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Name given to taxon in the original data supplied by the authors."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxonomic_updates>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1688,7 +1695,7 @@ skos:scopeNote
     skos:prefLabel "original name"@en, "original taxon name"@en .
 
 <https://w3id.org/traits.build/plot>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A subdivision of a location, designated because some properties differ across plots within a location, which might cause differences in measured trait values between plots."@en ;
     SIO:SIO_000602 SIO:SIO_000756 ;
     rdfs:label "plot context"@en ;
@@ -1698,6 +1705,7 @@ skos:scopeNote
     skos:prefLabel "plot context"@en .
 
 <https://w3id.org/traits.build/plot_context_id>
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier for a plot, where a plot is a distinct collection of organisms within a single geographic location, such as plants growing on different aspects or blocks in an experiment. The identifier links to specific information in the context table."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1710,7 +1718,7 @@ skos:scopeNote
     skos:prefLabel "plot context id"@en .
 
 <https://w3id.org/traits.build/plot_context_property>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A context characteristic indicating stratified variation within a location that might affect the trait values measured on an individual or population-level entity."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1727,7 +1735,7 @@ skos:scopeNote
 
 <https://w3id.org/traits.build/population>
     oboe:hasContext <https://w3id.org/traits.build/life_stage> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A collection of organisms, all of the same species, that live in the same place."@en ;
     SIO:SIO_000602 SIO:SIO_000756 ;
     rdfs:label "population"@en ;
@@ -1739,6 +1747,7 @@ skos:scopeNote
     skos:prefLabel "population"@en .
 
 <https://w3id.org/traits.build/population_id>
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier for a population, where a population is defined as individuals growing in the same location (location_id /location_name) and plot (plot_context_id, a context category) and being subjected to the same treatment (treatment_context_id, a context category)."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1751,6 +1760,7 @@ skos:scopeNote
     skos:prefLabel "population id"@en .
 
 <https://w3id.org/traits.build/repeat_measurements_id>
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier for repeat measurements of a trait that comprise a single observation, such as a response curve."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1763,6 +1773,7 @@ skos:scopeNote
     skos:prefLabel "repeat measurements id"@en .
 
 <https://w3id.org/traits.build/replicates>
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Number of replicate measurements that comprise a recorded trait measurement. A numeric value (or range) is ideal and appropriate if the value type is a `mean`, `median`, `min` or  `max`. For these value types, if replication is unknown the entry should be `unknown`. If the value type is `raw_value` the replicate value should be 1. If the trait is categorical or the value indicates a measurement for an entire species (or other taxon) replicate value should be `.na`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1775,7 +1786,7 @@ skos:scopeNote
     skos:prefLabel "replicates"@en .
 
 <https://w3id.org/traits.build/sampling_strategy>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "When available, this information is lifted verbatim from a published manuscript. For preserved specimens, this field ideally indicates which records were 'sampled' to measure a specific trait."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-methods> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1789,7 +1800,7 @@ skos:scopeNote
     skos:prefLabel "dataset sampling strategy"@en .
 
 <https://w3id.org/traits.build/scientific_name>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The full scientific name, with authorship and date information if known."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1804,7 +1815,7 @@ skos:scopeNote
     skos:prefLabel "scientific name"@en .
 
 <https://w3id.org/traits.build/scientific_name_id>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "An identifier for the set of taxon information (data associated with the taxon class). May be a global unique identifier or an identifier specific to the data set. Must be resolvable within this dataset."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1819,7 +1830,7 @@ skos:scopeNote
     skos:prefLabel "scientific name id"@en .
 
 <https://w3id.org/traits.build/source_id>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "For datasets that are compilations, an identifier for the original data source."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-sources>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1832,7 +1843,7 @@ skos:scopeNote
     skos:prefLabel "source id"@en .
 
 <https://w3id.org/traits.build/source_original_dataset_citation>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Citations for the original dataset_id in sources, for compilationse. This detail is generated from the original source in the metadata."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-methods> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1846,7 +1857,7 @@ skos:scopeNote
     skos:prefLabel "source original dataset citation"@en .
 
 <https://w3id.org/traits.build/source_original_dataset_key>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Citation key for the original dataset_id in sources, for compilations.  The key is typically formatted as `Surname_year`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-methods> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1861,7 +1872,7 @@ skos:scopeNote
     skos:prefLabel "source original dataset key"@en .
 
 <https://w3id.org/traits.build/source_primary_citation>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Citation for the primary source. This detail is generated from the primary source in the metadata."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-methods> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1875,7 +1886,7 @@ skos:scopeNote
     skos:prefLabel "source primary citation"@en .
 
 <https://w3id.org/traits.build/source_primary_key>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Citation key for the primary source in `sources`. The key is typically formatted as `Surname_year`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-methods> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1890,7 +1901,7 @@ skos:scopeNote
     skos:prefLabel "source primary key"@en .
 
 <https://w3id.org/traits.build/source_secondary_citation>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Citations for the secondary source. This detail is generated from the secondary source in the metadata."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-methods> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1904,7 +1915,7 @@ skos:scopeNote
     skos:prefLabel "source secondary citation"@en .
 
 <https://w3id.org/traits.build/source_secondary_key>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Citation key for the secondary source in `sources`.  The key is typically formatted as `Surname_year`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-methods> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1917,7 +1928,7 @@ skos:scopeNote
     skos:prefLabel "source secondary key"@en .
 
 <https://w3id.org/traits.build/taxon>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A circumscribed set of organisms."@en, "A group of organisms assumed to form a homogeneous unit with regard to associated trait measurements."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa> ;
     SIO:SIO_000223 <https://w3id.org/traits.build/establishment_means>, <https://w3id.org/traits.build/taxon_distribution> ;
@@ -1934,7 +1945,7 @@ skos:scopeNote
     skos:prefLabel "taxon"@en .
 
 <https://w3id.org/traits.build/taxon_distribution>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Known distribution of the taxon, by Australian state."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa> ;
     SIO:SIO_000224 <https://w3id.org/traits.build/taxon> ;
@@ -1946,7 +1957,7 @@ skos:scopeNote
     skos:prefLabel "taxon distribution"@en .
 
 <https://w3id.org/traits.build/taxon_id>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "An identifier for the set of taxon information (data associated with the taxon class). May be a global unique identifier or an identifier specific to the data set. Must be resolvable within this dataset."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -1961,7 +1972,7 @@ skos:scopeNote
     skos:prefLabel "taxon id"@en .
 
 <https://w3id.org/traits.build/taxon_name>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Scientific name of the taxon on which traits were sampled, without authorship. When possible, this is the currently accepted (botanical) or valid (zoological) scientific name, but might also be a higher taxonomic level."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa>, <https://w3id.org/traits.build/traits.build-taxonomic_updates>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000223 <https://w3id.org/traits.build/taxon_rank>, <https://w3id.org/traits.build/taxonomic_dataset>, <https://w3id.org/traits.build/taxonomic_status> ;
@@ -1978,7 +1989,7 @@ skos:scopeNote
     skos:prefLabel "taxon name"@en .
 
 <https://w3id.org/traits.build/taxon_rank>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The taxonomic rank of the most specific name in the scientific name."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa> ;
     SIO:SIO_000224 <https://w3id.org/traits.build/taxon_name> ;
@@ -1993,7 +2004,7 @@ skos:scopeNote
     skos:prefLabel "taxon rank"@en .
 
 <https://w3id.org/traits.build/taxonomic_dataset>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Name of the taxonomy (tree) that contains this concept. ie. APC, AusMoss etc."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa> ;
     SIO:SIO_000224 <https://w3id.org/traits.build/taxon_name> ;
@@ -2007,7 +2018,7 @@ skos:scopeNote
     skos:prefLabel "taxonomic dataset"@en .
 
 <https://w3id.org/traits.build/taxonomic_resolution>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The rank of the most specific taxon name (or scientific name) to which a submitted orignal name resolves."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxonomic_updates> ;
     SIO:SIO_000224 <https://w3id.org/traits.build/aligned_name> ;
@@ -2020,7 +2031,7 @@ skos:scopeNote
     skos:relatedMatch dwc:taxonRank .
 
 <https://w3id.org/traits.build/taxonomic_status>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The status of the use of the scientificName as a label for the taxon in regard to the 'accepted (or valid) taxonomy'. The assigned taxonomic status must be linked to a specific taxonomic reference that defines the concept."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa> ;
     SIO:SIO_000224 <https://w3id.org/traits.build/taxon_name> ;
@@ -2034,7 +2045,7 @@ skos:scopeNote
     skos:prefLabel "taxonomic status"@en .
 
 <https://w3id.org/traits.build/temporal_context>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A situation or process that varies across time and might cause the measured trait values of individuals or populations to change across time."@en ;
     SIO:SIO_000602 SIO:SIO_000756 ;
     rdfs:label "temporal context"@en ;
@@ -2044,6 +2055,7 @@ skos:scopeNote
     skos:prefLabel "temporal context"@en .
 
 <https://w3id.org/traits.build/temporal_context_id>
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier assigned where repeat observations are made on the same individual (or population, or taxon) across time. The identifier links to specific information in the context table."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -2056,7 +2068,7 @@ skos:scopeNote
     skos:prefLabel "temporal context id"@en .
 
 <https://w3id.org/traits.build/temporal_context_property>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A context characteristic indicating stratified variation across time might affect the trait values measured."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -2072,7 +2084,7 @@ skos:scopeNote
     skos:prefLabel "temporal context property"@en .
 
 <https://w3id.org/traits.build/trait>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A collection of trait values pertaining to a distinct characteristic of a specific part of an organism (cell, tissue, organ, or whole organism)."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-definitions> ;
     SIO:SIO_000223 <https://w3id.org/traits.build/allowed_values_levels>, <https://w3id.org/traits.build/allowed_values_max>, <https://w3id.org/traits.build/allowed_values_min>, <https://w3id.org/traits.build/type>, <https://w3id.org/traits.build/units> ;
@@ -2088,7 +2100,7 @@ skos:scopeNote
     skos:prefLabel "trait concept"@en .
 
 <https://w3id.org/traits.build/trait_concept_URI>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Unique identifier of the trait according to a public ontology, or a user-provided thesaurus of traits."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-definitions> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -2104,7 +2116,7 @@ skos:scopeNote
 <https://w3id.org/traits.build/trait_measurement>
     oboe:hasValue <https://w3id.org/traits.build/trait_value> ;
     oboe:measurementFor <https://w3id.org/traits.build/observation>, <https://w3id.org/traits.build/observations_at_location>, <https://w3id.org/traits.build/observations_from_dataset>, <https://w3id.org/traits.build/observations_from_source>, <https://w3id.org/traits.build/observations_of_individual>, <https://w3id.org/traits.build/observations_of_population>, <https://w3id.org/traits.build/observations_of_taxon> ;
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A measurement made on a trait."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
     rdfs:label "trait measurement"@en ;
@@ -2114,7 +2126,7 @@ skos:scopeNote
     skos:prefLabel "trait measurement"@en .
 
 <https://w3id.org/traits.build/trait_name>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Name of the trait sampled. Allowable values specified in the table `definitions`."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-definitions>, <https://w3id.org/traits.build/traits.build-methods>, <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -2126,7 +2138,7 @@ skos:scopeNote
     skos:prefLabel "trait name"@en .
 
 <https://w3id.org/traits.build/trait_value>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The measured value of a trait."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -2139,7 +2151,7 @@ skos:scopeNote
     skos:prefLabel "value"@en .
 
 <https://w3id.org/traits.build/traits.build-build_info>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A description of the computing environment used to create this version of the dataset, including version number, git commit and R session_info."@en ;
     SIO:SIO_000602 SIO:SIO_001330 ;
     rdfs:label "build info"@en ;
@@ -2148,7 +2160,7 @@ skos:scopeNote
     skos:prefLabel "build info"@en .
 
 <https://w3id.org/traits.build/traits.build-contexts>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A table containing observations of contextual characteristics associated with information in `traits`. Cross referencing between the two dataframes is possible using combinations of the variables `dataset_id`, `link_id`, and `link_vals`."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     rdfs:label "contexts table"@en ;
@@ -2157,7 +2169,7 @@ skos:scopeNote
     skos:prefLabel "contexts table"@en .
 
 <https://w3id.org/traits.build/traits.build-contributors>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A table of people contributing to each study."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     rdfs:label "contributors table"@en ;
@@ -2166,7 +2178,7 @@ skos:scopeNote
     skos:prefLabel "contributors table"@en .
 
 <https://w3id.org/traits.build/traits.build-definitions>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A list containing trait concept descriptions used to build the database."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     rdfs:label "definitions table"@en ;
@@ -2177,7 +2189,7 @@ skos:scopeNote
     skos:prefLabel "definitions table"@en .
 
 <https://w3id.org/traits.build/traits.build-excluded_data>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A table of data that did not pass quality tests and so were excluded from the master dataset. The structure is identical to that presented in the `traits` table, only with an extra column called `error` indicating why the record was excluded. Common reasons are missing_unit_conversions, missing_value, and unsupported_trait_value."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     rdfs:label "excluded data table"@en ;
@@ -2186,7 +2198,7 @@ skos:scopeNote
     skos:prefLabel "excluded data table"@en .
 
 <https://w3id.org/traits.build/traits.build-locations>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A table containing observations of location/site characteristics associated with information in `traits`. Cross referencing between the two dataframes is possible using combinations of the variables `dataset_id`, `location_name`."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     rdfs:comment "Includes information about Location properties."@en ;
@@ -2197,7 +2209,7 @@ skos:scopeNote
     skos:relatedMatch ets:Occurrence .
 
 <https://w3id.org/traits.build/traits.build-metadata>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A list containing database metadata."@en ;
     SIO:SIO_000602 SIO:SIO_001330 ;
     rdfs:label "metadata table"@en ;
@@ -2207,7 +2219,7 @@ skos:scopeNote
     skos:prefLabel "metadata table"@en .
 
 <https://w3id.org/traits.build/traits.build-methods>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A table containing details on methods with which data were collected, including time frame and source. Cross referencing with the `traits` table is possible using combinations of the variables `dataset_id`, `trait_name`."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     rdfs:label "methods table"@en ;
@@ -2217,7 +2229,7 @@ skos:scopeNote
     skos:relatedMatch ets:MeasurementOrFact .
 
 <https://w3id.org/traits.build/traits.build-schema>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A copy of the schema for all tables and terms. Information included here was used to process data and generate any documentation for the study."@en ;
     SIO:SIO_000602 SIO:SIO_001330 ;
     rdfs:label "schema"@en ;
@@ -2226,7 +2238,7 @@ skos:scopeNote
     skos:prefLabel "schema"@en .
 
 <https://w3id.org/traits.build/traits.build-sources>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A list containing citation details for all database sources."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     rdfs:label "sources table"@en ;
@@ -2235,7 +2247,7 @@ skos:scopeNote
     skos:prefLabel "sources table"@en .
 
 <https://w3id.org/traits.build/traits.build-taxa>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A table containing details on taxa associated with information in `traits`. Whenever possible, this information is sourced from curated taxon lists that include identifiers for each taxon. The information compiled in this table is released under a CC-BY3 license. Cross referencing between the two dataframes is possible using combinations of the variable `taxon_name`."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     rdfs:label "taxa table"@en ;
@@ -2246,7 +2258,7 @@ skos:scopeNote
     skos:prefLabel "taxa table"@en .
 
 <https://w3id.org/traits.build/traits.build-taxonomic_updates>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A table of all taxonomic changes implemented in the construction of AusTraits. Changes are determined by comparing the originally submitted taxon name against the taxonomic names listed in the taxonomic reference files, best placed in a subfolder in the `config` folder . Cross referencing with the `traits` table is possible using combinations of the variables `dataset_id` and `taxon_name`."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     rdfs:label "taxonomic updates table"@en ;
@@ -2255,7 +2267,7 @@ skos:scopeNote
     skos:prefLabel "taxonomic updates table"@en .
 
 <https://w3id.org/traits.build/traits.build-traits>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A table containing measurements of traits."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
     rdfs:comment "Includes information that must be recorded at the Measurement or Observation level."@en ;
@@ -2268,7 +2280,7 @@ skos:scopeNote
     skos:relatedMatch ets:MeasurementOrFact, ets:Occurrence .
 
 <https://w3id.org/traits.build/treatment>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "An experimental manipulation that subjects different individuals or populations to different conditions, which can lead to differences in measured trait values across treatments."@en ;
     SIO:SIO_000602 SIO:SIO_000756 ;
     rdfs:label "treatment context"@en ;
@@ -2278,6 +2290,7 @@ skos:scopeNote
     skos:prefLabel "treatment context"@en .
 
 <https://w3id.org/traits.build/treatment_context_id>
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A unique integer identifier for a treatment, where a treatment is any experimental manipulation to an organism's growing/living conditions. The identifier links to specific information in the context table."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -2290,7 +2303,7 @@ skos:scopeNote
     skos:prefLabel "treatment context id"@en .
 
 <https://w3id.org/traits.build/treatment_context_property>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A context characteristic indicating stratified treatments that might affect the trait values measured on an individual or population-level entity."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-contexts> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -2306,7 +2319,7 @@ skos:scopeNote
     skos:prefLabel "treatment context property"@en .
 
 <https://w3id.org/traits.build/trinomial>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The infraspecific taxon name match for an original name. This column is assigned `na` for taxon name that are at a broader taxonomic_resolution."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-taxa> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -2320,7 +2333,7 @@ skos:scopeNote
     skos:relatedMatch dwc:infraspecificEpithet .
 
 <https://w3id.org/traits.build/type>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Type of trait, specifying if traits are categorical, numeric, or ordinal."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-definitions> ;
     SIO:SIO_000224 <https://w3id.org/traits.build/trait> ;
@@ -2334,7 +2347,7 @@ skos:scopeNote
     skos:prefLabel "type"@en .
 
 <https://w3id.org/traits.build/unit>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "Units of the sampled trait value after aligning with AusTraits standards."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
@@ -2346,7 +2359,7 @@ skos:scopeNote
     skos:prefLabel "unit"@en .
 
 <https://w3id.org/traits.build/units>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "The preferred units for the trait, conforming to the Unified Code for Units of Measure (UCUM). There are often two entries for units, one that is a string and the second which links to a units of measurement axiom."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-definitions> ;
     SIO:SIO_000224 <https://w3id.org/traits.build/trait> ;
@@ -2360,7 +2373,7 @@ skos:scopeNote
     skos:prefLabel "units"@en .
 
 <https://w3id.org/traits.build/value_type>
-    dcterms:created "02/01/24"^^<xsd:date> ;
+    dcterms:created "01 February 2024"^^<xsd:date> ;
     dcterms:description "A categorical variable describing the statistical nature of the trait value recorded."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build/traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;

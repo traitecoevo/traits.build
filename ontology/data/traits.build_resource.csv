@@ -10,5 +10,5 @@ Subject,Predicate,Object
 <https://w3id.org/traits.build>,<http://purl.org/dc/terms/creator>,"""Daniel Falster"""
 <https://w3id.org/traits.build>,<http://purl.org/dc/terms/creator>,"""Elizabeth Wenk"""
 <https://w3id.org/traits.build>,<http://purl.org/dc/terms/creator>,"""Sophie Yang"""
-<https://w3id.org/traits.build>,<http://purl.org/dc/terms/created>,"""01/02/24^^<xsd:date>"""
+<https://w3id.org/traits.build>,<http://purl.org/dc/terms/created>,"""01 February 2024^^<xsd:date>"""
 <https://w3id.org/traits.build>,<http://semanticscience.org/resource/SIO_000602>,<http://semanticscience.org/resource/SIO_000750>
