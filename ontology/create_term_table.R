@@ -27,8 +27,10 @@ create_term_table <- function(thisterm, triples) {
   
   output <- tibble(name =  list(), description = list())
 
+  URI <- make_link(paste0(base_url, thisterm), paste0(base_url, thisterm))
+  
   output <- 
-    add_row(output, "URI", thisterm)
+    add_row(output, "URI", URI)
   
   # label
     label <- trait_i %>% filter(Predicate_labels == "preferred label")
