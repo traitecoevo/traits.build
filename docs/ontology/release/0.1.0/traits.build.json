@@ -1861,6 +1861,20 @@
       }
     },
     {
+      "@id": "http://www.w3.org/2004/02/skos/core#topConceptOf",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "Relates a concept to the concept scheme that it is a top level concept of."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://www.w3.org/2004/02/skos/core#"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "is top concept in scheme"
+      }
+    },
+    {
       "@id": "https://w3id.org/traits.build",
       "http://purl.org/dc/terms/created": "01 February 2024^^<xsd:date>",
       "http://purl.org/dc/terms/creator": [
@@ -1868,7 +1882,10 @@
         "Elizabeth Wenk",
         "Daniel Falster"
       ],
-      "http://purl.org/dc/terms/description": "A database of 13 relational tables build using the {traits.build} R-packge for harmonizing trait data.",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The traits.build ontology documents the output structure of a database built using the {traits.build} R package."
+      },
       "http://purl.org/dc/terms/license": {
         "@type": "xsd:anyURI",
         "@value": "<https://creativecommons.org/licenses/by/4.0/>"
@@ -1879,25 +1896,22 @@
       },
       "http://purl.org/dc/terms/title": {
         "@language": "en",
-        "@value": "traits.build database"
-      },
-      "http://semanticscience.org/resource/SIO_000602": {
-        "@id": "http://semanticscience.org/resource/SIO_000750"
+        "@value": "traits.build"
       },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
-        "@value": "traits.build database"
+        "@value": "traits.build"
       },
       "http://www.w3.org/2000/01/rdf-schema#type": {
         "@id": "http://www.w3.org/2004/02/skos/core#ConceptScheme"
       },
       "http://www.w3.org/2004/02/skos/core#hasTopConcept": {
         "@type": "xsd:anyURI",
-        "@value": "<https://w3id.org/traits.build>"
+        "@value": "<https://w3id.org/traits.build-database>"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
-        "@value": "traits.build database"
+        "@value": "traits.build"
       }
     },
     {
@@ -6946,6 +6960,9 @@
         "@language": "en",
         "@value": "A description of the computing environment used to create this version of the dataset, including version number, git commit and R session_info."
       },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
+        "@id": "https://w3id.org/traits.build#traits.build-database"
+      },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_001330"
       },
@@ -6974,6 +6991,9 @@
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A table containing observations of contextual characteristics associated with information in `traits`. Cross referencing between the two dataframes is possible using combinations of the variables `dataset_id`, `link_id`, and `link_vals`."
+      },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
+        "@id": "https://w3id.org/traits.build#traits.build-database"
       },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000754"
@@ -7004,6 +7024,9 @@
         "@language": "en",
         "@value": "A table of people contributing to each study."
       },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
+        "@id": "https://w3id.org/traits.build#traits.build-database"
+      },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000754"
       },
@@ -7024,6 +7047,35 @@
       }
     },
     {
+      "@id": "https://w3id.org/traits.build#traits.build-database",
+      "http://purl.org/dc/terms/created": {
+        "@type": "xsd:date",
+        "@value": "01 February 2024"
+      },
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A database of 13 relational tables build using the {traits.build} R-package for harmonizing trait data."
+      },
+      "http://semanticscience.org/resource/SIO_000602": {
+        "@id": "http://semanticscience.org/resource/SIO_000750"
+      },
+      "http://www.w3.org/2000/01/rdf-schema#label": {
+        "@language": "en",
+        "@value": "traits.build database"
+      },
+      "http://www.w3.org/2004/02/skos/core#altLabel": {
+        "@language": "en",
+        "@value": "traits.build_database"
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/traits.build"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "traits.build database"
+      }
+    },
+    {
       "@id": "https://w3id.org/traits.build#traits.build-definitions",
       "http://purl.org/dc/terms/created": {
         "@type": "xsd:date",
@@ -7032,6 +7084,9 @@
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A list containing trait concept descriptions used to build the database."
+      },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
+        "@id": "https://w3id.org/traits.build#traits.build-database"
       },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000754"
@@ -7068,6 +7123,9 @@
         "@language": "en",
         "@value": "A table of data that did not pass quality tests and so were excluded from the master dataset. The structure is identical to that presented in the `traits` table, only with an extra column called `error` indicating why the record was excluded. Common reasons are missing_unit_conversions, missing_value, and unsupported_trait_value."
       },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
+        "@id": "https://w3id.org/traits.build#traits.build-database"
+      },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000754"
       },
@@ -7096,6 +7154,9 @@
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A table containing observations of location/site characteristics associated with information in `traits`. Cross referencing between the two dataframes is possible using combinations of the variables `dataset_id`, `location_name`."
+      },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
+        "@id": "https://w3id.org/traits.build#traits.build-database"
       },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000754"
@@ -7133,6 +7194,9 @@
         "@language": "en",
         "@value": "A list containing database metadata."
       },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
+        "@id": "https://w3id.org/traits.build#traits.build-database"
+      },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_001330"
       },
@@ -7164,6 +7228,9 @@
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A table containing details on methods with which data were collected, including time frame and source. Cross referencing with the `traits` table is possible using combinations of the variables `dataset_id`, `trait_name`."
+      },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
+        "@id": "https://w3id.org/traits.build#traits.build-database"
       },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000754"
@@ -7197,6 +7264,9 @@
         "@language": "en",
         "@value": "A copy of the schema for all tables and terms. Information included here was used to process data and generate any documentation for the study."
       },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
+        "@id": "https://w3id.org/traits.build#traits.build-database"
+      },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_001330"
       },
@@ -7226,6 +7296,9 @@
         "@language": "en",
         "@value": "A list containing citation details for all database sources."
       },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
+        "@id": "https://w3id.org/traits.build#traits.build-database"
+      },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000754"
       },
@@ -7254,6 +7327,9 @@
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A table containing details on taxa associated with information in `traits`. Whenever possible, this information is sourced from curated taxon lists that include identifiers for each taxon. The information compiled in this table is released under a CC-BY3 license. Cross referencing between the two dataframes is possible using combinations of the variable `taxon_name`."
+      },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
+        "@id": "https://w3id.org/traits.build#traits.build-database"
       },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000754"
@@ -7290,6 +7366,9 @@
         "@language": "en",
         "@value": "A table of all taxonomic changes implemented in the construction of AusTraits. Changes are determined by comparing the originally submitted taxon name against the taxonomic names listed in the taxonomic reference files, best placed in a subfolder in the `config` folder . Cross referencing with the `traits` table is possible using combinations of the variables `dataset_id` and `taxon_name`."
       },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
+        "@id": "https://w3id.org/traits.build#traits.build-database"
+      },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000754"
       },
@@ -7318,6 +7397,9 @@
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "A table containing measurements of traits."
+      },
+      "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
+        "@id": "https://w3id.org/traits.build#traits.build-database"
       },
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000754"

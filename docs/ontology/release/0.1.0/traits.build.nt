@@ -1,9 +1,17 @@
+<https://w3id.org/traits.build#traits.build-database> <http://www.w3.org/2004/02/skos/core#prefLabel> "traits.build database"@en
+<https://w3id.org/traits.build#traits.build-database> <http://www.w3.org/2004/02/skos/core#altLabel> "traits.build_database"@en
+<https://w3id.org/traits.build#traits.build-database> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000750>
+<https://w3id.org/traits.build#traits.build-database> <http://www.w3.org/2000/01/rdf-schema#label> "traits.build database"@en
+<https://w3id.org/traits.build#traits.build-database> <http://purl.org/dc/terms/description> "A database of 13 relational tables build using the {traits.build} R-package for harmonizing trait data."@en
+<https://w3id.org/traits.build#traits.build-database> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date>
+<https://w3id.org/traits.build#traits.build-database> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build>
 <https://w3id.org/traits.build#traits.build-traits> <http://www.w3.org/2004/02/skos/core#prefLabel> "traits table"@en
 <https://w3id.org/traits.build#traits.build-traits> <http://www.w3.org/2004/02/skos/core#altLabel> "traits"@en
 <https://w3id.org/traits.build#traits.build-traits> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://terminologies.gfbio.org/terms/ETS/Traitdata>
 <https://w3id.org/traits.build#traits.build-traits> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754>
 <https://w3id.org/traits.build#traits.build-traits> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://terminologies.gfbio.org/terms/ETS/MeasurementOrFact>
 <https://w3id.org/traits.build#traits.build-traits> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://terminologies.gfbio.org/terms/ETS/Occurrence>
+<https://w3id.org/traits.build#traits.build-traits> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database>
 <https://w3id.org/traits.build#traits.build-traits> <http://www.w3.org/2000/01/rdf-schema#label> "traits table"@en
 <https://w3id.org/traits.build#traits.build-traits> <http://purl.org/dc/terms/description> "A table containing measurements of traits."@en
 <https://w3id.org/traits.build#traits.build-traits> <http://www.w3.org/2000/01/rdf-schema#comment> "Includes information that must be recorded at the Measurement or Observation level."@en
@@ -13,6 +21,7 @@
 <https://w3id.org/traits.build#traits.build-contexts> <http://www.w3.org/2004/02/skos/core#prefLabel> "contexts table"@en
 <https://w3id.org/traits.build#traits.build-contexts> <http://www.w3.org/2004/02/skos/core#altLabel> "contexts"@en
 <https://w3id.org/traits.build#traits.build-contexts> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754>
+<https://w3id.org/traits.build#traits.build-contexts> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database>
 <https://w3id.org/traits.build#traits.build-contexts> <http://www.w3.org/2000/01/rdf-schema#label> "contexts table"@en
 <https://w3id.org/traits.build#traits.build-contexts> <http://purl.org/dc/terms/description> "A table containing observations of contextual characteristics associated with information in `traits`. Cross referencing between the two dataframes is possible using combinations of the variables `dataset_id`, `link_id`, and `link_vals`."@en
 <https://w3id.org/traits.build#traits.build-contexts> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date>
@@ -21,6 +30,7 @@
 <https://w3id.org/traits.build#traits.build-locations> <http://www.w3.org/2004/02/skos/core#altLabel> "locations"@en
 <https://w3id.org/traits.build#traits.build-locations> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754>
 <https://w3id.org/traits.build#traits.build-locations> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://terminologies.gfbio.org/terms/ETS/Occurrence>
+<https://w3id.org/traits.build#traits.build-locations> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database>
 <https://w3id.org/traits.build#traits.build-locations> <http://www.w3.org/2000/01/rdf-schema#label> "locations table"@en
 <https://w3id.org/traits.build#traits.build-locations> <http://purl.org/dc/terms/description> "A table containing observations of location/site characteristics associated with information in `traits`. Cross referencing between the two dataframes is possible using combinations of the variables `dataset_id`, `location_name`."@en
 <https://w3id.org/traits.build#traits.build-locations> <http://www.w3.org/2000/01/rdf-schema#comment> "Includes information about Location properties."@en
@@ -30,6 +40,7 @@
 <https://w3id.org/traits.build#traits.build-methods> <http://www.w3.org/2004/02/skos/core#altLabel> "methods"@en
 <https://w3id.org/traits.build#traits.build-methods> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754>
 <https://w3id.org/traits.build#traits.build-methods> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://terminologies.gfbio.org/terms/ETS/MeasurementOrFact>
+<https://w3id.org/traits.build#traits.build-methods> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database>
 <https://w3id.org/traits.build#traits.build-methods> <http://www.w3.org/2000/01/rdf-schema#label> "methods table"@en
 <https://w3id.org/traits.build#traits.build-methods> <http://purl.org/dc/terms/description> "A table containing details on methods with which data were collected, including time frame and source. Cross referencing with the `traits` table is possible using combinations of the variables `dataset_id`, `trait_name`."@en
 <https://w3id.org/traits.build#traits.build-methods> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date>
@@ -37,6 +48,7 @@
 <https://w3id.org/traits.build#traits.build-excluded_data> <http://www.w3.org/2004/02/skos/core#prefLabel> "excluded data table"@en
 <https://w3id.org/traits.build#traits.build-excluded_data> <http://www.w3.org/2004/02/skos/core#altLabel> "excluded_data"@en
 <https://w3id.org/traits.build#traits.build-excluded_data> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754>
+<https://w3id.org/traits.build#traits.build-excluded_data> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database>
 <https://w3id.org/traits.build#traits.build-excluded_data> <http://www.w3.org/2000/01/rdf-schema#label> "excluded data table"@en
 <https://w3id.org/traits.build#traits.build-excluded_data> <http://purl.org/dc/terms/description> "A table of data that did not pass quality tests and so were excluded from the master dataset. The structure is identical to that presented in the `traits` table, only with an extra column called `error` indicating why the record was excluded. Common reasons are missing_unit_conversions, missing_value, and unsupported_trait_value."@en
 <https://w3id.org/traits.build#traits.build-excluded_data> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date>
@@ -44,6 +56,7 @@
 <https://w3id.org/traits.build#traits.build-taxonomic_updates> <http://www.w3.org/2004/02/skos/core#prefLabel> "taxonomic updates table"@en
 <https://w3id.org/traits.build#traits.build-taxonomic_updates> <http://www.w3.org/2004/02/skos/core#altLabel> "taxonomic_updates"@en
 <https://w3id.org/traits.build#traits.build-taxonomic_updates> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754>
+<https://w3id.org/traits.build#traits.build-taxonomic_updates> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database>
 <https://w3id.org/traits.build#traits.build-taxonomic_updates> <http://www.w3.org/2000/01/rdf-schema#label> "taxonomic updates table"@en
 <https://w3id.org/traits.build#traits.build-taxonomic_updates> <http://purl.org/dc/terms/description> "A table of all taxonomic changes implemented in the construction of AusTraits. Changes are determined by comparing the originally submitted taxon name against the taxonomic names listed in the taxonomic reference files, best placed in a subfolder in the `config` folder . Cross referencing with the `traits` table is possible using combinations of the variables `dataset_id` and `taxon_name`."@en
 <https://w3id.org/traits.build#traits.build-taxonomic_updates> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date>
@@ -52,6 +65,7 @@
 <https://w3id.org/traits.build#traits.build-taxa> <http://www.w3.org/2004/02/skos/core#altLabel> "taxa"@en
 <https://w3id.org/traits.build#traits.build-taxa> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://terminologies.gfbio.org/terms/ETS/Taxon>
 <https://w3id.org/traits.build#traits.build-taxa> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754>
+<https://w3id.org/traits.build#traits.build-taxa> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database>
 <https://w3id.org/traits.build#traits.build-taxa> <http://www.w3.org/2000/01/rdf-schema#label> "taxa table"@en
 <https://w3id.org/traits.build#traits.build-taxa> <http://purl.org/dc/terms/description> "A table containing details on taxa associated with information in `traits`. Whenever possible, this information is sourced from curated taxon lists that include identifiers for each taxon. The information compiled in this table is released under a CC-BY3 license. Cross referencing between the two dataframes is possible using combinations of the variable `taxon_name`."@en
 <https://w3id.org/traits.build#traits.build-taxa> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date>
@@ -60,6 +74,7 @@
 <https://w3id.org/traits.build#traits.build-contributors> <http://www.w3.org/2004/02/skos/core#prefLabel> "contributors table"@en
 <https://w3id.org/traits.build#traits.build-contributors> <http://www.w3.org/2004/02/skos/core#altLabel> "contributors"@en
 <https://w3id.org/traits.build#traits.build-contributors> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754>
+<https://w3id.org/traits.build#traits.build-contributors> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database>
 <https://w3id.org/traits.build#traits.build-contributors> <http://www.w3.org/2000/01/rdf-schema#label> "contributors table"@en
 <https://w3id.org/traits.build#traits.build-contributors> <http://purl.org/dc/terms/description> "A table of people contributing to each study."@en
 <https://w3id.org/traits.build#traits.build-contributors> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date>
@@ -67,6 +82,7 @@
 <https://w3id.org/traits.build#traits.build-sources> <http://www.w3.org/2004/02/skos/core#prefLabel> "sources table"@en
 <https://w3id.org/traits.build#traits.build-sources> <http://www.w3.org/2004/02/skos/core#altLabel> "sources"@en
 <https://w3id.org/traits.build#traits.build-sources> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754>
+<https://w3id.org/traits.build#traits.build-sources> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database>
 <https://w3id.org/traits.build#traits.build-sources> <http://www.w3.org/2000/01/rdf-schema#label> "sources table"@en
 <https://w3id.org/traits.build#traits.build-sources> <http://purl.org/dc/terms/description> "A list containing citation details for all database sources."@en
 <https://w3id.org/traits.build#traits.build-sources> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date>
@@ -75,6 +91,7 @@
 <https://w3id.org/traits.build#traits.build-definitions> <http://www.w3.org/2004/02/skos/core#altLabel> "definitions"@en
 <https://w3id.org/traits.build#traits.build-definitions> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://terminologies.gfbio.org/terms/ETS/Traitdata>
 <https://w3id.org/traits.build#traits.build-definitions> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754>
+<https://w3id.org/traits.build#traits.build-definitions> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database>
 <https://w3id.org/traits.build#traits.build-definitions> <http://www.w3.org/2000/01/rdf-schema#label> "definitions table"@en
 <https://w3id.org/traits.build#traits.build-definitions> <http://purl.org/dc/terms/description> "A list containing trait concept descriptions used to build the database."@en
 <https://w3id.org/traits.build#traits.build-definitions> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date>
@@ -83,6 +100,7 @@
 <https://w3id.org/traits.build#traits.build-schema> <http://www.w3.org/2004/02/skos/core#prefLabel> "schema"@en
 <https://w3id.org/traits.build#traits.build-schema> <http://www.w3.org/2004/02/skos/core#altLabel> "schema"@en
 <https://w3id.org/traits.build#traits.build-schema> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_001330>
+<https://w3id.org/traits.build#traits.build-schema> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database>
 <https://w3id.org/traits.build#traits.build-schema> <http://www.w3.org/2000/01/rdf-schema#label> "schema"@en
 <https://w3id.org/traits.build#traits.build-schema> <http://purl.org/dc/terms/description> "A copy of the schema for all tables and terms. Information included here was used to process data and generate any documentation for the study."@en
 <https://w3id.org/traits.build#traits.build-schema> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date>
@@ -91,6 +109,7 @@
 <https://w3id.org/traits.build#traits.build-metadata> <http://www.w3.org/2004/02/skos/core#altLabel> "metadata"@en
 <https://w3id.org/traits.build#traits.build-metadata> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_001330>
 <https://w3id.org/traits.build#traits.build-metadata> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://terminologies.gfbio.org/terms/ETS/Metadata>
+<https://w3id.org/traits.build#traits.build-metadata> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database>
 <https://w3id.org/traits.build#traits.build-metadata> <http://www.w3.org/2000/01/rdf-schema#label> "metadata table"@en
 <https://w3id.org/traits.build#traits.build-metadata> <http://purl.org/dc/terms/description> "A list containing database metadata."@en
 <https://w3id.org/traits.build#traits.build-metadata> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date>
@@ -98,6 +117,7 @@
 <https://w3id.org/traits.build#traits.build-build_info> <http://www.w3.org/2004/02/skos/core#prefLabel> "build info"@en
 <https://w3id.org/traits.build#traits.build-build_info> <http://www.w3.org/2004/02/skos/core#altLabel> "build_info"@en
 <https://w3id.org/traits.build#traits.build-build_info> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_001330>
+<https://w3id.org/traits.build#traits.build-build_info> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database>
 <https://w3id.org/traits.build#traits.build-build_info> <http://www.w3.org/2000/01/rdf-schema#label> "build info"@en
 <https://w3id.org/traits.build#traits.build-build_info> <http://purl.org/dc/terms/description> "A description of the computing environment used to create this version of the dataset, including version number, git commit and R session_info."@en
 <https://w3id.org/traits.build#traits.build-build_info> <http://purl.org/dc/terms/created> "01 February 2024"^^<xsd:date>
@@ -1710,6 +1730,9 @@
 <http://www.w3.org/2004/02/skos/core#hasTopConcept> <http://www.w3.org/2004/02/skos/core#prefLabel> "has top concept"@en
 <http://www.w3.org/2004/02/skos/core#hasTopConcept> <http://purl.org/dc/terms/description> "used to link a concept scheme to the SKOS concept(s) which are topmost in the hierarchical relations for that scheme"@en
 <http://www.w3.org/2004/02/skos/core#hasTopConcept> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2004/02/skos/core#>
+<http://www.w3.org/2004/02/skos/core#topConceptOf> <http://www.w3.org/2004/02/skos/core#prefLabel> "is top concept in scheme"@en
+<http://www.w3.org/2004/02/skos/core#topConceptOf> <http://purl.org/dc/terms/description> "Relates a concept to the concept scheme that it is a top level concept of."@en
+<http://www.w3.org/2004/02/skos/core#topConceptOf> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2004/02/skos/core#>
 <http://www.w3.org/2004/02/skos/core#ConceptScheme> <http://www.w3.org/2004/02/skos/core#prefLabel> "concept scheme"@en
 <http://www.w3.org/2004/02/skos/core#ConceptScheme> <http://purl.org/dc/terms/description> "skos:ConceptScheme is an instance of owl:Class."@en
 <http://www.w3.org/2004/02/skos/core#ConceptScheme> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2004/02/skos/core#>
@@ -1951,16 +1974,16 @@
 <http://www.w3.org/2001/XMLSchema#anyURI> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema>
 <http://www.w3.org/2001/XMLSchema#Name> <http://www.w3.org/2004/02/skos/core#prefLabel> "Name"@en
 <http://www.w3.org/2001/XMLSchema#Name> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema>
-<https://w3id.org/traits.build> <http://purl.org/dc/terms/description> "A database of 13 relational tables build using the {traits.build} R-packge for harmonizing trait data."
+<https://w3id.org/traits.build> <http://purl.org/dc/terms/description> "The traits.build ontology documents the output structure of a database built using the {traits.build} R package."@en
 <https://w3id.org/traits.build> <http://purl.org/dc/terms/license> "<https://creativecommons.org/licenses/by/4.0/>"^^<xsd:anyURI>
 <https://w3id.org/traits.build> <http://purl.org/dc/terms/publisher> "<https://austraits.org/>"^^<xsd:anyURI>
 <https://w3id.org/traits.build> <http://www.w3.org/2000/01/rdf-schema#type> <http://www.w3.org/2004/02/skos/core#ConceptScheme>
-<https://w3id.org/traits.build> <http://www.w3.org/2000/01/rdf-schema#label> "traits.build database"@en
-<https://w3id.org/traits.build> <http://purl.org/dc/terms/title> "traits.build database"@en
-<https://w3id.org/traits.build> <http://www.w3.org/2004/02/skos/core#prefLabel> "traits.build database"@en
-<https://w3id.org/traits.build> <http://www.w3.org/2004/02/skos/core#hasTopConcept> "<https://w3id.org/traits.build>"^^<xsd:anyURI>
+<https://w3id.org/traits.build> <http://www.w3.org/2000/01/rdf-schema#label> "traits.build"@en
+<https://w3id.org/traits.build> <http://purl.org/dc/terms/title> "traits.build"@en
+<https://w3id.org/traits.build> <http://www.w3.org/2004/02/skos/core#prefLabel> "traits.build"@en
+<https://w3id.org/traits.build> <http://www.w3.org/2004/02/skos/core#hasTopConcept> "<https://w3id.org/traits.build-database>"^^<xsd:anyURI>
 <https://w3id.org/traits.build> <http://purl.org/dc/terms/creator> "Daniel Falster"
 <https://w3id.org/traits.build> <http://purl.org/dc/terms/creator> "Elizabeth Wenk"
 <https://w3id.org/traits.build> <http://purl.org/dc/terms/creator> "Sophie Yang"
 <https://w3id.org/traits.build> <http://purl.org/dc/terms/created> "01 February 2024^^<xsd:date>"
-<https://w3id.org/traits.build> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000750>
+https://w3id.org/traits.build#traits.build-database <http://www.w3.org/2004/02/skos/core#topConceptOf> "<https://w3id.org/traits.build>"^^<xsd:anyURI>
