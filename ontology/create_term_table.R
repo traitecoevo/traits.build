@@ -27,7 +27,7 @@ create_term_table <- function(thisterm, triples) {
   
   output <- tibble(name =  list(), description = list())
 
-  URI <- make_link(paste0(base_url, thisterm), paste0(base_url, thisterm))
+  URI <- make_link(paste0("w3id.org/traits.build#", thisterm), paste0(base_url, thisterm))
   
   output <- 
     add_row(output, "URI", URI)
@@ -410,7 +410,7 @@ create_term_table <- function(thisterm, triples) {
     output <-
       add_row(output,
               scheme_tmp$property_link,
-              scheme_tmp$value_link
+              make_link("w3id.org/traits.build", "https://w3id.org/traits.build")
       )
     
   # datatype

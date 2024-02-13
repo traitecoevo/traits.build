@@ -39,7 +39,7 @@ link_version <- function(v) sprintf("<https://w3id.org/traits.build/release/%s/i
 
 <dt>**Contributors**:</dt>
 
-<dd>[David Coleman](https://orcid.org/0000-0002-1773-6597) [Sophie Yang](https://orcid.org/0000-0001-7328-345X)</dd>
+<dd>[David Coleman](https://orcid.org/0000-0002-1773-6597), [Sophie Yang](https://orcid.org/0000-0001-7328-345X)</dd>
 
 </dd>
 
@@ -73,7 +73,8 @@ link_version <- function(v) sprintf("<https://w3id.org/traits.build/release/%s/i
 
 <dt>Cite as:</dt>
 
-<dd>XXX</dd>
+<dd>(doi.org/10.1101/2024.02.11.579848)[https://doi.org/10.1101/2024.02.11.579848]: Wenk, Elizabeth H., Payal Bal, David Coleman, Rachael V. Gallagher, Sophie Yang, and Daniel S. Falster. “Traits.Build: A Data Model, Workflow and R Package for Building Harmonised Ecological Trait Databases.” bioRxiv, February 12, 2024.
+</dd>
 
 </dl>
 
@@ -102,7 +103,7 @@ source("create_term_table.R")
 triples_with_labels <-
   read_csv("output/ontology/build_triples.csv")
 
-base_url <- "https://w3id.org/traits.build/"
+base_url <- "https://w3id.org/traits.build#"
 
 if (knitr::is_html_output()) {
   print_table <- print_table_html
@@ -151,6 +152,11 @@ database_overview <-
 
 output <- tibble(name =  list(), description = list())
 
+URI <- make_link("w3id.org/traits.build#traits.build-database", "https://w3id.org/traits.build#traits.build-database")
+  
+output <- 
+  add_row(output, "URI", URI)
+
 for (i in seq_len(nrow(database_overview))) {
   name <- make_link(database_overview$Predicate_labels[i], database_overview$predicate_tmp[i])
   description <- ifelse(stringr::str_detect(database_overview$object_tmp[i], "http"), 
@@ -184,7 +190,7 @@ The traits.build output tables
 
 database_tables <-
   triples_with_labels %>%
-    filter(stringr::str_detect(Subject, "w3id.org/traits.build/traits.build-"))
+    filter(stringr::str_detect(Subject, "w3id.org/traits.build#traits.build-"))
 
 # subtract terms that will appear in this section's tables from "remaining", so that next section below only considers "not yet shown" terms
 remaining <-
