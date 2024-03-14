@@ -592,7 +592,7 @@ dataset_test_worker <-
 
         # Check that there are no duplicate `var_in` or `context_property` fields
 
-        if(is.na(metadata[["contexts"]])) {
+        if(is.na(metadata[["contexts"]][1])) {
           context_properties <- metadata[["contexts"]]
           context_vars_in <- metadata[["contexts"]]
         } else {
