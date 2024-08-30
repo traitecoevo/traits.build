@@ -19,6 +19,3 @@ Trait measurements are still output in long format (1 row per trait value),
 but all measurement-related metadata (methods, location properties, context properties, contributors)
 are now included as additional columns in a single table.
 }
-\examples{
-combined_database_table <- database_create_combined_table(database)
-}
