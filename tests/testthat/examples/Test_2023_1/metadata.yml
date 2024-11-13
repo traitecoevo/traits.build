@@ -68,10 +68,10 @@ locations:
     rainfall (mm): 2000
   Cape Tribulation:
     description: Complex mesophyll vine forest in tropical rain forest.
-    elevation (m): 25
-    rainfall (mm): 3500    
+    elevation (m): 25  
     latitude (deg): .na
     longitude (deg): .na
+    rainfall (mm): 3500
   test_excluded_site:
     description: test excluded site
     latitude (deg): .na
