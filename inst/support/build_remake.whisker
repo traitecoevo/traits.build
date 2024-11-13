@@ -58,7 +58,7 @@ targets:
 {{#dataset_ids}}
         {{dataset_id}},
 {{/dataset_ids}}
-        NULL)
+        I(NULL))
 
 # Version information
   version_number:
