@@ -646,6 +646,12 @@ test_that("`build_setup_pipeline` is working", {
   )
   expect_equal(sort(names(furrr_tmp_env)), sort(targets))
 
+  out1 <- get("Test_2022", envir = base_tmp_env)
+  out2 <- get("sources", envir = furrr_tmp_env)[["Test_2022"]]
+  
+  # don't compare build_info, as these differ through packages used.
+  expect_equal(out1[names(out1) != "build_info"], out2[names(out2) != "build_info"])
+  
   # Remake workflow
   expect_silent(suppressMessages(build_setup_pipeline(method = "remake")))
   expect_true(file.exists("remake.yml"))
