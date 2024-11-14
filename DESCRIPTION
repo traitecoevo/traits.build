@@ -22,7 +22,8 @@ Depends:
     lubridate,
     readr,
     stringr,
-    tidyr
+    tidyr,
+    austraits
 Imports:
     crayon,
     git2r,
@@ -57,8 +58,9 @@ Suggests:
     zip,
     covr
 Remotes:
-    richfitz/remake
+    richfitz/remake,
+    traitecoevo/austraits@develop
 Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Config/testthat/edition: 3
