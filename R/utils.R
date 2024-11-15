@@ -276,7 +276,3 @@ util_df_to_list <- austraits::convert_df_to_list
 
 database_create_combined_table <- austraits::flatten_database
 build_combine <- austraits::bind_databases
-
-util_list_to_df1 <- function() {
-
-}

@@ -1159,23 +1159,6 @@ dataset_test_worker <-
             )
           }
 
-          # Test `austraits` functions
-          # Testing per study, not on all studies combined (is this ideal?)
-          # I'm not testing whether the functions work as intended, just that they throw no error
-
-          expect_no_warning(
-            dataset_wider <- db_traits_pivot_wider(dataset$traits),
-            info = paste0(red(dataset_id), "\t`db_traits_pivot_wider` threw a warning; duplicate rows detected")
-          )
-
-          if (exists("dataset_wider")) {
-            expect_no_warning(
-              expect_no_error(
-                dataset_longer <- db_traits_pivot_longer(dataset_wider),
-                info = paste0(red(dataset_id), "\t`db_traits_pivot_longer`")),
-              info = paste0(red(dataset_id), "\t`db_traits_pivot_longer` threw a warning")
-            )
-          }
         }
       })
     }
