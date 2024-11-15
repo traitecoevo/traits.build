@@ -2,7 +2,6 @@
 
 export("%>%")
 export(build_add_version)
-export(build_combine)
 export(build_setup_pipeline)
 export(check_pivot_duplicates)
 export(dataset_build)

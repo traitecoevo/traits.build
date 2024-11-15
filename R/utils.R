@@ -267,3 +267,16 @@ create_tree_branch <- function(x, title, prefix = "") {
     )
   )
 }
+
+# Renaming of austraits functions to ensure old scripts still work
+
+util_list_to_df1 <- austraits::convert_list_to_df1
+util_list_to_df2 <- austraits::convert_list_to_df2
+util_df_to_list <- austraits::convert_df_to_list
+
+database_create_combined_table <- austraits::flatten_database
+build_combine <- austraits::bind_databases
+
+util_list_to_df1 <- function() {
+
+}
