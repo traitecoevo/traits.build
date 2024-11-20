@@ -305,7 +305,7 @@ austraits::convert_list_to_df1
 #' @examples util_list_to_df2(util_df_to_list(dplyr::starwars))
 util_list_to_df2 <- function(my_list, as_character = TRUE, on_empty = NA) {
   lifecycle::deprecate_warn("1.0.0", "util_list_to_df2()", "austraits::convert_list_to_df2()")
-  austraits::convert_list_to_df1(my_list, as_character, on_empty)
+  austraits::convert_list_to_df2(my_list, as_character, on_empty)
 }
 
 #' @importFrom austraits convert_list_to_df2
@@ -354,5 +354,9 @@ build_combine <- function(..., d = list(...)) {
 #' @importFrom austraits bind_databases
 #' @export
 austraits::bind_databases
+
+#' @importFrom austraits flatten_database
+#' @export
+austraits::flatten_database
 
 database_create_combined_table <- austraits::flatten_database
