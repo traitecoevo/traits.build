@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{metadata_find_taxonomic_change}
 \alias{metadata_find_taxonomic_change}
-\title{Find `dataset_id`'s with a given taxonomic change}
+\title{Find \code{dataset_id}'s with a given taxonomic change}
 \usage{
 metadata_find_taxonomic_change(find, replace = NULL, studies = NULL)
 }
@@ -14,5 +14,5 @@ metadata_find_taxonomic_change(find, replace = NULL, studies = NULL)
 \item{studies}{Name of studies to look through, default = NULL}
 }
 \description{
-Find `dataset_id`'s with a given taxonomic change
+Find \code{dataset_id}'s with a given taxonomic change
 }

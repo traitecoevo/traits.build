@@ -17,7 +17,7 @@ create_tree_branch(x, title, prefix = "")
 Vector of character strings for the tree structure
 }
 \description{
-`create_tree_branch()` is used to create a tree structure to show how things
+\code{create_tree_branch()} is used to create a tree structure to show how things
 are related. In AusTraits, this is used in the vignettes to show the file
 structure of the repository and also to show the different components of the
 AusTraits database.

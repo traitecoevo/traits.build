@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{metadata_add_traits}
 \alias{metadata_add_traits}
-\title{For specified `dataset_id`, populate columns for traits into metadata}
+\title{For specified \code{dataset_id}, populate columns for traits into metadata}
 \usage{
 metadata_add_traits(dataset_id, user_responses = NULL)
 }

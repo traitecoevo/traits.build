@@ -22,8 +22,8 @@ Tibble in long format with AusTraits formatted trait names, trait
 substitutions and unique observation id added
 }
 \description{
-Process a single dataset with `dataset_id` using the associated `data.csv` and
-`metadata.yml` files. Adds a unique observation id for each row of observation,
+Process a single dataset with \code{dataset_id} using the associated \code{data.csv} and
+\code{metadata.yml} files. Adds a unique observation id for each row of observation,
 trait names are formatted using AusTraits accepted names and trait substitutions
-are added. `parse data` is used in the core workflow pipeline (i.e. in `load study`).
+are added. \verb{parse data} is used in the core workflow pipeline (i.e. in \verb{load study}).
 }

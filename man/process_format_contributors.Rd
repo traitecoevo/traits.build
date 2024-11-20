@@ -17,7 +17,7 @@ process_format_contributors(my_list, dataset_id, schema)
 Tibble with details of contributors
 }
 \description{
-Format contributors, read in from the `metadata.yml` file. Converts from list to tibble.
+Format contributors, read in from the \code{metadata.yml} file. Converts from list to tibble.
 }
 \examples{
 \dontrun{

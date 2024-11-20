@@ -39,7 +39,8 @@ Imports:
     testthat,
     tibble,
     whisker,
-    yaml
+    yaml,
+    lifecycle
 Suggests:
     furrr,
     remake,
@@ -56,8 +57,7 @@ Suggests:
     gridExtra,
     scales,
     zip,
-    covr,
-    lifecycle
+    covr
 Remotes:
     richfitz/remake,
     traitecoevo/austraits
@@ -65,3 +65,4 @@ Encoding: UTF-8
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)

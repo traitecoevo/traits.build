@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{metadata_update_taxonomic_change}
 \alias{metadata_update_taxonomic_change}
-\title{Update a taxonomic change into a yaml file for a `dataset_id`}
+\title{Update a taxonomic change into a yaml file for a \code{dataset_id}}
 \usage{
 metadata_update_taxonomic_change(
   dataset_id,
@@ -25,8 +25,8 @@ metadata_update_taxonomic_change(
 to which a submitted orignal name resolves}
 }
 \value{
-`metadata.yml` file with added substitution
+\code{metadata.yml} file with added substitution
 }
 \description{
-Update a taxonomic change into a yaml file for a `dataset_id`
+Update a taxonomic change into a yaml file for a \code{dataset_id}
 }

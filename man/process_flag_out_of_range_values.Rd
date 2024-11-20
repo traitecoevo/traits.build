@@ -9,12 +9,12 @@ process_flag_out_of_range_values(data, definitions)
 \arguments{
 \item{data}{Tibble or dataframe containing the study data}
 
-\item{definitions}{Definitions read in from the `traits.yml` file in the config folder}
+\item{definitions}{Definitions read in from the \code{traits.yml} file in the config folder}
 }
 \value{
 Tibble with flagged values outside of allowable range
 }
 \description{
 Flags any numeric values that are outside the allowable range defined in the
-`traits.yml` file.
+\code{traits.yml} file.
 }

@@ -1,6 +1,6 @@
 #' Pipe operator
 #'
-#' See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
+#' See `magrittr::[\%>\%][magrittr::pipe]` for details.
 #'
 #' @name %>%
 #' @rdname pipe
@@ -234,7 +234,7 @@ write_metadata <- function(data, path, style_code = FALSE) {
 
 
 #' Write the YAML representation of `metadata.yml` for specified `dataset_id` to
-#' file \code{data/dataset_id/metadata.yml}
+#' file `data/dataset_id/metadata.yml`
 #'
 #' @inheritParams metadata_path_dataset_id
 #' @param metadata Metadata file
@@ -268,7 +268,7 @@ create_tree_branch <- function(x, title, prefix = "") {
   )
 }
 
-# Renaming of austraits functions to ensure old scripts still work
+# Renaming and re-exporting austraits functions to ensure old scripts still work
 
 #' Convert a list with single entries to dataframe
 #' 
@@ -290,8 +290,30 @@ util_list_to_df1 <- function(my_list) {
 #' @export
 austraits::convert_list_to_df1
 
+#' Convert a list of lists to dataframe
+#'
+#' @description
+#' Convert a list of lists to dataframe; requires that every list have same named elements.
+#' 
+#' `r lifecycle::badge("deprecated")`
+#'
+#' @param my_list A list of lists to dataframe
+#' @param as_character A logical value, indicating whether the values are read as character
+#' @param on_empty Value to return if my_list is NULL, NA or is length == 0, default = NA
+#'
+#' @export
+#' @examples util_list_to_df2(util_df_to_list(dplyr::starwars))
+util_list_to_df2 <- function(my_list, as_character = TRUE, on_empty = NA) {
+  lifecycle::deprecate_warn("1.0.0", "util_list_to_df2()", "austraits::convert_list_to_df2()")
+  austraits::convert_list_to_df1(my_list)
+}
+
+#' @importFrom austraits convert_list_to_df2
+#' @export
+austraits::convert_list_to_df2
+
 # util_list_to_df1 <- austraits::convert_list_to_df1
-util_list_to_df2 <- austraits::convert_list_to_df2
+# util_list_to_df2 <- austraits::convert_list_to_df2
 util_df_to_list <- austraits::convert_df_to_list
 
 database_create_combined_table <- austraits::flatten_database
