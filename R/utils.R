@@ -332,9 +332,27 @@ util_df_to_list <- function(df) {
 #' @export
 austraits::convert_df_to_list
 
-# util_list_to_df1 <- austraits::convert_list_to_df1
-# util_list_to_df2 <- austraits::convert_list_to_df2
-# util_df_to_list <- austraits::convert_df_to_list
+#' Combine all the AusTraits studies into the compiled AusTraits database
+#'
+#' @description
+#' `build_combine` compiles all the loaded studies into a single AusTraits
+#' database object as a large list.
+#'
+#' `r lifecycle::badge("deprecated")`
+#'
+#' @param ... Arguments passed to other functions
+#' @param d List of all the AusTraits studies
+#'
+#' @return AusTraits compilation database as a large list
+#' @importFrom rlang .data
+#' @export
+build_combine <- function(..., d = list(...)) {
+  lifecycle::deprecate_warn("1.0.0", "build_combine()", "austraits::bind_databases()")
+  austraits::convert_df_to_list(..., d)
+}
+
+#' @importFrom austraits bind_databases
+#' @export
+austraits::bind_databases
 
 database_create_combined_table <- austraits::flatten_database
-build_combine <- austraits::bind_databases
