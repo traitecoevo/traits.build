@@ -305,16 +305,36 @@ austraits::convert_list_to_df1
 #' @examples util_list_to_df2(util_df_to_list(dplyr::starwars))
 util_list_to_df2 <- function(my_list, as_character = TRUE, on_empty = NA) {
   lifecycle::deprecate_warn("1.0.0", "util_list_to_df2()", "austraits::convert_list_to_df2()")
-  austraits::convert_list_to_df1(my_list)
+  austraits::convert_list_to_df1(my_list, as_character, on_empty)
 }
 
 #' @importFrom austraits convert_list_to_df2
 #' @export
 austraits::convert_list_to_df2
 
+#' Convert dataframe to list
+#'
+#' @description
+#' Convert a dataframe to a named list, useful when converting to yaml.
+#'  
+#' `r lifecycle::badge("deprecated")`
+#'
+#' @param df A dataframe
+#' @return A (yaml) list
+#' @export
+#' @examples util_df_to_list(dplyr::starwars)
+util_df_to_list <- function(df) {
+  lifecycle::deprecate_warn("1.0.0", "util_df_to_list()", "austraits::convert_df_to_list()")
+  austraits::convert_df_to_list(df)
+}
+
+#' @importFrom austraits convert_df_to_list
+#' @export
+austraits::convert_df_to_list
+
 # util_list_to_df1 <- austraits::convert_list_to_df1
 # util_list_to_df2 <- austraits::convert_list_to_df2
-util_df_to_list <- austraits::convert_df_to_list
+# util_df_to_list <- austraits::convert_df_to_list
 
 database_create_combined_table <- austraits::flatten_database
 build_combine <- austraits::bind_databases
