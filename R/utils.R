@@ -270,7 +270,27 @@ create_tree_branch <- function(x, title, prefix = "") {
 
 # Renaming of austraits functions to ensure old scripts still work
 
-util_list_to_df1 <- austraits::convert_list_to_df1
+#' Convert a list with single entries to dataframe
+#' 
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#' 
+#' @param my_list A list with single entries
+#' @return A tibble with two columns
+#' @export
+#' @examples \dontrun{
+#' util_list_to_df1(as.list(dplyr::starwars)[2])
+#' }
+util_list_to_df1 <- function(my_list) {
+  lifecycle::deprecate_warn("1.0.0", "util_list_to_df1()", "austraits::convert_list_to_df1()")
+  austraits::convert_list_to_df1(my_list)
+}
+
+#' @importFrom austraits convert_list_to_df1
+#' @export
+austraits::convert_list_to_df1
+
+# util_list_to_df1 <- austraits::convert_list_to_df1
 util_list_to_df2 <- austraits::convert_list_to_df2
 util_df_to_list <- austraits::convert_df_to_list
 
