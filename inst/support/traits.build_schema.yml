@@ -46,6 +46,16 @@ basis_of_record:
      preserved_specimen: Traits were recorded from specimens preserved in a collection, eg. herbarium or museum.
      literature: Traits were sourced from values reported in the literature, and where the basis of record is not otherwise known.
 
+identifier_type:
+  description: &identifier_type The type of identifier whose identifying characters are recorded, referencing globally accepted identifier types.
+  type: categorical
+  values:
+     collectionID: An identifier for the collection or dataset from which the record was derived.
+     specimenID: XX
+     institutionCode: The name (or acronym) in use by the institution having custody of the object(s) or information referred to by a collectionID.
+     materialSampleID: An identifier for the dwc:MaterialSample (as opposed to a particular digital record of the dwc:MaterialSample). In the absence of a persistent global unique identifier, construct one from a combination of identifiers in the record that will most closely make the dwc:materialSampleID globally unique.
+     catalogNumber: An identifier (preferably unique) for the record within the data set or collection.
+
 #-------------------------------------------------------------
 # A key describing the structure of the compiled `AusTraits` dataset
 
@@ -103,6 +113,14 @@ austraits:
         description: Description of a specific context property value.
         link_id: Variable indicating which identifier column in the traits table contains the specified `link_vals`.
         link_vals: Unique integer identifiers that link between identifier columns in the `traits` table and the contextual properties/values in the `contexts` table.
+    identifiers:
+      description: A table containing details on identifiers that cross-references observations Cross referencing between the two dataframes is possible using combinations of the variables `dataset_id` and `observation_id`.
+      type: table
+      elements:
+        dataset_id: *dataset_id
+        observation_id: *observation_id
+        identifier: A sequence of characters that links an observation within a traits.build database to additional information about observed entity in another database.
+        identifier_type: *identifier_type
     methods:
       description: A table containing details on methods with which data were collected, including time frame and source. Cross referencing with the `traits` table is possible using combinations of the variables `dataset_id`, `trait_name`.
       type: table
