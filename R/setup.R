@@ -558,6 +558,79 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
 }
 
+#' For specified `dataset_id` import database cross-referencing identifer data from a dataframe
+#'
+#' This functions asks users which columns in the dataframe they would like to keep
+#' and records this appropriately in the metadata. The input data is assumed to be
+#' in wide format.
+#' The output may require additional manual editing if the user selects a non-standard identifier type.
+#'
+#' @inheritParams metadata_path_dataset_id
+#' @param overwrite Overwrite existing information
+#' @param user_responses Named list containing simulated user input for manual selection
+#' of variables, mainly for testing purposes
+#'
+#' @importFrom rlang .data
+#' @export
+metadata_add_identifiers <- function(dataset_id, overwrite = FALSE) {
+
+  # Read metadata
+  metadata <- read_metadata_dataset(dataset_id)
+
+  # Load and clean trait data
+  data <-
+    readr::read_csv(file.path("data", dataset_id, "data.csv"), col_types = cols()) %>%
+    process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
+
+  # Get list of potential columns
+  v <- names(data)
+
+  # Check for existing info and if it exists, retain information if overwrite = FALSE
+  if (!overwrite && !is.na(metadata$identifiers[1])) {
+    
+    identifiers <- metadata$identifiers
+    n_existing <- length(metadata$identifiers)
+      
+    message(
+      sprintf(
+        red("Existing identifier information detected, from the following columns in the dataset: ") %+%
+        green("'%s'\n\t") %+% red("Metadata is being appended; please review duplicates manually"),
+      identifiers %>% purrr::map_chr(~.x[["var_in"]]) %>% paste(collapse = "', '"))
+    )
+    
+  } else {
+    
+    identifiers <- list()
+    n_existing <- 0
+    
+  }
+
+    var_in <- metadata_user_select_names(
+      paste("Indicate all columns that contain identifiers that cross-reference between observations in ", dataset_id, " and an herbarium voucher or another database."), v)
+
+    types <-
+      c("collectionID", "specimenID", "institutionCode",
+        "materialSampleID", "catalogNumber")
+
+    for (i in seq_along(var_in)) {
+
+      ii <- n_existing + i
+      identifier_type <- metadata_user_select_names(
+        paste("What identifier type does ", var_in[i], "fit in?"), types)
+
+      identifiers[[ii]] <-
+        list(
+          var_in = var_in[i],
+          identifier_type = identifier_type
+        )
+      
+    }
+    
+  metadata$identifiers <- identifiers
+  write_metadata_dataset(metadata, dataset_id)
+  return(invisible(metadata))
+
+}
 
 #' Adds citation details to a metadata file for given study
 #'
