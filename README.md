@@ -4,6 +4,7 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/traitecoevo/traits.build/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/traitecoevo/traits.build/actions/workflows/R-CMD-check.yml)
 [![Codecov test coverage](https://codecov.io/gh/traitecoevo/traits.build/branch/develop/graph/badge.svg)](https://app.codecov.io/gh/traitecoevo/traits.build?branch=develop)
+[![Lifecycle: deprecated](https://img.shields.io/badge/lifecycle-deprecated-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#deprecated)
 <!-- badges: end -->
 
 

@@ -717,7 +717,7 @@ dataset_test_worker <-
           info = paste0(red(f), "\ttrait")
         )
 
-        expect_silent(traits <- traits.build::util_list_to_df2(metadata[["traits"]]))
+        expect_silent(traits <- austraits::convert_list_to_df2(metadata[["traits"]]))
 
         expect_true(
           is.data.frame(traits),
@@ -889,7 +889,7 @@ dataset_test_worker <-
           )
 
           expect_no_error(
-            x <- metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name),
+            x <- metadata[["substitutions"]] %>% austraits::convert_list_to_df2() %>% split(.$trait_name),
             info = paste0(red(f), "\tconverting substitutions to a dataframe and splitting by `trait_name`")
           )
 
@@ -939,7 +939,7 @@ dataset_test_worker <-
         if (!is.na(metadata[["taxonomic_updates"]][1])) {
 
           expect_no_error(
-            x <- metadata[["taxonomic_updates"]] %>% util_list_to_df2(),
+            x <- metadata[["taxonomic_updates"]] %>% austraits::convert_list_to_df2(),
             info = paste0(red(f), "\tconverting `taxonomic_updates` to a dataframe")
           )
 
@@ -1043,7 +1043,7 @@ dataset_test_worker <-
 
           expect_no_error(
             x <- metadata[["exclude_observations"]] %>%
-              util_list_to_df2() %>%
+              austraits::convert_list_to_df2() %>%
               tidyr::separate_longer_delim("find", delim = ", ") %>%
               dplyr::mutate(find = str_squish(.data$find)),
             info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe")
@@ -1159,23 +1159,6 @@ dataset_test_worker <-
             )
           }
 
-          # Test `austraits` functions
-          # Testing per study, not on all studies combined (is this ideal?)
-          # I'm not testing whether the functions work as intended, just that they throw no error
-
-          expect_no_warning(
-            dataset_wider <- db_traits_pivot_wider(dataset$traits),
-            info = paste0(red(dataset_id), "\t`db_traits_pivot_wider` threw a warning; duplicate rows detected")
-          )
-
-          if (exists("dataset_wider")) {
-            expect_no_warning(
-              expect_no_error(
-                dataset_longer <- db_traits_pivot_longer(dataset_wider),
-                info = paste0(red(dataset_id), "\t`db_traits_pivot_longer`")),
-              info = paste0(red(dataset_id), "\t`db_traits_pivot_longer` threw a warning")
-            )
-          }
         }
       })
     }

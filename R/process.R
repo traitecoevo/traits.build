@@ -33,7 +33,7 @@ dataset_configure <- function(
   # Table of trait_mapping
   trait_mapping <-
     metadata[["traits"]] %>%
-    util_list_to_df2() %>%
+    austraits::convert_list_to_df2() %>%
     dplyr::filter(!is.na(.data$trait_name))
 
   # Subset of definitions
@@ -205,7 +205,7 @@ dataset_process <- function(filename_data_raw,
   if (!is.na(metadata[["exclude_observations"]][1])) {
     taxa_to_exclude <-
       metadata[["exclude_observations"]] %>%
-      traits.build::util_list_to_df2() %>%
+      austraits::convert_list_to_df2() %>%
       dplyr::mutate(
         find = stringr::str_split(.data$find, ", ")
         ) %>%
@@ -554,7 +554,7 @@ process_create_observation_id <- function(data, metadata) {
 
   }
 
-  traits_table <- metadata[["traits"]] %>% util_list_to_df2()
+  traits_table <- metadata[["traits"]] %>% austraits::convert_list_to_df2()
 
   if (!is.null(traits_table[["repeat_measurements_id"]])) {
 
@@ -616,7 +616,7 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
 #' @importFrom rlang .data
 process_generate_method_ids <- function(metadata_traits) {
   metadata_traits %>%
-    util_list_to_df2() %>%
+    austraits::convert_list_to_df2() %>%
     dplyr::filter(!is.na(.data$trait_name)) %>%
     dplyr::select(dplyr::all_of(c("trait_name", "methods"))) %>%
     dplyr::distinct() %>%
@@ -656,7 +656,7 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
         context_property = x$context_property,
         category = x$category,
         var_in = x$var_in,
-        util_list_to_df2(x$values)
+        austraits::convert_list_to_df2(x$values)
       ) %>%
       dplyr::mutate(dataset_id = dataset_id) %>%
       dplyr::select(dplyr::any_of(vars))
@@ -846,7 +846,7 @@ process_format_locations <- function(my_list, dataset_id, schema) {
   out <-
     my_list %>%
     lapply(lapply, as.character) %>%
-    purrr::map_df(util_list_to_df1, .id = "name") %>%
+    purrr::map_df(austraits::convert_list_to_df1, .id = "name") %>%
     dplyr::mutate(dataset_id = dataset_id) %>%
     dplyr::rename(dplyr::all_of(c("location_property" = "key", "location_name" = "name"))) %>%
     process_add_all_columns(
@@ -915,7 +915,7 @@ process_flag_excluded_observations <- function(data, metadata) {
 
   fix <-
     metadata$exclude_observations %>%
-    util_list_to_df2() %>%
+    austraits::convert_list_to_df2() %>%
     tidyr::separate_longer_delim("find", delim = ", ") %>%
     dplyr::mutate(find = str_squish(.data$find))
 
@@ -923,7 +923,7 @@ process_flag_excluded_observations <- function(data, metadata) {
 
   fix <- split(fix, fix$variable)
 
-  traits <- metadata$traits %>% util_list_to_df2
+  traits <- metadata$traits %>% austraits::convert_list_to_df2()
 
   for (v in names(fix))
 
@@ -1424,7 +1424,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   # Step 2. Add trait information, with correct names
   traits_table <-
     metadata[["traits"]] %>%
-    util_list_to_df2() %>%
+    austraits::convert_list_to_df2() %>%
     dplyr::filter(!is.na(.data$trait_name))  # Remove any rows without a matching trait record
 
   # Check that the trait names as specified in config actually exist in data
@@ -1553,7 +1553,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
   # Implement any value changes as per substitutions
   if (!is.na(metadata[["substitutions"]][1])) {
 
-    substitutions_table <- util_list_to_df2(metadata[["substitutions"]]) %>%
+    substitutions_table <- austraits::convert_list_to_df2(metadata[["substitutions"]]) %>%
       dplyr::mutate(
         find = tolower(.data$find),
         replace = tolower(.data$replace)
@@ -1599,7 +1599,7 @@ process_format_contributors <- function(my_list, dataset_id, schema) {
     if (length(unlist(my_list$data_collectors)) > 1) {
       contributors <-
         my_list$data_collectors %>%
-        util_list_to_df2() %>%
+        austraits::convert_list_to_df2() %>%
         dplyr::mutate(dataset_id = dataset_id) %>%
         dplyr::filter(!is.na(.data$last_name))
     } else {
@@ -1625,7 +1625,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
       source_key = names(metadata$source),
       type = str_replace_all(.data$source_key, "_[:digit:]+", ""),
       source_id = metadata$source %>%
-        util_list_to_df2() %>%
+        austraits::convert_list_to_df2() %>%
         purrr::pluck("key")
     )
 
@@ -1657,7 +1657,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
       ,
       # Methods for entire study
       metadata$dataset %>%
-        util_list_to_df1() %>%
+        austraits::convert_list_to_df1() %>%
         tidyr::spread(.data$key, .data$value) %>%
         dplyr::mutate(dataset_id = dataset_id) %>%
         dplyr::select(
@@ -1783,7 +1783,7 @@ process_taxonomic_updates <- function(data, metadata) {
 
   # Now make any replacements specified in metadata yaml
   ## Read metadata table, quit if empty
-  substitutions_table <-  util_list_to_df2(metadata[["taxonomic_updates"]])
+  substitutions_table <-  austraits::convert_list_to_df2(metadata[["taxonomic_updates"]])
 
   if (any(is.na(substitutions_table[1])) || nrow(substitutions_table) == 0) {
     return(out)
@@ -1813,79 +1813,6 @@ process_taxonomic_updates <- function(data, metadata) {
   ## Return updated table
   out
 
-}
-
-#' Combine all the AusTraits studies into the compiled AusTraits database
-#'
-#' `build_combine` compiles all the loaded studies into a single AusTraits
-#' database object as a large list.
-#'
-#' @param ... Arguments passed to other functions
-#' @param d List of all the AusTraits studies
-#'
-#' @return AusTraits compilation database as a large list
-#' @importFrom rlang .data
-#' @export
-build_combine <- function(..., d = list(...)) {
-
-  combine <- function(name, d) {
-    dplyr::bind_rows(lapply(d, "[[", name))
-  }
-
-  # Combine sources and remove duplicates
-  sources <- d %>% lapply("[[", "sources")
-  keys <- sources %>% lapply(names) %>% unlist() %>% unique() %>% sort()
-  sources <- sources %>% purrr::reduce(c)
-  sources <- sources[keys]
-
-  definitions <- d %>% lapply("[[", "definitions") %>% purrr::reduce(c)
-  definitions <- definitions[!duplicated(names(definitions))]
-  definitions <- definitions[sort(names(definitions))]
-
-  # Drop null datasets
-  d[sapply(d, is.null)] <- NULL
-
-  names(d) <- sapply(d, "[[", "dataset_id")
-
-  # Taxonomy
-
-  taxonomic_updates <-
-    combine("taxonomic_updates", d) %>%
-    dplyr::group_by(.data$original_name, .data$aligned_name, .data$taxon_name, .data$taxonomic_resolution) %>%
-    dplyr::mutate(dataset_id = paste(.data$dataset_id, collapse = " ")) %>%
-    dplyr::ungroup() %>%
-    dplyr::distinct() %>%
-    dplyr::arrange(.data$original_name, .data$aligned_name, .data$taxon_name, .data$taxonomic_resolution)
-
-  # Metadata
-  contributors <- combine("contributors", d)
-  metadata <- d[[1]][["metadata"]]
-
-  metadata[["contributors"]] <-
-    contributors %>%
-    dplyr::select(-dplyr::any_of(c("dataset_id", "additional_role"))) %>%
-    dplyr::distinct() %>%
-    dplyr::arrange(.data$last_name, .data$given_name) %>%
-    util_df_to_list()
-
-  ret <- list(traits = combine("traits", d),
-              locations = combine("locations", d),
-              contexts = combine("contexts", d),
-              methods = combine("methods", d),
-              excluded_data = combine("excluded_data", d),
-              taxonomic_updates = taxonomic_updates,
-              taxa = combine("taxa", d) %>% dplyr::distinct() %>% dplyr::arrange(.data$taxon_name),
-              contributors = contributors,
-              sources = sources,
-              definitions = definitions,
-              schema = d[[1]][["schema"]],
-              metadata = metadata,
-              build_info = list(session_info = utils::sessionInfo())
-              )
-
-  class(ret) <- c("list", "traits.build")
-
-  ret
 }
 
 #' Apply taxonomic updates to austraits_raw

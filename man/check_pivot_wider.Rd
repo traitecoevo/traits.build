@@ -7,7 +7,7 @@
 check_pivot_wider(dataset)
 }
 \arguments{
-\item{dataset}{Built dataset with `test_build_dataset`}
+\item{dataset}{Built dataset with \code{test_build_dataset}}
 }
 \value{
 Number of rows with duplicates preventing pivoting wider

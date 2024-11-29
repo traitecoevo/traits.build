@@ -36,7 +36,6 @@ reference:
     desc: Functions that can be used when building individual datasets and entire compilation.
     contents:
     - '`build_setup_pipeline`'
-    - '`build_combine`'
     - '`build_add_version`'
     - '`dataset_update_taxonomy`'
     - '`dataset_build`'

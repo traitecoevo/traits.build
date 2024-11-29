@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{metadata_add_contexts}
 \alias{metadata_add_contexts}
-\title{For specified `dataset_id` import context data from a dataframe}
+\title{For specified \code{dataset_id} import context data from a dataframe}
 \usage{
 metadata_add_contexts(dataset_id, overwrite = FALSE, user_responses = NULL)
 }

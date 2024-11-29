@@ -17,7 +17,7 @@ process_format_locations(my_list, dataset_id, schema)
 Tibble with location details if available
 }
 \description{
-Format location data read in from the `metadata.yml` file. Converts from list to tibble.
+Format location data read in from the \code{metadata.yml} file. Converts from list to tibble.
 }
 \examples{
 \dontrun{

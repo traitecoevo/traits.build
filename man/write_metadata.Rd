@@ -2,19 +2,19 @@
 % Please edit documentation in R/utils.R
 \name{write_metadata}
 \alias{write_metadata}
-\title{Write `metadata.yml` for a study}
+\title{Write \code{metadata.yml} for a study}
 \usage{
 write_metadata(data, path, style_code = FALSE)
 }
 \arguments{
-\item{data}{`austraits` metadata object (a list)}
+\item{data}{\code{austraits} metadata object (a list)}
 
 \item{path}{Location where the metadata file is to be written to}
 
 \item{style_code}{Should the R code be styled?}
 }
 \description{
-Write `metadata.yml` file with custom R code formatted to allow line breaks.
+Write \code{metadata.yml} file with custom R code formatted to allow line breaks.
 }
 \examples{
 \dontrun{
