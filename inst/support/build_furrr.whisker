@@ -36,7 +36,7 @@ plan(multisession, workers = {{workers}})
 sources <- future_map(dataset_ids, f, .progress = TRUE)
 names(sources) <- dataset_ids
 
-{{database_name}}_raw <- build_combine(d = sources)
+{{database_name}}_raw <- austraits::bind_databases(databases = sources)
 
 # Version information
 version_number <- util_get_version("config/metadata.yml")

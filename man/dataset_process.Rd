@@ -14,15 +14,15 @@ dataset_process(
 )
 }
 \arguments{
-\item{filename_data_raw}{Raw `data.csv` file for any given study}
+\item{filename_data_raw}{Raw \code{data.csv} file for any given study}
 
-\item{config_for_dataset}{Config settings generated from `dataset_configure()`}
+\item{config_for_dataset}{Config settings generated from \code{dataset_configure()}}
 
 \item{schema}{Schema for traits.build}
 
 \item{resource_metadata}{Metadata about the traits compilation read in from the config folder}
 
-\item{unit_conversion_functions}{`unit_conversion.csv` file read in from the config folder}
+\item{unit_conversion_functions}{\code{unit_conversion.csv} file read in from the config folder}
 
 \item{filter_missing_values}{Default filters missing values from the excluded data table;
 change to false to see the rows with missing values}
@@ -31,9 +31,9 @@ change to false to see the rows with missing values}
 List, AusTraits database object
 }
 \description{
-`dataset_process` is used to load individual studies using the config file generated
-from `dataset_configure()`. `dataset_configure` and `dataset_process` are applied to every
-study in the `remake.yml` file.
+\code{dataset_process} is used to load individual studies using the config file generated
+from \code{dataset_configure()}. \code{dataset_configure} and \code{dataset_process} are applied to every
+study in the \code{remake.yml} file.
 }
 \examples{
 \dontrun{

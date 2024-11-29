@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{metadata_add_locations}
 \alias{metadata_add_locations}
-\title{For specified `dataset_id` import location data from a dataframe}
+\title{For specified \code{dataset_id} import location data from a dataframe}
 \usage{
 metadata_add_locations(dataset_id, location_data, user_responses = NULL)
 }

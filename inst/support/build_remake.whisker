@@ -54,7 +54,7 @@ targets:
 
   {{database_name}}_raw:
     command: >
-      build_combine(
+      bind_databases(
 {{#dataset_ids}}
         {{dataset_id}},
 {{/dataset_ids}}

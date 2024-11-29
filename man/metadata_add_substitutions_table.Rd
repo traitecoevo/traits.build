@@ -13,10 +13,10 @@ metadata_add_substitutions_table(
 )
 }
 \arguments{
-\item{dataframe_of_substitutions}{Dataframe with columns indicating `dataset_id`, `trait_name`,
-original trait values (`find`), and database aligned trait value (`replace`)}
+\item{dataframe_of_substitutions}{Dataframe with columns indicating \code{dataset_id}, \code{trait_name},
+original trait values (\code{find}), and database aligned trait value (\code{replace})}
 
-\item{dataset_id}{Name of column containing study `dataset_id`(s) in database}
+\item{dataset_id}{Name of column containing study \code{dataset_id}(s) in database}
 
 \item{trait_name}{Name of column containing trait name(s) for which a trait value replacement needs to be made}
 
@@ -29,7 +29,7 @@ Modified metadata files with trait value replacements
 }
 \description{
 Function that simultaneously adds many trait value replacements, potentially
-across many `trait_name`'s and `dataset_id`'s, to the respective `metadata.yml` files.
+across many \code{trait_name}'s and \code{dataset_id}'s, to the respective \code{metadata.yml} files.
 This function will be used to quickly re-align/re-assign trait values across all studies.
 }
 \examples{

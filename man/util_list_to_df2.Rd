@@ -15,6 +15,8 @@ util_list_to_df2(my_list, as_character = TRUE, on_empty = NA)
 }
 \description{
 Convert a list of lists to dataframe; requires that every list have same named elements.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 }
 \examples{
 util_list_to_df2(util_df_to_list(dplyr::starwars))

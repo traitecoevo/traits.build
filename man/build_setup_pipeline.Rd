@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{build_setup_pipeline}
 \alias{build_setup_pipeline}
-\title{Update the `remake.yml` file with new studies}
+\title{Update the \code{remake.yml} file with new studies}
 \usage{
 build_setup_pipeline(
   dataset_ids = dir("data"),
@@ -13,7 +13,7 @@ build_setup_pipeline(
 )
 }
 \arguments{
-\item{dataset_ids}{`dataset_id`'s to include; by default includes all}
+\item{dataset_ids}{\code{dataset_id}'s to include; by default includes all}
 
 \item{method}{Approach to use in build}
 
@@ -25,9 +25,9 @@ build_setup_pipeline(
 method = "furrr"}
 }
 \value{
-Updated `remake.yml` file
+Updated \code{remake.yml} file
 }
 \description{
-`build_setup_pipeline` rewrites the `remake.yml` file to include new
+\code{build_setup_pipeline} rewrites the \code{remake.yml} file to include new
 studies.
 }

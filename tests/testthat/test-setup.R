@@ -694,8 +694,6 @@ test_that("`build_setup_pipeline` is working", {
     version = as.character(packageVersion("traits.build"))
   )
   expect_equal(traits.build_tag, expected_output)
-  #expect_length(austraits_raw$taxa, 14) #not valid test with new `dataset_update_taxonomy setup`
-  #expect_length(austraits$taxa, 14) #not valid test with new `dataset_update_taxonomy setup`
 
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
 
@@ -739,7 +737,6 @@ test_that("reports and plots are produced", {
       dataset_report(dataset_id = "Test_2022", austraits = austraits, overwrite = TRUE)
     ))
 })
-
 
 testthat::test_that("`dataset_test` is working", {
   # Expect error if no `dataset_ids` argument is input

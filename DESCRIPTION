@@ -22,7 +22,8 @@ Depends:
     lubridate,
     readr,
     stringr,
-    tidyr
+    tidyr,
+    austraits
 Imports:
     crayon,
     git2r,
@@ -38,7 +39,8 @@ Imports:
     testthat,
     tibble,
     whisker,
-    yaml
+    yaml,
+    lifecycle
 Suggests:
     furrr,
     remake,
@@ -57,8 +59,10 @@ Suggests:
     zip,
     covr
 Remotes:
-    richfitz/remake
+    richfitz/remake,
+    traitecoevo/austraits
 Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
