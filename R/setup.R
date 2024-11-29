@@ -609,8 +609,7 @@ metadata_add_identifiers <- function(dataset_id, overwrite = FALSE) {
       paste("Indicate all columns that contain identifiers that cross-reference between observations in ", dataset_id, " and an herbarium voucher or another database."), v)
 
     types <-
-      c("collectionID", "specimenID", "institutionCode",
-        "materialSampleID", "catalogNumber")
+      c("catalogNumber", "collectionID", "institutionCode", "institutionID", "materialSampleID", "occurrenceID")
 
     for (i in seq_along(var_in)) {
 

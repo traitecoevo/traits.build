@@ -49,12 +49,13 @@ basis_of_record:
 identifier_type:
   description: &identifier_type The type of identifier whose identifying characters are recorded, referencing globally accepted identifier types.
   type: categorical
-  values:
-     collectionID: An identifier for the collection or dataset from which the record was derived.
-     specimenID: XX
-     institutionCode: The name (or acronym) in use by the institution having custody of the object(s) or information referred to by a collectionID.
-     materialSampleID: An identifier for the dwc:MaterialSample (as opposed to a particular digital record of the dwc:MaterialSample). In the absence of a persistent global unique identifier, construct one from a combination of identifiers in the record that will most closely make the dwc:materialSampleID globally unique.
+  values:  
      catalogNumber: An identifier (preferably unique) for the record within the data set or collection.
+     collectionID: An identifier for the collection or dataset from which the record was derived.
+     institutionCode: The name (or acronym) in use by the institution having custody of the object(s) or information referred to by a collectionID.
+     institutionID: An identifier for the institution having custody of the object(s) or information referred to in the record.
+     materialSampleID: An identifier for the dwc:MaterialSample (as opposed to a particular digital record of the dwc:MaterialSample). In the absence of a persistent global unique identifier, construct one from a combination of identifiers in the record that will most closely make the dwc:materialSampleID globally unique.
+     occurrenceID: Per DarwinCore, an identifier for an Occurrence, as opposed to a particular digital record of the Occurrence.
 
 #-------------------------------------------------------------
 # A key describing the structure of the compiled `AusTraits` dataset
