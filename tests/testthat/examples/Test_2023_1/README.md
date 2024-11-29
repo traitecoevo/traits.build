@@ -43,6 +43,7 @@ Test_2023_1 is a copy of Falster_2005_1 with the following modifications:
 - Added `leaf_photosynthesis`, `leaf_stomatal_conductance` and `leaf_stomatal_conductance_2` to test `repeat_measurements_id`, with another `leaf_stomatal_conductance_3` variable that doesn't specify `repeat_measurements_id`
 - Added row for Alphitonia petriei with `flowering_time` and `LASA1000` values (`entity_type: individual`), read in `collection_date` from separate columns for each (`collection_date1`, `collection_date2`) to test same `individual_id` but different `observation_id` (because of different `collection_date`) (remember `LASA1000_dupe` also has the same `individual_id`)
 - Added "7:00:00" as a substitution to make sure it doesn't get reformatted to "07:00:00" (happens e.g. when `read_csv` detects time data type)
+- Added fake columns for identifiers types (`herbarium_voucher` and `collection_id`)
 
 
 See output/ for expected output files.
