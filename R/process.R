@@ -96,9 +96,16 @@ dataset_process <- function(filename_data_raw,
     process_format_contexts(dataset_id, traits)
   
   # Load identifiers
-  identifiers_tmp <-
-    metadata[["identifiers"]] %>% util_list_to_df2()
-  
+  if ("identifiers" %in% names(metadata)) {
+    identifiers_tmp <-
+      metadata[["identifiers"]] %>% util_list_to_df2()
+  } else {
+    identifiers_tmp <- list(
+      "var_in",
+      "identifier_type"
+    )
+  }
+
   # Load and clean trait data
   traits <-
     traits %>%
@@ -183,19 +190,28 @@ dataset_process <- function(filename_data_raw,
     # Ensure everything converted to character type
     util_df_convert_character()
   
-  #browser()
   # Separate identifiers into a standalone table that is in long format.
   # Needs to happen now after `observation_id` is set.
+
   identifiers <- traits %>% 
     dplyr::select(dplyr::all_of(c("dataset_id", "observation_id", identifiers_tmp$var_in)))
   
-  identifiers <- identifiers %>%
-    tidyr::pivot_longer(cols = 3:ncol(identifiers)) %>%
-    dplyr::rename(identifier_value = value, var_in = name) %>%
-    dplyr::left_join(identifiers_tmp) %>%
-    dplyr::select(dataset_id, observation_id, identifier_type, identifier_value) %>%
-    dplyr::filter(!is.na(identifier_value)) %>%
-    dplyr::arrange(observation_id, identifier_type)
+  if (ncol(identifiers) >= 3) {
+    identifiers <- identifiers %>%
+      tidyr::pivot_longer(cols = 3:ncol(identifiers)) %>%
+      dplyr::rename(identifier_value = value, var_in = name) %>%
+      dplyr::left_join(identifiers_tmp) %>%
+      dplyr::select(dataset_id, observation_id, identifier_type, identifier_value) %>%
+      dplyr::filter(!is.na(identifier_value)) %>%
+      dplyr::arrange(observation_id, identifier_type)
+  } else {
+    identifiers <- tibble::tibble(
+      dataset_id = character(0),
+      observation_id = character(0),
+      identifier_type = character(0),
+      identifier_value = character(0)
+    )
+  }
   
   traits <- traits %>%
     dplyr::select(-dplyr::all_of(identifiers_tmp$var_in))
@@ -1353,6 +1369,8 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
            "temporal_context_id", "method_context_id")
     )
   
+  #browser()
+
   df <- data %>%
     # Next step selects and renames columns based on named vector
     dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in, identifiers_tmp$var_in))) %>% # Why select v? When would those ids ever be in the data?
