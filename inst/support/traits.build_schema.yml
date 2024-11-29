@@ -209,8 +209,8 @@ austraits:
       elements:
         dataset_id: *dataset_id
         observation_id: *observation_id
-        identifier: A sequence of characters that links an observation within a traits.build database to additional information about observed entity in another database.
         identifier_type: *identifier_type
+        identifier_value: A sequence of characters that links an observation within a traits.build database to additional information about observed entity in another database.
     sources:
       description: Bibtex entries for all primary and secondary sources in the compilation.
       type: list

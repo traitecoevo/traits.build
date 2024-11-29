@@ -11,7 +11,7 @@ test_that("`metadata_create_template` is working", {
         skip_manual = TRUE)
     ))
 
-  metadata_names <- c("source", "contributors", "dataset", "locations", "contexts", "traits",
+  metadata_names <- c("source", "contributors", "dataset", "identifiers","locations", "contexts", "traits",
                       "substitutions", "taxonomic_updates", "exclude_observations",
                       "questions")
   collectors_names <- c("last_name", "given_name", "ORCID", "affiliation")
@@ -44,7 +44,7 @@ test_that("`metadata_create_template` is working with simulated user input", {
     ".*(?=already exists and will be overwritten).*", perl = TRUE
   )
 
-  metadata_names <- c("source", "contributors", "dataset", "locations", "contexts", "traits",
+  metadata_names <- c("source", "contributors", "dataset", "identifiers", "locations", "contexts", "traits",
                       "substitutions", "taxonomic_updates", "exclude_observations",
                       "questions")
   # Test metadata exists with correct names
@@ -734,12 +734,6 @@ testthat::test_that("`dataset_find_taxon` is working", {
 
 test_that("reports and plots are produced", {
   expect_silent(suppressMessages(austraits <- remake::make("test_name")))
-  # Not testing right now
-  #expect_no_error(
-    #p <-
-      #traits.build::plot_trait_distribution_beeswarm(
-        #austraits, "huber_value", "dataset_id", highlight = "Test_2022", hide_ids = TRUE)
-  #)
   expect_silent(
     suppressMessages(
       dataset_report(dataset_id = "Test_2022", austraits = austraits, overwrite = TRUE)

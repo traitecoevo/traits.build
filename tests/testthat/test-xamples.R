@@ -294,7 +294,7 @@ testthat::test_that("Test Dataset 8 builds correctly", {
 
   # Expected output
   tables <- c("traits", "locations", "contexts", "methods", "excluded_data",
-              "taxonomic_updates", "taxa", "contributors")
+              "taxonomic_updates", "taxa", "contributors", "identifiers")
   expect_no_error(
     expected_output <-
       purrr::map(
