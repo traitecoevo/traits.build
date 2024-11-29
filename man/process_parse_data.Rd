@@ -4,7 +4,14 @@
 \alias{process_parse_data}
 \title{Process a single dataset}
 \usage{
-process_parse_data(data, dataset_id, metadata, contexts, schema)
+process_parse_data(
+  data,
+  dataset_id,
+  metadata,
+  contexts,
+  schema,
+  identifiers_tmp
+)
 }
 \arguments{
 \item{data}{Tibble or dataframe containing the study data}

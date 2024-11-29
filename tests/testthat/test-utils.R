@@ -6,16 +6,16 @@ test_that("`util_replace_null` returns NA", {
 })
 
 
-test_that("`util_df_to_list` is working", {
-  starwars_list <- suppressWarnings(util_df_to_list(dplyr::starwars))
+test_that("`convert_df_to_list` is working", {
+  starwars_list <- suppressWarnings(convert_df_to_list(dplyr::starwars))
   
   expect_type(starwars_list, "list")
   expect_type(starwars_list, "list")
 })
 
 
-test_that("`util_list_to_df1` is working", {
-  starwars_df <- suppressWarnings(util_list_to_df1(as.list(dplyr::starwars)[2]))
+test_that("`convert_list_to_df1` is working", {
+  starwars_df <- suppressWarnings(convert_list_to_df1(as.list(dplyr::starwars)[2]))
   
   expect_equal(starwars_df |> nrow(), 87)
   expect_match(starwars_df$value |> class(), "integer")
@@ -24,17 +24,17 @@ test_that("`util_list_to_df1` is working", {
 })
 
 
-test_that("`util_list_to_df2` is working", {
-  expect_equal(util_list_to_df2(NULL) |> suppressWarnings(), NA)
-  expect_equal(util_list_to_df2(NA) |> suppressWarnings(), NA)
+test_that("`convert_list_to_df2` is working", {
+  expect_equal(convert_list_to_df2(NULL) |> suppressWarnings(), NA)
+  expect_equal(convert_list_to_df2(NA) |> suppressWarnings(), NA)
 
-  my_list <-suppressWarnings(util_df_to_list(dplyr::starwars))
-  expect_match(class(util_list_to_df2(my_list))[1] |> suppressWarnings(), "tbl_df")
-  expect_equal(util_list_to_df2(my_list, as_character = TRUE)[[1,2]] |> suppressWarnings(), "172")
-  expect_equal(util_list_to_df2(my_list, as_character = FALSE)[[1,2]] |> suppressWarnings(), 172)
+  my_list <-suppressWarnings(convert_df_to_list(dplyr::starwars))
+  expect_match(class(convert_list_to_df2(my_list))[1] |> suppressWarnings(), "tbl_df")
+  expect_equal(convert_list_to_df2(my_list, as_character = TRUE)[[1,2]] |> suppressWarnings(), "172")
+  expect_equal(convert_list_to_df2(my_list, as_character = FALSE)[[1,2]] |> suppressWarnings(), 172)
 
   my_list <- list(NA)
-  expect_equal(util_list_to_df2(my_list) |> suppressWarnings(), NA)
+  expect_equal(convert_list_to_df2(my_list) |> suppressWarnings(), NA)
 })
 
 
@@ -45,7 +45,7 @@ test_that("`util_df_convert_character` is working", {
 
 
 test_that("`util_extract_list_element` is working", {
-  test_list <- util_df_to_list(dplyr::starwars) |> suppressWarnings()
+  test_list <- convert_df_to_list(dplyr::starwars) |> suppressWarnings()
   names(test_list) <- paste("row", seq_len(nrow(dplyr::starwars)))
 
   expect_type(util_extract_list_element(1, test_list, "height"), "integer")

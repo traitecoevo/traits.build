@@ -22,5 +22,6 @@ Test_2023_2 is a copy of Falster_2005_1 with the following modifications:
 - Removed latitude and longitude fields for both locations
 - Add duplicate of LASA1000 to test `method_id` when `value_type` is read from a column at the trait level
 - Added `collection_date` as location-level metadata and added a column for `collection_date` at dataset level (duplicated row for Acacia celsa to test `observation_id`)
+- Added `specimen` with fake hypothetical specimen numbers. In this case the `identifier_type` is not a value specified in the schema, so confirming that these are suggestions rather than requirements.
 
 See output/ for expected output files.

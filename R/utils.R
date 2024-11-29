@@ -283,10 +283,10 @@ create_tree_branch <- function(x, title, prefix = "") {
 #' @return A tibble with two columns
 #' @export
 #' @examples \dontrun{
-#' util_list_to_df1(as.list(dplyr::starwars)[2])
+#' convert_list_to_df1(as.list(dplyr::starwars)[2])
 #' }
-util_list_to_df1 <- function(my_list) {
-  lifecycle::deprecate_warn("1.0.0", "util_list_to_df1()", "austraits::convert_list_to_df1()")
+convert_list_to_df1 <- function(my_list) {
+  lifecycle::deprecate_warn("1.0.0", "convert_list_to_df1()", "austraits::convert_list_to_df1()")
   austraits::convert_list_to_df1(my_list)
 }
 
@@ -306,9 +306,9 @@ austraits::convert_list_to_df1
 #' @param on_empty Value to return if my_list is NULL, NA or is length == 0, default = NA
 #'
 #' @export
-#' @examples util_list_to_df2(util_df_to_list(dplyr::starwars))
-util_list_to_df2 <- function(my_list, as_character = TRUE, on_empty = NA) {
-  lifecycle::deprecate_warn("1.0.0", "util_list_to_df2()", "austraits::convert_list_to_df2()")
+#' @examples convert_list_to_df2(convert_df_to_list(dplyr::starwars))
+convert_list_to_df2 <- function(my_list, as_character = TRUE, on_empty = NA) {
+  lifecycle::deprecate_warn("1.0.0", "convert_list_to_df2()", "austraits::convert_list_to_df2()")
   austraits::convert_list_to_df2(my_list, as_character, on_empty)
 }
 
@@ -326,9 +326,9 @@ austraits::convert_list_to_df2
 #' @param df A dataframe
 #' @return A (yaml) list
 #' @export
-#' @examples util_df_to_list(dplyr::starwars)
-util_df_to_list <- function(df) {
-  lifecycle::deprecate_warn("1.0.0", "util_df_to_list()", "austraits::convert_df_to_list()")
+#' @examples convert_df_to_list(dplyr::starwars)
+convert_df_to_list <- function(df) {
+  lifecycle::deprecate_warn("1.0.0", "convert_df_to_list()", "austraits::convert_df_to_list()")
   austraits::convert_df_to_list(df)
 }
 

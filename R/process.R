@@ -96,9 +96,9 @@ dataset_process <- function(filename_data_raw,
     process_format_contexts(dataset_id, traits)
   
   # Load identifiers
-  if ("identifiers" %in% names(metadata)) {
+  if ("identifiers" %in% names(metadata) & !all(is.na(metadata[["identifiers"]]))) {
     identifiers_tmp <-
-      metadata[["identifiers"]] %>% util_list_to_df2()
+      metadata[["identifiers"]] %>% austraits::convert_list_to_df2()
   } else {
     identifiers_tmp <- list(
       "var_in",
@@ -1368,8 +1368,6 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
     nm = c("entity_context_id", "plot_context_id", "treatment_context_id",
            "temporal_context_id", "method_context_id")
     )
-  
-  #browser()
 
   df <- data %>%
     # Next step selects and renames columns based on named vector
@@ -1675,7 +1673,7 @@ process_format_identifiers <- function(my_list, dataset_id, traits) {
     if (length(unlist(my_list$identifiers)) > 1) {
       identifiers <-
         my_list$identifiers %>%
-        util_list_to_df2() %>%
+        austraits::convert_list_to_df2() %>%
         dplyr::mutate(dataset_id = dataset_id)
     } else {
       identifiers <- tibble::tibble(dataset_id = character())
