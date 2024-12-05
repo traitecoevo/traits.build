@@ -73,7 +73,6 @@ test_that("`util_separate_and_sort` returns alphabetically sorted characters", {
 })
 
 
-
 test_that("testing env is working", {
   expect_true(is_testing_env())
 })
