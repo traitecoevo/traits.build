@@ -18,11 +18,11 @@ dataset_build(
 \arguments{
 \item{filename_metadata}{Metadata yaml file for a given study}
 
-\item{filename_data_raw}{Raw `data.csv` file for any given study}
+\item{filename_data_raw}{Raw \code{data.csv} file for any given study}
 
-\item{definitions}{Definitions read in from the `traits.yml`}
+\item{definitions}{Definitions read in from the \code{traits.yml}}
 
-\item{unit_conversion_functions}{`unit_conversion.csv` file read in from the config folder}
+\item{unit_conversion_functions}{\code{unit_conversion.csv} file read in from the config folder}
 
 \item{schema}{Schema for traits.build}
 
@@ -38,7 +38,7 @@ List, AusTraits database object
 }
 \description{
 Build specified dataset. This function completes three steps, which can be executed separately if desired:
-`dataset_configure`, `dataset_process`, `dataset_update_taxonomy`
+\code{dataset_configure}, \code{dataset_process}, \code{dataset_update_taxonomy}
 }
 \examples{
 \dontrun{

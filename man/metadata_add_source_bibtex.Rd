@@ -16,13 +16,13 @@ metadata_add_source_bibtex(
 
 \item{file}{Name of file where reference is saved}
 
-\item{type}{Type of reference: `primary`, `secondary` or `original`
-(or `original_01`, `original_02`, etc., for multiple sources)}
+\item{type}{Type of reference: \code{primary}, \code{secondary} or \code{original}
+(or \code{original_01}, \code{original_02}, etc., for multiple sources)}
 
 \item{drop}{Variables in bibtex to ignore}
 }
 \value{
-`metadata.yml` file with citation details added
+\code{metadata.yml} file with citation details added
 }
 \description{
 Adds citation details to a metadata file for given study

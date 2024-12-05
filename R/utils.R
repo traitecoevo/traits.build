@@ -1,6 +1,6 @@
 #' Pipe operator
 #'
-#' See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
+#' See `magrittr::[\%>\%][magrittr::pipe]` for details.
 #'
 #' @name %>%
 #' @rdname pipe
@@ -107,59 +107,6 @@ util_separate_and_sort <- function(x, sep = " ") {
   x
 
 }
-
-#'  Convert dataframe to list
-#'
-#'  Convert a dataframe to a named list, useful when converting to yaml.
-#'
-#' @param df A dataframe
-#' @return A (yaml) list
-#' @export
-#' @examples util_df_to_list(dplyr::starwars)
-util_df_to_list <- function(df) {
-  attr(df, "out.attrs") <- NULL
-  unname(lapply(split(df, seq_len(nrow(df))), as.list))
-}
-
-#' Convert a list of lists to dataframe
-#'
-#' Convert a list of lists to dataframe; requires that every list have same named elements.
-#'
-#' @param my_list A list of lists to dataframe
-#' @param as_character A logical value, indicating whether the values are read as character
-#' @param on_empty Value to return if my_list is NULL, NA or is length == 0, default = NA
-#'
-#' @export
-#' @examples util_list_to_df2(util_df_to_list(dplyr::starwars))
-util_list_to_df2 <- function(my_list, as_character = TRUE, on_empty = NA) {
-
-  if (is.null(my_list) || any(is.na(my_list)) || length(my_list) == 0)
-    return(on_empty)
-
-  if (as_character)
-    my_list <- lapply(my_list, lapply, as.character)
-
-  dplyr::bind_rows(lapply(my_list, tibble::as_tibble))
-}
-
-#' Convert a list with single entries to dataframe
-#'
-#' @param my_list A list with single entries
-#' @return A tibble with two columns
-#' @export
-#' @examples \dontrun{
-#' util_list_to_df1(as.list(dplyr::starwars)[2])
-#' }
-util_list_to_df1 <- function(my_list) {
-
-  for (f in names(my_list)) {
-    if (is.null(my_list[[f]]))
-      my_list[[f]] <- NA
-  }
-
-  tibble::tibble(key = names(my_list), value = unname(unlist(my_list)))
-}
-
 
 #' Convert BibEntry object to a list
 #'
@@ -287,7 +234,7 @@ write_metadata <- function(data, path, style_code = FALSE) {
 
 
 #' Write the YAML representation of `metadata.yml` for specified `dataset_id` to
-#' file \code{data/dataset_id/metadata.yml}
+#' file `data/dataset_id/metadata.yml`
 #'
 #' @inheritParams metadata_path_dataset_id
 #' @param metadata Metadata file
@@ -320,3 +267,96 @@ create_tree_branch <- function(x, title, prefix = "") {
     )
   )
 }
+
+# Renaming and re-exporting austraits functions to ensure old scripts still work
+
+#' Convert a list with single entries to dataframe
+#' 
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#' 
+#' @param my_list A list with single entries
+#' @return A tibble with two columns
+#' @export
+#' @examples \dontrun{
+#' util_list_to_df1(as.list(dplyr::starwars)[2])
+#' }
+util_list_to_df1 <- function(my_list) {
+  lifecycle::deprecate_warn("1.0.0", "util_list_to_df1()", "austraits::convert_list_to_df1()")
+  austraits::convert_list_to_df1(my_list)
+}
+
+#' @importFrom austraits convert_list_to_df1
+#' @export
+austraits::convert_list_to_df1
+
+#' Convert a list of lists to dataframe
+#'
+#' @description
+#' Convert a list of lists to dataframe; requires that every list have same named elements.
+#' 
+#' `r lifecycle::badge("deprecated")`
+#'
+#' @param my_list A list of lists to dataframe
+#' @param as_character A logical value, indicating whether the values are read as character
+#' @param on_empty Value to return if my_list is NULL, NA or is length == 0, default = NA
+#'
+#' @export
+#' @examples util_list_to_df2(util_df_to_list(dplyr::starwars))
+util_list_to_df2 <- function(my_list, as_character = TRUE, on_empty = NA) {
+  lifecycle::deprecate_warn("1.0.0", "util_list_to_df2()", "austraits::convert_list_to_df2()")
+  austraits::convert_list_to_df2(my_list, as_character, on_empty)
+}
+
+#' @importFrom austraits convert_list_to_df2
+#' @export
+austraits::convert_list_to_df2
+
+#' Convert dataframe to list
+#'
+#' @description
+#' Convert a dataframe to a named list, useful when converting to yaml.
+#'  
+#' `r lifecycle::badge("deprecated")`
+#'
+#' @param df A dataframe
+#' @return A (yaml) list
+#' @export
+#' @examples util_df_to_list(dplyr::starwars)
+util_df_to_list <- function(df) {
+  lifecycle::deprecate_warn("1.0.0", "util_df_to_list()", "austraits::convert_df_to_list()")
+  austraits::convert_df_to_list(df)
+}
+
+#' @importFrom austraits convert_df_to_list
+#' @export
+austraits::convert_df_to_list
+
+#' Combine all the AusTraits studies into the compiled AusTraits database
+#'
+#' @description
+#' `build_combine` compiles all the loaded studies into a single AusTraits
+#' database object as a large list.
+#'
+#' `r lifecycle::badge("deprecated")`
+#'
+#' @param ... Arguments passed to other functions
+#' @param d List of all the AusTraits studies
+#'
+#' @return AusTraits compilation database as a large list
+#' @importFrom rlang .data
+#' @export
+build_combine <- function(..., d = list(...)) {
+  lifecycle::deprecate_warn("1.0.0", "build_combine()", "austraits::bind_databases()")
+  austraits::convert_df_to_list(..., d)
+}
+
+#' @importFrom austraits bind_databases
+#' @export
+austraits::bind_databases
+
+#' @importFrom austraits flatten_database
+#' @export
+austraits::flatten_database
+
+database_create_combined_table <- austraits::flatten_database

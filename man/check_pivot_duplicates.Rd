@@ -12,7 +12,7 @@ check_pivot_duplicates(
 \arguments{
 \item{database_object}{Database object}
 
-\item{dataset_ids}{`dataset_id`'s to check for duplicates; default is all of them}
+\item{dataset_ids}{\code{dataset_id}'s to check for duplicates; default is all of them}
 }
 \value{
 Tibble with duplicates and pivot columns

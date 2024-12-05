@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{metadata_add_source_doi}
 \alias{metadata_add_source_doi}
-\title{Adds citation details from a doi to a metadata file for a `dataset_id`}
+\title{Adds citation details from a doi to a metadata file for a \code{dataset_id}}
 \usage{
 metadata_add_source_doi(..., doi, bib = NULL)
 }
@@ -11,10 +11,10 @@ metadata_add_source_doi(..., doi, bib = NULL)
 
 \item{doi}{doi of reference to add}
 
-\item{bib}{(Only use for testing purposes) Result of calling `bib rcrossref::cr_cn(doi)`}
+\item{bib}{(Only use for testing purposes) Result of calling \verb{bib rcrossref::cr_cn(doi)}}
 }
 \value{
-`metadata.yml` file with citation details added
+\code{metadata.yml} file with citation details added
 }
 \description{
 Uses rcrossref package to access publication details from the crossref

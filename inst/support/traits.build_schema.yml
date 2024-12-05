@@ -23,6 +23,7 @@ value_type:
     mode: Value is the mode of values recorded for an entity. This is the appropriate value type for a categorical trait value.
     range: Value is a range of values recorded for an entity.
     bin: Value for an entity falls within specified limits.
+    standard_error: Value is the standard error of a mean of values recorded for an entity.
     unknown: Not currently known.
 
 basis_of_value:
@@ -119,8 +120,8 @@ austraits:
         source_original_dataset_key: Citation key for the original dataset_id in sources; for compilations.  The key is typically formatted as `Surname_year`.
         source_original_dataset_citation: Citations for the original dataset_id in sources; for compilationse. This detail is generated from the original source in the metadata.
         data_collectors: &data_collectors The person (people) leading data collection for this study.
-        assistants: &assistants Names of additional people who played a more minor role in data collection for the study.
-        dataset_curators: &dataset_curators Names of AusTraits team member(s) who contacted the data collectors and added the study to the AusTraits repository.
+        assistants: &assistants Names of people who played a more minor role in data collection for the study.
+        dataset_curators: &dataset_curators Names of database team member(s) who contacted the data collectors and added the study to the database repository.
     excluded_data:
       description: A table of data that did not pass quality tests and so were excluded from the master dataset. The structure is identical to that presented in the `traits` table, only with an extra column called `error` indicating why the record was excluded. Common reasons are missing_unit_conversions, missing_value, and unsupported_trait_value.
       type: table
@@ -411,11 +412,11 @@ metadata:
         find: Contributor's trait value that needs to be changed.
         replace: AusTraits supported replacement value.
     taxonomic_updates:
-      description: A table of taxonomic name changes needed to align original names in the dataset with taxon names in the chosen taxonomic reference(s).
+      description: A table of taxonomic name changes needed to align original names in the dataset with aligned names in the chosen taxonomic reference(s).
       type: array
       values:
         find: *original_name
-        replace: *taxon_name
+        replace: *aligned_name
         reason: Records why the change was implemented, e.g. `typos`, `taxonomic synonyms`, and `standardising spellings`
         taxonomic_resolution: *taxonomic_resolution
     exclude_observations:

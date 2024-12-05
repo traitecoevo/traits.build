@@ -20,7 +20,7 @@ taxon_list <- read_csv_char("config/taxon_list.csv")
 
 {{/dataset_ids}}
 
-{{database_name}}_raw <- build_combine(
+{{database_name}}_raw <- austraits::bind_databases(
 {{#dataset_ids}}
   {{dataset_id}},
 {{/dataset_ids}}

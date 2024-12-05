@@ -73,7 +73,7 @@ link_version <- function(v) sprintf("<https://w3id.org/traits.build/release/%s/i
 
 <dt>Cite as:</dt>
 
-<dd>[doi.org/10.1101/2024.02.11.579848](https://doi.org/10.1101/2024.02.11.579848): Wenk, Elizabeth H., Payal Bal, David Coleman, Rachael V. Gallagher, Sophie Yang, and Daniel S. Falster. “Traits.Build: A Data Model, Workflow and R Package for Building Harmonised Ecological Trait Databases.” bioRxiv, February 12, 2024.
+<dd>Wenk, Elizabeth H., Payal Bal, David Coleman, Rachael V. Gallagher, Sophie Yang, and Daniel S. Falster. “Traits.Build: A Data Model, Workflow and R Package for Building Harmonised Ecological Trait Databases.” bioRxiv, February 12, 2024. [doi.org/10.1101/2024.02.11.579848](https://doi.org/10.1101/2024.02.11.579848)
 </dd>
 
 </dl>
