@@ -39,7 +39,7 @@ link_version <- function(v) sprintf("<https://w3id.org/traits.build/release/%s/i
 
 <dt>**Contributors**:</dt>
 
-<dd>[David Coleman](https://orcid.org/0000-0002-1773-6597) [Sophie Yang](https://orcid.org/0000-0001-7328-345X)</dd>
+<dd>[David Coleman](https://orcid.org/0000-0002-1773-6597), [Sophie Yang](https://orcid.org/0000-0001-7328-345X)</dd>
 
 </dd>
 
@@ -73,7 +73,8 @@ link_version <- function(v) sprintf("<https://w3id.org/traits.build/release/%s/i
 
 <dt>Cite as:</dt>
 
-<dd>XXX</dd>
+<dd>Wenk, Elizabeth H., Payal Bal, David Coleman, Rachael V. Gallagher, Sophie Yang, and Daniel S. Falster. “Traits.Build: A Data Model, Workflow and R Package for Building Harmonised Ecological Trait Databases.” bioRxiv, February 12, 2024. [doi.org/10.1101/2024.02.11.579848](https://doi.org/10.1101/2024.02.11.579848)
+</dd>
 
 </dl>
 
@@ -102,7 +103,7 @@ source("create_term_table.R")
 triples_with_labels <-
   read_csv("output/ontology/build_triples.csv")
 
-base_url <- "https://w3id.org/traits.build/"
+base_url <- "https://w3id.org/traits.build#"
 
 if (knitr::is_html_output()) {
   print_table <- print_table_html
@@ -139,17 +140,65 @@ Within the traits.build ontology, there are 5 main categories of terms, differen
 
 # 2. Traits.build data model
 
+The traits.build resource
+
+```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+concept_scheme_terms <- 
+  triples_with_labels %>% 
+  filter(Subject == "<https://w3id.org/traits.build>") %>%
+  filter(!stringr::str_detect(Predicate, "http://purl.org/dc/terms/title")) %>%
+  filter(!stringr::str_detect(Predicate, "http://www.w3.org/2004/02/skos/core#prefLabel"))
+
+output <- tibble(name =  list(), description = list())
+
+URI <- make_link("w3id.org/traits.build", "https://w3id.org/traits.build")
+  
+output <- 
+  add_row(output, "URI", URI)
+
+for (i in seq_len(nrow(concept_scheme_terms))) {
+  name <- make_link(concept_scheme_terms$Predicate_labels[i], concept_scheme_terms$predicate_tmp[i])
+  description <- ifelse(stringr::str_detect(concept_scheme_terms$object_tmp[i], "http"), 
+                                       make_link(concept_scheme_terms$Object_labels[i], concept_scheme_terms$object_tmp[i]),
+                                       concept_scheme_terms$Object_labels[i])
+  if(!("html" %in% class(name)))
+    name <- gt::html(name)
+  if (!("html" %in% class(description))) {
+    description <- gt::html(description)
+  }
+  
+  output <- 
+    bind_rows(
+      output, 
+      tibble(name = list(name), description = list(description))
+    )
+  
+  output
+  
+}
+
+output %>%
+  print_table()
+```
+
+
 ##    Database
 
-The traits.build resource
+A traits.build database
 
 ```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
 database_overview <- 
   triples_with_labels %>% 
-  filter(Subject == "<https://w3id.org/traits.build>") %>%
-  mutate()
+  filter(Subject == "<https://w3id.org/traits.build#traits.build-database>") %>%
+  filter(!stringr::str_detect(Predicate, "http://purl.org/dc/terms/title")) %>%
+  filter(!stringr::str_detect(Predicate, "http://www.w3.org/2004/02/skos/core#prefLabel"))
 
 output <- tibble(name =  list(), description = list())
+
+URI <- make_link("w3id.org/traits.build#traits.build-database", "https://w3id.org/traits.build#traits.build-database")
+  
+output <- 
+  add_row(output, "URI", URI)
 
 for (i in seq_len(nrow(database_overview))) {
   name <- make_link(database_overview$Predicate_labels[i], database_overview$predicate_tmp[i])
@@ -184,12 +233,14 @@ The traits.build output tables
 
 database_tables <-
   triples_with_labels %>%
-    filter(stringr::str_detect(Subject, "w3id.org/traits.build/traits.build-"))
+    filter(stringr::str_detect(Subject, "w3id.org/traits.build#traits.build-"))
 
 # subtract terms that will appear in this section's tables from "remaining", so that next section below only considers "not yet shown" terms
 remaining <-
   triples_with_labels %>%
-  filter(!Subject %in% database_tables$Subject)
+  filter(!Subject %in% database_tables$Subject) %>%
+  filter(Subject != "<https://w3id.org/traits.build#traits.build-database>") %>%
+  filter(Subject != "<https://w3id.org/traits.build>")
 
 # load traits.build schema
 y <- traits.build::get_schema()
@@ -267,28 +318,32 @@ remaining <-
   remaining %>%
     filter(!Subject %in% organised_tmp$Subject)
 
+# create vector that includes columns already displayed, to avoid column names like `dataset_id` appearing many times in website
+terms_already_displayed <- vector()
+
 # split triples table by `row_n` to retain tables in same sequence as traits.build schema and traits.build output
 database_columns_sub_0 <- split(database_columns, database_columns$row_n)
 
 for (i in seq_along(1:length(database_columns_sub_0))) {
   
   table_label <- database_tables$Subject_labels[match(names(database_columns_sub_0)[[i]] %>% as.numeric(), database_tables$row_n)]
-  
-  writeLines(sprintf('\n\n ### %s ', table_label))
-  
+  table_label_alt <- database_tables$alt_label[match(names(database_columns_sub_0)[[i]] %>% as.numeric(), database_tables$row_n)]
+
  # create vector of terms within each table from traits.build schema, to keep terms in order
   column_seq_vec <- 
-    y$austraits$elements[[table_label]]$elements %>%
+    y$austraits$elements[[table_label_alt]]$elements %>%
     names() %>%
     as.vector()
   
- # create vector of terms within ontology that are matched to the specific table; use `altLabel` since that matches schema
+  column_seq_vec <- column_seq_vec  %>% subset(! column_seq_vec %in% terms_already_displayed)
+    
+   # create vector of terms within ontology that are matched to the specific table; use `altLabel` since that matches schema
   alt_column_labels <- 
     database_columns_sub_0[[i]] %>%
       filter(predicate_tmp == "http://www.w3.org/2004/02/skos/core#altLabel") %>% 
       select(table_label = object_tmp, subject_tmp)
 
- # amend above list, to add ontology terms (as in `trait_value` instead of `value) and fiter so that it only includes terms not also in schema
+ # amend above list, to add ontology terms (as in `trait_value` instead of `value) and filter so that it only includes terms not also in schema
   columns_extra <- 
     database_columns_sub_0[[i]] %>%
     distinct(subject_tmp) %>%
@@ -299,9 +354,17 @@ for (i in seq_along(1:length(database_columns_sub_0))) {
   
   columns_extra <- columns_extra$subject_tmp %>% as.vector()
   
+  columns_extra <- columns_extra  %>% subset(! columns_extra %in% terms_already_displayed)
+  
   # create a single vector with schema terms + any extras from ontology
-   column_seq_vec <- c(column_seq_vec, columns_extra)
-
+  column_seq_vec <- c(column_seq_vec, columns_extra)
+  
+  # only print table label if there are terms to print
+  
+  if (length(column_seq_vec) != 0) {
+    writeLines(sprintf('\n\n### %s ', table_label))
+  }
+    
   # rename terms from schema to names from ontology 
   column_seq <- 
     database_columns_sub_0[[i]]$Subject_labels[match(column_seq_vec,database_columns_sub_0[[i]]$object_tmp)] %>%
@@ -320,22 +383,31 @@ for (i in seq_along(1:length(database_columns_sub_0))) {
   database_columns_sub_0[[i]] <- 
     database_columns_sub_0[[i]] %>%
     dplyr::left_join(column_seq) %>%  
-    dplyr::arrange(row_n) # arranging by row number, but I think this is overwritten by `split`
+    # arranging by row number, but I think this is overwritten by `split`
+    dplyr::arrange(row_n) %>% 
+    # omit terms that have already appeared as part of a different table's output
+    dplyr::filter(!database_columns_sub_0[[i]]$subject_tmp %in% terms_already_displayed)
   
   # split triples pertaining to a specific table's terms, based on the sequence of columns in traits.build output
   # needs to use numbers, because `split` re-alphabetises input based on split term
   database_columns_sub <- split(database_columns_sub_0[[i]], database_columns_sub_0[[i]]$row_n_col)
   
-  for (j in seq_along(1:length(database_columns_sub))) {
+  if (length(column_seq_vec) != 0) {
     
-    # creating header makes anchor using header name. Also create an anchor using identifier
-    term_to_display <- database_columns_sub[[j]]$Subject_labels[1]
-    anchor <- paste0(base_url, database_columns_sub[[j]]$subject_tmp[1])
-    writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
-    thisterm <- column_seq$term[[j]]
-    
-    create_term_table(thisterm, database_columns_sub[[j]]) %>% 
-    print_table()
+    for (j in seq_along(1:length(database_columns_sub))) {
+      
+      # creating header makes anchor using header name. Also create an anchor using identifier
+      term_to_display <- database_columns_sub[[j]]$Subject_labels[1]
+      anchor <- paste0(base_url, database_columns_sub[[j]]$subject_tmp[1])
+      writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
+      thisterm <- column_seq$term[[j]]
+      
+      create_term_table(thisterm, database_columns_sub[[j]]) %>% 
+      print_table()
+      
+      terms_already_displayed <- unique(c(terms_already_displayed, database_columns_sub_0[[i]]$subject_tmp))
+      terms_already_displayed
+    }
   }
 }
 ```

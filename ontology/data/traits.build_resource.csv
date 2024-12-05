@@ -1,14 +1,14 @@
 Subject,Predicate,Object
-<https://w3id.org/traits.build>,<http://purl.org/dc/terms/description>,"""A database of 13 relational tables build using the {traits.build} R-packge for harmonizing trait data."""
+<https://w3id.org/traits.build>,<http://purl.org/dc/terms/description>,"""The traits.build ontology documents the output structure of a database built using the {traits.build} R package.""@en"
 <https://w3id.org/traits.build>,<http://purl.org/dc/terms/license>,"""<https://creativecommons.org/licenses/by/4.0/>""^^<xsd:anyURI>"
 <https://w3id.org/traits.build>,<http://purl.org/dc/terms/publisher>,"""<https://austraits.org/>""^^<xsd:anyURI>"
 <https://w3id.org/traits.build>,<http://www.w3.org/2000/01/rdf-schema#type>,<http://www.w3.org/2004/02/skos/core#ConceptScheme>
-<https://w3id.org/traits.build>,<http://www.w3.org/2000/01/rdf-schema#label>,"""traits.build database""@en"
-<https://w3id.org/traits.build>,<http://purl.org/dc/terms/title>,"""traits.build database""@en"
-<https://w3id.org/traits.build>,<http://www.w3.org/2004/02/skos/core#prefLabel>,"""traits.build database""@en"
-<https://w3id.org/traits.build>,<http://www.w3.org/2004/02/skos/core#hasTopConcept>,"""<https://w3id.org/traits.build>""^^<xsd:anyURI>"
+<https://w3id.org/traits.build>,<http://www.w3.org/2000/01/rdf-schema#label>,"""traits.build""@en"
+<https://w3id.org/traits.build>,<http://purl.org/dc/terms/title>,"""traits.build""@en"
+<https://w3id.org/traits.build>,<http://www.w3.org/2004/02/skos/core#prefLabel>,"""traits.build""@en"
+<https://w3id.org/traits.build>,<http://www.w3.org/2004/02/skos/core#hasTopConcept>,"""<https://w3id.org/traits.build-database>""^^<xsd:anyURI>"
 <https://w3id.org/traits.build>,<http://purl.org/dc/terms/creator>,"""Daniel Falster"""
 <https://w3id.org/traits.build>,<http://purl.org/dc/terms/creator>,"""Elizabeth Wenk"""
 <https://w3id.org/traits.build>,<http://purl.org/dc/terms/creator>,"""Sophie Yang"""
-<https://w3id.org/traits.build>,<http://purl.org/dc/terms/created>,"""01/02/24^^<xsd:date>"""
-<https://w3id.org/traits.build>,<http://semanticscience.org/resource/SIO_000602>,<http://semanticscience.org/resource/SIO_000750>
+<https://w3id.org/traits.build>,<http://purl.org/dc/terms/created>,"""01 February 2024^^<xsd:date>"""
+https://w3id.org/traits.build#traits.build-database,<http://www.w3.org/2004/02/skos/core#topConceptOf>,"""<https://w3id.org/traits.build>""^^<xsd:anyURI>"

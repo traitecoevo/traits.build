@@ -39,7 +39,9 @@ convert_to_triples <- function(ontology_csv, published_classes_csv) {
     dplyr::filter(!is.na(Object)) %>%
     dplyr::mutate(
       Subject = paste0("<",Subject,">"),
-      Object = ifelse(stringr::str_detect(Predicate,"inScheme"),paste0("<", Object, ">"), paste0("\"", Object, "\"@en"))
+      Object = ifelse(stringr::str_detect(Predicate,"inScheme"),
+                      paste0("<", Object, ">"), 
+                      paste0("\"", Object, "\"@en"))
       )
 
   reformatted_ontology <- 
@@ -83,10 +85,10 @@ convert_to_triples <- function(ontology_csv, published_classes_csv) {
     dplyr::mutate(
       `<http://www.w3.org/2000/01/rdf-schema#label>` = `<http://www.w3.org/2004/02/skos/core#prefLabel>`,
       `<http://www.w3.org/2002/07/owl#sameAs>` = `<http://www.w3.org/2004/02/skos/core#exactMatch>`,
-      `<http://www.w3.org/2004/02/skos/core#inScheme>` = "traits.build"
+      `<http://www.w3.org/2004/02/skos/core#inScheme>` = "<https://w3id.org/traits.build>"
     ) %>%
     dplyr::mutate(
-      Subject = paste0("<https://w3id.org/traits.build/",Subject,">")
+      Subject = paste0("<https://w3id.org/traits.build#",Subject,">")
     ) %>%
     tidyr::pivot_longer(cols = -Subject) %>% 
     dplyr::rename(
@@ -106,7 +108,7 @@ convert_to_triples <- function(ontology_csv, published_classes_csv) {
                                   paste0("\"", Object_tmp, "\"@en"), 
                                   NA),
       Object = ifelse(!stringr::str_detect(Object_tmp, "\\:") & !stringr::str_detect(Predicate, "description|label|comment")  & is.na(Object), 
-                       paste0("<https://w3id.org/traits.build/",stringr::str_trim(Object_tmp),">"), 
+                       paste0("<https://w3id.org/traits.build#",stringr::str_trim(Object_tmp),">"), 
                        Object),
       Object = ifelse(stringr::str_detect(Object_tmp, "\\:") & is.na(Object),
                        paste0("<", published_classes_csv$Entity[match(Object_tmp, published_classes_csv$identifier2)],">"), 
@@ -115,12 +117,12 @@ convert_to_triples <- function(ontology_csv, published_classes_csv) {
                        paste0("<", Object_tmp, ">"), 
                        Object),
       Object = ifelse(stringr::str_detect(Predicate,"inScheme"), 
-                      "<https://w3id.org/traits.build/>", 
+                      "<https://w3id.org/traits.build>", 
                       Object),
       Object = ifelse(stringr::str_detect(Predicate,"created"), 
                       paste0("\"", Object_tmp, "\"", "^^<xsd:date>"),
                       Object),
-      Subject = ifelse(Subject == "<https://w3id.org/traits.build/traits.build>", "<https://w3id.org/traits.build>", Subject)
+      Subject = ifelse(Subject == "<https://w3id.org/traits.build#traits.build>", "<https://w3id.org/traits.build>", Subject)
       ) %>%
     dplyr::select(-Object_tmp)
   
@@ -158,7 +160,7 @@ triples <- triples %>%
     object_tmp = stringr::str_replace(object_tmp, "@en", ""),
     object_tmp = stringr::str_replace(object_tmp, "[:punct:]$",""),
     object_tmp = stringr::str_replace(object_tmp, "^[:punct:]",""),
-    subject_tmp = stringr::str_replace(Subject, "<https://w3id.org/traits.build/", ""),
+    subject_tmp = stringr::str_replace(Subject, "<https://w3id.org/traits.build#", ""),
     subject_tmp = stringr::str_replace(subject_tmp, "<", ""),
     subject_tmp = stringr::str_replace(subject_tmp, ">", "")
   )
@@ -189,7 +191,7 @@ true_triples <- read_nquads(file.path(output_path, "traits.build.nq"))
 
 # serialize to any format
 rdflib::rdf_serialize(true_triples, file.path(output_path, "traits.build.ttl"),
-                      namespace = c(traits.build = "https://w3id.org/traits.build/",
+                      namespace = c(traits.build = "https://w3id.org/traits.build#",
                                     dc = "http://purl.org/dc/elements/1.1/",
                                     skos = "http://www.w3.org/2004/02/skos/core#",
                                     dwcattributes = "http://rs.tdwg.org/dwc/terms/attributes/",
@@ -207,17 +209,20 @@ rdflib::rdf_serialize(true_triples, file.path(output_path, "traits.build.ttl"),
 )
 rdflib::rdf_serialize(true_triples, file.path(output_path, "traits.build.json"), format="jsonld")
 
-
 # Put a copy of ontology in place found by pkgdown
-quarto::quarto_render("ontology/traits.build.qmd", output_format = "html")
-version <- rmarkdown::yaml_front_matter("ontology/traits.build.qmd")$params$version
+quarto::quarto_render("ontology/index.qmd", output_format = "html")
+version <- rmarkdown::yaml_front_matter("ontology/index.qmd")$params$version
 
-file.copy("ontology/traits.build.html", "ontology/output/ontology/traits.build.html", overwrite = TRUE)
-unlink("ontology/traits.build.html")
+file.copy("ontology/index.html", "ontology/output/ontology/index.html", overwrite = TRUE)
+unlink("ontology/index.html")
 
 # Copy into folder for specific release
-files <- c("traits.build.json", "traits.build.nq", "traits.build.nt", "traits.build.ttl", "traits.build.html")
+files <- c("traits.build.json", "traits.build.nq", "traits.build.nt", "traits.build.ttl", "index.html")
 to_path <- file.path("ontology/output/ontology/release", version)
 dir.create(to_path, FALSE, TRUE)
 purrr::walk(files, ~ file.copy(file.path("ontology/output/ontology", .x), file.path(to_path, .x), overwrite = TRUE))
 
+# **IMPORTANT FINAL STEP**
+# After generating the files within the ontology folder, 
+# a copy of the files needs to be copied across to build the website using:
+# pkgdown::build_site()

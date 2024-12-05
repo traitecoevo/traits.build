@@ -9,7 +9,7 @@ process_flag_unsupported_values(data, definitions)
 \arguments{
 \item{data}{Tibble or dataframe containing the study data}
 
-\item{definitions}{Definitions read in from the `traits.yml` file in the config folder}
+\item{definitions}{Definitions read in from the \code{traits.yml} file in the config folder}
 }
 \value{
 Tibble with flagged values that are unsupported categorical trait values, missing values
@@ -17,7 +17,7 @@ or numeric trait values that cannot be converted to numeric
 }
 \description{
 Flags any categorical traits values that are not on the list of allowed values defined in the
-`traits.yml` file.
+\code{traits.yml} file.
 NA values are flagged as errors.
 Numeric values that cannot convert to numeric are also flagged as errors.
 }

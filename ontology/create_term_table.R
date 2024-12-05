@@ -21,14 +21,16 @@ create_term_table <- function(thisterm, triples) {
   
   
   for (i in seq_along(1:nrow(trait_i))) {
-    trait_i$property_link[i] <- make_link(trait_i$Predicate_labels[i], trait_i$Predicate[i])
-    trait_i$value_link[i] = ifelse(stringr::str_detect(trait_i$Object[i], "http"), make_link(trait_i$Object_labels[i], trait_i$Object[i]), trait_i$Object_labels[i])
+    trait_i$property_link[i] <- make_link(trait_i$Predicate_labels[i], trait_i$predicate_tmp[i])
+    trait_i$value_link[i] = ifelse(stringr::str_detect(trait_i$Object[i], "http"), make_link(trait_i$Object_labels[i], trait_i$object_tmp[i]), trait_i$Object_labels[i])
   }
   
   output <- tibble(name =  list(), description = list())
 
+  URI <- make_link(paste0("w3id.org/traits.build#", thisterm), paste0(base_url, thisterm))
+  
   output <- 
-    add_row(output, "URI", thisterm)
+    add_row(output, "URI", URI)
   
   # label
     label <- trait_i %>% filter(Predicate_labels == "preferred label")
@@ -408,7 +410,7 @@ create_term_table <- function(thisterm, triples) {
     output <-
       add_row(output,
               scheme_tmp$property_link,
-              scheme_tmp$value_link
+              make_link("w3id.org/traits.build", "https://w3id.org/traits.build")
       )
     
   # datatype
