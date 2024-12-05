@@ -9,9 +9,9 @@ process_convert_units(data, definitions, unit_conversion_functions)
 \arguments{
 \item{data}{Tibble or dataframe containing the study data}
 
-\item{definitions}{Definitions read in from the `traits.yml` file in the config folder}
+\item{definitions}{Definitions read in from the \code{traits.yml} file in the config folder}
 
-\item{unit_conversion_functions}{`unit_conversions.csv` file stored in the config folder}
+\item{unit_conversion_functions}{\code{unit_conversions.csv} file stored in the config folder}
 }
 \value{
 Tibble with converted units

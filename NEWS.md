@@ -1,3 +1,10 @@
+# traits.build 1.1.0
+
+- Small bugfixes in dataset_test
+- Add Onotology
+- Add Hex sticker
+
+
 # traits.build 1.0.1
 
 As described in #134, fixes some minor issues with 

@@ -23,6 +23,7 @@ value_type:
     mode: Value is the mode of values recorded for an entity. This is the appropriate value type for a categorical trait value.
     range: Value is a range of values recorded for an entity.
     bin: Value for an entity falls within specified limits.
+    standard_error: Value is the standard error of a mean of values recorded for an entity.
     unknown: Not currently known.
 
 basis_of_value:

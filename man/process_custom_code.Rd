@@ -7,14 +7,14 @@
 process_custom_code(txt)
 }
 \arguments{
-\item{txt}{Character text within custom_R_code of a `metadata.yml` file}
+\item{txt}{Character text within custom_R_code of a \code{metadata.yml} file}
 }
 \value{
 character text containing custom_R_code if custom_R_code is not empty,
 otherwise no changes are made
 }
 \description{
-Applies custom data manipulations if the metadata field `custom_R_code` is not empty
-Otherwise no manipulations will be done by applying the `identity` function.
-The code `custom_R_code` assumes a single input.
+Applies custom data manipulations if the metadata field \code{custom_R_code} is not empty
+Otherwise no manipulations will be done by applying the \code{identity} function.
+The code \code{custom_R_code} assumes a single input.
 }

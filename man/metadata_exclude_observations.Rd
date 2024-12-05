@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{metadata_exclude_observations}
 \alias{metadata_exclude_observations}
-\title{Exclude observations in a yaml file for a `dataset_id`}
+\title{Exclude observations in a yaml file for a \code{dataset_id}}
 \usage{
 metadata_exclude_observations(dataset_id, variable, find, reason)
 }
@@ -16,8 +16,8 @@ metadata_exclude_observations(dataset_id, variable, find, reason)
 \item{reason}{Reason for exclusion}
 }
 \value{
-`metadata.yml` file with excluded observations
+\code{metadata.yml} file with excluded observations
 }
 \description{
-Exclude observations in a yaml file for a `dataset_id`
+Exclude observations in a yaml file for a \code{dataset_id}
 }

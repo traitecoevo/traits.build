@@ -9,11 +9,11 @@ process_flag_unsupported_traits(data, definitions)
 \arguments{
 \item{data}{Tibble or dataframe containing the study data}
 
-\item{definitions}{Definitions read in from the `traits.yml` file in the config folder}
+\item{definitions}{Definitions read in from the \code{traits.yml} file in the config folder}
 }
 \value{
 Tibble with unrecognised traits flagged in the "error" column
 }
 \description{
-Flag any unrecognised traits, as defined in the `traits.yml` file.
+Flag any unrecognised traits, as defined in the \code{traits.yml} file.
 }
