@@ -17,7 +17,7 @@ process_format_contexts(my_list, dataset_id, traits)
 Tibble with context details if available
 }
 \description{
-Format context data read in from the `metadata.yml` file. Converts from list to tibble.
+Format context data read in from the \code{metadata.yml} file. Converts from list to tibble.
 }
 \examples{
 \dontrun{

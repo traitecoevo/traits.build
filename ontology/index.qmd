@@ -1,0 +1,476 @@
+---
+title:  traits.build Data Model
+params:
+  version: 0.1.0
+  previous_version: 0.1.0
+format: 
+  html:
+    smooth-scroll: true
+    toc: true
+    toc-expand: 2
+    embed-resources: true
+---
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+version <- params$version
+
+link_version <- function(v) sprintf("<https://w3id.org/traits.build/release/%s/index.html>", v)
+```
+
+## Release `r version`
+
+<dl>
+
+<dt>**Latest version**:</dt>
+
+<dd><https://w3id.org/traits.build/index.html></dd>
+
+<dt>**This version**:</dt>
+
+<dd>`r link_version(params$version)`</dd>
+
+<dt>**Previous version**:</dt>
+
+<dd>`r link_version(params$previous_version)`</dd>
+
+<dt>**Authors**:</dt>
+
+<dd>[Elizabeth Wenk](https://orcid.org/0000-0001-5640-5910), [Daniel Falster](https://orcid.org/0000-0002-9814-092X)</dd>
+
+<dt>**Contributors**:</dt>
+
+<dd>[David Coleman](https://orcid.org/0000-0002-1773-6597), [Sophie Yang](https://orcid.org/0000-0001-7328-345X)</dd>
+
+</dd>
+
+<dt>Serializations:</dt>
+
+<dd><a href="traits.build.json" target="_blank"><img src="https://img.shields.io/badge/Format-JSON_LD-blue.svg" alt="JSON-LD"/></a> <a href="traits.build.nt" target="_blank"><img src="https://img.shields.io/badge/Format-N_Triples-blue.svg" alt="N-Triples"/></a> <a href="traits.build.nq" target="_blank"><img src="https://img.shields.io/badge/Format-N_Quads-blue.svg" alt="N-Quads"/></a> <a href="traits.build.ttl" target="_blank"><img src="https://img.shields.io/badge/Format-TTL-blue.svg" alt="TTL"/></a></dd>
+
+<dt>License:</dt>
+
+<dd><a href="http://purl.org/NET/rdflicense/cc-by4.0" target="_blank"><img src="https://img.shields.io/badge/License-CC%20BY%204.0-blue.svg" alt="http://purl.org/NET/rdflicense/cc-by4.0"/></a></dd>
+
+<!-- <dt>Visualization:</dt><dd><a href="webvowl/index.html#" target="_blank"><img src="https://img.shields.io/badge/Visualize_with-WebVowl-blue.svg" alt="Visualize with WebVowl"></a></dd> -->
+
+```{=html}
+<!-- <dt>Vocabulary service:</dt> <dd> 
+<span><a href="https://vocabs.ardc.edu.au/viewById/649" target="_blank"><img src="https://img.shields.io/badge/ARDC-RVA-blue.svg" alt="JSON-LD"></a> </span> </dd> -->
+```
+<dt>Source:</dt>
+
+<dd>
+
+<a href="https://doi.org/10.5281/zenodo.8040789" target="_blank"><img src="https://img.shields.io/badge/DOI-10.5281/zenodo.8040789-blue.svg" alt="10.5281/zenodo.8040789"/></a>
+
+<a href="https://github.com/traitecoevo/traits.build" target="_blank"><img src="https://img.shields.io/badge/Github-traitecoevo/traits.build-blue.svg" alt="JSON-LD"/></a>
+
+</dd>
+
+<dt>Contributing:</dt>
+
+<dd>[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/traitecoevo/traits.build/issues)</dd>
+
+<dt>Cite as:</dt>
+
+<dd>Wenk, Elizabeth H., Payal Bal, David Coleman, Rachael V. Gallagher, Sophie Yang, and Daniel S. Falster. “Traits.Build: A Data Model, Workflow and R Package for Building Harmonised Ecological Trait Databases.” bioRxiv, February 12, 2024. [doi.org/10.1101/2024.02.11.579848](https://doi.org/10.1101/2024.02.11.579848)
+</dd>
+
+</dl>
+
+```{=html}
+<!-- Examples:
+https://i-adopt.github.io/index.html
+https://www.w3.org/2009/08/skos-reference/skos.html
+https://terminologies.gfbio.org/terms/ets/pages/#expectedunit
+
+gt package: https://gt.rstudio.com/
+-->
+```
+
+```{r, include=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
+library(knitr)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(gt)
+library(purrr)
+library(traits.build)
+
+source("helpers.R")
+source("create_term_table.R")
+
+triples_with_labels <-
+  read_csv("output/ontology/build_triples.csv")
+
+base_url <- "https://w3id.org/traits.build#"
+
+if (knitr::is_html_output()) {
+  print_table <- print_table_html
+} else if (knitr::is_latex_output()) {
+  print_table <- print_table_pdf
+} else {
+  print_table <- print_table_docx
+}
+```
+
+# Abstract
+
+This document presents the traits.build data model (data standard), formally published within the w3id.org/traits.build namespace. The traits.build ontology documents the output structure of a database built using the {traits.build} R package. It terms are both the output variables in each of the databases's relational tables and additional conceptual terms inherent to the database structure. The ontology describes these terms and the semantic relationships between them. The traits.build data model adheres to the [OBOE ontology](https://bioportal.bioontology.org/ontologies/OBOE) and draws upon previously published terms whenever possible, especially [DarwinCore](https://dwc.tdwg.org/terms/) and the [Ecological Trait-data Standard](https://ecologicaltraitdata.github.io/ETS/).
+
+# Table of Contents
+
+1.  [Introduction](#introduction)
+2.  [traits.build data model](#data-model): The terms within the formal traits.build ontology
+3.  [Acknowledgements](#acknowledgements)
+
+# 1. Introduction {#introduction}
+
+A database must be accompanied by a published data model to be: 1) efficiently and accurately interpreted and used by researchers; and 2) easily integrated with other databases. A published data model should be machine-readable for easy integration into future data products, yet also tractable to human readers. A data model (a.k.a. data standard, ontology) must document the meanings behind each database output variable and should also record the semantic relationships between columns. For instance, within the traits.build ontology, indicating that `observation_id` is an identifier for a unique `observation`.
+
+To the extent possible, a data model should draw upon previously published vocabularies and ontologies, explicitly indicating when terms within the data model are identical to those used by other databases (or other bioinformatics outputs). For instance, the traits.build data standard maps terms related to taxonomy and species occurrences to [DarwinCore](https://dwc.tdwg.org/terms/) and terms related to trait measurements to the [Ecological Trait-data Standard](https://ecologicaltraitdata.github.io/ETS/). The semantic relationships between terms adhere to the [OBOE ontology](https://bioportal.bioontology.org/ontologies/OBOE), a generic relational ontology developed explicitly for documenting ecological trait observations and the context properties that are essential to document for ecological data. It further draws upon properties defined by the Semanticscience Integrated Ontology (https://bioportal.bioontology.org/ontologies/SIO) to describe relationships between terms.
+
+Within the traits.build ontology, there are 5 main categories of terms, differentiated based on whether they are database tables, rows, or columns:
+
+1.  **Database tables:** The relational tables (traits, contexts, locations, methods, taxa, contributors, taxonomic_updates). These terms are all mapped as having the property [computational entity](http://semanticscience.org/resource/SIO_000602) = [database table](http://semanticscience.org/resource/SIO_000754)\
+2.  **Database table columns:** The columns within these relational tables, all mapped as being organised into one (or more) of the tables using [dwc-attributes:organisedInClass](http://rs.tdwg.org/dwc/terms/attributes/organizedInClass). These terms are all mapped as having the property [computational entity](http://semanticscience.org/resource/SIO_000602) = [database column](http://semanticscience.org/resource/SIO_000757)\
+3.  **Database table entries:** Single, implicitly structured data items in a table. These terms are all types of [oboe-core:Entity](http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity), objects that are the foci for an [oboe-core:observation](http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation). These terms are all mapped as having the property [computational entity](http://semanticscience.org/resource/SIO_000602) = [database entry](http://semanticscience.org/resource/SIO_000756)\
+4.  **Clusters of rows within a database table:** Collections of rows within a table that represent either [observations](http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation) or [observation collections](http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection). These terms are all mapped as having the property [computational entity](http://semanticscience.org/resource/SIO_000602) = [database table](http://semanticscience.org/resource/SIO_000754).\
+5.  **Individual rows within a database table:** Individual rows within a table that are [measurements](http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement). These terms are all mapped as having the property [computational entity](http://semanticscience.org/resource/SIO_000602) = [database row](http://semanticscience.org/resource/SIO_001187).
+
+# 2. Traits.build data model
+
+The traits.build resource
+
+```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+concept_scheme_terms <- 
+  triples_with_labels %>% 
+  filter(Subject == "<https://w3id.org/traits.build>") %>%
+  filter(!stringr::str_detect(Predicate, "http://purl.org/dc/terms/title")) %>%
+  filter(!stringr::str_detect(Predicate, "http://www.w3.org/2004/02/skos/core#prefLabel"))
+
+output <- tibble(name =  list(), description = list())
+
+URI <- make_link("w3id.org/traits.build", "https://w3id.org/traits.build")
+  
+output <- 
+  add_row(output, "URI", URI)
+
+for (i in seq_len(nrow(concept_scheme_terms))) {
+  name <- make_link(concept_scheme_terms$Predicate_labels[i], concept_scheme_terms$predicate_tmp[i])
+  description <- ifelse(stringr::str_detect(concept_scheme_terms$object_tmp[i], "http"), 
+                                       make_link(concept_scheme_terms$Object_labels[i], concept_scheme_terms$object_tmp[i]),
+                                       concept_scheme_terms$Object_labels[i])
+  if(!("html" %in% class(name)))
+    name <- gt::html(name)
+  if (!("html" %in% class(description))) {
+    description <- gt::html(description)
+  }
+  
+  output <- 
+    bind_rows(
+      output, 
+      tibble(name = list(name), description = list(description))
+    )
+  
+  output
+  
+}
+
+output %>%
+  print_table()
+```
+
+
+##    Database
+
+A traits.build database
+
+```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+database_overview <- 
+  triples_with_labels %>% 
+  filter(Subject == "<https://w3id.org/traits.build#traits.build-database>") %>%
+  filter(!stringr::str_detect(Predicate, "http://purl.org/dc/terms/title")) %>%
+  filter(!stringr::str_detect(Predicate, "http://www.w3.org/2004/02/skos/core#prefLabel"))
+
+output <- tibble(name =  list(), description = list())
+
+URI <- make_link("w3id.org/traits.build#traits.build-database", "https://w3id.org/traits.build#traits.build-database")
+  
+output <- 
+  add_row(output, "URI", URI)
+
+for (i in seq_len(nrow(database_overview))) {
+  name <- make_link(database_overview$Predicate_labels[i], database_overview$predicate_tmp[i])
+  description <- ifelse(stringr::str_detect(database_overview$object_tmp[i], "http"), 
+                                       make_link(database_overview$Object_labels[i], database_overview$object_tmp[i]),
+                                       database_overview$Object_labels[i])
+  if(!("html" %in% class(name)))
+    name <- gt::html(name)
+  if (!("html" %in% class(description))) {
+    description <- gt::html(description)
+  }
+  
+  output <- 
+    bind_rows(
+      output, 
+      tibble(name = list(name), description = list(description))
+    )
+  
+  output
+  
+}
+
+output %>%
+  print_table()
+```
+
+##    Database Tables
+
+The traits.build output tables
+
+```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+
+database_tables <-
+  triples_with_labels %>%
+    filter(stringr::str_detect(Subject, "w3id.org/traits.build#traits.build-"))
+
+# subtract terms that will appear in this section's tables from "remaining", so that next section below only considers "not yet shown" terms
+remaining <-
+  triples_with_labels %>%
+  filter(!Subject %in% database_tables$Subject) %>%
+  filter(Subject != "<https://w3id.org/traits.build#traits.build-database>") %>%
+  filter(Subject != "<https://w3id.org/traits.build>")
+
+# load traits.build schema
+y <- traits.build::get_schema()
+
+# create vector of table names from traits.build schema
+table_tmp <- names(y$austraits$elements) %>% as.vector()
+
+# create table of all tables within traits.build output, adding labels in various syntaxes and number tables as they appear in schema
+table_seq <- 
+  database_tables$Subject_labels[match(table_tmp,database_tables$object_tmp)] %>%
+  as.data.frame() %>%
+  rename(Subject_labels = 1) %>%
+  mutate(
+    row_n = row_number(),
+    term = database_tables$subject_tmp[match(table_tmp,database_tables$object_tmp)]
+  )
+
+# add table-counter created above to triples pertaining to database tables, since database_tables most usefully split by number
+database_tables <- 
+  database_tables %>%
+  dplyr::left_join(table_seq) %>%  
+  dplyr::arrange(row_n)
+
+# split triples table by `row_n` to retain tables in same sequence as traits.build schema and traits.build output
+data_tables_sub <- split(database_tables, database_tables$row_n)
+
+for (k in seq_along(1:length(data_tables_sub))) {
+  
+  # creating header makes anchor using header name. Also create an anchor using identifier
+  term_to_display <- data_tables_sub[[k]]$Subject_labels[1]
+  anchor <- paste0(base_url, data_tables_sub[[k]]$term[1])
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
+  thisterm <- table_seq$term[[k]]
+
+  create_term_table(thisterm, data_tables_sub[[k]]) %>% 
+    print_table()
+}
+```
+
+##    Database Table Columns
+
+Columns within the traits.build output tables
+
+```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+
+# create table of all `organizedInClass` terms (objects)
+organised_tmp <- 
+  remaining %>% 
+  filter(stringr::str_detect(Predicate, "organizedInClass")) %>%
+  distinct(Subject, Object_labels) %>%
+  rename(tables = Object_labels) 
+
+# create table of all distinct database table terms (objects)
+database_tables <-
+  database_tables %>% 
+    distinct(subject_tmp, Subject_labels, row_n) %>%
+    mutate(
+      anchor = paste0(base_url, subject_tmp),
+      alt_label = stringr::str_replace(subject_tmp, "traits.build-", "")
+    )
+
+# from triples output not yet output to website, subset those terms that are columns in a database table; these are identified as being terms for which `organizedInClass` is mapped
+database_columns <-
+  remaining %>%
+    filter(Subject %in% organised_tmp$Subject) %>%
+    dplyr::left_join(organised_tmp) %>%
+    mutate(
+      Subject = stringr::str_replace(Subject, "<", ""),
+      Subject = stringr::str_replace(Subject, ">", "")
+      ) %>%
+    dplyr::left_join(database_tables %>% select(tables = Subject_labels, row_n, alt_table_label = alt_label))
+
+# again, subtract terms that will appear in this section's tables from "remaining", so that next section below only considers "not yet shown" terms
+remaining <-
+  remaining %>%
+    filter(!Subject %in% organised_tmp$Subject)
+
+# create vector that includes columns already displayed, to avoid column names like `dataset_id` appearing many times in website
+terms_already_displayed <- vector()
+
+# split triples table by `row_n` to retain tables in same sequence as traits.build schema and traits.build output
+database_columns_sub_0 <- split(database_columns, database_columns$row_n)
+
+for (i in seq_along(1:length(database_columns_sub_0))) {
+  
+  table_label <- database_tables$Subject_labels[match(names(database_columns_sub_0)[[i]] %>% as.numeric(), database_tables$row_n)]
+  table_label_alt <- database_tables$alt_label[match(names(database_columns_sub_0)[[i]] %>% as.numeric(), database_tables$row_n)]
+
+ # create vector of terms within each table from traits.build schema, to keep terms in order
+  column_seq_vec <- 
+    y$austraits$elements[[table_label_alt]]$elements %>%
+    names() %>%
+    as.vector()
+  
+  column_seq_vec <- column_seq_vec  %>% subset(! column_seq_vec %in% terms_already_displayed)
+    
+   # create vector of terms within ontology that are matched to the specific table; use `altLabel` since that matches schema
+  alt_column_labels <- 
+    database_columns_sub_0[[i]] %>%
+      filter(predicate_tmp == "http://www.w3.org/2004/02/skos/core#altLabel") %>% 
+      select(table_label = object_tmp, subject_tmp)
+
+ # amend above list, to add ontology terms (as in `trait_value` instead of `value) and filter so that it only includes terms not also in schema
+  columns_extra <- 
+    database_columns_sub_0[[i]] %>%
+    distinct(subject_tmp) %>%
+    left_join(alt_column_labels) %>%
+    filter(!table_label %in% column_seq_vec) %>%
+    distinct() %>%
+    select(subject_tmp)
+  
+  columns_extra <- columns_extra$subject_tmp %>% as.vector()
+  
+  columns_extra <- columns_extra  %>% subset(! columns_extra %in% terms_already_displayed)
+  
+  # create a single vector with schema terms + any extras from ontology
+  column_seq_vec <- c(column_seq_vec, columns_extra)
+  
+  # only print table label if there are terms to print
+  
+  if (length(column_seq_vec) != 0) {
+    writeLines(sprintf('\n\n### %s ', table_label))
+  }
+    
+  # rename terms from schema to names from ontology 
+  column_seq <- 
+    database_columns_sub_0[[i]]$Subject_labels[match(column_seq_vec,database_columns_sub_0[[i]]$object_tmp)] %>%
+    as.data.frame() %>%
+    rename(Subject_labels = 1) 
+  
+  # add row numbers, to allow splitting
+  column_seq <- column_seq %>%
+    rename(Subject_labels = 1) %>%
+    mutate(
+      row_n_col = row_number(),
+      term = database_columns_sub_0[[i]]$subject_tmp[match(column_seq_vec,database_columns_sub_0[[i]]$object_tmp)]
+    ) %>%
+    filter(!is.na(Subject_labels)) 
+  
+  database_columns_sub_0[[i]] <- 
+    database_columns_sub_0[[i]] %>%
+    dplyr::left_join(column_seq) %>%  
+    # arranging by row number, but I think this is overwritten by `split`
+    dplyr::arrange(row_n) %>% 
+    # omit terms that have already appeared as part of a different table's output
+    dplyr::filter(!database_columns_sub_0[[i]]$subject_tmp %in% terms_already_displayed)
+  
+  # split triples pertaining to a specific table's terms, based on the sequence of columns in traits.build output
+  # needs to use numbers, because `split` re-alphabetises input based on split term
+  database_columns_sub <- split(database_columns_sub_0[[i]], database_columns_sub_0[[i]]$row_n_col)
+  
+  if (length(column_seq_vec) != 0) {
+    
+    for (j in seq_along(1:length(database_columns_sub))) {
+      
+      # creating header makes anchor using header name. Also create an anchor using identifier
+      term_to_display <- database_columns_sub[[j]]$Subject_labels[1]
+      anchor <- paste0(base_url, database_columns_sub[[j]]$subject_tmp[1])
+      writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
+      thisterm <- column_seq$term[[j]]
+      
+      create_term_table(thisterm, database_columns_sub[[j]]) %>% 
+      print_table()
+      
+      terms_already_displayed <- unique(c(terms_already_displayed, database_columns_sub_0[[i]]$subject_tmp))
+      terms_already_displayed
+    }
+  }
+}
+```
+
+##    Database Table Entries
+
+Single, implicitly structured data items in a table. 
+
+```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+
+entries_tmp <- 
+  remaining %>% 
+  filter(stringr::str_detect(Object, "SIO_000756")) %>%
+  distinct(Subject)
+
+database_table_entries <-
+  remaining %>%
+    filter(Subject %in% entries_tmp$Subject)
+
+# again, subtract terms that will appear in this section's tables from "remaining", so that next section below only considers "not yet shown" terms
+remaining <-
+  remaining %>%
+    filter(!Subject %in% entries_tmp$Subject)
+
+database_entries_sub <- split(database_table_entries, database_table_entries$subject_tmp)
+
+for (thisterm in names(database_entries_sub)) {
+  
+  # creating header makes anchor using header name. Also create an anchor using identifier
+  term_to_display <- database_entries_sub[[thisterm]]$Subject_labels[1]
+  anchor <- paste0(base_url, thisterm)
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
+
+  create_term_table(thisterm, database_entries_sub[[thisterm]]) %>% 
+    print_table()
+}
+```
+
+##  Rows within a database table
+
+Rows or clusters of rows within a database table that represent measurements, observations or observation collections.
+
+```{r, eval = TRUE, results='asis', echo=FALSE, message=FALSE, warning=FALSE}
+
+remaining <-
+  remaining %>% 
+  filter(stringr::str_detect(Subject, "traits.build")) %>%
+  filter(Subject != "<https://w3id.org/traits.build>")
+
+database_rows_sub <- split(remaining, remaining$subject_tmp)
+
+for (thisterm in names(database_rows_sub)) {
+  
+  # creating header makes anchor using header name. Also create an anchor using identifier
+  term_to_display <- database_rows_sub[[thisterm]]$Subject_labels[1]
+  anchor <- paste0(base_url, thisterm)
+  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
+
+  create_term_table(thisterm, database_rows_sub[[thisterm]]) %>% 
+    print_table()
+}
+```
+
+# 3. Acknowledgements {#acknowledgements}
+
+We are grateful to S Cox, J Smillie, K Levett, M Barlow, and C Brady for useful conversations. The AusTraits project received investment (<https://doi.org/10.47486/TD044>, <https://doi.org/10.47486/DP720>) from the Australian Research Data Commons (ARDC). The ARDC is funded by the National Collaborative Research Infrastructure Strategy (NCRIS).

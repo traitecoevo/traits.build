@@ -2,7 +2,7 @@
 % Please edit documentation in R/testdata.R
 \name{dataset_test_worker}
 \alias{dataset_test_worker}
-\title{Test whether specified `dataset_id` has the correct setup}
+\title{Test whether specified \code{dataset_id} has the correct setup}
 \usage{
 dataset_test_worker(
   test_dataset_ids,
@@ -13,7 +13,7 @@ dataset_test_worker(
 )
 }
 \arguments{
-\item{test_dataset_ids}{Vector of `dataset_id` for sources to be tested}
+\item{test_dataset_ids}{Vector of \code{dataset_id} for sources to be tested}
 
 \item{path_config}{Path to folder containing configuration files}
 
@@ -24,5 +24,5 @@ dataset_test_worker(
 \item{definitions}{Trait defininitons}
 }
 \description{
-Run tests to ensure that specified `dataset_id` has the correct setup.
+Run tests to ensure that specified \code{dataset_id} has the correct setup.
 }

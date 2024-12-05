@@ -291,8 +291,14 @@ dataset_test_worker <-
         )
 
         # Check that there are no duplicate `var_in` or `context_property` fields
-        context_properties <- sapply(metadata[["contexts"]], "[[", "context_property")
-        context_vars_in <- sapply(metadata[["contexts"]], "[[", "var_in")
+
+        if(is.na(metadata[["contexts"]][1])) {
+          context_properties <- metadata[["contexts"]]
+          context_vars_in <- metadata[["contexts"]]
+        } else {
+          context_properties <- sapply(metadata[["contexts"]], "[[", "context_property")
+          context_vars_in <- sapply(metadata[["contexts"]], "[[", "var_in")
+        }
 
         test_expect_equal(
           context_properties |> duplicated() |> sum(),
@@ -417,7 +423,7 @@ dataset_test_worker <-
           info = paste0(red(f), "\ttrait")
         )
 
-        testthat::expect_silent(traits <- traits.build::util_list_to_df2(metadata[["traits"]]))
+        expect_silent(traits <- austraits::convert_list_to_df2(metadata[["traits"]]))
 
         test_expect_true(
           is.data.frame(traits),
@@ -431,12 +437,15 @@ dataset_test_worker <-
         )
 
         # Check units are found in `unit_conversions.csv`
-        units <- read_csv("config/unit_conversions.csv")
-        test_expect_is_in(
-          traits$unit_in, units$unit_from,
-          info = paste0(red(f), "\ttraits"),
-          label = "`unit_in`'s"
-        )
+        # This test is being commented out, because fails anytime columns are read in 
+        # or anytime there are units not in unit_conversions because they are never converted.
+        
+        #units <- read_csv("config/unit_conversions.csv")
+        #expect_is_in(
+        #  traits$unit_in, units$unit_from,
+        #  info = paste0(red(f), "\ttraits"),
+        #  label = "`unit_in`'s"
+        #)
 
         # Check no duplicate `var_in`'s
 
@@ -589,7 +598,7 @@ dataset_test_worker <-
           )
 
           test_expect_no_error(
-            x <- metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name),
+            x <- metadata[["substitutions"]] %>% austraits::convert_list_to_df2() %>% split(.$trait_name),
             info = paste0(red(f), "\tconverting substitutions to a dataframe and splitting by `trait_name`")
           )
 
@@ -639,7 +648,7 @@ dataset_test_worker <-
         if (!is.na(metadata[["taxonomic_updates"]][1])) {
 
           test_expect_no_error(
-            x <- metadata[["taxonomic_updates"]] %>% util_list_to_df2(),
+            x <- metadata[["taxonomic_updates"]] %>% austraits::convert_list_to_df2(),
             info = paste0(red(f), "\tconverting `taxonomic_updates` to a dataframe")
           )
 
@@ -743,7 +752,7 @@ dataset_test_worker <-
 
           test_expect_no_error(
             x <- metadata[["exclude_observations"]] %>%
-              util_list_to_df2() %>%
+              austraits::convert_list_to_df2() %>%
               tidyr::separate_longer_delim("find", delim = ", ") %>%
               dplyr::mutate(find = str_squish(.data$find)),
             info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe")

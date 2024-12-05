@@ -2,6 +2,7 @@ url: http://traitecoevo.github.io/traits.build/
 
 template:
   bootswatch: cosmo
+  assets: "ontology/output"
 
 home:
   links:
@@ -20,6 +21,9 @@ navbar:
   - text: Manual
     icon: fa-book
     href: https://traitecoevo.github.io/traits.build-book/
+  - text: Ontology
+    icon: fa-book
+    href: ontology/index.html
   - text: News
     href: news/index.html
   right:
@@ -32,7 +36,6 @@ reference:
     desc: Functions that can be used when building individual datasets and entire compilation.
     contents:
     - '`build_setup_pipeline`'
-    - '`build_combine`'
     - '`build_add_version`'
     - '`dataset_update_taxonomy`'
     - '`dataset_build`'

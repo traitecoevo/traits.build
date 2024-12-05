@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{metadata_path_dataset_id}
 \alias{metadata_path_dataset_id}
-\title{Path to the `metadata.yml` file for specified `dataset_id`}
+\title{Path to the \code{metadata.yml} file for specified \code{dataset_id}}
 \usage{
 metadata_path_dataset_id(dataset_id, path_data = "data")
 }
@@ -15,5 +15,5 @@ metadata_path_dataset_id(dataset_id, path_data = "data")
 A string
 }
 \description{
-Path to the `metadata.yml` file for specified `dataset_id`
+Path to the \code{metadata.yml} file for specified \code{dataset_id}
 }

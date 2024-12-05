@@ -644,6 +644,12 @@ test_that("`build_setup_pipeline` is working", {
   )
   expect_equal(sort(names(furrr_tmp_env)), sort(targets))
 
+  out1 <- get("Test_2022", envir = base_tmp_env)
+  out2 <- get("sources", envir = furrr_tmp_env)[["Test_2022"]]
+  
+  # don't compare build_info, as these differ through packages used.
+  expect_equal(out1[names(out1) != "build_info"], out2[names(out2) != "build_info"])
+  
   # Remake workflow
   expect_silent(suppressMessages(build_setup_pipeline(method = "remake")))
   expect_true(file.exists("remake.yml"))
@@ -686,8 +692,6 @@ test_that("`build_setup_pipeline` is working", {
     version = as.character(packageVersion("traits.build"))
   )
   expect_equal(traits.build_tag, expected_output)
-  #expect_length(austraits_raw$taxa, 14) #not valid test with new `dataset_update_taxonomy setup`
-  #expect_length(austraits$taxa, 14) #not valid test with new `dataset_update_taxonomy setup`
 
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
 
@@ -725,19 +729,12 @@ testthat::test_that("`dataset_find_taxon` is working", {
 
 
 test_that("reports and plots are produced", {
-  expect_silent(suppressMessages(austraits <- remake::make("test_name")))
-  # Not testing right now
-  #expect_no_error(
-    #p <-
-      #traits.build::plot_trait_distribution_beeswarm(
-        #austraits, "huber_value", "dataset_id", highlight = "Test_2022", hide_ids = TRUE)
-  #)
+  expect_silent(suppressMessages(austraits <- remake::make("test_name")))  
   expect_silent(
     suppressMessages(
       dataset_report(dataset_id = "Test_2022", austraits = austraits, overwrite = TRUE)
     ))
 })
-
 
 testthat::test_that("`dataset_test` is working", {
   # Expect error if no `dataset_ids` argument is input

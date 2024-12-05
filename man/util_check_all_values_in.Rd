@@ -17,6 +17,6 @@ util_check_all_values_in(x, y, sep = " ")
 Vector of logical values
 }
 \description{
-`util_check_all_values_in` checks if values in vector x are in y. Values in x may
-contain multiple values separated by `sep` so these are split first using `str_split`.
+\code{util_check_all_values_in} checks if values in vector x are in y. Values in x may
+contain multiple values separated by \code{sep} so these are split first using \code{str_split}.
 }
