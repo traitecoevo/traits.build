@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traits.build</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -44,6 +44,13 @@
   </a>
 </li>
 <li>
+  <a href="../ontology/index.html">
+    <span class="fa fa-book"></span>
+     
+    Ontology
+  </a>
+</li>
+<li>
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
@@ -66,7 +73,7 @@
 
     <table class="ref-index"><colgroup><col class="alias"><col class="title"></colgroup><tbody><tr><th colspan="2">
           <h2 id="building-a-dataset-or-compilation">Building a dataset or compilation <a href="#building-a-dataset-or-compilation" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Functions that can be used when building individual datasets and entire compilation</p>
+          <p class="section-desc"></p><p>Functions that can be used when building individual datasets and entire compilation.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="build_setup_pipeline.html">build_setup_pipeline()</a></code> </p>
@@ -81,7 +88,7 @@
         </td>
         <td><p>Add version information to AusTraits</p></td>
       </tr><tr><td>
-          <p><code><a href="build_update_taxonomy.html">build_update_taxonomy()</a></code> </p>
+          <p><code><a href="dataset_update_taxonomy.html">dataset_update_taxonomy()</a></code> </p>
         </td>
         <td><p>Apply taxonomic updates to austraits_raw</p></td>
       </tr><tr><td>
@@ -118,7 +125,7 @@
         <td><p>Retrieve version for compilation from definitions</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="creating-metadata-files">Creating metadata files <a href="#creating-metadata-files" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>functions that help you create metadata files</p>
+          <p class="section-desc"></p><p>Functions that help you create metadata files.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="dataset_test.html">dataset_test()</a></code> </p>
@@ -195,7 +202,7 @@ the metadata for specified `dataset_id`</p></td>
         <td><p>Find list of unique datasets within compilation containing specified taxa</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="reading-writing-files">Reading &amp; writing files <a href="#reading-writing-files" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Enable reading and wring of various file types</p>
+          <p class="section-desc"></p><p>Enable reading and writing of various file types.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="read_csv_char.html">read_csv_char()</a></code> </p>
@@ -221,6 +228,30 @@ the metadata for specified `dataset_id`</p></td>
           <p><code><a href="write_plaintext.html">write_plaintext()</a></code> </p>
         </td>
         <td><p>Export AusTraits version as plain text</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="working-with-outputs">Working with outputs <a href="#working-with-outputs" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions to work with compiled traits.build objects.</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="plot_trait_distribution_beeswarm.html">plot_trait_distribution_beeswarm()</a></code> </p>
+        </td>
+        <td><p>Beeswarm Trait distribution</p></td>
+      </tr><tr><td>
+          <p><code><a href="check_pivot_duplicates.html">check_pivot_duplicates()</a></code> </p>
+        </td>
+        <td><p>Identify duplicates preventing pivoting wider</p></td>
+      </tr><tr><td>
+          <p><code><a href="check_pivot_wider.html">check_pivot_wider()</a></code> </p>
+        </td>
+        <td><p>Test whether a dataset can pivot wider</p></td>
+      </tr><tr><td>
+          <p><code><a href="db_traits_pivot_longer.html">db_traits_pivot_longer()</a></code> </p>
+        </td>
+        <td><p>Pivot wide format data into a long format</p></td>
+      </tr><tr><td>
+          <p><code><a href="db_traits_pivot_wider.html">db_traits_pivot_wider()</a></code> </p>
+        </td>
+        <td><p>Pivot long format data into a wide format</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="building-a-compilation-private-">Building a compilation (private) <a href="#building-a-compilation-private-" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Private functions that are called in the background when building individual datasets and entire compilation. These are only of interest to developers.</p>
@@ -324,8 +355,8 @@ Determines number of 00s needed based on number of records</p></td>
         <td><p>Write the YAML representation of `metadata.yml` for specified `dataset_id` to
 file <code>data/dataset_id/metadata.yml</code></p></td>
       </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="diverse-utility-functions-for-converting-and-working-with-various-data-types">Diverse utility functions for converting and working with various data types <a href="#diverse-utility-functions-for-converting-and-working-with-various-data-types" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p>
+          <h2 id="diverse-utility-functions">Diverse utility functions <a href="#diverse-utility-functions" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Diverse utility functions for converting and working with various data types.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="util_append_to_list.html">util_append_to_list()</a></code> </p>
@@ -436,7 +467,7 @@ file <code>data/dataset_id/metadata.yml</code></p></td>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Daniel Falster, Elizabeth Wenk, ARDC, ARC.</p>
+  <p></p><p>Developed by Daniel Falster, Elizabeth Wenk, Sophie Yang, Fonti Kar, ARDC, ARC.</p>
 </div>
 
 <div class="pkgdown">

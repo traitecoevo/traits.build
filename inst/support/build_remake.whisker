@@ -46,7 +46,7 @@ targets:
                  )
   {{dataset_id}}:
     command: >
-      build_update_taxonomy({{dataset_id}}_raw,
+      dataset_update_taxonomy({{dataset_id}}_raw,
                   taxon_list
                  )
 
@@ -54,11 +54,11 @@ targets:
 
   {{database_name}}_raw:
     command: >
-      build_combine(
+      bind_databases(
 {{#dataset_ids}}
         {{dataset_id}},
 {{/dataset_ids}}
-        NULL)
+        I(NULL))
 
 # Version information
   version_number:

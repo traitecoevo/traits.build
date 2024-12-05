@@ -2,16 +2,18 @@
 % Please edit documentation in R/utils.R
 \name{read_metadata_dataset}
 \alias{read_metadata_dataset}
-\title{Read the `metadata.yml` file for specified `dataset_id`}
+\title{Read the \code{metadata.yml} file for specified \code{dataset_id}}
 \usage{
-read_metadata_dataset(dataset_id)
+read_metadata_dataset(dataset_id, path_data = "data")
 }
 \arguments{
 \item{dataset_id}{Identifier for a particular study in the database}
+
+\item{path_data}{Path to folder with data}
 }
 \value{
-A list with contents of metadata for specified `dataset_id`
+A list with contents of metadata for specified \code{dataset_id}
 }
 \description{
-Read the `metadata.yml` file for specified `dataset_id`
+Read the \code{metadata.yml} file for specified \code{dataset_id}
 }

@@ -13,6 +13,6 @@ util_check_disallowed_chars(object)
 Vector of logical values
 }
 \description{
-`util_check_disallowed_chars` checks if values in a vector do not contain disallowed characters,
+\code{util_check_disallowed_chars} checks if values in a vector do not contain disallowed characters,
 i.e. values outside of ASCII.
 }

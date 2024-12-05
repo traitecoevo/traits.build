@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{write_metadata_dataset}
 \alias{write_metadata_dataset}
-\title{Write the YAML representation of `metadata.yml` for specified `dataset_id` to
+\title{Write the YAML representation of \code{metadata.yml} for specified \code{dataset_id} to
 file \code{data/dataset_id/metadata.yml}}
 \usage{
 write_metadata_dataset(metadata, dataset_id)
@@ -16,6 +16,6 @@ write_metadata_dataset(metadata, dataset_id)
 A yaml file
 }
 \description{
-Write the YAML representation of `metadata.yml` for specified `dataset_id` to
+Write the YAML representation of \code{metadata.yml} for specified \code{dataset_id} to
 file \code{data/dataset_id/metadata.yml}
 }

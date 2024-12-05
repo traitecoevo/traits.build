@@ -15,24 +15,24 @@ dataset_report(
 )
 }
 \arguments{
-\item{dataset_id}{name of specific study/dataset}
+\item{dataset_id}{Name of specific study/dataset}
 
-\item{austraits}{compiled austraits database}
+\item{austraits}{Compiled austraits database}
 
-\item{overwrite}{logical value to determine whether to overwrite existing report,}
+\item{overwrite}{Logical value to determine whether to overwrite existing report}
 
-\item{output_path}{location where rendered report will be saved}
+\item{output_path}{Location where rendered report will be saved}
 
-\item{input_file}{report script (.Rmd) file to build study report}
+\item{input_file}{Report script (.Rmd) file to build study report}
 
-\item{quiet}{An option to suppress printing during rendering from knitr, pandoc command line and others.}
+\item{quiet}{An option to suppress printing during rendering from knitr, pandoc command line and others}
 
-\item{keep}{keep intermediate Rmd file used?}
+\item{keep}{Keep intermediate Rmd file used?}
 }
 \value{
-html file of the rendered report located in the specified output folder.
+Html file of the rendered report located in the specified output folder
 }
 \description{
-Builds a detailed report for every dataset with a unique `dataset_id`, based on the template Rmd file provided.  The reports are
-rendered as html files and saved in the specified output folder.
+Builds a detailed report for every dataset with a unique \code{dataset_id}, based on the template Rmd file provided.
+The reports are rendered as html files and saved in the specified output folder.
 }

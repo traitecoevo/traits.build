@@ -2,6 +2,7 @@ url: http://traitecoevo.github.io/traits.build/
 
 template:
   bootswatch: cosmo
+  assets: "ontology/output"
 
 home:
   links:
@@ -20,6 +21,9 @@ navbar:
   - text: Manual
     icon: fa-book
     href: https://traitecoevo.github.io/traits.build-book/
+  - text: Ontology
+    icon: fa-book
+    href: ontology/index.html
   - text: News
     href: news/index.html
   right:
@@ -29,12 +33,11 @@ navbar:
 
 reference:
   - title: Building a dataset or compilation
-    desc: Functions that can be used when building individual datasets and entire compilation
+    desc: Functions that can be used when building individual datasets and entire compilation.
     contents:
     - '`build_setup_pipeline`'
-    - '`build_combine`'
     - '`build_add_version`'
-    - '`build_update_taxonomy`'
+    - '`dataset_update_taxonomy`'
     - '`dataset_build`'
     - '`dataset_configure`'
     - '`dataset_process`'
@@ -45,7 +48,7 @@ reference:
     - '`util_get_version`'
 
   - title: Creating metadata files
-    desc: functions that help you create metadata files
+    desc: Functions that help you create metadata files.
     contents:
     - '`dataset_test`'
     - '`metadata_create_template`'
@@ -67,7 +70,7 @@ reference:
     - '`dataset_find_taxon`'
 
   - title: Reading & writing files
-    desc: Enable reading and wring of various file types
+    desc: Enable reading and writing of various file types.
     contents:
     - '`read_csv_char`'
     - '`read_metadata`'
@@ -75,6 +78,15 @@ reference:
     - '`read_yaml`'
     - '`write_yaml`'
     - '`write_plaintext`'
+
+  - title: Working with outputs
+    desc: Functions to work with compiled traits.build objects.
+    contents:
+    - '`plot_trait_distribution_beeswarm`'
+    - '`check_pivot_duplicates`'
+    - '`check_pivot_wider`'
+    - '`db_traits_pivot_longer`'
+    - '`db_traits_pivot_wider`'
 
   - title: Building a compilation (private)
     desc: Private functions that are called in the background when building individual datasets and entire compilation. These are only of interest to developers.
@@ -104,8 +116,9 @@ reference:
     - '`read_metadata_dataset`'
     - '`write_metadata_dataset`'
 
-  - title: Diverse utility functions for converting and working with various data types
-    desc: ~
+
+  - title: Diverse utility functions
+    desc: Diverse utility functions for converting and working with various data types.
     contents:
     - '`util_append_to_list`'
     - '`bib_print`'

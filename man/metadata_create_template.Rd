@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{metadata_create_template}
 \alias{metadata_create_template}
-\title{Create a template of file `metadata.yml` for specified `dataset_id`}
+\title{Create a template of file \code{metadata.yml} for specified \code{dataset_id}}
 \usage{
 metadata_create_template(
   dataset_id,
@@ -25,5 +25,5 @@ of variables, mainly for testing purposes}
 A yaml file template for metadata
 }
 \description{
-Includes place-holders for major sections of the metadata
+Includes place-holders for major sections of the metadata.
 }

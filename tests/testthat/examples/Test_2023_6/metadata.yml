@@ -1,0 +1,120 @@
+source:
+  primary:
+    key: Richards_2008
+    bibtype: Unpublished
+    year: '2009'
+    author: Anna Richards and Ian J. Wright
+    title: 'Unpublished data: Transcription of Australian plant functional trait data
+      from Ian Wright''s collection of papers, Macquarie University'
+  original_01:
+    key: Bell_1985
+    bibtype: Conference
+    year: '1985'
+    author: Bell
+    booktitle: Conference proceedings of N Australian mine rehab workshop 9
+    title: Nutrient requirements for the establishment of native flora at Weipa
+    volume: .na
+    number: .na
+    pages: .na
+  original_02:
+    key: Bevege_1978
+    bibtype: TechReport
+    year: '1978'
+    author: D. I. Bevege
+    institution: Queensland Department of Forestry
+    title: Biomass and nutrient distribution in indigenous forest ecosystems
+    volume: 6
+    number: .na
+    pages: 20
+  original_03:
+    key: Lambert_1979
+    bibtype: Thesis
+    year: '1979'
+    author: M. J. Lambert
+    title: Sulphur relationships of native and exotic tree species
+    type: Masters
+    institution: Macquarie University, Sydney
+  secondary_01:
+    key: Leuning_1991
+    bibtype: Article
+    year: '1991'
+    author: R. Leuning and R. N. Cromer and S. Rance
+    journal: Oecologia
+    title: Spatial distributions of foliar nitrogen and phosphorus in crowns of Eucalyptus
+      grandis
+    volume: '88'
+    number: '4'
+    pages: 504--510
+    doi: 10.1007/bf00317712
+  secondary_02:
+    key: Meakins_0000
+    bibtype: Unpublished
+    year: unknown
+    author: Meakins
+    title: 'Unpublished data: Study of Brindabella species'
+contributors:
+  data_collectors:
+  - last_name: Richards
+    given_name: Anna
+    ORCID: 0000-0002-2934-5497
+    affiliation: CSIRO Land and Water, Australia
+    additional_role: contact
+  dataset_curators: Ian Wright
+dataset:
+  data_is_long_format: yes
+  custom_R_code: .na
+  collection_date: unknown/2009
+  taxon_name: name_original
+  trait_name: trait_name
+  value: value
+  location_name: location_name
+  source_id: AusTraits_key
+  individual_id: individual_id
+  description: Collection of trait data on Australian plants compiled by Anna Richards
+    and Ian Wright from papers
+  basis_of_record: field
+  life_stage: adult
+  sampling_strategy: See the individual 'additional references' for the individual
+    study motivations.
+  original_file: The portion of 'Extra ozglop data OCT07 (iAN).xls' from pre-2000
+    papers or from more recent papers with very few data points; most recent/larger
+    datasets within Ian and Anna's compilation are in AusTraits individually.
+  notes: none
+locations:
+  location_1:
+    latitude range (deg): -27.5 to -34.5
+    longitude range (deg): 114 to 122
+    description: First made-up location for testing
+  location_2:
+    latitude range (deg): -11 to -26
+    longitude range (deg): 129 to 138
+    description: Second made-up location for testing
+contexts: .na
+traits:
+- var_in: SLA (cm2/g)
+  unit_in: SLA_units
+  trait_name: leaf_mass_per_area
+  entity_type: individual
+  value_type: mean
+  basis_of_value: measurement
+  replicates: 3
+  methods: unknown
+- var_in: leaf longevity
+  unit_in: lifespan_units
+  trait_name: leaf_lifespan
+  entity_type: individual
+  value_type: bin
+  basis_of_value: measurement
+  replicates: '5'
+  methods: From Richards_2008_2 (unpublished); See original references, listed alphabetically
+    under 'additional references'
+substitutions: .na
+taxonomic_updates: .na
+exclude_observations: .na
+questions:
+  additional_traits: Birk_1992 - has all reported values for nutrient addition treatments
+    as well; Feller - has root nutrient values for 2 species; Hopmans_1993 - additional
+    micronutrient data for wood and bark; Leigh_2003 - gas exchange data in chart,
+    if we get hold of the author; Leigh_2006 - lots of additional data if we contact
+    author; Leuning_1991 - lots of gas exchanges, Jmax, Vcmax, detailed leaf N & P
+    data if we contact author

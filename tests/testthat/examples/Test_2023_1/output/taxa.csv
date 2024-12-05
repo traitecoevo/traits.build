@@ -1,45 +1,47 @@
-taxon_name,taxonomic_dataset,taxon_rank,taxonomic_status,genus,binomial,trinomial,family,taxon_id,taxon_distribution
-Acacia celsa,APC,species,accepted,Acacia,Acacia celsa,,Fabaceae,https://id.biodiversity.org.au/taxon/apni/51436506,Qld
-Acmena graveolens,,,,,,,,,
-Acronychia acidula,APC,species,accepted,Acronychia,Acronychia acidula,,Rutaceae,https://id.biodiversity.org.au/node/apni/2913200,Qld
-Aleurites rockinghamensis,,,,,,,,,
-Alphitonia petriei,APC,species,accepted,Alphitonia,Alphitonia petriei,,Rhamnaceae,https://id.biodiversity.org.au/node/apni/2887911,"Qld, NSW"
-Alstonia scholaris,,,,,,,,,
-Argyrodendron peralatum,,,,,,,,,
-Atractocarpus hirtus,,,,,,,,,
-Brombya platynema,,,,,,,,,
-Cardwellia sublimis,,,,,,,,,
-Castanospermum australe,,,,,,,,,
-Cleistanthus myrianthus,,,,,,,,,
-Cryptocarya laevigata,,,,,,,,,
-Cryptocarya mackinnoniana,,,,,,,,,
-Cryptocarya murrayi,,,,,,,,,
-Dendrocnide moroides,,,,,,,,,
-Elaeocarpus grandis,,,,,,,,,
-Endiandra leptodendron,,,,,,,,,
-Endiandra microneura,,,,,,,,,
-Gillbeea adenopetala,,,,,,,,,
-Glochidion hylandii,APC,species,accepted,Glochidion,Glochidion hylandii,,Phyllanthaceae,https://id.biodiversity.org.au/node/apni/2889113,Qld
-Haplostichanthus submontanus,,,,,,,,,
-Harpullia rhyticarpa,,,,,,,,,
-Hernandia albiflora,,,,,,,,,
-Homalanthus novo-guineensis,,,,,,,,,
-Ixora biflora,,,,,,,,,
-Lasianthus strigosus,,,,,,,,,
-Litsea leefeana,,,,,,,,,
-Macaranga tanarius,,,,,,,,,
-Mallotus mollissimus,,,,,,,,,
-Medicosma sessiliflora,,,,,,,,,
-Melastoma cyanoides,,,,,,,,,
-Melicope elleryana,APC,species,accepted,Melicope,Melicope elleryana,,Rutaceae,https://id.biodiversity.org.au/node/apni/2913641,"WA, NT, Qld, NSW"
-Myristica insipida,,,,,,,,,
-Neolitsea dealbata,,,,,,,,,
-Pittosporum rubiginosum,,,,,,,,,
-Polyscias australiana,,,,,,,,,
-Psychotria dallachiana,,,,,,,,,
-Psychotria sp. Utchee Creek (H.Flecker NQNC5313),,,,,,,,,
-Quassia baileyana,,,,,,,,,
-Rhodomyrtus trineura,,,,,,,,,
-Rockinghamia angustifolia,,,,,,,,,
-Syzygium sayeri,,,,,,,,,
-Trema aspera,,,,,,,,,
+taxon_name,taxon_rank,taxonomic_status,taxonomic_dataset,taxon_name_alternatives,genus,family,binomial,trinomial,taxon_distribution,establishment_means,scientific_name,taxon_id,taxon_id_genus,taxon_id_family,scientific_name_id
+Acacia celsa,species,accepted,APC,,Acacia,Fabaceae,Acacia celsa,,Qld,native,Acacia celsa Tindale,https://id.biodiversity.org.au/taxon/apni/51436506,https://id.biodiversity.org.au/taxon/apni/51471290,https://id.biodiversity.org.au/taxon/apni/51702961,https://id.biodiversity.org.au/name/apni/154988
+Acronychia acidula,species,accepted,APC,,Acronychia,Rutaceae,Acronychia acidula,,Qld,native,Acronychia acidula F.Muell.,https://id.biodiversity.org.au/node/apni/2913200,https://id.biodiversity.org.au/taxon/apni/51446847,https://id.biodiversity.org.au/taxon/apni/51461748,https://id.biodiversity.org.au/name/apni/73794
+Aleurites rockinghamensis,species,accepted,APC,,Aleurites,Euphorbiaceae,Aleurites rockinghamensis,,Qld,native,Aleurites rockinghamensis (Baill.) P.I.Forst.,https://id.biodiversity.org.au/node/apni/2916622,https://id.biodiversity.org.au/node/apni/2900410,https://id.biodiversity.org.au/taxon/apni/51442249,https://id.biodiversity.org.au/name/apni/171057
+Alphitonia petriei,species,accepted,APC,,Alphitonia,Rhamnaceae,Alphitonia petriei,,"Qld, NSW",native,Alphitonia petriei Braid & C.T.White,https://id.biodiversity.org.au/node/apni/2887911,https://id.biodiversity.org.au/taxon/apni/51446205,https://id.biodiversity.org.au/taxon/apni/51446206,https://id.biodiversity.org.au/name/apni/82935
+Alstonia scholaris,species,accepted,APC,,Alstonia,Apocynaceae,Alstonia scholaris,,Qld,native,Alstonia scholaris (L.) R.Br.,https://id.biodiversity.org.au/node/apni/2916809,https://id.biodiversity.org.au/node/apni/6684160,https://id.biodiversity.org.au/taxon/apni/51700686,https://id.biodiversity.org.au/name/apni/83915
+Argyrodendron peralatum,species,accepted,APC,,Argyrodendron,Malvaceae,Argyrodendron peralatum,,Qld,native,Argyrodendron peralatum (F.M.Bailey) Edlin ex I.H.Boas,https://id.biodiversity.org.au/node/apni/2915243,https://id.biodiversity.org.au/taxon/apni/51288410,https://id.biodiversity.org.au/taxon/apni/51439248,https://id.biodiversity.org.au/name/apni/100216
+Atractocarpus hirtus,species,accepted,APC,,Atractocarpus,Rubiaceae,Atractocarpus hirtus,,Qld,native,Atractocarpus hirtus (F.Muell.) Puttock,https://id.biodiversity.org.au/node/apni/2910460,https://id.biodiversity.org.au/taxon/apni/51446611,https://id.biodiversity.org.au/taxon/apni/51446612,https://id.biodiversity.org.au/name/apni/146883
+Brombya platynema,species,accepted,APC,,Brombya,Rutaceae,Brombya platynema,,Qld,native,Brombya platynema F.Muell.,https://id.biodiversity.org.au/node/apni/2890280,https://id.biodiversity.org.au/node/apni/7937668,https://id.biodiversity.org.au/taxon/apni/51461748,https://id.biodiversity.org.au/name/apni/67607
+Cardwellia sublimis,species,accepted,APC,,Cardwellia,Proteaceae,Cardwellia sublimis,,Qld,native,Cardwellia sublimis F.Muell.,https://id.biodiversity.org.au/node/apni/2899253,https://id.biodiversity.org.au/node/apni/2908094,https://id.biodiversity.org.au/taxon/apni/51614274,https://id.biodiversity.org.au/name/apni/109268
+Castanospermum australe,species,accepted,APC,,Castanospermum,Fabaceae,Castanospermum australe,,"Qld, NSW, NI (doubtfully naturalised)",native and naturalised,Castanospermum australe A.Cunn. ex Mudie,https://id.biodiversity.org.au/node/apni/2894943,https://id.biodiversity.org.au/node/apni/7226268,https://id.biodiversity.org.au/taxon/apni/51702961,https://id.biodiversity.org.au/name/apni/196675
+Cleistanthus myrianthus,species,accepted,APC,,Cleistanthus,Phyllanthaceae,Cleistanthus myrianthus,,Qld,native,Cleistanthus myrianthus (Hassk.) Kurz,https://id.biodiversity.org.au/node/apni/2897700,https://id.biodiversity.org.au/node/apni/2914326,https://id.biodiversity.org.au/taxon/apni/51442162,https://id.biodiversity.org.au/name/apni/71354
+Cryptocarya laevigata,species,accepted,APC,,Cryptocarya,Lauraceae,Cryptocarya laevigata,,"Qld, NSW",native,Cryptocarya laevigata Blume,https://id.biodiversity.org.au/node/apni/2903400,https://id.biodiversity.org.au/taxon/apni/51438401,https://id.biodiversity.org.au/taxon/apni/51438397,https://id.biodiversity.org.au/name/apni/88410
+Cryptocarya mackinnoniana,species,accepted,APC,,Cryptocarya,Lauraceae,Cryptocarya mackinnoniana,,Qld,native,Cryptocarya mackinnoniana F.Muell.,https://id.biodiversity.org.au/node/apni/2914946,https://id.biodiversity.org.au/taxon/apni/51438401,https://id.biodiversity.org.au/taxon/apni/51438397,https://id.biodiversity.org.au/name/apni/88421
+Cryptocarya murrayi,species,accepted,APC,,Cryptocarya,Lauraceae,Cryptocarya murrayi,,Qld,native,Cryptocarya murrayi F.Muell.,https://id.biodiversity.org.au/node/apni/2910393,https://id.biodiversity.org.au/taxon/apni/51438401,https://id.biodiversity.org.au/taxon/apni/51438397,https://id.biodiversity.org.au/name/apni/88472
+Dendrocnide moroides,species,accepted,APC,,Dendrocnide,Urticaceae,Dendrocnide moroides,,"Qld, NSW",native,Dendrocnide moroides (Wedd.) Chew,https://id.biodiversity.org.au/node/apni/2904177,https://id.biodiversity.org.au/taxon/apni/51448284,https://id.biodiversity.org.au/taxon/apni/51662052,https://id.biodiversity.org.au/name/apni/86919
+Endiandra leptodendron,species,accepted,APC,,Endiandra,Lauraceae,Endiandra leptodendron,,Qld,native,Endiandra leptodendron B.Hyland,https://id.biodiversity.org.au/node/apni/2910725,https://id.biodiversity.org.au/taxon/apni/51438414,https://id.biodiversity.org.au/taxon/apni/51438397,https://id.biodiversity.org.au/name/apni/111888
+Endiandra microneura,species,accepted,APC,,Endiandra,Lauraceae,Endiandra microneura,,Qld,native,Endiandra microneura C.T.White,https://id.biodiversity.org.au/node/apni/2899314,https://id.biodiversity.org.au/taxon/apni/51438414,https://id.biodiversity.org.au/taxon/apni/51438397,https://id.biodiversity.org.au/name/apni/111949
+Gillbeea adenopetala,species,accepted,APC,,Gillbeea,Cunoniaceae,Gillbeea adenopetala,,Qld,native,Gillbeea adenopetala F.Muell.,https://id.biodiversity.org.au/node/apni/2913815,https://id.biodiversity.org.au/node/apni/2918249,https://id.biodiversity.org.au/taxon/apni/51434138,https://id.biodiversity.org.au/name/apni/98098
+Glochidion hylandii,species,accepted,APC,,Glochidion,Phyllanthaceae,Glochidion hylandii,,Qld,native,Glochidion hylandii Airy Shaw,https://id.biodiversity.org.au/node/apni/2889113,https://id.biodiversity.org.au/node/apni/8387508,https://id.biodiversity.org.au/taxon/apni/51442162,https://id.biodiversity.org.au/name/apni/78303
+Harpullia rhyticarpa,species,accepted,APC,,Harpullia,Sapindaceae,Harpullia rhyticarpa,,Qld,native,Harpullia rhyticarpa C.T.White & W.D.Francis,https://id.biodiversity.org.au/node/apni/2910766,https://id.biodiversity.org.au/taxon/apni/51447330,https://id.biodiversity.org.au/taxon/apni/51447212,https://id.biodiversity.org.au/name/apni/108928
+Hernandia albiflora,species,accepted,APC,,Hernandia,Hernandiaceae,Hernandia albiflora,,Qld,native,Hernandia albiflora (C.T.White) Kubitzki,https://id.biodiversity.org.au/node/apni/2911354,https://id.biodiversity.org.au/taxon/apni/51437691,https://id.biodiversity.org.au/taxon/apni/51437692,https://id.biodiversity.org.au/name/apni/92773
+Homalanthus novo-guineensis,species,accepted,APC,,Homalanthus,Euphorbiaceae,Homalanthus novo-guineensis,,"WA (native and naturalised), NT, Qld",native and naturalised,Homalanthus novo-guineensis (Warb.) Lauterb. & K.Schum.,https://id.biodiversity.org.au/node/apni/2888327,https://id.biodiversity.org.au/node/apni/4932846,https://id.biodiversity.org.au/taxon/apni/51442249,https://id.biodiversity.org.au/name/apni/130383
+Ixora biflora,species,accepted,APC,,Ixora,Rubiaceae,Ixora biflora,,Qld,native,Ixora biflora Fosberg,https://id.biodiversity.org.au/node/apni/2915627,https://id.biodiversity.org.au/taxon/apni/51446659,https://id.biodiversity.org.au/taxon/apni/51446612,https://id.biodiversity.org.au/name/apni/90479
+Lasianthus chlorocarpus,species,accepted,APC,,Lasianthus,Rubiaceae,Lasianthus chlorocarpus,,Qld,native,Lasianthus chlorocarpus K.Schum.,https://id.biodiversity.org.au/node/apni/7839740,https://id.biodiversity.org.au/node/apni/8136656,https://id.biodiversity.org.au/taxon/apni/51446612,https://id.biodiversity.org.au/name/apni/219373
+Litsea leefeana,species,accepted,APC,,Litsea,Lauraceae,Litsea leefeana,,Qld,native,Litsea leefeana (F.Muell.) Merr.,https://id.biodiversity.org.au/node/apni/2921063,https://id.biodiversity.org.au/taxon/apni/51438430,https://id.biodiversity.org.au/taxon/apni/51438397,https://id.biodiversity.org.au/name/apni/81094
+Macaranga tanarius,species,accepted,APC,,Macaranga,Euphorbiaceae,Macaranga tanarius,,"ChI, NT, Qld, NSW",native,Macaranga tanarius (L.) Müll.Arg.,https://id.biodiversity.org.au/node/apni/2902044,https://id.biodiversity.org.au/node/apni/2900788,https://id.biodiversity.org.au/taxon/apni/51442249,https://id.biodiversity.org.au/name/apni/57015
+Mallotus mollissimus,species,accepted,APC,,Mallotus,Euphorbiaceae,Mallotus mollissimus,,Qld,native,Mallotus mollissimus (Geiseler) Airy Shaw,https://id.biodiversity.org.au/node/apni/2904445,https://id.biodiversity.org.au/taxon/apni/51284195,https://id.biodiversity.org.au/taxon/apni/51442249,https://id.biodiversity.org.au/name/apni/59376
+Medicosma sessiliflora,species,accepted,APC,,Medicosma,Rutaceae,Medicosma sessiliflora,,Qld,native,Medicosma sessiliflora (C.T.White) T.G.Hartley,https://id.biodiversity.org.au/node/apni/2914896,https://id.biodiversity.org.au/taxon/apni/51446918,https://id.biodiversity.org.au/taxon/apni/51461748,https://id.biodiversity.org.au/name/apni/73658
+Melastoma cyanoides,species,accepted,APC,,Melastoma,Melastomataceae,Melastoma cyanoides,,Qld,native,Melastoma cyanoides Sm.,https://id.biodiversity.org.au/node/apni/2895184,https://id.biodiversity.org.au/taxon/apni/51439399,https://id.biodiversity.org.au/taxon/apni/51439392,https://id.biodiversity.org.au/name/apni/172752
+Melicope elleryana,species,accepted,APC,,Melicope,Rutaceae,Melicope elleryana,,"WA, NT, Qld, NSW",native,Melicope elleryana (F.Muell.) T.G.Hartley,https://id.biodiversity.org.au/node/apni/2913641,https://id.biodiversity.org.au/node/apni/2918609,https://id.biodiversity.org.au/taxon/apni/51461748,https://id.biodiversity.org.au/name/apni/118560
+Myristica insipida,species,accepted,APC,,Myristica,Myristicaceae,Myristica insipida,,"WA, NT, Qld",native,Myristica insipida R.Br.,https://id.biodiversity.org.au/node/apni/2902429,https://id.biodiversity.org.au/node/apni/2895962,https://id.biodiversity.org.au/node/apni/2903136,https://id.biodiversity.org.au/name/apni/86064
+Neolitsea dealbata,species,accepted,APC,,Neolitsea,Lauraceae,Neolitsea dealbata,,"Qld, NSW",native,Neolitsea dealbata (R.Br.) Merr.,https://id.biodiversity.org.au/node/apni/2910025,https://id.biodiversity.org.au/node/apni/2914447,https://id.biodiversity.org.au/taxon/apni/51438397,https://id.biodiversity.org.au/name/apni/79589
+Pittosporum rubiginosum,species,accepted,APC,,Pittosporum,Pittosporaceae,Pittosporum rubiginosum,,Qld,native,Pittosporum rubiginosum A.Cunn.,https://id.biodiversity.org.au/node/apni/2887772,https://id.biodiversity.org.au/taxon/apni/51442349,https://id.biodiversity.org.au/taxon/apni/51442315,https://id.biodiversity.org.au/name/apni/100119
+Polyalthia submontana,species,accepted,APC,,Polyalthia,Annonaceae,Polyalthia submontana,,Qld,native,Polyalthia submontana (Jessup) B.Xue & R.M.K.Saunders,https://id.biodiversity.org.au/taxon/apni/51613975,https://id.biodiversity.org.au/taxon/apni/51613976,https://id.biodiversity.org.au/taxon/apni/51613977,https://id.biodiversity.org.au/name/apni/246294
+Polyscias australiana,species,accepted,APC,,Polyscias,Araliaceae,Polyscias australiana,,"NT, Qld",native,Polyscias australiana (F.Muell.) Philipson,https://id.biodiversity.org.au/node/apni/7223338,https://id.biodiversity.org.au/taxon/apni/51292784,https://id.biodiversity.org.au/taxon/apni/51632289,https://id.biodiversity.org.au/name/apni/84802
+Psychotria dallachiana,species,accepted,APC,,Psychotria,Rubiaceae,Psychotria dallachiana,,Qld,native,Psychotria dallachiana Benth.,https://id.biodiversity.org.au/node/apni/2890013,https://id.biodiversity.org.au/taxon/apni/51446698,https://id.biodiversity.org.au/taxon/apni/51446612,https://id.biodiversity.org.au/name/apni/89074
+Psychotria sp. Utchee Creek (H.Flecker NQNC5313),species,accepted,APC,,Psychotria,Rubiaceae,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),,Qld,native,Psychotria sp. Utchee Creek (H.Flecker NQNC5313) Qld Herbarium,https://id.biodiversity.org.au/taxon/apni/51446727,https://id.biodiversity.org.au/taxon/apni/51446698,https://id.biodiversity.org.au/taxon/apni/51446612,https://id.biodiversity.org.au/name/apni/218829
+Rhodomyrtus trineura,species,accepted,APC,,Rhodomyrtus,Myrtaceae,Rhodomyrtus trineura,,Qld,native,Rhodomyrtus trineura (F.Muell.) Benth.,https://id.biodiversity.org.au/taxon/apni/51441176,https://id.biodiversity.org.au/taxon/apni/51441177,https://id.biodiversity.org.au/taxon/apni/51702983,https://id.biodiversity.org.au/name/apni/69289
+Rockinghamia angustifolia,species,accepted,APC,,Rockinghamia,Euphorbiaceae,Rockinghamia angustifolia,,Qld,native,Rockinghamia angustifolia (Benth.) Airy Shaw,https://id.biodiversity.org.au/node/apni/2921179,https://id.biodiversity.org.au/node/apni/2892697,https://id.biodiversity.org.au/taxon/apni/51442249,https://id.biodiversity.org.au/name/apni/61487
+Samadera baileyana,species,accepted,APC,,Samadera,Simaroubaceae,Samadera baileyana,,Qld,native,Samadera baileyana Oliv.,https://id.biodiversity.org.au/node/apni/2891526,https://id.biodiversity.org.au/node/apni/2900441,https://id.biodiversity.org.au/taxon/apni/51316490,https://id.biodiversity.org.au/name/apni/60763
+Syzygium,genus,genus accepted,APC,,Syzygium,Myrtaceae,,,,,,,https://id.biodiversity.org.au/taxon/apni/51440383,https://id.biodiversity.org.au/taxon/apni/51702983,
+Syzygium graveolens,species,accepted,APC,,Syzygium,Myrtaceae,Syzygium graveolens,,Qld,native,Syzygium graveolens (F.M.Bailey) Craven & Biffin,https://id.biodiversity.org.au/node/apni/2920364,https://id.biodiversity.org.au/taxon/apni/51440383,https://id.biodiversity.org.au/taxon/apni/51702983,https://id.biodiversity.org.au/name/apni/202985
+Syzygium sayeri,species,accepted,APC,,Syzygium,Myrtaceae,Syzygium sayeri,,Qld,native,Syzygium sayeri (F.Muell.) B.Hyland,https://id.biodiversity.org.au/node/apni/2888968,https://id.biodiversity.org.au/taxon/apni/51440383,https://id.biodiversity.org.au/taxon/apni/51702983,https://id.biodiversity.org.au/name/apni/64837
+Testupdated sp4 replaced,species,unknown,,,Testupdated,,Testupdated sp4 replaced,,,,,,,,
+Trema tomentosa var. aspera,variety,accepted,APC,,Trema,Cannabaceae,Trema tomentosa,Trema tomentosa var. aspera,"WA, Qld, NSW, Vic (presumed extinct)",native,Trema tomentosa var. aspera (Brongn.) Hewson,https://id.biodiversity.org.au/node/apni/2917190,https://id.biodiversity.org.au/node/apni/2913617,https://id.biodiversity.org.au/taxon/apni/51269919,https://id.biodiversity.org.au/name/apni/206199
+testupdated sp3 replaced,species,unknown,,,testupdated,,testupdated sp3 replaced,,,,,,,,

@@ -4,16 +4,22 @@
     <loc>http://traitecoevo.github.io/traits.build/404.html</loc>
   </url>
   <url>
-    <loc>http://traitecoevo.github.io/traits.build/LICENSE-text.html</loc>
-  </url>
-  <url>
     <loc>http://traitecoevo.github.io/traits.build/authors.html</loc>
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/index.html</loc>
   </url>
   <url>
+    <loc>http://traitecoevo.github.io/traits.build/LICENSE-text.html</loc>
+  </url>
+  <url>
     <loc>http://traitecoevo.github.io/traits.build/news/index.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/ontology/index.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/ontology/release/0.1.0/index.html</loc>
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/bib_print.html</loc>
@@ -32,6 +38,12 @@
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/build_update_taxonomy.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/reference/check_pivot_duplicates.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/reference/check_pivot_wider.html</loc>
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/create_tree_branch.html</loc>
@@ -56,6 +68,15 @@
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/dataset_test_worker.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/reference/dataset_update_taxonomy.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/reference/db_traits_pivot_longer.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/reference/db_traits_pivot_wider.html</loc>
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/get_schema.html</loc>
@@ -149,6 +170,9 @@
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/reference/plot_trait_distribution_beeswarm.html</loc>
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/process_add_all_columns.html</loc>

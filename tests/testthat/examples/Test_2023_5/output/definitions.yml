@@ -1,0 +1,34 @@
+leaf_mass_per_area:
+  label: Leaf mass per area
+  description: A leaf morphology trait [TO:0000748] which is the ratio [PATO:0001470]
+    of the leaf dry [PATO:0001824] mass [PATO:0000125] to the leaf [PO:0025034] area
+    [PATO:0001323], measured on an entire leaf, including the entire leaf lamina [PO:0020039]
+    and the petiole [PO:0020038].;The ratio of leaf dry mass to leaf area, measured
+    on an entire leaf including the petiole; LMA. (The inverse of specific leaf area,
+    SLA.)
+  comments: Leaf mass per area includes measurements submitted as `specific_leaf_area`
+    (SLA); they are simply inverted. Leaf mass per area is explicitly measured on
+    an entire leaf, including the petiole. Measurements made on a piece of the leaf
+    lamina, excluding petiole and midrib, are a separate trait `leaf_lamina_mass_per_area`.
+    If measurements are made on the entire leaf lamina, but the petiole is excluded,
+    this should be noted in the methods or under `measurement_remarks`.
+  type: numeric
+  units: g/m2
+  allowed_values_min: 1.0
+  allowed_values_max: 3000.0
+  entity_URI: https://w3id.org/APD/traits/trait_0011230
+leaf_lifespan:
+  label: Leaf lifespan
+  description: The duration [PATO:0001309] that an individual leaf [PO:0025034] is
+    attached to the stem [PO:0009047] and is physiologically functional [PATO:0001510].;Duration
+    of time that an individual leaf is attached to the stem and physiologically functional;
+    leaf longevity.
+  comments: Leaf lifespan is the inverse of the rate of leaf turnover. For some species,
+    leaflets or other portions of a leaf may be censused rather than the entire leaf
+    lamina. Leaf lifespan can be censused as either the rate of shedding leaves (leaf
+    death) or the rate of formation of new leaves (leaf birth).
+  type: numeric
+  units: mo
+  allowed_values_min: 1.0
+  allowed_values_max: 1000.0
+  entity_URI: https://w3id.org/APD/traits/trait_0030025

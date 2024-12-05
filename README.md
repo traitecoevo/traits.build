@@ -1,9 +1,10 @@
 
-# The {traits.build} R package
+# The {traits.build} R package <img src="man/figures/traits_build_hex2.png" align="right" alt="" width="120" />
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/traitecoevo/traits.build/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/traitecoevo/traits.build/actions/workflows/R-CMD-check.yml)
 [![Codecov test coverage](https://codecov.io/gh/traitecoevo/traits.build/branch/develop/graph/badge.svg)](https://app.codecov.io/gh/traitecoevo/traits.build?branch=develop)
+[![Lifecycle: deprecated](https://img.shields.io/badge/lifecycle-deprecated-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#deprecated)
 <!-- badges: end -->
 
 
@@ -73,7 +74,11 @@ Please read the [help guide](https://traitecoevo.github.io/traits.build-book/hel
 
 ## Citation
 
-We are developing a paper describing the `traits.build` workflow. In the meantime, please cite the following publication
+A publication describing the `traits.build` workflow:
+> Wenk E, Bal P, Coleman D, Gallagher R, Yang S, Falster D, (2024) Traits.build: A data model, workflow and R package for building harmonised ecological trait databases. Ecological Informatics 83: 102773. DOI: [10.1016/j.ecoinf.2024.102773](https://doi.org/10.1016/j.ecoinf.2024.102773)
+
+
+A publication describing the biggest database using the `traits.build` workflow:
 
 > Falster D, Gallagher R, Wenk, E et al. (2021) AusTraits, a curated plant trait 
 database for the Australian flora. Scientific Data 8: 254. 
