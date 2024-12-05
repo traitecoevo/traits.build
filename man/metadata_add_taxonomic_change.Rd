@@ -2,7 +2,7 @@
 % Please edit documentation in R/setup.R
 \name{metadata_add_taxonomic_change}
 \alias{metadata_add_taxonomic_change}
-\title{Add a taxonomic change into the `metadata.yml` file for a `dataset_id`}
+\title{Add a taxonomic change into the \code{metadata.yml} file for a \code{dataset_id}}
 \usage{
 metadata_add_taxonomic_change(
   dataset_id,
@@ -25,11 +25,11 @@ metadata_add_taxonomic_change(
 \item{taxonomic_resolution}{The rank of the most specific taxon name (or scientific name)
 to which a submitted orignal name resolves}
 
-\item{overwrite}{Parameter indicating whether preexisting find-replace entries should be overwritten. Defaults to `true`}
+\item{overwrite}{Parameter indicating whether preexisting find-replace entries should be overwritten. Defaults to \code{true}}
 }
 \value{
-`metadata.yml` file with taxonomic change added
+\code{metadata.yml} file with taxonomic change added
 }
 \description{
-Add a single taxonomic change into the `metadata.yml` file for a specific study.
+Add a single taxonomic change into the \code{metadata.yml} file for a specific study.
 }

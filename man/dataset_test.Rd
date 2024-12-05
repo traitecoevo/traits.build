@@ -2,7 +2,7 @@
 % Please edit documentation in R/testdata.R
 \name{dataset_test}
 \alias{dataset_test}
-\title{Test whether specified `dataset_id` has the correct setup}
+\title{Test whether specified \code{dataset_id} has the correct setup}
 \usage{
 dataset_test(
   dataset_ids,
@@ -12,14 +12,14 @@ dataset_test(
 )
 }
 \arguments{
-\item{dataset_ids}{Vector of `dataset_id` for sources to be tested}
+\item{dataset_ids}{Vector of \code{dataset_id} for sources to be tested}
 
 \item{path_config}{Path to folder containing configuration files}
 
 \item{path_data}{Path to folder containing data files}
 
-\item{reporter}{`testthat` reporter to use to summarise output}
+\item{reporter}{\code{testthat} reporter to use to summarise output}
 }
 \description{
-Run tests to ensure that specified `dataset_id` has the correct setup.
+Run tests to ensure that specified \code{dataset_id} has the correct setup.
 }

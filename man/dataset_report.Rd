@@ -33,6 +33,6 @@ dataset_report(
 Html file of the rendered report located in the specified output folder
 }
 \description{
-Builds a detailed report for every dataset with a unique `dataset_id`, based on the template Rmd file provided.
+Builds a detailed report for every dataset with a unique \code{dataset_id}, based on the template Rmd file provided.
 The reports are rendered as html files and saved in the specified output folder.
 }

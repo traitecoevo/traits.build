@@ -12,7 +12,7 @@ metadata_user_select_names(title, vars)
 \item{vars}{Variable names}
 }
 \description{
-`metadata_user_select_names` is used to prompt the user to select the variables that
+\code{metadata_user_select_names} is used to prompt the user to select the variables that
 are relevant for compiling the metadata yaml file. It is currently used for
-`metadata_add_traits`, `metadata_add_locations` and `metadata_add_contexts`.
+\code{metadata_add_traits}, \code{metadata_add_locations} and \code{metadata_add_contexts}.
 }

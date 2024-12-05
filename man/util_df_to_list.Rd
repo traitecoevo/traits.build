@@ -14,6 +14,8 @@ A (yaml) list
 }
 \description{
 Convert a dataframe to a named list, useful when converting to yaml.
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 }
 \examples{
 util_df_to_list(dplyr::starwars)

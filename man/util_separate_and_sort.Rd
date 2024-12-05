@@ -15,8 +15,8 @@ util_separate_and_sort(x, sep = " ")
 A vector of alphabetically sorted records
 }
 \description{
-`util_separate_and_sort`: For a vector x in which individual cell may have
- multiple values (separated by 'sep'), sort records within each cell alphabetically.
+\code{util_separate_and_sort}: For a vector x in which individual cell may have
+multiple values (separated by 'sep'), sort records within each cell alphabetically.
 }
 \examples{
 \dontrun{util_separate_and_sort("z y x")}

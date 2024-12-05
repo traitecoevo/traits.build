@@ -7,12 +7,12 @@
 read_csv_char(...)
 }
 \arguments{
-\item{...}{Arguments passed to the `read_csv()`}
+\item{...}{Arguments passed to the \code{read_csv()}}
 }
 \value{
 A tibble
 }
 \description{
-Reads in a csv file using the `read_csv` function from readr
+Reads in a csv file using the \code{read_csv} function from readr
 with columns as characters.
 }
