@@ -75,7 +75,7 @@ dataset_test_worker <-
         }
 
         ## Check for other files
-        vals <- c("data.csv", "metadata.yml", "raw")
+        vals <- c("data.csv", "metadata.yml", "raw", "output", "README.md")
         test_expect_is_in(
           dir(s), vals,
           info = paste0(red(file.path(path_data, dataset_id)), "\tdisallowed files"),

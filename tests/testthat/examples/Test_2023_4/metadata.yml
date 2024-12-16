@@ -85,7 +85,10 @@ dataset:
         entity_measured = ifelse(category %in% c("capsule", "silicula", "nut", "utricles", "pyrenes", "berry", "achenes"), "fruit", entity_measured),
         units = ifelse(trait_name == "fruit_width", NA_character_, units)
       ) %>%
-      mutate(entity_measured = ifelse(is.na(entity_measured), "unknown", entity_measured))
+      mutate(entity_measured = ifelse(is.na(entity_measured), "unknown", entity_measured)) %>%
+      group_by(taxon_name, trait_name, entity_measured, value_type) %>%
+        mutate(observation_number = dplyr::row_number()) %>%
+      ungroup()
   '
   collection_date: collection_date
   taxon_name: taxon_name
@@ -150,6 +153,9 @@ contexts:
   values:
   - value: unknown
   - value: fruit
+- context_property: replicate observations
+  category: temporal_context
+  var_in: observation_number
 traits:
 - var_in: fruit_colour
   trait_name: fruit_colour
