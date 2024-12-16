@@ -708,6 +708,9 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
       tibble::tibble(dataset_id = character(), var_in = character())
   }
 
+  contexts <- contexts %>% dplyr::select(dplyr::any_of(
+    c("dataset_id", "context_property", "category", "value", "description", "find", "var_in")))
+
   contexts
 }
 

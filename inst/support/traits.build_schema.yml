@@ -118,7 +118,7 @@ austraits:
         source_secondary_key: Citation key for the secondary source in `sources`.  The key is typically formatted as `Surname_year`.
         source_secondary_citation: Citations for the secondary source. This detail is generated from the secondary source in the metadata.
         source_original_dataset_key: Citation key for the original dataset_id in sources; for compilations.  The key is typically formatted as `Surname_year`.
-        source_original_dataset_citation: Citations for the original dataset_id in sources; for compilationse. This detail is generated from the original source in the metadata.
+        source_original_dataset_citation: Citations for the original dataset_id in sources; for compilations. This detail is generated from the original source in the metadata.
         data_collectors: &data_collectors The person (people) leading data collection for this study.
         assistants: &assistants Names of people who played a more minor role in data collection for the study.
         dataset_curators: &dataset_curators Names of database team member(s) who contacted the data collectors and added the study to the database repository.
