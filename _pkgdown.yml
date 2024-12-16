@@ -82,11 +82,8 @@ reference:
   - title: Working with outputs
     desc: Functions to work with compiled traits.build objects.
     contents:
-    - '`plot_trait_distribution_beeswarm`'
     - '`check_pivot_duplicates`'
     - '`check_pivot_wider`'
-    - '`db_traits_pivot_longer`'
-    - '`db_traits_pivot_wider`'
 
   - title: Building a compilation (private)
     desc: Private functions that are called in the background when building individual datasets and entire compilation. These are only of interest to developers.
@@ -127,12 +124,9 @@ reference:
     - '`util_check_all_values_in`'
     - '`util_check_disallowed_chars`'
     - '`util_df_convert_character`'
-    - '`util_df_to_list`'
     - '`util_extract_list_element`'
     - '`util_kable_styling_html`'
     - '`util_list_to_bib`'
-    - '`util_list_to_df1`'
-    - '`util_list_to_df2`'
     - '`util_replace_null`'
     - '`util_separate_and_sort`'
     - '`util_standardise_doi`'
