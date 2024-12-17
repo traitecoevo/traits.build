@@ -75,7 +75,7 @@ dataset_test_worker <-
         }
 
         ## Check for other files
-        vals <- c("data.csv", "metadata.yml", "raw")
+        vals <- c("data.csv", "metadata.yml", "raw", "output", "README.md")
         test_expect_is_in(
           dir(s), vals,
           info = paste0(red(file.path(path_data, dataset_id)), "\tdisallowed files"),
@@ -873,18 +873,20 @@ dataset_test_worker <-
           # I'm not testing whether the functions work as intended, just that they throw no error
 
           test_expect_no_warning(
-            dataset_wider <- db_traits_pivot_wider(dataset$traits),
-            info = paste0(red(dataset_id), "\t`db_traits_pivot_wider` threw a warning; duplicate rows detected")
+            dataset_wider <- check_pivot_wider(dataset),
+            info = paste0(red(dataset_id), "\t`check_pivot_wider` threw a warning; duplicate rows detected")
           )
 
-          if (exists("dataset_wider")) {
-            test_expect_no_warning(
-              test_expect_no_error(
-                dataset_longer <- db_traits_pivot_longer(dataset_wider),
-                info = paste0(red(dataset_id), "\t`db_traits_pivot_longer`")),
-              info = paste0(red(dataset_id), "\t`db_traits_pivot_longer` threw a warning")
-            )
-          }
+          # Commenting out test Dec 2024, because `check_pivot_longer` has been deprecated
+          
+          #if (exists("dataset_wider")) {
+          #  test_expect_no_warning(
+          #    test_expect_no_error(
+          #      dataset_longer <- check_pivot_longer(dataset_wider),
+          #      info = paste0(red(dataset_id), "\t`check_pivot_longer`")),
+          #    info = paste0(red(dataset_id), "\t`check_pivot_longer` threw a warning")
+          #  )
+          #}
         }
       })
     }
