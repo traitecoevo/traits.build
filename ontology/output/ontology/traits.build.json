@@ -7073,6 +7073,10 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "traits.build database"
+      },
+      "http://www.w3.org/2004/02/skos/core#topConceptOf": {
+        "@type": "xsd:anyURI",
+        "@value": "<https://w3id.org/traits.build>"
       }
     },
     {

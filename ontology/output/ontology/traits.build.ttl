@@ -2189,7 +2189,8 @@ skos:topConceptOf
     rdfs:label "traits.build database"@en ;
     skos:altLabel "traits.build_database"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "traits.build database"@en .
+    skos:prefLabel "traits.build database"@en ;
+    skos:topConceptOf "<https://w3id.org/traits.build>"^^<xsd:anyURI> .
 
 <https://w3id.org/traits.build#traits.build-definitions>
     dcterms:created "01 February 2024"^^<xsd:date> ;
