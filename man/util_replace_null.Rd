@@ -15,7 +15,7 @@ util_replace_null(x, val = NA)
 NA or a non-NULL object
 }
 \description{
-`util_replace_null` converts NULL values a different value. Default is
+\code{util_replace_null} converts NULL values a different value. Default is
 converting NULL to NA.
 }
 \examples{

@@ -12,7 +12,7 @@ metadata_add_substitutions_list(dataset_id, substitutions)
 \item{substitutions}{Dataframe of trait value substitutions}
 }
 \value{
-`metadata.yml` file with multiple trait value substitutions added
+\code{metadata.yml} file with multiple trait value substitutions added
 }
 \description{
 Add a dataframe of trait value substitutions into a metadata file for a dataset_id

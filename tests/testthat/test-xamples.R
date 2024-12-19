@@ -5,6 +5,22 @@ unit_conversions <- traits.build:::get_unit_conversions("config/unit_conversions
 taxon_list <- read_csv_char("config/taxon_list.csv")
 examples_dir <- "examples"
 
+# Dataset test
+expect_no_error(
+  dataset_test(
+    dataset_ids = c("Test_2023_2", "Test_2023_3", "Test_2023_4", 
+                    "Test_2023_5", "Test_2023_6", "Test_2023_7"), 
+    path_data = "examples")
+  )
+
+# Test_2023_1 explicitly has an incorrect trait_name included in the metadata file, so will fail dataset_test
+testthat::expect_output(
+  dataset_test(
+    dataset_ids = c("Test_2023_1"), 
+    path_data = "examples")
+  )
+
+
 # Not sure why but running the tests line by line generates different ids than when you
 # run the whole `test_that` function... It means that I have to use the `test_that` function to
 # generate the expected output.
@@ -20,19 +36,17 @@ testthat::test_that("Test Dataset 1 builds correctly", {
       file.path(examples_dir, "Test_2023_1/metadata.yml"),
       file.path(examples_dir, "Test_2023_1/data.csv"),
       "Test Dataset 1", definitions, unit_conversions, schema, resource_metadata, taxon_list
-    ),
-    info = "Building Test Dataset 1")
+    ))
 
   # Expected output
 
   tables <- c("traits", "locations", "contexts", "methods", "excluded_data",
               "taxonomic_updates", "taxa", "contributors")
 
-    expect_no_error(
+  expect_no_error(
     expected_output <-
       purrr::map(
-        tables, ~read_csv(sprintf("examples/Test_2023_1/output/%s.csv", .x), col_types = cols(.default = "c"))),
-    info = "Reading in expected output tables"
+        tables, ~read_csv(sprintf("examples/Test_2023_1/output/%s.csv", .x), col_types = cols(.default = "c")))
   )
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
@@ -56,8 +70,7 @@ testthat::test_that("Test Dataset 2 builds correctly", {
       file.path(examples_dir, "Test_2023_2/metadata.yml"),
       file.path(examples_dir, "Test_2023_2/data.csv"),
       "Test Dataset 2", definitions, unit_conversions, schema, resource_metadata, taxon_list
-    ),
-    info = "Building Test Dataset 2")
+    ))
 
   # Expected output
   tables <- c("traits", "locations", "contexts", "methods", "excluded_data",
@@ -65,8 +78,7 @@ testthat::test_that("Test Dataset 2 builds correctly", {
   expect_no_error(
     expected_output <-
       purrr::map(
-        tables, ~read_csv(sprintf("examples/Test_2023_2/output/%s.csv", .x), col_types = cols(.default = "c"))),
-    info = "Reading in expected output tables"
+        tables, ~read_csv(sprintf("examples/Test_2023_2/output/%s.csv", .x), col_types = cols(.default = "c")))
   )
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
@@ -90,8 +102,7 @@ testthat::test_that("Test Dataset 3 builds correctly", {
       file.path(examples_dir, "Test_2023_3/metadata.yml"),
       file.path(examples_dir, "Test_2023_3/data.csv"),
       "Test Dataset 3", definitions, unit_conversions, schema, resource_metadata, taxon_list
-    ),
-    info = "Building Test Dataset 3")
+    ))
 
   # Expected output
   tables <- c("traits", "locations", "contexts", "methods", "excluded_data",
@@ -99,8 +110,7 @@ testthat::test_that("Test Dataset 3 builds correctly", {
   expect_no_error(
     expected_output <-
       purrr::map(
-        tables, ~read_csv(sprintf("examples/Test_2023_3/output/%s.csv", .x), col_types = cols(.default = "c"))),
-    info = "Reading in expected output tables"
+        tables, ~read_csv(sprintf("examples/Test_2023_3/output/%s.csv", .x), col_types = cols(.default = "c")))
   )
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
@@ -124,8 +134,7 @@ testthat::test_that("Test Dataset 4 builds correctly", {
       file.path(examples_dir, "Test_2023_4/metadata.yml"),
       file.path(examples_dir, "Test_2023_4/data.csv"),
       "Test Dataset 4", definitions, unit_conversions, schema, resource_metadata, taxon_list
-    ),
-    info = "Building Test Dataset 4")
+    ))
 
   # Expected output
   tables <- c("traits", "locations", "contexts", "methods", "excluded_data",
@@ -133,8 +142,7 @@ testthat::test_that("Test Dataset 4 builds correctly", {
   expect_no_error(
     expected_output <-
       purrr::map(
-        tables, ~read_csv(sprintf("examples/Test_2023_4/output/%s.csv", .x), col_types = cols(.default = "c"))),
-    info = "Reading in expected output tables"
+        tables, ~read_csv(sprintf("examples/Test_2023_4/output/%s.csv", .x), col_types = cols(.default = "c")))
   )
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
@@ -187,8 +195,7 @@ testthat::test_that("Test Dataset 5 builds correctly", {
       file.path(examples_dir, "Test_2023_5/metadata.yml"),
       file.path(examples_dir, "Test_2023_5/data.csv"),
       "Test Dataset 5", definitions, unit_conversions, schema, resource_metadata, taxon_list
-    ),
-    info = "Building Test Dataset 5")
+    ))
 
   # Expected output
   tables <- c("traits", "locations", "contexts", "methods", "excluded_data",
@@ -196,8 +203,7 @@ testthat::test_that("Test Dataset 5 builds correctly", {
   expect_no_error(
     expected_output <-
       purrr::map(
-        tables, ~read_csv(sprintf("examples/Test_2023_5/output/%s.csv", .x), col_types = cols(.default = "c"))),
-    info = "Reading in expected output tables"
+        tables, ~read_csv(sprintf("examples/Test_2023_5/output/%s.csv", .x), col_types = cols(.default = "c")))
   )
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
@@ -221,8 +227,7 @@ testthat::test_that("Test Dataset 6 builds correctly", {
       file.path(examples_dir, "Test_2023_6/metadata.yml"),
       file.path(examples_dir, "Test_2023_6/data.csv"),
       "Test Dataset 6", definitions, unit_conversions, schema, resource_metadata, taxon_list
-    ),
-    info = "Building Test Dataset 6")
+    ))
 
   # Expected output
   tables <- c("traits", "locations", "contexts", "methods", "excluded_data",
@@ -230,8 +235,7 @@ testthat::test_that("Test Dataset 6 builds correctly", {
   expect_no_error(
     expected_output <-
       purrr::map(
-        tables, ~read_csv(sprintf("examples/Test_2023_6/output/%s.csv", .x), col_types = cols(.default = "c"))),
-    info = "Reading in expected output tables"
+        tables, ~read_csv(sprintf("examples/Test_2023_6/output/%s.csv", .x), col_types = cols(.default = "c")))
   )
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
@@ -255,8 +259,7 @@ testthat::test_that("Test Dataset 7 builds correctly", {
       file.path(examples_dir, "Test_2023_7/metadata.yml"),
       file.path(examples_dir, "Test_2023_7/data.csv"),
       "Test Dataset 7", definitions, unit_conversions, schema, resource_metadata, taxon_list
-    ),
-    info = "Building Test Dataset 7")
+    ))
 
   # Expected output
   tables <- c("traits", "locations", "contexts", "methods", "excluded_data",
@@ -264,8 +267,7 @@ testthat::test_that("Test Dataset 7 builds correctly", {
   expect_no_error(
     expected_output <-
       purrr::map(
-        tables, ~read_csv(sprintf("examples/Test_2023_7/output/%s.csv", .x), col_types = cols(.default = "c"))),
-    info = "Reading in expected output tables"
+        tables, ~read_csv(sprintf("examples/Test_2023_7/output/%s.csv", .x), col_types = cols(.default = "c")))
   )
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables
@@ -289,8 +291,7 @@ testthat::test_that("Test Dataset 8 builds correctly", {
       file.path(examples_dir, "Test_2023_8/metadata.yml"),
       file.path(examples_dir, "Test_2023_8/data.csv"),
       "Test Dataset 8", definitions, unit_conversions, schema, resource_metadata, taxon_list
-    ),
-    info = "Building Test Dataset 8")
+    ))
 
   # Expected output
   tables <- c("traits", "locations", "contexts", "methods", "excluded_data",
@@ -298,8 +299,7 @@ testthat::test_that("Test Dataset 8 builds correctly", {
   expect_no_error(
     expected_output <-
       purrr::map(
-        tables, ~read_csv(sprintf("examples/Test_2023_8/output/%s.csv", .x), col_types = cols(.default = "c"))),
-    info = "Reading in expected output tables"
+        tables, ~read_csv(sprintf("examples/Test_2023_8/output/%s.csv", .x), col_types = cols(.default = "c")))
   )
   # Todo: also load and test non-csv outputs
   names(expected_output) <- tables

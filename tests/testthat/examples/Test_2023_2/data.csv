@@ -43,5 +43,5 @@ Psychotria dallachiana,psydal,Cape Tribulation,0.079,0.0177,2495,0.612,0.33,,429
 Quassia baileyana,quabai,Cape Tribulation,0.086,0.023,9624,0.501,0.42,,,5867,3216,5719,2,unknown,mean,adult,,Test_2022,,
 Rockinghamia angustifolia,rocang,Cape Tribulation,0.108,0.0158,10636,0.455,0.39,19.38,,5862,4611,6098,2,unknown,mean,adult,,Test_2022,,
 Syzygium gustavioides,syzgus,Cape Tribulation,0.167,0.0129,3590,0.521,0.59,48000,2833,3121,3047,6584,2,unknown,mean,adult,,Test_2022,,
-Syzygium sayeri,syzsay,Cape Tribulation,0.131,0.0137,2645,0.485,0.65,841,3929,5767,4939,9836,2,unknown,mean,adult,,Test_2022,,
-Trema aspera,treasp,Cape Tribulation,0.053,0.0299,2071,0.357,0.53,5.12,3578,5291,5440,6695,2,unknown,mean,adult,,Test_2022,,
+Syzygium sayeri,syzsay,Cape Tribulation,0.131,0.0137,2645,0.485,0.65,841,3929,5767,4939,9836,2,unknown,standard_deviation,adult,,Test_2022,,
+Trema aspera,treasp,Cape Tribulation,0.053,0.0299,2071,0.357,0.53,5.12,3578,5291,5440,6695,2,unknown,standard_error,adult,,Test_2022,,

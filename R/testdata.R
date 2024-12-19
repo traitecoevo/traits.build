@@ -41,7 +41,7 @@ dataset_test <-
 #' @inheritParams dataset_test
 #' @param schema Data schema
 #' @param definitions Trait defininitons
-#' @importFrom testthat local_edition compare expect test_that context expect_silent
+#' @importFrom testthat local_edition test_that context expect_silent
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
 dataset_test_worker <-
@@ -55,310 +55,10 @@ dataset_test_worker <-
 
     # We're using 2nd edition of test that, which has "context" field
     # https://cran.r-project.org/web/packages/testthat/vignettes/third-edition.html
-    # Is there a reason to be using the 2nd edition, while context has been superseded in later versions?
+
     local_edition(2)
 
-    expect_is_in <- function(object, expected, ..., info, label, na.rm = TRUE) {
-
-        if (na.rm)
-          object <- object[!is.na(object)]
-        i <- object %in% expected
-
-        comp <- compare(all(i), TRUE, ...)
-        expect(
-          comp$equal,
-          sprintf(
-            "%s - %s should not contain: '%s'",
-            info, label,
-            paste(object[!i], collapse = "', '")
-          ))
-
-        invisible(object)
-      }
-
-    expect_contains <- function(object, expected, ..., info) {
-
-      i <- expected %in% object
-
-      comp <- compare(all(i), TRUE, ...)
-      expect(
-        comp$equal,
-        sprintf("%s - does not contain: '%s'", info, paste(expected[!i], collapse = "', '"))
-      )
-
-      invisible(object)
-    }
-
-    expect_allowed <- function(object, allowed, ..., info, label) {
-
-      i <- object %in% allowed
-
-      comp <- compare(all(i), TRUE, ...)
-      expect(
-        comp$equal,
-        sprintf(
-          "%s - %s include(s) invalid terms: '%s'",
-          info, label,
-          paste(object[!i], collapse = "', '")
-        ))
-
-      invisible(object)
-    }
-
-    expect_equal <- function(object, expected, info) {
-      i <- object == expected
-      comp <- compare(all(i), TRUE)
-      expect(comp$equal, info)
-    }
-
-    expect_true <- function(object, info) {
-      i <- object == TRUE
-      comp <- compare(all(i), TRUE)
-      expect(comp$equal, info)
-    }
-
-    expect_false <- function(object, info) {
-      i <- object == FALSE
-      comp <- compare(all(i), TRUE)
-      expect(comp$equal, info)
-    }
-
-    expect_named <- function(object, expected_names, info, label) {
-
-      if (missing(expected_names)) {
-        expect(
-          !identical(names(object), NULL),
-          sprintf("%s - %s do not exist", info, label))
-      } else {
-        expect(
-          identical(names(object), expected_names),
-          sprintf(
-            "%s\tnames of %s (%s) don't match %s",
-            info,
-            label, paste0("'", names(object), "'", collapse = ", "),
-            paste0("'", expected_names, "'", collapse = ", ")
-          )
-        )
-      }
-    }
-
-    expect_type <- function(object, type, info, label) {
-      stopifnot(is.character(type), length(type) == 1)
-      expect(
-        identical(typeof(object), type),
-        sprintf("%s - %s has type %s, not %s", info, label, typeof(object), type)
-      )
-    }
-
-    expect_not_NA <- function(object, info, label) {
-      i <- !is.na(object)
-      comp <- compare(all(i), TRUE)
-      expect(comp$equal, sprintf("%s - %s contain(s) NAs", info, label))
-      invisible(object)
-    }
-
-    expect_length_zero <- function(object, info, label) {
-      comp <- compare(length(object), 0)
-      expect(comp$equal, sprintf("%s: %s", info, label))
-      invisible(object)
-    }
-
-    expect_unique <- function(object, info, label) {
-      x <- table(unlist(object))
-      i <- x == 1
-      comp <- compare(all(i), TRUE)
-      expect(comp$equal, sprintf("%s - %s not unique: '%s'", info, label, paste(names(x)[!i], collapse = "', '")))
-      invisible(object)
-    }
-
-    expect_allowed_text <- function(object, is_data = FALSE, is_col_names = FALSE, info, label) {
-
-      if (length(object) > 0) {
-
-        if (is_data) {
-          disallowed <-
-            object %>% lapply(check_disallowed_chars, exceptions = c("")) %>% simplify2array()
-        } else {
-          disallowed <-
-            object %>% lapply(check_disallowed_chars) %>% simplify2array()
-        }
-
-        check <- disallowed %>% lapply(any) %>% unlist()
-
-        txt <- "\n"
-        for (i in which(check)) {
-          if (is_col_names) {
-            txt <- sprintf(
-              "%s\t- col %s: %s\n",
-              txt, i, colour_characters(object[[i]], which(disallowed[[i]])))
-          } else {
-            txt <- sprintf(
-              "%s\t- ln %s: %s\n",
-              txt, i, colour_characters(object[[i]], which(disallowed[[i]])))
-          }
-
-        }
-
-        if (is_data) {
-          expect(
-            identical(as.vector(all(!check)), TRUE),
-            sprintf(
-              "%s\tdisallowed characters in data detected: %s\n\tPlease replace using `custom_R_code`",
-              info, txt
-            )
-          )
-        } else {
-          expect(
-            identical(as.vector(all(!check)), TRUE),
-            sprintf("%s - disallowed characters in %s detected: \n%s", info, label, txt)
-          )
-        }
-
-      }
-
-      invisible(object)
-
-    }
-
-    colour_characters <- function(x, i = NULL) {
-
-      chars <- x %>% charToRaw() %>% lapply(rawToChar) %>% unlist()
-
-      # Wrapper around characters to print as colour
-      # obtained from crayon::red(x)
-      if (!is.null(i))
-        chars[i] <- sprintf("\033[31m%s\033[39m", chars[i])
-
-      paste0(chars, collapse = "")
-    }
-
-    check_disallowed_chars <- function(x, exceptions = c("ÁÅÀÂÄÆÃĀâíåæäãàáíÇčóöøéèłńl°êÜüùúû±µµ“”‘’-–—≈˜×≥≤")) {
-
-      i <- charToRaw(x)
-      # Allow all ascii text
-      is_ascii <- i < 0x7F
-
-      # Allow some utf8 characters, those with accents over letters for foreign names
-      # List of codes is here: http://www.utf8-chartable.de/
-      # Note c3 is needed because this is prefix for allowed UTF8 chars
-      # Warning: Portable packages must use only ASCII characters in their R code
-      # Sophie - could replace these with unicode like Lizzy did before?
-      exceptions <- exceptions
-
-      is_allowed <- i %in% charToRaw(exceptions)
-      !(is_ascii | is_allowed)
-    }
-
-    # Better than expect_silent as contains `info` and allows for complete failures
-    expect_no_error <- function(object, ..., info) {
-      error <- tryCatch({
-        object
-        NULL
-      }, error = function(e) {
-        e
-      })
-      expect(
-        is.null(error),
-        sprintf("%s threw an error:\n\n" %+% red("%s"), info, paste(error, collapse = ",")))
-      invisible(object)
-    }
-
-    expect_no_warning <- function(object, ..., info) {
-      warning <- tryCatch({
-        object
-        NULL
-      }, warning = function(w) {
-        w
-      })
-      expect(is.null(warning), info)
-    }
-
-    expect_list_elements_contains_names <- function(object, expected, info) {
-      for (i in seq_along(object))
-        expect_contains(names(object[[i]]), expected, info = paste(info, i))
-      invisible(object)
-    }
-
-    expect_list_elements_allowed_names <- function(object, allowed, info, label) {
-      for (i in seq_along(object))
-        expect_allowed(names(object[[i]]), allowed, info = paste(info, i), label = "field names")
-      invisible(object)
-    }
-
-    expect_list_elements_exact_names <- function(object, expected, info) {
-      for (i in seq_along(object)) {
-        expect_contains(names(object[[i]]), expected, info = paste(info, i))
-        expect_allowed(names(object[[i]]), expected, info = paste(info, i), label = "field names")
-      }
-      invisible(object)
-    }
-
-    expect_dataframe_valid <- function(data, info, label) {
-      expect_not_NA(colnames(data), info, label)
-      expect_allowed_text(colnames(data), is_col_names = TRUE, info = info, label = label)
-      expect_unique(colnames(data), info, label)
-      expect_true(is.data.frame(data), info = sprintf("%s - is not a dataframe", info))
-    }
-
-    # Function is assigned but not used
-    expect_dataframe_named <- function(data, expected_colnames, info, label) {
-      expect_dataframe_valid(data, info, label)
-      expect_named(data, expected_colnames, info = info, label = label)
-    }
-
-    expect_dataframe_names_contain <- function(data, expected_colnames, info, label) {
-      expect_dataframe_valid(data, info, label)
-      expect_contains(names(data), expected_colnames, info = info)
-    }
-
-    expect_list <- function(data, info) {
-      expect_true("list" %in% class(data), info = sprintf("%s - is not a list", info))
-    }
-
-    expect_list_names_valid <- function(data, info, label) {
-      expect_list(data, info)
-      expect_not_NA(names(data), info = info, label = label)
-      expect_unique(names(data), info = info, label = label)
-    }
-
-    expect_list_names_exact <- function(data, expected_names, info, label) {
-      expect_list_names_valid(data, info, label = label)
-      expect_named(data, expected_names, info = info, label = label)
-    }
-
-    expect_list_names_allowed <- function(data, allowed_names, info, label) {
-      expect_list_names_valid(data, info, label = label)
-      expect_named(data, info = info, label = label)
-      expect_allowed(names(data), allowed_names, info = info, label = label)
-    }
-
-    # Function is assigned but not used
-    expect_list_names_contain <- function(data, expected_names, info, label) {
-      expect_list_names_valid(data, info, label = label)
-      expect_named(data, info = info, label = label)
-      expect_contains(names(data), expected_names, info = info)
-    }
-
-    test_build_dataset <- function(
-      path_metadata, path_data, info, definitions, unit_conversions, schema, resource_metadata, taxon_list) {
-
-      # Test it builds with no errors
-      expect_no_error({
-        build_config <- dataset_configure(path_metadata, definitions)
-      }, info = "`dataset_configure`")
-
-      expect_no_error({
-        build_dataset_raw <- dataset_process(path_data, build_config, schema, resource_metadata, unit_conversions)
-      }, info = "`dataset_process`")
-
-      expect_no_error({
-        build_dataset <- dataset_update_taxonomy(build_dataset_raw, taxon_list)
-      }, info = "`dataset_update_taxonomy`")
-
-      build_dataset
-    }
-
-    # Now run tests for each dataset
+    # Run tests for each dataset
 
     for (dataset_id in test_dataset_ids) {
 
@@ -371,12 +71,12 @@ dataset_test_worker <-
         ## Files exist
         files <- file.path(s, c("data.csv", "metadata.yml"))
         for (f in files) {
-          expect_true(file.exists(f), info = sprintf("%s" %+% "\tfile does not exist", red(f)))
+          test_expect_true(file.exists(f), info = sprintf("%s\tfile does not exist", red(f)))
         }
 
         ## Check for other files
-        vals <- c("data.csv", "metadata.yml", "raw")
-        expect_is_in(
+        vals <- c("data.csv", "metadata.yml", "raw", "output", "README.md")
+        test_expect_is_in(
           dir(s), vals,
           info = paste0(red(file.path(path_data, dataset_id)), "\tdisallowed files"),
           label = "folder"
@@ -384,23 +84,23 @@ dataset_test_worker <-
 
         ## `data.csv`
         f <- files[1]
-        expect_silent(
+        testthat::expect_silent(
           data <- read_csv(f, col_types = cols(), guess_max = 1e5, progress = FALSE) # Time columns get reformatted
         )
 
         ## Check no issues flagged when parsing file
-        expect_no_error(
+        test_expect_no_error(
           readr::stop_for_problems(data),
           info = sprintf(red("`read_csv(%s)`"), f)
         )
 
-        expect_dataframe_valid(data, info = paste0(red(f), "\tdata"), label = "column names")
+        test_expect_dataframe_valid(data, info = paste0(red(f), "\tdata"), label = "column names")
 
         ## Metadata
         f <- files[2]
-        expect_allowed_text(readLines(f, encoding = "UTF-8"), info = paste0(red(f), "\tmetadata"), label = "metadata")
-        expect_silent(metadata <- yaml::read_yaml(f))
-        expect_list_names_exact(
+        test_expect_allowed_text(readLines(f, encoding = "UTF-8"), info = paste0(red(f), "\tmetadata"), label = "metadata")
+        testthat::expect_silent(metadata <- yaml::read_yaml(f))
+        test_expect_list_names_exact(
           metadata, schema$metadata$elements %>% names(),
           info = red(f), label = "metadata sections"
         )
@@ -408,28 +108,28 @@ dataset_test_worker <-
         ## Custom R code
         txt <- metadata[["dataset"]][["custom_R_code"]]
         # Check that `custom_R_code` is immediately followed by `collection_date`
-        expect_equal(
+        test_expect_equal(
           metadata[["dataset"]][which(names(metadata[["dataset"]]) == "custom_R_code") + 1] %>% names(),
           "collection_date",
           info = sprintf("%s\tdataset - the `custom_R_code` field must be followed by `collection_date`", red(f))
         )
         # Apply custom manipulations
-        expect_no_error(data <- process_custom_code(txt)(data), info = paste0(red(f), "\t`custom_R_code`"))
+        test_expect_no_error(data <- process_custom_code(txt)(data), info = paste0(red(f), "\t`custom_R_code`"))
 
         ## Source
-        expect_list_names_valid(metadata[["source"]], info = sprintf("%s\tsource", red(f)), label = "field names")
+        test_expect_list_names_valid(metadata[["source"]], info = sprintf("%s\tsource", red(f)), label = "field names")
 
         v <- names(metadata[["source"]])
         i <- grepl("primary", v) | grepl("secondary", v) | grepl("original", v)
 
-        expect_contains(v, "primary", info = paste0(red(f), "\tsource"))
+        test_expect_contains(v, "primary", info = paste0(red(f), "\tsource"))
 
-        expect_true(
+        test_expect_true(
           sum(grepl("primary", v)) <= 1,
           info = paste0(red(f), "\tsources can have max 1 type labelled 'primary': ", paste(v, collapse = ", "))
         )
 
-        expect_true(
+        test_expect_true(
           all(i),
           info = paste0(red(f), "\tsources must be primary, secondary or original: ", paste(v[!i], collapse = ", "))
         )
@@ -437,7 +137,7 @@ dataset_test_worker <-
         vals <- c("key", "bibtype", "author", "title", "year")
 
         for (bib in names(metadata[["source"]])) {
-          expect_contains(
+          test_expect_contains(
             names(metadata[["source"]][[bib]]), vals,
             info = sprintf("%s\tsource '%s'", red(f), bib)
           )
@@ -445,16 +145,16 @@ dataset_test_worker <-
 
         keys <- unlist(lapply(metadata[["source"]], "[[", "key"))
 
-        expect_unique(
+        test_expect_unique(
           keys,
           info = paste0(red(f), "\tsources"),
           label = "keys"
         )
 
         ## People
-        expect_list(metadata[["contributors"]], info = paste0(red(f), "\tcontributors"))
+        test_expect_list(metadata[["contributors"]], info = paste0(red(f), "\tcontributors"))
 
-        expect_list_names_allowed(
+        test_expect_list_names_allowed(
           metadata[["contributors"]],
           schema$metadata$elements$contributors$elements %>% names(),
           info = paste0(red(f), "\tcontributors"), label = "contributor type fields"
@@ -463,17 +163,17 @@ dataset_test_worker <-
         ## Data collectors
         if (!is.na(metadata[["contributors"]][["data_collectors"]][1])) {
 
-          expect_list(metadata[["contributors"]][["data_collectors"]], info = paste0(red(f), "\tdata_collectors"))
+          test_expect_list(metadata[["contributors"]][["data_collectors"]], info = paste0(red(f), "\tdata_collectors"))
           vars <- schema$metadata$elements$contributors$elements$data_collectors$elements %>% names()
 
           for (i in seq_along(metadata[["contributors"]][["data_collectors"]])) {
-            expect_list_names_allowed(
+            test_expect_list_names_allowed(
               metadata[["contributors"]][["data_collectors"]][[i]],
               vars,
               info = paste0(red(f), "\tdata_collector ", i), label = "`data_collector` field names"
             )
 
-            expect_contains(
+            test_expect_contains(
               metadata[["contributors"]][["data_collectors"]][[i]] %>% names(), vars[1:4],
               info = sprintf("%s\tdata_collector %s", red(f), i)
             )
@@ -481,42 +181,42 @@ dataset_test_worker <-
         }
 
         ## Dataset curators
-        expect_true(
+        test_expect_true(
           !is.null(metadata[["contributors"]][["dataset_curators"]]),
           info = sprintf("%s\tcontributors - `dataset_curators` is missing", red(f))
         )
-        expect_type(
+        test_expect_type(
           metadata[["contributors"]][["dataset_curators"]], "character",
           info = paste0(red(f), "\tcontributors"), label = "`dataset_curators`"
         )
 
         ## Assistants
         if (!is.null(metadata[["contributors"]][["assistants"]][1]))
-          expect_type(
+          test_expect_type(
             metadata[["contributors"]][["assistants"]], "character",
             info = paste0(red(f), "\tcontributors"), label = "`assistants`"
           )
 
         ## Dataset
-        expect_list_names_allowed(
+        test_expect_list_names_allowed(
           metadata[["dataset"]],
           schema$metadata$elements$dataset$values %>% names(),
           info = paste0(red(f), "\tdataset"), label = "`dataset` field names"
         )
 
-        expect_type(
+        test_expect_type(
           metadata[["dataset"]][["data_is_long_format"]], "logical",
           info = paste0(red(f), "\tdataset"), label = "`data_is_long_format`"
         )
 
-        expect_type(
+        test_expect_type(
           metadata[["dataset"]], "list",
           info = paste0(red(f), "\tdataset"), label = "metadata"
         )
 
         ## Locations
 
-        expect_silent(
+        testthat::expect_silent(
           locations <-
             metadata$locations %>%
             process_format_locations(dataset_id, schema) %>%
@@ -525,9 +225,9 @@ dataset_test_worker <-
 
         if (length(unlist(metadata[["locations"]])) > 1) {
 
-          expect_list(metadata[["locations"]], info = paste0(red(f), "\tlocations"))
+          test_expect_list(metadata[["locations"]], info = paste0(red(f), "\tlocations"))
 
-          expect_dataframe_names_contain(
+          test_expect_dataframe_names_contain(
             locations,
             c("dataset_id", "location_name", "location_property", "value"),
             info = paste0(red(f), "\tlocations"), label = "field names"
@@ -535,13 +235,13 @@ dataset_test_worker <-
 
           for (v in names(metadata$locations)) {
 
-            expect_list(metadata[["locations"]][[v]], info = paste0(red(f), "\tlocation ", v))
+            test_expect_list(metadata[["locations"]][[v]], info = paste0(red(f), "\tlocation ", v))
 
             # If fields do not contain both 'latitude range (deg)' and 'longitude range (deg)'
             if (!(all(c("latitude range (deg)", "longitude range (deg)") %in% names(metadata[["locations"]][[v]])))) {
 
               # Check that it contains 'latitude (deg)' and 'longitude (deg)'
-              expect_contains(
+              test_expect_contains(
                 names(metadata[["locations"]][[v]]),
                 c("latitude (deg)", "longitude (deg)"),
                 info = paste0(red(f), "\tlocation '", v, "'")
@@ -550,12 +250,12 @@ dataset_test_worker <-
           }
 
           # Check `location_name`'s from metadata are in dataset and vice versa
-          expect_true(
+          test_expect_true(
             !is.null(metadata[["dataset"]][["location_name"]]),
             info = paste0(red(files[2]), "\tdataset - `location_name` is missing")
           )
 
-          expect_contains(
+          test_expect_contains(
             names(data),
             metadata[["dataset"]][["location_name"]],
             info = paste0(
@@ -565,7 +265,7 @@ dataset_test_worker <-
 
           v <- data[[metadata[["dataset"]][["location_name"]]]] %>% unique %>% na.omit
           i <- v %in% names(metadata$locations)
-          expect_true(
+          test_expect_true(
             all(i),
             info = paste0(
               red(f),
@@ -574,7 +274,7 @@ dataset_test_worker <-
           )
 
           i <- names(metadata$locations) %in% v
-          expect_true(
+          test_expect_true(
             all(i),
             info = paste0(
               red(f),
@@ -584,17 +284,23 @@ dataset_test_worker <-
         }
 
         ## Contexts
-        expect_silent(
+        testthat::expect_silent(
           contexts <-
             metadata$contexts %>%
             process_format_contexts(dataset_id, data)
         )
 
         # Check that there are no duplicate `var_in` or `context_property` fields
-        context_properties <- sapply(metadata[["contexts"]], "[[", "context_property")
-        context_vars_in <- sapply(metadata[["contexts"]], "[[", "var_in")
 
-        expect_equal(
+        if(is.na(metadata[["contexts"]][1])) {
+          context_properties <- metadata[["contexts"]]
+          context_vars_in <- metadata[["contexts"]]
+        } else {
+          context_properties <- sapply(metadata[["contexts"]], "[[", "context_property")
+          context_vars_in <- sapply(metadata[["contexts"]], "[[", "var_in")
+        }
+
+        test_expect_equal(
           context_properties |> duplicated() |> sum(),
           0,
           info = sprintf(
@@ -602,7 +308,7 @@ dataset_test_worker <-
             red(f),
             paste(context_properties[duplicated(context_properties)], collapse = "', '"))
         )
-        expect_equal(
+        test_expect_equal(
           context_vars_in |> duplicated() |> sum(),
           0,
           info =  sprintf(
@@ -614,7 +320,7 @@ dataset_test_worker <-
         # Check context details load
         if (nrow(contexts) > 0) {
 
-          expect_dataframe_names_contain(
+          test_expect_dataframe_names_contain(
             contexts,
             c("context_property", "category", "var_in"),
             info = paste0(red(f), "\tcontexts"), label = "field names"
@@ -622,7 +328,7 @@ dataset_test_worker <-
 
 
           # Check that unique context `value`'s only have one unique description
-          expect_equal(
+          test_expect_equal(
             contexts %>% dplyr::group_by(.data$context_property, .data$value) %>% dplyr::summarise(n = dplyr::n_distinct(.data$description)) %>%
               dplyr::filter(.data$n > 1) %>% nrow(),
             0, info = sprintf(
@@ -636,7 +342,7 @@ dataset_test_worker <-
           )
 
           # Check that there are no duplicate `find` fields
-          expect_equal(
+          test_expect_equal(
             contexts %>% dplyr::group_by(.data$context_property, .data$find) %>% dplyr::summarise(n = dplyr::n()) %>% dplyr::filter(.data$n > 1) %>%
               nrow(),
             0, info = sprintf(
@@ -659,7 +365,7 @@ dataset_test_worker <-
 
                 # Check that no `find` values are NA
                 if (!is.null(vals[[s]][["find"]])) {
-                  expect_false(
+                  test_expect_false(
                     is.na(vals[[s]][["find"]]),
                     info = paste0(red(f),
                       sprintf(
@@ -669,7 +375,7 @@ dataset_test_worker <-
                 }
 
                 # Check that there are no `find` fields without accompanying `value` fields
-                expect_false(
+                test_expect_false(
                   !is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
                   info = paste0(red(f),
                     sprintf(
@@ -679,7 +385,7 @@ dataset_test_worker <-
 
                 # Check that there are no `description` fields with NA `value` fields
                 if (!is.null(vals[[s]][["value"]]) && !is.null(vals[[s]][["description"]])) {
-                  expect_false(
+                  test_expect_false(
                     !is.na(vals[[s]][["description"]]) && is.na(vals[[s]][["value"]]),
                     info = paste0(red(f),
                       sprintf(
@@ -689,7 +395,7 @@ dataset_test_worker <-
                 }
 
                 # Check that there are no `description` fields without accompanying `find` and `value` fields
-                expect_false(
+                test_expect_false(
                   !is.null(vals[[s]][["description"]]) && is.null(vals[[s]][["find"]]) && is.null(vals[[s]][["value"]]),
                   info = paste0(red(f),
                     sprintf(
@@ -705,42 +411,45 @@ dataset_test_worker <-
 
         ## Traits
 
-        expect_list_elements_contains_names(
+        test_expect_list_elements_contains_names(
           metadata[["traits"]],
           c("var_in", "unit_in", "trait_name", "value_type", "basis_of_value"),
           info = paste0(red(f), "\ttrait")
         )
 
-        expect_list_elements_allowed_names(
+        test_expect_list_elements_allowed_names(
           metadata[["traits"]],
           c(schema$metadata$elements$traits$elements %>% names(), unique(contexts$var_in)),
           info = paste0(red(f), "\ttrait")
         )
 
-        expect_silent(traits <- traits.build::util_list_to_df2(metadata[["traits"]]))
+        expect_silent(traits <- austraits::convert_list_to_df2(metadata[["traits"]]))
 
-        expect_true(
+        test_expect_true(
           is.data.frame(traits),
           info = paste0(red(f), "\ttraits - metadata cannot be converted to a dataframe")
         )
 
-        expect_is_in(
+        test_expect_is_in(
           traits$trait_name, definitions$elements %>% names(),
           info = paste0(red(f), "\ttraits"),
           label = "`trait_name`'s"
         )
 
         # Check units are found in `unit_conversions.csv`
-        units <- read_csv("config/unit_conversions.csv")
-        expect_is_in(
-          traits$unit_in, units$unit_from,
-          info = paste0(red(f), "\ttraits"),
-          label = "`unit_in`'s"
-        )
+        # This test is being commented out, because fails anytime columns are read in 
+        # or anytime there are units not in unit_conversions because they are never converted.
+        
+        #units <- read_csv("config/unit_conversions.csv")
+        #expect_is_in(
+        #  traits$unit_in, units$unit_from,
+        #  info = paste0(red(f), "\ttraits"),
+        #  label = "`unit_in`'s"
+        #)
 
         # Check no duplicate `var_in`'s
 
-        expect_equal(
+        test_expect_equal(
           traits %>% dplyr::group_by(.data$var_in) %>% dplyr::summarise(n = dplyr::n()) %>%
             dplyr::filter(.data$n > 1) %>% nrow(),
           0,
@@ -759,7 +468,7 @@ dataset_test_worker <-
         if (nrow(contexts > 0)) {
 
           # Check they are in context dataset
-          expect_contains(
+          test_expect_contains(
             c(names(data), names(traits)),
             unique(contexts$var_in),
             info = paste0(red(files[1]), red(", "), red(files[2]), "\tdata and/or traits metadata")
@@ -783,7 +492,7 @@ dataset_test_worker <-
             # Look for context values in `find` column
             i <- v %in% contextsub[["find"]]
 
-            expect_true(
+            test_expect_true(
               all(i),
               info = ifelse(
                 "hms" %in% class(v),
@@ -797,7 +506,7 @@ dataset_test_worker <-
 
             i <- contextsub[["find"]] %in% v
 
-            expect_true(
+            test_expect_true(
               all(i),
               info = ifelse(
                 !is.null(data[[j]]),
@@ -825,7 +534,7 @@ dataset_test_worker <-
             cols <- traits[[field]][i] %>% unique()
 
             # Check fixed values in metadata are allowed
-            expect_is_in(
+            test_expect_is_in(
               fixed, c("unknown", schema[[field]][["values"]] %>% names),
               info = paste0(red(f), "\ttraits"), label = sprintf("`%s`", field)
             )
@@ -833,7 +542,7 @@ dataset_test_worker <-
             # Check column values are allowed
             if (length(cols) > 0) {
               for (c in cols) {
-                expect_is_in(
+                test_expect_is_in(
                   stringr::str_split(data[[c]], " ") %>% unlist() %>% unique(), c("unknown", schema[[field]][["values"]] %>% names),
                   info = sprintf("%s\t'%s'", red(files[1]), c),
                   label = sprintf("`%s` column", field)
@@ -850,7 +559,7 @@ dataset_test_worker <-
             # If the metadata field is a column in the data (and not an accepted value of the field)
             if (metadata[["dataset"]][[field]] %in% names(data) & !(metadata[["dataset"]][[field]] %in% not_allowed)) {
 
-              expect_is_in(
+              test_expect_is_in(
                 stringr::str_split(data[[metadata[["dataset"]][[field]]]], " ") %>% unlist() %>% unique(), c("unknown", schema[[field]][["values"]] %>% names),
                 info = sprintf("%s\t'%s'", red(files[1]), metadata[["dataset"]][[field]]),
                 label = sprintf("`%s` column", field)
@@ -860,7 +569,7 @@ dataset_test_worker <-
             } else {
 
               fields_by_word <- stringr::str_split(metadata[["dataset"]][[field]], " ") %>% unlist()
-              expect_is_in(
+              test_expect_is_in(
                 fields_by_word, c("unknown", schema[[field]][["values"]] %>% names),
                 info = paste0(red(f), "\tdataset"), label = sprintf("`%s`", field)
               )
@@ -873,23 +582,23 @@ dataset_test_worker <-
 
         if (!is.na(metadata[["substitutions"]][1])) {
 
-          expect_list_elements_exact_names(
+          test_expect_list_elements_exact_names(
             metadata[["substitutions"]],
             schema$metadata$elements$substitutions$values %>% names(),
             info = paste0(red(f), "\tsubstitution")
           )
           trait_names <- sapply(metadata[["substitutions"]], "[[", "trait_name")
-          expect_is_in(
+          test_expect_is_in(
             unique(trait_names), definitions$elements %>% names(),
             info = paste0(red(f), "\tsubstitutions"), label = "`trait_name`'s"
           )
-          expect_is_in(
+          test_expect_is_in(
             unique(trait_names), unique(traits$trait_name),
             info = paste0(red(f), "\tsubstitutions"), label = "`trait_name`'s"
           )
 
-          expect_no_error(
-            x <- metadata[["substitutions"]] %>% util_list_to_df2() %>% split(.$trait_name),
+          test_expect_no_error(
+            x <- metadata[["substitutions"]] %>% austraits::convert_list_to_df2() %>% split(.$trait_name),
             info = paste0(red(f), "\tconverting substitutions to a dataframe and splitting by `trait_name`")
           )
 
@@ -897,7 +606,7 @@ dataset_test_worker <-
           for (trait in names(x)) {
 
             # First check no duplicate combinations of `find`
-            expect_equal(
+            test_expect_equal(
               x[[trait]] %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>%
                 dplyr::filter(.data$n > 1) %>% nrow(),
               0, info = sprintf(
@@ -923,7 +632,7 @@ dataset_test_worker <-
                   to_check %in% allowable |
                   to_check %>% sapply(util_check_all_values_in, allowable)
               )]
-              expect_length_zero(
+              test_expect_length_zero(
                 failing,
                 info = sprintf(
                   "%s\tsubstitutions - `%s` has invalid replacement values",
@@ -938,13 +647,13 @@ dataset_test_worker <-
 
         if (!is.na(metadata[["taxonomic_updates"]][1])) {
 
-          expect_no_error(
-            x <- metadata[["taxonomic_updates"]] %>% util_list_to_df2(),
+          test_expect_no_error(
+            x <- metadata[["taxonomic_updates"]] %>% austraits::convert_list_to_df2(),
             info = paste0(red(f), "\tconverting `taxonomic_updates` to a dataframe")
           )
 
           # Check no duplicate `find` values
-          expect_equal(
+          test_expect_equal(
             x %>% dplyr::group_by(.data$find) %>% dplyr::summarise(n = dplyr::n()) %>% dplyr::filter(.data$n > 1) %>% nrow(),
             0, info = sprintf(
               "%s\ttaxonomic_updates - duplicate `find` values detected: '%s'",
@@ -956,14 +665,14 @@ dataset_test_worker <-
             )
           )
 
-           expect_list_elements_exact_names(
+           test_expect_list_elements_exact_names(
              metadata[["taxonomic_updates"]],
              schema$metadata$elements$taxonomic_updates$values %>% names(),
              info = paste0(red(f), "\ttaxonomic_update")
            )
 
            taxon_names <- sapply(metadata[["taxonomic_updates"]], "[[", "find")
-           expect_is_in(
+           test_expect_is_in(
              unique(taxon_names), data[[metadata[["dataset"]][["taxon_name"]]]] %>% unique(),
              info = paste0(red(f), "\ttaxonomic_updates"), label = "`taxon_name`'s"
            )
@@ -971,12 +680,12 @@ dataset_test_worker <-
         }
 
         ## Check that special characters do not make it into the data
-        expect_no_error(
+        test_expect_no_error(
           parsed_data <- data %>%
             process_parse_data(dataset_id, metadata, contexts, schema),
           info = sprintf("%s\t`process_parse_data`", red(dataset_id)))
 
-        expect_allowed_text(
+        test_expect_allowed_text(
           parsed_data$traits$value, is_data = TRUE,
           info = sprintf("%s", red(files[1]))
         )
@@ -1035,22 +744,22 @@ dataset_test_worker <-
 
         if (!is.na(metadata[["exclude_observations"]][1])) {
 
-          expect_list_elements_exact_names(
+          test_expect_list_elements_exact_names(
             metadata[["exclude_observations"]],
             schema$metadata$elements$exclude_observations$values %>% names(),
             info = paste0(red(f), "\texclude_observations")
           )
 
-          expect_no_error(
+          test_expect_no_error(
             x <- metadata[["exclude_observations"]] %>%
-              util_list_to_df2() %>%
+              austraits::convert_list_to_df2() %>%
               tidyr::separate_longer_delim("find", delim = ", ") %>%
               dplyr::mutate(find = str_squish(.data$find)),
             info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe")
           )
 
           # Check no duplicate `find` values
-          expect_equal(
+          test_expect_equal(
             x %>% dplyr::group_by(.data$variable, .data$find) %>%
               dplyr::summarise(n = dplyr::n()) %>% dplyr::filter(.data$n > 1) %>% nrow(),
             0, info = sprintf(
@@ -1062,7 +771,7 @@ dataset_test_worker <-
                 collapse = "', '")
             )
           )
-          expect_no_error(
+          test_expect_no_error(
             x <- x %>% split(.$variable),
             info = paste0(red(f), "\tsplitting `exclude_observations` by variable")
           )
@@ -1074,7 +783,7 @@ dataset_test_worker <-
 
             # If the variable to be excluded is a trait:
             if (variable %in% traits$trait_name) {
-              expect_is_in(
+              test_expect_is_in(
                 find_values,
                 # Extract values from the data for that variable
                 parsed_data %>% dplyr::filter(.data$trait_name == variable) %>% dplyr::pull(.data$value) %>% unique(),
@@ -1084,7 +793,7 @@ dataset_test_worker <-
             } else {
 
             # If the variable to be excluded is `taxon_name`, `location_name` or other metadata fields
-              expect_is_in(
+              test_expect_is_in(
                 find_values, parsed_data %>% dplyr::pull(variable) %>% unique(),
                 info = paste0(red(f), "\texclude_observations"), label = sprintf("variable '%s'", variable)
               )
@@ -1100,7 +809,7 @@ dataset_test_worker <-
           var_in <- unlist(metadata[["dataset"]])
           i <- match("trait_name", var_out)
           values <- unique(data[[var_in[i]]])
-          expect_contains(
+          test_expect_contains(
             traits[["var_in"]], values,
             info = paste0(red(files[2]), "\ttraits")
           )
@@ -1108,7 +817,7 @@ dataset_test_worker <-
         } else {
 
           # For wide datasets, expect variables in traits are headers in the data
-          expect_is_in(
+          test_expect_is_in(
             traits[["var_in"]], names(data),
             info = paste0(red(files[2]), "\ttraits"), label = "`var_in`"
           )
@@ -1128,14 +837,14 @@ dataset_test_worker <-
 
 
         ## Check that not all trait names are NAs
-        expect_false(
+        test_expect_false(
           nrow(traits %>% dplyr::filter(!is.na(.data$trait_name))) == 0,
           info = paste0(red(f), "\ttraits - only contain NA `trait_name`'s"))
 
         if (nrow(traits %>% dplyr::filter(!is.na(.data$trait_name))) > 0) {
 
           # Test build dataset
-          expect_no_error(
+          test_expect_no_error(
             dataset <- test_build_dataset(
               file.path(path_data, dataset_id, "metadata.yml"),
               file.path(path_data, dataset_id, "data.csv"),
@@ -1149,11 +858,11 @@ dataset_test_worker <-
             info = sprintf("%s\tbuilding dataset", red(dataset_id)))
 
           ## Check that traits table is not empty
-          expect_false(nrow(dataset$traits) == 0, info = sprintf("%s\t`traits` table is empty", red(dataset_id)))
+          test_expect_false(nrow(dataset$traits) == 0, info = sprintf("%s\t`traits` table is empty", red(dataset_id)))
 
           ## Check that dataset can pivot wider
           if (nrow(dataset$traits) > 0) {
-            expect_true(
+            test_expect_true(
               dataset %>% check_pivot_wider(),
               info = sprintf("%s\tduplicate rows detected; `traits` table cannot pivot wider", red(dataset_id))
             )
@@ -1163,19 +872,21 @@ dataset_test_worker <-
           # Testing per study, not on all studies combined (is this ideal?)
           # I'm not testing whether the functions work as intended, just that they throw no error
 
-          expect_no_warning(
-            dataset_wider <- db_traits_pivot_wider(dataset$traits),
-            info = paste0(red(dataset_id), "\t`db_traits_pivot_wider` threw a warning; duplicate rows detected")
+          test_expect_no_warning(
+            dataset_wider <- check_pivot_wider(dataset),
+            info = paste0(red(dataset_id), "\t`check_pivot_wider` threw a warning; duplicate rows detected")
           )
 
-          if (exists("dataset_wider")) {
-            expect_no_warning(
-              expect_no_error(
-                dataset_longer <- db_traits_pivot_longer(dataset_wider),
-                info = paste0(red(dataset_id), "\t`db_traits_pivot_longer`")),
-              info = paste0(red(dataset_id), "\t`db_traits_pivot_longer` threw a warning")
-            )
-          }
+          # Commenting out test Dec 2024, because `check_pivot_longer` has been deprecated
+          
+          #if (exists("dataset_wider")) {
+          #  test_expect_no_warning(
+          #    test_expect_no_error(
+          #      dataset_longer <- check_pivot_longer(dataset_wider),
+          #      info = paste0(red(dataset_id), "\t`check_pivot_longer`")),
+          #    info = paste0(red(dataset_id), "\t`check_pivot_longer` threw a warning")
+          #  )
+          #}
         }
       })
     }

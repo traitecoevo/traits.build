@@ -28,5 +28,4 @@ Test_2023_4 is a copy of NHNSW_2023 with the following modifications:
 - Added `leaf_photosynthesis` and `leaf_stomatal_conductance` to test `repeat_measurements_id`, with another `leaf_stomatal_conductance_2` variable that doesn't specify `repeat_measurements_id`
 - Duplicated `fruit_length` for Imperata cylindrica and Alectryon subdentatus to test `collection_date` making separate `observation_id`'s and added `collection_date` column to dataset-level metadata
 
-
 See output/ for expected output files.
