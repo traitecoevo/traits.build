@@ -439,25 +439,25 @@ Test_2023_2,Syzygium gustavioides,097,leaf_N_per_dry_mass,12.9,mg/g,species,mean
 Test_2023_2,Syzygium gustavioides,097,leaf_area,3590,mm2,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium gustavioides
 Test_2023_2,Syzygium gustavioides,097,leaf_mass_per_area,167,g/m2,species,mean,measurement,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium gustavioides
 Test_2023_2,Syzygium gustavioides,097,wood_density,0.521,mg/mm3,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium gustavioides
-Test_2023_2,Syzygium sayeri,098,branch_mass_fraction,0.65,mg/mg,population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Syzygium sayeri
-Test_2023_2,Syzygium sayeri,098,huber_value,0.000254517688979384,mm2{sapwood}/mm2{leaf},population,mean,unknown,7,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Syzygium sayeri
-Test_2023_2,Syzygium sayeri,098,huber_value,0.000173400381480839,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Syzygium sayeri
-Test_2023_2,Syzygium sayeri,098,huber_value,0.000202470135654991,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Syzygium sayeri
+Test_2023_2,Syzygium sayeri,098,branch_mass_fraction,0.65,mg/mg,population,standard_deviation,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Syzygium sayeri
 Test_2023_2,Syzygium sayeri,098,huber_value,0.000101667344448963,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Syzygium sayeri
 Test_2023_2,Syzygium sayeri,098,huber_value,0.000101667344448963,mm2{sapwood}/mm2{leaf},population,maximum,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Syzygium sayeri
-Test_2023_2,Syzygium sayeri,098,seed_dry_mass,841,mg,population,mean,unknown,unknown,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Syzygium sayeri
-Test_2023_2,Syzygium sayeri,099,leaf_N_per_dry_mass,13.7,mg/g,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium sayeri
-Test_2023_2,Syzygium sayeri,099,leaf_area,2645,mm2,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium sayeri
-Test_2023_2,Syzygium sayeri,099,leaf_mass_per_area,131,g/m2,species,mean,measurement,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium sayeri
-Test_2023_2,Syzygium sayeri,099,wood_density,0.485,mg/mm3,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium sayeri
-Test_2023_2,Trema tomentosa var. aspera,100,branch_mass_fraction,0.53,mg/mg,population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Trema aspera
-Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000279485746226942,mm2{sapwood}/mm2{leaf},population,mean,unknown,7,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Trema aspera
-Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000189000189000189,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Trema aspera
-Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000183823529411765,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Trema aspera
+Test_2023_2,Syzygium sayeri,098,huber_value,0.000254517688979384,mm2{sapwood}/mm2{leaf},population,standard_deviation,unknown,7,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Syzygium sayeri
+Test_2023_2,Syzygium sayeri,098,huber_value,0.000173400381480839,mm2{sapwood}/mm2{leaf},population,standard_deviation,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Syzygium sayeri
+Test_2023_2,Syzygium sayeri,098,huber_value,0.000202470135654991,mm2{sapwood}/mm2{leaf},population,standard_deviation,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Syzygium sayeri
+Test_2023_2,Syzygium sayeri,098,seed_dry_mass,841,mg,population,standard_deviation,unknown,unknown,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Syzygium sayeri
+Test_2023_2,Syzygium sayeri,099,leaf_N_per_dry_mass,13.7,mg/g,species,standard_deviation,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium sayeri
+Test_2023_2,Syzygium sayeri,099,leaf_area,2645,mm2,species,standard_deviation,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium sayeri
+Test_2023_2,Syzygium sayeri,099,leaf_mass_per_area,131,g/m2,species,standard_deviation,measurement,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium sayeri
+Test_2023_2,Syzygium sayeri,099,wood_density,0.485,mg/mm3,species,standard_deviation,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Syzygium sayeri
+Test_2023_2,Trema tomentosa var. aspera,100,branch_mass_fraction,0.53,mg/mg,population,standard_error,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Trema aspera
 Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},population,mean,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Trema aspera
 Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000149365197908887,mm2{sapwood}/mm2{leaf},population,maximum,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,04,,Trema aspera
-Test_2023_2,Trema tomentosa var. aspera,100,seed_dry_mass,5.12,mg,population,mean,unknown,unknown,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Trema aspera
-Test_2023_2,Trema tomentosa var. aspera,101,leaf_N_per_dry_mass,29.9,mg/g,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
-Test_2023_2,Trema tomentosa var. aspera,101,leaf_area,2071,mm2,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
-Test_2023_2,Trema tomentosa var. aspera,101,leaf_mass_per_area,53,g/m2,species,mean,measurement,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
-Test_2023_2,Trema tomentosa var. aspera,101,wood_density,0.357,mg/mm3,species,mean,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000279485746226942,mm2{sapwood}/mm2{leaf},population,standard_error,unknown,7,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000189000189000189,mm2{sapwood}/mm2{leaf},population,standard_error,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,02,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000183823529411765,mm2{sapwood}/mm2{leaf},population,standard_error,unknown,2,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,03,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,100,seed_dry_mass,5.12,mg,population,standard_error,unknown,unknown,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,101,leaf_N_per_dry_mass,29.9,mg/g,species,standard_error,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,101,leaf_area,2071,mm2,species,standard_error,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,101,leaf_mass_per_area,53,g/m2,species,standard_error   ,measurement,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,101,wood_density,0.357,mg/mm3,species,standard_error,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
