@@ -144,3 +144,10 @@ reference:
     - '`notetaker_print_notes`'
     - '`notes_random_string`'
 
+  - title: Deprecated function names
+    desc: Functions that have been moved from traits.build to austraits and renamed. Deprecated names still work.
+    contents:
+    - '`build_combine`'
+    - '`util_df_to_list`'
+    - '`util_list_to_df1`'
+    - '`util_list_to_df2`'
