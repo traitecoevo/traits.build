@@ -115,6 +115,7 @@ austraits:
         description: &description A 1-2 sentence description of the purpose of the study.
         sampling_strategy: &sampling_strategy A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript. For preserved specimens, this field ideally indicates which records were 'sampled' to measure a specific trait.
         source_primary_key: Citation key for the primary source in `sources`. The key is typically formatted as `Surname_year`.
+        source_primary_type: Citation type for the primary source in `sources`, using standard BibTex citation types (Article, Book, Misc, Online, Report, Techreport, Thesis, Unpublished).
         source_primary_citation: Citation for the primary source. This detail is generated from the primary source in the metadata.
         source_secondary_key: Citation key for the secondary source in `sources`.  The key is typically formatted as `Surname_year`.
         source_secondary_citation: Citations for the secondary source. This detail is generated from the secondary source in the metadata.
