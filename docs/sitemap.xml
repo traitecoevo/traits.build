@@ -22,6 +22,9 @@
     <loc>http://traitecoevo.github.io/traits.build/ontology/release/0.1.0/index.html</loc>
   </url>
   <url>
+    <loc>http://traitecoevo.github.io/traits.build/ontology/release/1.0.0/index.html</loc>
+  </url>
+  <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/bib_print.html</loc>
   </url>
   <url>
@@ -239,6 +242,9 @@
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/read_yaml.html</loc>
+  </url>
+  <url>
+    <loc>http://traitecoevo.github.io/traits.build/reference/reexports.html</loc>
   </url>
   <url>
     <loc>http://traitecoevo.github.io/traits.build/reference/traits.build-package.html</loc>

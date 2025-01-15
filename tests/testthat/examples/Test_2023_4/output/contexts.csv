@@ -5,3 +5,8 @@ Test_2023_4,trait scoring method,method_context,inferred_from_genus,Trait value 
 Test_2023_4,trait scoring method,method_context,inferred_from_family,Trait value inferred from family-level taxon description.,method_context_id,01
 Test_2023_4,entity measured,entity_context,unknown,,entity_context_id,02
 Test_2023_4,entity measured,entity_context,fruit,,entity_context_id,01
+Test_2023_4,replicate observations,temporal_context,1,NA,temporal_context_id,01
+Test_2023_4,replicate observations,temporal_context,2,NA,temporal_context_id,02
+Test_2023_4,replicate observations,temporal_context,3,NA,temporal_context_id,03
+Test_2023_4,replicate observations,temporal_context,4,NA,temporal_context_id,04
+Test_2023_4,replicate observations,temporal_context,5,NA,temporal_context_id,05

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traits.build</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
       </span>
     </div>
 
@@ -72,6 +72,35 @@
       <small>Source: <a href="https://github.com/traitecoevo/traits.build/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.0.0" id="traitsbuild-200">traits.build 2.0.0<a class="anchor" aria-label="anchor" href="#traitsbuild-200"></a></h2>
+<ul><li>traits.build paper published in Sep 2024 in Ecological Informatics (DOI: <a href="https://doi.org/10.1016/j.ecoinf.2024.102773" class="external-link">10.1016/j.ecoinf.2024.102773</a>)</li>
+<li>Added standard error and standard deviation as value types</li>
+<li>Moved functions to austraits package and made austraits package a dependancy</li>
+<li>Renamed some of the functions that are now moved to austraits package
+<ul><li>
+<code>bind_databases</code> &lt;– <code>build_combine</code>
+</li>
+<li>
+<code>convert_df_to_list</code> &lt;– <code>util_df_to_list</code>
+</li>
+<li>
+<code>convert_list_to_df1</code> &lt;– <code>util_list_to_df1</code>
+</li>
+<li>
+<code>convert_list_to_df2</code> &lt;– <code>util_list_to_df2</code>
+</li>
+</ul></li>
+<li>Renamed functions still <em>also</em> assigned their old name, with a deprecation warning indicating the new name<br></li>
+<li>
+<code>plot_trait_distribution_beeswarm</code>, <code>trait_pivot_longer</code> and <code>trait_pivot_wider</code> had been in both austraits and traits.build packages and have now been removed from traits.build</li>
+<li>Import new austraits function <code>flatten_database</code> (had been suggested to be <code>database_create_combined_table</code>)</li>
+<li>Refactoring of test functions used by <code>dataset_test</code>
+</li>
+<li>Added tests using the <code>dataset_test</code> function, so it is checked explicitly by traits.build (run on Example datasets)</li>
+<li>Minor bug fixes</li>
+<li>Minor updates to ontology (now version 1.0)</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.0" id="traitsbuild-110">traits.build 1.1.0<a class="anchor" aria-label="anchor" href="#traitsbuild-110"></a></h2>
 <ul><li>Small bugfixes in dataset_test</li>

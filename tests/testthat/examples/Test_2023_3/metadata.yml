@@ -123,6 +123,8 @@ dataset:
 identifiers: .na
 locations:
   australia:
+    latitude (deg): -26.158
+    longitude (deg): 143.685
     description: First made-up location for testing
   australia_2:
     latitude (deg): -27.158

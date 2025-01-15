@@ -5,6 +5,22 @@ unit_conversions <- traits.build:::get_unit_conversions("config/unit_conversions
 taxon_list <- read_csv_char("config/taxon_list.csv")
 examples_dir <- "examples"
 
+# Dataset test
+expect_no_error(
+  dataset_test(
+    dataset_ids = c("Test_2023_2", "Test_2023_3", "Test_2023_4", 
+                    "Test_2023_5", "Test_2023_6", "Test_2023_7"), 
+    path_data = "examples")
+  )
+
+# Test_2023_1 explicitly has an incorrect trait_name included in the metadata file, so will fail dataset_test
+testthat::expect_output(
+  dataset_test(
+    dataset_ids = c("Test_2023_1"), 
+    path_data = "examples")
+  )
+
+
 # Not sure why but running the tests line by line generates different ids than when you
 # run the whole `test_that` function... It means that I have to use the `test_that` function to
 # generate the expected output.
