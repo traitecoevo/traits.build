@@ -200,10 +200,11 @@ dataset_process <- function(filename_data_raw,
     identifiers <- identifiers %>%
       tidyr::pivot_longer(cols = 3:ncol(identifiers)) %>%
       dplyr::rename(identifier_value = value, var_in = name) %>%
-      dplyr::left_join(identifiers_tmp) %>%
+      dplyr::left_join(identifiers_tmp, by = join_by(var_in)) %>%
       dplyr::select(dataset_id, observation_id, identifier_type, identifier_value) %>%
-      dplyr::filter(!is.na(identifier_value)) %>%
-      dplyr::arrange(observation_id, identifier_type)
+      dplyr::filter(!is.na(.data$identifier_value), !is.na(.data$observation_id)) %>%
+      dplyr::arrange(observation_id, identifier_type) %>%
+      dplyr::distinct()
   } else {
     identifiers <- tibble::tibble(
       dataset_id = character(0),
