@@ -205,7 +205,7 @@ austraits:
         affiliation: Last known institution or affiliation.
         additional_role: Additional roles of data collector, mostly contact person.  
     identifiers:
-      description: A table containing details on identifiers that cross-references observations Cross referencing between the two dataframes is possible using combinations of the variables `dataset_id` and `observation_id`.
+      description: A table containing details on identifiers that cross-references observations between the two dataframes using combinations of the variables `dataset_id` and `observation_id`.
       type: table
       elements:
         dataset_id: *dataset_id
