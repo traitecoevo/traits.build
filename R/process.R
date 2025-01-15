@@ -1633,6 +1633,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
     )
 
   source_primary_key <- metadata$source$primary$key
+  source_primary_type <- metadata$source$primary$bibtype
   source_secondary_keys <- citation_types %>%
     dplyr::filter(.data$type == "secondary") %>%
     purrr::pluck("source_id")
@@ -1676,6 +1677,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
         tibble::tibble(
           dataset_id = dataset_id,
           source_primary_key = source_primary_key,
+          source_primary_type = source_primary_type,
           source_primary_citation = bib_print(sources[[source_primary_key]]),
           source_secondary_key = ifelse(
             length(source_secondary_keys) > 0,
