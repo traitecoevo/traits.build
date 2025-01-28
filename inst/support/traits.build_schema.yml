@@ -6,10 +6,29 @@ entity_type:
     individual: Value comes from a single individual.
     population: Value represents a summary statistic from multiple individuals at a single location.
     metapopulation: Value represents a summary statistic from individuals of the taxon across multiple locations.
+    subspecies: Value represents a summary statistic or expert score for an entire subspecies. The entity_type value species will also included subspecies-level trait values in many databases.
     species: Value represents a summary statistic for a species or infraspecific taxon across its range or as estimated by an expert based on their knowledge of the taxon. Data fitting this category include estimates from reference books that represent a taxon's entire range and values for categorical variables obtained from a reference book or identified by an expert.
+    subsection: Value represents a summary statistic or expert score for a subsection.
+    section: Value represents a summary statistic or expert score for a section.
+    subgenus: Value represents a summary statistic or expert score for a subgenus.
     genus: Value represents a summary statistic or expert score for an entire genus.
+    subtribe: Value represents a summary statistic or expert score for a subtribe.
+    tribe: Value represents a summary statistic or expert score for a tribe.
+    supertribe: Value represents a summary statistic or expert score for a supertribe.
+    subfamily: Value represents a summary statistic or expert score for a subfamily.
     family: Value represents a summary statistic or expert score for an entire family.
+    superfamily: Value represents a summary statistic or expert score for a superfamily.
+    infraorder: Value represents a summary statistic or expert score for an infraorder.
+    suborder: Value represents a summary statistic or expert score for a suborder.
     order: Value represents a summary statistic or expert score for an entire order.
+    superorder: Value represents a summary statistic or expert score for a superorder.
+    subclass: Value represents a summary statistic or expert score for a subclass.
+    class: Value represents a summary statistic or expert score for an entire class.
+    subphylum: Value represents a summary statistic or expert score for a subphylum.
+    phylum: Value represents a summary statistic or expert score for an entire phylum.
+    subdivision: Value represents a summary statistic or expert score for a subdivision.
+    division: Value represents a summary statistic or expert score for an entire division.
+    kingdom: Value represents a summary statistic or expert score for an entire kingdom.
 
 value_type:
   description: &value_type A categorical variable describing the statistical nature of the trait value recorded.
