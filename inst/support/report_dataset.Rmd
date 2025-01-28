@@ -215,7 +215,7 @@ Primary citation:
 
 ```{r, results='asis', echo=FALSE}
 metadata$source$primary %>%
-  convert_list_to_df1() %>%
+  austraits::convert_list_to_df1() %>%
   my_kable_styling()
 ```
 
@@ -226,7 +226,7 @@ if (n > 1) {
 
   for (i in 2:n) {
     metadata$source[[i]] %>%
-    convert_list_to_df1() %>%
+    austraits::convert_list_to_df1() %>%
     my_kable_styling() %>%
     cat()
     writeLines("\n\n")
@@ -245,7 +245,7 @@ The description we have of the study is as follows:
 
 ```{r, results='asis', echo=FALSE}
 metadata$dataset %>%
-  convert_list_to_df1() %>%
+  austraits::convert_list_to_df1() %>%
   my_kable_styling()
 ```
 
@@ -255,7 +255,7 @@ new_question("(section `dataset`) Can you provide more detailed information for 
 
 ```{r, results='asis', echo=FALSE}
 missing <- metadata$dataset %>%
-  convert_list_to_df1() %>%
+  austraits::convert_list_to_df1() %>%
   filter(value == "unknown") %>%
   pull(key)
 
@@ -498,7 +498,7 @@ define_variable <- function(var, schema) {
     writeLines("Possible values are:")
 
     schema$value_type$values %>%
-      convert_list_to_df1()  %>%
+      austraits::convert_list_to_df1()  %>%
       my_kable_styling() %>%
       writeLines()
     }
@@ -726,7 +726,7 @@ The table below shows the table of all taxa in this study, where possible using 
 
 ```{r, results='asis', echo=FALSE}
 schema$austraits$elements$taxa$elements %>%
-  convert_list_to_df1() %>%
+  austraits::convert_list_to_df1() %>%
   my_kable_styling()
 ```
 
