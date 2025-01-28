@@ -23,7 +23,7 @@ Depends:
     readr,
     stringr,
     tidyr,
-    austraits@3585fab
+    austraits
 Imports:
     crayon,
     git2r,
@@ -60,7 +60,7 @@ Suggests:
     covr
 Remotes:
     richfitz/remake,
-    traitecoevo/austraits
+    traitecoevo/austraits@3585fab
 Encoding: UTF-8
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
