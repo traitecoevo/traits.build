@@ -23,7 +23,7 @@ Depends:
     readr,
     stringr,
     tidyr,
-    austraits
+    austraits@3585fab
 Imports:
     crayon,
     git2r,
