@@ -97,10 +97,10 @@ dataset_process <- function(filename_data_raw,
   
   # Load identifiers
   if ("identifiers" %in% names(metadata) & !all(is.na(metadata[["identifiers"]]))) {
-    identifiers_tmp <-
+    identifiers <-
       metadata[["identifiers"]] %>% austraits::convert_list_to_df2()
   } else {
-    identifiers_tmp <- list(
+    identifiers <- list(
       "var_in",
       "identifier_type"
     )
@@ -109,7 +109,7 @@ dataset_process <- function(filename_data_raw,
   # Load and clean trait data
   traits <-
     traits %>%
-    process_parse_data(dataset_id, metadata, contexts, schema, identifiers_tmp)
+    process_parse_data(dataset_id, metadata, contexts, schema, identifiers)
   
   # Context ids needed to continue processing
   context_ids <- traits$context_ids
@@ -123,7 +123,7 @@ dataset_process <- function(filename_data_raw,
     traits$traits %>%
     process_add_all_columns(
       c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
-        "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in", identifiers_tmp$var_in)
+        "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in", identifiers$var_in)
     )
   
   # Replace old `location_id` with a new `location_id`
@@ -193,20 +193,20 @@ dataset_process <- function(filename_data_raw,
   # Separate identifiers into a standalone table that is in long format.
   # Needs to happen now after `observation_id` is set.
 
-  identifiers <- traits %>% 
-    dplyr::select(dplyr::all_of(c("dataset_id", "observation_id", identifiers_tmp$var_in)))
+  identifiers_tmp <- traits %>% 
+    dplyr::select(dplyr::all_of(c("dataset_id", "observation_id", identifiers$var_in)))
   
-  if (ncol(identifiers) >= 3) {
-    identifiers <- identifiers %>%
-      tidyr::pivot_longer(cols = 3:ncol(identifiers)) %>%
+  if (ncol(identifiers_tmp) >= 3) {
+    identifiers_tmp <- identifiers_tmp %>%
+      tidyr::pivot_longer(cols = 3:ncol(identifiers_tmp)) %>%
       dplyr::rename(identifier_value = value, var_in = name) %>%
-      dplyr::left_join(identifiers_tmp, by = join_by(var_in)) %>%
+      dplyr::left_join(identifiers, by = join_by(var_in)) %>%
       dplyr::select(dataset_id, observation_id, identifier_type, identifier_value) %>%
       dplyr::filter(!is.na(.data$identifier_value), !is.na(.data$observation_id)) %>%
       dplyr::arrange(observation_id, identifier_type) %>%
       dplyr::distinct()
   } else {
-    identifiers <- tibble::tibble(
+    identifiers_tmp <- tibble::tibble(
       dataset_id = character(0),
       observation_id = character(0),
       identifier_type = character(0),
@@ -215,7 +215,7 @@ dataset_process <- function(filename_data_raw,
   }
   
   traits <- traits %>%
-    dplyr::select(-dplyr::all_of(identifiers_tmp$var_in))
+    dplyr::select(-dplyr::all_of(identifiers$var_in))
 
   # Record contributors
   contributors <-
@@ -325,7 +325,7 @@ dataset_process <- function(filename_data_raw,
         dplyr::select(dplyr::all_of(c(taxon_name = "aligned_name"))) %>%
         dplyr::distinct(),
       contributors = contributors,
-      identifiers = identifiers,
+      identifiers = identifiers_tmp,
       sources = sources,
       definitions = definitions,
       schema = schema,
@@ -1359,7 +1359,7 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' substitutions and unique observation id added
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
 #' @importFrom rlang .data
-process_parse_data <- function(data, dataset_id, metadata, contexts, schema, identifiers_tmp) {
+process_parse_data <- function(data, dataset_id, metadata, contexts, schema, identifiers) {
 
   # Get config data for dataset
   data_is_long_format <- metadata[["dataset"]][["data_is_long_format"]]
@@ -1375,7 +1375,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
 
   df <- data %>%
     # Next step selects and renames columns based on named vector
-    dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in, identifiers_tmp$var_in))) %>% # Why select v? When would those ids ever be in the data?
+    dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in, identifiers$var_in))) %>% # Why select v? When would those ids ever be in the data?
     dplyr::mutate(dataset_id = dataset_id)
 
   # Step 1b. Import any values that aren't columns of data
