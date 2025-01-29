@@ -94,12 +94,23 @@ dataset_process <- function(filename_data_raw,
   contexts <-
     metadata$contexts %>%
     process_format_contexts(dataset_id, traits)
+  
+  # Load identifiers
+  if ("identifiers" %in% names(metadata) & !all(is.na(metadata[["identifiers"]]))) {
+    identifiers <-
+      metadata[["identifiers"]] %>% austraits::convert_list_to_df2()
+  } else {
+    identifiers <- list(
+      "var_in",
+      "identifier_type"
+    )
+  }
 
   # Load and clean trait data
   traits <-
     traits %>%
-    process_parse_data(dataset_id, metadata, contexts, schema)
-
+    process_parse_data(dataset_id, metadata, contexts, schema, identifiers)
+  
   # Context ids needed to continue processing
   context_ids <- traits$context_ids
 
@@ -112,9 +123,9 @@ dataset_process <- function(filename_data_raw,
     traits$traits %>%
     process_add_all_columns(
       c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
-        "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
+        "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in", identifiers$var_in)
     )
-
+  
   # Replace old `location_id` with a new `location_id`
   if (nrow(locations) > 0) {
     traits <-
@@ -178,6 +189,33 @@ dataset_process <- function(filename_data_raw,
     dplyr::arrange(.data$observation_id, .data$trait_name, .data$value_type) %>%
     # Ensure everything converted to character type
     util_df_convert_character()
+  
+  # Separate identifiers into a standalone table that is in long format.
+  # Needs to happen now after `observation_id` is set.
+
+  identifiers_tmp <- traits %>% 
+    dplyr::select(dplyr::all_of(c("dataset_id", "observation_id", identifiers$var_in)))
+  
+  if (ncol(identifiers_tmp) >= 3) {
+    identifiers_tmp <- identifiers_tmp %>%
+      tidyr::pivot_longer(cols = 3:ncol(identifiers_tmp)) %>%
+      dplyr::rename(identifier_value = value, var_in = name) %>%
+      dplyr::left_join(identifiers, by = join_by(var_in)) %>%
+      dplyr::select(dataset_id, observation_id, identifier_type, identifier_value) %>%
+      dplyr::filter(!is.na(.data$identifier_value), !is.na(.data$observation_id)) %>%
+      dplyr::arrange(observation_id, identifier_type) %>%
+      dplyr::distinct()
+  } else {
+    identifiers_tmp <- tibble::tibble(
+      dataset_id = character(0),
+      observation_id = character(0),
+      identifier_type = character(0),
+      identifier_value = character(0)
+    )
+  }
+  
+  traits <- traits %>%
+    dplyr::select(-dplyr::all_of(identifiers$var_in))
 
   # Record contributors
   contributors <-
@@ -287,6 +325,7 @@ dataset_process <- function(filename_data_raw,
         dplyr::select(dplyr::all_of(c(taxon_name = "aligned_name"))) %>%
         dplyr::distinct(),
       contributors = contributors,
+      identifiers = identifiers_tmp,
       sources = sources,
       definitions = definitions,
       schema = schema,
@@ -1320,7 +1359,7 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' substitutions and unique observation id added
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
 #' @importFrom rlang .data
-process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
+process_parse_data <- function(data, dataset_id, metadata, contexts, schema, identifiers) {
 
   # Get config data for dataset
   data_is_long_format <- metadata[["dataset"]][["data_is_long_format"]]
@@ -1336,7 +1375,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema) {
 
   df <- data %>%
     # Next step selects and renames columns based on named vector
-    dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in))) %>% # Why select v? When would those ids ever be in the data?
+    dplyr::select(dplyr::any_of(c(var_in[i], v, contexts$var_in, identifiers$var_in))) %>% # Why select v? When would those ids ever be in the data?
     dplyr::mutate(dataset_id = dataset_id)
 
   # Step 1b. Import any values that aren't columns of data
@@ -1616,6 +1655,41 @@ process_format_contributors <- function(my_list, dataset_id, schema) {
         add_error_column = FALSE)
 
   contributors
+}
+
+#' Format identifiers from list into tibble
+#'
+#' Format identifiers, read in from the `metadata.yml` file. Converts from list to tibble.
+#'
+#' @param my_list List of input information
+#' @param dataset_id Identifier for a particular study in the AusTraits database
+#' @param schema Schema for traits.build
+#'
+#' @return Tibble with details of identifiers
+#' @importFrom rlang .data
+#'
+#' @examples
+#' \dontrun{
+#' process_format_identifiers(read_metadata("data/Falster_2003/metadata.yml")$identifiers)
+#' }
+process_format_identifiers <- function(my_list, dataset_id, traits) {
+
+    if (length(unlist(my_list$identifiers)) > 1) {
+      identifiers <-
+        my_list$identifiers %>%
+        austraits::convert_list_to_df2() %>%
+        dplyr::mutate(dataset_id = dataset_id)
+    } else {
+      identifiers <- tibble::tibble(dataset_id = character())
+    }
+
+    identifiers <-
+      identifiers %>%
+      process_add_all_columns(
+        names(schema[["austraits"]][["elements"]][["identifiers"]][["elements"]]),
+        add_error_column = FALSE)
+
+  identifiers
 }
 
 process_format_methods <- function(metadata, dataset_id, sources, contributors) {

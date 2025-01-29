@@ -11,7 +11,7 @@ test_that("`metadata_create_template` is working", {
         skip_manual = TRUE)
     ))
 
-  metadata_names <- c("source", "contributors", "dataset", "locations", "contexts", "traits",
+  metadata_names <- c("source", "contributors", "dataset", "identifiers", "locations", "contexts", "traits",
                       "substitutions", "taxonomic_updates", "exclude_observations",
                       "questions")
   collectors_names <- c("last_name", "given_name", "ORCID", "affiliation")
@@ -44,7 +44,7 @@ test_that("`metadata_create_template` is working with simulated user input", {
     ".*(?=already exists and will be overwritten).*", perl = TRUE
   )
 
-  metadata_names <- c("source", "contributors", "dataset", "locations", "contexts", "traits",
+  metadata_names <- c("source", "contributors", "dataset", "identifiers", "locations", "contexts", "traits",
                       "substitutions", "taxonomic_updates", "exclude_observations",
                       "questions")
   # Test metadata exists with correct names

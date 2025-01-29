@@ -58,6 +58,7 @@ dataset:
   notes: The few duplicate values within this dataset, and with Schmidt_2003, Schulze_1998,
     and Schulze_2006_2 seem to all be random, independent values since many measurements
     for the same traits were made on the same species.
+identifiers: .na
 locations:
   Howard Springs:
     latitude (deg): -12.485

@@ -47,6 +47,17 @@ basis_of_record:
      preserved_specimen: Traits were recorded from specimens preserved in a collection, eg. herbarium or museum.
      literature: Traits were sourced from values reported in the literature, and where the basis of record is not otherwise known.
 
+identifier_type:
+  description: &identifier_type The type of identifier whose identifying characters are recorded, referencing globally accepted identifier types.
+  type: categorical
+  values:  
+     catalogNumber: An identifier (preferably unique) for the record within the data set or collection.
+     collectionID: An identifier for the collection or dataset from which the record was derived.
+     institutionCode: The name (or acronym) in use by the institution having custody of the object(s) or information referred to by a collectionID.
+     institutionID: An identifier for the institution having custody of the object(s) or information referred to in the record.
+     materialSampleID: An identifier for the dwc:MaterialSample (as opposed to a particular digital record of the dwc:MaterialSample). In the absence of a persistent global unique identifier, construct one from a combination of identifiers in the record that will most closely make the dwc:materialSampleID globally unique.
+     occurrenceID: Per DarwinCore, an identifier for an Occurrence, as opposed to a particular digital record of the Occurrence.
+
 #-------------------------------------------------------------
 # A key describing the structure of the compiled `AusTraits` dataset
 
@@ -194,7 +205,15 @@ austraits:
         given_name: Given names of the data collector.
         ORCID: ORCID of the data collector.
         affiliation: Last known institution or affiliation.
-        additional_role: Additional roles of data collector, mostly contact person.
+        additional_role: Additional roles of data collector, mostly contact person.  
+    identifiers:
+      description: A table containing details on identifiers that cross-references observations between the two dataframes using combinations of the variables `dataset_id` and `observation_id`.
+      type: table
+      elements:
+        dataset_id: *dataset_id
+        observation_id: *observation_id
+        identifier_type: *identifier_type
+        identifier_value: A sequence of characters that links an observation within a traits.build database to additional information about observed entity in another database.
     sources:
       description: Bibtex entries for all primary and secondary sources in the compilation.
       type: list
@@ -369,6 +388,12 @@ metadata:
         measurement_remarks: *measurement_remarks
         original_file: The name of the file initially submitted to AusTraits.
         notes: Generic notes about the study and processing of data.
+    identifiers:
+      description: A list of columns that include identifiers that cross-references observations to information in other databases and information indicating what identifier_type they are.
+      type: array
+      elements:        
+        var_in: Name of column with contextual data in the original data submitted.
+        identifier_type: *identifier_type
     locations:
       description: A list of study locations (sites) and information about each of the study locations where data were collected. Each should include at least three variables - `latitude (deg)`, `longitude (deg)` and `description`. Additional variables can be included where available. Set to `.na` for botanical collections and field studies where data values are a mean across many locations.
       type: array

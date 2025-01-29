@@ -169,6 +169,10 @@ read_metadata <- function(path) {
       paste(collapse = "\n")
   }
 
+  if (!"identifier" %in% names(data)) {
+    data["identifier"] <- NA
+  }
+
   data
 }
 

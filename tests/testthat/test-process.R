@@ -25,7 +25,7 @@ test_that("`dataset_process` is working", {
   expect_no_error(x <- dataset_process(test_data, test_config, schema, resource_metadata, unit_conversions))
   expect_type(x, "list")
   expect_equal(class(x), c("list", "traits.build"))
-  expect_length(x, 13)
+  expect_length(x, 14)
   expect_named(x, austraits_names)
   expect_equal(nrow(x$excluded_data), 0)
   # Test to see if `filter_missing_values` argument works

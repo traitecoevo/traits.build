@@ -1,0 +1,3359 @@
+dataset_id,observation_id,identifier_type,identifier_value
+Test_2023_1,001,collectionID,Plant 1
+Test_2023_1,001,specimentID,MQ_2004_12345
+Test_2023_1,002,collectionID,Plant 1
+Test_2023_1,002,collectionID,Plant 1
+Test_2023_1,002,specimentID,MQ_2004_12345
+Test_2023_1,002,specimentID,MQ_2004_12345
+Test_2023_1,003,collectionID,Plant 1
+Test_2023_1,003,collectionID,Plant 1
+Test_2023_1,003,specimentID,MQ_2004_12345
+Test_2023_1,003,specimentID,MQ_2004_12345
+Test_2023_1,004,collectionID,Plant 1
+Test_2023_1,004,collectionID,Plant 1
+Test_2023_1,004,collectionID,Plant 1
+Test_2023_1,004,collectionID,Plant 1
+Test_2023_1,004,collectionID,Plant 1
+Test_2023_1,004,collectionID,Plant 1
+Test_2023_1,004,collectionID,Plant 1
+Test_2023_1,004,collectionID,Plant 1
+Test_2023_1,004,collectionID,Plant 1
+Test_2023_1,004,collectionID,Plant 1
+Test_2023_1,004,specimentID,MQ_2004_12345
+Test_2023_1,004,specimentID,MQ_2004_12345
+Test_2023_1,004,specimentID,MQ_2004_12345
+Test_2023_1,004,specimentID,MQ_2004_12345
+Test_2023_1,004,specimentID,MQ_2004_12345
+Test_2023_1,004,specimentID,MQ_2004_12345
+Test_2023_1,004,specimentID,MQ_2004_12345
+Test_2023_1,004,specimentID,MQ_2004_12345
+Test_2023_1,004,specimentID,MQ_2004_12345
+Test_2023_1,004,specimentID,MQ_2004_12345
+Test_2023_1,005,collectionID,Plant 2
+Test_2023_1,005,specimentID,MQ_2004_12347
+Test_2023_1,006,collectionID,Plant 11
+Test_2023_1,006,collectionID,Plant 12
+Test_2023_1,006,collectionID,Plant 13
+Test_2023_1,006,specimentID,MQ_2004_12365
+Test_2023_1,006,specimentID,MQ_2004_12367
+Test_2023_1,006,specimentID,MQ_2004_12369
+Test_2023_1,007,collectionID,Plant 14
+Test_2023_1,007,collectionID,Plant 15
+Test_2023_1,007,collectionID,Plant 16
+Test_2023_1,007,collectionID,Plant 17
+Test_2023_1,007,collectionID,Plant 18
+Test_2023_1,007,specimentID,MQ_2004_12371
+Test_2023_1,007,specimentID,MQ_2004_12373
+Test_2023_1,007,specimentID,MQ_2004_12375
+Test_2023_1,007,specimentID,MQ_2004_12377
+Test_2023_1,007,specimentID,MQ_2004_12379
+Test_2023_1,008,collectionID,Plant 1
+Test_2023_1,008,collectionID,Plant 1
+Test_2023_1,008,collectionID,Plant 1
+Test_2023_1,008,collectionID,Plant 1
+Test_2023_1,008,specimentID,MQ_2004_12345
+Test_2023_1,008,specimentID,MQ_2004_12345
+Test_2023_1,008,specimentID,MQ_2004_12345
+Test_2023_1,008,specimentID,MQ_2004_12345
+Test_2023_1,009,collectionID,Plant 2
+Test_2023_1,009,collectionID,Plant 11
+Test_2023_1,009,collectionID,Plant 12
+Test_2023_1,009,collectionID,Plant 13
+Test_2023_1,009,collectionID,Plant 14
+Test_2023_1,009,collectionID,Plant 15
+Test_2023_1,009,collectionID,Plant 16
+Test_2023_1,009,collectionID,Plant 17
+Test_2023_1,009,collectionID,Plant 18
+Test_2023_1,009,collectionID,Plant 2
+Test_2023_1,009,collectionID,Plant 11
+Test_2023_1,009,collectionID,Plant 12
+Test_2023_1,009,collectionID,Plant 13
+Test_2023_1,009,collectionID,Plant 14
+Test_2023_1,009,collectionID,Plant 15
+Test_2023_1,009,collectionID,Plant 16
+Test_2023_1,009,collectionID,Plant 17
+Test_2023_1,009,collectionID,Plant 18
+Test_2023_1,009,specimentID,MQ_2004_12347
+Test_2023_1,009,specimentID,MQ_2004_12365
+Test_2023_1,009,specimentID,MQ_2004_12367
+Test_2023_1,009,specimentID,MQ_2004_12369
+Test_2023_1,009,specimentID,MQ_2004_12371
+Test_2023_1,009,specimentID,MQ_2004_12373
+Test_2023_1,009,specimentID,MQ_2004_12375
+Test_2023_1,009,specimentID,MQ_2004_12377
+Test_2023_1,009,specimentID,MQ_2004_12379
+Test_2023_1,009,specimentID,MQ_2004_12347
+Test_2023_1,009,specimentID,MQ_2004_12365
+Test_2023_1,009,specimentID,MQ_2004_12367
+Test_2023_1,009,specimentID,MQ_2004_12369
+Test_2023_1,009,specimentID,MQ_2004_12371
+Test_2023_1,009,specimentID,MQ_2004_12373
+Test_2023_1,009,specimentID,MQ_2004_12375
+Test_2023_1,009,specimentID,MQ_2004_12377
+Test_2023_1,009,specimentID,MQ_2004_12379
+Test_2023_1,010,collectionID,Plant 34
+Test_2023_1,010,specimentID,MQ_2004_12411
+Test_2023_1,011,collectionID,Plant 34
+Test_2023_1,011,specimentID,MQ_2004_12411
+Test_2023_1,012,collectionID,Plant 34
+Test_2023_1,012,specimentID,MQ_2004_12411
+Test_2023_1,013,collectionID,Plant 34
+Test_2023_1,013,collectionID,Plant 34
+Test_2023_1,013,collectionID,Plant 34
+Test_2023_1,013,collectionID,Plant 34
+Test_2023_1,013,collectionID,Plant 34
+Test_2023_1,013,collectionID,Plant 34
+Test_2023_1,013,collectionID,Plant 34
+Test_2023_1,013,specimentID,MQ_2004_12411
+Test_2023_1,013,specimentID,MQ_2004_12411
+Test_2023_1,013,specimentID,MQ_2004_12411
+Test_2023_1,013,specimentID,MQ_2004_12411
+Test_2023_1,013,specimentID,MQ_2004_12411
+Test_2023_1,013,specimentID,MQ_2004_12411
+Test_2023_1,013,specimentID,MQ_2004_12411
+Test_2023_1,014,collectionID,Plant 34
+Test_2023_1,014,collectionID,Plant 34
+Test_2023_1,014,collectionID,Plant 34
+Test_2023_1,014,specimentID,MQ_2004_12411
+Test_2023_1,014,specimentID,MQ_2004_12411
+Test_2023_1,014,specimentID,MQ_2004_12411
+Test_2023_1,015,collectionID,Plant 3
+Test_2023_1,015,collectionID,Plant 4
+Test_2023_1,015,collectionID,Plant 5
+Test_2023_1,015,collectionID,Plant 3
+Test_2023_1,015,specimentID,MQ_2004_12349
+Test_2023_1,015,specimentID,MQ_2004_12351
+Test_2023_1,015,specimentID,MQ_2004_12353
+Test_2023_1,015,specimentID,MQ_2004_12349
+Test_2023_1,016,collectionID,Plant 6
+Test_2023_1,016,specimentID,MQ_2004_12355
+Test_2023_1,017,collectionID,Plant 6
+Test_2023_1,017,specimentID,MQ_2004_12355
+Test_2023_1,018,collectionID,Plant 6
+Test_2023_1,018,collectionID,Plant 6
+Test_2023_1,018,specimentID,MQ_2004_12355
+Test_2023_1,018,specimentID,MQ_2004_12355
+Test_2023_1,019,collectionID,Plant 6
+Test_2023_1,019,collectionID,Plant 6
+Test_2023_1,019,collectionID,Plant 6
+Test_2023_1,019,collectionID,Plant 6
+Test_2023_1,019,collectionID,Plant 6
+Test_2023_1,019,collectionID,Plant 6
+Test_2023_1,019,collectionID,Plant 6
+Test_2023_1,019,collectionID,Plant 6
+Test_2023_1,019,specimentID,MQ_2004_12355
+Test_2023_1,019,specimentID,MQ_2004_12355
+Test_2023_1,019,specimentID,MQ_2004_12355
+Test_2023_1,019,specimentID,MQ_2004_12355
+Test_2023_1,019,specimentID,MQ_2004_12355
+Test_2023_1,019,specimentID,MQ_2004_12355
+Test_2023_1,019,specimentID,MQ_2004_12355
+Test_2023_1,019,specimentID,MQ_2004_12355
+Test_2023_1,020,collectionID,Plant 6
+Test_2023_1,020,collectionID,Plant 6
+Test_2023_1,020,collectionID,Plant 6
+Test_2023_1,020,collectionID,Plant 6
+Test_2023_1,020,specimentID,MQ_2004_12355
+Test_2023_1,020,specimentID,MQ_2004_12355
+Test_2023_1,020,specimentID,MQ_2004_12355
+Test_2023_1,020,specimentID,MQ_2004_12355
+Test_2023_1,021,collectionID,Plant 3
+Test_2023_1,021,collectionID,Plant 4
+Test_2023_1,021,collectionID,Plant 5
+Test_2023_1,021,collectionID,Plant 3
+Test_2023_1,021,collectionID,Plant 4
+Test_2023_1,021,collectionID,Plant 5
+Test_2023_1,021,specimentID,MQ_2004_12349
+Test_2023_1,021,specimentID,MQ_2004_12351
+Test_2023_1,021,specimentID,MQ_2004_12353
+Test_2023_1,021,specimentID,MQ_2004_12349
+Test_2023_1,021,specimentID,MQ_2004_12351
+Test_2023_1,021,specimentID,MQ_2004_12353
+Test_2023_1,022,collectionID,Plant 35
+Test_2023_1,022,specimentID,MQ_2004_12413
+Test_2023_1,023,collectionID,Plant 35
+Test_2023_1,023,specimentID,MQ_2004_12413
+Test_2023_1,024,collectionID,Plant 35
+Test_2023_1,024,collectionID,Plant 35
+Test_2023_1,024,specimentID,MQ_2004_12413
+Test_2023_1,024,specimentID,MQ_2004_12413
+Test_2023_1,025,collectionID,Plant 35
+Test_2023_1,025,collectionID,Plant 35
+Test_2023_1,025,collectionID,Plant 35
+Test_2023_1,025,collectionID,Plant 35
+Test_2023_1,025,collectionID,Plant 35
+Test_2023_1,025,collectionID,Plant 35
+Test_2023_1,025,specimentID,MQ_2004_12413
+Test_2023_1,025,specimentID,MQ_2004_12413
+Test_2023_1,025,specimentID,MQ_2004_12413
+Test_2023_1,025,specimentID,MQ_2004_12413
+Test_2023_1,025,specimentID,MQ_2004_12413
+Test_2023_1,025,specimentID,MQ_2004_12413
+Test_2023_1,026,collectionID,Plant 35
+Test_2023_1,026,collectionID,Plant 35
+Test_2023_1,026,collectionID,Plant 35
+Test_2023_1,026,specimentID,MQ_2004_12413
+Test_2023_1,026,specimentID,MQ_2004_12413
+Test_2023_1,026,specimentID,MQ_2004_12413
+Test_2023_1,027,collectionID,Plant 7
+Test_2023_1,027,collectionID,Plant 8
+Test_2023_1,027,collectionID,Plant 9
+Test_2023_1,027,collectionID,Plant 10
+Test_2023_1,027,specimentID,MQ_2004_12357
+Test_2023_1,027,specimentID,MQ_2004_12359
+Test_2023_1,027,specimentID,MQ_2004_12361
+Test_2023_1,027,specimentID,MQ_2004_12363
+Test_2023_1,028,collectionID,Plant 25
+Test_2023_1,028,specimentID,MQ_2004_12393
+Test_2023_1,029,collectionID,Plant 25
+Test_2023_1,029,specimentID,MQ_2004_12393
+Test_2023_1,030,collectionID,Plant 25
+Test_2023_1,030,collectionID,Plant 25
+Test_2023_1,030,specimentID,MQ_2004_12393
+Test_2023_1,030,specimentID,MQ_2004_12393
+Test_2023_1,031,collectionID,Plant 26
+Test_2023_1,031,specimentID,MQ_2004_12395
+Test_2023_1,032,collectionID,Plant 26
+Test_2023_1,032,specimentID,MQ_2004_12395
+Test_2023_1,033,collectionID,Plant 26
+Test_2023_1,033,specimentID,MQ_2004_12395
+Test_2023_1,034,collectionID,Plant 25
+Test_2023_1,034,collectionID,Plant 25
+Test_2023_1,034,collectionID,Plant 25
+Test_2023_1,034,collectionID,Plant 25
+Test_2023_1,034,collectionID,Plant 25
+Test_2023_1,034,collectionID,Plant 25
+Test_2023_1,034,collectionID,Plant 25
+Test_2023_1,034,collectionID,Plant 25
+Test_2023_1,034,collectionID,Plant 25
+Test_2023_1,034,specimentID,MQ_2004_12393
+Test_2023_1,034,specimentID,MQ_2004_12393
+Test_2023_1,034,specimentID,MQ_2004_12393
+Test_2023_1,034,specimentID,MQ_2004_12393
+Test_2023_1,034,specimentID,MQ_2004_12393
+Test_2023_1,034,specimentID,MQ_2004_12393
+Test_2023_1,034,specimentID,MQ_2004_12393
+Test_2023_1,034,specimentID,MQ_2004_12393
+Test_2023_1,034,specimentID,MQ_2004_12393
+Test_2023_1,035,collectionID,Plant 25
+Test_2023_1,035,collectionID,Plant 25
+Test_2023_1,035,collectionID,Plant 26
+Test_2023_1,035,collectionID,Plant 25
+Test_2023_1,035,collectionID,Plant 25
+Test_2023_1,035,collectionID,Plant 26
+Test_2023_1,035,specimentID,MQ_2004_12393
+Test_2023_1,035,specimentID,MQ_2004_12393
+Test_2023_1,035,specimentID,MQ_2004_12395
+Test_2023_1,035,specimentID,MQ_2004_12393
+Test_2023_1,035,specimentID,MQ_2004_12393
+Test_2023_1,035,specimentID,MQ_2004_12395
+Test_2023_1,036,collectionID,Plant 7
+Test_2023_1,036,collectionID,Plant 8
+Test_2023_1,036,collectionID,Plant 9
+Test_2023_1,036,collectionID,Plant 10
+Test_2023_1,036,collectionID,Plant 7
+Test_2023_1,036,collectionID,Plant 8
+Test_2023_1,036,collectionID,Plant 9
+Test_2023_1,036,collectionID,Plant 10
+Test_2023_1,036,specimentID,MQ_2004_12357
+Test_2023_1,036,specimentID,MQ_2004_12359
+Test_2023_1,036,specimentID,MQ_2004_12361
+Test_2023_1,036,specimentID,MQ_2004_12363
+Test_2023_1,036,specimentID,MQ_2004_12357
+Test_2023_1,036,specimentID,MQ_2004_12359
+Test_2023_1,036,specimentID,MQ_2004_12361
+Test_2023_1,036,specimentID,MQ_2004_12363
+Test_2023_1,037,collectionID,Plant 36
+Test_2023_1,037,specimentID,MQ_2004_12415
+Test_2023_1,038,collectionID,Plant 36
+Test_2023_1,038,specimentID,MQ_2004_12415
+Test_2023_1,039,collectionID,Plant 36
+Test_2023_1,039,specimentID,MQ_2004_12415
+Test_2023_1,040,collectionID,Plant 36
+Test_2023_1,040,collectionID,Plant 36
+Test_2023_1,040,collectionID,Plant 36
+Test_2023_1,040,collectionID,Plant 36
+Test_2023_1,040,collectionID,Plant 36
+Test_2023_1,040,collectionID,Plant 36
+Test_2023_1,040,collectionID,Plant 36
+Test_2023_1,040,collectionID,Plant 36
+Test_2023_1,040,specimentID,MQ_2004_12415
+Test_2023_1,040,specimentID,MQ_2004_12415
+Test_2023_1,040,specimentID,MQ_2004_12415
+Test_2023_1,040,specimentID,MQ_2004_12415
+Test_2023_1,040,specimentID,MQ_2004_12415
+Test_2023_1,040,specimentID,MQ_2004_12415
+Test_2023_1,040,specimentID,MQ_2004_12415
+Test_2023_1,040,specimentID,MQ_2004_12415
+Test_2023_1,041,collectionID,Plant 36
+Test_2023_1,041,collectionID,Plant 36
+Test_2023_1,041,collectionID,Plant 36
+Test_2023_1,041,collectionID,Plant 36
+Test_2023_1,041,specimentID,MQ_2004_12415
+Test_2023_1,041,specimentID,MQ_2004_12415
+Test_2023_1,041,specimentID,MQ_2004_12415
+Test_2023_1,041,specimentID,MQ_2004_12415
+Test_2023_1,042,collectionID,Plant 19
+Test_2023_1,042,collectionID,Plant 20
+Test_2023_1,042,collectionID,Plant 19
+Test_2023_1,042,collectionID,Plant 20
+Test_2023_1,042,collectionID,Plant 19
+Test_2023_1,042,collectionID,Plant 20
+Test_2023_1,042,collectionID,Plant 19
+Test_2023_1,042,collectionID,Plant 20
+Test_2023_1,042,specimentID,MQ_2004_12381
+Test_2023_1,042,specimentID,MQ_2004_12383
+Test_2023_1,042,specimentID,MQ_2004_12381
+Test_2023_1,042,specimentID,MQ_2004_12383
+Test_2023_1,042,specimentID,MQ_2004_12381
+Test_2023_1,042,specimentID,MQ_2004_12383
+Test_2023_1,042,specimentID,MQ_2004_12381
+Test_2023_1,042,specimentID,MQ_2004_12383
+Test_2023_1,043,collectionID,Plant 37
+Test_2023_1,043,specimentID,MQ_2004_12417
+Test_2023_1,044,collectionID,Plant 37
+Test_2023_1,044,specimentID,MQ_2004_12417
+Test_2023_1,045,collectionID,Plant 37
+Test_2023_1,045,collectionID,Plant 37
+Test_2023_1,045,specimentID,MQ_2004_12417
+Test_2023_1,045,specimentID,MQ_2004_12417
+Test_2023_1,046,collectionID,Plant 37
+Test_2023_1,046,collectionID,Plant 37
+Test_2023_1,046,collectionID,Plant 37
+Test_2023_1,046,collectionID,Plant 37
+Test_2023_1,046,collectionID,Plant 37
+Test_2023_1,046,collectionID,Plant 37
+Test_2023_1,046,collectionID,Plant 37
+Test_2023_1,046,collectionID,Plant 37
+Test_2023_1,046,specimentID,MQ_2004_12417
+Test_2023_1,046,specimentID,MQ_2004_12417
+Test_2023_1,046,specimentID,MQ_2004_12417
+Test_2023_1,046,specimentID,MQ_2004_12417
+Test_2023_1,046,specimentID,MQ_2004_12417
+Test_2023_1,046,specimentID,MQ_2004_12417
+Test_2023_1,046,specimentID,MQ_2004_12417
+Test_2023_1,046,specimentID,MQ_2004_12417
+Test_2023_1,047,collectionID,Plant 37
+Test_2023_1,047,collectionID,Plant 37
+Test_2023_1,047,collectionID,Plant 37
+Test_2023_1,047,specimentID,MQ_2004_12417
+Test_2023_1,047,specimentID,MQ_2004_12417
+Test_2023_1,047,specimentID,MQ_2004_12417
+Test_2023_1,048,collectionID,Plant 38
+Test_2023_1,048,specimentID,MQ_2004_12419
+Test_2023_1,049,collectionID,Plant 38
+Test_2023_1,049,specimentID,MQ_2004_12419
+Test_2023_1,050,collectionID,Plant 38
+Test_2023_1,050,collectionID,Plant 38
+Test_2023_1,050,specimentID,MQ_2004_12419
+Test_2023_1,050,specimentID,MQ_2004_12419
+Test_2023_1,051,collectionID,Plant 38
+Test_2023_1,051,collectionID,Plant 38
+Test_2023_1,051,collectionID,Plant 38
+Test_2023_1,051,collectionID,Plant 38
+Test_2023_1,051,collectionID,Plant 38
+Test_2023_1,051,collectionID,Plant 38
+Test_2023_1,051,collectionID,Plant 38
+Test_2023_1,051,specimentID,MQ_2004_12419
+Test_2023_1,051,specimentID,MQ_2004_12419
+Test_2023_1,051,specimentID,MQ_2004_12419
+Test_2023_1,051,specimentID,MQ_2004_12419
+Test_2023_1,051,specimentID,MQ_2004_12419
+Test_2023_1,051,specimentID,MQ_2004_12419
+Test_2023_1,051,specimentID,MQ_2004_12419
+Test_2023_1,052,collectionID,Plant 38
+Test_2023_1,052,collectionID,Plant 38
+Test_2023_1,052,collectionID,Plant 38
+Test_2023_1,052,collectionID,Plant 38
+Test_2023_1,052,specimentID,MQ_2004_12419
+Test_2023_1,052,specimentID,MQ_2004_12419
+Test_2023_1,052,specimentID,MQ_2004_12419
+Test_2023_1,052,specimentID,MQ_2004_12419
+Test_2023_1,053,collectionID,Plant 39
+Test_2023_1,053,specimentID,MQ_2004_12421
+Test_2023_1,054,collectionID,Plant 39
+Test_2023_1,054,specimentID,MQ_2004_12421
+Test_2023_1,055,collectionID,Plant 39
+Test_2023_1,055,specimentID,MQ_2004_12421
+Test_2023_1,056,collectionID,Plant 39
+Test_2023_1,056,collectionID,Plant 39
+Test_2023_1,056,collectionID,Plant 39
+Test_2023_1,056,collectionID,Plant 39
+Test_2023_1,056,collectionID,Plant 39
+Test_2023_1,056,collectionID,Plant 39
+Test_2023_1,056,collectionID,Plant 39
+Test_2023_1,056,specimentID,MQ_2004_12421
+Test_2023_1,056,specimentID,MQ_2004_12421
+Test_2023_1,056,specimentID,MQ_2004_12421
+Test_2023_1,056,specimentID,MQ_2004_12421
+Test_2023_1,056,specimentID,MQ_2004_12421
+Test_2023_1,056,specimentID,MQ_2004_12421
+Test_2023_1,056,specimentID,MQ_2004_12421
+Test_2023_1,057,collectionID,Plant 39
+Test_2023_1,057,collectionID,Plant 39
+Test_2023_1,057,collectionID,Plant 39
+Test_2023_1,057,collectionID,Plant 39
+Test_2023_1,057,specimentID,MQ_2004_12421
+Test_2023_1,057,specimentID,MQ_2004_12421
+Test_2023_1,057,specimentID,MQ_2004_12421
+Test_2023_1,057,specimentID,MQ_2004_12421
+Test_2023_1,058,collectionID,Plant 21
+Test_2023_1,058,collectionID,Plant 21
+Test_2023_1,058,collectionID,Plant 21
+Test_2023_1,058,collectionID,Plant 21
+Test_2023_1,058,specimentID,MQ_2004_12385
+Test_2023_1,058,specimentID,MQ_2004_12385
+Test_2023_1,058,specimentID,MQ_2004_12385
+Test_2023_1,058,specimentID,MQ_2004_12385
+Test_2023_1,059,collectionID,Plant 40
+Test_2023_1,059,specimentID,MQ_2004_12423
+Test_2023_1,060,collectionID,Plant 40
+Test_2023_1,060,specimentID,MQ_2004_12423
+Test_2023_1,061,collectionID,Plant 40
+Test_2023_1,061,specimentID,MQ_2004_12423
+Test_2023_1,062,collectionID,Plant 40
+Test_2023_1,062,collectionID,Plant 40
+Test_2023_1,062,collectionID,Plant 40
+Test_2023_1,062,collectionID,Plant 40
+Test_2023_1,062,collectionID,Plant 40
+Test_2023_1,062,collectionID,Plant 40
+Test_2023_1,062,collectionID,Plant 40
+Test_2023_1,062,collectionID,Plant 40
+Test_2023_1,062,specimentID,MQ_2004_12423
+Test_2023_1,062,specimentID,MQ_2004_12423
+Test_2023_1,062,specimentID,MQ_2004_12423
+Test_2023_1,062,specimentID,MQ_2004_12423
+Test_2023_1,062,specimentID,MQ_2004_12423
+Test_2023_1,062,specimentID,MQ_2004_12423
+Test_2023_1,062,specimentID,MQ_2004_12423
+Test_2023_1,062,specimentID,MQ_2004_12423
+Test_2023_1,063,collectionID,Plant 40
+Test_2023_1,063,collectionID,Plant 40
+Test_2023_1,063,collectionID,Plant 40
+Test_2023_1,063,collectionID,Plant 40
+Test_2023_1,063,specimentID,MQ_2004_12423
+Test_2023_1,063,specimentID,MQ_2004_12423
+Test_2023_1,063,specimentID,MQ_2004_12423
+Test_2023_1,063,specimentID,MQ_2004_12423
+Test_2023_1,064,collectionID,Plant 41
+Test_2023_1,064,specimentID,MQ_2004_12425
+Test_2023_1,065,collectionID,Plant 41
+Test_2023_1,065,specimentID,MQ_2004_12425
+Test_2023_1,066,collectionID,Plant 41
+Test_2023_1,066,specimentID,MQ_2004_12425
+Test_2023_1,067,collectionID,Plant 41
+Test_2023_1,067,collectionID,Plant 41
+Test_2023_1,067,collectionID,Plant 41
+Test_2023_1,067,collectionID,Plant 41
+Test_2023_1,067,collectionID,Plant 41
+Test_2023_1,067,collectionID,Plant 41
+Test_2023_1,067,specimentID,MQ_2004_12425
+Test_2023_1,067,specimentID,MQ_2004_12425
+Test_2023_1,067,specimentID,MQ_2004_12425
+Test_2023_1,067,specimentID,MQ_2004_12425
+Test_2023_1,067,specimentID,MQ_2004_12425
+Test_2023_1,067,specimentID,MQ_2004_12425
+Test_2023_1,068,collectionID,Plant 41
+Test_2023_1,068,collectionID,Plant 41
+Test_2023_1,068,collectionID,Plant 41
+Test_2023_1,068,collectionID,Plant 41
+Test_2023_1,068,specimentID,MQ_2004_12425
+Test_2023_1,068,specimentID,MQ_2004_12425
+Test_2023_1,068,specimentID,MQ_2004_12425
+Test_2023_1,068,specimentID,MQ_2004_12425
+Test_2023_1,069,collectionID,Plant 42
+Test_2023_1,069,specimentID,MQ_2004_12427
+Test_2023_1,070,collectionID,Plant 42
+Test_2023_1,070,specimentID,MQ_2004_12427
+Test_2023_1,071,collectionID,Plant 42
+Test_2023_1,071,specimentID,MQ_2004_12427
+Test_2023_1,072,collectionID,Plant 42
+Test_2023_1,072,collectionID,Plant 42
+Test_2023_1,072,collectionID,Plant 42
+Test_2023_1,072,collectionID,Plant 42
+Test_2023_1,072,collectionID,Plant 42
+Test_2023_1,072,collectionID,Plant 42
+Test_2023_1,072,collectionID,Plant 42
+Test_2023_1,072,collectionID,Plant 42
+Test_2023_1,072,collectionID,Plant 42
+Test_2023_1,072,specimentID,MQ_2004_12427
+Test_2023_1,072,specimentID,MQ_2004_12427
+Test_2023_1,072,specimentID,MQ_2004_12427
+Test_2023_1,072,specimentID,MQ_2004_12427
+Test_2023_1,072,specimentID,MQ_2004_12427
+Test_2023_1,072,specimentID,MQ_2004_12427
+Test_2023_1,072,specimentID,MQ_2004_12427
+Test_2023_1,072,specimentID,MQ_2004_12427
+Test_2023_1,072,specimentID,MQ_2004_12427
+Test_2023_1,073,collectionID,Plant 42
+Test_2023_1,073,collectionID,Plant 42
+Test_2023_1,073,collectionID,Plant 42
+Test_2023_1,073,specimentID,MQ_2004_12427
+Test_2023_1,073,specimentID,MQ_2004_12427
+Test_2023_1,073,specimentID,MQ_2004_12427
+Test_2023_1,074,collectionID,Plant 22
+Test_2023_1,074,collectionID,Plant 23
+Test_2023_1,074,collectionID,Plant 24
+Test_2023_1,074,collectionID,Plant 22
+Test_2023_1,074,collectionID,Plant 23
+Test_2023_1,074,collectionID,Plant 24
+Test_2023_1,074,collectionID,Plant 22
+Test_2023_1,074,collectionID,Plant 23
+Test_2023_1,074,collectionID,Plant 24
+Test_2023_1,074,collectionID,Plant 22
+Test_2023_1,074,collectionID,Plant 23
+Test_2023_1,074,collectionID,Plant 24
+Test_2023_1,074,specimentID,MQ_2004_12387
+Test_2023_1,074,specimentID,MQ_2004_12389
+Test_2023_1,074,specimentID,MQ_2004_12391
+Test_2023_1,074,specimentID,MQ_2004_12387
+Test_2023_1,074,specimentID,MQ_2004_12389
+Test_2023_1,074,specimentID,MQ_2004_12391
+Test_2023_1,074,specimentID,MQ_2004_12387
+Test_2023_1,074,specimentID,MQ_2004_12389
+Test_2023_1,074,specimentID,MQ_2004_12391
+Test_2023_1,074,specimentID,MQ_2004_12387
+Test_2023_1,074,specimentID,MQ_2004_12389
+Test_2023_1,074,specimentID,MQ_2004_12391
+Test_2023_1,075,collectionID,Plant 43
+Test_2023_1,075,specimentID,MQ_2004_12429
+Test_2023_1,076,collectionID,Plant 43
+Test_2023_1,076,specimentID,MQ_2004_12429
+Test_2023_1,077,collectionID,Plant 43
+Test_2023_1,077,specimentID,MQ_2004_12429
+Test_2023_1,078,collectionID,Plant 43
+Test_2023_1,078,collectionID,Plant 43
+Test_2023_1,078,collectionID,Plant 43
+Test_2023_1,078,collectionID,Plant 43
+Test_2023_1,078,collectionID,Plant 43
+Test_2023_1,078,collectionID,Plant 43
+Test_2023_1,078,collectionID,Plant 43
+Test_2023_1,078,collectionID,Plant 43
+Test_2023_1,078,collectionID,Plant 43
+Test_2023_1,078,specimentID,MQ_2004_12429
+Test_2023_1,078,specimentID,MQ_2004_12429
+Test_2023_1,078,specimentID,MQ_2004_12429
+Test_2023_1,078,specimentID,MQ_2004_12429
+Test_2023_1,078,specimentID,MQ_2004_12429
+Test_2023_1,078,specimentID,MQ_2004_12429
+Test_2023_1,078,specimentID,MQ_2004_12429
+Test_2023_1,078,specimentID,MQ_2004_12429
+Test_2023_1,078,specimentID,MQ_2004_12429
+Test_2023_1,079,collectionID,Plant 43
+Test_2023_1,079,collectionID,Plant 43
+Test_2023_1,079,collectionID,Plant 43
+Test_2023_1,079,specimentID,MQ_2004_12429
+Test_2023_1,079,specimentID,MQ_2004_12429
+Test_2023_1,079,specimentID,MQ_2004_12429
+Test_2023_1,080,collectionID,Plant 44
+Test_2023_1,080,specimentID,MQ_2004_12431
+Test_2023_1,081,collectionID,Plant 44
+Test_2023_1,081,specimentID,MQ_2004_12431
+Test_2023_1,082,collectionID,Plant 44
+Test_2023_1,082,specimentID,MQ_2004_12431
+Test_2023_1,083,collectionID,Plant 44
+Test_2023_1,083,collectionID,Plant 44
+Test_2023_1,083,collectionID,Plant 44
+Test_2023_1,083,collectionID,Plant 44
+Test_2023_1,083,collectionID,Plant 44
+Test_2023_1,083,collectionID,Plant 44
+Test_2023_1,083,collectionID,Plant 44
+Test_2023_1,083,collectionID,Plant 44
+Test_2023_1,083,specimentID,MQ_2004_12431
+Test_2023_1,083,specimentID,MQ_2004_12431
+Test_2023_1,083,specimentID,MQ_2004_12431
+Test_2023_1,083,specimentID,MQ_2004_12431
+Test_2023_1,083,specimentID,MQ_2004_12431
+Test_2023_1,083,specimentID,MQ_2004_12431
+Test_2023_1,083,specimentID,MQ_2004_12431
+Test_2023_1,083,specimentID,MQ_2004_12431
+Test_2023_1,084,collectionID,Plant 44
+Test_2023_1,084,collectionID,Plant 44
+Test_2023_1,084,collectionID,Plant 44
+Test_2023_1,084,specimentID,MQ_2004_12431
+Test_2023_1,084,specimentID,MQ_2004_12431
+Test_2023_1,084,specimentID,MQ_2004_12431
+Test_2023_1,085,collectionID,Plant 45
+Test_2023_1,085,specimentID,MQ_2004_12433
+Test_2023_1,086,collectionID,Plant 45
+Test_2023_1,086,specimentID,MQ_2004_12433
+Test_2023_1,087,collectionID,Plant 45
+Test_2023_1,087,specimentID,MQ_2004_12433
+Test_2023_1,088,collectionID,Plant 45
+Test_2023_1,088,collectionID,Plant 45
+Test_2023_1,088,collectionID,Plant 45
+Test_2023_1,088,collectionID,Plant 45
+Test_2023_1,088,collectionID,Plant 45
+Test_2023_1,088,collectionID,Plant 45
+Test_2023_1,088,collectionID,Plant 45
+Test_2023_1,088,collectionID,Plant 45
+Test_2023_1,088,specimentID,MQ_2004_12433
+Test_2023_1,088,specimentID,MQ_2004_12433
+Test_2023_1,088,specimentID,MQ_2004_12433
+Test_2023_1,088,specimentID,MQ_2004_12433
+Test_2023_1,088,specimentID,MQ_2004_12433
+Test_2023_1,088,specimentID,MQ_2004_12433
+Test_2023_1,088,specimentID,MQ_2004_12433
+Test_2023_1,088,specimentID,MQ_2004_12433
+Test_2023_1,089,collectionID,Plant 45
+Test_2023_1,089,collectionID,Plant 45
+Test_2023_1,089,collectionID,Plant 45
+Test_2023_1,089,specimentID,MQ_2004_12433
+Test_2023_1,089,specimentID,MQ_2004_12433
+Test_2023_1,089,specimentID,MQ_2004_12433
+Test_2023_1,090,collectionID,Plant 46
+Test_2023_1,090,specimentID,MQ_2004_12435
+Test_2023_1,091,collectionID,Plant 46
+Test_2023_1,091,specimentID,MQ_2004_12435
+Test_2023_1,092,collectionID,Plant 46
+Test_2023_1,092,specimentID,MQ_2004_12435
+Test_2023_1,093,collectionID,Plant 46
+Test_2023_1,093,collectionID,Plant 46
+Test_2023_1,093,collectionID,Plant 46
+Test_2023_1,093,collectionID,Plant 46
+Test_2023_1,093,collectionID,Plant 46
+Test_2023_1,093,collectionID,Plant 46
+Test_2023_1,093,specimentID,MQ_2004_12435
+Test_2023_1,093,specimentID,MQ_2004_12435
+Test_2023_1,093,specimentID,MQ_2004_12435
+Test_2023_1,093,specimentID,MQ_2004_12435
+Test_2023_1,093,specimentID,MQ_2004_12435
+Test_2023_1,093,specimentID,MQ_2004_12435
+Test_2023_1,094,collectionID,Plant 46
+Test_2023_1,094,collectionID,Plant 46
+Test_2023_1,094,collectionID,Plant 46
+Test_2023_1,094,specimentID,MQ_2004_12435
+Test_2023_1,094,specimentID,MQ_2004_12435
+Test_2023_1,094,specimentID,MQ_2004_12435
+Test_2023_1,095,collectionID,Plant 47
+Test_2023_1,095,specimentID,MQ_2004_12437
+Test_2023_1,096,collectionID,Plant 47
+Test_2023_1,096,specimentID,MQ_2004_12437
+Test_2023_1,097,collectionID,Plant 47
+Test_2023_1,097,specimentID,MQ_2004_12437
+Test_2023_1,098,collectionID,Plant 47
+Test_2023_1,098,collectionID,Plant 47
+Test_2023_1,098,collectionID,Plant 47
+Test_2023_1,098,collectionID,Plant 47
+Test_2023_1,098,collectionID,Plant 47
+Test_2023_1,098,collectionID,Plant 47
+Test_2023_1,098,collectionID,Plant 47
+Test_2023_1,098,collectionID,Plant 47
+Test_2023_1,098,specimentID,MQ_2004_12437
+Test_2023_1,098,specimentID,MQ_2004_12437
+Test_2023_1,098,specimentID,MQ_2004_12437
+Test_2023_1,098,specimentID,MQ_2004_12437
+Test_2023_1,098,specimentID,MQ_2004_12437
+Test_2023_1,098,specimentID,MQ_2004_12437
+Test_2023_1,098,specimentID,MQ_2004_12437
+Test_2023_1,098,specimentID,MQ_2004_12437
+Test_2023_1,099,collectionID,Plant 47
+Test_2023_1,099,collectionID,Plant 47
+Test_2023_1,099,collectionID,Plant 47
+Test_2023_1,099,specimentID,MQ_2004_12437
+Test_2023_1,099,specimentID,MQ_2004_12437
+Test_2023_1,099,specimentID,MQ_2004_12437
+Test_2023_1,100,collectionID,Plant 48
+Test_2023_1,100,specimentID,MQ_2004_12439
+Test_2023_1,101,collectionID,Plant 48
+Test_2023_1,101,specimentID,MQ_2004_12439
+Test_2023_1,102,collectionID,Plant 48
+Test_2023_1,102,specimentID,MQ_2004_12439
+Test_2023_1,103,collectionID,Plant 48
+Test_2023_1,103,collectionID,Plant 48
+Test_2023_1,103,collectionID,Plant 48
+Test_2023_1,103,collectionID,Plant 48
+Test_2023_1,103,collectionID,Plant 48
+Test_2023_1,103,collectionID,Plant 48
+Test_2023_1,103,collectionID,Plant 48
+Test_2023_1,103,collectionID,Plant 48
+Test_2023_1,103,specimentID,MQ_2004_12439
+Test_2023_1,103,specimentID,MQ_2004_12439
+Test_2023_1,103,specimentID,MQ_2004_12439
+Test_2023_1,103,specimentID,MQ_2004_12439
+Test_2023_1,103,specimentID,MQ_2004_12439
+Test_2023_1,103,specimentID,MQ_2004_12439
+Test_2023_1,103,specimentID,MQ_2004_12439
+Test_2023_1,103,specimentID,MQ_2004_12439
+Test_2023_1,104,collectionID,Plant 48
+Test_2023_1,104,collectionID,Plant 48
+Test_2023_1,104,collectionID,Plant 48
+Test_2023_1,104,specimentID,MQ_2004_12439
+Test_2023_1,104,specimentID,MQ_2004_12439
+Test_2023_1,104,specimentID,MQ_2004_12439
+Test_2023_1,105,collectionID,Plant 49
+Test_2023_1,105,specimentID,MQ_2004_12441
+Test_2023_1,106,collectionID,Plant 49
+Test_2023_1,106,specimentID,MQ_2004_12441
+Test_2023_1,107,collectionID,Plant 49
+Test_2023_1,107,specimentID,MQ_2004_12441
+Test_2023_1,108,collectionID,Plant 49
+Test_2023_1,108,collectionID,Plant 49
+Test_2023_1,108,collectionID,Plant 49
+Test_2023_1,108,collectionID,Plant 49
+Test_2023_1,108,collectionID,Plant 49
+Test_2023_1,108,collectionID,Plant 49
+Test_2023_1,108,collectionID,Plant 49
+Test_2023_1,108,collectionID,Plant 49
+Test_2023_1,108,specimentID,MQ_2004_12441
+Test_2023_1,108,specimentID,MQ_2004_12441
+Test_2023_1,108,specimentID,MQ_2004_12441
+Test_2023_1,108,specimentID,MQ_2004_12441
+Test_2023_1,108,specimentID,MQ_2004_12441
+Test_2023_1,108,specimentID,MQ_2004_12441
+Test_2023_1,108,specimentID,MQ_2004_12441
+Test_2023_1,108,specimentID,MQ_2004_12441
+Test_2023_1,109,collectionID,Plant 49
+Test_2023_1,109,collectionID,Plant 49
+Test_2023_1,109,collectionID,Plant 49
+Test_2023_1,109,specimentID,MQ_2004_12441
+Test_2023_1,109,specimentID,MQ_2004_12441
+Test_2023_1,109,specimentID,MQ_2004_12441
+Test_2023_1,110,collectionID,Plant 50
+Test_2023_1,110,specimentID,MQ_2004_12443
+Test_2023_1,111,collectionID,Plant 50
+Test_2023_1,111,specimentID,MQ_2004_12443
+Test_2023_1,112,collectionID,Plant 50
+Test_2023_1,112,specimentID,MQ_2004_12443
+Test_2023_1,113,collectionID,Plant 50
+Test_2023_1,113,collectionID,Plant 50
+Test_2023_1,113,collectionID,Plant 50
+Test_2023_1,113,collectionID,Plant 50
+Test_2023_1,113,collectionID,Plant 50
+Test_2023_1,113,collectionID,Plant 50
+Test_2023_1,113,collectionID,Plant 50
+Test_2023_1,113,collectionID,Plant 50
+Test_2023_1,113,specimentID,MQ_2004_12443
+Test_2023_1,113,specimentID,MQ_2004_12443
+Test_2023_1,113,specimentID,MQ_2004_12443
+Test_2023_1,113,specimentID,MQ_2004_12443
+Test_2023_1,113,specimentID,MQ_2004_12443
+Test_2023_1,113,specimentID,MQ_2004_12443
+Test_2023_1,113,specimentID,MQ_2004_12443
+Test_2023_1,113,specimentID,MQ_2004_12443
+Test_2023_1,114,collectionID,Plant 50
+Test_2023_1,114,collectionID,Plant 50
+Test_2023_1,114,collectionID,Plant 50
+Test_2023_1,114,specimentID,MQ_2004_12443
+Test_2023_1,114,specimentID,MQ_2004_12443
+Test_2023_1,114,specimentID,MQ_2004_12443
+Test_2023_1,115,collectionID,Plant 27
+Test_2023_1,115,specimentID,MQ_2004_12397
+Test_2023_1,116,collectionID,Plant 27
+Test_2023_1,116,specimentID,MQ_2004_12397
+Test_2023_1,117,collectionID,Plant 27
+Test_2023_1,117,collectionID,Plant 27
+Test_2023_1,117,specimentID,MQ_2004_12397
+Test_2023_1,117,specimentID,MQ_2004_12397
+Test_2023_1,118,collectionID,Plant 27
+Test_2023_1,118,collectionID,Plant 27
+Test_2023_1,118,collectionID,Plant 27
+Test_2023_1,118,collectionID,Plant 27
+Test_2023_1,118,collectionID,Plant 27
+Test_2023_1,118,collectionID,Plant 27
+Test_2023_1,118,collectionID,Plant 27
+Test_2023_1,118,collectionID,Plant 27
+Test_2023_1,118,collectionID,Plant 27
+Test_2023_1,118,specimentID,MQ_2004_12397
+Test_2023_1,118,specimentID,MQ_2004_12397
+Test_2023_1,118,specimentID,MQ_2004_12397
+Test_2023_1,118,specimentID,MQ_2004_12397
+Test_2023_1,118,specimentID,MQ_2004_12397
+Test_2023_1,118,specimentID,MQ_2004_12397
+Test_2023_1,118,specimentID,MQ_2004_12397
+Test_2023_1,118,specimentID,MQ_2004_12397
+Test_2023_1,118,specimentID,MQ_2004_12397
+Test_2023_1,119,collectionID,Plant 27
+Test_2023_1,119,collectionID,Plant 27
+Test_2023_1,119,collectionID,Plant 27
+Test_2023_1,119,specimentID,MQ_2004_12397
+Test_2023_1,119,specimentID,MQ_2004_12397
+Test_2023_1,119,specimentID,MQ_2004_12397
+Test_2023_1,120,collectionID,Plant 51
+Test_2023_1,120,specimentID,MQ_2004_12445
+Test_2023_1,121,collectionID,Plant 51
+Test_2023_1,121,specimentID,MQ_2004_12445
+Test_2023_1,122,collectionID,Plant 51
+Test_2023_1,122,specimentID,MQ_2004_12445
+Test_2023_1,123,collectionID,Plant 51
+Test_2023_1,123,collectionID,Plant 51
+Test_2023_1,123,collectionID,Plant 51
+Test_2023_1,123,collectionID,Plant 51
+Test_2023_1,123,collectionID,Plant 51
+Test_2023_1,123,collectionID,Plant 51
+Test_2023_1,123,collectionID,Plant 51
+Test_2023_1,123,collectionID,Plant 51
+Test_2023_1,123,specimentID,MQ_2004_12445
+Test_2023_1,123,specimentID,MQ_2004_12445
+Test_2023_1,123,specimentID,MQ_2004_12445
+Test_2023_1,123,specimentID,MQ_2004_12445
+Test_2023_1,123,specimentID,MQ_2004_12445
+Test_2023_1,123,specimentID,MQ_2004_12445
+Test_2023_1,123,specimentID,MQ_2004_12445
+Test_2023_1,123,specimentID,MQ_2004_12445
+Test_2023_1,124,collectionID,Plant 51
+Test_2023_1,124,collectionID,Plant 51
+Test_2023_1,124,collectionID,Plant 51
+Test_2023_1,124,specimentID,MQ_2004_12445
+Test_2023_1,124,specimentID,MQ_2004_12445
+Test_2023_1,124,specimentID,MQ_2004_12445
+Test_2023_1,125,collectionID,Plant 52
+Test_2023_1,125,specimentID,MQ_2004_12447
+Test_2023_1,126,collectionID,Plant 52
+Test_2023_1,126,specimentID,MQ_2004_12447
+Test_2023_1,127,collectionID,Plant 52
+Test_2023_1,127,specimentID,MQ_2004_12447
+Test_2023_1,128,collectionID,Plant 52
+Test_2023_1,128,collectionID,Plant 52
+Test_2023_1,128,collectionID,Plant 52
+Test_2023_1,128,collectionID,Plant 52
+Test_2023_1,128,collectionID,Plant 52
+Test_2023_1,128,collectionID,Plant 52
+Test_2023_1,128,collectionID,Plant 52
+Test_2023_1,128,specimentID,MQ_2004_12447
+Test_2023_1,128,specimentID,MQ_2004_12447
+Test_2023_1,128,specimentID,MQ_2004_12447
+Test_2023_1,128,specimentID,MQ_2004_12447
+Test_2023_1,128,specimentID,MQ_2004_12447
+Test_2023_1,128,specimentID,MQ_2004_12447
+Test_2023_1,128,specimentID,MQ_2004_12447
+Test_2023_1,129,collectionID,Plant 52
+Test_2023_1,129,collectionID,Plant 52
+Test_2023_1,129,collectionID,Plant 52
+Test_2023_1,129,specimentID,MQ_2004_12447
+Test_2023_1,129,specimentID,MQ_2004_12447
+Test_2023_1,129,specimentID,MQ_2004_12447
+Test_2023_1,130,collectionID,Plant 53
+Test_2023_1,130,specimentID,MQ_2004_12449
+Test_2023_1,131,collectionID,Plant 53
+Test_2023_1,131,specimentID,MQ_2004_12449
+Test_2023_1,132,collectionID,Plant 53
+Test_2023_1,132,specimentID,MQ_2004_12449
+Test_2023_1,133,collectionID,Plant 53
+Test_2023_1,133,collectionID,Plant 53
+Test_2023_1,133,collectionID,Plant 53
+Test_2023_1,133,collectionID,Plant 53
+Test_2023_1,133,collectionID,Plant 53
+Test_2023_1,133,collectionID,Plant 53
+Test_2023_1,133,collectionID,Plant 53
+Test_2023_1,133,collectionID,Plant 53
+Test_2023_1,133,specimentID,MQ_2004_12449
+Test_2023_1,133,specimentID,MQ_2004_12449
+Test_2023_1,133,specimentID,MQ_2004_12449
+Test_2023_1,133,specimentID,MQ_2004_12449
+Test_2023_1,133,specimentID,MQ_2004_12449
+Test_2023_1,133,specimentID,MQ_2004_12449
+Test_2023_1,133,specimentID,MQ_2004_12449
+Test_2023_1,133,specimentID,MQ_2004_12449
+Test_2023_1,134,collectionID,Plant 53
+Test_2023_1,134,collectionID,Plant 53
+Test_2023_1,134,collectionID,Plant 53
+Test_2023_1,134,specimentID,MQ_2004_12449
+Test_2023_1,134,specimentID,MQ_2004_12449
+Test_2023_1,134,specimentID,MQ_2004_12449
+Test_2023_1,135,collectionID,Plant 28
+Test_2023_1,135,specimentID,MQ_2004_12399
+Test_2023_1,136,collectionID,Plant 28
+Test_2023_1,136,specimentID,MQ_2004_12399
+Test_2023_1,137,collectionID,Plant 28
+Test_2023_1,137,collectionID,Plant 28
+Test_2023_1,137,specimentID,MQ_2004_12399
+Test_2023_1,137,specimentID,MQ_2004_12399
+Test_2023_1,138,collectionID,Plant 28
+Test_2023_1,138,collectionID,Plant 28
+Test_2023_1,138,collectionID,Plant 28
+Test_2023_1,138,collectionID,Plant 28
+Test_2023_1,138,collectionID,Plant 28
+Test_2023_1,138,collectionID,Plant 28
+Test_2023_1,138,collectionID,Plant 28
+Test_2023_1,138,collectionID,Plant 28
+Test_2023_1,138,specimentID,MQ_2004_12399
+Test_2023_1,138,specimentID,MQ_2004_12399
+Test_2023_1,138,specimentID,MQ_2004_12399
+Test_2023_1,138,specimentID,MQ_2004_12399
+Test_2023_1,138,specimentID,MQ_2004_12399
+Test_2023_1,138,specimentID,MQ_2004_12399
+Test_2023_1,138,specimentID,MQ_2004_12399
+Test_2023_1,138,specimentID,MQ_2004_12399
+Test_2023_1,139,collectionID,Plant 28
+Test_2023_1,139,collectionID,Plant 28
+Test_2023_1,139,collectionID,Plant 28
+Test_2023_1,139,collectionID,Plant 28
+Test_2023_1,139,specimentID,MQ_2004_12399
+Test_2023_1,139,specimentID,MQ_2004_12399
+Test_2023_1,139,specimentID,MQ_2004_12399
+Test_2023_1,139,specimentID,MQ_2004_12399
+Test_2023_1,140,collectionID,Plant 54
+Test_2023_1,140,specimentID,MQ_2004_12451
+Test_2023_1,141,collectionID,Plant 54
+Test_2023_1,141,specimentID,MQ_2004_12451
+Test_2023_1,142,collectionID,Plant 54
+Test_2023_1,142,specimentID,MQ_2004_12451
+Test_2023_1,143,collectionID,Plant 54
+Test_2023_1,143,collectionID,Plant 54
+Test_2023_1,143,collectionID,Plant 54
+Test_2023_1,143,collectionID,Plant 54
+Test_2023_1,143,collectionID,Plant 54
+Test_2023_1,143,collectionID,Plant 54
+Test_2023_1,143,collectionID,Plant 54
+Test_2023_1,143,collectionID,Plant 54
+Test_2023_1,143,collectionID,Plant 54
+Test_2023_1,143,specimentID,MQ_2004_12451
+Test_2023_1,143,specimentID,MQ_2004_12451
+Test_2023_1,143,specimentID,MQ_2004_12451
+Test_2023_1,143,specimentID,MQ_2004_12451
+Test_2023_1,143,specimentID,MQ_2004_12451
+Test_2023_1,143,specimentID,MQ_2004_12451
+Test_2023_1,143,specimentID,MQ_2004_12451
+Test_2023_1,143,specimentID,MQ_2004_12451
+Test_2023_1,143,specimentID,MQ_2004_12451
+Test_2023_1,144,collectionID,Plant 54
+Test_2023_1,144,collectionID,Plant 54
+Test_2023_1,144,collectionID,Plant 54
+Test_2023_1,144,specimentID,MQ_2004_12451
+Test_2023_1,144,specimentID,MQ_2004_12451
+Test_2023_1,144,specimentID,MQ_2004_12451
+Test_2023_1,145,collectionID,Plant 55
+Test_2023_1,145,specimentID,MQ_2004_12453
+Test_2023_1,146,collectionID,Plant 55
+Test_2023_1,146,specimentID,MQ_2004_12453
+Test_2023_1,147,collectionID,Plant 55
+Test_2023_1,147,specimentID,MQ_2004_12453
+Test_2023_1,148,collectionID,Plant 55
+Test_2023_1,148,collectionID,Plant 55
+Test_2023_1,148,collectionID,Plant 55
+Test_2023_1,148,collectionID,Plant 55
+Test_2023_1,148,collectionID,Plant 55
+Test_2023_1,148,collectionID,Plant 55
+Test_2023_1,148,collectionID,Plant 55
+Test_2023_1,148,collectionID,Plant 55
+Test_2023_1,148,collectionID,Plant 55
+Test_2023_1,148,specimentID,MQ_2004_12453
+Test_2023_1,148,specimentID,MQ_2004_12453
+Test_2023_1,148,specimentID,MQ_2004_12453
+Test_2023_1,148,specimentID,MQ_2004_12453
+Test_2023_1,148,specimentID,MQ_2004_12453
+Test_2023_1,148,specimentID,MQ_2004_12453
+Test_2023_1,148,specimentID,MQ_2004_12453
+Test_2023_1,148,specimentID,MQ_2004_12453
+Test_2023_1,148,specimentID,MQ_2004_12453
+Test_2023_1,149,collectionID,Plant 55
+Test_2023_1,149,collectionID,Plant 55
+Test_2023_1,149,collectionID,Plant 55
+Test_2023_1,149,specimentID,MQ_2004_12453
+Test_2023_1,149,specimentID,MQ_2004_12453
+Test_2023_1,149,specimentID,MQ_2004_12453
+Test_2023_1,150,collectionID,Plant 56
+Test_2023_1,150,specimentID,MQ_2004_12455
+Test_2023_1,151,collectionID,Plant 56
+Test_2023_1,151,specimentID,MQ_2004_12455
+Test_2023_1,152,collectionID,Plant 56
+Test_2023_1,152,specimentID,MQ_2004_12455
+Test_2023_1,153,collectionID,Plant 56
+Test_2023_1,153,collectionID,Plant 56
+Test_2023_1,153,collectionID,Plant 56
+Test_2023_1,153,collectionID,Plant 56
+Test_2023_1,153,collectionID,Plant 56
+Test_2023_1,153,collectionID,Plant 56
+Test_2023_1,153,collectionID,Plant 56
+Test_2023_1,153,collectionID,Plant 56
+Test_2023_1,153,collectionID,Plant 56
+Test_2023_1,153,specimentID,MQ_2004_12455
+Test_2023_1,153,specimentID,MQ_2004_12455
+Test_2023_1,153,specimentID,MQ_2004_12455
+Test_2023_1,153,specimentID,MQ_2004_12455
+Test_2023_1,153,specimentID,MQ_2004_12455
+Test_2023_1,153,specimentID,MQ_2004_12455
+Test_2023_1,153,specimentID,MQ_2004_12455
+Test_2023_1,153,specimentID,MQ_2004_12455
+Test_2023_1,153,specimentID,MQ_2004_12455
+Test_2023_1,154,collectionID,Plant 56
+Test_2023_1,154,collectionID,Plant 56
+Test_2023_1,154,collectionID,Plant 56
+Test_2023_1,154,specimentID,MQ_2004_12455
+Test_2023_1,154,specimentID,MQ_2004_12455
+Test_2023_1,154,specimentID,MQ_2004_12455
+Test_2023_1,155,collectionID,Plant 57
+Test_2023_1,155,specimentID,MQ_2004_12457
+Test_2023_1,156,collectionID,Plant 57
+Test_2023_1,156,specimentID,MQ_2004_12457
+Test_2023_1,157,collectionID,Plant 57
+Test_2023_1,157,specimentID,MQ_2004_12457
+Test_2023_1,158,collectionID,Plant 57
+Test_2023_1,158,collectionID,Plant 57
+Test_2023_1,158,collectionID,Plant 57
+Test_2023_1,158,collectionID,Plant 57
+Test_2023_1,158,collectionID,Plant 57
+Test_2023_1,158,specimentID,MQ_2004_12457
+Test_2023_1,158,specimentID,MQ_2004_12457
+Test_2023_1,158,specimentID,MQ_2004_12457
+Test_2023_1,158,specimentID,MQ_2004_12457
+Test_2023_1,158,specimentID,MQ_2004_12457
+Test_2023_1,159,collectionID,Plant 57
+Test_2023_1,159,collectionID,Plant 57
+Test_2023_1,159,collectionID,Plant 57
+Test_2023_1,159,specimentID,MQ_2004_12457
+Test_2023_1,159,specimentID,MQ_2004_12457
+Test_2023_1,159,specimentID,MQ_2004_12457
+Test_2023_1,160,collectionID,Plant 58
+Test_2023_1,160,specimentID,MQ_2004_12459
+Test_2023_1,161,collectionID,Plant 58
+Test_2023_1,161,specimentID,MQ_2004_12459
+Test_2023_1,162,collectionID,Plant 58
+Test_2023_1,162,specimentID,MQ_2004_12459
+Test_2023_1,163,collectionID,Plant 58
+Test_2023_1,163,collectionID,Plant 58
+Test_2023_1,163,collectionID,Plant 58
+Test_2023_1,163,collectionID,Plant 58
+Test_2023_1,163,collectionID,Plant 58
+Test_2023_1,163,collectionID,Plant 58
+Test_2023_1,163,collectionID,Plant 58
+Test_2023_1,163,collectionID,Plant 58
+Test_2023_1,163,collectionID,Plant 58
+Test_2023_1,163,specimentID,MQ_2004_12459
+Test_2023_1,163,specimentID,MQ_2004_12459
+Test_2023_1,163,specimentID,MQ_2004_12459
+Test_2023_1,163,specimentID,MQ_2004_12459
+Test_2023_1,163,specimentID,MQ_2004_12459
+Test_2023_1,163,specimentID,MQ_2004_12459
+Test_2023_1,163,specimentID,MQ_2004_12459
+Test_2023_1,163,specimentID,MQ_2004_12459
+Test_2023_1,163,specimentID,MQ_2004_12459
+Test_2023_1,164,collectionID,Plant 58
+Test_2023_1,164,collectionID,Plant 58
+Test_2023_1,164,collectionID,Plant 58
+Test_2023_1,164,specimentID,MQ_2004_12459
+Test_2023_1,164,specimentID,MQ_2004_12459
+Test_2023_1,164,specimentID,MQ_2004_12459
+Test_2023_1,165,collectionID,Plant 59
+Test_2023_1,165,specimentID,MQ_2004_12461
+Test_2023_1,166,collectionID,Plant 59
+Test_2023_1,166,specimentID,MQ_2004_12461
+Test_2023_1,167,collectionID,Plant 59
+Test_2023_1,167,specimentID,MQ_2004_12461
+Test_2023_1,168,collectionID,Plant 59
+Test_2023_1,168,collectionID,Plant 59
+Test_2023_1,168,collectionID,Plant 59
+Test_2023_1,168,collectionID,Plant 59
+Test_2023_1,168,collectionID,Plant 59
+Test_2023_1,168,collectionID,Plant 59
+Test_2023_1,168,collectionID,Plant 59
+Test_2023_1,168,collectionID,Plant 59
+Test_2023_1,168,specimentID,MQ_2004_12461
+Test_2023_1,168,specimentID,MQ_2004_12461
+Test_2023_1,168,specimentID,MQ_2004_12461
+Test_2023_1,168,specimentID,MQ_2004_12461
+Test_2023_1,168,specimentID,MQ_2004_12461
+Test_2023_1,168,specimentID,MQ_2004_12461
+Test_2023_1,168,specimentID,MQ_2004_12461
+Test_2023_1,168,specimentID,MQ_2004_12461
+Test_2023_1,169,collectionID,Plant 59
+Test_2023_1,169,collectionID,Plant 59
+Test_2023_1,169,collectionID,Plant 59
+Test_2023_1,169,specimentID,MQ_2004_12461
+Test_2023_1,169,specimentID,MQ_2004_12461
+Test_2023_1,169,specimentID,MQ_2004_12461
+Test_2023_1,170,collectionID,Plant 60
+Test_2023_1,170,specimentID,MQ_2004_12463
+Test_2023_1,171,collectionID,Plant 60
+Test_2023_1,171,specimentID,MQ_2004_12463
+Test_2023_1,172,collectionID,Plant 60
+Test_2023_1,172,specimentID,MQ_2004_12463
+Test_2023_1,173,collectionID,Plant 60
+Test_2023_1,173,collectionID,Plant 60
+Test_2023_1,173,collectionID,Plant 60
+Test_2023_1,173,collectionID,Plant 60
+Test_2023_1,173,collectionID,Plant 60
+Test_2023_1,173,collectionID,Plant 60
+Test_2023_1,173,collectionID,Plant 60
+Test_2023_1,173,collectionID,Plant 60
+Test_2023_1,173,collectionID,Plant 60
+Test_2023_1,173,specimentID,MQ_2004_12463
+Test_2023_1,173,specimentID,MQ_2004_12463
+Test_2023_1,173,specimentID,MQ_2004_12463
+Test_2023_1,173,specimentID,MQ_2004_12463
+Test_2023_1,173,specimentID,MQ_2004_12463
+Test_2023_1,173,specimentID,MQ_2004_12463
+Test_2023_1,173,specimentID,MQ_2004_12463
+Test_2023_1,173,specimentID,MQ_2004_12463
+Test_2023_1,173,specimentID,MQ_2004_12463
+Test_2023_1,174,collectionID,Plant 60
+Test_2023_1,174,collectionID,Plant 60
+Test_2023_1,174,collectionID,Plant 60
+Test_2023_1,174,specimentID,MQ_2004_12463
+Test_2023_1,174,specimentID,MQ_2004_12463
+Test_2023_1,174,specimentID,MQ_2004_12463
+Test_2023_1,175,collectionID,Plant 29
+Test_2023_1,175,specimentID,MQ_2004_12401
+Test_2023_1,176,collectionID,Plant 29
+Test_2023_1,176,specimentID,MQ_2004_12401
+Test_2023_1,177,collectionID,Plant 29
+Test_2023_1,177,collectionID,Plant 29
+Test_2023_1,177,specimentID,MQ_2004_12401
+Test_2023_1,177,specimentID,MQ_2004_12401
+Test_2023_1,178,collectionID,Plant 29
+Test_2023_1,178,collectionID,Plant 29
+Test_2023_1,178,collectionID,Plant 29
+Test_2023_1,178,collectionID,Plant 29
+Test_2023_1,178,collectionID,Plant 29
+Test_2023_1,178,collectionID,Plant 29
+Test_2023_1,178,collectionID,Plant 29
+Test_2023_1,178,collectionID,Plant 29
+Test_2023_1,178,specimentID,MQ_2004_12401
+Test_2023_1,178,specimentID,MQ_2004_12401
+Test_2023_1,178,specimentID,MQ_2004_12401
+Test_2023_1,178,specimentID,MQ_2004_12401
+Test_2023_1,178,specimentID,MQ_2004_12401
+Test_2023_1,178,specimentID,MQ_2004_12401
+Test_2023_1,178,specimentID,MQ_2004_12401
+Test_2023_1,178,specimentID,MQ_2004_12401
+Test_2023_1,179,collectionID,Plant 29
+Test_2023_1,179,collectionID,Plant 29
+Test_2023_1,179,collectionID,Plant 29
+Test_2023_1,179,collectionID,Plant 29
+Test_2023_1,179,specimentID,MQ_2004_12401
+Test_2023_1,179,specimentID,MQ_2004_12401
+Test_2023_1,179,specimentID,MQ_2004_12401
+Test_2023_1,179,specimentID,MQ_2004_12401
+Test_2023_1,180,collectionID,Plant 61
+Test_2023_1,180,specimentID,MQ_2004_12465
+Test_2023_1,181,collectionID,Plant 61
+Test_2023_1,181,specimentID,MQ_2004_12465
+Test_2023_1,182,collectionID,Plant 61
+Test_2023_1,182,specimentID,MQ_2004_12465
+Test_2023_1,183,collectionID,Plant 61
+Test_2023_1,183,collectionID,Plant 61
+Test_2023_1,183,collectionID,Plant 61
+Test_2023_1,183,collectionID,Plant 61
+Test_2023_1,183,collectionID,Plant 61
+Test_2023_1,183,collectionID,Plant 61
+Test_2023_1,183,collectionID,Plant 61
+Test_2023_1,183,collectionID,Plant 61
+Test_2023_1,183,specimentID,MQ_2004_12465
+Test_2023_1,183,specimentID,MQ_2004_12465
+Test_2023_1,183,specimentID,MQ_2004_12465
+Test_2023_1,183,specimentID,MQ_2004_12465
+Test_2023_1,183,specimentID,MQ_2004_12465
+Test_2023_1,183,specimentID,MQ_2004_12465
+Test_2023_1,183,specimentID,MQ_2004_12465
+Test_2023_1,183,specimentID,MQ_2004_12465
+Test_2023_1,184,collectionID,Plant 61
+Test_2023_1,184,collectionID,Plant 61
+Test_2023_1,184,collectionID,Plant 61
+Test_2023_1,184,specimentID,MQ_2004_12465
+Test_2023_1,184,specimentID,MQ_2004_12465
+Test_2023_1,184,specimentID,MQ_2004_12465
+Test_2023_1,185,collectionID,Plant 30
+Test_2023_1,185,specimentID,MQ_2004_12403
+Test_2023_1,186,collectionID,Plant 30
+Test_2023_1,186,specimentID,MQ_2004_12403
+Test_2023_1,187,collectionID,Plant 30
+Test_2023_1,187,specimentID,MQ_2004_12403
+Test_2023_1,188,collectionID,Plant 30
+Test_2023_1,188,collectionID,Plant 30
+Test_2023_1,188,collectionID,Plant 30
+Test_2023_1,188,collectionID,Plant 30
+Test_2023_1,188,collectionID,Plant 30
+Test_2023_1,188,collectionID,Plant 30
+Test_2023_1,188,collectionID,Plant 30
+Test_2023_1,188,collectionID,Plant 30
+Test_2023_1,188,collectionID,Plant 30
+Test_2023_1,188,specimentID,MQ_2004_12403
+Test_2023_1,188,specimentID,MQ_2004_12403
+Test_2023_1,188,specimentID,MQ_2004_12403
+Test_2023_1,188,specimentID,MQ_2004_12403
+Test_2023_1,188,specimentID,MQ_2004_12403
+Test_2023_1,188,specimentID,MQ_2004_12403
+Test_2023_1,188,specimentID,MQ_2004_12403
+Test_2023_1,188,specimentID,MQ_2004_12403
+Test_2023_1,188,specimentID,MQ_2004_12403
+Test_2023_1,189,collectionID,Plant 30
+Test_2023_1,189,collectionID,Plant 30
+Test_2023_1,189,collectionID,Plant 30
+Test_2023_1,189,collectionID,Plant 30
+Test_2023_1,189,specimentID,MQ_2004_12403
+Test_2023_1,189,specimentID,MQ_2004_12403
+Test_2023_1,189,specimentID,MQ_2004_12403
+Test_2023_1,189,specimentID,MQ_2004_12403
+Test_2023_1,190,collectionID,Plant 62
+Test_2023_1,190,specimentID,MQ_2004_12467
+Test_2023_1,191,collectionID,Plant 62
+Test_2023_1,191,specimentID,MQ_2004_12467
+Test_2023_1,192,collectionID,Plant 62
+Test_2023_1,192,specimentID,MQ_2004_12467
+Test_2023_1,193,collectionID,Plant 62
+Test_2023_1,193,collectionID,Plant 62
+Test_2023_1,193,collectionID,Plant 62
+Test_2023_1,193,collectionID,Plant 62
+Test_2023_1,193,collectionID,Plant 62
+Test_2023_1,193,collectionID,Plant 62
+Test_2023_1,193,collectionID,Plant 62
+Test_2023_1,193,collectionID,Plant 62
+Test_2023_1,193,collectionID,Plant 62
+Test_2023_1,193,specimentID,MQ_2004_12467
+Test_2023_1,193,specimentID,MQ_2004_12467
+Test_2023_1,193,specimentID,MQ_2004_12467
+Test_2023_1,193,specimentID,MQ_2004_12467
+Test_2023_1,193,specimentID,MQ_2004_12467
+Test_2023_1,193,specimentID,MQ_2004_12467
+Test_2023_1,193,specimentID,MQ_2004_12467
+Test_2023_1,193,specimentID,MQ_2004_12467
+Test_2023_1,193,specimentID,MQ_2004_12467
+Test_2023_1,194,collectionID,Plant 62
+Test_2023_1,194,collectionID,Plant 62
+Test_2023_1,194,collectionID,Plant 62
+Test_2023_1,194,specimentID,MQ_2004_12467
+Test_2023_1,194,specimentID,MQ_2004_12467
+Test_2023_1,194,specimentID,MQ_2004_12467
+Test_2023_1,195,collectionID,Plant 31
+Test_2023_1,195,specimentID,MQ_2004_12405
+Test_2023_1,196,collectionID,Plant 31
+Test_2023_1,196,specimentID,MQ_2004_12405
+Test_2023_1,197,collectionID,Plant 31
+Test_2023_1,197,collectionID,Plant 31
+Test_2023_1,197,specimentID,MQ_2004_12405
+Test_2023_1,197,specimentID,MQ_2004_12405
+Test_2023_1,198,collectionID,Plant 31
+Test_2023_1,198,collectionID,Plant 31
+Test_2023_1,198,collectionID,Plant 31
+Test_2023_1,198,collectionID,Plant 31
+Test_2023_1,198,collectionID,Plant 31
+Test_2023_1,198,collectionID,Plant 31
+Test_2023_1,198,specimentID,MQ_2004_12405
+Test_2023_1,198,specimentID,MQ_2004_12405
+Test_2023_1,198,specimentID,MQ_2004_12405
+Test_2023_1,198,specimentID,MQ_2004_12405
+Test_2023_1,198,specimentID,MQ_2004_12405
+Test_2023_1,198,specimentID,MQ_2004_12405
+Test_2023_1,199,collectionID,Plant 31
+Test_2023_1,199,collectionID,Plant 31
+Test_2023_1,199,collectionID,Plant 31
+Test_2023_1,199,collectionID,Plant 31
+Test_2023_1,199,specimentID,MQ_2004_12405
+Test_2023_1,199,specimentID,MQ_2004_12405
+Test_2023_1,199,specimentID,MQ_2004_12405
+Test_2023_1,199,specimentID,MQ_2004_12405
+Test_2023_1,200,collectionID,Plant 63
+Test_2023_1,200,specimentID,MQ_2004_12469
+Test_2023_1,201,collectionID,Plant 63
+Test_2023_1,201,specimentID,MQ_2004_12469
+Test_2023_1,202,collectionID,Plant 63
+Test_2023_1,202,specimentID,MQ_2004_12469
+Test_2023_1,203,collectionID,Plant 63
+Test_2023_1,203,collectionID,Plant 63
+Test_2023_1,203,collectionID,Plant 63
+Test_2023_1,203,collectionID,Plant 63
+Test_2023_1,203,collectionID,Plant 63
+Test_2023_1,203,collectionID,Plant 63
+Test_2023_1,203,collectionID,Plant 63
+Test_2023_1,203,collectionID,Plant 63
+Test_2023_1,203,specimentID,MQ_2004_12469
+Test_2023_1,203,specimentID,MQ_2004_12469
+Test_2023_1,203,specimentID,MQ_2004_12469
+Test_2023_1,203,specimentID,MQ_2004_12469
+Test_2023_1,203,specimentID,MQ_2004_12469
+Test_2023_1,203,specimentID,MQ_2004_12469
+Test_2023_1,203,specimentID,MQ_2004_12469
+Test_2023_1,203,specimentID,MQ_2004_12469
+Test_2023_1,204,collectionID,Plant 63
+Test_2023_1,204,collectionID,Plant 63
+Test_2023_1,204,collectionID,Plant 63
+Test_2023_1,204,specimentID,MQ_2004_12469
+Test_2023_1,204,specimentID,MQ_2004_12469
+Test_2023_1,204,specimentID,MQ_2004_12469
+Test_2023_1,205,collectionID,Plant 32
+Test_2023_1,205,specimentID,MQ_2004_12407
+Test_2023_1,206,collectionID,Plant 32
+Test_2023_1,206,specimentID,MQ_2004_12407
+Test_2023_1,207,collectionID,Plant 32
+Test_2023_1,207,specimentID,MQ_2004_12407
+Test_2023_1,208,collectionID,Plant 32
+Test_2023_1,208,collectionID,Plant 32
+Test_2023_1,208,collectionID,Plant 32
+Test_2023_1,208,collectionID,Plant 32
+Test_2023_1,208,collectionID,Plant 32
+Test_2023_1,208,collectionID,Plant 32
+Test_2023_1,208,collectionID,Plant 32
+Test_2023_1,208,collectionID,Plant 32
+Test_2023_1,208,specimentID,MQ_2004_12407
+Test_2023_1,208,specimentID,MQ_2004_12407
+Test_2023_1,208,specimentID,MQ_2004_12407
+Test_2023_1,208,specimentID,MQ_2004_12407
+Test_2023_1,208,specimentID,MQ_2004_12407
+Test_2023_1,208,specimentID,MQ_2004_12407
+Test_2023_1,208,specimentID,MQ_2004_12407
+Test_2023_1,208,specimentID,MQ_2004_12407
+Test_2023_1,209,collectionID,Plant 32
+Test_2023_1,209,collectionID,Plant 32
+Test_2023_1,209,collectionID,Plant 32
+Test_2023_1,209,collectionID,Plant 32
+Test_2023_1,209,specimentID,MQ_2004_12407
+Test_2023_1,209,specimentID,MQ_2004_12407
+Test_2023_1,209,specimentID,MQ_2004_12407
+Test_2023_1,209,specimentID,MQ_2004_12407
+Test_2023_1,210,collectionID,Plant 64
+Test_2023_1,210,specimentID,MQ_2004_12471
+Test_2023_1,211,collectionID,Plant 64
+Test_2023_1,211,specimentID,MQ_2004_12471
+Test_2023_1,212,collectionID,Plant 64
+Test_2023_1,212,specimentID,MQ_2004_12471
+Test_2023_1,213,collectionID,Plant 64
+Test_2023_1,213,collectionID,Plant 64
+Test_2023_1,213,collectionID,Plant 64
+Test_2023_1,213,collectionID,Plant 64
+Test_2023_1,213,collectionID,Plant 64
+Test_2023_1,213,collectionID,Plant 64
+Test_2023_1,213,collectionID,Plant 64
+Test_2023_1,213,specimentID,MQ_2004_12471
+Test_2023_1,213,specimentID,MQ_2004_12471
+Test_2023_1,213,specimentID,MQ_2004_12471
+Test_2023_1,213,specimentID,MQ_2004_12471
+Test_2023_1,213,specimentID,MQ_2004_12471
+Test_2023_1,213,specimentID,MQ_2004_12471
+Test_2023_1,213,specimentID,MQ_2004_12471
+Test_2023_1,214,collectionID,Plant 64
+Test_2023_1,214,collectionID,Plant 64
+Test_2023_1,214,collectionID,Plant 64
+Test_2023_1,214,specimentID,MQ_2004_12471
+Test_2023_1,214,specimentID,MQ_2004_12471
+Test_2023_1,214,specimentID,MQ_2004_12471
+Test_2023_1,215,collectionID,Plant 33
+Test_2023_1,215,specimentID,MQ_2004_12409
+Test_2023_1,216,collectionID,Plant 33
+Test_2023_1,216,specimentID,MQ_2004_12409
+Test_2023_1,217,collectionID,Plant 33
+Test_2023_1,217,collectionID,Plant 33
+Test_2023_1,217,specimentID,MQ_2004_12409
+Test_2023_1,217,specimentID,MQ_2004_12409
+Test_2023_1,218,collectionID,Plant 33
+Test_2023_1,218,collectionID,Plant 33
+Test_2023_1,218,collectionID,Plant 33
+Test_2023_1,218,collectionID,Plant 33
+Test_2023_1,218,collectionID,Plant 33
+Test_2023_1,218,collectionID,Plant 33
+Test_2023_1,218,collectionID,Plant 33
+Test_2023_1,218,collectionID,Plant 33
+Test_2023_1,218,specimentID,MQ_2004_12409
+Test_2023_1,218,specimentID,MQ_2004_12409
+Test_2023_1,218,specimentID,MQ_2004_12409
+Test_2023_1,218,specimentID,MQ_2004_12409
+Test_2023_1,218,specimentID,MQ_2004_12409
+Test_2023_1,218,specimentID,MQ_2004_12409
+Test_2023_1,218,specimentID,MQ_2004_12409
+Test_2023_1,218,specimentID,MQ_2004_12409
+Test_2023_1,219,collectionID,Plant 33
+Test_2023_1,219,collectionID,Plant 33
+Test_2023_1,219,collectionID,Plant 33
+Test_2023_1,219,collectionID,Plant 33
+Test_2023_1,219,specimentID,MQ_2004_12409
+Test_2023_1,219,specimentID,MQ_2004_12409
+Test_2023_1,219,specimentID,MQ_2004_12409
+Test_2023_1,219,specimentID,MQ_2004_12409
+Test_2023_1,220,collectionID,Plant 65
+Test_2023_1,220,specimentID,MQ_2004_12473
+Test_2023_1,221,collectionID,Plant 65
+Test_2023_1,221,specimentID,MQ_2004_12473
+Test_2023_1,222,collectionID,Plant 65
+Test_2023_1,222,specimentID,MQ_2004_12473
+Test_2023_1,223,collectionID,Plant 65
+Test_2023_1,223,collectionID,Plant 65
+Test_2023_1,223,collectionID,Plant 65
+Test_2023_1,223,collectionID,Plant 65
+Test_2023_1,223,collectionID,Plant 65
+Test_2023_1,223,collectionID,Plant 65
+Test_2023_1,223,collectionID,Plant 65
+Test_2023_1,223,collectionID,Plant 65
+Test_2023_1,223,specimentID,MQ_2004_12473
+Test_2023_1,223,specimentID,MQ_2004_12473
+Test_2023_1,223,specimentID,MQ_2004_12473
+Test_2023_1,223,specimentID,MQ_2004_12473
+Test_2023_1,223,specimentID,MQ_2004_12473
+Test_2023_1,223,specimentID,MQ_2004_12473
+Test_2023_1,223,specimentID,MQ_2004_12473
+Test_2023_1,223,specimentID,MQ_2004_12473
+Test_2023_1,224,collectionID,Plant 65
+Test_2023_1,224,collectionID,Plant 65
+Test_2023_1,224,collectionID,Plant 65
+Test_2023_1,224,specimentID,MQ_2004_12473
+Test_2023_1,224,specimentID,MQ_2004_12473
+Test_2023_1,224,specimentID,MQ_2004_12473
+Test_2023_1,225,collectionID,Plant 73
+Test_2023_1,225,specimentID,MQ_2004_12489
+Test_2023_1,226,collectionID,Plant 73
+Test_2023_1,226,collectionID,Plant 73
+Test_2023_1,226,specimentID,MQ_2004_12489
+Test_2023_1,226,specimentID,MQ_2004_12489
+Test_2023_1,227,collectionID,Plant 66
+Test_2023_1,227,specimentID,MQ_2004_12475
+Test_2023_1,228,collectionID,Plant 66
+Test_2023_1,228,specimentID,MQ_2004_12475
+Test_2023_1,229,collectionID,Plant 66
+Test_2023_1,229,specimentID,MQ_2004_12475
+Test_2023_1,230,collectionID,Plant 66
+Test_2023_1,230,collectionID,Plant 66
+Test_2023_1,230,collectionID,Plant 66
+Test_2023_1,230,collectionID,Plant 66
+Test_2023_1,230,collectionID,Plant 66
+Test_2023_1,230,collectionID,Plant 66
+Test_2023_1,230,collectionID,Plant 66
+Test_2023_1,230,collectionID,Plant 66
+Test_2023_1,230,collectionID,Plant 66
+Test_2023_1,230,specimentID,MQ_2004_12475
+Test_2023_1,230,specimentID,MQ_2004_12475
+Test_2023_1,230,specimentID,MQ_2004_12475
+Test_2023_1,230,specimentID,MQ_2004_12475
+Test_2023_1,230,specimentID,MQ_2004_12475
+Test_2023_1,230,specimentID,MQ_2004_12475
+Test_2023_1,230,specimentID,MQ_2004_12475
+Test_2023_1,230,specimentID,MQ_2004_12475
+Test_2023_1,230,specimentID,MQ_2004_12475
+Test_2023_1,231,collectionID,Plant 66
+Test_2023_1,231,collectionID,Plant 66
+Test_2023_1,231,collectionID,Plant 66
+Test_2023_1,231,specimentID,MQ_2004_12475
+Test_2023_1,231,specimentID,MQ_2004_12475
+Test_2023_1,231,specimentID,MQ_2004_12475
+Test_2023_1,232,collectionID,Plant 67
+Test_2023_1,232,specimentID,MQ_2004_12477
+Test_2023_1,233,collectionID,Plant 67
+Test_2023_1,233,specimentID,MQ_2004_12477
+Test_2023_1,234,collectionID,Plant 67
+Test_2023_1,234,specimentID,MQ_2004_12477
+Test_2023_1,235,collectionID,Plant 67
+Test_2023_1,235,collectionID,Plant 67
+Test_2023_1,235,collectionID,Plant 67
+Test_2023_1,235,collectionID,Plant 67
+Test_2023_1,235,collectionID,Plant 67
+Test_2023_1,235,collectionID,Plant 67
+Test_2023_1,235,collectionID,Plant 67
+Test_2023_1,235,collectionID,Plant 67
+Test_2023_1,235,collectionID,Plant 67
+Test_2023_1,235,specimentID,MQ_2004_12477
+Test_2023_1,235,specimentID,MQ_2004_12477
+Test_2023_1,235,specimentID,MQ_2004_12477
+Test_2023_1,235,specimentID,MQ_2004_12477
+Test_2023_1,235,specimentID,MQ_2004_12477
+Test_2023_1,235,specimentID,MQ_2004_12477
+Test_2023_1,235,specimentID,MQ_2004_12477
+Test_2023_1,235,specimentID,MQ_2004_12477
+Test_2023_1,235,specimentID,MQ_2004_12477
+Test_2023_1,236,collectionID,Plant 67
+Test_2023_1,236,collectionID,Plant 67
+Test_2023_1,236,collectionID,Plant 67
+Test_2023_1,236,specimentID,MQ_2004_12477
+Test_2023_1,236,specimentID,MQ_2004_12477
+Test_2023_1,236,specimentID,MQ_2004_12477
+Test_2023_1,237,collectionID,Plant 69
+Test_2023_1,237,specimentID,MQ_2004_12481
+Test_2023_1,238,collectionID,Plant 69
+Test_2023_1,238,collectionID,Plant 69
+Test_2023_1,238,specimentID,MQ_2004_12481
+Test_2023_1,238,specimentID,MQ_2004_12481
+Test_2023_1,239,collectionID,Plant 70
+Test_2023_1,239,specimentID,MQ_2004_12483
+Test_2023_1,240,collectionID,Plant 70
+Test_2023_1,240,collectionID,Plant 70
+Test_2023_1,240,specimentID,MQ_2004_12483
+Test_2023_1,240,specimentID,MQ_2004_12483
+Test_2023_1,241,collectionID,Plant 71
+Test_2023_1,241,specimentID,MQ_2004_12485
+Test_2023_1,242,collectionID,Plant 71
+Test_2023_1,242,collectionID,Plant 71
+Test_2023_1,242,specimentID,MQ_2004_12485
+Test_2023_1,242,specimentID,MQ_2004_12485
+Test_2023_1,243,collectionID,Plant 72
+Test_2023_1,243,specimentID,MQ_2004_12487
+Test_2023_1,244,collectionID,Plant 72
+Test_2023_1,244,collectionID,Plant 72
+Test_2023_1,244,specimentID,MQ_2004_12487
+Test_2023_1,244,specimentID,MQ_2004_12487
+Test_2023_1,245,collectionID,Plant 68
+Test_2023_1,245,specimentID,MQ_2004_12479
+Test_2023_1,246,collectionID,Plant 68
+Test_2023_1,246,specimentID,MQ_2004_12479
+Test_2023_1,247,collectionID,Plant 68
+Test_2023_1,247,specimentID,MQ_2004_12479
+Test_2023_1,248,collectionID,Plant 68
+Test_2023_1,248,collectionID,Plant 68
+Test_2023_1,248,collectionID,Plant 68
+Test_2023_1,248,collectionID,Plant 68
+Test_2023_1,248,collectionID,Plant 68
+Test_2023_1,248,collectionID,Plant 68
+Test_2023_1,248,collectionID,Plant 68
+Test_2023_1,248,collectionID,Plant 68
+Test_2023_1,248,collectionID,Plant 68
+Test_2023_1,248,specimentID,MQ_2004_12479
+Test_2023_1,248,specimentID,MQ_2004_12479
+Test_2023_1,248,specimentID,MQ_2004_12479
+Test_2023_1,248,specimentID,MQ_2004_12479
+Test_2023_1,248,specimentID,MQ_2004_12479
+Test_2023_1,248,specimentID,MQ_2004_12479
+Test_2023_1,248,specimentID,MQ_2004_12479
+Test_2023_1,248,specimentID,MQ_2004_12479
+Test_2023_1,248,specimentID,MQ_2004_12479
+Test_2023_1,249,collectionID,Plant 68
+Test_2023_1,249,collectionID,Plant 68
+Test_2023_1,249,collectionID,Plant 68
+Test_2023_1,249,specimentID,MQ_2004_12479
+Test_2023_1,249,specimentID,MQ_2004_12479
+Test_2023_1,249,specimentID,MQ_2004_12479
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 30
+Test_2023_1,NA,collectionID,Plant 32
+Test_2023_1,NA,collectionID,Plant 34
+Test_2023_1,NA,collectionID,Plant 36
+Test_2023_1,NA,collectionID,Plant 39
+Test_2023_1,NA,collectionID,Plant 40
+Test_2023_1,NA,collectionID,Plant 41
+Test_2023_1,NA,collectionID,Plant 42
+Test_2023_1,NA,collectionID,Plant 43
+Test_2023_1,NA,collectionID,Plant 44
+Test_2023_1,NA,collectionID,Plant 45
+Test_2023_1,NA,collectionID,Plant 46
+Test_2023_1,NA,collectionID,Plant 47
+Test_2023_1,NA,collectionID,Plant 48
+Test_2023_1,NA,collectionID,Plant 49
+Test_2023_1,NA,collectionID,Plant 50
+Test_2023_1,NA,collectionID,Plant 51
+Test_2023_1,NA,collectionID,Plant 52
+Test_2023_1,NA,collectionID,Plant 53
+Test_2023_1,NA,collectionID,Plant 54
+Test_2023_1,NA,collectionID,Plant 55
+Test_2023_1,NA,collectionID,Plant 56
+Test_2023_1,NA,collectionID,Plant 57
+Test_2023_1,NA,collectionID,Plant 58
+Test_2023_1,NA,collectionID,Plant 59
+Test_2023_1,NA,collectionID,Plant 60
+Test_2023_1,NA,collectionID,Plant 61
+Test_2023_1,NA,collectionID,Plant 62
+Test_2023_1,NA,collectionID,Plant 63
+Test_2023_1,NA,collectionID,Plant 64
+Test_2023_1,NA,collectionID,Plant 65
+Test_2023_1,NA,collectionID,Plant 66
+Test_2023_1,NA,collectionID,Plant 67
+Test_2023_1,NA,collectionID,Plant 68
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 6
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 25
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 28
+Test_2023_1,NA,collectionID,Plant 29
+Test_2023_1,NA,collectionID,Plant 31
+Test_2023_1,NA,collectionID,Plant 32
+Test_2023_1,NA,collectionID,Plant 34
+Test_2023_1,NA,collectionID,Plant 35
+Test_2023_1,NA,collectionID,Plant 36
+Test_2023_1,NA,collectionID,Plant 37
+Test_2023_1,NA,collectionID,Plant 38
+Test_2023_1,NA,collectionID,Plant 39
+Test_2023_1,NA,collectionID,Plant 40
+Test_2023_1,NA,collectionID,Plant 41
+Test_2023_1,NA,collectionID,Plant 44
+Test_2023_1,NA,collectionID,Plant 46
+Test_2023_1,NA,collectionID,Plant 47
+Test_2023_1,NA,collectionID,Plant 50
+Test_2023_1,NA,collectionID,Plant 52
+Test_2023_1,NA,collectionID,Plant 57
+Test_2023_1,NA,collectionID,Plant 61
+Test_2023_1,NA,collectionID,Plant 64
+Test_2023_1,NA,collectionID,Plant 65
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 31
+Test_2023_1,NA,collectionID,Plant 35
+Test_2023_1,NA,collectionID,Plant 41
+Test_2023_1,NA,collectionID,Plant 46
+Test_2023_1,NA,collectionID,Plant 57
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 31
+Test_2023_1,NA,collectionID,Plant 35
+Test_2023_1,NA,collectionID,Plant 41
+Test_2023_1,NA,collectionID,Plant 46
+Test_2023_1,NA,collectionID,Plant 57
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 1
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 6
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 25
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 27
+Test_2023_1,NA,collectionID,Plant 28
+Test_2023_1,NA,collectionID,Plant 29
+Test_2023_1,NA,collectionID,Plant 30
+Test_2023_1,NA,collectionID,Plant 31
+Test_2023_1,NA,collectionID,Plant 32
+Test_2023_1,NA,collectionID,Plant 33
+Test_2023_1,NA,collectionID,Plant 34
+Test_2023_1,NA,collectionID,Plant 35
+Test_2023_1,NA,collectionID,Plant 36
+Test_2023_1,NA,collectionID,Plant 37
+Test_2023_1,NA,collectionID,Plant 38
+Test_2023_1,NA,collectionID,Plant 39
+Test_2023_1,NA,collectionID,Plant 40
+Test_2023_1,NA,collectionID,Plant 41
+Test_2023_1,NA,collectionID,Plant 42
+Test_2023_1,NA,collectionID,Plant 43
+Test_2023_1,NA,collectionID,Plant 44
+Test_2023_1,NA,collectionID,Plant 45
+Test_2023_1,NA,collectionID,Plant 46
+Test_2023_1,NA,collectionID,Plant 47
+Test_2023_1,NA,collectionID,Plant 48
+Test_2023_1,NA,collectionID,Plant 49
+Test_2023_1,NA,collectionID,Plant 50
+Test_2023_1,NA,collectionID,Plant 51
+Test_2023_1,NA,collectionID,Plant 52
+Test_2023_1,NA,collectionID,Plant 53
+Test_2023_1,NA,collectionID,Plant 54
+Test_2023_1,NA,collectionID,Plant 55
+Test_2023_1,NA,collectionID,Plant 56
+Test_2023_1,NA,collectionID,Plant 57
+Test_2023_1,NA,collectionID,Plant 58
+Test_2023_1,NA,collectionID,Plant 59
+Test_2023_1,NA,collectionID,Plant 60
+Test_2023_1,NA,collectionID,Plant 61
+Test_2023_1,NA,collectionID,Plant 62
+Test_2023_1,NA,collectionID,Plant 63
+Test_2023_1,NA,collectionID,Plant 64
+Test_2023_1,NA,collectionID,Plant 65
+Test_2023_1,NA,collectionID,Plant 66
+Test_2023_1,NA,collectionID,Plant 67
+Test_2023_1,NA,collectionID,Plant 68
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 1
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 6
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 25
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 27
+Test_2023_1,NA,collectionID,Plant 28
+Test_2023_1,NA,collectionID,Plant 29
+Test_2023_1,NA,collectionID,Plant 30
+Test_2023_1,NA,collectionID,Plant 31
+Test_2023_1,NA,collectionID,Plant 32
+Test_2023_1,NA,collectionID,Plant 33
+Test_2023_1,NA,collectionID,Plant 34
+Test_2023_1,NA,collectionID,Plant 35
+Test_2023_1,NA,collectionID,Plant 36
+Test_2023_1,NA,collectionID,Plant 37
+Test_2023_1,NA,collectionID,Plant 38
+Test_2023_1,NA,collectionID,Plant 39
+Test_2023_1,NA,collectionID,Plant 40
+Test_2023_1,NA,collectionID,Plant 41
+Test_2023_1,NA,collectionID,Plant 42
+Test_2023_1,NA,collectionID,Plant 43
+Test_2023_1,NA,collectionID,Plant 44
+Test_2023_1,NA,collectionID,Plant 45
+Test_2023_1,NA,collectionID,Plant 46
+Test_2023_1,NA,collectionID,Plant 47
+Test_2023_1,NA,collectionID,Plant 48
+Test_2023_1,NA,collectionID,Plant 49
+Test_2023_1,NA,collectionID,Plant 50
+Test_2023_1,NA,collectionID,Plant 51
+Test_2023_1,NA,collectionID,Plant 52
+Test_2023_1,NA,collectionID,Plant 53
+Test_2023_1,NA,collectionID,Plant 54
+Test_2023_1,NA,collectionID,Plant 55
+Test_2023_1,NA,collectionID,Plant 56
+Test_2023_1,NA,collectionID,Plant 57
+Test_2023_1,NA,collectionID,Plant 58
+Test_2023_1,NA,collectionID,Plant 59
+Test_2023_1,NA,collectionID,Plant 60
+Test_2023_1,NA,collectionID,Plant 61
+Test_2023_1,NA,collectionID,Plant 62
+Test_2023_1,NA,collectionID,Plant 63
+Test_2023_1,NA,collectionID,Plant 64
+Test_2023_1,NA,collectionID,Plant 65
+Test_2023_1,NA,collectionID,Plant 66
+Test_2023_1,NA,collectionID,Plant 67
+Test_2023_1,NA,collectionID,Plant 68
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 1
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 6
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 25
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 27
+Test_2023_1,NA,collectionID,Plant 28
+Test_2023_1,NA,collectionID,Plant 29
+Test_2023_1,NA,collectionID,Plant 30
+Test_2023_1,NA,collectionID,Plant 31
+Test_2023_1,NA,collectionID,Plant 32
+Test_2023_1,NA,collectionID,Plant 33
+Test_2023_1,NA,collectionID,Plant 34
+Test_2023_1,NA,collectionID,Plant 35
+Test_2023_1,NA,collectionID,Plant 36
+Test_2023_1,NA,collectionID,Plant 37
+Test_2023_1,NA,collectionID,Plant 38
+Test_2023_1,NA,collectionID,Plant 39
+Test_2023_1,NA,collectionID,Plant 40
+Test_2023_1,NA,collectionID,Plant 41
+Test_2023_1,NA,collectionID,Plant 42
+Test_2023_1,NA,collectionID,Plant 43
+Test_2023_1,NA,collectionID,Plant 44
+Test_2023_1,NA,collectionID,Plant 45
+Test_2023_1,NA,collectionID,Plant 46
+Test_2023_1,NA,collectionID,Plant 47
+Test_2023_1,NA,collectionID,Plant 48
+Test_2023_1,NA,collectionID,Plant 49
+Test_2023_1,NA,collectionID,Plant 50
+Test_2023_1,NA,collectionID,Plant 51
+Test_2023_1,NA,collectionID,Plant 52
+Test_2023_1,NA,collectionID,Plant 53
+Test_2023_1,NA,collectionID,Plant 54
+Test_2023_1,NA,collectionID,Plant 55
+Test_2023_1,NA,collectionID,Plant 56
+Test_2023_1,NA,collectionID,Plant 57
+Test_2023_1,NA,collectionID,Plant 58
+Test_2023_1,NA,collectionID,Plant 59
+Test_2023_1,NA,collectionID,Plant 60
+Test_2023_1,NA,collectionID,Plant 61
+Test_2023_1,NA,collectionID,Plant 62
+Test_2023_1,NA,collectionID,Plant 63
+Test_2023_1,NA,collectionID,Plant 64
+Test_2023_1,NA,collectionID,Plant 65
+Test_2023_1,NA,collectionID,Plant 66
+Test_2023_1,NA,collectionID,Plant 67
+Test_2023_1,NA,collectionID,Plant 68
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 1
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 6
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 25
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 27
+Test_2023_1,NA,collectionID,Plant 28
+Test_2023_1,NA,collectionID,Plant 29
+Test_2023_1,NA,collectionID,Plant 30
+Test_2023_1,NA,collectionID,Plant 31
+Test_2023_1,NA,collectionID,Plant 32
+Test_2023_1,NA,collectionID,Plant 33
+Test_2023_1,NA,collectionID,Plant 34
+Test_2023_1,NA,collectionID,Plant 35
+Test_2023_1,NA,collectionID,Plant 36
+Test_2023_1,NA,collectionID,Plant 37
+Test_2023_1,NA,collectionID,Plant 38
+Test_2023_1,NA,collectionID,Plant 39
+Test_2023_1,NA,collectionID,Plant 40
+Test_2023_1,NA,collectionID,Plant 41
+Test_2023_1,NA,collectionID,Plant 42
+Test_2023_1,NA,collectionID,Plant 43
+Test_2023_1,NA,collectionID,Plant 44
+Test_2023_1,NA,collectionID,Plant 45
+Test_2023_1,NA,collectionID,Plant 46
+Test_2023_1,NA,collectionID,Plant 47
+Test_2023_1,NA,collectionID,Plant 48
+Test_2023_1,NA,collectionID,Plant 49
+Test_2023_1,NA,collectionID,Plant 50
+Test_2023_1,NA,collectionID,Plant 51
+Test_2023_1,NA,collectionID,Plant 52
+Test_2023_1,NA,collectionID,Plant 53
+Test_2023_1,NA,collectionID,Plant 54
+Test_2023_1,NA,collectionID,Plant 55
+Test_2023_1,NA,collectionID,Plant 56
+Test_2023_1,NA,collectionID,Plant 57
+Test_2023_1,NA,collectionID,Plant 58
+Test_2023_1,NA,collectionID,Plant 59
+Test_2023_1,NA,collectionID,Plant 60
+Test_2023_1,NA,collectionID,Plant 61
+Test_2023_1,NA,collectionID,Plant 62
+Test_2023_1,NA,collectionID,Plant 63
+Test_2023_1,NA,collectionID,Plant 64
+Test_2023_1,NA,collectionID,Plant 65
+Test_2023_1,NA,collectionID,Plant 66
+Test_2023_1,NA,collectionID,Plant 67
+Test_2023_1,NA,collectionID,Plant 68
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 27
+Test_2023_1,NA,collectionID,Plant 34
+Test_2023_1,NA,collectionID,Plant 35
+Test_2023_1,NA,collectionID,Plant 37
+Test_2023_1,NA,collectionID,Plant 42
+Test_2023_1,NA,collectionID,Plant 43
+Test_2023_1,NA,collectionID,Plant 44
+Test_2023_1,NA,collectionID,Plant 45
+Test_2023_1,NA,collectionID,Plant 46
+Test_2023_1,NA,collectionID,Plant 47
+Test_2023_1,NA,collectionID,Plant 48
+Test_2023_1,NA,collectionID,Plant 49
+Test_2023_1,NA,collectionID,Plant 50
+Test_2023_1,NA,collectionID,Plant 51
+Test_2023_1,NA,collectionID,Plant 52
+Test_2023_1,NA,collectionID,Plant 53
+Test_2023_1,NA,collectionID,Plant 54
+Test_2023_1,NA,collectionID,Plant 55
+Test_2023_1,NA,collectionID,Plant 56
+Test_2023_1,NA,collectionID,Plant 57
+Test_2023_1,NA,collectionID,Plant 58
+Test_2023_1,NA,collectionID,Plant 59
+Test_2023_1,NA,collectionID,Plant 60
+Test_2023_1,NA,collectionID,Plant 61
+Test_2023_1,NA,collectionID,Plant 62
+Test_2023_1,NA,collectionID,Plant 63
+Test_2023_1,NA,collectionID,Plant 64
+Test_2023_1,NA,collectionID,Plant 65
+Test_2023_1,NA,collectionID,Plant 66
+Test_2023_1,NA,collectionID,Plant 67
+Test_2023_1,NA,collectionID,Plant 68
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 6
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 33
+Test_2023_1,NA,collectionID,Plant 34
+Test_2023_1,NA,collectionID,Plant 38
+Test_2023_1,NA,collectionID,Plant 39
+Test_2023_1,NA,collectionID,Plant 42
+Test_2023_1,NA,collectionID,Plant 45
+Test_2023_1,NA,collectionID,Plant 48
+Test_2023_1,NA,collectionID,Plant 49
+Test_2023_1,NA,collectionID,Plant 51
+Test_2023_1,NA,collectionID,Plant 52
+Test_2023_1,NA,collectionID,Plant 53
+Test_2023_1,NA,collectionID,Plant 57
+Test_2023_1,NA,collectionID,Plant 59
+Test_2023_1,NA,collectionID,Plant 63
+Test_2023_1,NA,collectionID,Plant 64
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 27
+Test_2023_1,NA,collectionID,Plant 28
+Test_2023_1,NA,collectionID,Plant 29
+Test_2023_1,NA,collectionID,Plant 30
+Test_2023_1,NA,collectionID,Plant 31
+Test_2023_1,NA,collectionID,Plant 32
+Test_2023_1,NA,collectionID,Plant 33
+Test_2023_1,NA,collectionID,Plant 34
+Test_2023_1,NA,collectionID,Plant 35
+Test_2023_1,NA,collectionID,Plant 36
+Test_2023_1,NA,collectionID,Plant 37
+Test_2023_1,NA,collectionID,Plant 38
+Test_2023_1,NA,collectionID,Plant 39
+Test_2023_1,NA,collectionID,Plant 40
+Test_2023_1,NA,collectionID,Plant 41
+Test_2023_1,NA,collectionID,Plant 43
+Test_2023_1,NA,collectionID,Plant 44
+Test_2023_1,NA,collectionID,Plant 45
+Test_2023_1,NA,collectionID,Plant 46
+Test_2023_1,NA,collectionID,Plant 47
+Test_2023_1,NA,collectionID,Plant 48
+Test_2023_1,NA,collectionID,Plant 49
+Test_2023_1,NA,collectionID,Plant 50
+Test_2023_1,NA,collectionID,Plant 51
+Test_2023_1,NA,collectionID,Plant 52
+Test_2023_1,NA,collectionID,Plant 53
+Test_2023_1,NA,collectionID,Plant 54
+Test_2023_1,NA,collectionID,Plant 55
+Test_2023_1,NA,collectionID,Plant 56
+Test_2023_1,NA,collectionID,Plant 57
+Test_2023_1,NA,collectionID,Plant 58
+Test_2023_1,NA,collectionID,Plant 59
+Test_2023_1,NA,collectionID,Plant 60
+Test_2023_1,NA,collectionID,Plant 61
+Test_2023_1,NA,collectionID,Plant 62
+Test_2023_1,NA,collectionID,Plant 63
+Test_2023_1,NA,collectionID,Plant 64
+Test_2023_1,NA,collectionID,Plant 65
+Test_2023_1,NA,collectionID,Plant 66
+Test_2023_1,NA,collectionID,Plant 67
+Test_2023_1,NA,collectionID,Plant 68
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 6
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 25
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 27
+Test_2023_1,NA,collectionID,Plant 28
+Test_2023_1,NA,collectionID,Plant 29
+Test_2023_1,NA,collectionID,Plant 30
+Test_2023_1,NA,collectionID,Plant 31
+Test_2023_1,NA,collectionID,Plant 32
+Test_2023_1,NA,collectionID,Plant 33
+Test_2023_1,NA,collectionID,Plant 34
+Test_2023_1,NA,collectionID,Plant 35
+Test_2023_1,NA,collectionID,Plant 36
+Test_2023_1,NA,collectionID,Plant 37
+Test_2023_1,NA,collectionID,Plant 38
+Test_2023_1,NA,collectionID,Plant 39
+Test_2023_1,NA,collectionID,Plant 40
+Test_2023_1,NA,collectionID,Plant 41
+Test_2023_1,NA,collectionID,Plant 42
+Test_2023_1,NA,collectionID,Plant 43
+Test_2023_1,NA,collectionID,Plant 44
+Test_2023_1,NA,collectionID,Plant 45
+Test_2023_1,NA,collectionID,Plant 46
+Test_2023_1,NA,collectionID,Plant 47
+Test_2023_1,NA,collectionID,Plant 48
+Test_2023_1,NA,collectionID,Plant 49
+Test_2023_1,NA,collectionID,Plant 50
+Test_2023_1,NA,collectionID,Plant 51
+Test_2023_1,NA,collectionID,Plant 52
+Test_2023_1,NA,collectionID,Plant 53
+Test_2023_1,NA,collectionID,Plant 54
+Test_2023_1,NA,collectionID,Plant 55
+Test_2023_1,NA,collectionID,Plant 56
+Test_2023_1,NA,collectionID,Plant 57
+Test_2023_1,NA,collectionID,Plant 58
+Test_2023_1,NA,collectionID,Plant 59
+Test_2023_1,NA,collectionID,Plant 60
+Test_2023_1,NA,collectionID,Plant 61
+Test_2023_1,NA,collectionID,Plant 62
+Test_2023_1,NA,collectionID,Plant 63
+Test_2023_1,NA,collectionID,Plant 64
+Test_2023_1,NA,collectionID,Plant 65
+Test_2023_1,NA,collectionID,Plant 66
+Test_2023_1,NA,collectionID,Plant 67
+Test_2023_1,NA,collectionID,Plant 68
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,collectionID,Plant 2
+Test_2023_1,NA,collectionID,Plant 3
+Test_2023_1,NA,collectionID,Plant 4
+Test_2023_1,NA,collectionID,Plant 5
+Test_2023_1,NA,collectionID,Plant 7
+Test_2023_1,NA,collectionID,Plant 8
+Test_2023_1,NA,collectionID,Plant 9
+Test_2023_1,NA,collectionID,Plant 10
+Test_2023_1,NA,collectionID,Plant 11
+Test_2023_1,NA,collectionID,Plant 12
+Test_2023_1,NA,collectionID,Plant 13
+Test_2023_1,NA,collectionID,Plant 14
+Test_2023_1,NA,collectionID,Plant 15
+Test_2023_1,NA,collectionID,Plant 16
+Test_2023_1,NA,collectionID,Plant 17
+Test_2023_1,NA,collectionID,Plant 18
+Test_2023_1,NA,collectionID,Plant 19
+Test_2023_1,NA,collectionID,Plant 20
+Test_2023_1,NA,collectionID,Plant 21
+Test_2023_1,NA,collectionID,Plant 22
+Test_2023_1,NA,collectionID,Plant 23
+Test_2023_1,NA,collectionID,Plant 24
+Test_2023_1,NA,collectionID,Plant 26
+Test_2023_1,NA,collectionID,Plant 69
+Test_2023_1,NA,collectionID,Plant 70
+Test_2023_1,NA,collectionID,Plant 71
+Test_2023_1,NA,collectionID,Plant 72
+Test_2023_1,NA,collectionID,Plant 73
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12403
+Test_2023_1,NA,specimentID,MQ_2004_12407
+Test_2023_1,NA,specimentID,MQ_2004_12411
+Test_2023_1,NA,specimentID,MQ_2004_12415
+Test_2023_1,NA,specimentID,MQ_2004_12421
+Test_2023_1,NA,specimentID,MQ_2004_12423
+Test_2023_1,NA,specimentID,MQ_2004_12425
+Test_2023_1,NA,specimentID,MQ_2004_12427
+Test_2023_1,NA,specimentID,MQ_2004_12429
+Test_2023_1,NA,specimentID,MQ_2004_12431
+Test_2023_1,NA,specimentID,MQ_2004_12433
+Test_2023_1,NA,specimentID,MQ_2004_12435
+Test_2023_1,NA,specimentID,MQ_2004_12437
+Test_2023_1,NA,specimentID,MQ_2004_12439
+Test_2023_1,NA,specimentID,MQ_2004_12441
+Test_2023_1,NA,specimentID,MQ_2004_12443
+Test_2023_1,NA,specimentID,MQ_2004_12445
+Test_2023_1,NA,specimentID,MQ_2004_12447
+Test_2023_1,NA,specimentID,MQ_2004_12449
+Test_2023_1,NA,specimentID,MQ_2004_12451
+Test_2023_1,NA,specimentID,MQ_2004_12453
+Test_2023_1,NA,specimentID,MQ_2004_12455
+Test_2023_1,NA,specimentID,MQ_2004_12457
+Test_2023_1,NA,specimentID,MQ_2004_12459
+Test_2023_1,NA,specimentID,MQ_2004_12461
+Test_2023_1,NA,specimentID,MQ_2004_12463
+Test_2023_1,NA,specimentID,MQ_2004_12465
+Test_2023_1,NA,specimentID,MQ_2004_12467
+Test_2023_1,NA,specimentID,MQ_2004_12469
+Test_2023_1,NA,specimentID,MQ_2004_12471
+Test_2023_1,NA,specimentID,MQ_2004_12473
+Test_2023_1,NA,specimentID,MQ_2004_12475
+Test_2023_1,NA,specimentID,MQ_2004_12477
+Test_2023_1,NA,specimentID,MQ_2004_12479
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12355
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12393
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12399
+Test_2023_1,NA,specimentID,MQ_2004_12401
+Test_2023_1,NA,specimentID,MQ_2004_12405
+Test_2023_1,NA,specimentID,MQ_2004_12407
+Test_2023_1,NA,specimentID,MQ_2004_12411
+Test_2023_1,NA,specimentID,MQ_2004_12413
+Test_2023_1,NA,specimentID,MQ_2004_12415
+Test_2023_1,NA,specimentID,MQ_2004_12417
+Test_2023_1,NA,specimentID,MQ_2004_12419
+Test_2023_1,NA,specimentID,MQ_2004_12421
+Test_2023_1,NA,specimentID,MQ_2004_12423
+Test_2023_1,NA,specimentID,MQ_2004_12425
+Test_2023_1,NA,specimentID,MQ_2004_12431
+Test_2023_1,NA,specimentID,MQ_2004_12435
+Test_2023_1,NA,specimentID,MQ_2004_12437
+Test_2023_1,NA,specimentID,MQ_2004_12443
+Test_2023_1,NA,specimentID,MQ_2004_12447
+Test_2023_1,NA,specimentID,MQ_2004_12457
+Test_2023_1,NA,specimentID,MQ_2004_12465
+Test_2023_1,NA,specimentID,MQ_2004_12471
+Test_2023_1,NA,specimentID,MQ_2004_12473
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12405
+Test_2023_1,NA,specimentID,MQ_2004_12413
+Test_2023_1,NA,specimentID,MQ_2004_12425
+Test_2023_1,NA,specimentID,MQ_2004_12435
+Test_2023_1,NA,specimentID,MQ_2004_12457
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12405
+Test_2023_1,NA,specimentID,MQ_2004_12413
+Test_2023_1,NA,specimentID,MQ_2004_12425
+Test_2023_1,NA,specimentID,MQ_2004_12435
+Test_2023_1,NA,specimentID,MQ_2004_12457
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12345
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12355
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12393
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12397
+Test_2023_1,NA,specimentID,MQ_2004_12399
+Test_2023_1,NA,specimentID,MQ_2004_12401
+Test_2023_1,NA,specimentID,MQ_2004_12403
+Test_2023_1,NA,specimentID,MQ_2004_12405
+Test_2023_1,NA,specimentID,MQ_2004_12407
+Test_2023_1,NA,specimentID,MQ_2004_12409
+Test_2023_1,NA,specimentID,MQ_2004_12411
+Test_2023_1,NA,specimentID,MQ_2004_12413
+Test_2023_1,NA,specimentID,MQ_2004_12415
+Test_2023_1,NA,specimentID,MQ_2004_12417
+Test_2023_1,NA,specimentID,MQ_2004_12419
+Test_2023_1,NA,specimentID,MQ_2004_12421
+Test_2023_1,NA,specimentID,MQ_2004_12423
+Test_2023_1,NA,specimentID,MQ_2004_12425
+Test_2023_1,NA,specimentID,MQ_2004_12427
+Test_2023_1,NA,specimentID,MQ_2004_12429
+Test_2023_1,NA,specimentID,MQ_2004_12431
+Test_2023_1,NA,specimentID,MQ_2004_12433
+Test_2023_1,NA,specimentID,MQ_2004_12435
+Test_2023_1,NA,specimentID,MQ_2004_12437
+Test_2023_1,NA,specimentID,MQ_2004_12439
+Test_2023_1,NA,specimentID,MQ_2004_12441
+Test_2023_1,NA,specimentID,MQ_2004_12443
+Test_2023_1,NA,specimentID,MQ_2004_12445
+Test_2023_1,NA,specimentID,MQ_2004_12447
+Test_2023_1,NA,specimentID,MQ_2004_12449
+Test_2023_1,NA,specimentID,MQ_2004_12451
+Test_2023_1,NA,specimentID,MQ_2004_12453
+Test_2023_1,NA,specimentID,MQ_2004_12455
+Test_2023_1,NA,specimentID,MQ_2004_12457
+Test_2023_1,NA,specimentID,MQ_2004_12459
+Test_2023_1,NA,specimentID,MQ_2004_12461
+Test_2023_1,NA,specimentID,MQ_2004_12463
+Test_2023_1,NA,specimentID,MQ_2004_12465
+Test_2023_1,NA,specimentID,MQ_2004_12467
+Test_2023_1,NA,specimentID,MQ_2004_12469
+Test_2023_1,NA,specimentID,MQ_2004_12471
+Test_2023_1,NA,specimentID,MQ_2004_12473
+Test_2023_1,NA,specimentID,MQ_2004_12475
+Test_2023_1,NA,specimentID,MQ_2004_12477
+Test_2023_1,NA,specimentID,MQ_2004_12479
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12345
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12355
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12393
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12397
+Test_2023_1,NA,specimentID,MQ_2004_12399
+Test_2023_1,NA,specimentID,MQ_2004_12401
+Test_2023_1,NA,specimentID,MQ_2004_12403
+Test_2023_1,NA,specimentID,MQ_2004_12405
+Test_2023_1,NA,specimentID,MQ_2004_12407
+Test_2023_1,NA,specimentID,MQ_2004_12409
+Test_2023_1,NA,specimentID,MQ_2004_12411
+Test_2023_1,NA,specimentID,MQ_2004_12413
+Test_2023_1,NA,specimentID,MQ_2004_12415
+Test_2023_1,NA,specimentID,MQ_2004_12417
+Test_2023_1,NA,specimentID,MQ_2004_12419
+Test_2023_1,NA,specimentID,MQ_2004_12421
+Test_2023_1,NA,specimentID,MQ_2004_12423
+Test_2023_1,NA,specimentID,MQ_2004_12425
+Test_2023_1,NA,specimentID,MQ_2004_12427
+Test_2023_1,NA,specimentID,MQ_2004_12429
+Test_2023_1,NA,specimentID,MQ_2004_12431
+Test_2023_1,NA,specimentID,MQ_2004_12433
+Test_2023_1,NA,specimentID,MQ_2004_12435
+Test_2023_1,NA,specimentID,MQ_2004_12437
+Test_2023_1,NA,specimentID,MQ_2004_12439
+Test_2023_1,NA,specimentID,MQ_2004_12441
+Test_2023_1,NA,specimentID,MQ_2004_12443
+Test_2023_1,NA,specimentID,MQ_2004_12445
+Test_2023_1,NA,specimentID,MQ_2004_12447
+Test_2023_1,NA,specimentID,MQ_2004_12449
+Test_2023_1,NA,specimentID,MQ_2004_12451
+Test_2023_1,NA,specimentID,MQ_2004_12453
+Test_2023_1,NA,specimentID,MQ_2004_12455
+Test_2023_1,NA,specimentID,MQ_2004_12457
+Test_2023_1,NA,specimentID,MQ_2004_12459
+Test_2023_1,NA,specimentID,MQ_2004_12461
+Test_2023_1,NA,specimentID,MQ_2004_12463
+Test_2023_1,NA,specimentID,MQ_2004_12465
+Test_2023_1,NA,specimentID,MQ_2004_12467
+Test_2023_1,NA,specimentID,MQ_2004_12469
+Test_2023_1,NA,specimentID,MQ_2004_12471
+Test_2023_1,NA,specimentID,MQ_2004_12473
+Test_2023_1,NA,specimentID,MQ_2004_12475
+Test_2023_1,NA,specimentID,MQ_2004_12477
+Test_2023_1,NA,specimentID,MQ_2004_12479
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12345
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12355
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12393
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12397
+Test_2023_1,NA,specimentID,MQ_2004_12399
+Test_2023_1,NA,specimentID,MQ_2004_12401
+Test_2023_1,NA,specimentID,MQ_2004_12403
+Test_2023_1,NA,specimentID,MQ_2004_12405
+Test_2023_1,NA,specimentID,MQ_2004_12407
+Test_2023_1,NA,specimentID,MQ_2004_12409
+Test_2023_1,NA,specimentID,MQ_2004_12411
+Test_2023_1,NA,specimentID,MQ_2004_12413
+Test_2023_1,NA,specimentID,MQ_2004_12415
+Test_2023_1,NA,specimentID,MQ_2004_12417
+Test_2023_1,NA,specimentID,MQ_2004_12419
+Test_2023_1,NA,specimentID,MQ_2004_12421
+Test_2023_1,NA,specimentID,MQ_2004_12423
+Test_2023_1,NA,specimentID,MQ_2004_12425
+Test_2023_1,NA,specimentID,MQ_2004_12427
+Test_2023_1,NA,specimentID,MQ_2004_12429
+Test_2023_1,NA,specimentID,MQ_2004_12431
+Test_2023_1,NA,specimentID,MQ_2004_12433
+Test_2023_1,NA,specimentID,MQ_2004_12435
+Test_2023_1,NA,specimentID,MQ_2004_12437
+Test_2023_1,NA,specimentID,MQ_2004_12439
+Test_2023_1,NA,specimentID,MQ_2004_12441
+Test_2023_1,NA,specimentID,MQ_2004_12443
+Test_2023_1,NA,specimentID,MQ_2004_12445
+Test_2023_1,NA,specimentID,MQ_2004_12447
+Test_2023_1,NA,specimentID,MQ_2004_12449
+Test_2023_1,NA,specimentID,MQ_2004_12451
+Test_2023_1,NA,specimentID,MQ_2004_12453
+Test_2023_1,NA,specimentID,MQ_2004_12455
+Test_2023_1,NA,specimentID,MQ_2004_12457
+Test_2023_1,NA,specimentID,MQ_2004_12459
+Test_2023_1,NA,specimentID,MQ_2004_12461
+Test_2023_1,NA,specimentID,MQ_2004_12463
+Test_2023_1,NA,specimentID,MQ_2004_12465
+Test_2023_1,NA,specimentID,MQ_2004_12467
+Test_2023_1,NA,specimentID,MQ_2004_12469
+Test_2023_1,NA,specimentID,MQ_2004_12471
+Test_2023_1,NA,specimentID,MQ_2004_12473
+Test_2023_1,NA,specimentID,MQ_2004_12475
+Test_2023_1,NA,specimentID,MQ_2004_12477
+Test_2023_1,NA,specimentID,MQ_2004_12479
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12345
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12355
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12393
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12397
+Test_2023_1,NA,specimentID,MQ_2004_12399
+Test_2023_1,NA,specimentID,MQ_2004_12401
+Test_2023_1,NA,specimentID,MQ_2004_12403
+Test_2023_1,NA,specimentID,MQ_2004_12405
+Test_2023_1,NA,specimentID,MQ_2004_12407
+Test_2023_1,NA,specimentID,MQ_2004_12409
+Test_2023_1,NA,specimentID,MQ_2004_12411
+Test_2023_1,NA,specimentID,MQ_2004_12413
+Test_2023_1,NA,specimentID,MQ_2004_12415
+Test_2023_1,NA,specimentID,MQ_2004_12417
+Test_2023_1,NA,specimentID,MQ_2004_12419
+Test_2023_1,NA,specimentID,MQ_2004_12421
+Test_2023_1,NA,specimentID,MQ_2004_12423
+Test_2023_1,NA,specimentID,MQ_2004_12425
+Test_2023_1,NA,specimentID,MQ_2004_12427
+Test_2023_1,NA,specimentID,MQ_2004_12429
+Test_2023_1,NA,specimentID,MQ_2004_12431
+Test_2023_1,NA,specimentID,MQ_2004_12433
+Test_2023_1,NA,specimentID,MQ_2004_12435
+Test_2023_1,NA,specimentID,MQ_2004_12437
+Test_2023_1,NA,specimentID,MQ_2004_12439
+Test_2023_1,NA,specimentID,MQ_2004_12441
+Test_2023_1,NA,specimentID,MQ_2004_12443
+Test_2023_1,NA,specimentID,MQ_2004_12445
+Test_2023_1,NA,specimentID,MQ_2004_12447
+Test_2023_1,NA,specimentID,MQ_2004_12449
+Test_2023_1,NA,specimentID,MQ_2004_12451
+Test_2023_1,NA,specimentID,MQ_2004_12453
+Test_2023_1,NA,specimentID,MQ_2004_12455
+Test_2023_1,NA,specimentID,MQ_2004_12457
+Test_2023_1,NA,specimentID,MQ_2004_12459
+Test_2023_1,NA,specimentID,MQ_2004_12461
+Test_2023_1,NA,specimentID,MQ_2004_12463
+Test_2023_1,NA,specimentID,MQ_2004_12465
+Test_2023_1,NA,specimentID,MQ_2004_12467
+Test_2023_1,NA,specimentID,MQ_2004_12469
+Test_2023_1,NA,specimentID,MQ_2004_12471
+Test_2023_1,NA,specimentID,MQ_2004_12473
+Test_2023_1,NA,specimentID,MQ_2004_12475
+Test_2023_1,NA,specimentID,MQ_2004_12477
+Test_2023_1,NA,specimentID,MQ_2004_12479
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12397
+Test_2023_1,NA,specimentID,MQ_2004_12411
+Test_2023_1,NA,specimentID,MQ_2004_12413
+Test_2023_1,NA,specimentID,MQ_2004_12417
+Test_2023_1,NA,specimentID,MQ_2004_12427
+Test_2023_1,NA,specimentID,MQ_2004_12429
+Test_2023_1,NA,specimentID,MQ_2004_12431
+Test_2023_1,NA,specimentID,MQ_2004_12433
+Test_2023_1,NA,specimentID,MQ_2004_12435
+Test_2023_1,NA,specimentID,MQ_2004_12437
+Test_2023_1,NA,specimentID,MQ_2004_12439
+Test_2023_1,NA,specimentID,MQ_2004_12441
+Test_2023_1,NA,specimentID,MQ_2004_12443
+Test_2023_1,NA,specimentID,MQ_2004_12445
+Test_2023_1,NA,specimentID,MQ_2004_12447
+Test_2023_1,NA,specimentID,MQ_2004_12449
+Test_2023_1,NA,specimentID,MQ_2004_12451
+Test_2023_1,NA,specimentID,MQ_2004_12453
+Test_2023_1,NA,specimentID,MQ_2004_12455
+Test_2023_1,NA,specimentID,MQ_2004_12457
+Test_2023_1,NA,specimentID,MQ_2004_12459
+Test_2023_1,NA,specimentID,MQ_2004_12461
+Test_2023_1,NA,specimentID,MQ_2004_12463
+Test_2023_1,NA,specimentID,MQ_2004_12465
+Test_2023_1,NA,specimentID,MQ_2004_12467
+Test_2023_1,NA,specimentID,MQ_2004_12469
+Test_2023_1,NA,specimentID,MQ_2004_12471
+Test_2023_1,NA,specimentID,MQ_2004_12473
+Test_2023_1,NA,specimentID,MQ_2004_12475
+Test_2023_1,NA,specimentID,MQ_2004_12477
+Test_2023_1,NA,specimentID,MQ_2004_12479
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12355
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12409
+Test_2023_1,NA,specimentID,MQ_2004_12411
+Test_2023_1,NA,specimentID,MQ_2004_12419
+Test_2023_1,NA,specimentID,MQ_2004_12421
+Test_2023_1,NA,specimentID,MQ_2004_12427
+Test_2023_1,NA,specimentID,MQ_2004_12433
+Test_2023_1,NA,specimentID,MQ_2004_12439
+Test_2023_1,NA,specimentID,MQ_2004_12441
+Test_2023_1,NA,specimentID,MQ_2004_12445
+Test_2023_1,NA,specimentID,MQ_2004_12447
+Test_2023_1,NA,specimentID,MQ_2004_12449
+Test_2023_1,NA,specimentID,MQ_2004_12457
+Test_2023_1,NA,specimentID,MQ_2004_12461
+Test_2023_1,NA,specimentID,MQ_2004_12469
+Test_2023_1,NA,specimentID,MQ_2004_12471
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12397
+Test_2023_1,NA,specimentID,MQ_2004_12399
+Test_2023_1,NA,specimentID,MQ_2004_12401
+Test_2023_1,NA,specimentID,MQ_2004_12403
+Test_2023_1,NA,specimentID,MQ_2004_12405
+Test_2023_1,NA,specimentID,MQ_2004_12407
+Test_2023_1,NA,specimentID,MQ_2004_12409
+Test_2023_1,NA,specimentID,MQ_2004_12411
+Test_2023_1,NA,specimentID,MQ_2004_12413
+Test_2023_1,NA,specimentID,MQ_2004_12415
+Test_2023_1,NA,specimentID,MQ_2004_12417
+Test_2023_1,NA,specimentID,MQ_2004_12419
+Test_2023_1,NA,specimentID,MQ_2004_12421
+Test_2023_1,NA,specimentID,MQ_2004_12423
+Test_2023_1,NA,specimentID,MQ_2004_12425
+Test_2023_1,NA,specimentID,MQ_2004_12429
+Test_2023_1,NA,specimentID,MQ_2004_12431
+Test_2023_1,NA,specimentID,MQ_2004_12433
+Test_2023_1,NA,specimentID,MQ_2004_12435
+Test_2023_1,NA,specimentID,MQ_2004_12437
+Test_2023_1,NA,specimentID,MQ_2004_12439
+Test_2023_1,NA,specimentID,MQ_2004_12441
+Test_2023_1,NA,specimentID,MQ_2004_12443
+Test_2023_1,NA,specimentID,MQ_2004_12445
+Test_2023_1,NA,specimentID,MQ_2004_12447
+Test_2023_1,NA,specimentID,MQ_2004_12449
+Test_2023_1,NA,specimentID,MQ_2004_12451
+Test_2023_1,NA,specimentID,MQ_2004_12453
+Test_2023_1,NA,specimentID,MQ_2004_12455
+Test_2023_1,NA,specimentID,MQ_2004_12457
+Test_2023_1,NA,specimentID,MQ_2004_12459
+Test_2023_1,NA,specimentID,MQ_2004_12461
+Test_2023_1,NA,specimentID,MQ_2004_12463
+Test_2023_1,NA,specimentID,MQ_2004_12465
+Test_2023_1,NA,specimentID,MQ_2004_12467
+Test_2023_1,NA,specimentID,MQ_2004_12469
+Test_2023_1,NA,specimentID,MQ_2004_12471
+Test_2023_1,NA,specimentID,MQ_2004_12473
+Test_2023_1,NA,specimentID,MQ_2004_12475
+Test_2023_1,NA,specimentID,MQ_2004_12477
+Test_2023_1,NA,specimentID,MQ_2004_12479
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12355
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12393
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12397
+Test_2023_1,NA,specimentID,MQ_2004_12399
+Test_2023_1,NA,specimentID,MQ_2004_12401
+Test_2023_1,NA,specimentID,MQ_2004_12403
+Test_2023_1,NA,specimentID,MQ_2004_12405
+Test_2023_1,NA,specimentID,MQ_2004_12407
+Test_2023_1,NA,specimentID,MQ_2004_12409
+Test_2023_1,NA,specimentID,MQ_2004_12411
+Test_2023_1,NA,specimentID,MQ_2004_12413
+Test_2023_1,NA,specimentID,MQ_2004_12415
+Test_2023_1,NA,specimentID,MQ_2004_12417
+Test_2023_1,NA,specimentID,MQ_2004_12419
+Test_2023_1,NA,specimentID,MQ_2004_12421
+Test_2023_1,NA,specimentID,MQ_2004_12423
+Test_2023_1,NA,specimentID,MQ_2004_12425
+Test_2023_1,NA,specimentID,MQ_2004_12427
+Test_2023_1,NA,specimentID,MQ_2004_12429
+Test_2023_1,NA,specimentID,MQ_2004_12431
+Test_2023_1,NA,specimentID,MQ_2004_12433
+Test_2023_1,NA,specimentID,MQ_2004_12435
+Test_2023_1,NA,specimentID,MQ_2004_12437
+Test_2023_1,NA,specimentID,MQ_2004_12439
+Test_2023_1,NA,specimentID,MQ_2004_12441
+Test_2023_1,NA,specimentID,MQ_2004_12443
+Test_2023_1,NA,specimentID,MQ_2004_12445
+Test_2023_1,NA,specimentID,MQ_2004_12447
+Test_2023_1,NA,specimentID,MQ_2004_12449
+Test_2023_1,NA,specimentID,MQ_2004_12451
+Test_2023_1,NA,specimentID,MQ_2004_12453
+Test_2023_1,NA,specimentID,MQ_2004_12455
+Test_2023_1,NA,specimentID,MQ_2004_12457
+Test_2023_1,NA,specimentID,MQ_2004_12459
+Test_2023_1,NA,specimentID,MQ_2004_12461
+Test_2023_1,NA,specimentID,MQ_2004_12463
+Test_2023_1,NA,specimentID,MQ_2004_12465
+Test_2023_1,NA,specimentID,MQ_2004_12467
+Test_2023_1,NA,specimentID,MQ_2004_12469
+Test_2023_1,NA,specimentID,MQ_2004_12471
+Test_2023_1,NA,specimentID,MQ_2004_12473
+Test_2023_1,NA,specimentID,MQ_2004_12475
+Test_2023_1,NA,specimentID,MQ_2004_12477
+Test_2023_1,NA,specimentID,MQ_2004_12479
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
+Test_2023_1,NA,specimentID,MQ_2004_12347
+Test_2023_1,NA,specimentID,MQ_2004_12349
+Test_2023_1,NA,specimentID,MQ_2004_12351
+Test_2023_1,NA,specimentID,MQ_2004_12353
+Test_2023_1,NA,specimentID,MQ_2004_12357
+Test_2023_1,NA,specimentID,MQ_2004_12359
+Test_2023_1,NA,specimentID,MQ_2004_12361
+Test_2023_1,NA,specimentID,MQ_2004_12363
+Test_2023_1,NA,specimentID,MQ_2004_12365
+Test_2023_1,NA,specimentID,MQ_2004_12367
+Test_2023_1,NA,specimentID,MQ_2004_12369
+Test_2023_1,NA,specimentID,MQ_2004_12371
+Test_2023_1,NA,specimentID,MQ_2004_12373
+Test_2023_1,NA,specimentID,MQ_2004_12375
+Test_2023_1,NA,specimentID,MQ_2004_12377
+Test_2023_1,NA,specimentID,MQ_2004_12379
+Test_2023_1,NA,specimentID,MQ_2004_12381
+Test_2023_1,NA,specimentID,MQ_2004_12383
+Test_2023_1,NA,specimentID,MQ_2004_12385
+Test_2023_1,NA,specimentID,MQ_2004_12387
+Test_2023_1,NA,specimentID,MQ_2004_12389
+Test_2023_1,NA,specimentID,MQ_2004_12391
+Test_2023_1,NA,specimentID,MQ_2004_12395
+Test_2023_1,NA,specimentID,MQ_2004_12481
+Test_2023_1,NA,specimentID,MQ_2004_12483
+Test_2023_1,NA,specimentID,MQ_2004_12485
+Test_2023_1,NA,specimentID,MQ_2004_12487
+Test_2023_1,NA,specimentID,MQ_2004_12489
