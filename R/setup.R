@@ -1281,7 +1281,7 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
     )
 
   # Setup pipeline based on selected method for building
-  pipeline <- whisker::whisker.render(template, data = vals)
+  pipeline <- whisker::whisker.render(readLines(template), data = vals)
 
   if (method == "base") {
     writeLines(pipeline, "build.R")
@@ -1345,7 +1345,7 @@ select_pipeline_template <- function(method) {
     default = "build_base.whisker"
   )
 
-  readLines(system.file("support", file, package = "traits.build"))
+  system.file("support", file, package = "traits.build")
 }
 
 #' Find list of unique datasets within compilation containing specified taxa
