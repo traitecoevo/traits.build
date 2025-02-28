@@ -169,10 +169,12 @@ read_metadata <- function(path) {
       paste(collapse = "\n")
   }
 
-  if (!"identifier" %in% names(data)) {
-    data["identifier"] <- NA
+  if (!"identifiers" %in% names(data)) {
+    data["identifiers"] <- NA
   }
 
+  data <- data[schema$metadata$elements %>% names()]
+  
   data
 }
 
