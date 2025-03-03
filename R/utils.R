@@ -173,7 +173,8 @@ read_metadata <- function(path) {
     data["identifiers"] <- NA
   }
 
-  data <- data[schema$metadata$elements %>% names()]
+  data <- data[c("source", "contributors", "dataset", "identifiers", "locations", "contexts", "traits", 
+  "substitutions", "taxonomic_updates", "exclude_observations", "questions")]
   
   data
 }
