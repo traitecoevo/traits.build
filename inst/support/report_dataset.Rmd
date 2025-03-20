@@ -509,31 +509,31 @@ writeLines(ifelse(length(traits_numeric) == 0,
         "No numerical traits data are currently available in this dataset",
         "We have recorded the following traits with continuous numerical values in this dataset. Plots are shown comparing the distribution of values in your study (blue) to those in other datasets within AusTraits (red, green). For each trait, please eyeball the information provided and let us know of any issues or updates where appropriate."))
 
-for (trait in traits_numeric) {
+for (trait in seq_along(1:length(traits_numeric)) {
 
   data_trait_study <- data_study$traits %>%
-    filter(trait_name == trait, !value_type %in% c("bin", "range")) %>%
+    filter(trait_name == traits_numeric[[trait]], !value_type %in% c("bin", "range")) %>%
     mutate(value = as.numeric(value))
 
   data_trait_all <- austraits$traits %>%
-    filter(trait_name == trait, !value_type %in% c("bin", "range")) %>%
+    filter(trait_name == traits_numeric[[trait]], !value_type %in% c("bin", "range")) %>%
     mutate(value = as.numeric(value))
 
-  transforms <- metadata$traits %>% austraits::convert_list_to_df2() %>% filter(trait_name == trait)
+  transforms <- metadata$traits %>% austraits::convert_list_to_df2() %>% filter(trait_name == traits_numeric[[trait]])
 
-  elements <- definitions[[trait]]
+  elements <- definitions[[traits_numeric[[trait]]]]
 
   units <- elements$units
 
   c("", "",
-    sprintf("### %s", trait),
+    sprintf("### %s", traits_numeric[[trait]]),
     "",
     sprintf("We aligned the contributed variable called `%s` in the data you supplied with the trait `%s` in the AusTraits database, with value_types `%s`.\n\nThe original variable was supplied with units `%s`; these were converted to our standard `%s`.\n\nThe data has the following properties:",
-            transforms$var_in %>% paste0(collapse = ", "), trait,
+            transforms$var_in %>% paste0(collapse = ", "), traits_numeric[[trait]],
             transforms$value_type %>% paste0(collapse = ", "),
             transforms$unit_in[1], elements$units),
     "",
-    sprintf("- **standardised name**: %s", trait),
+    sprintf("- **standardised name**: %s", traits_numeric[[trait]]),
     sprintf("- **standardised description**: %s", elements$description),
     sprintf("- **label**: %s", elements$label),
     sprintf("- **units**: %s", units),
@@ -558,8 +558,8 @@ for (trait in traits_numeric) {
     "The following data points were excluded because the values were outside the allowable range (error = `Value out of allowable range`). Our ranges of allowable values are sufficiently generous, that most excluded data are well outside the expected range for the trait, but if you believe these data are valid, accurate measurements that will be useful to future AusTraits users, let us know.", "")
   )
 
-if (nrow(filter(data_study$excluded_data, error == "Value out of allowable range" & trait_name == trait)) > 0) {
-  data_study$excluded_data %>% filter(error == "Value out of allowable range" & trait_name == trait) %>%
+if (nrow(filter(data_study$excluded_data, error == "Value out of allowable range" & trait_name == traits_numeric[[trait]])) > 0) {
+  data_study$excluded_data %>% filter(error == "Value out of allowable range" & trait_name == traits_numeric[[trait]]) %>%
     select(observation_id, taxon_name, location_id, value, unit) %>%
     my_kable_styling() %>%
     writeLines()
@@ -567,7 +567,7 @@ if (nrow(filter(data_study$excluded_data, error == "Value out of allowable range
 
   austraits_no_bins <- extract_data(austraits, table = "traits", col = "value_type", col_value = c("mean", "median", "minimum", "maximum", "raw"))
   
-  austraits::plot_trait_distribution_beeswarm(austraits_no_bins, trait, "dataset_id", highlight = dataset_id, hide_ids = TRUE)
+  austraits::plot_trait_distribution_beeswarm(austraits_no_bins, traits_numeric[[trait]], "dataset_id", highlight = dataset_id, hide_ids = TRUE)
 
   writeLines(c(""))
 
