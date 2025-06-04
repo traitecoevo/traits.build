@@ -1933,9 +1933,16 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
     # For taxa where there is no `taxon_name` to matched to a `aligned_name`,
     # maintain the `aligned_name` as the `taxon_name`
     dplyr::mutate(
-      taxon_name = ifelse(is.na(.data$taxon_name), .data$aligned_name, .data$taxon_name)#,
+      taxon_name = ifelse(is.na(.data$taxon_name), .data$aligned_name, .data$taxon_name),
     ) %>%
     dplyr::select(-dplyr::all_of(c("aligned_name")))
+  
+  # in the chunk above, if the traits table is empty (i.e. all values in excluded data)
+  # the column `taxon_name` becomes logical and then datasets can't bind
+  if (nrow(austraits_raw$traits) == 0) {
+    austraits_raw$traits <- austraits_raw$traits %>%
+      mutate(taxon_name = as.character(taxon_name))
+  }
 
   species_tmp <-
     austraits_raw$traits %>%
