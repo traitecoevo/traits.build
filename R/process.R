@@ -102,7 +102,8 @@ dataset_process <- function(filename_data_raw,
   } else {
     identifiers <- list(
       "var_in",
-      "identifier_type"
+      "identifier_type",
+      "institution_code"
     )
   }
 
@@ -201,7 +202,7 @@ dataset_process <- function(filename_data_raw,
       tidyr::pivot_longer(cols = 3:ncol(identifiers_tmp)) %>%
       dplyr::rename(identifier_value = value, var_in = name) %>%
       dplyr::left_join(identifiers, by = join_by(var_in)) %>%
-      dplyr::select(dataset_id, observation_id, identifier_type, identifier_value) %>%
+      dplyr::select(dataset_id, observation_id, identifier_type, institution_code, identifier_value) %>%
       dplyr::filter(!is.na(.data$identifier_value), !is.na(.data$observation_id)) %>%
       dplyr::arrange(observation_id, identifier_type) %>%
       dplyr::distinct()
@@ -210,7 +211,8 @@ dataset_process <- function(filename_data_raw,
       dataset_id = character(0),
       observation_id = character(0),
       identifier_type = character(0),
-      identifier_value = character(0)
+      institution_code = character(0),
+      identifier_value = character(0),
     )
   }
   
