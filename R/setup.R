@@ -620,7 +620,8 @@ metadata_add_identifiers <- function(dataset_id, overwrite = FALSE) {
       identifiers[[ii]] <-
         list(
           var_in = var_in[i],
-          identifier_type = identifier_type
+          identifier_type = identifier_type,
+          institution_code = .na
         )
       
     }
