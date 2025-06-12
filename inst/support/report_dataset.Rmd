@@ -100,7 +100,7 @@ my_kable_styling <- util_kable_styling_html
 
 definitions <- austraits$definitions
 data_study <- extract_dataset(austraits, dataset_id, partial_matches_allowed = F)
-metadata <- read_metadata(file.path("../austraits.build/data", dataset_id, "metadata.yml"))
+metadata <- read_metadata(file.path("data", dataset_id, "metadata.yml"))
 schema <- austraits$schema
 
 # start notetaker device
