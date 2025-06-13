@@ -223,20 +223,25 @@ dataset_test_worker <-
         )
 
         ## Identifiers
-        if (!"identifiers" %in% names(metadata)) {
-          testthat::expect_silent(
-            identifiers <-
-              metadata$identifiers %>%
-              process_format_identifiers(dataset_id, data)
-          )
+        if (!is.null(metadata$identifiers)) {
+          if (!is.na(metadata$identifiers)) {
+            testthat::expect_silent(
+              identifiers <-
+                metadata$identifiers %>%
+                process_format_identifiers(dataset_id, data)
+            )
+          }
         }
         
-        if (!"identifiers" %in% names(metadata)) {
+        
+        if (!is.null(metadata$identifiers)) {
+          if (!is.na(metadata$identifiers)) {
           test_expect_list_elements_exact_names(
             metadata$identifiers,
-            schema$metadata$elements$identifiers$values %>% names(),
+            schema$metadata$elements$identifiers$elements %>% names(),
             info = paste0(red(f), "\tidentifiers")
           )
+          }
         }
         
         ## Locations
