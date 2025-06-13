@@ -1,3 +1,11 @@
+# traits.build 2.1.0
+
+- Include two additional output structures, a flattened database and a parquet file.
+- Identifiers table added, allowing trait values to be linked to a specific identifiers in an herbarium, museum collection, GenBank, or an arboretum. If a data contributor has collected data on the same individual plants across multiple datasets, these can also be linked.
+- Methods table documents the dataset's Bibtex types, whether the data are from a Journal article, Online resource, Unpublished dataset, Thesis, etc.
+- Additional entity_type values added to schema, included `standard_error`, `standard_deviation`.
+- A collection of minor errors have been fixed - including empty datasets breaking the build process, and the wrong location name column being read in
+
 # traits.build 2.0.0
 
 - traits.build paper published in Sep 2024 in Ecological Informatics (DOI: [10.1016/j.ecoinf.2024.102773](https://doi.org/10.1016/j.ecoinf.2024.102773))
