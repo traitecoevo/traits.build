@@ -53,6 +53,7 @@ dataset:
 identifiers:
 - var_in: specimen
   identifier_type: personal specimen number
+  institution_code: herbarium
 locations:
   Atherton:
     description: Tropical rain forest vegetation.
