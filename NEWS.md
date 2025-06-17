@@ -1,6 +1,5 @@
 # traits.build 2.1.0
 
-- Include two additional output structures, a flattened database and a parquet file.
 - Identifiers table added, allowing trait values to be linked to a specific identifiers in an herbarium, museum collection, GenBank, or an arboretum. If a data contributor has collected data on the same individual plants across multiple datasets, these can also be linked.
 - Methods table documents the dataset's Bibtex types, whether the data are from a Journal article, Online resource, Unpublished dataset, Thesis, etc.
 - Additional entity_type values added to schema, included `standard_error`, `standard_deviation`.
