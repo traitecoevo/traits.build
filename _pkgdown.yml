@@ -67,6 +67,7 @@ reference:
     - '`metadata_remove_taxonomic_change`'
     - '`metadata_update_taxonomic_change`'
     - '`metadata_exclude_observations`'
+    - '`metadata_add_identifiers`'
     - '`dataset_find_taxon`'
 
   - title: Reading & writing files
@@ -100,6 +101,7 @@ reference:
     - '`process_format_contexts`'
     - '`process_format_contributors`'
     - '`process_format_locations`'
+    - '`process_format_identifiers`'
     - '`process_generate_id`'
     - '`process_generate_method_ids`'
     - '`process_parse_data`'

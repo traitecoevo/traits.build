@@ -1,8 +1,8 @@
 ---
 title:  traits.build Data Model
 params:
-  version: 1.0.0
-  previous_version: 0.1.0
+  version: 1.1.0
+  previous_version: 1.0.0
 format: 
   html:
     smooth-scroll: true
@@ -243,7 +243,15 @@ remaining <-
   filter(Subject != "<https://w3id.org/traits.build>")
 
 # load traits.build schema
-y <- traits.build::get_schema()
+# !!! WARNING !!!
+# XX - WARNING - XX if the tables have changed since the last release, running `traits.build::get_schema()` 
+# will cause the new tables to be omitted unless you're recently reinstalled traits.build
+
+devtools::load_all()
+
+y <- get_schema()
+
+#y <- traits.build::get_schema()
 
 # create vector of table names from traits.build schema
 table_tmp <- names(y$austraits$elements) %>% as.vector()

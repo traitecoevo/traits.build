@@ -1,6 +1,7 @@
 library(dplyr)
 library(rdflib)
 
+
 output_path <- "ontology/output/ontology"
 data_path <- "ontology/data"
 
@@ -225,4 +226,4 @@ purrr::walk(files, ~ file.copy(file.path("ontology/output/ontology", .x), file.p
 # **IMPORTANT FINAL STEP**
 # After generating the files within the ontology folder, 
 # a copy of the files needs to be copied across to build the website using:
-# pkgdown::build_site()
+ pkgdown::build_site()
