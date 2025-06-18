@@ -650,7 +650,7 @@ dataset_test_worker <-
             )
 
             # If trait is categorical
-            if (!is.null(definitions$elements[[trait]]) && definitions$elements[[trait]]$type == "categorical") {
+            if (!is.null(definitions$elements[[trait]]$allowed_values_levels) && definitions$elements[[trait]]$type == "categorical") {
 
               # Check replacement values
               to_check <- x[[trait]]$replace %>% unique()
