@@ -18,7 +18,8 @@ print_list <- function(vals, title = NA, empty_text = NA) {
   }
 }
 
-print_list2 <- function(vals, title = NA, empty_text = NA) {
+# version that broke APD, and proactively replacing with new function below
+print_list3 <- function(vals, title = NA, empty_text = NA) {
   
   out <- c()
   if (!is.na(title)) 
@@ -33,6 +34,18 @@ print_list2 <- function(vals, title = NA, empty_text = NA) {
   out
 }
 
+print_list2 <- function(vals) {
+  
+  out <- c()
+  
+  vals <- vals[!is.na(vals)]
+  
+  if (length(vals) > 0) {
+    out <- c(out, paste0(vals, collapse = "<br>\n"))
+  } 
+  
+  out
+}
 
 #' Format table with kable and default styling for html
 #'

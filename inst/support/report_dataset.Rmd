@@ -121,7 +121,6 @@ structures_already_defined <- c("names")
 
 # Introduction
 
-## About AusTraits
 
 `AusTraits` is an open-source compilation of trait data for Australian plant taxa. The traits we are considering are any morphological, functional or physiological variable that: 1. Tend to vary widely among taxa; and 2. Have been collected across a moderate number of taxa. Many people collect trait data, and as such, data is spread across many sources, under a variety of formats and terms.
 
@@ -193,7 +192,7 @@ The following people are listed as data collectors in this study:
 
 ```{r, results='asis', echo=FALSE}
 metadata$contributors$data_collectors %>%
-  util_list_to_df2() %>%
+  austraits::convert_list_to_df2() %>%
   my_kable_styling()
 ```
 
@@ -215,7 +214,7 @@ Primary citation:
 
 ```{r, results='asis', echo=FALSE}
 metadata$source$primary %>%
-  util_list_to_df1() %>%
+  austraits::convert_list_to_df1() %>%
   my_kable_styling()
 ```
 
@@ -226,7 +225,7 @@ if (n > 1) {
 
   for (i in 2:n) {
     metadata$source[[i]] %>%
-    util_list_to_df1() %>%
+    austraits::convert_list_to_df1() %>%
     my_kable_styling() %>%
     cat()
     writeLines("\n\n")
@@ -245,7 +244,7 @@ The description we have of the study is as follows:
 
 ```{r, results='asis', echo=FALSE}
 metadata$dataset %>%
-  util_list_to_df1() %>%
+  austraits::convert_list_to_df1() %>%
   my_kable_styling()
 ```
 
@@ -255,7 +254,7 @@ new_question("(section `dataset`) Can you provide more detailed information for 
 
 ```{r, results='asis', echo=FALSE}
 missing <- metadata$dataset %>%
-  util_list_to_df1() %>%
+  austraits::convert_list_to_df1() %>%
   filter(value == "unknown") %>%
   pull(key)
 
@@ -457,7 +456,7 @@ if (nrow(subset(data_study$excluded_data, error != "Missing value")) > 0) {
 
   if (nrow(subset(data_study$excluded_data, error == "Observation excluded in metadata")) > 0) {
     metadata$exclude_observations %>%
-      util_list_to_df2() %>%
+      austraits::convert_list_to_df2() %>%
       my_kable_styling() %>%
       writeLines()
   }
@@ -498,7 +497,7 @@ define_variable <- function(var, schema) {
     writeLines("Possible values are:")
 
     schema$value_type$values %>%
-      util_list_to_df1()  %>%
+      austraits::convert_list_to_df1()  %>%
       my_kable_styling() %>%
       writeLines()
     }
@@ -519,7 +518,7 @@ for (trait in traits_numeric) {
     filter(trait_name == trait, !value_type %in% c("bin", "range")) %>%
     mutate(value = as.numeric(value))
 
-  transforms <- metadata$traits %>% util_list_to_df2() %>% filter(trait_name == trait)
+  transforms <- metadata$traits %>% austraits::convert_list_to_df2() %>% filter(trait_name == trait)
 
   elements <- definitions[[trait]]
 
@@ -623,11 +622,11 @@ writeLines(
 
 for (trait in traits_categorical) {
 
-  transforms <- metadata$traits %>% util_list_to_df2() %>% filter(trait_name == trait)
+  transforms <- metadata$traits %>% austraits::convert_list_to_df2() %>% filter(trait_name == trait)
   if (is.na(metadata$substitutions[1])) {
     substitutions_for_trait <- tibble
   } else {
-    substitutions_for_trait <- metadata$substitutions %>% util_list_to_df2() %>% filter(trait_name == trait)
+    substitutions_for_trait <- metadata$substitutions %>% austraits::convert_list_to_df2() %>% filter(trait_name == trait)
   }
 
   data_trait_study <- data_study$traits %>%
@@ -728,7 +727,7 @@ The table below shows the table of all taxa in this study, where possible using 
 
 ```{r, results='asis', echo=FALSE}
 schema$austraits$elements$taxa$elements %>%
-  util_list_to_df1() %>%
+  austraits::convert_list_to_df1() %>%
   my_kable_styling()
 ```
 

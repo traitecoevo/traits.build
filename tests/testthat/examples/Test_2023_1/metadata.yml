@@ -61,6 +61,13 @@ dataset:
     included.
   original_file: Falster & Westoby 2005 J Ecol appendix.doc
   notes: none
+identifiers:
+- var_in: herbarium_voucher
+  identifier_type: specimentID
+  institution_code: National Herbarium NSW
+- var_in: collection_id
+  identifier_type: collectionID
+  institution_code: National Herbarium NSW
 locations:
   Atherton:
     description: Tropical rain forest vegetation.

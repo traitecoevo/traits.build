@@ -168,7 +168,7 @@ read_metadata <- function(path) {
       gsub("custom_R_code:", "", ., fixed = TRUE) %>%
       paste(collapse = "\n")
   }
-
+  
   data
 }
 
@@ -207,9 +207,19 @@ write_metadata <- function(data, path, style_code = FALSE) {
 
   y <- data
   y$dataset$custom_R_code <- NA
+  
+  # For metadata files that don't yet include "identifiers", add before writing file
+  if (!"identifiers" %in% names(y)) {
+    y["identifiers"] <- NA
+  }
+  
+  y <- y[c("source", "contributors", "dataset", "identifiers", "locations", "contexts", "traits", 
+               "substitutions", "taxonomic_updates", "exclude_observations", "questions")]
+  
 
   txt <- yaml::as.yaml(y, column.major = FALSE, indent = 2) %>%
     gsub(": ~", ":", ., fixed = TRUE)
+
 
   # Reinsert custom R code
   if (!is.na(data$dataset$custom_R_code)) {

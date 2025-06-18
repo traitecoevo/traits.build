@@ -50,6 +50,10 @@ dataset:
     included.
   original_file: Falster & Westoby 2005 J Ecol appendix.doc
   notes: none
+identifiers:
+- var_in: specimen
+  identifier_type: personal specimen number
+  institution_code: herbarium
 locations:
   Atherton:
     description: Tropical rain forest vegetation.

@@ -100,10 +100,18 @@ dataset_test_worker <-
         f <- files[2]
         test_expect_allowed_text(readLines(f, encoding = "UTF-8"), info = paste0(red(f), "\tmetadata"), label = "metadata")
         testthat::expect_silent(metadata <- yaml::read_yaml(f))
-        test_expect_list_names_exact(
-          metadata, schema$metadata$elements %>% names(),
-          info = red(f), label = "metadata sections"
-        )
+
+        if (!is.null(metadata[["identifiers"]])) {
+          test_expect_list_names_exact(
+            metadata, schema$metadata$elements %>% names(),
+            info = red(f), label = "metadata sections"
+          )
+        } else {
+          test_expect_list_names_allowed(
+            metadata, schema$metadata$elements %>% names(),
+            info = red(f), label = "metadata sections"
+          )
+        }
 
         ## Custom R code
         txt <- metadata[["dataset"]][["custom_R_code"]]
@@ -214,6 +222,28 @@ dataset_test_worker <-
           info = paste0(red(f), "\tdataset"), label = "metadata"
         )
 
+        ## Identifiers
+        if (!is.null(metadata$identifiers)) {
+          if (!is.na(metadata$identifiers)) {
+            testthat::expect_silent(
+              identifiers <-
+                metadata$identifiers %>%
+                process_format_identifiers(dataset_id, data)
+            )
+          }
+        }
+        
+        
+        if (!is.null(metadata$identifiers)) {
+          if (!is.na(metadata$identifiers)) {
+          test_expect_list_elements_exact_names(
+            metadata$identifiers,
+            schema$metadata$elements$identifiers$elements %>% names(),
+            info = paste0(red(f), "\tidentifiers")
+          )
+          }
+        }
+        
         ## Locations
 
         testthat::expect_silent(
@@ -620,7 +650,7 @@ dataset_test_worker <-
             )
 
             # If trait is categorical
-            if (!is.null(definitions$elements[[trait]]) && definitions$elements[[trait]]$type == "categorical") {
+            if (!is.null(definitions$elements[[trait]]$allowed_values_levels) && definitions$elements[[trait]]$type == "categorical") {
 
               # Check replacement values
               to_check <- x[[trait]]$replace %>% unique()
@@ -679,10 +709,20 @@ dataset_test_worker <-
 
         }
 
+        # Load identifiers
+        if ("identifiers" %in% names(metadata) & !all(is.na(metadata[["identifiers"]]))) {
+          identifiers <-
+            metadata[["identifiers"]] %>% austraits::convert_list_to_df2()
+        } else {
+          identifiers <- list(
+            "var_in",
+            "identifier_type"
+          )
+        }
         ## Check that special characters do not make it into the data
         test_expect_no_error(
           parsed_data <- data %>%
-            process_parse_data(dataset_id, metadata, contexts, schema),
+            process_parse_data(dataset_id, metadata, contexts, schema, identifiers),
           info = sprintf("%s\t`process_parse_data`", red(dataset_id)))
 
         test_expect_allowed_text(
