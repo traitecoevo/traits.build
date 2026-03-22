@@ -139,7 +139,7 @@ dataset_process <- function(filename_data_raw,
   # Load and clean trait data
   traits <-
     traits %>%
-    process_parse_data(dataset_id, metadata, contexts, schema, identifiers)
+    process_parse_data(dataset_id, metadata, contexts, schema, identifiers, definitions)
 
   # Context ids needed to continue processing
   context_ids <- traits$context_ids
@@ -1408,7 +1408,7 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' substitutions and unique observation id added
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
 #' @importFrom rlang .data
-process_parse_data <- function(data, dataset_id, metadata, contexts, schema, identifiers) {
+process_parse_data <- function(data, dataset_id, metadata, contexts, schema, identifiers, definitions) {
 
   # Get config data for dataset
   data_is_long_format <- metadata[["dataset"]][["data_is_long_format"]]
@@ -1639,6 +1639,60 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
   if (length(i) > 0) {
     j <- !is.na(i)
     out[["trait_name"]][j] <- traits_table[["trait_name"]][i[j]]
+  }
+
+  # Apply automatic synonym replacements from traits.yml (definitions tibble)
+  if (!is.null(definitions) && length(definitions) > 0) {
+
+    # Create table of synonyms from the definitions table
+    synonym_table <-
+      purrr::imap_dfr(definitions, function(trait_definition, trait_name) {
+        if (!is.null(trait_definition$allowed_values_levels)) {
+          purrr::imap_dfr(trait_definition$allowed_values_levels, function(trait_value_description, trait_value) {
+            synonyms_string <- stringr::str_extract(trait_value_description, "(?<=\\(Synonyms,)[^)]+")
+            if (!is.na(synonyms_string)) {
+              tibble::tibble(
+                find = stringr::str_split(synonyms_string, ",")[[1]] %>%
+                  stringr::str_trim() %>%
+                  tolower(),
+                replace = trait_value
+              )
+            } else {
+              NULL
+            }
+          })
+        } else {
+          NULL
+        }
+      })
+
+    if (nrow(synonym_table) > 0) {
+      # For each trait by trait_value with synonyms, create replacement vectors.
+      # A vector is required, as there can be multiple synonyms per trait value.
+      # Synonyms are comma-delimited in the traits.yml and 
+      # are always words with hyphens and underscores but no spaces.
+      synonym_table <- synonym_table %>%
+        dplyr::mutate(pattern = stringr::str_c("\\b", stringr::str_escape(.data$find), "\\b")) %>%
+        dplyr::group_by(.data$trait_name) %>%
+        dplyr::summarise(
+          synonym_replacement_vec = list(purrr::set_names(replace, pattern)),
+          .groups = "drop"
+        )
+
+      # Implement trait value synonym substitutions, by joining the synonym replacement vectors,
+      # and using word by word searches to find matches.
+      # Remove column with replacement vectors at the end.
+      out <- out %>%
+        dplyr::left_join(synonym_table, by = "trait_name") %>%
+        dplyr::mutate(
+          value = purrr::map2_chr(
+            .data$value,
+            .data$synonym_replacement_vec,
+            function(v, rv) if (is.null(rv)) v else stringr::str_replace_all(v, rv)
+          )
+        ) %>%
+        dplyr::select(-"synonym_replacement_vec")
+    }
   }
 
   # Implement any value changes as per substitutions
