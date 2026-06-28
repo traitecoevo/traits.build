@@ -88,3 +88,15 @@ DOI: [10.1038/s41597-021-01006-6](http://doi.org/10.1038/s41597-021-01006-6)
 
 **Funding**: The AusTraits project received investment (<https://doi.org/10.47486/TD044>, <https://doi.org/10.47486/DP720>) from the Australian Research Data Commons (ARDC). The ARDC is funded by the National Collaborative Research Infrastructure Strategy (NCRIS).
 
+
+## AusTraits family
+
+`traits.build` is part of the **AusTraits family** of packages maintained by the
+[AusTraits](https://austraits.org) team. See **[austraits.org](https://austraits.org)** for the
+project, the data, and the people behind it.
+
+Contributing? Issues across the family are tracked on one board,
+[AusTraits #9](https://github.com/orgs/traitecoevo/projects/9), and new issues are auto-added. Please
+read the [issue & labelling guide](https://github.com/traitecoevo/austraits-meta/blob/main/governance/issue-guide.md)
+in [`austraits-meta`](https://github.com/traitecoevo/austraits-meta) — the family's cross-package
+knowledge and governance hub — before filing.
