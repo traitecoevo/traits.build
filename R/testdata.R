@@ -228,7 +228,7 @@ dataset_test_worker <-
             testthat::expect_silent(
               identifiers <-
                 metadata$identifiers %>%
-                process_format_identifiers(dataset_id, data)
+                process_format_identifiers(dataset_id, schema)
             )
           }
         }
