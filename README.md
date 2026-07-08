@@ -43,15 +43,9 @@ There are multiple ways to install the `traits.build` package itself, and both t
 
 | Type        | Source   | Command                                                           |
 |-------------|----------|-------------------------------------------------------------------|
-| Release     | CRAN     | coming                                     |
+| Release     | CRAN     | *not yet on CRAN — install the development version from GitHub* |
 | Development | GitHub   | `remotes::install_github("traitecoevo/traits.build")`                     |
 
-<!-- ## Get started in 5(?) minutes
-
-The 5-minute video at <xxx> demonstrates the use of `traits.build` using a template example compilation. This template is also used in chapters
-of the [user manual](https://traitecoevo.github.io/traits.build-book/).
-
--- [![](./man/figures/video.png)](XXX) -->
 ## Documentation
 
 - [User manual](https://traitecoevo.github.io/traits.build-book/): in-depth
@@ -70,12 +64,12 @@ Please read the [help guide](https://traitecoevo.github.io/traits.build-book/hel
 
 ## Code of conduct
 
-* Please note that the package follows the [Contributor Code of Conduct for the AusTraits projects](hhttp://traitecoevo.github.io/austraits.build/CODE_OF_CONDUCT.html). By contributing to this project you agree to abide by its terms.
+* Please note that the package follows the [Contributor Code of Conduct for the AusTraits projects](http://traitecoevo.github.io/austraits.build/CODE_OF_CONDUCT.html). By contributing to this project you agree to abide by its terms.
 
 ## Citation
 
 A publication describing the `traits.build` workflow:
-> Wenk E, Bal P, Coleman D, Gallagher R, Yang S, Falster D, (2024) Traits.build: A data model, workflow and R package for building harmonised ecological trait databases. Ecological Informatics 83: 102773. DOI: [10.1016/j.ecoinf.2024.102773](https://doi.org/10.1016/j.ecoinf.2024.102773)
+> Wenk E, Bal P, Coleman D, Gallagher R, Yang S, Falster D (2024) traits.build: A data model, workflow and R package for building harmonised ecological trait databases. *Ecological Informatics* 83: 102773. DOI: [10.1016/j.ecoinf.2024.102773](https://doi.org/10.1016/j.ecoinf.2024.102773)
 
 
 A publication describing the biggest database using the `traits.build` workflow:
@@ -84,7 +78,34 @@ A publication describing the biggest database using the `traits.build` workflow:
 database for the Australian flora. Scientific Data 8: 254. 
 DOI: [10.1038/s41597-021-01006-6](http://doi.org/10.1038/s41597-021-01006-6)
 
+## AusTraits family
+
+`traits.build` is part of the **AusTraits family** of packages maintained by the
+[AusTraits](https://austraits.org) team. See **[austraits.org](https://austraits.org)** for the
+project, the data, and the people behind it.
+
+Contributing? Issues across the family are tracked on one board,
+[AusTraits #9](https://github.com/orgs/traitecoevo/projects/9), and new issues are auto-added. Please
+read the [issue & labelling guide](https://github.com/traitecoevo/austraits-meta/blob/main/governance/issue-guide.md)
+in [`austraits-meta`](https://github.com/traitecoevo/austraits-meta) — the family's cross-package
+knowledge and governance hub — before filing.
+
 ## Acknowledgements
 
-**Funding**: The AusTraits project received investment (<https://doi.org/10.47486/TD044>, <https://doi.org/10.47486/DP720>) from the Australian Research Data Commons (ARDC). The ARDC is funded by the National Collaborative Research Infrastructure Strategy (NCRIS).
+AusTraits is made possible by contributions from our partner organisations — the
+[University of New South Wales](https://www.unsw.edu.au/),
+[Western Sydney University](https://www.westernsydney.edu.au/),
+[Botanic Gardens of Sydney](https://www.botanicgardens.org.au/),
+[the University of Melbourne](https://www.unimelb.edu.au/),
+the [Atlas of Living Australia](https://www.ala.org.au/), and the Australian Government
+[Department of Climate Change, Energy, the Environment and Water](https://www.dcceew.gov.au) — and
+from our [advisory board, data contributors, and past partners](https://austraits.org/team/team-partners.html).
+
+AusTraits is a co-investment partnership with the
+[Australian Research Data Commons](https://ardc.edu.au/) (ARDC) through the Planet Research Data
+Commons ([DOI: 10.3565/nyk4-4r91](https://doi.org/10.3565/nyk4-4r91)). The ARDC is enabled by the
+Australian Government's [National Collaborative Research Infrastructure Strategy](https://www.education.gov.au/ncris)
+(NCRIS).
+
+This work received investment ([DP720](https://doi.org/10.47486/DP720)) from the ARDC.
 
