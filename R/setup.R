@@ -567,8 +567,6 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 #'
 #' @inheritParams metadata_path_dataset_id
 #' @param overwrite Overwrite existing information
-#' @param user_responses Named list containing simulated user input for manual selection
-#' of variables, mainly for testing purposes
 #'
 #' @importFrom rlang .data
 #' @export
