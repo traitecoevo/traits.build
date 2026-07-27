@@ -1367,6 +1367,10 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' @param metadata Yaml file with metadata
 #' @param contexts Dataframe of contexts for this study
 #' @param schema Schema for traits.build
+#' @param identifiers Dataframe of identifiers for this study, as returned by
+#' [process_format_identifiers()]. Its `var_in` column names the columns of
+#' `data` holding identifier values, which are carried through so they can be
+#' split into the identifiers table once `observation_id` is set.
 #' @return Tibble in long format with AusTraits formatted trait names, trait
 #' substitutions and unique observation id added
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
@@ -1907,20 +1911,17 @@ process_taxonomic_updates <- function(data, metadata) {
 
 }
 
-#' Taxon name ranks that carry more than a genus name
-#'
-#' Ranks at or below species, whose names are binomials or trinomials and so
-#' are matched against the taxon list in full. Names at any coarser rank are
-#' matched on their first word alone -- see [util_name_to_match_to()].
-#'
-#' The list is botanical, which is a limitation rather than a decision: the
-#' invertebrate ranks used by `ausinvertraits.build` (`subfamily`, `suborder`,
-#' `subgenus`, `superfamily`, `supertribe`, `tribe`) are all coarser than
-#' species, so first-word matching is right for them -- but nothing checks that,
-#' and a rank below species that is missing here would silently be truncated to
-#' its genus. Moving this into the schema is tracked as part of #225.
-#'
-#' @keywords internal
+# Ranks at or below species, whose names are binomials or trinomials and so are
+# matched against the taxon list in full. Names at any coarser rank are matched
+# on their first word alone -- see `util_name_to_match_to()`.
+#
+# The list is botanical, which is a limitation rather than a decision. The
+# invertebrate ranks used by `ausinvertraits.build` (subfamily, suborder,
+# subgenus, superfamily, supertribe, tribe) are all coarser than species, so
+# first-word matching is right for them -- but a rank *below* species that is
+# missing here would be silently truncated to its genus. Moving this into the
+# schema is tracked as part of #225; `test-taxonomic-resolution.R` pins the
+# behaviour meanwhile.
 ranks_at_or_below_species <-
   c("species", "subspecies", "series", "variety", "form")
 
