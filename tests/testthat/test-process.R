@@ -53,6 +53,29 @@ test_that("`process_custom_code` is working", {
 })
 
 
+test_that("`process_format_identifiers` is working", {
+  # The third argument is the schema, not the trait data, and `my_list` is the
+  # identifiers list itself rather than something wrapping it. Getting either
+  # wrong made every call fail with "object 'schema' not found", or silently
+  # return no rows.
+  identifiers <- read_metadata("examples/Test_2023_1/metadata.yml")$identifiers
+  expected_cols <-
+    names(schema[["austraits"]][["elements"]][["identifiers"]][["elements"]])
+
+  out <- process_format_identifiers(identifiers, "Test_2023_1", schema)
+
+  expect_named(out, expected_cols)
+  expect_equal(nrow(out), length(identifiers))
+  expect_equal(out$dataset_id, rep("Test_2023_1", length(identifiers)))
+  expect_equal(out$identifier_type, purrr::map_chr(identifiers, "identifier_type"))
+
+  # A dataset that declares no identifiers still gets the full set of columns
+  empty <- process_format_identifiers(list(), "Test_2023_1", schema)
+  expect_named(empty, expected_cols)
+  expect_equal(nrow(empty), 0)
+})
+
+
 # The below functions are not working
 #test_that("process_flag_unsupported_traits is working", {
 #  process_flag_unsupported_traits(data, definitions)

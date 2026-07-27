@@ -256,7 +256,8 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
   metadata <- read_metadata_dataset(dataset_id)
 
   # Load and clean trait data
-  data <- readr::read_csv(file.path("data", dataset_id, "data.csv"), col_types = cols()) %>%
+  data <- readr::read_csv(file.path("data", dataset_id, "data.csv"),
+                          col_types = cols(), guess_max = 100000) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
 
   # Get list of potential traits
@@ -444,8 +445,28 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
   # Load and clean trait data
   data <-
-    readr::read_csv(file.path("data", dataset_id, "data.csv"), col_types = cols()) %>%
+    readr::read_csv(file.path("data", dataset_id, "data.csv"),
+                    col_types = cols(), guess_max = 100000) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
+
+  # `read_csv` parses time-like columns as `hms`, which reformats the text in
+  # data.csv ("9:00" is read as "09:00:00"). Record the reformatted strings,
+  # since those are what the build and `dataset_test` compare against, and warn
+  # the user so the values written here don't look inconsistent with data.csv.
+  time_cols <- names(data)[purrr::map_lgl(data, ~ inherits(.x, "hms"))]
+
+  if (length(time_cols) > 0) {
+    data <- data %>%
+      dplyr::mutate(dplyr::across(dplyr::all_of(time_cols), as.character))
+
+    message(
+      sprintf(
+        red("Time data detected in column(s) ") %+% green("'%s'") %+%
+          red("\n\tValues are reformatted to 'hh:mm:ss' to match how the build reads them"),
+        paste(time_cols, collapse = "', '")
+      )
+    )
+  }
 
   # Get list of potential columns
   v <- names(data)
@@ -530,7 +551,7 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
       ii <- n_existing + i
       category <- categories[i]
-      context_values <- data[[var_in[i]]] %>% unique() %>% na.omit()
+      context_values <- data[[var_in[i]]] %>% unique() %>% na.omit() %>% as.character()
 
       contexts[[ii]] <-
         list(
@@ -579,7 +600,8 @@ metadata_add_identifiers <- function(dataset_id, overwrite = FALSE) {
 
   # Load and clean trait data
   data <-
-    readr::read_csv(file.path("data", dataset_id, "data.csv"), col_types = cols()) %>%
+    readr::read_csv(file.path("data", dataset_id, "data.csv"),
+                    col_types = cols(), guess_max = 100000) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
 
   # Get list of potential columns
@@ -721,7 +743,9 @@ util_standardise_doi <- function(doi) {
 #' Adds citation details from a doi to a metadata file for a `dataset_id`
 #'
 #' Uses rcrossref package to access publication details from the crossref
-#' database
+#' database. `rcrossref` is an optional dependency; it is only needed when
+#' `bib` is not supplied, and can be installed with
+#' `install.packages("rcrossref")`.
 #'
 #' @param bib (Only use for testing purposes) Result of calling `bib rcrossref::cr_cn(doi)`
 #' @inheritParams metadata_path_dataset_id
@@ -735,8 +759,10 @@ metadata_add_source_doi <- function(..., doi, bib = NULL) {
 
   doi <- util_standardise_doi(doi)
 
-  if (is.null(bib))
+  if (is.null(bib)) {
+    util_require_package("rcrossref", "to look up citation details for a doi.")
     bib <- rcrossref::cr_cn(doi)
+  }
 
   if (is.null(bib)) {
     message(red("DOI not available in Crossref database, please fill record manually"))
