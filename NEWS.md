@@ -1,3 +1,8 @@
+# traits.build (development version)
+
+- `metadata_add_contexts()` no longer writes time-valued contexts as a number of seconds (`9:00:00` became `32400.0`) when called with `user_responses`, and now reports when a time column has been reformatted so the recorded values can be recognised as matching `data.csv` (#49).
+- `metadata_add_contexts()`, `metadata_add_traits()` and `metadata_add_identifiers()` now guess column types from the same number of rows as the build (`guess_max = 100000`), so a sparse column can no longer be typed one way when metadata is written and another way when the database is built.
+
 # traits.build 2.1.0
 
 - Identifiers table added, allowing trait values to be linked to a specific identifiers in an herbarium, museum collection, GenBank, or an arboretum. If a data contributor has collected data on the same individual plants across multiple datasets, these can also be linked.
