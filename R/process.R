@@ -1065,6 +1065,13 @@ bib_print <- function(bib, .opts = list(first.inits = TRUE, max.names = 1000, st
   oldopts <- RefManageR::BibOptions(.opts)
   on.exit(RefManageR::BibOptions(oldopts))
 
+  # RefManageR quotes titles with `dQuote()`, which honours `useFancyQuotes`.
+  # That option defaults to TRUE, so a plain `Rscript` build renders titles with
+  # curly quotes while testthat (which forces it FALSE) renders straight ones.
+  # Pin it so citations do not depend on how the build was launched.
+  oldquotes <- options(useFancyQuotes = FALSE)
+  on.exit(options(oldquotes), add = TRUE)
+
   bib %>%
     format.BibEntry(.sort = FALSE) %>%
     # HACK: remove some of formatting introduced in line above
