@@ -263,6 +263,45 @@ test_that("`metadata_add_contexts` is working", {
 })
 
 
+test_that("`metadata_add_contexts` records time values as the build reads them", {
+  # `read_csv` types time-like columns as `hms`, which reached `yaml::as.yaml`
+  # as the underlying number of seconds, so "9:00:00" was written to the
+  # metadata as `32400.0` and never matched the data (#49).
+
+  # Build the dataset on the fly and remove it again, so that it is not picked
+  # up as a dataset by the functions that scan the whole `data` directory
+  dir.create("data/Test_time")
+  withr::defer(unlink("data/Test_time", recursive = TRUE))
+  writeLines(
+    c("Species,site,sampling_time,LMA (mg mm-2)",
+      "Acacia celsa,Atherton,9:00:00,0.145",
+      "Acmena graveolens,Atherton,11:30,0.180",
+      "Neolitsea dealbata,Cape Tribulation,,0.200",
+      "Brombya platynema,Cape Tribulation,9:00:00,0.210"),
+    "data/Test_time/data.csv"
+  )
+
+  expect_no_error(suppressMessages(metadata_create_template("Test_time", skip_manual = TRUE)))
+
+  expect_message(
+    x <- metadata_add_contexts(
+      "Test_time",
+      user_responses = list(
+        var_in = "sampling_time",
+        categories = "temporal_context",
+        replace_needed = "y")),
+    ".*(?=Time data detected in column)", perl = TRUE
+  )
+
+  # "9:00:00" is zero-padded and bare "11:30" gains seconds, matching the
+  # reformatting `read_csv` applies during the build
+  expect_equal(sort(x$contexts[[1]][["values"]][["find"]]), c("09:00:00", "11:30:00"))
+
+  # The seconds-since-midnight representation must not reach the metadata file
+  expect_false(any(grepl("32400", readLines("data/Test_time/metadata.yml"), fixed = TRUE)))
+})
+
+
 test_that("`metadata_add_traits` is working", {
   metadata <- read_metadata_dataset("Test_2022")
   metadata$traits <- NA
