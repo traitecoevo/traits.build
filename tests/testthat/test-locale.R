@@ -8,7 +8,10 @@ build_example <- function(dataset_id) {
   resource_metadata <- get_schema("config/metadata.yml", "metadata")
   definitions <- get_schema("config/traits.yml", "traits")
   unit_conversions <- get_unit_conversions("config/unit_conversions.csv")
-  taxon_list <- read_csv_char("config/taxon_list.csv")
+  # `config/taxon_list.csv` is generated as a side effect of `test-setup.R`, so
+  # it does not exist when this file runs first. Read the committed fixture it
+  # is copied from instead, so this test does not depend on file ordering.
+  taxon_list <- read_csv_char("config/taxon_list-orig.csv")
 
   build_config <-
     dataset_configure(
