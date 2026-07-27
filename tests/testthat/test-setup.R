@@ -188,6 +188,31 @@ test_that("`metadata_add_source_doi` is working", {
 })
 
 
+test_that("`metadata_add_source_doi` reports informatively when `rcrossref` is missing", {
+  # `rcrossref` is an optional (Suggests) dependency, needed only when `bib` is
+  # not supplied. Pretend it is absent to check the error names the package and
+  # says what it is for, rather than reporting a bare `loadNamespace` failure.
+  local_mocked_bindings(
+    util_require_package = function(pkg, reason) {
+      rlang::abort(sprintf("The package `%s` is required %s", pkg, reason))
+    }
+  )
+
+  expect_error(
+    metadata_add_source_doi(dataset_id = "Test_2022", doi = "10.3389/fmars.2021.671145"),
+    "`rcrossref` is required to look up citation details"
+  )
+
+  # Supplying `bib` bypasses crossref, so it must not consult the package at all
+  bib <- readLines("data/test.bib", encoding = "UTF-8") %>% paste(collapse = "\n")
+  expect_invisible(
+    suppressMessages(
+      metadata_add_source_doi(dataset_id = "Test_2022", doi = "10.3389/fmars.2021.671145", bib = bib)
+    )
+  )
+})
+
+
 test_that("`metadata_check_custom_R_code` is working", {
   # Check that the `custom_R_code` produces a tibble class object
   expect_equal(class(metadata_check_custom_R_code("Test_2022")), c("spec_tbl_df", "tbl_df", "tbl", "data.frame"))

@@ -5,6 +5,7 @@
 - `process_format_identifiers()` no longer fails with `object 'schema' not found`. Its third argument is the schema, as documented, rather than the trait data, and it now reads the identifiers list it is passed instead of looking one level too deep. `dataset_test()` was erroring on every dataset that declares identifiers.
 - `metadata_add_contexts()` no longer writes time-valued contexts as a number of seconds (`9:00:00` became `32400.0`) when called with `user_responses`, and now reports when a time column has been reformatted so the recorded values can be recognised as matching `data.csv` (#49).
 - `metadata_add_contexts()`, `metadata_add_traits()` and `metadata_add_identifiers()` now guess column types from the same number of rows as the build (`guess_max = 100000`), so a sparse column can no longer be typed one way when metadata is written and another way when the database is built.
+- `metadata_add_source_doi()` now reports clearly that the optional `rcrossref` package is needed, and offers to install it in interactive sessions, instead of failing with `there is no package called 'rcrossref'` (#178).
 
 # traits.build 2.1.0
 
