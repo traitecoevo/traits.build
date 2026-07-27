@@ -11,7 +11,9 @@ build_example <- function(dataset_id) {
   taxon_list <- read_csv_char("config/taxon_list.csv")
 
   build_config <-
-    dataset_configure(file.path("examples", dataset_id, "metadata.yml"), definitions)
+    dataset_configure(
+      file.path("examples", dataset_id, "metadata.yml"), definitions
+    )
 
   dataset_process(
     file.path("examples", dataset_id, "data.csv"),
@@ -33,9 +35,11 @@ test_that("build output does not depend on `LC_COLLATE`", {
     paste(other_locale, "locale is not available")
   )
 
-  # `Test_2023_1` has multi-property entity contexts including NAs, and
-  # `Test_2023_2` shifts `observation_id`; both changed with locale previously
-  for (dataset_id in c("Test_2023_1", "Test_2023_2")) {
+  # Every example is built under both collations and compared in full, so that
+  # any sort added to the build in future is caught wherever it sits.
+  # `Test_2023_1` (multi-property entity contexts including NAs), `Test_2023_2`
+  # and `Test_2023_4` are the ones that differed before this was fixed
+  for (dataset_id in list.dirs("examples", recursive = FALSE, full.names = FALSE)) {
 
     Sys.setlocale("LC_COLLATE", other_locale)
     built_other <- suppressMessages(suppressWarnings(build_example(dataset_id)))
@@ -43,8 +47,12 @@ test_that("build output does not depend on `LC_COLLATE`", {
     Sys.setlocale("LC_COLLATE", "C")
     built_c <- suppressMessages(suppressWarnings(build_example(dataset_id)))
 
-    expect_equal(built_other$traits, built_c$traits, info = dataset_id)
-    expect_equal(built_other$contexts, built_c$contexts, info = dataset_id)
+    # `build_info` records the session, including the locale, so is expected
+    # to differ
+    built_other[["build_info"]] <- NULL
+    built_c[["build_info"]] <- NULL
+
+    expect_equal(built_other, built_c, info = dataset_id)
   }
 })
 
