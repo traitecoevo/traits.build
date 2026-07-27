@@ -1,3 +1,8 @@
+## Build output must not depend on ambient session settings, because the
+## examples are built under `testthat` while real databases are built under
+## `Rscript`, `targets` or `remake`. Anything that differs between those two
+## contexts is invisible to this suite by construction.
+##
 ## Ids used to be generated with locale-collated sorting (`sort()` and
 ## `as.factor()` both follow `LC_COLLATE`), so a build on a contributor's
 ## machine produced different `observation_id`s, `method_id`s and context ids to
@@ -57,6 +62,36 @@ test_that("build output does not depend on `LC_COLLATE`", {
 
     expect_equal(built_other, built_c, info = dataset_id)
   }
+})
+
+
+test_that("citations do not depend on `useFancyQuotes`", {
+  # RefManageR quotes titles with `dQuote()`. `useFancyQuotes` defaults to TRUE,
+  # but `test_that` forces it FALSE, so every committed fixture was generated
+  # with straight quotes while a real `Rscript` build produced curly ones. The
+  # option has to be set explicitly here for this to test anything.
+  old_quotes <- getOption("useFancyQuotes")
+  withr::defer(options(useFancyQuotes = old_quotes))
+
+  # `Test_2023_5` carries six sources across primary, secondary and original
+  # dataset citations, so all three `source_*_citation` columns are populated
+  options(useFancyQuotes = TRUE)
+  built_fancy <- suppressMessages(suppressWarnings(build_example("Test_2023_5")))
+
+  options(useFancyQuotes = FALSE)
+  built_plain <- suppressMessages(suppressWarnings(build_example("Test_2023_5")))
+
+  built_fancy[["build_info"]] <- NULL
+  built_plain[["build_info"]] <- NULL
+
+  expect_equal(built_fancy, built_plain)
+
+  # Guard the intent as well as the symmetry: curly quotes are non-ASCII, and
+  # would otherwise reach every downstream database's citation fields
+  expect_no_match(
+    built_fancy$methods$source_primary_citation,
+    "[\u201c\u201d\u2018\u2019]"
+  )
 })
 
 

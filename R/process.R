@@ -1065,6 +1065,13 @@ bib_print <- function(bib, .opts = list(first.inits = TRUE, max.names = 1000, st
   oldopts <- RefManageR::BibOptions(.opts)
   on.exit(RefManageR::BibOptions(oldopts))
 
+  # RefManageR quotes titles with `dQuote()`, which honours `useFancyQuotes`.
+  # That option defaults to TRUE, so a plain `Rscript` build renders titles with
+  # curly quotes while testthat (which forces it FALSE) renders straight ones.
+  # Pin it so citations do not depend on how the build was launched.
+  oldquotes <- options(useFancyQuotes = FALSE)
+  on.exit(options(oldquotes), add = TRUE)
+
   bib %>%
     format.BibEntry(.sort = FALSE) %>%
     # HACK: remove some of formatting introduced in line above
@@ -1074,6 +1081,9 @@ bib_print <- function(bib, .opts = list(first.inits = TRUE, max.names = 1000, st
     gsub("  ", " ", .) %>%
     gsub("DOI:", " doi: ", ., fixed = TRUE) %>%
     gsub("URL:", " url: ", ., fixed = TRUE) %>%
+    # Normalise page-range dashes to a plain hyphen so output is stable across
+    # RefManageR versions (newer versions render page ranges with an en-dash)
+    gsub("(pp?\\. \\d+)[\u2013\u2014](\\d+)", "\\1-\\2", .) %>%
     ifelse(tolower(bib$bibtype) == "article",  gsub("In:", " ", .), .)
 }
 

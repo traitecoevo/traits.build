@@ -212,7 +212,7 @@ colour_characters <- function(x, i = NULL) {
 }
 
 
-check_disallowed_chars <- function(x, exceptions = c("ÁÅÀÂÄÆÃĀâíåæäãàáíÇčóöøéèłńl°êÜüùúû±µµ“”‘’-–—≈˜×≥≤")) {
+check_disallowed_chars <- function(x, exceptions = c("\u00c1\u00c5\u00c0\u00c2\u00c4\u00c6\u00c3\u0100\u00e2\u00ed\u00e5\u00e6\u00e4\u00e3\u00e0\u00e1\u00ed\u00c7\u010d\u00f3\u00f6\u00f8\u00e9\u00e8\u0142\u0144l\u00b0\u00ea\u00dc\u00fc\u00f9\u00fa\u00fb\u00b1\u00b5\u00b5\u201c\u201d\u2018\u2019-\u2013\u2014\u2248\u02dc\u00d7\u2265\u2264")) {
 
   i <- charToRaw(x)
   # Allow all ascii text
