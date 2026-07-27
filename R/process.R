@@ -1674,11 +1674,12 @@ process_format_contributors <- function(my_list, dataset_id, schema) {
 #' \dontrun{
 #' process_format_identifiers(read_metadata("data/Falster_2003/metadata.yml")$identifiers)
 #' }
-process_format_identifiers <- function(my_list, dataset_id, traits) {
+process_format_identifiers <- function(my_list, dataset_id, schema) {
 
-    if (length(unlist(my_list$identifiers)) > 1) {
+    # `my_list` is the identifiers list itself, as read from `metadata.yml`
+    if (length(unlist(my_list)) > 0) {
       identifiers <-
-        my_list$identifiers %>%
+        my_list %>%
         austraits::convert_list_to_df2() %>%
         dplyr::mutate(dataset_id = dataset_id)
     } else {
