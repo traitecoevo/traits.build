@@ -644,7 +644,7 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
     unique() %>%
     subset(., !is.na(.))
 
-  if (sort) d <- sort(d, na.last = TRUE)
+  if (sort) d <- util_sort_locale_independent(d)
 
   id <- make_id_segment(length(d), prefix)
 
@@ -817,7 +817,7 @@ process_create_context_ids <- function(data, contexts) {
       dplyr::mutate(
         combined = ifelse(.data$combined == NAs, NA, .data$combined),
         id = ifelse(!is.na(.data$combined), .data$combined %>%
-          as.factor() %>% as.integer() %>% make_id(), NA)
+          util_index_locale_independent() %>% make_id(), NA)
       ) %>%
       dplyr::select(-dplyr::all_of(c("combined")))
 
@@ -1674,11 +1674,12 @@ process_format_contributors <- function(my_list, dataset_id, schema) {
 #' \dontrun{
 #' process_format_identifiers(read_metadata("data/Falster_2003/metadata.yml")$identifiers)
 #' }
-process_format_identifiers <- function(my_list, dataset_id, traits) {
+process_format_identifiers <- function(my_list, dataset_id, schema) {
 
-    if (length(unlist(my_list$identifiers)) > 1) {
+    # `my_list` is the identifiers list itself, as read from `metadata.yml`
+    if (length(unlist(my_list)) > 0) {
       identifiers <-
-        my_list$identifiers %>%
+        my_list %>%
         austraits::convert_list_to_df2() %>%
         dplyr::mutate(dataset_id = dataset_id)
     } else {

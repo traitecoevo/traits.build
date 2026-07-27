@@ -4,7 +4,7 @@
 \alias{process_format_identifiers}
 \title{Format identifiers from list into tibble}
 \usage{
-process_format_identifiers(my_list, dataset_id, traits)
+process_format_identifiers(my_list, dataset_id, schema)
 }
 \arguments{
 \item{my_list}{List of input information}

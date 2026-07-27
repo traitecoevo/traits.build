@@ -84,6 +84,41 @@ util_extract_list_element <- function(i, my_list, var) {
 
 
 
+#' Sort a vector independently of the session's locale
+#'
+#' `sort()`, `order()` and `as.factor()` all collate character vectors
+#' according to `LC_COLLATE`, so the same input is ordered differently
+#' depending on the machine. Anything derived from that order — notably the
+#' ids generated during a build — then differs between machines too. Sorting
+#' with `method = "radix"` always collates in the C locale, which is the order
+#' the database has always been built in on CI, and gives a reproducible result.
+#'
+#' `NA` values are dropped.
+#'
+#' @param x A vector
+#'
+#' @return `x`, sorted, with any `NA` removed
+#' @keywords internal
+util_sort_locale_independent <- function(x) {
+  x[order(x, method = "radix", na.last = NA)]
+}
+
+#' Number a vector's unique values independently of the session's locale
+#'
+#' Replacement for `as.integer(as.factor(x))`, which numbers values by their
+#' locale-collated order. `NA` is returned for `NA`, matching the behaviour of
+#' `as.factor()`.
+#'
+#' @param x A vector
+#'
+#' @return Integer vector giving the position of each element of `x` among its
+#'   sorted unique values
+#' @keywords internal
+util_index_locale_independent <- function(x) {
+  match(x, util_sort_locale_independent(unique(x)))
+}
+
+
 #'  Split and sort cells with multiple values
 #'
 #'  `util_separate_and_sort`: For a vector x in which individual cell may have
@@ -102,7 +137,7 @@ util_separate_and_sort <- function(x, sep = " ") {
   # For those cells, split, sort then combine
   x[i] <- x[i] %>%
       stringr::str_split(" ") %>%
-      lapply(function(xi) xi %>% sort() %>% unique() %>% paste(collapse = " ")) %>%
+      lapply(function(xi) xi %>% util_sort_locale_independent() %>% unique() %>% paste(collapse = " ")) %>%
       unlist()
   x
 
