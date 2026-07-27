@@ -1,3 +1,7 @@
+# traits.build (development version)
+
+- `dataset_test()` no longer aborts with `the condition has length > 1` for a dataset that declares more than one identifier. `metadata$identifiers` is a list, so `is.na()` on it returns one value per identifier.
+
 # traits.build 2.1.0
 
 - Identifiers table added, allowing trait values to be linked to a specific identifiers in an herbarium, museum collection, GenBank, or an arboretum. If a data contributor has collected data on the same individual plants across multiple datasets, these can also be linked.
