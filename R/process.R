@@ -1655,7 +1655,8 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
                 find = stringr::str_split(synonyms_string, ",")[[1]] %>%
                   stringr::str_trim() %>%
                   tolower(),
-                replace = trait_value
+                replace = trait_value,
+                trait_name = trait_name
               )
             } else {
               NULL
