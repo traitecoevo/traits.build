@@ -721,7 +721,9 @@ util_standardise_doi <- function(doi) {
 #' Adds citation details from a doi to a metadata file for a `dataset_id`
 #'
 #' Uses rcrossref package to access publication details from the crossref
-#' database
+#' database. `rcrossref` is an optional dependency; it is only needed when
+#' `bib` is not supplied, and can be installed with
+#' `install.packages("rcrossref")`.
 #'
 #' @param bib (Only use for testing purposes) Result of calling `bib rcrossref::cr_cn(doi)`
 #' @inheritParams metadata_path_dataset_id
@@ -735,8 +737,10 @@ metadata_add_source_doi <- function(..., doi, bib = NULL) {
 
   doi <- util_standardise_doi(doi)
 
-  if (is.null(bib))
+  if (is.null(bib)) {
+    util_require_package("rcrossref", "to look up citation details for a doi.")
     bib <- rcrossref::cr_cn(doi)
+  }
 
   if (is.null(bib)) {
     message(red("DOI not available in Crossref database, please fill record manually"))

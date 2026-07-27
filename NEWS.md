@@ -1,3 +1,7 @@
+# traits.build (development version)
+
+- `metadata_add_source_doi()` now reports clearly that the optional `rcrossref` package is needed, and offers to install it in interactive sessions, instead of failing with `there is no package called 'rcrossref'` (#178).
+
 # traits.build 2.1.0
 
 - Identifiers table added, allowing trait values to be linked to a specific identifiers in an herbarium, museum collection, GenBank, or an arboretum. If a data contributor has collected data on the same individual plants across multiple datasets, these can also be linked.

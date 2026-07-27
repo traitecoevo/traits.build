@@ -23,6 +23,27 @@ NULL
 NULL
 
 
+#' Require an optional package
+#'
+#' Checks that a package listed under `Suggests` is available before it is used,
+#' reporting the package name and why it is needed. In an interactive session
+#' the user is offered the chance to install it.
+#'
+#' A thin wrapper around [rlang::check_installed()], kept as its own function so
+#' that the missing-package branch can be exercised in tests without having to
+#' uninstall the package.
+#'
+#' @param pkg Name of the required package
+#' @param reason Sentence completing "The package is required ..." explaining
+#'   what the package is needed for
+#'
+#' @return Called for its side effect. Returns `NULL` invisibly if `pkg` is
+#'   available, otherwise throws an error.
+#' @keywords internal
+util_require_package <- function(pkg, reason) {
+  rlang::check_installed(pkg, reason = reason)
+}
+
 #' Read in a csv as a tibble with column types as characters
 #'
 #' Reads in a csv file using the `read_csv` function from readr
