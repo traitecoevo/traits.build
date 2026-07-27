@@ -223,25 +223,21 @@ dataset_test_worker <-
         )
 
         ## Identifiers
-        if (!is.null(metadata$identifiers)) {
-          if (!is.na(metadata$identifiers)) {
-            testthat::expect_silent(
-              identifiers <-
-                metadata$identifiers %>%
-                process_format_identifiers(dataset_id, data)
-            )
-          }
-        }
-        
-        
-        if (!is.null(metadata$identifiers)) {
-          if (!is.na(metadata$identifiers)) {
+        # A dataset may declare several identifiers, so `metadata$identifiers`
+        # is a list and `is.na()` on it returns one value per element
+        if ("identifiers" %in% names(metadata) & !all(is.na(metadata[["identifiers"]]))) {
+
+          testthat::expect_silent(
+            identifiers <-
+              metadata$identifiers %>%
+              process_format_identifiers(dataset_id, data)
+          )
+
           test_expect_list_elements_exact_names(
             metadata$identifiers,
             schema$metadata$elements$identifiers$elements %>% names(),
             info = paste0(red(f), "\tidentifiers")
           )
-          }
         }
         
         ## Locations
