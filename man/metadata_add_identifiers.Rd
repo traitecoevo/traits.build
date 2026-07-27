@@ -10,9 +10,6 @@ metadata_add_identifiers(dataset_id, overwrite = FALSE)
 \item{dataset_id}{Identifier for a particular study in the database}
 
 \item{overwrite}{Overwrite existing information}
-
-\item{user_responses}{Named list containing simulated user input for manual selection
-of variables, mainly for testing purposes}
 }
 \description{
 This functions asks users which columns in the dataframe they would like to keep

@@ -1074,6 +1074,9 @@ bib_print <- function(bib, .opts = list(first.inits = TRUE, max.names = 1000, st
     gsub("  ", " ", .) %>%
     gsub("DOI:", " doi: ", ., fixed = TRUE) %>%
     gsub("URL:", " url: ", ., fixed = TRUE) %>%
+    # Normalise page-range dashes to a plain hyphen so output is stable across
+    # RefManageR versions (newer versions render page ranges with an en-dash)
+    gsub("(pp?\\. \\d+)[\u2013\u2014](\\d+)", "\\1-\\2", .) %>%
     ifelse(tolower(bib$bibtype) == "article",  gsub("In:", " ", .), .)
 }
 
