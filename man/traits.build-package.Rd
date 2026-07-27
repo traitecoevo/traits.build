@@ -6,7 +6,7 @@
 \alias{traits.build-package}
 \title{traits.build: A workflow for harmonising trait data from diverse sources into a documented standard structure}
 \description{
-The `traits.build` package provides a workflow to harmonise trait data from diverse sources. The code was originally built to support AusTraits (see Falster et al 2021, \doi{10.1038/s41597-021-01006-6}, \url{https://github.com/traitecoevo/autraits.build}) and has been generalised here to support construction of other trait databases. For detailed instructions and examples see \url{https://traitecoevo.github.io/traits.build-book/}.
+The `traits.build` package provides a workflow to harmonise trait data from diverse sources. A description of the data model, workflow, and R package are presented in Wenk et al, 2024, \doi{10.1016/j.ecoinf.2024.102773}. The code was originally built to support AusTraits (see Falster et al 2021, \doi{10.1038/s41597-021-01006-6}, \url{https://github.com/traitecoevo/autraits.build}) and has been generalised here to support construction of other trait databases. For detailed instructions and examples see \url{https://traitecoevo.github.io/traits.build-book/}.
 }
 \seealso{
 Useful links:
@@ -21,6 +21,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Daniel Falster \email{daniel.falster@unsw.edu.au} (\href{https://orcid.org/0000-0002-9814-092X}{ORCID})
   \item Elizabeth Wenk (\href{https://orcid.org/0000-0001-5640-5910}{ORCID}) [curator]
   \item Sophie Yang (\href{https://orcid.org/0000-0001-7328-345X}{ORCID}) [curator]
   \item Fonti Kar (\href{https://orcid.org/0000-0002-2760-3974}{ORCID}) [contributor]
