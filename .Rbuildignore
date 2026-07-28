@@ -28,3 +28,5 @@ _pkgdown.yml$
 ^Meta$
 ^planning$
 ^ontology$
+^\.claude$
+^AGENTS\.md$
