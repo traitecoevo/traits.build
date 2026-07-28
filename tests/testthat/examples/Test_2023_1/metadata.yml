@@ -63,7 +63,7 @@ dataset:
   notes: none
 identifiers:
 - var_in: herbarium_voucher
-  identifier_type: specimentID
+  identifier_type: specimenID
   institution_code: National Herbarium NSW
 - var_in: collection_id
   identifier_type: collectionID

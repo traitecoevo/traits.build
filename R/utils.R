@@ -414,7 +414,11 @@ austraits::convert_df_to_list
 #' @export
 build_combine <- function(..., d = list(...)) {
   lifecycle::deprecate_warn("1.0.0", "build_combine()", "austraits::bind_databases()")
-  austraits::convert_df_to_list(..., d)
+  # The shim pointed users at `bind_databases()` but called
+  # `convert_df_to_list()`, and passed the studies twice -- once through `...`
+  # and again as `d`, which `d = list(...)` had already collected. So it
+  # returned nonsense for anyone who followed the deprecation notice.
+  austraits::bind_databases(databases = d)
 }
 
 #' @importFrom austraits bind_databases
@@ -425,4 +429,33 @@ austraits::bind_databases
 #' @export
 austraits::flatten_database
 
-database_create_combined_table <- austraits::flatten_database
+#' Create a single combined table from a database
+#'
+#' Joins the relational tables of a built database into one wide table, by
+#' calling [austraits::flatten_database()].
+#'
+#' Wenk et al. 2024 (*Ecological Informatics* 83:102773) presents
+#' `database_create_combined_table` as the route to the combined table, but it
+#' was only ever assigned here and never exported, so the published workflow
+#' could not be followed. The paper is the public specification of this
+#' workflow, so the name it documents resolves.
+#'
+#' This is a thin pass-through rather than a reimplementation on purpose. The
+#' joins it relies on are eight functions totalling ~264 lines in `austraits`,
+#' and querying a built compilation is that package's job -- this one builds
+#' the database. Arguments are passed straight through so the defaults have a
+#' single definition.
+#'
+#' Note that `austraits` is currently in `Depends`. When it moves to `Suggests`
+#' this needs a `util_require_package("austraits", ...)` guard, as does
+#' [build_combine()] -- see #225.
+#'
+#' @param database A built database object
+#' @param ... Further arguments passed to [austraits::flatten_database()],
+#' such as `format`, `vars` and `include_description`
+#'
+#' @return A single wide table combining the database's relational tables
+#' @export
+database_create_combined_table <- function(database, ...) {
+  austraits::flatten_database(database, ...)
+}

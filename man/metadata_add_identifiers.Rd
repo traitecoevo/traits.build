@@ -4,12 +4,20 @@
 \alias{metadata_add_identifiers}
 \title{For specified \code{dataset_id} import database cross-referencing identifer data from a dataframe}
 \usage{
-metadata_add_identifiers(dataset_id, overwrite = FALSE)
+metadata_add_identifiers(dataset_id, overwrite = FALSE, user_responses = NULL)
 }
 \arguments{
 \item{dataset_id}{Identifier for a particular study in the database}
 
 \item{overwrite}{Overwrite existing information}
+
+\item{user_responses}{Named list containing simulated user input, so the
+function can be driven without an interactive prompt. Expects \code{var_in}, a
+vector of column names, and \code{identifier_type}, one type per column.}
+}
+\value{
+Invisibly, the updated metadata list. Called for the side effect of
+writing \code{metadata.yml} for \code{dataset_id}.
 }
 \description{
 This functions asks users which columns in the dataframe they would like to keep

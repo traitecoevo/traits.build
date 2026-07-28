@@ -588,10 +588,17 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 #'
 #' @inheritParams metadata_path_dataset_id
 #' @param overwrite Overwrite existing information
+#' @param user_responses Named list containing simulated user input, so the
+#' function can be driven without an interactive prompt. Expects `var_in`, a
+#' vector of column names, and `identifier_type`, one type per column.
+#'
+#' @return Invisibly, the updated metadata list. Called for the side effect of
+#' writing `metadata.yml` for `dataset_id`.
 #'
 #' @importFrom rlang .data
 #' @export
-metadata_add_identifiers <- function(dataset_id, overwrite = FALSE) {
+metadata_add_identifiers <- function(dataset_id, overwrite = FALSE,
+                                     user_responses = NULL) {
 
   # Read metadata
   metadata <- read_metadata_dataset(dataset_id)
@@ -606,7 +613,18 @@ metadata_add_identifiers <- function(dataset_id, overwrite = FALSE) {
   v <- names(data)
 
   # Check for existing info and if it exists, retain information if overwrite = FALSE
-  if (!overwrite && !is.na(metadata$identifiers[1])) {
+  #
+  # `metadata$identifiers` is NULL when the key is absent, which is the case for
+  # every dataset the first time this is called. `is.na(NULL[1])` is
+  # `logical(0)`, so the previous guard reduced to `if (NA)` and failed with
+  # "missing value where TRUE/FALSE needed". Matching the test used in
+  # `dataset_process()` short-circuits correctly, since `all(is.na(NULL))` is
+  # TRUE.
+  has_existing <-
+    "identifiers" %in% names(metadata) &&
+    !all(is.na(metadata[["identifiers"]]))
+
+  if (!overwrite && has_existing) {
     
     identifiers <- metadata$identifiers
     n_existing <- length(metadata$identifiers)
@@ -625,27 +643,45 @@ metadata_add_identifiers <- function(dataset_id, overwrite = FALSE) {
     
   }
 
-    var_in <- metadata_user_select_names(
-      paste("Indicate all columns that contain identifiers that cross-reference between observations in ", dataset_id, " and an herbarium voucher or another database."), v)
-
     types <-
       c("catalogNumber", "collectionID", "institutionCode", "institutionID", "materialSampleID", "occurrenceID")
+
+    if (!is.null(user_responses)) {
+      var_in <- user_responses[["var_in"]]
+      identifier_types <- user_responses[["identifier_type"]]
+
+      if (length(identifier_types) != length(var_in)) {
+        stop("`user_responses` needs one `identifier_type` per `var_in` column")
+      }
+    } else {
+      var_in <- metadata_user_select_names(
+        paste("Indicate all columns that contain identifiers that cross-reference between observations in ", dataset_id, " and an herbarium voucher or another database."), v)
+
+      identifier_types <- purrr::map_chr(
+        var_in,
+        ~ metadata_user_select_names(
+          paste("What identifier type does ", .x, "fit in?"), types)
+      )
+    }
 
     for (i in seq_along(var_in)) {
 
       ii <- n_existing + i
-      identifier_type <- metadata_user_select_names(
-        paste("What identifier type does ", var_in[i], "fit in?"), types)
 
       identifiers[[ii]] <-
         list(
           var_in = var_in[i],
-          identifier_type = identifier_type,
-          institution_code = .na
+          identifier_type = identifier_types[i],
+          # `institution_code` is not asked for, since it cannot be inferred
+          # from the data; the user fills it in afterwards. This was written as
+          # a bare `.na`, which is YAML's null but not an R object, so the
+          # function errored with "object '.na' not found" the moment a column
+          # was selected -- i.e. it never worked at all.
+          institution_code = NA_character_
         )
-      
+
     }
-    
+
   metadata$identifiers <- identifiers
   write_metadata_dataset(metadata, dataset_id)
   return(invisible(metadata))

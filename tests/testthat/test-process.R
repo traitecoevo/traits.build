@@ -121,6 +121,40 @@ test_that("`write_plaintext` exports every table in the database", {
 })
 
 
+test_that("the pipeline published in Wenk et al. 2024 Fig. 1 runs as written", {
+  # Three of the seven functions the paper's figure names were not usable:
+  # `data_update_taxonomy()` did not exist, `database_create_combined_table`
+  # was never exported, and `build_combine()`'s shim called the wrong function.
+  # A reader following the published figure could not run the documented
+  # workflow. This walks it exactly as drawn, so that stays true.
+  taxon_list <- read_csv_char("config/taxon_list-orig.csv")
+
+  build_config <- dataset_configure("examples/Test_2023_1/metadata.yml",
+                                    traits_definitions)
+
+  built <-
+    dataset_process("examples/Test_2023_1/data.csv", build_config,
+                    schema, resource_metadata, unit_conversions) %>%
+    data_update_taxonomy(taxon_list)
+
+  # The published name and the current one are the same function
+  expect_equal(
+    built,
+    dataset_process("examples/Test_2023_1/data.csv", build_config,
+                    schema, resource_metadata, unit_conversions) %>%
+      dataset_update_taxonomy(taxon_list)
+  )
+
+  database <- austraits::bind_databases(databases = list(Test_2023_1 = built))
+
+  combined <- database_create_combined_table(database)
+  expect_s3_class(combined, "data.frame")
+  expect_equal(nrow(combined), nrow(built$traits))
+  # Wider than the traits table, since it is the relational tables joined in
+  expect_gt(ncol(combined), ncol(built$traits))
+})
+
+
 # The below functions are not working
 #test_that("process_flag_unsupported_traits is working", {
 #  process_flag_unsupported_traits(data, definitions)
