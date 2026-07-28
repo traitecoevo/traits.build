@@ -759,10 +759,10 @@ test_that("`build_setup_pipeline` is working", {
 
   out1 <- get("Test_2022", envir = base_tmp_env)
   out2 <- get("sources", envir = furrr_tmp_env)[["Test_2022"]]
-  
+
   # don't compare build_info, as these differ through packages used.
   expect_equal(out1[names(out1) != "build_info"], out2[names(out2) != "build_info"])
-  
+
   # Remake workflow
   expect_silent(suppressMessages(build_setup_pipeline(method = "remake")))
   expect_true(file.exists("remake.yml"))
@@ -842,7 +842,7 @@ testthat::test_that("`dataset_find_taxon` is working", {
 
 
 test_that("reports and plots are produced", {
-  expect_silent(suppressMessages(austraits <- remake::make("test_name")))  
+  expect_silent(suppressMessages(austraits <- remake::make("test_name")))
   expect_silent(
     suppressMessages(
       dataset_report(dataset_id = "Test_2022", austraits = austraits, overwrite = TRUE)

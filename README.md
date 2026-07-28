@@ -11,7 +11,7 @@
 Imagine you wanted to build a database of traits. You might start by compiling data from existing datasets, but you'd quickly find that there are many ways to name and measure the same trait, that different studies use different units, or use an outdated name for a species or taxon.
 
 The `traits.build` package provides a workflow for harmonising data from 
-disconnected primary sources and arises from the AusTraits project [austraits.org](https://austraits.org). In 2023 this package was spun out as a separate package from the [`autraits.build`](http://traitecoevo.github.io/austraits.build/) repository.
+disconnected primary sources and arises from the AusTraits project [austraits.org](https://austraits.org). In 2023 this package was spun out as a separate package from the [`austraits.build`](https://github.com/traitecoevo/austraits.build) repository.
 
 ## Goals
 
@@ -50,7 +50,7 @@ There are multiple ways to install the `traits.build` package itself, and both t
 
 - [User manual](https://traitecoevo.github.io/traits.build-book/): in-depth
   discussion about how to use `traits.build`.
-- [Reference website](http://traitecoevo.github.io/traits.build/): formal
+- [Reference website](https://traitecoevo.github.io/traits.build/): formal
   documentation of all user-side functions.
 
 ## Tutorials
@@ -64,7 +64,7 @@ Please read the [help guide](https://traitecoevo.github.io/traits.build-book/hel
 
 ## Code of conduct
 
-* Please note that the package follows the [Contributor Code of Conduct for the AusTraits projects](http://traitecoevo.github.io/austraits.build/CODE_OF_CONDUCT.html). By contributing to this project you agree to abide by its terms.
+* Please note that the package follows the [Contributor Code of Conduct for the AusTraits projects](https://github.com/traitecoevo/austraits.build/blob/develop/.github/CODE_OF_CONDUCT.md). By contributing to this project you agree to abide by its terms.
 
 ## Citation
 
