@@ -99,6 +99,35 @@ dataset_process <- function(filename_data_raw,
   if ("identifiers" %in% names(metadata) && !all(is.na(metadata[["identifiers"]]))) {
     identifiers <-
       metadata[["identifiers"]] %>% austraits::convert_list_to_df2()
+
+    # A `var_in` naming a column that does not exist used to pass silently:
+    # `process_add_all_columns()` creates the missing column as all-NA, and the
+    # `!is.na(identifier_value)` filter below then drops every row, so the
+    # dataset lost its identifiers with no error, warning or empty-table hint
+    # (#232).
+    #
+    # Checked against `traits` rather than the raw csv header, because
+    # `custom_R_code` has already run above and legitimately creates these
+    # columns -- every dataset currently using this feature relies on that, so
+    # validating the raw header would reject all of them.
+    missing_var_in <- setdiff(identifiers$var_in, names(traits))
+
+    if (length(missing_var_in) > 0) {
+      stop(
+        sprintf(
+          paste0(
+            "Dataset %s declares identifiers with `var_in` naming %s not present in the data: %s.\n",
+            "  Available columns: %s\n",
+            "  If the column is meant to be created by `custom_R_code`, check that it runs and spells the name identically."
+          ),
+          dataset_id,
+          ifelse(length(missing_var_in) > 1, "columns", "a column"),
+          paste(missing_var_in, collapse = ", "),
+          paste(names(traits), collapse = ", ")
+        ),
+        call. = FALSE
+      )
+    }
   } else {
     identifiers <- list(
       "var_in",
