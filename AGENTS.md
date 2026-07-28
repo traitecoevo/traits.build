@@ -27,16 +27,44 @@ regression tests covering the whole output structure. Never hand-edit an expecte
 output you observed — run `Rscript regenerate-examples.R` from `tests/testthat/` and read the diff.
 Every diff is either a fix you meant to make or a regression.
 
-> Heads-up: `traits.build` has `austraits` in **`Depends`** (it re-exports a few conversion
-> helpers), so the R-package install graph runs `traits.build → austraits` even though in the *data*
-> pipeline traits.build is upstream of austraits. Run traits.build's tests after touching those
-> helpers.
->
-> `Depends` rather than `Imports` is deliberate and load-bearing, not an oversight: `custom_R_code`
-> in downstream `metadata.yml` files is evaluated against the search path, and ~1,240 call sites
-> across the 601 datasets in `austraits.build`, `ausinvertraits.build` and `AusFizz` call
-> dplyr/tidyr/stringr functions unqualified. Moving those packages to `Imports` breaks all of them.
-> See #225 before touching `DESCRIPTION`.
+### `Depends` is a contract, not an oversight — read this before editing `DESCRIPTION`
+
+This is the easiest way to break every downstream database, and it looks exactly like tidying up.
+
+`DESCRIPTION` has `dplyr`, `lubridate`, `readr`, `stringr` and `tidyr` in **`Depends`**, so they are
+*attached* when traits.build loads. That is load-bearing. Datasets carry `custom_R_code` snippets in
+their `metadata.yml`, which the build evaluates with `eval(parse(text = ...), new.env())` in
+`process_custom_code()` (`R/process.R`). `new.env()` chains to the **search path**, so those snippets
+resolve unqualified names — `mutate()`, `filter()`, `str_detect()` — through whatever is attached.
+
+Across the three database repos that is **~1,240 unqualified call sites in 601 datasets**:
+
+| Repo | Datasets | Unqualified calls |
+|---|---|---|
+| `austraits.build` | 411 | 970 |
+| `ausinvertraits.build` | 160 | 170 |
+| `AusFizz` | 30 | 100 |
+
+**Moving those five to `Imports` breaks all of them**, at build time, in repos whose tests do not run
+here. CRAN treats a heavy `Depends` as a style smell rather than a blocker, so there is no deadline
+forcing the change.
+
+What is safe: adding to `Imports`, and removing entries that are genuinely unused — `base` (a no-op)
+and `forcats` (referenced nowhere) came out this way. What is not safe: moving any of the tidyverse
+five out of `Depends` without first making the `custom_R_code` environment explicit, i.e. having
+`process_custom_code()` populate its evaluation environment from the namespaces user code is entitled
+to use instead of relying on what happens to be attached. Do that and `Depends` → `Imports` becomes
+safe, and `custom_R_code` starts behaving identically under `library()`, `traits.build::`, `Rscript`
+and `targets` workers — which it does not today. #225 sketches the fix; it is not done.
+
+Any change here wants the downstream gate: build all three repos before and after, and diff the
+output. Nothing in this repo's own suite will catch it.
+
+> Separately: `austraits` is also in `Depends`, for a few re-exported conversion helpers, so the
+> package graph runs `traits.build → austraits` even though in the *data* pipeline traits.build is
+> upstream of austraits. That edge is a known wart with a plan attached (#225 Option A); it is not
+> the contract above, and moving `austraits` to `Suggests` does not endanger `custom_R_code`, since
+> no downstream snippet calls it unqualified. Run this package's tests after touching those helpers.
 
 ---
 
