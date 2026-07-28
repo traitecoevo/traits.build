@@ -2,6 +2,44 @@
 
 *Review dated 2026-07-27. Tracked by the epic issue linked from this file's PR.*
 
+> ## Corrections, 2026-07-28
+>
+> Stage 0 is done (#230), and executing it proved six statements below wrong. They are corrected
+> here rather than edited away, because *why* the review was wrong is the more useful record.
+> Everything else held up.
+>
+> 1. **`fix/rdevel-check-identifiers-citation` was not unPR'd.** It was raised as #217 and merged
+>    into **`master`, not `develop`**, on 8 July. So were #214 and #215. Nothing enforces the base
+>    branch on a PR, and this cost three weeks of `develop` carrying WARNINGs that were already
+>    fixed. Ported by #229 and #231.
+> 2. **The identifiers feature is broken in four ways, not three.** `write_plaintext()` — the
+>    public exporter — had a hardcoded table list that omitted `identifiers`, so every export
+>    silently dropped 2.1.0's headline table for the whole release. The function had no test.
+>    Fixed in #230.
+> 3. **There are three Rd `\usage` mismatches, not two.** `process_parse_data()` gained an
+>    `identifiers` parameter whose roxygen was never updated. With it fixed, a fresh-clone
+>    `R CMD check` reports **0 errors, 0 warnings, 3 notes**, so `error-on: "warning"` can be
+>    turned on now rather than in Stage 2.
+> 4. **The `expect_snapshot_value()` migration should not happen.** Its premise — that
+>    `expect_equal` "dumps hundreds of rows for a one-cell change" — was true under testthat
+>    edition 2 but not edition 3, which is already active. Measured: waldo gives a 15-line diff
+>    naming the exact cell in the 527×26 traits table. The regeneration benefit is provided
+>    instead by `tests/testthat/regenerate-examples.R`, which goes through `write_plaintext()` and
+>    so covers the exporter too. Snapshots are now used where they do fit: `dataset_test`'s report.
+> 5. **The `R/pivot.R` detached-roxygen hazard is already gone.** "Fix before anyone runs
+>    `document()`" no longer applies — roxygen2 8.0.0, adopted in #228, associates the block across
+>    the blank line. Verified by deleting `man/check_pivot_wider.Rd` and re-documenting: it comes
+>    back identically.
+> 6. **The real edition-3 gap is `local_edition(2)` in `dataset_test_worker()`**
+>    (`R/testdata.R:60`), not the two deprecated `context()` calls. Those are a symptom. See #234.
+>
+> Two things the review predicted were understated rather than wrong. The unasserted
+> `identifiers.csv` fixtures were not merely stale, they were **wrong**: Test_2023_1 maps
+> observation 235 to `Plant 66` where the verified `traits.csv` puts it on taxon *Syzygium*, the
+> `Plant 73` row. And Test_2023_2's 506-row fixture could not be reproduced from committed inputs
+> at all, because the column it read from was never committed. Follow-ups from Stage 0 are
+> #232–#236.
+
 A structured review of the package against four goals — **easy to use, well documented, easily
 maintained, and stable**. Every claim below was verified against the code, the three downstream
 database repos (`austraits.build`, `ausinvertraits.build`, `AusFizz`), the published paper
@@ -138,11 +176,14 @@ Two caveats to handle while doing it:
 - **Expect the newly-compared files to fail immediately.** The identifiers pipeline is broken, so
   the existing `identifiers.csv` fixtures may encode buggy output. They must be regenerated and
   reviewed, not blessed.
-- **Fix the diff ergonomics at the same time.** `expect_equal(built[[v]], expected[[v]])` on a whole
-  tibble dumps hundreds of rows for a one-cell change. `Config/testthat/edition: 3` is already set
-  and `_snaps/` exists but is empty — moving to `expect_snapshot_value()` gives readable diffs and a
-  one-command `snapshot_accept()` regeneration path, which also removes the temptation to hand-edit
-  expected output to match observed output.
+- **Fix the diff ergonomics at the same time.** ~~`expect_equal(built[[v]], expected[[v]])` on a
+  whole tibble dumps hundreds of rows for a one-cell change... moving to `expect_snapshot_value()`
+  gives readable diffs and a one-command `snapshot_accept()` regeneration path.~~
+  **Superseded — see correction 4.** The premise was edition-2 behaviour; under edition 3, already
+  active, `expect_equal` routes through waldo and gives a 15-line diff naming the exact cell. What
+  was actually missing was the regeneration path, now `tests/testthat/regenerate-examples.R`, which
+  additionally exercises `write_plaintext()`. The real point stands: nothing should be hand-edited
+  to match observed output.
 
 ---
 
@@ -560,9 +601,11 @@ unPR'd `fix/rdevel-check-identifiers-citation`. Fix `.na` (`R/setup.R:624`) plus
 `data_update_taxonomy()` alias, fix `build_combine()`'s shim, export
 `database_create_combined_table`. Fix the `specimentID` typo and validate `identifier_type` against
 the allowed list. Delete `forcats` and `base`; add `^ontology$` to `.Rbuildignore` (11 MB, currently
-shipped — well over CRAN's 5 MB limit). Fix the detached roxygen block at `R/pivot.R:8` **before
+shipped — well over CRAN's 5 MB limit). ~~Fix the detached roxygen block at `R/pivot.R:8` **before
 anyone runs `document()`**, since the next re-document silently deletes
-`man/check_pivot_wider.Rd` and breaks the pkgdown build.
+`man/check_pivot_wider.Rd` and breaks the pkgdown build.~~ **No longer applies — see correction
+5:** roxygen2 8.0.0 (adopted in #228) associates the block across the blank line, verified by
+deleting the Rd and re-documenting.
 
 **Stage 2 — turn the safety nets back on (days).** Resolve the licence. Clear the remaining check
 NOTEs. Set `error-on: "warning"`, add `pull_request` to the coverage workflow, add `oldrel-1` and
@@ -756,7 +799,7 @@ Also resolved: **`remake` is to be dropped**, but paced by partner migration —
 remake, so guarding the six test calls unblocks CRAN *now* and the removal can follow at partner
 pace. And **ownership of the `austraits` side of Option A sits with Daniel or Fonti Kar**.
 
-Nothing is currently blocking a start on Stage 0.
+Nothing is currently blocking a start on Stage 0. **Stage 0 is now done (#230); Stage 1 is in progress.** Its one open decision is whether `database_create_combined_table` should be exported as the thin `austraits::flatten_database` alias it is today, or reimplemented here first. Reimplementing means porting 288 lines of `join_*` query-layer code out of austraits, which is that package's job, not this one's -- so exporting the alias and guarding it in Stage 3, exactly as this review already prescribes for `build_combine()`, looks right.
 
 ### Resolved while writing this: what `Test_2023_9` is for
 
