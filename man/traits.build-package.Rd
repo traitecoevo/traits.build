@@ -4,14 +4,14 @@
 \name{traits.build-package}
 \alias{traits.build}
 \alias{traits.build-package}
-\title{traits.build: A workflow for harmonising trait data from diverse sources into a documented standard structure}
+\title{traits.build: A Workflow for Harmonising Trait Data from Diverse Sources into a Documented Standard Structure}
 \description{
-The `traits.build` package provides a workflow to harmonise trait data from diverse sources. A description of the data model, workflow, and R package are presented in Wenk et al, 2024, \doi{10.1016/j.ecoinf.2024.102773}. The code was originally built to support AusTraits (see Falster et al 2021, \doi{10.1038/s41597-021-01006-6}, \url{https://github.com/traitecoevo/autraits.build}) and has been generalised here to support construction of other trait databases. For detailed instructions and examples see \url{https://traitecoevo.github.io/traits.build-book/}.
+The `traits.build` package provides a workflow to harmonise trait data from diverse sources. A description of the data model, workflow, and R package are presented in Wenk et al, 2024, \doi{10.1016/j.ecoinf.2024.102773}. The code was originally built to support AusTraits (see Falster et al 2021, \doi{10.1038/s41597-021-01006-6}, \url{https://github.com/traitecoevo/austraits.build}) and has been generalised here to support construction of other trait databases. For detailed instructions and examples see \url{https://traitecoevo.github.io/traits.build-book/}.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{http://traitecoevo.github.io/traits.build/}
+  \item \url{https://traitecoevo.github.io/traits.build/}
   \item Report bugs at \url{https://github.com/traitecoevo/traits.build/issues}
 }
 

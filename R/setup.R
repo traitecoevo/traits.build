@@ -625,22 +625,22 @@ metadata_add_identifiers <- function(dataset_id, overwrite = FALSE,
     !all(is.na(metadata[["identifiers"]]))
 
   if (!overwrite && has_existing) {
-    
+
     identifiers <- metadata$identifiers
     n_existing <- length(metadata$identifiers)
-      
+
     message(
       sprintf(
         red("Existing identifier information detected, from the following columns in the dataset: ") %+%
         green("'%s'\n\t") %+% red("Metadata is being appended; please review duplicates manually"),
       identifiers %>% purrr::map_chr(~.x[["var_in"]]) %>% paste(collapse = "', '"))
     )
-    
+
   } else {
-    
+
     identifiers <- list()
     n_existing <- 0
-    
+
   }
 
     types <-

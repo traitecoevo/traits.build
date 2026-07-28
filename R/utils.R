@@ -224,7 +224,7 @@ read_metadata <- function(path) {
       gsub("custom_R_code:", "", ., fixed = TRUE) %>%
       paste(collapse = "\n")
   }
-  
+
   data
 }
 
@@ -263,15 +263,15 @@ write_metadata <- function(data, path, style_code = FALSE) {
 
   y <- data
   y$dataset$custom_R_code <- NA
-  
+
   # For metadata files that don't yet include "identifiers", add before writing file
   if (!"identifiers" %in% names(y)) {
     y["identifiers"] <- NA
   }
-  
-  y <- y[c("source", "contributors", "dataset", "identifiers", "locations", "contexts", "traits", 
+
+  y <- y[c("source", "contributors", "dataset", "identifiers", "locations", "contexts", "traits",
                "substitutions", "taxonomic_updates", "exclude_observations", "questions")]
-  
+
 
   txt <- yaml::as.yaml(y, column.major = FALSE, indent = 2) %>%
     gsub(": ~", ":", ., fixed = TRUE)
@@ -337,10 +337,10 @@ create_tree_branch <- function(x, title, prefix = "") {
 # Renaming and re-exporting austraits functions to ensure old scripts still work
 
 #' Convert a list with single entries to dataframe
-#' 
+#'
 #' @description
 #' `r lifecycle::badge("deprecated")`
-#' 
+#'
 #' @param my_list A list with single entries
 #' @return A tibble with two columns
 #' @export
@@ -360,7 +360,7 @@ austraits::convert_list_to_df1
 #'
 #' @description
 #' Convert a list of lists to dataframe; requires that every list have same named elements.
-#' 
+#'
 #' `r lifecycle::badge("deprecated")`
 #'
 #' @param my_list A list of lists to dataframe
@@ -382,7 +382,7 @@ austraits::convert_list_to_df2
 #'
 #' @description
 #' Convert a dataframe to a named list, useful when converting to yaml.
-#'  
+#'
 #' `r lifecycle::badge("deprecated")`
 #'
 #' @param df A dataframe

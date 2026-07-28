@@ -239,7 +239,7 @@ dataset_test_worker <-
             info = paste0(red(f), "\tidentifiers")
           )
         }
-        
+
         ## Locations
 
         testthat::expect_silent(
@@ -463,9 +463,9 @@ dataset_test_worker <-
         )
 
         # Check units are found in `unit_conversions.csv`
-        # This test is being commented out, because fails anytime columns are read in 
+        # This test is being commented out, because fails anytime columns are read in
         # or anytime there are units not in unit_conversions because they are never converted.
-        
+
         #units <- read_csv("config/unit_conversions.csv")
         #expect_is_in(
         #  traits$unit_in, units$unit_from,
@@ -914,7 +914,7 @@ dataset_test_worker <-
           )
 
           # Commenting out test Dec 2024, because `check_pivot_longer` has been deprecated
-          
+
           #if (exists("dataset_wider")) {
           #  test_expect_no_warning(
           #    test_expect_no_error(

@@ -8,7 +8,7 @@ test_that("`util_replace_null` returns NA", {
 
 test_that("`convert_df_to_list` is working", {
   starwars_list <- suppressWarnings(convert_df_to_list(dplyr::starwars))
-  
+
   expect_type(starwars_list, "list")
   expect_type(starwars_list, "list")
 })
@@ -16,7 +16,7 @@ test_that("`convert_df_to_list` is working", {
 
 test_that("`convert_list_to_df1` is working", {
   starwars_df <- suppressWarnings(convert_list_to_df1(as.list(dplyr::starwars)[2]))
-  
+
   expect_equal(starwars_df |> nrow(), 87)
   expect_match(starwars_df$value |> class(), "integer")
   expect_match(starwars_df$key |> unique(), "height")
@@ -56,7 +56,7 @@ test_that("`util_extract_list_element` is working", {
 
 
 test_that("`util_append_to_list` is working", {
-  my_list <- as.list(dplyr::starwars) 
+  my_list <- as.list(dplyr::starwars)
   expect_equal(util_append_to_list(my_list, NULL), my_list)
   expect_length(util_append_to_list(my_list, NA), 15)
   expect_gt(length(util_append_to_list(my_list, NA)), length(my_list))
@@ -76,4 +76,3 @@ test_that("`util_separate_and_sort` returns alphabetically sorted characters", {
 test_that("testing env is working", {
   expect_true(is_testing_env())
 })
-

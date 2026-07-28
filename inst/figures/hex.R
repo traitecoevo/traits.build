@@ -2,11 +2,11 @@
 
 f <- function(filename) {
   p <- ggplot() +  theme_void() + ggpubr::theme_transparent()
-  
+
   #p <- file.path("logo_green_transparent.png")
-  
-  hexSticker::sticker(p, 
-                    package="traits.build", 
+
+  hexSticker::sticker(p,
+                    package="traits.build",
                     p_color = "chartreuse4",
                     p_size=25,
                     p_y = 1.05,

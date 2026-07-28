@@ -1,0 +1,14 @@
+linters: linters_with_defaults(
+    line_length_linter(120L),
+    object_length_linter(40L),
+    commented_code_linter = NULL,
+    indentation_linter = NULL,
+    pipe_consistency_linter = NULL,
+    pipe_continuation_linter = NULL
+  )
+exclusions: list(
+    "tests/testthat/examples",
+    "tests/testthat/R",
+    "tests/testthat/build.R"
+  )
+encoding: "UTF-8"

@@ -5,16 +5,9 @@
 ## passes on any output at all.
 
 
-# `dataset_test` reads `config/taxon_list.csv`, which is not in the repository:
-# it is created as a side effect of `test-setup.R`. Test files run
-# alphabetically, so this one runs first on a clean checkout. Seed it from the
-# committed fixture that `test-setup.R` copies over it anyway.
-local_taxon_list <- function(env = parent.frame()) {
-  if (!file.exists("config/taxon_list.csv")) {
-    file.copy("config/taxon_list-orig.csv", "config/taxon_list.csv")
-    withr::defer(unlink("config/taxon_list.csv"), envir = env)
-  }
-}
+# `dataset_test` reads `config/taxon_list.csv`, which is not in the repository.
+# `helper.R` seeds it before any test file runs, so this file no longer needs to
+# guard for itself.
 
 
 # The messages `dataset_test` reports, with everything environment-dependent
@@ -23,8 +16,6 @@ local_taxon_list <- function(env = parent.frame()) {
 # in `R/` is edited, which would make these snapshots churn on unrelated
 # changes).
 dataset_test_failures <- function(dataset_id) {
-
-  local_taxon_list()
 
   withr::local_options(
     useFancyQuotes = FALSE, cli.unicode = FALSE, crayon.enabled = FALSE,
@@ -60,8 +51,6 @@ test_that("`dataset_test` handles several identifiers", {
   # "the condition has length > 1" for any such dataset.
   metadata <- read_metadata("examples/Test_2023_1/metadata.yml")
   expect_gt(length(metadata$identifiers), 1)
-
-  local_taxon_list()
 
   out <- capture.output(
     suppressMessages(

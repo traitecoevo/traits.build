@@ -6,6 +6,7 @@
 - `metadata_add_contexts()` no longer writes time-valued contexts as a number of seconds (`9:00:00` became `32400.0`) when called with `user_responses`, and now reports when a time column has been reformatted so the recorded values can be recognised as matching `data.csv` (#49).
 - `metadata_add_contexts()`, `metadata_add_traits()` and `metadata_add_identifiers()` now guess column types from the same number of rows as the build (`guess_max = 100000`), so a sparse column can no longer be typed one way when metadata is written and another way when the database is built.
 - `metadata_add_source_doi()` now reports clearly that the optional `rcrossref` package is needed, and offers to install it in interactive sessions, instead of failing with `there is no package called 'rcrossref'` (#178).
+- Corrected the link to the AusTraits source repository, which had been misspelled `autraits.build` in `DESCRIPTION`, the package documentation and `NEWS.md`, and pointed at a URL that did not resolve. The Code of Conduct and reference website links in `README.md` were also dead or redirecting, and now resolve directly.
 
 # traits.build 2.1.0
 
@@ -49,7 +50,7 @@ As described in #134, fixes some minor issues with
 
 # traits.build 1.0.0
 
-This is the first major release of the {traits.build} package, providing a workflow to harmonise trait data from diverse sources. The code was originally built to support AusTraits (see Falster et al 2021, <doi:10.1038/s41597-021-01006-6>, <https://github.com/traitecoevo/autraits.build>) and has been generalised here to support construction of other trait databases. Detailed instructions are available at
+This is the first major release of the {traits.build} package, providing a workflow to harmonise trait data from diverse sources. The code was originally built to support AusTraits (see Falster et al 2021, <doi:10.1038/s41597-021-01006-6>, <https://github.com/traitecoevo/austraits.build>) and has been generalised here to support construction of other trait databases. Detailed instructions are available at
 
 - package website: <https://traitecoevo.github.io/traits.build/>
 - package book: <https://traitecoevo.github.io/traits.build-book/>

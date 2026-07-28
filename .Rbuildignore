@@ -30,3 +30,4 @@ _pkgdown.yml$
 ^ontology$
 ^\.claude$
 ^AGENTS\.md$
+^\.lintr$
