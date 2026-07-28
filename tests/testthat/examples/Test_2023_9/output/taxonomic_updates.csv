@@ -20,10 +20,10 @@ Test_2023_9,Endiandra leptodendron,Endiandra leptodendron,,Endiandra leptodendro
 Test_2023_9,Endiandra microneura,Endiandra microneura,,Endiandra microneura,https://id.biodiversity.org.au/node/apni/2899314,accepted
 Test_2023_9,Gillbeea adenopetala,Gillbeea adenopetala,,Gillbeea adenopetala,https://id.biodiversity.org.au/node/apni/2913815,accepted
 Test_2023_9,Glochidion hylandii,Glochidion hylandii,,Glochidion hylandii,https://id.biodiversity.org.au/node/apni/2889113,accepted
-Test_2023_9,Haplostichanthus sp Coop. Ck,Haplostichanthus submontanus,,Polyalthia submontana,https://id.biodiversity.org.au/instance/apni/51430810,nomenclatural synonym
+Test_2023_9,Haplostichanthus sp Coop. Ck,Haplostichanthus submontanus,species,Polyalthia submontana,https://id.biodiversity.org.au/instance/apni/51430810,nomenclatural synonym
 Test_2023_9,Harpullia rhyticarpa,Harpullia rhyticarpa,,Harpullia rhyticarpa,https://id.biodiversity.org.au/node/apni/2910766,accepted
 Test_2023_9,Hernandia albiflora,Hernandia albiflora,,Hernandia albiflora,https://id.biodiversity.org.au/node/apni/2911354,accepted
-Test_2023_9,Homalanthus novoguineensis,Homalanthus novo-guineensis,,Homalanthus novo-guineensis,https://id.biodiversity.org.au/node/apni/2888327,accepted
+Test_2023_9,Homalanthus novoguineensis,Homalanthus novo-guineensis,species,Homalanthus novo-guineensis,https://id.biodiversity.org.au/node/apni/2888327,accepted
 Test_2023_9,Ixora biflora,Ixora biflora,,Ixora biflora,https://id.biodiversity.org.au/node/apni/2915627,accepted
 Test_2023_9,Lasianthus strigosus,Lasianthus strigosus,,Lasianthus chlorocarpus,https://id.biodiversity.org.au/instance/apni/7839725,misapplied
 Test_2023_9,Litsea leefeana,Litsea leefeana,,Litsea leefeana,https://id.biodiversity.org.au/node/apni/2921063,accepted
@@ -37,7 +37,7 @@ Test_2023_9,Neolitsea dealbata,Neolitsea dealbata,,Neolitsea dealbata,https://id
 Test_2023_9,Pittosporum rubiginosum,Pittosporum rubiginosum,,Pittosporum rubiginosum,https://id.biodiversity.org.au/node/apni/2887772,accepted
 Test_2023_9,Polyscias australiana,Polyscias australiana,,Polyscias australiana,https://id.biodiversity.org.au/instance/apni/941828,taxonomic synonym
 Test_2023_9,Psychotria dallachiana,Psychotria dallachiana,,Psychotria dallachiana,https://id.biodiversity.org.au/node/apni/2890013,accepted
-Test_2023_9,Psychotria sp Utchee Creek,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),https://id.biodiversity.org.au/taxon/apni/51446727,accepted
+Test_2023_9,Psychotria sp Utchee Creek,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),species,Psychotria sp. Utchee Creek (H.Flecker NQNC5313),https://id.biodiversity.org.au/taxon/apni/51446727,accepted
 Test_2023_9,Quassia baileyana,Quassia baileyana,,Samadera baileyana,https://id.biodiversity.org.au/instance/apni/897542,nomenclatural synonym
 Test_2023_9,Rhodomyrtus trineura,Rhodomyrtus trineura,,Rhodomyrtus trineura,https://id.biodiversity.org.au/taxon/apni/51441176,accepted
 Test_2023_9,Rockinghamia angustifolia,Rockinghamia angustifolia,,Rockinghamia angustifolia,https://id.biodiversity.org.au/node/apni/2921179,accepted
