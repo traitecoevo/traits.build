@@ -233,20 +233,36 @@ check_disallowed_chars <- function(x, exceptions = c("\u00c1\u00c5\u00c0\u00c2\u
 
   # Allow some utf8 characters, those with accents over letters for foreign names
   # List of codes is here: http://www.utf8-chartable.de/
-  allowed_bytes <- charToRaw(exceptions)
+  allowed_chars <- util_split_chars(exceptions)
 
-  # Returns one value per character rather than per byte, so that the positions
-  # line up with `colour_characters()`. Whether a character is disallowed is
-  # still decided byte by byte, exactly as before: it is allowed when every one
-  # of its bytes is either ASCII or appears somewhere in `exceptions`. That is
-  # looser than comparing whole characters -- a character assembled from bytes
-  # that all happen to occur in `exceptions` slips through -- but tightening it
-  # would change which real datasets pass, so it is left alone here.
+  # Compared whole character against whole character. This used to flatten
+  # `exceptions` into an unordered bag of bytes and allow a character when each
+  # of its bytes appeared *somewhere* in that bag, which let 1,671 code points
+  # through: the 49-character exception list yields only 47 distinct bytes, so
+  # anything reassembled from them passed. `ñ`, `É`, `Ø`, `º`, `≠`, `…`, `‰` and
+  # a non-breaking space were all silently accepted (#233).
+  #
+  # Returns one value per character, not per byte, so positions line up with
+  # `colour_characters()`.
   vapply(
     util_split_chars(x),
     function(char) {
       bytes <- charToRaw(char)
-      !all(bytes < 0x7F | bytes %in% allowed_bytes)
+
+      # ASCII is always allowed, whatever the exception list says
+      if (all(bytes < 0x7F)) {
+        return(FALSE)
+      }
+
+      # `util_split_chars()` falls back to splitting on bytes for input that is
+      # not valid UTF-8, so `char` can be a lone continuation byte. Those are
+      # exactly the mojibake this check exists to catch, and comparing them as
+      # strings is not meaningful, so treat them as disallowed.
+      if (!validUTF8(char)) {
+        return(TRUE)
+      }
+
+      !(char %in% allowed_chars)
     },
     logical(1),
     USE.NAMES = FALSE
