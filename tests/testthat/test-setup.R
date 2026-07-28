@@ -251,6 +251,55 @@ test_that("`metadata_add_locations` is working", {
 })
 
 
+test_that("`metadata_add_identifiers` is working", {
+  # This was the only `metadata_add_*` function with no test, precisely because
+  # it was the only one with no `user_responses` hook to test through -- and
+  # with nothing exercising it, `institution_code = .na` shipped. `.na` is
+  # YAML's null, not an R object, so the function errored with
+  # "object '.na' not found" the moment a column was selected. It never worked.
+  expect_true(file.copy("data/Test_2022/test-metadata.yml",
+                        "data/Test_2022/metadata.yml", overwrite = TRUE))
+
+  expect_no_error(
+    x <- metadata_add_identifiers(
+      "Test_2022",
+      user_responses = list(
+        var_in = c("species_abb", "site"),
+        identifier_type = c("catalogNumber", "institutionCode")))
+  )
+
+  expect_length(x$identifiers, 2)
+  expect_equal(purrr::map_chr(x$identifiers, "var_in"), c("species_abb", "site"))
+  expect_equal(purrr::map_chr(x$identifiers, "identifier_type"),
+               c("catalogNumber", "institutionCode"))
+
+  # Not asked for, since it cannot be inferred from the data -- but it has to be
+  # a real NA the user can fill in, not an error
+  expect_true(all(is.na(purrr::map_chr(x$identifiers, "institution_code"))))
+
+  # Round-trips through `metadata.yml` rather than only existing in memory
+  written <- read_metadata_dataset("Test_2022")
+  expect_equal(written$identifiers, x$identifiers)
+
+  # Appends rather than overwrites, matching its siblings
+  expect_message(
+    y <- metadata_add_identifiers(
+      "Test_2022",
+      user_responses = list(var_in = "Species", identifier_type = "occurrenceID"))
+  )
+  expect_length(y$identifiers, 3)
+
+  expect_error(
+    suppressMessages(
+      metadata_add_identifiers(
+        "Test_2022",
+        user_responses = list(var_in = c("Species", "site"),
+                              identifier_type = "occurrenceID"))),
+    "one `identifier_type` per `var_in`"
+  )
+})
+
+
 test_that("`metadata_add_contexts` is working", {
   expect_true(file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml", overwrite = TRUE))
   var_in <- c("test_context_1", "test_context_2")

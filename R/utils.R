@@ -414,7 +414,11 @@ austraits::convert_df_to_list
 #' @export
 build_combine <- function(..., d = list(...)) {
   lifecycle::deprecate_warn("1.0.0", "build_combine()", "austraits::bind_databases()")
-  austraits::convert_df_to_list(..., d)
+  # The shim pointed users at `bind_databases()` but called
+  # `convert_df_to_list()`, and passed the studies twice -- once through `...`
+  # and again as `d`, which `d = list(...)` had already collected. So it
+  # returned nonsense for anyone who followed the deprecation notice.
+  austraits::bind_databases(databases = d)
 }
 
 #' @importFrom austraits bind_databases

@@ -2046,6 +2046,26 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
   austraits_raw
 }
 
+
+#' Apply taxonomic updates to austraits_raw
+#'
+#' Alias for [dataset_update_taxonomy()].
+#'
+#' Wenk et al. 2024 (*Ecological Informatics* 83:102773) names this step
+#' `data_update_taxonomy` in the Fig. 1 pipeline diagram, but no such function
+#' has ever existed, so the published workflow could not be run as written.
+#' The paper is the public specification of this workflow, so the name it
+#' documents resolves here rather than being treated as an erratum.
+#'
+#' @inheritParams dataset_update_taxonomy
+#'
+#' @return List of AusTraits compiled data with taxonomic updates applied
+#' @export
+data_update_taxonomy <- function(austraits_raw, taxa) {
+  dataset_update_taxonomy(austraits_raw, taxa)
+}
+
+
 #' Add version information to AusTraits
 #'
 #' @param austraits AusTraits database object
