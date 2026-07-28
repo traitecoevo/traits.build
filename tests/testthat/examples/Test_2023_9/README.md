@@ -1,7 +1,13 @@
 
 # Test Dataset 9: `Test_2023_9`
 
-This dataset is for testing `dataset_test` (not yet implemented). Erroneous metadata entry has been added to check the expected output of `dataset_test` (more to be added).
+This dataset is for testing `dataset_test`. Erroneous metadata entries have been added to check the expected output of `dataset_test` (more to be added).
+
+It carries deliberate faults, so unlike the other examples it is **expected to fail `dataset_test`**. The report it produces is pinned as a snapshot in `tests/testthat/_snaps/dataset-test.md`; that snapshot is the only coverage the package has of the validation layer actually rejecting bad input. When it changes, work out which check changed and why before running `snapshot_accept()`.
+
+Note that not every message in that snapshot comes from a fault added on purpose. The `trait N - does not contain: 'value_type', 'basis_of_value'` and `taxonomic_update N - does not contain: 'taxonomic_resolution'` lines are this metadata having been written before those fields entered the schema, and were only visible once the dataset was un-commented in Stage 0 of #225. Tidying them is worth doing; doing so will change the snapshot.
+
+Its build output in `output/` is also compared, like the other examples. Those files were three years stale until Stage 0 regenerated them.
 
 Test_2023_9 is a copy of Falster_2005_1 with the following modifications:
 - `entity_type`, `basis_of_value`, `value_type` and `replicates` were moved to dataset level fixed value in metadata.yml, except for `flowering_time`, `huber_value` (LASA1000) and `plant_growth_form` where they're specified at the trait level

@@ -1367,6 +1367,10 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' @param metadata Yaml file with metadata
 #' @param contexts Dataframe of contexts for this study
 #' @param schema Schema for traits.build
+#' @param identifiers Dataframe of identifiers for this study, as returned by
+#' [process_format_identifiers()]. Its `var_in` column names the columns of
+#' `data` holding identifier values, which are carried through so they can be
+#' split into the identifiers table once `observation_id` is set.
 #' @return Tibble in long format with AusTraits formatted trait names, trait
 #' substitutions and unique observation id added
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
@@ -1907,6 +1911,42 @@ process_taxonomic_updates <- function(data, metadata) {
 
 }
 
+# Ranks at or below species, whose names are binomials or trinomials and so are
+# matched against the taxon list in full. Names at any coarser rank are matched
+# on their first word alone -- see `util_name_to_match_to()`.
+#
+# The list is botanical, which is a limitation rather than a decision. The
+# invertebrate ranks used by `ausinvertraits.build` (subfamily, suborder,
+# subgenus, superfamily, supertribe, tribe) are all coarser than species, so
+# first-word matching is right for them -- but a rank *below* species that is
+# missing here would be silently truncated to its genus. Moving this into the
+# schema is tracked as part of #225; `test-taxonomic-resolution.R` pins the
+# behaviour meanwhile.
+ranks_at_or_below_species <-
+  c("species", "subspecies", "series", "variety", "form")
+
+
+#' Find the part of a taxon name that matches can be made against
+#'
+#' Names at or below species rank are matched in full; names at coarser ranks
+#' (genus, family, order, and the invertebrate ranks) are matched on their
+#' first word, since that is the only part naming the taxon. A bracketed
+#' qualifier -- `Acacia sp. [Kimberley]` -- is dropped either way.
+#'
+#' @param taxon_name Character vector of taxon names
+#' @param taxon_rank Character vector of ranks, the same length as `taxon_name`
+#'
+#' @return Character vector of names to match against the taxon list
+#' @keywords internal
+util_name_to_match_to <- function(taxon_name, taxon_rank) {
+  ifelse(
+    !taxon_rank %in% ranks_at_or_below_species,
+    stringr::word(taxon_name, 1),
+    stringr::str_replace(taxon_name, " \\[.+", "")
+  )
+}
+
+
 #' Apply taxonomic updates to austraits_raw
 #'
 #' Applies taxonomic updates to austraits_raw.
@@ -1970,12 +2010,10 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
         taxa$taxon_rank[match(.data$taxon_name, taxa$aligned_name)],
         .data$taxonomic_resolution),
       taxon_rank = .data$taxonomic_resolution,
-      name_to_match_to = .data$taxon_name,
       # Create variable `name_to_match_to` which specifies the part of the taxon name to which matches can be made
       # This step requires `taxon_rank`
-      name_to_match_to = stringr::str_replace(.data$taxon_name, " \\[.+", ""),
-      name_to_match_to = ifelse(!.data$taxon_rank %in% c("species", "subspecies", "series", "variety", "form"),
-                                stringr::word(.data$taxon_name, 1), .data$name_to_match_to)
+      name_to_match_to =
+        util_name_to_match_to(.data$taxon_name, .data$taxon_rank)
     ) %>%
     # Remove `taxon_rank`, as it is about to be merged back in, but matches will now be possible to more rows
     dplyr::select(-dplyr::any_of(c("taxon_rank", "taxonomic_resolution"))) %>%
@@ -2051,12 +2089,14 @@ write_plaintext <- function(austraits, path) {
   # Save references
   RefManageR::WriteBib(austraits$sources, sprintf("%s/sources", path))
 
-  # Save tables
-  for (v in c(
-    "traits", "locations", "contexts", "methods", "excluded_data",
-    "taxonomic_updates", "taxa", "contributors")
-  ) {
-    readr::write_csv(austraits[[v]], sprintf("%s/%s.csv", path, v), na = "")
+  # Save tables. Which tables exist is taken from the database itself rather
+  # than hardcoded, so a table added to the structure is exported without
+  # needing an edit here -- `identifiers` was missing from this list for the
+  # whole of 2.1.0, so exports silently dropped it.
+  for (v in names(austraits)) {
+    if (is.data.frame(austraits[[v]])) {
+      readr::write_csv(austraits[[v]], sprintf("%s/%s.csv", path, v), na = "")
+    }
   }
 }
 
