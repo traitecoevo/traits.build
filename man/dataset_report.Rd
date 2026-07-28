@@ -30,7 +30,10 @@ dataset_report(
 \item{keep}{Keep intermediate Rmd file used?}
 }
 \value{
-Html file of the rendered report located in the specified output folder
+Invisibly, a logical named by \code{dataset_id}, \code{TRUE} where the report
+was written. Reports are rendered as html files in \code{output_path}. A dataset
+whose report fails to render warns and returns \code{FALSE} rather than aborting
+the batch.
 }
 \description{
 Builds a detailed report for every dataset with a unique \code{dataset_id}, based on the template Rmd file provided.

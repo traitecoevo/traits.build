@@ -842,11 +842,87 @@ testthat::test_that("`dataset_find_taxon` is working", {
 
 
 test_that("reports and plots are produced", {
+  # This used to assert only `expect_silent()`. `dataset_report()` renders in a
+  # child process, so a failure there writes to that process's stderr and
+  # `expect_silent()` cannot see it -- and `dataset_report()` swallowed the
+  # failure anyway. The test passed on a render that had errored, and asserted
+  # nothing about the report existing or containing anything (#244).
   expect_silent(suppressMessages(austraits <- remake::make("test_name")))
-  expect_silent(
+
+  # The report calls `austraits::plot_trait_distribution_beeswarm()`, which uses
+  # `forcats` -- declared in `austraits`' Suggests and used there unguarded, so
+  # without it the whole render fails and no file is written at all. Skipping
+  # rather than failing keeps an upstream packaging problem from reading as a
+  # regression here; `forcats` is in this package's Suggests so CI does run it.
+  skip_if_not_installed("forcats")
+
+  output_path <- withr::local_tempdir()
+  output_html <- file.path(output_path, "Test_2022.html")
+
+  expect_no_warning(
     suppressMessages(
-      dataset_report(dataset_id = "Test_2022", austraits = austraits, overwrite = TRUE)
+      built <- dataset_report(
+        dataset_id = "Test_2022", austraits = austraits,
+        output_path = output_path, overwrite = TRUE
+      )
     ))
+
+  # The report was actually written, not merely attempted
+  expect_true(file.exists(output_html))
+  expect_gt(file.size(output_html), 10000)
+
+  # ...and carries the sections it is built to carry, rather than being a
+  # rendered shell with the failing chunks silently dropped
+  report <- paste(readLines(output_html, warn = FALSE), collapse = "\n")
+  expect_match(report, "Test_2022", fixed = TRUE)
+  expect_no_match(report, "there is no package called", fixed = TRUE)
+})
+
+
+test_that("`dataset_report` reports a failed render instead of swallowing it", {
+  # A render failure used to be discarded by a bare `try()` whose result was
+  # never inspected, so the success line printed regardless and no file was
+  # written. In CI that is not hypothetical: `forcats` is absent there, the
+  # render failed on every run, and this test suite reported success (#244).
+  expect_silent(suppressMessages(austraits <- remake::make("test_name")))
+
+  output_path <- withr::local_tempdir()
+
+  # A template that parses but stops during knitting, so the failure happens
+  # where a real one does rather than in argument handling
+  template <- file.path(withr::local_tempdir(), "boom.Rmd")
+  writeLines(
+    c("---", "title: t", "output: html_document",
+      "params:", "    dataset_id: provide", "    austraits: provide", "---",
+      "", "```{r}", "stop('deliberate render failure')", "```"),
+    template
+  )
+
+  expect_warning(
+    suppressMessages(
+      built <- dataset_report(
+        dataset_id = "Test_2022", austraits = austraits,
+        output_path = output_path, overwrite = TRUE, input_file = template
+      )
+    ),
+    "failed to build"
+  )
+  expect_false(built)
+  expect_false(file.exists(file.path(output_path, "Test_2022.html")))
+})
+
+
+test_that("`dataset_report` rejects a missing template clearly", {
+  # `readLines()` on a nonexistent template gave "cannot open the connection",
+  # which names neither the file nor the argument
+  expect_silent(suppressMessages(austraits <- remake::make("test_name")))
+  expect_error(
+    dataset_report(
+      dataset_id = "Test_2022", austraits = austraits,
+      output_path = withr::local_tempdir(), input_file = "no-such-template.Rmd"
+    ),
+    "Report template not found"
+  )
 })
 
 testthat::test_that("`dataset_test` is working", {
