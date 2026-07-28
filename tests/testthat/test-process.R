@@ -76,6 +76,60 @@ test_that("`process_format_identifiers` is working", {
 })
 
 
+test_that("a `var_in` naming a column that does not exist is rejected", {
+  # This used to pass silently: `process_add_all_columns()` creates the missing
+  # column as all-NA and the `!is.na(identifier_value)` filter then drops every
+  # row, so the dataset lost its identifiers with no error and an empty table
+  # (#232).
+  metadata_path <- file.path(withr::local_tempdir(), "metadata.yml")
+  metadata <- readLines("examples/Test_2023_1/metadata.yml")
+  metadata[grepl("^- var_in: herbarium_voucher$", metadata)] <-
+    "- var_in: herbarium_vouchers"
+  writeLines(metadata, metadata_path)
+
+  expect_error(
+    dataset_process(
+      "examples/Test_2023_1/data.csv",
+      dataset_configure(metadata_path, traits_definitions),
+      schema, resource_metadata, unit_conversions
+    ),
+    "herbarium_vouchers"
+  )
+})
+
+
+test_that("a `var_in` created by `custom_R_code` is still accepted", {
+  # The check has to run against the data as it stands after `custom_R_code`,
+  # not against the raw csv header. Every dataset in the three downstream
+  # repositories that uses identifiers creates its `var_in` column this way, so
+  # validating the raw header would reject all of them (#232).
+  metadata_path <- file.path(withr::local_tempdir(), "metadata.yml")
+  metadata <- readLines("examples/Test_2023_1/metadata.yml")
+
+  # Point `var_in` at a column absent from data.csv, then add it to the
+  # existing `custom_R_code` mutate so it exists by the time identifiers load
+  metadata[grepl("^- var_in: herbarium_voucher$", metadata)] <-
+    "- var_in: voucher_made_by_custom_code"
+  metadata[grepl("^\\s+LASA1000_dupe = LASA1000$", metadata)] <-
+    "        LASA1000_dupe = LASA1000,\n        voucher_made_by_custom_code = herbarium_voucher"
+  writeLines(metadata, metadata_path)
+
+  # Guard the premise: the column really is absent from the raw csv
+  expect_false(
+    "voucher_made_by_custom_code" %in% names(read_csv_char("examples/Test_2023_1/data.csv"))
+  )
+
+  expect_no_error(
+    built <- dataset_process(
+      "examples/Test_2023_1/data.csv",
+      dataset_configure(metadata_path, traits_definitions),
+      schema, resource_metadata, unit_conversions
+    )
+  )
+  expect_gt(nrow(built$identifiers), 0)
+})
+
+
 test_that("`write_plaintext` exports every table in the database", {
   # The table list used to be hardcoded and had `identifiers` missing from it
   # for the whole of 2.1.0, so exports silently dropped the release's headline
