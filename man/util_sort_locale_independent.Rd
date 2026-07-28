@@ -15,8 +15,8 @@ util_sort_locale_independent(x)
 \description{
 \code{sort()}, \code{order()} and \code{as.factor()} all collate character vectors
 according to \code{LC_COLLATE}, so the same input is ordered differently
-depending on the machine. Anything derived from that order — notably the
-ids generated during a build — then differs between machines too. Sorting
+depending on the machine. Anything derived from that order (notably the
+ids generated during a build) then differs between machines too. Sorting
 with \code{method = "radix"} always collates in the C locale, which is the order
 the database has always been built in on CI, and gives a reproducible result.
 }

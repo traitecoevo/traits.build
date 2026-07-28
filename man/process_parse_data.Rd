@@ -16,6 +16,11 @@ process_parse_data(data, dataset_id, metadata, contexts, schema, identifiers)
 \item{contexts}{Dataframe of contexts for this study}
 
 \item{schema}{Schema for traits.build}
+
+\item{identifiers}{Dataframe of identifiers for this study, as returned by
+\code{\link[=process_format_identifiers]{process_format_identifiers()}}. Its \code{var_in} column names the columns of
+\code{data} holding identifier values, which are carried through so they can be
+split into the identifiers table once \code{observation_id} is set.}
 }
 \value{
 Tibble in long format with AusTraits formatted trait names, trait

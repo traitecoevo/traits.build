@@ -199,9 +199,26 @@ test_expect_allowed_text <- function(object, is_data = FALSE, is_col_names = FAL
 }
 
 
+#' Split a string into characters
+#'
+#' Falls back to splitting on bytes when the input is not valid UTF-8, so that
+#' text this check exists to catch cannot make the check itself error.
+#'
+#' @param x A length-1 character vector
+#' @return Character vector of the individual characters in `x`
+#' @keywords internal
+util_split_chars <- function(x) {
+  strsplit(x, "", useBytes = !validUTF8(x))[[1]]
+}
+
+
 colour_characters <- function(x, i = NULL) {
 
-  chars <- x %>% charToRaw() %>% lapply(rawToChar) %>% unlist()
+  # Split per character, not per byte. Splitting on bytes wrapped the escape
+  # codes around the halves of a multi-byte character, so reporting a
+  # non-ASCII character produced invalid UTF-8 -- which then errored in
+  # whatever tried to print or trim the message.
+  chars <- util_split_chars(x)
 
   # Wrapper around characters to print as colour
   # obtained from crayon::red(x)
@@ -212,21 +229,28 @@ colour_characters <- function(x, i = NULL) {
 }
 
 
-check_disallowed_chars <- function(x, exceptions = c("ÁÅÀÂÄÆÃĀâíåæäãàáíÇčóöøéèłńl°êÜüùúû±µµ“”‘’-–—≈˜×≥≤")) {
-
-  i <- charToRaw(x)
-  # Allow all ascii text
-  is_ascii <- i < 0x7F
+check_disallowed_chars <- function(x, exceptions = c("\u00c1\u00c5\u00c0\u00c2\u00c4\u00c6\u00c3\u0100\u00e2\u00ed\u00e5\u00e6\u00e4\u00e3\u00e0\u00e1\u00ed\u00c7\u010d\u00f3\u00f6\u00f8\u00e9\u00e8\u0142\u0144l\u00b0\u00ea\u00dc\u00fc\u00f9\u00fa\u00fb\u00b1\u00b5\u00b5\u201c\u201d\u2018\u2019-\u2013\u2014\u2248\u02dc\u00d7\u2265\u2264")) {
 
   # Allow some utf8 characters, those with accents over letters for foreign names
   # List of codes is here: http://www.utf8-chartable.de/
-  # Note c3 is needed because this is prefix for allowed UTF8 chars
-  # Warning: Portable packages must use only ASCII characters in their R code
-  # Sophie - could replace these with unicode like Lizzy did before?
-  exceptions <- exceptions
+  allowed_bytes <- charToRaw(exceptions)
 
-  is_allowed <- i %in% charToRaw(exceptions)
-  !(is_ascii | is_allowed)
+  # Returns one value per character rather than per byte, so that the positions
+  # line up with `colour_characters()`. Whether a character is disallowed is
+  # still decided byte by byte, exactly as before: it is allowed when every one
+  # of its bytes is either ASCII or appears somewhere in `exceptions`. That is
+  # looser than comparing whole characters -- a character assembled from bytes
+  # that all happen to occur in `exceptions` slips through -- but tightening it
+  # would change which real datasets pass, so it is left alone here.
+  vapply(
+    util_split_chars(x),
+    function(char) {
+      bytes <- charToRaw(char)
+      !all(bytes < 0x7F | bytes %in% allowed_bytes)
+    },
+    logical(1),
+    USE.NAMES = FALSE
+  )
 }
 
 
