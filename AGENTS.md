@@ -16,12 +16,27 @@ AusTraits project in 2023 (see Wenk et al. 2024, doi:10.1016/j.ecoinf.2024.10277
   function reference at <http://traitecoevo.github.io/traits.build/>.
 
 Dev follows the standard R-package workflow: `devtools::load_all()`, `devtools::test()`,
-`devtools::check()`. Default development branch is `develop`. Note the README's **deprecated**
-lifecycle badge — confirm intent before large new features.
+`devtools::check()`. Default development branch is `develop`.
 
-> Heads-up: `traits.build` **Imports `austraits`** (it re-exports a few conversion helpers), so the
-> R-package install graph runs `traits.build → austraits` even though in the *data* pipeline
-> traits.build is upstream of austraits. Run traits.build's tests after touching those helpers.
+> The README's **deprecated** lifecycle badge is a mistake, not a statement of intent — the package
+> is actively maintained and CRAN submission is a goal. Don't treat it as a reason to hold back on
+> new work. Fixing the badge is tracked in #225.
+
+**Test fixtures:** the nine `tests/testthat/examples/Test_2023_*` datasets are golden-file
+regression tests covering the whole output structure. Never hand-edit an expected file towards the
+output you observed — run `Rscript regenerate-examples.R` from `tests/testthat/` and read the diff.
+Every diff is either a fix you meant to make or a regression.
+
+> Heads-up: `traits.build` has `austraits` in **`Depends`** (it re-exports a few conversion
+> helpers), so the R-package install graph runs `traits.build → austraits` even though in the *data*
+> pipeline traits.build is upstream of austraits. Run traits.build's tests after touching those
+> helpers.
+>
+> `Depends` rather than `Imports` is deliberate and load-bearing, not an oversight: `custom_R_code`
+> in downstream `metadata.yml` files is evaluated against the search path, and ~1,240 call sites
+> across the 601 datasets in `austraits.build`, `ausinvertraits.build` and `AusFizz` call
+> dplyr/tidyr/stringr functions unqualified. Moving those packages to `Imports` breaks all of them.
+> See #225 before touching `DESCRIPTION`.
 
 ---
 
