@@ -13,29 +13,42 @@
 #' @param keep Keep intermediate Rmd file used?
 #'
 #' @rdname dataset_report
-#' @return Html file of the rendered report located in the specified output folder
+#' @return Invisibly, a logical named by `dataset_id`, `TRUE` where the report
+#'   was written. Reports are rendered as html files in `output_path`. A dataset
+#'   whose report fails to render warns and returns `FALSE` rather than aborting
+#'   the batch.
 #' @export
 dataset_report <- function(dataset_id, austraits, overwrite = FALSE,
                            output_path = "export/reports",
                            input_file = system.file("support", "report_dataset.Rmd", package = "traits.build"),
                            quiet = TRUE, keep = FALSE) {
 
-  for (d in dataset_id)
-    dataset_report_worker(
-      dataset_id = d,
-      austraits = austraits,
-      overwrite = overwrite,
-      output_path = output_path,
-      input_file = input_file,
-      quiet = quiet,
-      keep = keep
-    )
+  built <- vapply(
+    dataset_id,
+    function(d)
+      dataset_report_worker(
+        dataset_id = d,
+        austraits = austraits,
+        overwrite = overwrite,
+        output_path = output_path,
+        input_file = input_file,
+        quiet = quiet,
+        keep = keep
+      ),
+    logical(1)
+  )
+
+  invisible(built)
 }
 
 dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
                                   output_path = "export/reports",
                                   input_file = system.file("support", "report_dataset.Rmd", package = "traits.build"),
                                   quiet = TRUE, keep = FALSE) {
+
+  if (!file.exists(input_file)) {
+    stop("Report template not found: ", input_file, call. = FALSE)
+  }
 
   if (!file.exists(output_path)) {
     dir.create(output_path, FALSE, TRUE)
@@ -56,8 +69,13 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
 
     # Knit and render. Note, call render directly
     # in preference to knit, then render, as leaflet widget
-    # requires this to work
-    # Warning: result assigned but may not be used
+    # requires this to work.
+    #
+    # Rendering is allowed to fail without aborting, so that one bad dataset
+    # does not stop a batch of reports. It must still be reported: this was a
+    # bare `try()` whose result was discarded, so a failed render printed the
+    # success line anyway and the only trace was whatever `try()` happened to
+    # write to stderr (#244).
     result <- try(
       rmarkdown::render(
         input_Rmd,
@@ -67,17 +85,31 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
           dataset_id = dataset_id,
           austraits = austraits
         )
-      )
+      ),
+      silent = TRUE
     )
 
     # Remove temporary Rmd
     if (!keep)
       unlink(input_Rmd)
+
+    if (inherits(result, "try-error")) {
+      warning(
+        sprintf(
+          "Report for %s failed to build; no file written to %s.\n  %s",
+          dataset_id, output_html, conditionMessage(attr(result, "condition"))
+        ),
+        call. = FALSE
+      )
+      return(invisible(FALSE))
+    }
+
     message(" -> ", output_html, "\n")
   } else {
     message(sprintf(red("Report for %s") %+% red(" already exists -> %s\n"), blue(dataset_id), blue(output_html)))
   }
 
+  invisible(TRUE)
 }
 
 #' Format table with kable and default styling for html

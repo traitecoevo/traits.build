@@ -42,6 +42,7 @@ Imports:
 Suggests:
     furrr,
     remake,
+    forcats,
     leaflet,
     bibtex,
     knitr,
