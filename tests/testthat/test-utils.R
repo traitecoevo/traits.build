@@ -85,24 +85,22 @@ test_that("`check_disallowed_chars` compares whole characters, not bytes", {
   # points reassembled from them slipped through (#233).
   f <- check_disallowed_chars
 
-  # Every one of these was silently accepted. The first is an invisible
-  # non-breaking space; several are near-certainly mistyped ASCII -- `º` for
-  # `°`, `″` for `"`, `∼` for `~` -- so the check now surfaces real typos.
-  leaked <- c(" ", "ñ", "É", "Ø", "Ó", "º",
-              "≠", "…", "•", "†", "‰", "″",
-              "∼", "◦")
+  # Every one of these was silently accepted. Those that are genuine characters
+  # are now permitted deliberately, via the schema; the ones below are look-alikes
+  # or invisible, and must stay caught.
+  leaked <- c("\u00a0", "\u00ba", "\u2260", "\u2022", "\u2020", "\u25e6")
   for (ch in leaked) {
     expect_true(any(f(ch)), info = sprintf("U+%04X", utf8ToInt(ch)))
   }
 
   # Characters that were already caught must stay caught
-  for (ch in c("Ö", "€", "α", "中")) {
+  for (ch in c("€", "α", "中")) {
     expect_true(any(f(ch)), info = sprintf("U+%04X", utf8ToInt(ch)))
   }
 
-  # ...and every character in the exception list must still be allowed, or the
-  # check would start rejecting the accented names it exists to permit
-  allowed <- util_split_chars(eval(formals(f)$exceptions))
+  # ...and every character in the allowed set must pass, or the check would start
+  # rejecting the accented names and symbols it exists to permit
+  allowed <- util_split_chars(util_allowed_characters())
   expect_false(any(vapply(allowed, function(ch) any(f(ch)), logical(1))))
 
   # ASCII is allowed whatever the exception list says
@@ -119,4 +117,55 @@ test_that("`check_disallowed_chars` compares whole characters, not bytes", {
   # That was already equivalent to a character-wise check, so it must not move.
   expect_true(any(f("é", exceptions = "")))
   expect_false(any(f("abc", exceptions = "")))
+})
+
+
+test_that("the allowed characters come from the schema, and are case-symmetric", {
+  allowed <- util_split_chars(util_allowed_characters())
+
+  # The point of defining letters by range: hand-enumeration left 14 letters
+  # allowed in lower case but not upper, so `Ósvaldsson` was reported while
+  # `ósvaldsson` would not have been.
+  letters_only <- allowed[grepl("^\\p{L}$", allowed, perl = TRUE)]
+  other_case <- ifelse(letters_only == tolower(letters_only),
+                       toupper(letters_only), tolower(letters_only))
+  has_case <- tolower(letters_only) != toupper(letters_only)
+
+  # The exceptions are letters whose other case is ASCII or Greek, so they cannot
+  # be in a non-ASCII set: U+0130 dotted capital I, U+0131 dotless i, U+017F long
+  # s, and U+00B5 micro sign.
+  asymmetric <- letters_only[has_case & !(other_case %in% letters_only)]
+  expect_setequal(asymmetric, c("İ", "ı", "ſ", "µ"))
+
+  # No duplicates and no ASCII -- both were true of the hand-written list, which
+  # listed `í` and `µ` twice and included a stray ASCII `l`
+  expect_false(any(duplicated(allowed)))
+  expect_false(any(vapply(allowed, utf8ToInt, integer(1)) < 128L))
+})
+
+
+test_that("the ordinal indicators stay disallowed despite being letters", {
+  # Unicode classifies U+00AA and U+00BA as letters, so a range-based rule would
+  # admit them. They occur only as look-alikes -- U+00BA for the degree sign is
+  # the single most common disallowed character in the database -- so the schema
+  # lists them under `never_allowed`.
+  expect_true(any(check_disallowed_chars("º")))
+  expect_true(any(check_disallowed_chars("ª")))
+  expect_false(any(check_disallowed_chars("°")))
+})
+
+
+test_that("names and symbols that used to be reported are now allowed", {
+  # Measured occurrences in the three downstream databases, all of them genuine
+  for (x in c("Ósvaldsson", "Briceño", "Klimešová",
+              "16°17′24″S", "(d13C, ‰)", "∼38 Pa")) {
+    expect_false(any(check_disallowed_chars(x)), info = x)
+  }
+})
+
+
+test_that("util_allowed_characters caches rather than re-reading the schema", {
+  first <- util_allowed_characters()
+  expect_identical(util_allowed_characters(), first)
+  expect_identical(character_cache$allowed, first)
 })

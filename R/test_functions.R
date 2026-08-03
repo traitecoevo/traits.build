@@ -229,10 +229,61 @@ colour_characters <- function(x, i = NULL) {
 }
 
 
-check_disallowed_chars <- function(x, exceptions = c("\u00c1\u00c5\u00c0\u00c2\u00c4\u00c6\u00c3\u0100\u00e2\u00ed\u00e5\u00e6\u00e4\u00e3\u00e0\u00e1\u00ed\u00c7\u010d\u00f3\u00f6\u00f8\u00e9\u00e8\u0142\u0144l\u00b0\u00ea\u00dc\u00fc\u00f9\u00fa\u00fb\u00b1\u00b5\u00b5\u201c\u201d\u2018\u2019-\u2013\u2014\u2248\u02dc\u00d7\u2265\u2264")) {
+# Cache for `util_allowed_characters()`. The schema is a 500-line YAML file and
+# `check_disallowed_chars()` runs once per line of every `metadata.yml`, so the
+# set must be built once per session rather than once per call.
+character_cache <- new.env(parent = emptyenv())
 
-  # Allow some utf8 characters, those with accents over letters for foreign names
-  # List of codes is here: http://www.utf8-chartable.de/
+
+#' The characters allowed outside ASCII
+#'
+#' Built from the `allowed_characters` section of the schema, which is the single
+#' global definition of what is permitted — see
+#' `inst/support/traits.build_schema.yml`. It is deliberately not configurable
+#' per dataset: one database, one answer.
+#'
+#' Letters come from **ranges** rather than a hand-written list. Enumerating them
+#' individually is what left 14 letters allowed in lower case but not upper, so
+#' that `Ósvaldsson` was reported while `ósvaldsson` would not have been. Ranges
+#' contribute only their letters, so a symbol that happens to share the range
+#' has to be admitted deliberately under `symbols`.
+#'
+#' @return A length-1 string containing every allowed non-ASCII character
+#' @keywords internal
+util_allowed_characters <- function() {
+
+  if (!is.null(character_cache$allowed)) {
+    return(character_cache$allowed)
+  }
+
+  spec <- get_schema(subsection = "allowed_characters")
+  from_hex <- function(x) vapply(strtoi(x, base = 16L), intToUtf8, character(1))
+
+  from_ranges <- unlist(lapply(
+    names(spec$letter_ranges$values),
+    function(range) {
+      ends <- strtoi(strsplit(range, "-", fixed = TRUE)[[1]], base = 16L)
+      chars <- vapply(seq(ends[1], ends[2]), intToUtf8, character(1))
+      # `\p{L}` rather than `[[:alpha:]]`, which is locale-dependent and matches
+      # ASCII only under a C locale.
+      chars[grepl("^\\p{L}$", chars, perl = TRUE)]
+    }
+  ))
+
+  allowed <- c(from_ranges, from_hex(names(spec$letters$values)),
+               from_hex(names(spec$symbols$values)))
+
+  # Unicode calls the ordinal indicators letters, so the ranges would otherwise
+  # admit them; they occur only as look-alikes for a symbol.
+  allowed <- setdiff(unique(allowed), from_hex(names(spec$never_allowed$values)))
+
+  character_cache$allowed <- paste(allowed, collapse = "")
+  character_cache$allowed
+}
+
+
+check_disallowed_chars <- function(x, exceptions = util_allowed_characters()) {
+
   allowed_chars <- util_split_chars(exceptions)
 
   # Compared whole character against whole character. This used to flatten

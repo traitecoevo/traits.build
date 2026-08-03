@@ -475,3 +475,43 @@ metadata:
         find: Value of variable to remove.
         reason: Records why the data was removed, e.g. `exotic`.
     questions: A place to record any queries we have about the dataset (recorded as a named array), including notes on any additional traits that may have been collected in the study but have not been incorporated into AusTraits.
+
+allowed_characters:
+  description: &allowed_characters Characters permitted outside plain ASCII, used by `check_disallowed_chars()` and reported by `dataset_test`. ASCII is always allowed whatever this section says. This is the single global definition; it is not configurable per dataset.
+  type: character_set
+  letter_ranges:
+    description: Letters are allowed by range rather than listed one at a time, so that a letter and its upper-case form can never be treated differently. Enumerating them by hand left 14 letters allowed in lower case but not upper, which is why a name like Osvaldsson was reported while osvaldsson would not have been. The range covers the accented letters of every European language, which is what contributor, author and taxon names need.
+    values:
+      00C0-017F: Latin-1 Supplement letters and Latin Extended-A. Code points in this range that are not letters are excluded automatically, so 00D7 MULTIPLICATION SIGN and 00F7 DIVISION SIGN are not admitted here; 00D7 is listed under symbols below.
+  letters:
+    description: Letters allowed from outside the ranges above.
+    values:
+      00B5: MICRO SIGN, as in micrometre. Note that 03BC GREEK SMALL LETTER MU is a different code point that looks identical; it is not allowed, so that units are written consistently.
+  symbols:
+    description: Non-letter characters that carry meaning and so are retained rather than rewritten. A symbol absent from this list is reported, and either belongs here or is a mistake to correct.
+    values:
+      00B0: DEGREE SIGN
+      00B1: PLUS-MINUS SIGN
+      00D7: MULTIPLICATION SIGN
+      02DC: SMALL TILDE
+      2013: EN DASH
+      2014: EM DASH
+      2018: LEFT SINGLE QUOTATION MARK
+      2019: RIGHT SINGLE QUOTATION MARK
+      201C: LEFT DOUBLE QUOTATION MARK
+      201D: RIGHT DOUBLE QUOTATION MARK
+      2032: PRIME, for arcminutes in coordinates
+      2033: DOUBLE PRIME, for arcseconds in coordinates
+      2030: PER MILLE SIGN, for isotope composition
+      2044: FRACTION SLASH
+      2212: MINUS SIGN, which is not a hyphen
+      2026: HORIZONTAL ELLIPSIS
+      223C: TILDE OPERATOR, meaning approximately
+      2248: ALMOST EQUAL TO
+      2264: LESS-THAN OR EQUAL TO
+      2265: GREATER-THAN OR EQUAL TO
+  never_allowed:
+    description: Characters that Unicode classifies as letters, and which the ranges above would otherwise admit, but which occur in practice only as look-alikes for a symbol. They stay disallowed so that the look-alike is corrected rather than retained.
+    values:
+      00AA: FEMININE ORDINAL INDICATOR, a look-alike for a superscript a
+      00BA: MASCULINE ORDINAL INDICATOR, used in error for 00B0 DEGREE SIGN. The most common disallowed character in the database.
