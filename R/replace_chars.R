@@ -151,18 +151,33 @@ util_locate_disallowed_chars <- function(x, ascii_only = FALSE) {
 #' argument of `check_disallowed_chars()`, or a mangling that only the curator
 #' can interpret.
 #'
-#' `data.csv` is held to the stricter standard `dataset_test()` uses for data:
-#' ASCII only, no exceptions. Note that the long-standing advice for data has
-#' been to fix characters in `custom_R_code` rather than in `data.csv`, so
-#' rewriting `data.csv` here changes a file the contributor supplied. Read the
-#' dry-run report before applying it.
-#'
 #' A file that is not valid UTF-8 is reported and skipped, since recovering one
 #' means knowing which encoding it was written in.
 #'
+#' @section Scope of `data.csv`:
+#'
+#' `data.csv` is **not** in `files` by default. It can be processed by asking for
+#' it, but the two files are very different problems, and the scope for data is
+#' still an open question (see #251).
+#'
+#' `dataset_test()` applies its ASCII-only rule for data to
+#' `parsed_data$traits$value` — the values that actually reach the built
+#' database. This function reads whole files, so for `data.csv` it sees every
+#' column, including ones that never become a trait value. Measured over all 601
+#' downstream datasets, that is the difference between **95** disallowed
+#' characters in `metadata.yml` and **170,946** in `data.csv` across 147 files —
+#' almost none of which `dataset_test()` reports. The bulk is invisible junk in
+#' provenance columns (110,666 zero-width joiners in one `created_by` column)
+#' plus legitimate typography and accented names that the ASCII-only rule can
+#' only ever report, never resolve.
+#'
+#' So pass `files = c("metadata.yml", "data.csv")` deliberately, and read the
+#' dry-run report first.
+#'
 #' @inheritParams metadata_path_dataset_id
 #' @param dataset_id Identifier for a study, or a vector of them
-#' @param files Names of files within each dataset folder to process
+#' @param files Names of files within each dataset folder to process. Defaults to
+#'   `metadata.yml` only; see the section on `data.csv` below before adding it.
 #' @param dry_run Report what would change without writing anything. Default
 #'   `TRUE`; pass `FALSE` to apply the replacements.
 #'
@@ -179,11 +194,14 @@ util_locate_disallowed_chars <- function(x, ascii_only = FALSE) {
 #'
 #' # Apply it
 #' dataset_replace_disallowed_chars(dir("data"), dry_run = FALSE)
+#'
+#' # Include the data files, which is a much wider sweep -- read the report first
+#' dataset_replace_disallowed_chars(dir("data"), files = c("metadata.yml", "data.csv"))
 #' }
 #' @export
 dataset_replace_disallowed_chars <- function(dataset_id,
                                              path_data = "data",
-                                             files = c("metadata.yml", "data.csv"),
+                                             files = "metadata.yml",
                                              dry_run = TRUE) {
 
   report <- list()

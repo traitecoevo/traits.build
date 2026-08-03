@@ -217,12 +217,38 @@ test_that("data.csv is held to ASCII only, and metadata.yml is not", {
   )
 
   report <- suppressMessages(
-    dataset_replace_disallowed_chars("Test_2020", path_data = path_data)
+    dataset_replace_disallowed_chars(
+      "Test_2020", path_data = path_data, files = c("metadata.yml", "data.csv")
+    )
   )
 
   # The accented metadata name is allowed, so only data.csv is reported
   expect_equal(unique(report$file), "data.csv")
   expect_equal(report$code, "U+00BA")
+})
+
+
+test_that("data.csv is left out unless asked for", {
+  # Its scope is a much wider sweep than metadata.yml's, so it must not be
+  # picked up by the default one-liner. See #251.
+  path_data <- setup_dataset(
+    metadata = "description: clean ASCII",
+    data = c("species,temp", "Acacia,17ºC")
+  )
+
+  expect_equal(
+    nrow(suppressMessages(
+      dataset_replace_disallowed_chars("Test_2020", path_data = path_data)
+    )),
+    0
+  )
+
+  expect_equal(
+    nrow(suppressMessages(
+      dataset_replace_disallowed_chars("Test_2020", path_data = path_data, files = "data.csv")
+    )),
+    1
+  )
 })
 
 

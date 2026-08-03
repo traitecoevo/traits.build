@@ -7,7 +7,7 @@
 dataset_replace_disallowed_chars(
   dataset_id,
   path_data = "data",
-  files = c("metadata.yml", "data.csv"),
+  files = "metadata.yml",
   dry_run = TRUE
 )
 }
@@ -16,7 +16,8 @@ dataset_replace_disallowed_chars(
 
 \item{path_data}{Path to folder with data}
 
-\item{files}{Names of files within each dataset folder to process}
+\item{files}{Names of files within each dataset folder to process. Defaults to
+\code{metadata.yml} only; see the section on \code{data.csv} below before adding it.}
 
 \item{dry_run}{Report what would change without writing anything. Default
 \code{TRUE}; pass \code{FALSE} to apply the replacements.}
@@ -45,15 +46,31 @@ Each is either a genuine character that should be added to the \code{exceptions}
 argument of \code{check_disallowed_chars()}, or a mangling that only the curator
 can interpret.
 
-\code{data.csv} is held to the stricter standard \code{dataset_test()} uses for data:
-ASCII only, no exceptions. Note that the long-standing advice for data has
-been to fix characters in \code{custom_R_code} rather than in \code{data.csv}, so
-rewriting \code{data.csv} here changes a file the contributor supplied. Read the
-dry-run report before applying it.
-
 A file that is not valid UTF-8 is reported and skipped, since recovering one
 means knowing which encoding it was written in.
 }
+\section{Scope of \code{data.csv}}{
+
+
+\code{data.csv} is \strong{not} in \code{files} by default. It can be processed by asking for
+it, but the two files are very different problems, and the scope for data is
+still an open question (see #251).
+
+\code{dataset_test()} applies its ASCII-only rule for data to
+\code{parsed_data$traits$value} — the values that actually reach the built
+database. This function reads whole files, so for \code{data.csv} it sees every
+column, including ones that never become a trait value. Measured over all 601
+downstream datasets, that is the difference between \strong{95} disallowed
+characters in \code{metadata.yml} and \strong{170,946} in \code{data.csv} across 147 files —
+almost none of which \code{dataset_test()} reports. The bulk is invisible junk in
+provenance columns (110,666 zero-width joiners in one \code{created_by} column)
+plus legitimate typography and accented names that the ASCII-only rule can
+only ever report, never resolve.
+
+So pass \code{files = c("metadata.yml", "data.csv")} deliberately, and read the
+dry-run report first.
+}
+
 \examples{
 \dontrun{
 # See what would change across every dataset
@@ -61,5 +78,8 @@ report <- dataset_replace_disallowed_chars(dir("data"))
 
 # Apply it
 dataset_replace_disallowed_chars(dir("data"), dry_run = FALSE)
+
+# Include the data files, which is a much wider sweep -- read the report first
+dataset_replace_disallowed_chars(dir("data"), files = c("metadata.yml", "data.csv"))
 }
 }
