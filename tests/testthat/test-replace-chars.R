@@ -254,7 +254,7 @@ test_that("a clean dataset reports nothing and returns the empty report shape", 
   )
 
   expect_equal(nrow(report), 0)
-  expect_named(report, names(util_empty_char_report()))
+  expect_named(report, names(util_char_report_cols))
 })
 
 

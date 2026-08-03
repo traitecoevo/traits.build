@@ -115,25 +115,22 @@ util_locate_disallowed_chars <- function(x, ascii_only = FALSE) {
                       stringsAsFactors = FALSE))
   }
 
-  out$code <- vapply(out$char, util_describe_char, character(1), USE.NAMES = FALSE)
+  out$code <- vapply(
+    out$char,
+    function(char) {
+      # `util_split_chars()` falls back to splitting on bytes for input that is
+      # not valid UTF-8, so `char` can be a byte that is not a code point.
+      if (validUTF8(char)) {
+        sprintf("U+%04X", utf8ToInt(char))
+      } else {
+        paste0("0x", toupper(as.character(charToRaw(char))), collapse = "")
+      }
+    },
+    character(1),
+    USE.NAMES = FALSE
+  )
 
   out
-}
-
-
-#' Name a character by its code point
-#'
-#' @param char A single character, or a single byte of invalid UTF-8
-#' @return A length-1 string such as `"U+00BA"`, or `"0xA0"` for a lone byte
-#' @keywords internal
-util_describe_char <- function(char) {
-  # `util_split_chars()` falls back to splitting on bytes for input that is not
-  # valid UTF-8, so `char` can be a byte that is not a code point at all.
-  if (validUTF8(char)) {
-    sprintf("U+%04X", utf8ToInt(char))
-  } else {
-    paste0("0x", toupper(as.character(charToRaw(char))), collapse = "")
-  }
 }
 
 
@@ -247,14 +244,23 @@ dataset_replace_disallowed_chars <- function(dataset_id,
 
   if (is.null(report)) {
     message(crayon::green("No disallowed characters found"))
-    return(invisible(util_empty_char_report()))
+    report <- util_char_report_cols[0, ]
+  } else {
+    report <- report[, names(util_char_report_cols)]
+    util_report_disallowed_chars(report, dry_run)
   }
-
-  report <- report[, names(util_empty_char_report())]
-  util_report_disallowed_chars(report, dry_run)
 
   if (dry_run) report else invisible(report)
 }
+
+
+# The columns of a `dataset_replace_disallowed_chars()` report, in order. Also
+# the report's zero-row form, as `util_char_report_cols[0, ]`.
+util_char_report_cols <- data.frame(
+  dataset_id = NA_character_, file = NA_character_, line = NA_integer_,
+  char = NA_character_, code = NA_character_, replacement = NA_character_,
+  status = NA_character_, stringsAsFactors = FALSE
+)
 
 
 #' Write lines to a file as UTF-8
@@ -270,19 +276,6 @@ util_write_lines_utf8 <- function(lines, path) {
 }
 
 
-#' The zero-row form of the `dataset_replace_disallowed_chars()` report
-#'
-#' @return A data frame with no rows and the report's columns
-#' @keywords internal
-util_empty_char_report <- function() {
-  data.frame(
-    dataset_id = character(), file = character(), line = integer(),
-    char = character(), code = character(), replacement = character(),
-    status = character(), stringsAsFactors = FALSE
-  )
-}
-
-
 #' Summarise a `dataset_replace_disallowed_chars()` report on the console
 #'
 #' @param report Report data frame
@@ -290,6 +283,12 @@ util_empty_char_report <- function() {
 #' @return `report`, invisibly
 #' @keywords internal
 util_report_disallowed_chars <- function(report, dry_run) {
+
+  # Distinct characters in a set of rows, most frequent first
+  tally <- function(rows) {
+    counts <- sort(table(paste(rows$code, rows$char)), decreasing = TRUE)
+    paste0("(", paste(sprintf("%s x%d", names(counts), counts), collapse = ", "), ")")
+  }
 
   replaced <- report[report$status == "replaced", ]
   unresolved <- report[report$status == "no replacement known", ]
@@ -305,7 +304,7 @@ util_report_disallowed_chars <- function(report, dry_run) {
       crayon::blue(sprintf(
         "%d file(s)", nrow(unique(replaced[, c("dataset_id", "file")]))
       )),
-      crayon::silver(util_tally_chars(replaced))
+      crayon::silver(tally(replaced))
     ))
   }
 
@@ -315,7 +314,7 @@ util_report_disallowed_chars <- function(report, dry_run) {
       crayon::red(sprintf(
         "%d character(s) have no known replacement:", nrow(unresolved)
       )),
-      crayon::silver(util_tally_chars(unresolved)),
+      crayon::silver(tally(unresolved)),
       crayon::silver("add each to `exceptions` if it is intended, or correct it by hand")
     ))
   }
@@ -340,13 +339,3 @@ util_report_disallowed_chars <- function(report, dry_run) {
   invisible(report)
 }
 
-
-#' Tally the distinct characters in a report, most frequent first
-#'
-#' @param report Report data frame
-#' @return A length-1 string
-#' @keywords internal
-util_tally_chars <- function(report) {
-  tally <- sort(table(paste(report$code, report$char)), decreasing = TRUE)
-  paste0("(", paste(sprintf("%s x%d", names(tally), tally), collapse = ", "), ")")
-}
