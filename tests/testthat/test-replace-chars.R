@@ -32,20 +32,29 @@ test_that("a multi-character key is matched before the characters it is built fr
 })
 
 
-test_that("the characters measured in real datasets are all resolved", {
-  # Each of these was found in a downstream `metadata.yml`, with the intended
-  # character unambiguous from context.
+test_that("the wrong-character cases measured in real datasets are corrected", {
+  # Each was found in a downstream `metadata.yml`, and in each the character
+  # used is simply not the one that was meant.
   cases <- list(
-    c("33.33ºS, 150.44ºE", "33.33°S, 150.44°E"),   # degrees
+    c("33.33ºS, 150.44ºE", "33.33°S, 150.44°E"),  # ordinal for degree
     c("inserted at 90◦ to each other", "inserted at 90° to each other"),
-    c("(∼38 Pa in this study)", "(~38 Pa in this study)"),
-    c("16°17'24.8″S", "16°17'24.8\"S"),                  # arcseconds
     c("Coenocharopa yessabahensis ", "Coenocharopa yessabahensis ")
   )
 
   for (case in cases) {
     expect_equal(util_replace_disallowed_chars(case[1]), case[2])
     expect_false(any(check_disallowed_chars(case[2])))
+  }
+})
+
+
+test_that("correct typography is reported, never flattened to ASCII", {
+  # U+2033 is the right character for arcseconds and U+2030 has a technical
+  # meaning, so rewriting either to ASCII would lose information rather than fix
+  # a mistake. Retaining these is a curator decision, via `exceptions`.
+  for (x in c("16°17'24.8″S", "(∼38 Pa in this study)", "(d13C, ‰)",
+              "range 10−20", "a ⁄ b", "and so on…")) {
+    expect_equal(util_replace_disallowed_chars(x), x)
   }
 })
 
@@ -150,7 +159,8 @@ test_that("dry_run reports without writing", {
 
 
 test_that("dry_run = FALSE rewrites only the offending characters", {
-  metadata <- c("description: measured at 17ºC", "notes: clean line", "coords: 24.8″S")
+  metadata <- c("description: measured at 17ºC", "notes: clean line",
+                "taxon: Coenocharopa¬†yessabahensis")
   path_data <- setup_dataset(metadata)
 
   suppressMessages(
@@ -159,7 +169,8 @@ test_that("dry_run = FALSE rewrites only the offending characters", {
 
   after <- readLines(file.path(path_data, "Test_2020", "metadata.yml"), encoding = "UTF-8")
 
-  expect_equal(after, c("description: measured at 17°C", "notes: clean line", "coords: 24.8\"S"))
+  expect_equal(after, c("description: measured at 17°C", "notes: clean line",
+                        "taxon: Coenocharopa yessabahensis"))
   expect_false(any(unlist(lapply(after, check_disallowed_chars))))
 
   # ...and a second pass finds nothing left to do
@@ -167,6 +178,25 @@ test_that("dry_run = FALSE rewrites only the offending characters", {
     dataset_replace_disallowed_chars("Test_2020", path_data = path_data)
   )
   expect_equal(nrow(again), 0)
+})
+
+
+test_that("dry_run = FALSE leaves correct typography in place", {
+  # The line is rewritten for the ordinal indicator but must keep its arcseconds
+  # mark, which is then reported as needing a decision rather than a fix.
+  metadata <- "coords: 16°17\'24.8″S at 17ºC"
+  path_data <- setup_dataset(metadata)
+
+  report <- suppressMessages(
+    dataset_replace_disallowed_chars("Test_2020", path_data = path_data, dry_run = FALSE)
+  )
+
+  expect_equal(
+    readLines(file.path(path_data, "Test_2020", "metadata.yml"), encoding = "UTF-8"),
+    "coords: 16°17\'24.8″S at 17°C"
+  )
+  expect_equal(report$status[report$char == "º"], "replaced")
+  expect_equal(report$status[report$char == "″"], "no replacement known")
 })
 
 

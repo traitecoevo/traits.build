@@ -11,13 +11,17 @@ A named character vector; names are the text to find, values the
 replacement.
 }
 \description{
-A curated map from characters that \code{check_disallowed_chars()} rejects to the
-allowed character that was almost certainly intended. Deliberately
-conservative: it contains only substitutions that carry no loss of meaning,
-so a character with more than one plausible reading is left alone and
-reported instead.
+A curated map covering only characters that are \emph{wrong}, not merely unusual:
+a look-alike standing in for the character actually meant, encoding damage,
+or an invisible character with no content. Anything that carries meaning is
+left alone and reported, so it can be retained via the \code{exceptions} argument
+of \code{check_disallowed_chars()} rather than flattened.
 }
 \details{
+Correct typography is deliberately absent. U+2033 DOUBLE PRIME is the right
+character for arcseconds, and U+2030 PER MILLE has a technical meaning, so
+rewriting them to ASCII would lose information rather than fix a mistake.
+
 Letters are never in this map. An unexpected letter is either a genuine name
 (\code{Briceno}, \code{Klimesova}, \code{Osvaldsson} with their accents), which belongs in
 the \code{exceptions} argument of \code{check_disallowed_chars()}, or a mangling of a
