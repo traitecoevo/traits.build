@@ -20,7 +20,7 @@ Depends:
     dplyr,
     lubridate,
     readr,
-    stringr,
+    stringr (>= 1.5.0),
     tidyr,
     austraits
 Imports:
