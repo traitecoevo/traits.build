@@ -4,7 +4,15 @@
 \alias{process_parse_data}
 \title{Process a single dataset}
 \usage{
-process_parse_data(data, dataset_id, metadata, contexts, schema, identifiers)
+process_parse_data(
+  data,
+  dataset_id,
+  metadata,
+  contexts,
+  schema,
+  identifiers,
+  definitions
+)
 }
 \arguments{
 \item{data}{Tibble or dataframe containing the study data}
@@ -21,6 +29,10 @@ process_parse_data(data, dataset_id, metadata, contexts, schema, identifiers)
 \code{\link[=process_format_identifiers]{process_format_identifiers()}}. Its \code{var_in} column names the columns of
 \code{data} holding identifier values, which are carried through so they can be
 split into the identifiers table once \code{observation_id} is set.}
+
+\item{definitions}{Trait definitions for this dataset -- the \code{elements} of the
+\code{traits.yml} schema, keyed by \code{trait_name}, as returned by \code{\link[=dataset_configure]{dataset_configure()}}.
+Used to apply database-wide trait value synonyms.}
 }
 \value{
 Tibble in long format with AusTraits formatted trait names, trait

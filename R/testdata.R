@@ -718,7 +718,8 @@ dataset_test_worker <-
         ## Check that special characters do not make it into the data
         test_expect_no_error(
           parsed_data <- data %>%
-            process_parse_data(dataset_id, metadata, contexts, schema, identifiers),
+            process_parse_data(dataset_id, metadata, contexts, schema, identifiers,
+                               definitions[["elements"]]),
           info = sprintf("%s\t`process_parse_data`", red(dataset_id)))
 
         test_expect_allowed_text(
