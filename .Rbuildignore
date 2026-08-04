@@ -31,3 +31,4 @@ _pkgdown.yml$
 ^\.claude$
 ^AGENTS\.md$
 ^\.lintr$
+^CITATION\.cff$
