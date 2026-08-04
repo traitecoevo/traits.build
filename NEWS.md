@@ -7,6 +7,8 @@
 - `metadata_add_contexts()`, `metadata_add_traits()` and `metadata_add_identifiers()` now guess column types from the same number of rows as the build (`guess_max = 100000`), so a sparse column can no longer be typed one way when metadata is written and another way when the database is built.
 - `metadata_add_source_doi()` now reports clearly that the optional `rcrossref` package is needed, and offers to install it in interactive sessions, instead of failing with `there is no package called 'rcrossref'` (#178).
 - Corrected the link to the AusTraits source repository, which had been misspelled `autraits.build` in `DESCRIPTION`, the package documentation and `NEWS.md`, and pointed at a URL that did not resolve. The Code of Conduct and reference website links in `README.md` were also dead or redirecting, and now resolve directly.
+- Added `CITATION.cff` and `inst/CITATION`, so `citation("traits.build")` and GitHub's "Cite this repository" widget both return the Wenk et al. (2024) paper. `CITATION.cff` is excluded from the package tarball via `.Rbuildignore`.
+- Removed a duplicated "AusTraits family" section from `README.md`, which had been added twice.
 
 # traits.build 2.1.0
 

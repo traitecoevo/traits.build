@@ -139,7 +139,7 @@ dataset_process <- function(filename_data_raw,
   # Load and clean trait data
   traits <-
     traits %>%
-    process_parse_data(dataset_id, metadata, contexts, schema, identifiers)
+    process_parse_data(dataset_id, metadata, contexts, schema, identifiers, definitions)
 
   # Context ids needed to continue processing
   context_ids <- traits$context_ids
@@ -1404,11 +1404,14 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' [process_format_identifiers()]. Its `var_in` column names the columns of
 #' `data` holding identifier values, which are carried through so they can be
 #' split into the identifiers table once `observation_id` is set.
+#' @param definitions Trait definitions for this dataset -- the `elements` of the
+#' `traits.yml` schema, keyed by `trait_name`, as returned by [dataset_configure()].
+#' Used to apply database-wide trait value synonyms.
 #' @return Tibble in long format with AusTraits formatted trait names, trait
 #' substitutions and unique observation id added
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
 #' @importFrom rlang .data
-process_parse_data <- function(data, dataset_id, metadata, contexts, schema, identifiers) {
+process_parse_data <- function(data, dataset_id, metadata, contexts, schema, identifiers, definitions) {
 
   # Get config data for dataset
   data_is_long_format <- metadata[["dataset"]][["data_is_long_format"]]
@@ -1663,10 +1666,105 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
     }
   }
 
+  # Apply automatic trait value synonym replacements declared in `traits.yml`.
+  # This runs *after* substitutions, so a dataset's own curated substitution always
+  # wins over the database-wide synonym for the same value.
+  out <- process_replace_synonyms(out, definitions)
+
   list(
     traits = out,
     context_ids = context_ids
   )
+}
+
+
+#' Replace trait values with their preferred synonym
+#'
+#' Applies the database-wide trait value synonyms declared in `traits.yml`. A categorical
+#' trait value may list synonyms in its description using the convention
+#' `(Synonyms, first, second)`; every listed synonym found in the data is replaced by the
+#' value that declares it.
+#'
+#' Matching is on whole words, so a value that holds several space-delimited categorical
+#' values has each of them replaced independently, and a synonym occurring as part of a
+#' longer word is left alone. Values reaching this point are already lower-cased, which is
+#' why the synonyms are lower-cased too.
+#'
+#' Called from `process_parse_data()` *after* dataset substitutions have been applied, so
+#' that a curated, dataset-specific substitution takes precedence over the database-wide
+#' synonym for the same value.
+#'
+#' @param data Tibble with `trait_name` and `value` columns
+#' @param definitions Trait definitions for this dataset -- the `elements` of the
+#'   `traits.yml` schema, keyed by `trait_name`
+#'
+#' @return `data`, with synonyms in `value` replaced by their preferred value
+#' @importFrom rlang .data
+#' @noRd
+process_replace_synonyms <- function(data, definitions) {
+
+  if (is.null(definitions) || length(definitions) == 0) {
+    return(data)
+  }
+
+  # Collect the synonyms declared by each trait value's description
+  synonym_table <-
+    purrr::imap_dfr(definitions, function(trait_definition, trait_name) {
+      if (is.null(trait_definition[["allowed_values_levels"]])) {
+        return(NULL)
+      }
+      purrr::imap_dfr(
+        trait_definition[["allowed_values_levels"]],
+        function(trait_value_description, trait_value) {
+          # A value carrying no description at all yields a zero-length extract,
+          # so test the length before the value
+          synonyms <- stringr::str_extract(trait_value_description, "(?<=\\(Synonyms,)[^)]+")
+          if (length(synonyms) != 1 || is.na(synonyms)) {
+            return(NULL)
+          }
+          tibble::tibble(
+            find = stringr::str_split(synonyms, "[,;]")[[1]] %>%
+              stringr::str_trim() %>%
+              tolower(),
+            replace = trait_value,
+            trait_name = trait_name
+          )
+        }
+      )
+    })
+
+  if (nrow(synonym_table) == 0) {
+    return(data)
+  }
+
+  # One named replacement vector per trait, since a trait value may declare several
+  # synonyms and a trait several values. Patterns are escaped and word-bounded.
+  synonym_table <- synonym_table %>%
+    dplyr::filter(.data$find != "", .data$find != .data$replace) %>%
+    dplyr::mutate(
+      pattern = stringr::str_c("\\b", stringr::str_escape(.data$find), "\\b")
+    ) %>%
+    dplyr::group_by(.data$trait_name) %>%
+    dplyr::summarise(
+      replacements = list(purrr::set_names(.data$replace, .data$pattern)),
+      .groups = "drop"
+    )
+
+  # Replace one trait at a time: the traits declaring synonyms are few, while `data`
+  # can run to millions of rows, so this avoids touching rows that cannot match.
+  for (i in seq_len(nrow(synonym_table))) {
+    j <- which(data[["trait_name"]] == synonym_table[["trait_name"]][i])
+
+    if (length(j) > 0) {
+      data[["value"]][j] <-
+        stringr::str_replace_all(
+          data[["value"]][j],
+          synonym_table[["replacements"]][[i]]
+        )
+    }
+  }
+
+  data
 }
 
 
