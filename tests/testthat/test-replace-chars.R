@@ -48,6 +48,25 @@ test_that("the wrong-character cases measured in real datasets are corrected", {
 })
 
 
+test_that("GREEK SMALL LETTER MU is normalised to MICRO SIGN", {
+  # The two are visually identical, so a unit written with the Greek letter
+  # cannot be told from one written with the micro sign by eye. Only the micro
+  # sign is allowed, and the whole point of allowing it is that units stay
+  # consistent -- so the Greek letter has to converge on it.
+  expect_equal(
+    util_replace_disallowed_chars("leaf thickness in \u03bcm"),
+    "leaf thickness in \u00b5m"
+  )
+  expect_true(all(check_disallowed_chars("\u03bc")))
+  expect_false(any(check_disallowed_chars("\u00b5")))
+
+  # and the normalised form is what the validator accepts
+  expect_false(
+    any(check_disallowed_chars(util_replace_disallowed_chars("\u03bcg g-1")))
+  )
+})
+
+
 test_that("correct typography is reported, never flattened to ASCII", {
   # U+2033 is the right character for arcseconds and U+2030 has a technical
   # meaning, so rewriting either to ASCII would lose information rather than fix
@@ -183,7 +202,8 @@ test_that("dry_run = FALSE rewrites only the offending characters", {
 
 test_that("dry_run = FALSE leaves correct typography in place", {
   # The line is rewritten for the ordinal indicator but must keep its arcseconds
-  # mark, which is then reported as needing a decision rather than a fix.
+  # mark. `″` U+2033 is an allowed character, so it is not reported at all --
+  # the fixer's job is to leave correct typography alone, not to ask about it.
   metadata <- "coords: 16°17\'24.8″S at 17ºC"
   path_data <- setup_dataset(metadata)
 
@@ -196,14 +216,17 @@ test_that("dry_run = FALSE leaves correct typography in place", {
     "coords: 16°17\'24.8″S at 17°C"
   )
   expect_equal(report$status[report$char == "º"], "replaced")
-  expect_equal(report$status[report$char == "″"], "no replacement known")
+  expect_false("″" %in% report$char)
 })
 
 
 test_that("a character with no known replacement is reported, not guessed at", {
-  # `‰` is a real symbol rather than a typo, and `Ø` could be a name or a
-  # mangled `Phi`. Neither is in the map, so neither may be altered.
-  metadata <- c("description: isotope composition (d13C, ‰)", "notes: ØPSII was measured")
+  # `†` and `∞` are real symbols rather than typos, so neither is in the map and
+  # neither may be altered. Both are disallowed under the character list as it
+  # stood before #253 and as it stands after, so this test does not move when
+  # the allowed list is widened -- unlike the `‰` and `Ø` it used to use, which
+  # #253 made allowed outright.
+  metadata <- c("description: growth was unbounded (∞)", "notes: see the note marked †")
   path_data <- setup_dataset(metadata)
 
   report <- suppressMessages(
@@ -220,7 +243,7 @@ test_that("a character with no known replacement is reported, not guessed at", {
 
 
 test_that("a resolvable and an unresolvable character on one line are separated", {
-  metadata <- "description: 17ºC and (d13C, ‰)"
+  metadata <- "description: 17ºC and unbounded growth (∞)"
   path_data <- setup_dataset(metadata)
 
   report <- suppressMessages(
@@ -228,12 +251,12 @@ test_that("a resolvable and an unresolvable character on one line are separated"
   )
 
   expect_equal(report$status[report$char == "º"], "replaced")
-  expect_equal(report$status[report$char == "‰"], "no replacement known")
+  expect_equal(report$status[report$char == "∞"], "no replacement known")
 
   # The known one is fixed and the unknown one survives untouched
   expect_equal(
     readLines(file.path(path_data, "Test_2020", "metadata.yml"), encoding = "UTF-8"),
-    "description: 17°C and (d13C, ‰)"
+    "description: 17°C and unbounded growth (∞)"
   )
 })
 

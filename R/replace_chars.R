@@ -41,7 +41,12 @@ util_disallowed_char_replacements <- function() {
 
     # Look-alikes for the degree sign, which the exception list already allows
     "\u00ba" = "\u00b0",         # MASCULINE ORDINAL INDICATOR
-    "\u25e6" = "\u00b0"         # WHITE BULLET
+    "\u25e6" = "\u00b0",         # WHITE BULLET
+
+    # A mis-set MICRO SIGN in a unit. The two are visually identical and only
+    # the MICRO SIGN is allowed, so permitting both would let the same unit be
+    # written two ways.
+    "\u03bc" = "\u00b5"          # GREEK SMALL LETTER MU -> MICRO SIGN
   )
 }
 
