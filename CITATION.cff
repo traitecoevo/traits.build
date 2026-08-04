@@ -1,0 +1,67 @@
+# ------------------------------------------------
+# CITATION.cff file created with {cffr} R package
+# See also: https://docs.ropensci.org/cffr/
+# ------------------------------------------------
+ 
+cff-version: 1.2.0
+message: 'To cite package "traits.build" in publications use:'
+type: software
+license: BSD-2-Clause
+title: 'traits.build: A Workflow for Harmonising Trait Data from Diverse Sources into
+  a Documented Standard Structure'
+version: 2.1.0.900
+doi: 10.1016/j.ecoinf.2024.102773
+abstract: The `traits.build` package provides a workflow to harmonise trait data from
+  diverse sources. A description of the data model, workflow, and R package are presented
+  in Wenk et al, 2024, <https://doi.org/10.1016/j.ecoinf.2024.102773>. The code was
+  originally built to support AusTraits (see Falster et al 2021, <https://doi.org/10.1038/s41597-021-01006-6>,
+  <https://github.com/traitecoevo/austraits.build>) and has been generalised here
+  to support construction of other trait databases. For detailed instructions and
+  examples see <https://traitecoevo.github.io/traits.build-book/>.
+authors:
+- family-names: Falster
+  given-names: Daniel
+  email: daniel.falster@unsw.edu.au
+  orcid: https://orcid.org/0000-0002-9814-092X
+- family-names: Wenk
+  given-names: Elizabeth
+  orcid: https://orcid.org/0000-0001-5640-5910
+- family-names: Yang
+  given-names: Sophie
+  orcid: https://orcid.org/0000-0001-7328-345X
+- family-names: Kar
+  given-names: Fonti
+  orcid: https://orcid.org/0000-0002-2760-3974
+preferred-citation:
+  type: article
+  title: 'traits.build: A data model, workflow and R package for building harmonised
+    ecological trait databases'
+  authors:
+  - family-names: Wenk
+    given-names: Elizabeth
+    orcid: https://orcid.org/0000-0001-5640-5910
+  - family-names: Bal
+    given-names: Payal
+  - family-names: Coleman
+    given-names: David
+  - family-names: Gallagher
+    given-names: Rachael
+  - family-names: Yang
+    given-names: Sophie
+    orcid: https://orcid.org/0000-0001-7328-345X
+  - family-names: Falster
+    given-names: Daniel S.
+  journal: Ecological Informatics
+  year: '2024'
+  volume: '83'
+  doi: 10.1016/j.ecoinf.2024.102773
+  url: https://doi.org/10.1016/j.ecoinf.2024.102773
+  start: '102773'
+repository-code: https://github.com/traitecoevo/traits.build
+url: https://traitecoevo.github.io/traits.build/
+contact:
+- family-names: Falster
+  given-names: Daniel
+  email: daniel.falster@unsw.edu.au
+  orcid: https://orcid.org/0000-0002-9814-092X
+
