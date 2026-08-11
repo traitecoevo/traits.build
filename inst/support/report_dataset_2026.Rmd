@@ -113,6 +113,12 @@ new_question <- function(txt) {
   writeLines(sprintf("<font color='orange'>**Question:** %s</font>\n\n", paste0(x, collape = "")))
 }
 
+new_question_2 <- function(txt) {
+  x <- questions(traits.build:::notetaker_add_note, traits.build:::notetaker_as_note(txt)) %>%
+    traits.build:::notetaker_print_notes(as_anchor = TRUE)
+  writeLines(sprintf("<font color='blue'>**Dataset-specific question:** %s</font>\n\n", paste0(x, collape = "")))
+}
+
 # Variable to record when definitions have been specified
 
 structures_already_defined <- c("names")
@@ -189,7 +195,7 @@ if (!is.null(metadata$questions) && !is.na(metadata$questions[1])) {
     writeLines("# Major questions\n\n")
 
   for (i in seq_along(x))
-    new_question(sprintf("(section `general`) %s", metadata$questions[[i]]))
+    new_question_2(sprintf("(section `general`) %s", metadata$questions[[i]]))
 }
 ```
 
@@ -600,12 +606,12 @@ if (nrow(filter(data_study$excluded_data, error == "Value out of allowable range
   # check for outliers
   if (nrow(outliers) > 0) {
     writeLines(
-      sprintf("OUTLIERS: %s of points in your dataset lie in either the bottom or top 2.5 percent of data\n",
+      sprintf("POSSIBLE OUTLIERS: %s of points in your dataset lie in either the bottom or top 2.5 percent of data\n",
       nrow(outliers))
     )
     percent_outliers <- nrow(outliers) / nrow(data_trait_study) * 100
     if (percent_outliers > 10) {
-      new_question(paste0("(section `traits`) More than 10% of your data points for the trait `", trait, "` are outliers, does this seem reasonable, given what you know about the biology of these taxa and overall distribution of values in AusTraits?"))
+      new_question(paste0("(section `traits`) More than 10% of your data points for the trait `", trait, "` are in the either the bottom or top 2.5 percent of the data for this trait. Does this seem reasonable, given what you know about the biology of these taxa and overall distribution of values in AusTraits?"))
     } else {
       new_question(
     sprintf("(section `traits`) Do the data for the trait `%s` appear correct?", trait)
