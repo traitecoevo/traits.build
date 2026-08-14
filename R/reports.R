@@ -182,7 +182,7 @@ new_taxa_trait_combinations <- function(database, dataset) {
     mutate(new_taxa = n()) %>%
     ungroup() %>%
     distinct() %>%
-    left_join(preexisting_taxa)
+    left_join(preexisting_taxa, by = "trait_name")
   
   new_taxa
   

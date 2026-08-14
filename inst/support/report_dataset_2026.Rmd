@@ -95,8 +95,6 @@ library(austraits)
 library(knitr)
 library(kableExtra)
 
-source(system.file("support", "plot_trait_values.R", package = "traits.build"))
-
 my_kable_styling <- util_kable_styling_html
 
 definitions <- austraits$definitions
@@ -428,9 +426,9 @@ n_records %>%
   my_kable_styling()
 ```
   
-This includes the first records in AusTraits for many trait by taxon combinations - thanks for helping to gap-fill our knowledge about Australian plants.
+This includes the first records in AusTraits for some trait by taxon combinations - thanks for helping to gap-fill our knowledge about Australian plants.
 
-```{r}
+```{r, results='asis', echo=FALSE}
 new_taxa_trait_combinations(database = austraits, dataset = dataset_id) |>
   select(-dataset_id) |>
   my_kable_styling()
