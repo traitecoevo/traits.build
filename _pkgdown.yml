@@ -42,10 +42,16 @@ reference:
     - '`dataset_configure`'
     - '`dataset_process`'
     - '`dataset_report`'
+    - '`new_taxa_trait_combinations`'
     - '`get_schema`'
     - '`get_unit_conversions`'
     - '`util_get_SHA`'
     - '`util_get_version`'
+
+  - title: Claude Code skills
+    desc: Install traits.build's Claude Code skills into a database repo.
+    contents:
+    - '`use_traits_build_skills`'
 
   - title: Creating metadata files
     desc: Functions that help you create metadata files.
