@@ -120,7 +120,7 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
 util_kable_styling_html <- function(...) {
     txt <-
       kableExtra::kable(...) %>%
-      kableExtra::kable_styling(...,
+      kableExtra::kable_styling(
                   bootstrap_options = c("striped", "hover", "condensed", "responsive"),
                   full_width = FALSE,
                   position = "left"
