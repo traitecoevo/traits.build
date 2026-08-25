@@ -22,6 +22,12 @@ Dev follows the standard R-package workflow: `devtools::load_all()`, `devtools::
 > is actively maintained and CRAN submission is a goal. Don't treat it as a reason to hold back on
 > new work. Fixing the badge is tracked in #225.
 
+**Adding a dataset to a database repo:** there's a Claude Code skill for this —
+`inst/skills/traits-build-add-dataset/` (symlinked into `.claude/skills/` here for
+authoring; installed into a database repo's own `.claude/skills/` via the exported
+`use_traits_build_skills()`). Read its `SKILL.md` rather than re-deriving the
+add-dataset workflow from `traits.build-book` from scratch.
+
 **Test fixtures:** the nine `tests/testthat/examples/Test_2023_*` datasets are golden-file
 regression tests covering the whole output structure. Never hand-edit an expected file towards the
 output you observed — run `Rscript regenerate-examples.R` from `tests/testthat/` and read the diff.

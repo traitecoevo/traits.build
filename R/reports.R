@@ -143,6 +143,7 @@ util_kable_styling_html <- function(...) {
 #' \dontrun{
 #' new_taxa_trait_combinations(austraits, "Falster_2003")
 #' }
+#' @export
 new_taxa_trait_combinations <- function(database, dataset) {
   
   # extract accepted species from APC
@@ -185,5 +186,5 @@ new_taxa_trait_combinations <- function(database, dataset) {
     left_join(preexisting_taxa, by = "trait_name")
   
   new_taxa
-  
+
 }
