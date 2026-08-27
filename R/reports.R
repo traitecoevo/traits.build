@@ -64,7 +64,7 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
 
     # Create a new Rmd file with name embedded in title
     x <- readLines(input_file, encoding = "UTF-8")
-    x[2] <- sprintf("title: Report on study `%s` from", dataset_id)
+    x[2] <- sprintf("title: Report on study `%s`", dataset_id)
     writeLines(x, input_Rmd)
 
     # Knit and render. Note, call render directly
@@ -153,14 +153,26 @@ new_taxa_trait_combinations <- function(database, dataset) {
     select(taxon_name)
   
   # extract new dataset
-  new_data <- (database %>% extract_dataset(dataset))$traits %>% 
-    distinct(dataset_id, taxon_name, trait_name) %>% 
+  new_data <- (database %>% extract_dataset(dataset))$traits %>%
+    distinct(dataset_id, taxon_name, trait_name) %>%
     mutate(combined = paste0(taxon_name,"_", trait_name)) %>%
     filter(taxon_name %in% accepted_species$taxon_name)
-  
+
+  # Create an empty tibble for instances where none of the input names are `accepted`.
+  if (nrow(new_data) == 0) {
+    return(
+      tibble::tibble(
+        dataset_id = character(),
+        trait_name = character(),
+        new_taxa = integer(),
+        existing_taxa = integer()
+      )
+    )
+  }
+
   # taxa present in new dataset
   traits_to_check <- new_data %>% distinct(trait_name)
-  
+
   # data in database prior to new dataset
   preexisting_data <- (database %>% extract_trait(traits_to_check$trait_name))$traits %>% 
     filter(dataset_id != dataset) %>%

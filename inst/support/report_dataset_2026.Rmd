@@ -47,7 +47,7 @@ options(dplyr.summarise.inform = FALSE)
 # Guidelines for writing report code
 # - use tidyverse style and format: http://htmlpreview.github.io/?https://github.com/nicercode/2018_BEES_regression/blob/master/tidyverse.html
 # - use kableExtra for styling: https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html
-# - use knitr chunck options: https://rmarkdown.rstudio.com/lesson-3.html
+# - use knitr chunk options: https://rmarkdown.rstudio.com/lesson-3.html
 
 # Some useful functions
 
@@ -56,7 +56,7 @@ options(dplyr.summarise.inform = FALSE)
 #'
 #' Generate hyperlink for markdown and html files
 #'
-#' @param link character string for the url link
+#' @param link character string for the URL link
 #' @param text character string for the text to display
 #' @param type file type, default is markdown "md" otherwise html
 #'
@@ -73,15 +73,15 @@ as_link <- function(link, text, type = "md") {
 }
 
 
-#' Get SHA link from Github
+#' Get SHA link from GitHub
 #'
 #' Get SHA link using the util_get_SHA() function. The link generated leads to the latest
-#' commit for the Github repository. SHA is the abbreviated SHA-1 40 digit
-#' hexadecimal number which Github uses to track commits and changes made to a repository.
+#' commit for the GitHub repository. SHA is the abbreviated SHA-1 40-digit
+#' hexadecimal number which GitHub uses to track commits and changes made to a repository.
 #'
 #' @param ... arguments passed to the util_get_SHA()
 #'
-#' @return SHA link to a github commit as a character string formatted using markdown syntax
+#' @return SHA link to a GitHub commit as a character string formatted using markdown syntax
 util_get_SHA_link <- function(...) {
   sha <- util_get_SHA(...)
   as_link(sprintf("https://github.com/traitecoevo/austraits/tree/%s", sha), sha)
@@ -101,6 +101,19 @@ definitions <- austraits$definitions
 data_study <- extract_dataset(austraits, dataset_id, partial_matches_allowed = F)
 metadata <- read_metadata(file.path("data", dataset_id, "metadata.yml"))
 schema <- austraits$schema
+
+# Data release (not code/package release) of APCalign used to align taxon
+# names -- recorded as a dated GitHub release tag among the compiled
+# database's `related_identifiers` metadata, e.g.
+# ".../APCalign/releases/tag/2025-04-15".
+apcalign_identifier <- austraits$metadata$related_identifiers %>%
+  purrr::detect(~ !is.null(.x$identifier) && grepl("APCalign", .x$identifier, ignore.case = TRUE))
+
+apcalign_data_release <- if (!is.null(apcalign_identifier)) {
+  sub(".*/tag/", "", apcalign_identifier$identifier)
+} else {
+  "unknown"
+}
 
 # start notetaker device
 questions <-  traits.build:::notetaker_start()
@@ -130,15 +143,15 @@ structures_already_defined <- c("names")
 
 `AusTraits` is an open-source compilation of trait data for Australian plant taxa. It includes data for more than 500 morphological, ecological and physiological variables that: 1. Tend to vary among taxa; and 2. Have been collected across a number of taxa. 
 
-Many people collect trait data, and as such, data is spread across many sources, under a variety of formats and terms. AusTraits combines all of these data fragments into a harmonised, error checked, publicly available compilation, built to make trait data reusable. 
+Many people collect trait data, and as such, data are spread across many sources, under a variety of formats and terms. AusTraits combines all of these data fragments into a harmonised, error checked, publicly available compilation, built to make trait data reusable. 
 
-AusTraits now includes more than 400 unique `datasets`, each denoted by a distinct `dataset_id`. These include individual research datasets generally linked to a scientific publications, morphological and ecological trait data extracted from flora descriptions and the taxonomic literature, informal compilations from the literature submitted by researchers, and unpublished datasets. Our data processing pipeline combines all of the studies in a transparent and reproducible way using a AusTraits-family R package, [traits.build](http://traitecoevo.github.io/traits.build/). We seek to retain all metadata associated with the individual trait values, including measurement methods, location and location properties, and any additional contextual metadata submitted by the data contributor. 
+AusTraits now includes more than 400 unique `datasets`, each denoted by a distinct `dataset_id`. These include individual research datasets generally linked to a scientific publication, morphological and ecological trait data extracted from flora descriptions and the taxonomic literature, informal compilations from the literature submitted by researchers, and unpublished datasets. Our data processing pipeline combines all of the studies in a transparent and reproducible way using an AusTraits-family R package, [traits.build](http://traitecoevo.github.io/traits.build/). We seek to retain all metadata associated with the individual trait values, including measurement methods, location and location properties, and any additional contextual metadata submitted by the data contributor. 
 
 All traits included in AusTraits are published in the [AusTraits Plant Dictionary (APD)](https://w3id.org). This resource includes trait definitions, lists of allowed categorical trait values (for categorical traits), allowed ranges (for numeric traits), and output units (for numeric traits).
 
 All plant names are aligned to the [Australian Plant Census (APC)](https://biodiversity.org.au/nsl/services/search/taxonomy) using the R package [APCalign](http://traitecoevo.github.io/APCalign).
 
-AusTraits exists and continues to expand because of the contributions of researchers across Australia. Thank you for being part of an endeavor to make trait data for Australia's flora readily accessible for ecological and evolutionary research, biodiversity infrastructure and conservation decision-making.
+AusTraits exists and continues to expand because of the contributions of researchers across Australia. Thank you for being part of an endeavour to make trait data for Australia's flora readily accessible for ecological and evolutionary research, biodiversity infrastructure and conservation decision-making.
 
 Learn more at the [AusTraits website](https://austraits.org).
 
@@ -156,15 +169,15 @@ Each study is assigned a unique `dataset_id`, with information for that dataset 
 - ` `r dataset_id`/data.csv`: contains the primary trait measurements, in either long or wide format
 - ` `r dataset_id`/metadata.yml`: contains all the contextual data (or metadata) about the trait measurements.
 
-Data from those files has been used to generate the report below.
+Data from those files have been used to generate the report below.
 
 Please review the report, check it is correct, and send updates where appropriate. 
 
 There are two sets of queries in this report:
 
-1. *Queries in orange scattered throughout the report.* These are automatically generated for all reports and do not indicate we have a concern about your dataset submission; consider them prompts to draw your attention to each section of the report. 
+1. <font color='orange'>*Queries in orange scattered throughout the report.*</font> These are automatically generated for all reports and do not indicate we have a concern about your dataset submission; consider them prompts to draw your attention to each section of the report.
 
-2. *Queries in blue that appear at the start of the report.* These are explicit questions pertaining to your dataset that the dataset curator had when adding your study. 
+2. <font color='blue'>*Queries in blue that (might) appear at the start of the report.*</font> These are explicit questions pertaining to your dataset that the dataset curator had when adding your study.
 
 All questions appear again as a list at the end of the document.
 
@@ -176,9 +189,9 @@ To aid your review, we have attached the following files:
 
 1. **Copying and pasting the questions at the end of the report into an email and answering as many as possible.**
 
-   For the automated (orange) questions if the pertinent metadata or data plot/table match your expectations simply answer "yes".
+   For the automated (orange) questions, if the pertinent metadata or data plot/table match your expectations, simply answer "yes".
    
-   The targeted (blue) questions represented an uncertainty or concern the AusTraits data curator had as they merged in your study. Please consider these carefully, as they usually indicate missing metadata or some source of ambiguity (e.g. units not provided, uncertainty about trait value substitutions, study site latitude/lonitude).
+   The targeted (blue) questions represented an uncertainty or concern the AusTraits data curator had as they merged in your study. Please consider these carefully, as they usually indicate missing metadata or some source of ambiguity (e.g. units not provided, uncertainty about trait value substitutions, study site latitude/longitude).
     
 2. Sending back your responses and any additional metadata required.
 
@@ -216,7 +229,7 @@ metadata$contributors$data_collectors %>%
   my_kable_styling()
 ```
 
-We also require an email address for all people. People involved in the study who cannot be tracked down, need to be designated as assistants.
+We also require an email address for all people. People involved in the study who cannot be tracked down need to be designated as assistants.
 
 In addition, the following people are included as
 
@@ -262,10 +275,10 @@ new_question("(section `source`) Are the citation details for this study correct
 
 The dataset-level metadata we have mapped in is as follows:
 
-- the fields `taxon_name`, `trait_name`, `value` (for long-format dataset), & `location_name` indicate the column from `data.csv` we have mapped in for this information
+- the fields `taxon_name`, `trait_name`, `value` (for long-format datasets), & `location_name` indicate the column from `data.csv` we have mapped in for this information
 - `description` & `sampling_strategy` are based on information in the publication or notes you've provided
 - `basis_of_record`, `life_stage`, and `collection_date` can be a fixed value for the dataset or link to a column that varies by observation
-- custom_R_code is just that; code specifically written to manipulate `data.csv` as it is read in
+- `custom_R_code` is just that; code specifically written to manipulate `data.csv` as it is read into the traits.build workflow
 
 ```{r, results='asis', echo=FALSE}
 metadata$dataset %>%
@@ -291,46 +304,21 @@ for (v in missing) {
 }
 ```
 
-## Identifiers
-
-```{r, results='asis', echo=FALSE}
-sprintf("The `identifiers` table is defined as: *%s*", schema$metadata$elements$identifiers$description) %>%
-  writeLines()
-
-writeLines("")
-
-writeLines(
-  ifelse(nrow(data_study$identifiers) == 0,
-    "There are no identifiers provided that link data from this dataset to other datasets, biodiversity portals, collections, or other databases.",
-    "The following identifiers are linked to the trait data observations for this study."))
-
-if (nrow(data_study$identifiers) > 0) {
-  identifiers_meta <- metadata$identifiers %>% austraits::convert_list_to_df2()
-
-  tibble::tibble(
-    var_in = paste(unique(identifiers_meta$var_in), collapse = ", "),
-    identifier_type = paste(unique(identifiers_meta$identifier_type), collapse = ", "),
-    institution_code = paste(unique(identifiers_meta$institution_code), collapse = ", "),
-    records = nrow(data_study$identifiers)
-  ) %>%
-    my_kable_styling() %>%
-    writeLines()
-
-  new_question("(section `identifiers`) Do the identifier details look complete and accurate?")
-} else {
-  new_question("(section `identifiers`) Are there identifiers that should be included for this dataset?")
-}
-```
-
 ## Locations
 
 ```{r, results='asis', echo=FALSE}
-if (nrow(data_study$traits) > 0 && isTRUE(all(data_study$traits$entity_type == "species"))) {
+# When every record is species-level (or a higher taxonomic rank), 
+# jump straight to a single confirmatory question instead.
+is_species_only_dataset <- nrow(data_study$traits) > 0 && isTRUE(all(data_study$traits$entity_type == "species"))
+
+if (is_species_only_dataset) {
   writeLines("This dataset only includes species-level trait observations. Such observations are not linked to a specific location or location properties.")
+
+  writeLines("")
+
+  new_question("(section `locations`) Is it correct that all your trait data apply to the species, not just specific populations or individuals, and therefore is it appropriate that there is no location data attached to these observations?")
 }
 ```
-
-Data were collected at the following sites and locations. As a minimum, we are aiming to collect, the variables
 
 ```{r, results='asis', echo=FALSE, warning=FALSE}
 
@@ -342,52 +330,63 @@ create_if_missing <- function(df, var, type = rep(NA_character_, nrow(df))) {
 
 location_main <- c("location_name", "longitude (deg)", "latitude (deg)", "description")
 
-# entity_type values recorded against a specific collection location.
-# Species-level (and higher taxonomic-rank) measurements are summary
-# statistics/expert scores for a taxon as a whole and never have a
-# location, so they're excluded here rather than showing up as a spurious
-# "unknown" location row full of NAs.
-location_entity_types <- c("individual", "population", "metapopulation")
+if (!is_species_only_dataset) {
+  writeLines("Data were collected at the following sites and locations. As a minimum, we are aiming to collect the variables `latitude`, `longitude`, and `description`.")
 
-locations <-
-  full_join(by = "location_id",
-            # count of records by location
-            data_study$traits %>%
-              filter(entity_type %in% location_entity_types) %>%
-              # `ifelse()` degrades a character column to logical when the
-              # data is empty (e.g. a dataset with no location-tied entity
-              # types), which then fails to join against `location_id`
-              # (character) below -- `coalesce()` doesn't have that problem.
-              mutate(location_id = dplyr::coalesce(location_id, "unknown")) %>%
-              group_by(location_id) %>%
-              summarise(records = n()),
-            # details on locations from metadata
-            data_study$locations %>%
-              filter(location_property %in% location_main) %>%
-              select(-dataset_id) %>%
-              spread(location_property, value) %>%
-              create_if_missing("location_id") %>%
-              create_if_missing("location_name") %>%
-              create_if_missing("latitude (deg)") %>%
-              create_if_missing("longitude (deg)") %>%
-              create_if_missing("description")  %>%
-              mutate(
-                `latitude (deg)` = as.numeric(`latitude (deg)`),
-                `longitude (deg)` = as.numeric(`longitude (deg)`)
-                )
-  ) %>%
- select(location_id, location_name, records, `latitude (deg)`, `longitude (deg)`, description)
+  # entity_type values recorded against a specific collection location.
+  # Species-level (and higher taxonomic-rank) measurements are summary
+  # statistics/expert scores for a taxon as a whole and never have a
+  # location, so they're excluded here rather than showing up as a spurious
+  # "unknown" location row full of NAs.
+  location_entity_types <- c("individual", "population", "metapopulation")
 
-if (nrow(locations) > 0) {
-  locations %>%
-    my_kable_styling() %>%
-    writeLines()
+  locations <-
+    full_join(by = "location_id",
+              # count of records by location
+              data_study$traits %>%
+                filter(entity_type %in% location_entity_types) %>%
+                # `ifelse()` degrades a character column to logical when the
+                # data is empty (e.g. a dataset with no location-tied entity
+                # types), which then fails to join against `location_id`
+                # (character) below -- `coalesce()` doesn't have that problem.
+                mutate(location_id = dplyr::coalesce(location_id, "unknown")) %>%
+                group_by(location_id) %>%
+                summarise(records = n()),
+              # details on locations from metadata
+              data_study$locations %>%
+                filter(location_property %in% location_main) %>%
+                select(-dataset_id) %>%
+                spread(location_property, value) %>%
+                create_if_missing("location_id") %>%
+                create_if_missing("location_name") %>%
+                create_if_missing("latitude (deg)") %>%
+                create_if_missing("longitude (deg)") %>%
+                create_if_missing("description")  %>%
+                mutate(
+                  `latitude (deg)` = as.numeric(`latitude (deg)`),
+                  `longitude (deg)` = as.numeric(`longitude (deg)`)
+                  )
+    ) %>%
+   select(location_id, location_name, records, `latitude (deg)`, `longitude (deg)`, description)
 
-  if (any(tolower(locations$location_name) %in% c(NA, "unknown"))) {
-    new_question("(section `locations`) **Location data incomplete or unknown!** Can you provide location details where your data were sampled? If data are from a National Park, biological reserve, or other location with a name, but not linked to a specific location within the park, the location name should be that national park (or similar), and we will use the park's headquarters as the GPS coordinates. If the data are from herbarium specimens or a taxa monograph it is appropriate to leave this information blank.")
+  if (nrow(locations) > 0) {
+    locations %>%
+      my_kable_styling() %>%
+      writeLines()
+
+    if (any(tolower(locations$location_name) %in% c(NA, "unknown"))) {
+      new_question("(section `locations`) **Location data incomplete or unknown!** Can you provide location details where your data were sampled? If data are from a National Park, biological reserve, or other location with a name, but not linked to a specific location within the park, the location name should be that national park (or similar), and we will use the park's headquarters as the GPS coordinates. If the data are from herbarium specimens or a taxa monograph, it is appropriate to leave this information blank.")
+    }
+  } else {
+    writeLines("There is currently no location data associated with this dataset, as all trait values are species-level (or higher taxonomic rank) and so are not tied to a specific collection location.")
   }
 } else {
-  writeLines("There is currently no location data associated with this dataset, as all trait values are species-level (or higher taxonomic rank) and so are not tied to a specific collection location.")
+  # keep `locations` defined (0 rows) so the `maps` chunk below has
+  # something safe to filter/check, without rendering anything itself
+  locations <- tibble::tibble(
+    location_id = character(), location_name = character(), records = integer(),
+    `latitude (deg)` = numeric(), `longitude (deg)` = numeric(), description = character()
+  )
 }
 
 ```
@@ -407,28 +406,34 @@ if (nrow(locations) > 0) {
 ```
 
 ```{r, results='asis', echo=FALSE}
-new_question("(section `locations`) Do location details look complete and accurate? As a minimum we would like `latitude`, `longitude`, `description`.")
+if (!is_species_only_dataset) {
+  new_question("(section `locations`) Do location details look complete and accurate? As a minimum we would like `latitude`, `longitude`, `description`.")
+}
 ```
 
-## Additional location data (optional)
-
-The following variables have been recorded for the locations included in the study:
-
 ```{r, results='asis', echo=FALSE}
+if (!is_species_only_dataset) {
+  writeLines(c(
+    "## Additional location data (optional)",
+    "",
+    "The following variables have been recorded for the locations included in the study:",
+    ""
+  ))
 
-locations_extra <- data_study$locations %>%
-  filter(!(location_property %in% location_main)) %>%
-  select(-dataset_id) %>%
-  spread(location_property, value)
+  locations_extra <- data_study$locations %>%
+    filter(!(location_property %in% location_main)) %>%
+    select(-dataset_id) %>%
+    spread(location_property, value)
 
-if (nrow(locations_extra) > 0) {
-  locations_extra %>%
-    my_kable_styling() %>%
-    writeLines()
+  if (nrow(locations_extra) > 0) {
+    locations_extra %>%
+      my_kable_styling() %>%
+      writeLines()
 
-  new_question("(section `locations`) Do the additional location details look complete?")
+    new_question("(section `locations`) Do the additional location details look complete?")
   } else {
-  writeLines("There is currently no additional location data associated with this dataset.")
+    writeLines("There is currently no additional location data associated with this dataset.")
+  }
 }
 
 ```
@@ -436,22 +441,30 @@ if (nrow(locations_extra) > 0) {
 ## Contexts
 
 ```{r, results='asis', echo=FALSE}
-# The schema's `category` field description opens with its own lead-in
-# sentence ("The category of contextual data.") before listing the five
-# category options -- we want our own lead-in instead, so strip the
-# schema's and splice ours on, but keep pulling the actual (live) list of
-# categories/definitions from the schema so it stays in sync automatically.
+# Create intro statement that rephrases information from traits.build schema
+# definition into a more readable format. 
+# This requires some word substitutions and syntax changes
 category_options_text <- schema$metadata$elements$contexts$elements$category %>%
   stringr::str_remove("^[^.]*\\.\\s*") %>%
   stringr::str_replace("^Options", "options")
 
+
+description_text <- schema$metadata$elements$contexts$description %>%
+  stringr::str_remove("\\.\\s*$")
+description_text <- paste0(tolower(substring(description_text, 1, 1)), substring(description_text, 2))
+
+# Present what the 5 possible context property categories are
+# since we report to the reader which category each of their context properties is in.
 sprintf(
-  "Contexts are %s. There are five context categories: %s",
-  schema$metadata$elements$contexts$description %>% stringr::str_remove("\\.\\s*$"),
+  "Contexts are %s. There are five context property categories: %s",
+  description_text,
   category_options_text
 ) %>%
   writeLines()
 ```
+
+That is, context properties are flexible and allow you to map in any additional metadata you have documented that might be useful for explaining differences in trait values. This ensures when your data are used in future analyses your expert knowledge about your trait measurements is documented. This might include plant age, measurement methods that subtely differed between trait measurements, fire history, or anything that can be added as a column of information to the `data.csv` file.
+
 
 ```{r, results='asis', echo=FALSE}
 context_properties <- data_study$contexts %>%
@@ -464,42 +477,142 @@ description_removed <- FALSE
 if (length(context_properties) > 0) {
     writeLines("The following contexts have been recorded for the measurements included in this study.\n")
 
+    # Helper function for properly spacing lines in output
+    context_spacer <- function() {
+      writeLines("")
+      writeLines("<div style='margin-top: 2.0em;'></div>")
+      writeLines("")
+    }
+
+    if ("replicate observations" %in% data_study$contexts$context_property) {
+      writeLines("The context property `replicate observations` has been added because you have multiple trait observations at a population or species-level linked to the same value for `species` * `location` * `other contexts` * `value_type`, and our pivoting functions require an additional context property that flags each row as an independent observation.")
+      context_spacer()
+    }
+
     for (i in seq_along(context_properties)) {
       var_in <- context_properties[[i]][["var_in"]][1]
       category <- context_properties[[i]]$category[1]
       article <- ifelse(grepl("^[aeiouAEIOU]", category), "an", "a")
+      context_property_name <- context_properties[[i]]$context_property[1]
 
-      writeLines(paste0("**", context_properties[[i]]$context_property[1], "** has been ",
+      if (i > 1) {
+        context_spacer()
+      }
+
+      writeLines(paste0("**", context_property_name, "** has been ",
         ifelse(is.null(var_in), "added ",
           paste0("mapped from the column titled **", var_in, "** in your dataset, ")),
         "as ", article, " `", category, "`."))
 
       writeLines("\n\nThe following values exist for this context:\n")
 
-      context_table <- context_properties[[i]] %>% dplyr::select(dplyr::any_of(c("find", "value", "description")))
+      context_table <- context_properties[[i]] %>% dplyr::select(dplyr::any_of(c("value", "description")))
+
+      # As the compiled `contexts` table doesn't retain the originally supplied
+      # values (those in `find` in the metadata.yml), 
+      # these need to be pulled back in from metadata.yml for display
+      metadata_context_entry <- metadata$contexts %>%
+        purrr::detect(~ identical(.x$context_property, context_property_name))
+
+      if (!is.null(metadata_context_entry) && !is.null(metadata_context_entry$values)) {
+        find_value_table <- metadata_context_entry$values %>%
+          austraits::convert_list_to_df2() %>%
+          dplyr::select(dplyr::any_of(c("find", "value")))
+
+        context_table <- context_table %>%
+          dplyr::distinct() %>%
+          dplyr::left_join(find_value_table, by = "value") %>%
+          dplyr::mutate(find = dplyr::coalesce(find, value)) %>%
+          dplyr::select(dplyr::any_of(c("find", "value", "description")))
+      }
 
       if ("description" %in% names(context_table) && all(is.na(context_table$description))) {
         context_table <- context_table %>% dplyr::select(-description)
         description_removed <- TRUE
       }
 
-      context_table %>%
-        my_kable_styling() %>%
-        writeLines()
+      if (identical(names(context_table), "value")) {
+        # If there are no contect value substitutions or descriptions
+        # collapse the values into a single
+        # sorted, comma-delimited, line-wrapping line.
+        distinct_values <- context_table$value %>% unique()
+        numeric_values <- suppressWarnings(as.numeric(distinct_values))
+        sorted_values <- if (!anyNA(numeric_values)) {
+          distinct_values[order(numeric_values)]
+        } else {
+          sort(distinct_values)
+        }
+        writeLines(" ")
+        # helper function to add multiple scapes that would otherwise be collapsed
+        value_separator <- paste0(";", strrep("&nbsp;", 3), " ")
+        writeLines(paste0(sorted_values, collapse = value_separator))
+        writeLines(" ")
+      } else {
+        writeLines(" ")
+        context_table %>%
+          my_kable_styling() %>%
+          writeLines()
+        writeLines("\n\n")
+      }
     }
   new_question("(section `contexts`) Do the context details look complete?")
   if (description_removed) {
-    new_question("(section `contexts`) For some contexts, we do not map in descriptions of individual context values; for instance for context values that are numbers, names of seasons, or species names. Let us know if you feel like omitting descriptions for any of your context values leads to ambiguity in their meaning.")
+    new_question("(section `contexts`) For some contexts, we do not map in descriptions of individual context values; for instance, context values that are numbers, names of seasons, or species names. Let us know if you feel like omitting descriptions for any of your context values leads to ambiguity in their meaning.")
   }
   } else {
   writeLines("There is currently no contextual data associated with this dataset.")
+
+  writeLines("")
+
+  new_question("(section `contexts`) Are there context properties that should be included for this dataset?")
   }
 
 ```
 
+## Identifiers
+
+```{r, results='asis', echo=FALSE}
+# Create intro statement that rephrases information from traits.build schema
+# definition into a more readable format.
+
+identifiers_desc_text <- schema$metadata$elements$identifiers$description %>%
+  stringr::str_remove("^.*\\bidentifiers that\\s*") %>%
+  stringr::str_remove("\\.\\s*$") %>%
+  stringr::str_replace("^cross-references\\b", "cross-reference")
+
+sprintf("Identifiers %s.", identifiers_desc_text) %>%
+  writeLines()
+
+writeLines("")
+
+writeLines(
+  ifelse(nrow(data_study$identifiers) == 0,
+    "There are no identifiers provided that link data from this dataset to other datasets, biodiversity portals, collections, or other databases.",
+    "The following identifiers are linked to the trait data observations for this study."))
+
+writeLines("")
+
+if (nrow(data_study$identifiers) > 0) {
+  identifiers_meta <- metadata$identifiers %>% austraits::convert_list_to_df2()
+
+  tibble::tibble(
+    var_in = paste(unique(identifiers_meta$var_in), collapse = ", "),
+    identifier_type = paste(unique(identifiers_meta$identifier_type), collapse = ", "),
+    institution_code = paste(unique(identifiers_meta$institution_code), collapse = ", "),
+    records = nrow(data_study$identifiers)
+  ) %>%
+    my_kable_styling() %>%
+    writeLines()
+
+  new_question("(section `identifiers`) Do the identifier details look complete and accurate?")
+} else {
+  new_question("(section `identifiers`) Are there identifiers that should be included for this dataset?")
+}
+```
+
 ## Taxa sampled
 
-We have records on `r data_study$traits$taxon_name %>% unique() %>% length()` taxa from your study. The full list of names for taxa recorded in your study are listed at the end of the report.
+We have records on `r data_study$traits$taxon_name %>% unique() %>% length()` taxa from your study. The full list of names for taxa recorded in your study is listed at the end of the report.
 
 # Trait measurements
 
@@ -531,7 +644,7 @@ new_taxa_trait_combinations(database = austraits, dataset = dataset_id) |>
 new_question("(section `traits`) Does this study include other trait data we may have missed?")
 
 if (median(n_records$records_per_taxa) < 2) {
-  new_question("(section `traits`) It appears as though we mostly have means for each taxa. Can you provide individual-level measurements?")
+  new_question("(section `traits`) It appears as though we mostly have means for each taxon. Can you provide individual-level measurements?")
 }
 
 new_question("(section `traits`) Were any of your data sourced from other studies? If so, can you tell us which records and the source (so that we can avoid duplicates, where possible)?")
@@ -542,7 +655,7 @@ new_question("(section `traits`) Were any of your data sourced from other studie
 
 writeLines(ifelse(nrow(subset(data_study$excluded_data, error != "Missing value")) == 0,
         "All data passed quality control so nothing was excluded in this study. (Yay!)",
-        "We excluded some records in your dataset as they did not pass the quality control. A summary of the number of points and reasons for exclusion are as follows:"))
+        "We excluded some records in your dataset as they did not pass the quality control. A summary of the number of points and reasons for exclusion is as follows:"))
 
 if (nrow(subset(data_study$excluded_data, error != "Missing value")) > 0) {
   data_study$excluded_data %>%
@@ -581,7 +694,7 @@ if (nrow(subset(data_study$excluded_data, error != "Missing value")) > 0) {
 
   writeLines("Summaries of excluded numeric observations are included later in the report.")
 
-  new_question("(section `traits`) Can you provide any additional information so that above exclusions (required substitutions or other errors) no longer apply?")
+  new_question("(section `traits`) Can you provide any additional information so that the above exclusions (required substitutions or other errors) no longer apply?")
 }
 ```
 
@@ -629,7 +742,7 @@ writeLines(ifelse(length(traits_numeric) == 0,
 if (length(traits_numeric) > 0) {
   # value_types that represent a genuine point estimate suitable for plotting on
   # the x-axis - excludes e.g. bin/range (not a single value), mode/standard_error/
-  # standard_deviation/unknown (not meaningful plotted as a raw value)
+  # standard_deviation
   austraits_no_bins <- extract_data(austraits, table = "traits", col = "value_type", col_value = c("mean", "median", "minimum", "maximum", "raw"))
 }
 
@@ -652,7 +765,7 @@ for (trait in traits_numeric) {
   c("", "",
     sprintf("### %s", trait),
     "",
-    sprintf("We aligned the contributed variable called `%s` in the data you supplied with the trait `%s` in the AusTraits database, with value_types `%s`.\n\nThe original variable was supplied with units `%s`; these were converted to our standard `%s`.\n\nThe data has the following properties:",
+    sprintf("We aligned the contributed variable called `%s` in the data you supplied with the trait `%s` in the AusTraits database, with value_types `%s`.\n\nThe original variable was supplied with units `%s`; these were converted to our standard `%s`.\n\nThe data have the following properties:",
             transforms$var_in %>% paste0(collapse = ", "), trait,
             transforms$value_type %>% paste0(collapse = ", "),
             transforms$unit_in[1], elements$units),
@@ -679,7 +792,7 @@ for (trait in traits_numeric) {
 
   writeLines(
     ifelse(nrow(filter(data_study$excluded_data, error == "Value out of allowable range" & trait_name == trait)) > 0,
-    "The following data points were excluded because the values were outside the allowable range (error = `Value out of allowable range`). Our ranges of allowable values are sufficiently generous, that most excluded data are well outside the expected range for the trait, but if you believe these data are valid, accurate measurements that will be useful to future AusTraits users, let us know.", "")
+    "The following data points were excluded because the values were outside the allowable range (error = `Value out of allowable range`). Our ranges of allowable values are sufficiently generous that most excluded data are well outside the expected range for the trait, but if you believe these data are valid, accurate measurements that will be useful to future AusTraits users, let us know.", "")
   )
 
 if (nrow(filter(data_study$excluded_data, error == "Value out of allowable range" & trait_name == trait)) > 0) {
@@ -706,12 +819,12 @@ if (nrow(filter(data_study$excluded_data, error == "Value out of allowable range
   # check for outliers
   if (nrow(outliers) > 0) {
     writeLines(
-      sprintf("POSSIBLE OUTLIERS: %s of points in your dataset lie in either the bottom or top 2.5 percent of data\n",
+      sprintf("POSSIBLE OUTLIERS: %s points in your dataset lie in either the bottom or top 2.5 percent of data\n",
       nrow(outliers))
     )
     percent_outliers <- nrow(outliers) / nrow(data_trait_study) * 100
     if (percent_outliers > 10) {
-      new_question(paste0("(section `traits`) More than 10% of your data points for the trait `", trait, "` are in the either the bottom or top 2.5 percent of the data for this trait. Does this seem reasonable, given what you know about the biology of these taxa and overall distribution of values in AusTraits?"))
+      new_question(paste0("(section `traits`) More than 10% of your data points for the trait `", trait, "` are in either the bottom or top 2.5 percent of the data for this trait. Does this seem reasonable, given what you know about the biology of these taxa and overall distribution of values in AusTraits?"))
     } else {
       new_question(
     sprintf("(section `traits`) Do the data for the trait `%s` appear correct?", trait)
@@ -795,7 +908,7 @@ for (trait in traits_categorical) {
   x <- c("", "",
     sprintf("### %s", trait),
     "",
-    sprintf("We aligned the variable called `%s`in the data you supplied with the trait `%s` in the AusTraits database.\n\nThe contributed data has the following properties:", transforms$var_in, trait),
+    sprintf("We aligned the variable called `%s`in the data you supplied with the trait `%s` in the AusTraits database.\n\nThe contributed data have the following properties:", transforms$var_in, trait),
     "",
     sprintf("- **standardised name**: %s", trait),
     sprintf("- **standardised description**: %s", elements$description),
@@ -877,11 +990,11 @@ for (trait in traits_categorical) {
 
 # Taxon list
 
-We have records on the following taxa from your study. We have attempted to align taxon names with [the Australian Plant Census  (APC)](https://biodiversity.org.au/nsl/services/APC) or Australian Plant Names Index (APNI), a working list of all known Australian vascular plant taxa.
+We have records on the following taxa from your study. We have attempted to align taxon names with [the Australian Plant Census (APC)](https://biodiversity.org.au/nsl/services/APC) or Australian Plant Names Index (APNI), a working list of all known Australian vascular plant taxa.
 
 ## Full taxa list
 
-The table below shows the table of all taxa in this study, where possible using the name aligned with the APC. Columns are as follows:
+The table below shows all taxa in this study, where possible using the name aligned with the APC (version = `r apcalign_data_release`). Columns are as follows:
 
 ```{r, results='asis', echo=FALSE}
 schema$austraits$elements$taxa$elements %>%
@@ -935,7 +1048,7 @@ if (nrow(tmp) < 10000) {
   mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   my_kable_styling()
 } else {
-  cat(crayon:red("\t\tTable too large to dsiplay\n"))
+  cat(crayon::red("\t\tTable too large to display\n"))
   tmp %>%
   mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
   write_csv(paste0(dataset_id, "_taxa.csv"))
@@ -947,7 +1060,7 @@ if (nrow(tmp) < 10000) {
 # `updated_taxa` (before the `bind_rows(empty_tibble_taxonomic_updates)`
 # placeholder-row padding below, added purely so `my_kable_styling()` always
 # has something to render) reflects whether any taxonomic changes were
-# actually made, so it's what we gate this whole block on.
+# actually made
 taxa_columns <- names(data_study$taxa)
 
 updated_taxa <- data_study$taxonomic_updates %>% select(-dataset_id) %>%
@@ -1017,7 +1130,7 @@ new_question("(section `taxonomic_updates`) Do these taxonomic alignments and co
 
 # Review of questions
 
-Here is a summary of the questions we would like answers to. Clicking on the links will take you back to the appropriate spot in the document. Please copy and past these into an email when you respond.
+Here is a summary of the questions we would like answers to. Clicking on the links will take you back to the appropriate spot in the document. Please copy and paste these into an email when you respond.
 
 <font size = '3'>
 
@@ -1032,7 +1145,7 @@ questions() %>% traits.build:::notetaker_print_all() %>% writeLines()
 
 # Session information
 
-The technical information below may useful for us for the sake of reproducibility, but you don't need to worry about it!
+The technical information below may be useful for us for the sake of reproducibility, but you don't need to worry about it!
 
 <font color='grey'>
 This report was generated using the data from the commit `r util_get_SHA_link()`
