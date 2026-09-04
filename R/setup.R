@@ -1373,6 +1373,7 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
   if (method == "targets") {
     writeLines(pipeline, "_targets.R")
     message(green("\t-> build compilation using file `_targets.R`, via `targets::tar_make()`"))
+    message(green("\t-> then `build_export()` to write export/data/curr, which `tar_make()` leaves alone"))
   }
 
   # Check file R/custom_R_code.R exists
@@ -1404,6 +1405,44 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
       scientific_name_id = character()
     ) %>% readr::write_csv(filename)
   }
+}
+
+
+#' Write a built database to `export/data/curr`
+#'
+#' The `targets` pipeline rebuilds the compilation but does not write the
+#' exported `.rds`: that write is around a third of a one-dataset rebuild, and
+#' it is a publishing step rather than part of checking a dataset. This writes
+#' it, reading the compilation `targets::tar_make()` has already built.
+#'
+#' @param database_name Name of the database, matching the one given to
+#'  [build_setup_pipeline()]
+#' @param path Directory to write into
+#'
+#' @return The path written, invisibly
+#' @export
+#' @examples
+#' \dontrun{
+#' targets::tar_make()
+#' build_export()
+#' }
+build_export <- function(database_name = "database",
+                         path = file.path("export", "data", "curr")) {
+
+  util_require_package(
+    "targets",
+    "to read the database built by the `targets` pipeline"
+  )
+
+  database <- targets::tar_read_raw(database_name)
+
+  dir.create(path, showWarnings = FALSE, recursive = TRUE)
+  file <- file.path(path, paste0(database_name, ".rds"))
+  saveRDS(database, file)
+
+  message(green(sprintf("\t-> written to `%s`", file)))
+
+  invisible(file)
 }
 
 

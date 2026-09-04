@@ -71,16 +71,14 @@ list(
       version_number,
       git_SHA
     )
-  ),
-
-  # Save to file
-  tar_target(
-    file_{{database_name}},
-    {
-      dir.create("export/data/curr", FALSE, TRUE)
-      saveRDS({{database_name}}, "export/data/curr/{{database_name}}.rds")
-      "export/data/curr/{{database_name}}.rds"
-    },
-    format = "file"
   )
+
+  # The exported `export/data/curr/{{database_name}}.rds` is deliberately not a
+  # target. Writing it is about a third of a one-dataset rebuild, and it is a
+  # publishing step rather than part of checking a dataset, so `tar_make()`
+  # rebuilds the compilation and leaves it alone. Write it when you want it:
+  #
+  #   build_export()
+  #
+  # or read the rebuilt compilation directly with `targets::tar_read({{database_name}})`.
 )

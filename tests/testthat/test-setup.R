@@ -963,8 +963,12 @@ test_that("`build_setup_pipeline(method = 'targets')` builds the same database",
     targets::tar_manifest(callr_function = NULL)$name,
     c("Test_2022_config", "Test_2022_raw", "Test_2022",
       "file_Test_2022_metadata", "file_Test_2022_data",
-      "version_number", "git_SHA", "database", "file_database")
+      "version_number", "git_SHA", "database")
   )
+
+  # The export is a publishing step, not a target: `tar_make()` rebuilds the
+  # compilation and leaves `export/data/curr` alone
+  expect_false("file_database" %in% targets::tar_manifest(callr_function = NULL)$name)
 
   # `build_add_version()` is folded into the `database` target rather than given
   # one of its own, so that the database is written to the store once per
@@ -989,6 +993,14 @@ test_that("`build_setup_pipeline(method = 'targets')` builds the same database",
   expect_equal(
     from_targets[names(from_targets) != "build_info"],
     from_base[names(from_base) != "build_info"]
+  )
+
+  # `build_export()` writes the file the pipeline deliberately does not
+  exported <- build_export(path = file.path(withr::local_tempdir(), "curr"))
+  expect_true(file.exists(exported))
+  expect_equal(
+    readRDS(exported)[names(from_targets) != "build_info"],
+    from_targets[names(from_targets) != "build_info"]
   )
 
   # Nothing changed, so nothing rebuilds
