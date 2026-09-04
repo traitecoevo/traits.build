@@ -169,3 +169,125 @@ test_that("util_allowed_characters caches rather than re-reading the schema", {
   expect_identical(util_allowed_characters(), first)
   expect_identical(character_cache$allowed, first)
 })
+
+
+# `yaml::read_yaml()` is superlinear in the number of container nodes, so a
+# dataset with one location per georeferenced record takes minutes to read
+# (#263). `util_read_yaml_chunked()` parses a large `locations:` block in
+# chunks; these tests pin it to agreeing with the plain parser.
+
+# Build a copy of a real example metadata file with `n` locations spliced in,
+# keeping every other block -- including the `taxonomic_updates:` sequence and
+# the unindented lines inside `custom_R_code` -- exactly as it is.
+with_n_locations <- function(n, path = "examples/Test_2023_1/metadata.yml") {
+  lines <- readLines(path, encoding = "UTF-8", warn = FALSE)
+  opens <- which(lines == "locations:")
+
+  lat <- -10 - seq_len(n) * 1e-4
+  long <- 130 + seq_len(n) * 1e-4
+  added <- paste0(
+    "  at_", lat, "_deg_lat_and_", long, "_deg_long:\n",
+    "    latitude (deg): ", lat, "\n",
+    "    longitude (deg): ", long
+  )
+
+  out <- withr::local_tempfile(fileext = ".yml", .local_envir = parent.frame())
+  writeLines(append(lines, added, after = opens), out)
+  out
+}
+
+
+test_that("a large `locations:` block reads the same chunked as whole", {
+  f <- with_n_locations(2000)
+
+  expect_identical(util_read_yaml_chunked(f), yaml::read_yaml(f))
+  expect_length(util_read_yaml_chunked(f)$locations, 2003)
+
+  # Chunk size is an implementation detail, not a source of answers
+  for (chunk in c(1L, 7L, 500L, 5000L)) {
+    expect_identical(
+      util_read_yaml_chunked(f, chunk = chunk), yaml::read_yaml(f),
+      info = paste("chunk =", chunk)
+    )
+  }
+})
+
+
+test_that("blocks other than `locations:` survive chunking", {
+  # The guard that matters: `taxonomic_updates:` is a sequence written with
+  # `- find:` at indent 0 and its other keys at indent 2, so treating every
+  # indent-2 line as an entry start would split entries and fail to parse
+  f <- with_n_locations(2000)
+  chunked <- util_read_yaml_chunked(f)
+  whole <- yaml::read_yaml(f)
+
+  for (block in setdiff(names(whole), "locations")) {
+    expect_identical(chunked[[block]], whole[[block]], info = block)
+  }
+})
+
+
+test_that("a small `locations:` block is read by the plain parser", {
+  f <- "examples/Test_2023_1/metadata.yml"
+
+  expect_identical(util_read_yaml_chunked(f), yaml::read_yaml(f))
+  expect_length(util_read_yaml_chunked(f)$locations, 3)
+})
+
+
+test_that("every example dataset reads identically through the fast path", {
+  for (f in list.files("examples", "^metadata\\.yml$",
+                       recursive = TRUE, full.names = TRUE)) {
+    expect_identical(util_read_yaml_chunked(f), yaml::read_yaml(f), info = f)
+  }
+})
+
+
+test_that("a malformed file still reports the real parser's error", {
+  f <- with_n_locations(2000)
+  lines <- readLines(f)
+  # Break a line well past the first chunk boundary
+  lines[length(lines) - 2] <- "  \tbad: [unclosed"
+  writeLines(lines, f)
+
+  expect_error(util_read_yaml_chunked(f), class = "error")
+  expect_error(
+    util_read_yaml_chunked(f),
+    regexp = as.character(tryCatch(yaml::read_yaml(f), error = conditionMessage)),
+    fixed = TRUE
+  )
+})
+
+
+test_that("`read_metadata` still preserves custom R code formatting", {
+  f <- with_n_locations(2000)
+  metadata <- read_metadata(f)
+
+  expect_length(metadata$locations, 2003)
+  expect_match(metadata$dataset$custom_R_code, "wood_density_dupe", fixed = TRUE)
+  expect_match(metadata$dataset$custom_R_code, "\n", fixed = TRUE)
+  expect_identical(
+    metadata$dataset$custom_R_code,
+    read_metadata("examples/Test_2023_1/metadata.yml")$dataset$custom_R_code
+  )
+})
+
+
+test_that("the chunked path is actually taken, and only when it applies", {
+  # Everything above would still pass if the fast path fell back every time,
+  # so make falling back detectable
+  local_mocked_bindings(
+    read_yaml = function(...) stop("fell back to the plain parser"),
+    .package = "yaml"
+  )
+
+  big <- with_n_locations(2000)
+  expect_length(util_read_yaml_chunked(big)$locations, 2003)
+
+  # Below the threshold, and for a block that is not a map of locations,
+  # falling back is the correct behaviour
+  expect_error(util_read_yaml_chunked(big, threshold = 5000L), "fell back")
+  expect_error(
+    util_read_yaml_chunked("examples/Test_2023_1/metadata.yml"), "fell back"
+  )
+})
