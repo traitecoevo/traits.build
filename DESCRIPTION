@@ -42,6 +42,8 @@ Imports:
 Suggests:
     furrr,
     remake,
+    targets,
+    crew,
     forcats,
     leaflet,
     bibtex,

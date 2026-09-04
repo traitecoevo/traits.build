@@ -1296,13 +1296,18 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' studies.
 #'
 #' @param dataset_ids `dataset_id`'s to include; by default includes all
-#' @param method Approach to use in build
+#' @param method Approach to use in build. `"base"` writes a plain `build.R`
+#'  that rebuilds everything; `"furrr"` does the same in parallel; `"remake"`
+#'  and `"targets"` write a pipeline that caches, so that editing one dataset
+#'  rebuilds only that dataset. `"targets"` is the maintained, CRAN-available
+#'  option of the two.
 #' @param database_name Name of database to be built
 #' @param template Template used to build
 #' @param workers Number of workers/parallel processes to use when using
-#' method = "furrr"
+#' method = "furrr" or method = "targets"
 #'
-#' @return Updated `remake.yml` file
+#' @return Updated pipeline file: `build.R` for `"base"` and `"furrr"`,
+#'  `remake.yml` for `"remake"`, `_targets.R` for `"targets"`
 #' @export
 build_setup_pipeline <- function(dataset_ids = dir("data"),
                                  method = "base",
@@ -1311,7 +1316,7 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
                                  workers = 1
                                  ) {
 
-  if (!method %in% c("base", "remake", "furrr")) {
+  if (!method %in% c("base", "remake", "furrr", "targets")) {
     stop(sprintf("Invalid method selected in `build_setup_pipeline`: %s", method))
   }
 
@@ -1338,7 +1343,8 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
       sprintf("c(%s)", sprintf("'%s'", dataset_ids) %>% paste(collapse = ", ")),
     path = path,
     database_name = database_name,
-    workers = workers
+    workers = workers,
+    parallel = workers > 1
     )
 
   # Setup pipeline based on selected method for building
@@ -1362,6 +1368,11 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
   if (method == "remake") {
     writeLines(pipeline, "remake.yml")
     message(green("\t-> build compilation using file `remake.yml`"))
+  }
+
+  if (method == "targets") {
+    writeLines(pipeline, "_targets.R")
+    message(green("\t-> build compilation using file `_targets.R`, via `targets::tar_make()`"))
   }
 
   # Check file R/custom_R_code.R exists
@@ -1403,6 +1414,7 @@ select_pipeline_template <- function(method) {
     base = "build_base.whisker",
     remake = "build_remake.whisker",
     furrr = "build_furrr.whisker",
+    targets = "build_targets.whisker",
     default = "build_base.whisker"
   )
 

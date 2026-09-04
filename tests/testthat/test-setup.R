@@ -933,3 +933,83 @@ testthat::test_that("`dataset_test` is working", {
   expect_in(
     class(out), c("SilentReporter", "Reporter", "R6"))
 })
+
+
+# `targets` is the caching pipeline that replaces `remake` (#17): remake is
+# unmaintained and off CRAN, and a curator's normal loop is editing one dataset,
+# where rebuilding all of them is the whole cost.
+test_that("`build_setup_pipeline(method = 'targets')` builds the same database", {
+
+  skip_if_not_installed("targets")
+
+  # Same fixture state the base/remake pipelines are tested against
+  file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml",
+            overwrite = TRUE)
+  if (!file.exists("config/taxon_list.csv")) {
+    file.copy("config/taxon_list-orig.csv", "config/taxon_list.csv")
+  }
+
+  withr::defer({
+    unlink("_targets", recursive = TRUE)
+    unlink("_targets.R")
+  })
+
+  expect_silent(suppressMessages(build_setup_pipeline(method = "targets")))
+  expect_true(file.exists("_targets.R"))
+
+  # The generated pipeline has to be valid R, and declare the dataset's targets
+  expect_silent(parse("_targets.R"))
+  expect_contains(
+    targets::tar_manifest(callr_function = NULL)$name,
+    c("Test_2022_config", "Test_2022_raw", "Test_2022",
+      "file_Test_2022_metadata", "file_Test_2022_data",
+      "database_raw", "database", "file_database")
+  )
+
+  # `callr_function = NULL` so the pipeline runs in this session, where the
+  # package under test is the one loaded by pkgload rather than an installed one
+  expect_no_error(
+    suppressMessages(targets::tar_make(reporter = "silent", callr_function = NULL))
+  )
+
+  from_targets <- targets::tar_read(database)
+
+  # Same database the base pipeline produces. `build_info` records the packages
+  # used, which differ between the two, so it is compared separately.
+  base_env <- new.env()
+  suppressMessages(build_setup_pipeline(method = "base"))
+  suppressMessages(source("build.R", local = base_env))
+  from_base <- get("database", envir = base_env)
+
+  expect_equal(
+    from_targets[names(from_targets) != "build_info"],
+    from_base[names(from_base) != "build_info"]
+  )
+
+  # Nothing changed, so nothing rebuilds
+  expect_no_error(
+    suppressMessages(targets::tar_make(reporter = "silent", callr_function = NULL))
+  )
+  rebuilt <- targets::tar_progress()
+  rebuilt <- rebuilt[rebuilt$progress == "completed", ]
+  # `git_SHA` is deliberately re-read every run; nothing else should move
+  expect_equal(setdiff(rebuilt$name, "git_SHA"), character(0))
+})
+
+
+test_that("`build_setup_pipeline` declares a controller only when parallel", {
+
+  withr::defer({
+    unlink("_targets.R")
+    suppressMessages(build_setup_pipeline(method = "base"))
+  })
+
+  suppressMessages(build_setup_pipeline(method = "targets"))
+  expect_false(any(grepl("crew", readLines("_targets.R"), fixed = TRUE)))
+
+  suppressMessages(build_setup_pipeline(method = "targets", workers = 4))
+  generated <- readLines("_targets.R")
+  expect_true(any(grepl("crew::crew_controller_local(workers = 4)", generated,
+                        fixed = TRUE)))
+  expect_silent(parse("_targets.R"))
+})

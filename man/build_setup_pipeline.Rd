@@ -15,17 +15,22 @@ build_setup_pipeline(
 \arguments{
 \item{dataset_ids}{\code{dataset_id}'s to include; by default includes all}
 
-\item{method}{Approach to use in build}
+\item{method}{Approach to use in build. \code{"base"} writes a plain \code{build.R}
+that rebuilds everything; \code{"furrr"} does the same in parallel; \code{"remake"}
+and \code{"targets"} write a pipeline that caches, so that editing one dataset
+rebuilds only that dataset. \code{"targets"} is the maintained, CRAN-available
+option of the two.}
 
 \item{database_name}{Name of database to be built}
 
 \item{template}{Template used to build}
 
 \item{workers}{Number of workers/parallel processes to use when using
-method = "furrr"}
+method = "furrr" or method = "targets"}
 }
 \value{
-Updated \code{remake.yml} file
+Updated pipeline file: \code{build.R} for \code{"base"} and \code{"furrr"},
+\code{remake.yml} for \code{"remake"}, \verb{_targets.R} for \code{"targets"}
 }
 \description{
 \code{build_setup_pipeline} rewrites the \code{remake.yml} file to include new
