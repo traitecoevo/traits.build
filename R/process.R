@@ -913,17 +913,22 @@ process_create_context_ids <- function(data, contexts) {
   )
 }
 
-#' Format location data from list to tibble
+#' Format location data as a tibble
 #'
-#' Format location data read in from the `metadata.yml` file. Converts from list to tibble.
+#' Format location data read in from the `metadata.yml` file, in either of the
+#' two forms [read_metadata()] returns it: the list of locations given by an
+#' inline `locations:` block, or the data frame read from the csv file a
+#' `locations: locations.csv` entry names.
 #'
-#' @param my_list List of input information
+#' @param my_list List of input information, or a data frame with a
+#'  `location_name` column and one further column per location property
 #' @param dataset_id Identifier for a particular study in the AusTraits database
 #' @param schema Schema for traits.build
 #'
 #' @return Tibble with location details if available
 #' @importFrom rlang .data
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
+#' @importFrom tidyr pivot_longer
 
 #'
 #' @examples
@@ -932,26 +937,54 @@ process_create_context_ids <- function(data, contexts) {
 #' }
 process_format_locations <- function(my_list, dataset_id, schema) {
 
-  # Default, if length 1 then it's an "na"
-  if (length(unlist(my_list)) == 1) {
-    empty_locations <- tibble::tibble() %>%
-      process_add_all_columns(
-        names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]),
-        add_error_column = FALSE
+  location_columns <-
+    names(schema[["austraits"]][["elements"]][["locations"]][["elements"]])
+
+  empty_locations <- function() {
+    tibble::tibble() %>%
+      process_add_all_columns(location_columns, add_error_column = FALSE)
+  }
+
+  if (is.data.frame(my_list)) {
+
+    # Locations read from a separate csv file, one column per property
+    if (nrow(my_list) == 0 || ncol(my_list) < 2) return(empty_locations())
+
+    long <-
+      my_list %>%
+      util_df_convert_character() %>%
+      tidyr::pivot_longer(
+        -dplyr::all_of("location_name"),
+        names_to = "location_property",
+        values_to = "value"
+      ) %>%
+      # An empty cell means this location does not record the property, so it
+      # gets no row -- as it would have no entry in an inline `locations:`
+      # block. `.na` is the same "recorded, but unknown" it means in the yaml,
+      # and keeps its row
+      dplyr::filter(!is.na(.data$value), .data$value != "") %>%
+      dplyr::mutate(
+        value = dplyr::if_else(.data$value == ".na", NA_character_, .data$value)
       )
-    return(empty_locations)
+
+  } else {
+
+    # Default, if length 1 then it's an "na"
+    if (length(unlist(my_list)) == 1) return(empty_locations())
+
+    long <-
+      my_list %>%
+      lapply(lapply, as.character) %>%
+      purrr::map_df(austraits::convert_list_to_df1, .id = "name") %>%
+      dplyr::rename(
+        dplyr::all_of(c("location_property" = "key", "location_name" = "name"))
+      )
   }
 
   out <-
-    my_list %>%
-    lapply(lapply, as.character) %>%
-    purrr::map_df(austraits::convert_list_to_df1, .id = "name") %>%
+    long %>%
     dplyr::mutate(dataset_id = dataset_id) %>%
-    dplyr::rename(dplyr::all_of(c("location_property" = "key", "location_name" = "name"))) %>%
-    process_add_all_columns(
-      names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]),
-      add_error_column = FALSE
-    ) %>%
+    process_add_all_columns(location_columns, add_error_column = FALSE) %>%
     dplyr::group_by(.data$dataset_id) %>%
     dplyr::mutate(
       location_id = process_generate_id(.data$location_name, "", sort = TRUE)

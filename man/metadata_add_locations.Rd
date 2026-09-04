@@ -4,7 +4,12 @@
 \alias{metadata_add_locations}
 \title{For specified \code{dataset_id} import location data from a dataframe}
 \usage{
-metadata_add_locations(dataset_id, location_data, user_responses = NULL)
+metadata_add_locations(
+  dataset_id,
+  location_data,
+  user_responses = NULL,
+  file = NULL
+)
 }
 \arguments{
 \item{dataset_id}{Identifier for a particular study in the database}
@@ -13,6 +18,11 @@ metadata_add_locations(dataset_id, location_data, user_responses = NULL)
 
 \item{user_responses}{Named list containing simulated user input for manual selection
 of variables, mainly for testing purposes}
+
+\item{file}{Name of a csv file to hold the locations, written beside
+\code{metadata.yml} and referred to from it as \verb{locations: <file>}, instead of
+listing every location in the yaml. Worth using for a dataset with many
+locations, such as one generating a location per georeferenced record.}
 }
 \description{
 This functions asks users which columns in the dataframe they would like to keep
@@ -25,5 +35,6 @@ The output may require additional manual editing.
 austraits$locations \%>\% dplyr::filter(dataset_id == "Falster_2005_1") \%>\%
 select(-dataset_id) \%>\% spread(location_property, value) \%>\% type_convert() -> location_data
 metadata_add_locations("Falster_2005_1", location_data)
+metadata_add_locations("AVH_2026", location_data, file = "locations.csv")
 }
 }

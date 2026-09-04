@@ -77,7 +77,21 @@ list(
 {{#dataset_ids}}
   tar_target(file_{{dataset_id}}_metadata, "{{path}}/{{dataset_id}}/metadata.yml", format = "file"),
   tar_target(file_{{dataset_id}}_data, "{{path}}/{{dataset_id}}/data.csv", format = "file"),
+{{#locations_file}}
+  tar_target(file_{{dataset_id}}_locations, "{{path}}/{{dataset_id}}/{{locations_file}}", format = "file"),
+  # This dataset's `locations:` names a csv file, which `dataset_configure()`
+  # reads for itself. Naming the file target here is what makes editing that
+  # file rebuild the dataset -- targets works out dependencies from the symbols
+  # a command mentions, so the reference has to be visible even though the
+  # value is not used.
+  tar_target({{dataset_id}}_config, {
+    file_{{dataset_id}}_locations
+    dataset_configure(file_{{dataset_id}}_metadata, definitions)
+  }),
+{{/locations_file}}
+{{^locations_file}}
   tar_target({{dataset_id}}_config, dataset_configure(file_{{dataset_id}}_metadata, definitions)),
+{{/locations_file}}
   tar_target({{dataset_id}}_raw, dataset_process(file_{{dataset_id}}_data, {{dataset_id}}_config, schema, resource_metadata, unit_conversions)),
   tar_target({{dataset_id}}, dataset_update_taxonomy({{dataset_id}}_raw, taxon_list)),
 
