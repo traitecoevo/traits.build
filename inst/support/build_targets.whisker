@@ -4,7 +4,14 @@
 
 library(targets)
 
-tar_option_set(packages = "traits.build")
+# `qs` stores targets with qs2 rather than gzipped rds. The store is internal
+# to targets -- the exported .rds that consumers read is unaffected -- and it
+# is worth about a third of a rebuild, so it is used when qs2 is available and
+# quietly skipped when it is not.
+tar_option_set(
+  packages = "traits.build",
+  format = if (requireNamespace("qs2", quietly = TRUE)) "qs" else "rds"
+)
 {{#parallel}}
 
 # Build datasets in parallel. Each worker is a separate R process, so this is
@@ -41,24 +48,30 @@ list(
   tar_target({{dataset_id}}, dataset_update_taxonomy({{dataset_id}}_raw, taxon_list)),
 
 {{/dataset_ids}}
-  tar_target(
-    {{database_name}}_raw,
-    austraits::bind_databases(
-{{#dataset_ids}}
-      {{dataset_id}},
-{{/dataset_ids}}
-      NULL
-    )
-  ),
-
   # Version information. `git_SHA` is re-read on every run, because the commit
   # can change without any file the pipeline tracks changing. It is cheap, and
   # everything downstream of it is skipped when the SHA has not moved.
   tar_target(version_number, util_get_version(file_resource_metadata)),
   tar_target(git_SHA, util_get_SHA(), cue = tar_cue(mode = "always")),
 
-  # Combine all the source into one resource
-  tar_target({{database_name}}, build_add_version({{database_name}}_raw, version_number, git_SHA)),
+  # Combine all the source into one resource. `build_add_version()` is folded in
+  # here rather than given a target of its own: it takes no measurable time, so
+  # splitting it bought no caching while costing a second copy of the whole
+  # database in the store on every rebuild. The price is that a commit with no
+  # data change now re-runs `bind_databases()`.
+  tar_target(
+    {{database_name}},
+    build_add_version(
+      austraits::bind_databases(
+{{#dataset_ids}}
+        {{dataset_id}},
+{{/dataset_ids}}
+        NULL
+      ),
+      version_number,
+      git_SHA
+    )
+  ),
 
   # Save to file
   tar_target(

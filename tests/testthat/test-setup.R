@@ -963,8 +963,13 @@ test_that("`build_setup_pipeline(method = 'targets')` builds the same database",
     targets::tar_manifest(callr_function = NULL)$name,
     c("Test_2022_config", "Test_2022_raw", "Test_2022",
       "file_Test_2022_metadata", "file_Test_2022_data",
-      "database_raw", "database", "file_database")
+      "version_number", "git_SHA", "database", "file_database")
   )
+
+  # `build_add_version()` is folded into the `database` target rather than given
+  # one of its own, so that the database is written to the store once per
+  # rebuild instead of twice
+  expect_false("database_raw" %in% targets::tar_manifest(callr_function = NULL)$name)
 
   # `callr_function = NULL` so the pipeline runs in this session, where the
   # package under test is the one loaded by pkgload rather than an installed one
