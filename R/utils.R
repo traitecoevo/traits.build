@@ -257,6 +257,114 @@ util_append_to_list <- function(my_list, to_append) {
   my_list
 }
 
+# Top-level blocks of a `metadata.yml`, in the order `write_metadata()` writes
+# them. Also used by `util_read_yaml_chunked()` to find where a block ends.
+metadata_blocks <- c(
+  "source", "contributors", "dataset", "identifiers", "locations", "contexts",
+  "traits", "substitutions", "taxonomic_updates", "exclude_observations",
+  "questions"
+)
+
+
+#' Read a `metadata.yml`, parsing a very large `locations:` block in chunks
+#'
+#' `yaml::read_yaml()` costs roughly O(n^2) in the number of *container* nodes
+#' a document contains -- not in its size. A flat sequence of 40,000 scalars
+#' parses in 0.02s; the 40,000-entry map of maps that a `locations:` block is
+#' takes 20s. Datasets compiled from per-record georeferenced occurrences
+#' generate one location per record, so this bites hard: `AVH_2026` in
+#' `austraits.build` has 162,469 locations and took 911s to read (#263).
+#'
+#' The cost is per *parse call*, so this lifts the `locations:` body out of the
+#' file, parses the (now small) remainder normally, and parses the body in
+#' chunks of `chunk` entries. Every chunk still goes through the same YAML
+#' parser, so nothing about how the file is interpreted changes -- on `AVH_2026`
+#' this reads the same 162,469 locations in 1.7s.
+#'
+#' Anything unexpected about the file's structure, and any error from a chunk,
+#' falls back to parsing the whole file with `yaml::read_yaml()`. The fast path
+#' can therefore only ever be slower than the plain one, never disagree with it,
+#' and a genuinely malformed file still reports the real parser's error against
+#' the real line numbers.
+#'
+#' @param path Location of the metadata file
+#' @param chunk Number of `locations:` entries to parse per call
+#' @param threshold Minimum number of entries before chunking is worth its
+#'  overhead. Below this the plain parser is used.
+#'
+#' @return A list, as `yaml::read_yaml()` returns
+#' @noRd
+util_read_yaml_chunked <- function(path, chunk = 500L, threshold = 1000L) {
+
+  plain <- function() yaml::read_yaml(path)
+
+  lines <- readLines(path, encoding = "UTF-8", warn = FALSE)
+
+  # A `locations:` block with its entries on following lines. Anything else --
+  # absent, `locations: .na`, more than one -- is not the case we optimise.
+  opens <- which(lines == "locations:")
+  if (length(opens) != 1L) return(plain())
+
+  # The block runs to the next top-level block. Anchoring on the known block
+  # names rather than on "any unindented line" matters: `custom_R_code` holds
+  # arbitrary R, whose lines are frequently unindented.
+  starts_block <- grep(
+    paste0("^(", paste(metadata_blocks, collapse = "|"), "):"), lines
+  )
+  following <- starts_block[starts_block > opens]
+  last <- if (length(following) > 0) following[1] - 1L else length(lines)
+  if (last <= opens) return(plain())
+
+  body <- lines[(opens + 1L):last]
+  entries <- grep("^  [^ ]", body)
+
+  # Only chunk a block that is unambiguously a map of locations: enough entries
+  # to be worth it, every line indented into the block, and every entry a
+  # mapping key. The last test is what keeps sequence-valued blocks out --
+  # `taxonomic_updates:` writes `- find:` at indent 0 with its remaining keys at
+  # indent 2, so its continuation lines would otherwise read as entry starts and
+  # chunk boundaries would fall inside an entry.
+  worth_it <- length(entries) >= threshold &&
+    all(grepl("^(\\s*$|  )", body)) &&
+    all(grepl("^  [^ #-].*:", body[entries]))
+  if (!worth_it) return(plain())
+
+  breaks <- seq(1L, length(entries), by = chunk)
+
+  out <- try(
+    {
+      parsed <- yaml::yaml.load(
+        paste(lines[-((opens + 1L):last)], collapse = "\n")
+      )
+
+      chunks <- vector("list", length(breaks))
+      for (i in seq_along(breaks)) {
+        from <- entries[breaks[i]]
+        to <- if (breaks[i] + chunk <= length(entries)) {
+          entries[breaks[i] + chunk] - 1L
+        } else {
+          length(body)
+        }
+        # Dedent by one level so each chunk is a document in its own right
+        chunks[[i]] <- yaml::yaml.load(
+          paste(sub("^  ", "", body[from:to]), collapse = "\n")
+        )
+      }
+      parsed$locations <- unlist(chunks, recursive = FALSE)
+      parsed
+    },
+    silent = TRUE
+  )
+
+  # Every entry accounted for, or we did not understand the file after all
+  if (inherits(out, "try-error") || length(out$locations) != length(entries)) {
+    return(plain())
+  }
+
+  out
+}
+
+
 #' Read in a `metadata.yml` file for a study
 #'
 #' @param path Location of the metadata file
@@ -265,7 +373,7 @@ util_append_to_list <- function(my_list, to_append) {
 #' @export
 read_metadata <- function(path) {
 
-  data <- yaml::read_yaml(path)
+  data <- util_read_yaml_chunked(path)
 
   # We want to preserve formatting in custom R code
   # but `read_yaml` loses it
@@ -328,8 +436,7 @@ write_metadata <- function(data, path, style_code = FALSE) {
     y["identifiers"] <- NA
   }
 
-  y <- y[c("source", "contributors", "dataset", "identifiers", "locations", "contexts", "traits",
-               "substitutions", "taxonomic_updates", "exclude_observations", "questions")]
+  y <- y[metadata_blocks]
 
 
   txt <- yaml::as.yaml(y, column.major = FALSE, indent = 2) %>%
