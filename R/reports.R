@@ -65,26 +65,26 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
 
     message(sprintf("Building report for %s ", dataset_id))
 
-    # Create a new qmd file with name embedded in title
+    # Copy the template, embedding the dataset name in its title. The title has
+    # to be edited into the YAML header itself: a document's own `title` beats
+    # anything passed via `quarto_render(metadata = )`.
     x <- readLines(input_file, encoding = "UTF-8")
-    x[2] <- sprintf("title: Report on study `%s`", dataset_id)
+    title_line <- grep("^title:", x)[1]
+    if (is.na(title_line)) {
+      stop("Report template has no `title:` line in its YAML header: ", input_file, call. = FALSE)
+    }
+    x[title_line] <- sprintf("title: Report on study `%s`", dataset_id)
     writeLines(x, input_qmd)
 
-    # `austraits` cannot go through `execute_params` directly: unlike
-    # rmarkdown::render()'s `params`, which injects R objects into the knit
-    # environment in-process, Quarto's `execute_params` serialises every value
-    # to a YAML metadata file for the external `quarto render` CLI to read --
-    # and YAML has no representation for R's `NA`, which `austraits$traits`
-    # always contains. So the database goes to a temp `.rds` instead, and only
-    # its path (a plain string) is passed as a parameter; the template reads
-    # it back with `readRDS(params$austraits_path)`.
+    # Pass the database by path, not by value. `execute_params` is serialised
+    # to YAML for the external `quarto render` process, and YAML cannot
+    # represent the `NA`s that `austraits$traits` always contains. The template
+    # reads it back with `readRDS(params$austraits_path)`.
     austraits_rds <- tempfile(fileext = ".rds")
     saveRDS(austraits, austraits_rds)
 
-    # Render with Quarto rather than rmarkdown::render() -- the template is a
-    # .qmd file, and `format: html: embed-resources: true` in its YAML is what
-    # keeps the output a single self-contained file, matching what
-    # rmarkdown::render()'s default `self_contained: true` used to give.
+    # The output is a single self-contained file; that comes from
+    # `embed-resources: true` in the template's YAML.
     #
     # Rendering is allowed to fail without aborting, so that one bad dataset
     # does not stop a batch of reports. It must still be reported: this was a
@@ -171,15 +171,15 @@ new_taxa_trait_combinations <- function(database, dataset) {
 
   # extract accepted species from APC
   accepted_species <- database$taxa %>%
-    filter(taxonomic_status == "accepted") %>%
-    filter(taxon_rank %in% c("species", "subspecies", "varietas", "forma")) %>%
-    select(taxon_name)
+    dplyr::filter(.data$taxonomic_status == "accepted") %>%
+    dplyr::filter(.data$taxon_rank %in% c("species", "subspecies", "varietas", "forma")) %>%
+    dplyr::select("taxon_name")
 
   # extract new dataset
-  new_data <- (database %>% extract_dataset(dataset))$traits %>%
-    distinct(dataset_id, taxon_name, trait_name) %>%
-    mutate(combined = paste0(taxon_name,"_", trait_name)) %>%
-    filter(taxon_name %in% accepted_species$taxon_name)
+  new_data <- (database %>% austraits::extract_dataset(dataset))$traits %>%
+    dplyr::distinct(.data$dataset_id, .data$taxon_name, .data$trait_name) %>%
+    dplyr::mutate(combined = paste0(.data$taxon_name, "_", .data$trait_name)) %>%
+    dplyr::filter(.data$taxon_name %in% accepted_species$taxon_name)
 
   # Create an empty tibble for instances where none of the input names are `accepted`.
   if (nrow(new_data) == 0) {
@@ -194,31 +194,31 @@ new_taxa_trait_combinations <- function(database, dataset) {
   }
 
   # taxa present in new dataset
-  traits_to_check <- new_data %>% distinct(trait_name)
+  traits_to_check <- new_data %>% dplyr::distinct(.data$trait_name)
 
   # data in database prior to new dataset
-  preexisting_data <- (database %>% extract_trait(traits_to_check$trait_name))$traits %>%
-    filter(dataset_id != dataset) %>%
-    distinct(taxon_name, trait_name) %>%
-    mutate(combined = paste0(taxon_name,"_", trait_name)) %>%
-    filter(taxon_name %in% accepted_species$taxon_name)
+  preexisting_data <- (database %>% austraits::extract_trait(traits_to_check$trait_name))$traits %>%
+    dplyr::filter(.data$dataset_id != dataset) %>%
+    dplyr::distinct(.data$taxon_name, .data$trait_name) %>%
+    dplyr::mutate(combined = paste0(.data$taxon_name, "_", .data$trait_name)) %>%
+    dplyr::filter(.data$taxon_name %in% accepted_species$taxon_name)
 
   # counts of taxa per trait prior to new dataset
   preexisting_taxa <- preexisting_data %>%
-    select(-taxon_name, -combined) %>%
-    group_by(trait_name) %>%
-    mutate(existing_taxa = n()) %>%
-    ungroup() %>%
-    distinct()
+    dplyr::select(-dplyr::all_of(c("taxon_name", "combined"))) %>%
+    dplyr::group_by(.data$trait_name) %>%
+    dplyr::mutate(existing_taxa = dplyr::n()) %>%
+    dplyr::ungroup() %>%
+    dplyr::distinct()
 
   # number of new taxa added per trait once the new dataset is added
-  new_taxa <- new_data %>% filter(!combined %in% preexisting_data$combined) %>%
-    select(-taxon_name, -combined) %>%
-    group_by(dataset_id, trait_name) %>%
-    mutate(new_taxa = n()) %>%
-    ungroup() %>%
-    distinct() %>%
-    left_join(preexisting_taxa, by = "trait_name")
+  new_taxa <- new_data %>% dplyr::filter(!.data$combined %in% preexisting_data$combined) %>%
+    dplyr::select(-dplyr::all_of(c("taxon_name", "combined"))) %>%
+    dplyr::group_by(.data$dataset_id, .data$trait_name) %>%
+    dplyr::mutate(new_taxa = dplyr::n()) %>%
+    dplyr::ungroup() %>%
+    dplyr::distinct() %>%
+    dplyr::left_join(preexisting_taxa, by = "trait_name")
 
   new_taxa
 

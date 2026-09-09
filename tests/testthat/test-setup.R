@@ -849,22 +849,15 @@ test_that("reports and plots are produced", {
   # nothing about the report existing or containing anything (#244).
   expect_silent(suppressMessages(austraits <- remake::make("test_name")))
 
-  # The report calls `plot_trait_distribution_jitter()`, which uses `forcats`
-  # -- declared in this package's Suggests and used unguarded, so without it
-  # the whole render fails and no file is written at all. Skipping rather than
-  # failing keeps a missing optional dependency from reading as a regression
-  # here; `forcats` is in this package's Suggests so CI does run it.
+  # `plot_trait_distribution_jitter()` uses `forcats` unguarded, so without it
+  # the render fails and no file is written at all.
   skip_if_not_installed("forcats")
 
-  # The report template is a `.qmd`, rendered by shelling out to the `quarto`
-  # CLI (`quarto::quarto_render()`), which is not installed everywhere `forcats`
-  # is. Beyond that, the CLI always loads traits.build via its own fresh
-  # `library(traits.build)`, in a separate process `devtools::load_all()` has
-  # no reach into -- so this test exercises whatever is *installed*, not this
-  # session's edits. `R CMD check` installs the package fresh before running
-  # tests, so CI genuinely covers this; running it via plain `devtools::test()`
-  # after editing the plotting functions or the template needs
-  # `devtools::install()` first, or this test silently checks stale code.
+  # Rendering shells out to the `quarto` CLI, which starts a fresh R session
+  # and does its own `library(traits.build)`. This test therefore exercises the
+  # *installed* package, not `devtools::load_all()`: after editing the plotting
+  # functions or the template, run `devtools::install()` or this checks stale
+  # code. `R CMD check` installs first, so CI is unaffected.
   skip_if_not_installed("quarto")
   skip_if(is.null(quarto::quarto_path()), "Quarto CLI not found")
 

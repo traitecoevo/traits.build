@@ -27,8 +27,8 @@ plot_trait_distribution <- function(data, trait, ...) {
     return(plot_categorical_trait_distribution(data, trait, family_count = 50))
   else {
     data_plot <- data |>
-    filter(!value_type %in% c("bin", "range")) |>
-    mutate(value = as.numeric(value))
+    dplyr::filter(!.data$value_type %in% c("bin", "range")) |>
+    dplyr::mutate(value = as.numeric(.data$value))
 
     return(plot_trait_distribution_jitter(data_plot, trait, "family", hide_ids = FALSE))
   }
@@ -55,104 +55,107 @@ plot_categorical_trait_distribution <- function(data, trait, family_count) {
   }
 
   # filter to relevant trait
-  data <- data |> dplyr::filter(trait_name == trait)
+  data <- data |> dplyr::filter(.data$trait_name == trait)
 
   # determine proportion of observations for each categorical trait value by taxon
   prop_by_species <- data |>
-    dplyr::select(family, taxon_name, value, dataset_id) |>
+    dplyr::select(dplyr::all_of(c("family", "taxon_name", "value", "dataset_id"))) |>
     # separate instances with multiple strings in a value cell; as in polymorphic scorings for a single observation
-    tidyr::separate_longer_delim(value, delim = " ") |>
+    tidyr::separate_longer_delim("value", delim = " ") |>
     # probably not necessary, but good to retain
     dplyr::distinct() |>
     # for each observation, if multiple values, give each of them a fractional weight
-    dplyr::group_by(family, taxon_name, dataset_id) |>
+    dplyr::group_by(.data$family, .data$taxon_name, .data$dataset_id) |>
     dplyr::mutate(
-      total_per_obs = n(),
-      scaled_by_obs = 1 / total_per_obs
+      total_per_obs = dplyr::n(),
+      scaled_by_obs = 1 / .data$total_per_obs
     ) |>
     dplyr::ungroup() |>
-    dplyr::select(-total_per_obs) |>
-    dplyr::group_by(family, taxon_name, value) |>
+    dplyr::select(-dplyr::all_of("total_per_obs")) |>
+    dplyr::group_by(.data$family, .data$taxon_name, .data$value) |>
     # calculate counts for each categorical value, for each taxon, across all observations
-    dplyr::mutate(counts = sum(scaled_by_obs)) |>
+    dplyr::mutate(counts = sum(.data$scaled_by_obs)) |>
     dplyr::ungroup() |>
-    dplyr::distinct(family, taxon_name, value, counts) |>
-    dplyr::group_by(family, taxon_name) |>
-    dplyr::mutate(total = sum(counts)) |>
+    dplyr::distinct(.data$family, .data$taxon_name, .data$value, .data$counts) |>
+    dplyr::group_by(.data$family, .data$taxon_name) |>
+    dplyr::mutate(total = sum(.data$counts)) |>
     dplyr::ungroup() |>
-    dplyr::mutate(prop = counts / total) |>
-    dplyr::select(-total, -counts)
+    dplyr::mutate(prop = .data$counts / .data$total) |>
+    dplyr::select(-dplyr::all_of(c("total", "counts")))
 
   # create dataframe of the 50 families with the greatest number of taxa with trait scores
   most_common_families <- prop_by_species |>
-    dplyr::distinct(family, taxon_name) |>
-    dplyr::group_by(family) |>
-    dplyr::mutate(species_per_family = n()) |>
+    dplyr::distinct(.data$family, .data$taxon_name) |>
+    dplyr::group_by(.data$family) |>
+    dplyr::mutate(species_per_family = dplyr::n()) |>
     dplyr::ungroup() |>
-    dplyr::distinct(family, species_per_family) |>
-    dplyr::arrange(-species_per_family) |>
+    dplyr::distinct(.data$family, .data$species_per_family) |>
+    dplyr::arrange(-.data$species_per_family) |>
     dplyr::slice(1:family_count)
 
   # now combine species-level proportions for each categorical trait value,
   # outputting family-level proportions instead
   prop_by_family <- prop_by_species |>
-    dplyr::filter(family %in% most_common_families$family) |>
-    dplyr::group_by(family, value) |>
+    dplyr::filter(.data$family %in% most_common_families$family) |>
+    dplyr::group_by(.data$family, .data$value) |>
     dplyr::mutate(
-      counts_per_value = sum(prop),
+      counts_per_value = sum(.data$prop),
       # actual number of taxa in the family with a record for this value.
       # NB: counts_per_value is a fractional, prop-weighted total - taxa whose
       # records disagree (e.g. "annual" in one dataset, "perennial" in another)
       # get split and down-weighted across every value they touch, so it
       # under-counts taxa and must not be used to size the bubbles
-      n_taxa = dplyr::n_distinct(taxon_name)
+      n_taxa = dplyr::n_distinct(.data$taxon_name)
     ) |>
     dplyr::ungroup() |>
-    dplyr::distinct(family, value, counts_per_value, n_taxa) |>
-    dplyr::group_by(family) |>
+    dplyr::distinct(.data$family, .data$value, .data$counts_per_value, .data$n_taxa) |>
+    dplyr::group_by(.data$family) |>
     dplyr::mutate(
-      total = sum(counts_per_value)
+      total = sum(.data$counts_per_value)
     ) |>
     dplyr::ungroup() |>
-    dplyr::mutate(prop = counts_per_value / total) |>
-    dplyr::select(-total)
+    dplyr::mutate(prop = .data$counts_per_value / .data$total) |>
+    dplyr::select(-dplyr::all_of("total"))
 
   # create ordered vector, indicating frequency of each categorical trait value
   # for ordering the x-axis
   counts_by_value <- prop_by_family |>
-    dplyr::group_by(value) |>
-    dplyr::mutate(total_counts = sum(counts_per_value)) |>
+    dplyr::group_by(.data$value) |>
+    dplyr::mutate(total_counts = sum(.data$counts_per_value)) |>
     dplyr::ungroup() |>
-    dplyr::distinct(value, total_counts) |>
-    dplyr::arrange(-total_counts) |>
-    dplyr::pull(value)
+    dplyr::distinct(.data$value, .data$total_counts) |>
+    dplyr::arrange(-.data$total_counts) |>
+    dplyr::pull("value")
 
   # turn categorical trait value into a factor, order by relative common-ness across all taxa
   prop_by_family <- prop_by_family |>
-    dplyr::mutate(value = factor(value, levels = counts_by_value))
+    dplyr::mutate(value = factor(.data$value, levels = counts_by_value))
 
   # vs lowest prop of data for the most common categorical trait value,
   # for families without any records for most common categorical trait value, order by next value, etc
   family_vector <- prop_by_family |>
     # filter dataframe to only be the most common categorical trait value
-    dplyr::arrange(value, -prop) |>
-    dplyr::mutate(row_counter = row_number()) |>
-    dplyr::group_by(family) |>
-    dplyr::mutate(family_order = min(row_counter)) |>
-    dplyr::arrange(family_order) |>
+    dplyr::arrange(.data$value, -.data$prop) |>
+    dplyr::mutate(row_counter = dplyr::row_number()) |>
+    dplyr::group_by(.data$family) |>
+    dplyr::mutate(family_order = min(.data$row_counter)) |>
+    dplyr::arrange(.data$family_order) |>
     dplyr::slice(1) |>
     dplyr::ungroup() |>
-    dplyr::arrange(family_order) |>
-    dplyr::pull(family)
+    dplyr::arrange(.data$family_order) |>
+    dplyr::pull("family")
 
   prop_by_family <- prop_by_family |>
     # turn family into a factor, ordered by the proportion of species with the most common categorical trait value
-    dplyr::mutate(family = factor(family, levels = family_vector)) |>
+    dplyr::mutate(family = factor(.data$family, levels = family_vector)) |>
     # occassional observations don't have families attached, remove those
-    dplyr::filter(!is.na(family)) |>
-    dplyr::arrange(family)
+    dplyr::filter(!is.na(.data$family)) |>
+    dplyr::arrange(.data$family)
 
-  ggplot2::ggplot(ggplot2::aes(y = family, x = value, fill = prop, size = n_taxa), data = prop_by_family |> filter(prop > 0)) +
+  ggplot2::ggplot(
+    ggplot2::aes(y = .data$family, x = .data$value, fill = .data$prop, size = .data$n_taxa),
+    data = prop_by_family |> dplyr::filter(.data$prop > 0)
+  ) +
     ggplot2::geom_jitter(shape = 21, width = 0.15, height = 0) +
     ggplot2::scale_size_continuous() +
     ggplot2::scale_fill_viridis_c(option = "D") +
@@ -217,8 +220,8 @@ plot_trait_distribution_jitter <- function(data,
   }
 
   data <- data %>%
-    dplyr::mutate(shapes = as_shape(value_type)) %>%
-    dplyr::mutate(value = as.numeric(value))
+    dplyr::mutate(shapes = as_shape(.data$value_type)) %>%
+    dplyr::mutate(value = as.numeric(.data$value))
 
   # Define grouping variables and derivatives
   if (!y_axis_category %in% names(data)) {
@@ -245,7 +248,7 @@ plot_trait_distribution_jitter <- function(data,
   # set colour of group to highlight
   highlight_present <- !is.na(highlight) & highlight %in% data$Group
   if (highlight_present) {
-    data <- dplyr::mutate(data, colour = ifelse(Group %in% highlight, "c", colour))
+    data <- dplyr::mutate(data, colour = ifelse(.data$Group %in% highlight, "c", .data$colour))
   }
 
   vals <- list(
@@ -262,11 +265,11 @@ plot_trait_distribution_jitter <- function(data,
   # Second plot -- dots by groups, using geom_jitter
   p2 <-
     ggplot2::ggplot(data, ggplot2::aes(
-      x = value,
-      y = Group,
-      colour = colour,
-      shape = shapes,
-      text = paste0(dataset_id, " | ", taxon_name)  # Add tooltip text
+      x = .data$value,
+      y = .data$Group,
+      colour = .data$colour,
+      shape = .data$shapes,
+      text = paste0(.data$dataset_id, " | ", .data$taxon_name)  # Add tooltip text
     )) +
     ggplot2::geom_jitter(width = 0) +
     ggplot2::ylab(paste("By ", y_axis_category)) +
