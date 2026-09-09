@@ -55,12 +55,12 @@ There are multiple ways to install the `traits.build` package itself, and both t
 
 ## Tutorials
 
-- [Example compilation](https://traitecoevo.github.io/traits.build-book/tutorial_compilation.html)
-- [Adding datasets](https://traitecoevo.github.io/traits.build-book/tutorial_datasets.html)
+- [Example compilation](https://traitecoevo.github.io/traits.build-book/content/tutorial_compilation.html)
+- [Adding datasets](https://traitecoevo.github.io/traits.build-book/content/tutorial_datasets.html)
 
 ## Help
 
-Please read the [help guide](https://traitecoevo.github.io/traits.build-book/help.html) to learn how best to ask for help using `traits.build`.
+Please read the [help guide](https://traitecoevo.github.io/traits.build-book/content/help.html) to learn how best to ask for help using `traits.build`.
 
 ## Code of conduct
 
