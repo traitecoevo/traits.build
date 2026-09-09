@@ -963,6 +963,9 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
 #' @param trait_name Name of column containing trait name(s) for which a trait value replacement needs to be made
 #' @param find Name of column containing trait values submitted by the contributor for a data observation
 #' @param replace Name of column containing database aligned trait values
+#' @param match Optional. Name of column containing `"word"` or `"value"` (or `NA`)
+#'   for each row -- see `metadata_add_substitution()`. When omitted, every row is
+#'   added as `match: value` (today's default, exact whole-cell match).
 #'
 #' @importFrom rlang .data
 #'
@@ -975,10 +978,10 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
 #'   filter(dataset_id == "Angevin_2011") -> dataframe_of_substitutions
 #' metadata_add_substitutions_table(dataframe_of_substitutions, dataset_id, trait_name, find, replace)
 #' }
-metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset_id, trait_name, find, replace) {
+metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset_id, trait_name, find, replace, match = NULL) {
 
   # Throw error if the column doesn't exist in the dataframe
-  for (col in c(dataset_id, trait_name, find, replace)) {
+  for (col in c(dataset_id, trait_name, find, replace, match)) {
     if (!col %in% names(dataframe_of_substitutions)) {
       stop(sprintf(green("'%s'") %+% red(" is not a column in the substitutions table"), col))
     }
@@ -1017,6 +1020,9 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
       find = dataframe_of_substitutions[[i]][[find]],
       replace = dataframe_of_substitutions[[i]][[replace]]
     )
+    if (!is.null(match) && identical(dataframe_of_substitutions[[i]][[match]], "word")) {
+      to_add[["match"]] <- "word"
+    }
     # If `substitutions` is empty, make new list
     if (all(is.na(metadata[[set_name]]))) {
 
