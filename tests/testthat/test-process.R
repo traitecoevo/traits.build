@@ -130,6 +130,119 @@ test_that("a `var_in` created by `custom_R_code` is still accepted", {
 })
 
 
+test_that("a context `var_in` naming a column that does not exist is rejected", {
+  # This used to abort deep inside `process_create_context_ids()` with
+  # "Assigned data `xxx[context_cols[[v]]]` must be compatible with existing
+  # data", which named neither the dataset, nor the context, nor the column
+  # (#247). Assert all three are now in the message.
+  metadata_path <- file.path(withr::local_tempdir(), "metadata.yml")
+  metadata <- readLines("examples/Test_2023_1/metadata.yml")
+  metadata[metadata == "  var_in: sex"] <- "  var_in: sexx"
+  writeLines(metadata, metadata_path)
+
+  expect_error(
+    dataset_process(
+      "examples/Test_2023_1/data.csv",
+      dataset_configure(metadata_path, traits_definitions),
+      schema, resource_metadata, unit_conversions
+    ),
+    "plant sex.*sexx"
+  )
+
+  # The near-match hint, and the intended column, both survive to the message:
+  # `df` drops the column a mistyped `var_in` meant to name, so listing what is
+  # available has to happen before that
+  expect_error(
+    dataset_process(
+      "examples/Test_2023_1/data.csv",
+      dataset_configure(metadata_path, traits_definitions),
+      schema, resource_metadata, unit_conversions
+    ),
+    "did you mean `sex`"
+  )
+})
+
+
+test_that("a context `var_in` naming a `traits` field rather than a column still builds", {
+  # `var_in: method_context` names no column of data.csv at all -- the column is
+  # created from the `method_context:` entries in the metadata `traits` table.
+  # 35 contexts across 32 datasets in `austraits.build` rely on this, so a check
+  # written against the csv columns alone would reject every one of them (#247).
+  metadata <- read_metadata("examples/Test_2023_1/metadata.yml")
+  var_ins <- purrr::map_chr(metadata$contexts, ~as.character(.x$var_in))
+
+  # Guard the premise: `method_context` is a context `var_in` and is not a column
+  expect_true("method_context" %in% var_ins)
+  expect_false(
+    "method_context" %in% names(read_csv_char("examples/Test_2023_1/data.csv"))
+  )
+
+  expect_no_error(
+    built <- dataset_process(
+      "examples/Test_2023_1/data.csv",
+      dataset_configure("examples/Test_2023_1/metadata.yml", traits_definitions),
+      schema, resource_metadata, unit_conversions
+    )
+  )
+  expect_true("branch length" %in% built$contexts$context_property)
+})
+
+
+test_that("a context `var_in` created by `custom_R_code` is still accepted", {
+  # As for identifiers (#232), the check runs against the data as it stands
+  # after `custom_R_code`, not against the raw csv header
+  metadata_path <- file.path(withr::local_tempdir(), "metadata.yml")
+  metadata <- readLines("examples/Test_2023_1/metadata.yml")
+  metadata[metadata == "  var_in: sex"] <- "  var_in: sex_made_by_custom_code"
+  metadata[grepl("^\\s+LASA1000_dupe = LASA1000$", metadata)] <-
+    "        LASA1000_dupe = LASA1000,\n        sex_made_by_custom_code = sex"
+  writeLines(metadata, metadata_path)
+
+  expect_false(
+    "sex_made_by_custom_code" %in% names(read_csv_char("examples/Test_2023_1/data.csv"))
+  )
+
+  expect_no_error(
+    built <- dataset_process(
+      "examples/Test_2023_1/data.csv",
+      dataset_configure(metadata_path, traits_definitions),
+      schema, resource_metadata, unit_conversions
+    )
+  )
+  expect_true("plant sex" %in% built$contexts$context_property)
+})
+
+
+test_that("a context with no `values` and no matching column is rejected", {
+  # With neither `find` nor `value` given, context values can only come from the
+  # named column. When it is absent the left_join in `process_format_contexts()`
+  # returned zero rows and the context vanished without a word (#247).
+  metadata <- read_metadata("examples/Test_2023_1/metadata.yml")
+  data <- read_csv_char("examples/Test_2023_1/data.csv")
+
+  contexts <- list(list(context_property = "plant sex", category = "entity_context",
+                        var_in = "sexx"))
+
+  expect_error(
+    process_format_contexts(contexts, "Test_2023_1", data),
+    "Test_2023_1.*plant sex.*sexx"
+  )
+
+  # Likewise when `var_in` is missing altogether, rather than merely misspelled
+  contexts[[1]]$var_in <- NULL
+  expect_error(
+    process_format_contexts(contexts, "Test_2023_1", data),
+    "Test_2023_1.*plant sex"
+  )
+  contexts[[1]]$var_in <- "sexx"
+
+  # The same context, spelled correctly, takes its values from the column
+  contexts[[1]]$var_in <- "sex"
+  expect_no_error(out <- process_format_contexts(contexts, "Test_2023_1", data))
+  expect_gt(nrow(out), 0)
+})
+
+
 test_that("`write_plaintext` exports every table in the database", {
   # The table list used to be hardcoded and had `identifiers` missing from it
   # for the whole of 2.1.0, so exports silently dropped the release's headline
