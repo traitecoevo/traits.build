@@ -36,3 +36,39 @@ Updated pipeline file: \code{build.R} for \code{"base"} and \code{"furrr"},
 \code{build_setup_pipeline} rewrites the \code{remake.yml} file to include new
 studies.
 }
+\section{Using the \code{targets} pipeline}{
+
+
+\code{method = "targets"} writes \verb{_targets.R}, and building from it is three
+steps rather than one. The other three methods return the database from a
+single call, so the habits they teach do not carry over:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{build_setup_pipeline(method = "targets", database_name = "austraits")
+targets::tar_make()                       # rebuild the compilation
+austraits <- targets::tar_read(austraits) # load it into your session
+build_export("austraits")                 # write export/data/curr
+}\if{html}{\out{</div>}}
+
+\code{targets::tar_make()} returns nothing. It builds into the \verb{_targets/} store
+and prints what it did, so the direct translation of
+\code{austraits <- remake::make("austraits")} leaves you holding \code{NULL}. Use
+\code{\link[targets:tar_read]{targets::tar_read()}} to read the built compilation back.
+
+\code{tar_make()} also does not write \code{export/data/curr}. That write is around a
+third of a one-dataset rebuild and is a publishing step rather than part of
+checking a dataset, so \code{\link[=build_export]{build_export()}} does it when it is wanted. Pass
+\code{\link[=build_export]{build_export()}} the same \code{database_name} given here.
+
+\code{tar_make()} prints two lines per target, several hundred on a large
+compilation, and in the order its scheduler reaches them rather than
+alphabetically. Neither is adjustable: \code{targets} collapses only dynamic
+branches into a progress bar, and it deprecated target priorities in 1.10.1
+when it moved to the current scheduler, so execution order is no longer
+controllable. \code{targets::tar_make(reporter = "silent")} builds quietly, and
+\code{targets::tar_config_set(reporter_make = "silent")} sets that for the
+repository.
+}
+
+\seealso{
+\code{\link[=build_export]{build_export()}}
+}

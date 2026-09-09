@@ -1030,3 +1030,47 @@ test_that("`build_setup_pipeline` declares a controller only when parallel", {
                         fixed = TRUE)))
   expect_silent(parse("_targets.R"))
 })
+
+
+# Building from `_targets.R` is three steps, not one, and a curator coming from
+# `remake` gets both of the other two wrong: `tar_make()` returns nothing rather
+# than the database, and it does not write the export. Both the setup message
+# and the generated file have to say so, with the name actually in use -- a bare
+# `build_export()` errors against a pipeline named anything but `database`.
+test_that("the `targets` setup names all three steps, with the database's name", {
+
+  withr::defer({
+    unlink("_targets.R")
+    suppressMessages(build_setup_pipeline(method = "base"))
+  })
+
+  instructions <- testthat::capture_messages(
+    build_setup_pipeline(method = "targets", database_name = "austraits")
+  )
+  instructions <- paste(instructions, collapse = "")
+
+  expect_match(instructions, "targets::tar_make()", fixed = TRUE)
+  expect_match(instructions, "targets::tar_read(austraits)", fixed = TRUE)
+  expect_match(instructions, "build_export(\"austraits\")", fixed = TRUE)
+
+  # The same three steps in the file itself, since that is where a curator
+  # returning to the repository looks
+  generated <- paste(readLines("_targets.R"), collapse = "\n")
+  expect_match(generated, "targets::tar_read(austraits)", fixed = TRUE)
+  expect_match(generated, "build_export(\"austraits\")", fixed = TRUE)
+
+  # The header used to credit `remake.yml.whisker`, which is a different template
+  expect_match(generated, "build_targets.whisker", fixed = TRUE)
+  expect_false(grepl("remake.yml.whisker", generated, fixed = TRUE))
+})
+
+
+test_that("`build_export` says what to fix when the database name is wrong", {
+
+  skip_if_not_installed("targets")
+
+  expect_error(
+    build_export("not_a_target_in_this_pipeline"),
+    "must match the one given to `build_setup_pipeline\\(\\)`"
+  )
+})

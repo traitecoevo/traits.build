@@ -1308,6 +1308,40 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #'
 #' @return Updated pipeline file: `build.R` for `"base"` and `"furrr"`,
 #'  `remake.yml` for `"remake"`, `_targets.R` for `"targets"`
+#'
+#' @section Using the `targets` pipeline:
+#'
+#' `method = "targets"` writes `_targets.R`, and building from it is three
+#' steps rather than one. The other three methods return the database from a
+#' single call, so the habits they teach do not carry over:
+#'
+#' ```
+#' build_setup_pipeline(method = "targets", database_name = "austraits")
+#' targets::tar_make()                       # rebuild the compilation
+#' austraits <- targets::tar_read(austraits) # load it into your session
+#' build_export("austraits")                 # write export/data/curr
+#' ```
+#'
+#' `targets::tar_make()` returns nothing. It builds into the `_targets/` store
+#' and prints what it did, so the direct translation of
+#' `austraits <- remake::make("austraits")` leaves you holding `NULL`. Use
+#' [targets::tar_read()] to read the built compilation back.
+#'
+#' `tar_make()` also does not write `export/data/curr`. That write is around a
+#' third of a one-dataset rebuild and is a publishing step rather than part of
+#' checking a dataset, so [build_export()] does it when it is wanted. Pass
+#' [build_export()] the same `database_name` given here.
+#'
+#' `tar_make()` prints two lines per target, several hundred on a large
+#' compilation, and in the order its scheduler reaches them rather than
+#' alphabetically. Neither is adjustable: `targets` collapses only dynamic
+#' branches into a progress bar, and it deprecated target priorities in 1.10.1
+#' when it moved to the current scheduler, so execution order is no longer
+#' controllable. `targets::tar_make(reporter = "silent")` builds quietly, and
+#' `targets::tar_config_set(reporter_make = "silent")` sets that for the
+#' repository.
+#'
+#' @seealso [build_export()]
 #' @export
 build_setup_pipeline <- function(dataset_ids = dir("data"),
                                  method = "base",
@@ -1372,8 +1406,16 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 
   if (method == "targets") {
     writeLines(pipeline, "_targets.R")
+    # Three separate steps, each of which the `remake` idiom gets wrong:
+    # `tar_make()` returns nothing rather than the database, and it does not
+    # write the export. Name the actual database, so the lines can be pasted.
     message(green("\t-> build compilation using file `_targets.R`, via `targets::tar_make()`"))
-    message(green("\t-> then `build_export()` to write export/data/curr, which `tar_make()` leaves alone"))
+    message(green(sprintf(
+      "\t-> then `targets::tar_read(%s)` to load it; `tar_make()` itself returns nothing",
+      database_name)))
+    message(green(sprintf(
+      "\t-> then `build_export(\"%s\")` to write export/data/curr, which `tar_make()` leaves alone",
+      database_name)))
   }
 
   # Check file R/custom_R_code.R exists
@@ -1416,15 +1458,18 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 #' it, reading the compilation `targets::tar_make()` has already built.
 #'
 #' @param database_name Name of the database, matching the one given to
-#'  [build_setup_pipeline()]
+#'  [build_setup_pipeline()]. A pipeline set up with a `database_name` other
+#'  than the default must be exported with that same name.
 #' @param path Directory to write into
 #'
 #' @return The path written, invisibly
+#' @seealso [build_setup_pipeline()]
 #' @export
 #' @examples
 #' \dontrun{
+#' build_setup_pipeline(method = "targets", database_name = "austraits")
 #' targets::tar_make()
-#' build_export()
+#' build_export("austraits")
 #' }
 build_export <- function(database_name = "database",
                          path = file.path("export", "data", "curr")) {
@@ -1434,7 +1479,25 @@ build_export <- function(database_name = "database",
     "to read the database built by the `targets` pipeline"
   )
 
-  database <- targets::tar_read_raw(database_name)
+  # `tar_read_raw()` reports only "target <name> not found", which does not say
+  # that the name is the `database_name` the pipeline was set up with. Someone
+  # who used a non-default name and then ran a bare `build_export()`, as the
+  # setup message used to tell them to, hit exactly that.
+  database <- tryCatch(
+    targets::tar_read_raw(database_name),
+    error = function(e) {
+      stop(sprintf(
+        paste0(
+          "cannot read `%s` from the targets store: %s\n",
+          "  `database_name` must match the one given to ",
+          "`build_setup_pipeline()`,\n",
+          "  and `targets::tar_make()` must have built it. ",
+          "`targets::tar_manifest()` lists the pipeline's targets."
+        ),
+        database_name, conditionMessage(e)
+      ), call. = FALSE)
+    }
+  )
 
   dir.create(path, showWarnings = FALSE, recursive = TRUE)
   file <- file.path(path, paste0(database_name, ".rds"))

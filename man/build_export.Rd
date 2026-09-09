@@ -11,7 +11,8 @@ build_export(
 }
 \arguments{
 \item{database_name}{Name of the database, matching the one given to
-\code{\link[=build_setup_pipeline]{build_setup_pipeline()}}}
+\code{\link[=build_setup_pipeline]{build_setup_pipeline()}}. A pipeline set up with a \code{database_name} other
+than the default must be exported with that same name.}
 
 \item{path}{Directory to write into}
 }
@@ -26,7 +27,11 @@ it, reading the compilation \code{targets::tar_make()} has already built.
 }
 \examples{
 \dontrun{
+build_setup_pipeline(method = "targets", database_name = "austraits")
 targets::tar_make()
-build_export()
+build_export("austraits")
 }
+}
+\seealso{
+\code{\link[=build_setup_pipeline]{build_setup_pipeline()}}
 }
