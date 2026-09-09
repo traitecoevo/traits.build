@@ -140,6 +140,65 @@ util_index_locale_independent <- function(x) {
 }
 
 
+#' Build the error message for a context `var_in` that names no column
+#'
+#' Reports the dataset, each affected `context_property`, and the column name
+#' that is missing -- the three things the raw tidyselect failure did not name
+#' (#247). Where a close match exists among the available columns it is
+#' suggested, since the usual cause is a typo.
+#'
+#' @param contexts Contexts tibble, as returned by `process_format_contexts()`
+#' @param missing_var_in Character vector of `var_in` values not found
+#' @param data_columns Character vector of columns in the data, after
+#'   `custom_R_code` has run
+#' @param traits_fields Character vector of fields declared on the `traits`
+#'   entries of `metadata.yml`, the other place a `var_in` may be satisfied
+#'
+#' @return A length-1 character string
+#' @keywords internal
+util_context_var_in_message <- function(contexts, missing_var_in,
+                                        data_columns, traits_fields = character()) {
+
+  dataset_id <- unique(contexts[["dataset_id"]])
+  if (length(dataset_id) != 1 || is.na(dataset_id)) dataset_id <- "(unknown)"
+
+  # `var_in` -> the context properties it was declared for
+  properties <- function(v) {
+    p <- unique(contexts[["context_property"]][contexts[["var_in"]] %in% v])
+    paste(sprintf("'%s'", p), collapse = ", ")
+  }
+
+  # The usual cause is a typo, so point at the nearest available name. Edit
+  # distance rather than `agrep()`, which matches on substrings and so offers
+  # wild suggestions for short names.
+  candidates <- unique(c(data_columns, traits_fields))
+  suggestion <- function(v) {
+    if (length(candidates) == 0) return("")
+    d <- utils::adist(v, candidates, ignore.case = TRUE)[1, ]
+    near <- candidates[d == min(d) & d <= max(1, floor(nchar(v) / 3))]
+    if (length(near) == 0) return("")
+    sprintf(" (did you mean %s?)", paste(sprintf("`%s`", near), collapse = " or "))
+  }
+
+  lines <- purrr::map_chr(
+    missing_var_in,
+    ~sprintf("  - context_property %s declares `var_in: %s`%s",
+             properties(.x), .x, suggestion(.x))
+  )
+
+  paste0(
+    sprintf("Dataset %s declares contexts with `var_in` naming %s not present in the data:\n",
+            dataset_id,
+            ifelse(length(missing_var_in) > 1, "columns", "a column")),
+    paste(lines, collapse = "\n"), "\n",
+    "  A context `var_in` must name either a column of `data.csv` (after `custom_R_code` has run)\n",
+    "  or a field declared on the `traits` entries of `metadata.yml` (e.g. `method_context`).\n",
+    sprintf("  Columns in the data: %s\n", paste(data_columns, collapse = ", ")),
+    sprintf("  Fields on the `traits` entries: %s", paste(traits_fields, collapse = ", "))
+  )
+}
+
+
 #'  Split and sort cells with multiple values
 #'
 #'  `util_separate_and_sort`: For a vector x in which individual cell may have
@@ -198,7 +257,229 @@ util_append_to_list <- function(my_list, to_append) {
   my_list
 }
 
+# Default name for a dataset's separate locations file, and the number of
+# locations beyond which holding them in `metadata.yml` stops being reasonable
+locations_file_default <- "locations.csv"
+locations_file_suggest_at <- 1000
+
+
+#' Is this `locations:` block a reference to a separate csv file?
+#'
+#' @param locations The `locations` element of a metadata list
+#'
+#' @return `TRUE` for a single string naming a `.csv` file
+#' @noRd
+util_locations_is_file <- function(locations) {
+  is.character(locations) &&
+    length(locations) == 1 &&
+    !is.na(locations) &&
+    grepl("\\.csv$", locations, ignore.case = TRUE)
+}
+
+
+#' Read a dataset's locations from a separate csv file
+#'
+#' A `locations:` block holding one entry per georeferenced record makes a
+#' `metadata.yml` unreadable and unreviewable -- `AVH_2026` in `austraits.build`
+#' reaches 162,469 locations and 487,518 lines (#263). Such a dataset can
+#' instead name a csv file, `locations: locations.csv`, kept beside
+#' `metadata.yml` and read from here.
+#'
+#' The file is read one column per location property, which is the shape
+#' `austraits$locations %>% tidyr::spread(location_property, value)` returns and
+#' the shape [metadata_add_locations()] is given. Every column is read as
+#' character, matching what the yaml path is coerced to downstream and leaving
+#' values exactly as they are written in the file.
+#'
+#' A rectangle has no way of saying that a location does not record a property
+#' at all, which an inline `locations:` block says by simply not listing it. An
+#' **empty cell** means exactly that -- this location does not record this
+#' property -- and the property is absent for that location, as it would be in
+#' the yaml. A cell holding **`.na`** is the same "recorded, but unknown" that
+#' `.na` means in the yaml, and is kept as a location property with a missing
+#' value. Nothing else is treated as missing, so a location genuinely named
+#' `NA` survives being written out and read back.
+#'
+#' @param file Name of the csv file, relative to the metadata file
+#' @param path Location of the metadata file
+#'
+#' @return A tibble, carrying the file it was read from as an attribute
+#' @noRd
+util_read_locations_file <- function(file, path) {
+
+  full <- file.path(dirname(path), file)
+
+  if (!file.exists(full)) {
+    stop(
+      sprintf(
+        paste0(
+          "%s declares `locations: %s`, but %s does not exist.\n",
+          "  A `locations:` entry naming a .csv file is read from that file, ",
+          "which must sit beside `metadata.yml`."
+        ),
+        path, file, full
+      ),
+      call. = FALSE
+    )
+  }
+
+  # `na = character()` so that neither an empty cell nor the string "NA" is
+  # read as missing -- an empty cell means the property is absent for this
+  # location, and `.na` means recorded but unknown. Both are handled in
+  # `process_format_locations()`, which is where the distinction matters
+  locations <- readr::read_csv(
+    full,
+    col_types = readr::cols(.default = readr::col_character()),
+    na = character(),
+    progress = FALSE
+  )
+
+  if (!"location_name" %in% names(locations)) {
+    stop(
+      sprintf(
+        paste0(
+          "%s has no `location_name` column, so its rows cannot be matched to ",
+          "the location names in `data.csv`.\n  Columns found: %s"
+        ),
+        full, paste(names(locations), collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+
+  duplicated_names <- unique(
+    locations$location_name[duplicated(locations$location_name)]
+  )
+
+  if (length(duplicated_names) > 0) {
+    stop(
+      sprintf(
+        "%s has %d duplicated `location_name`: %s",
+        full, length(duplicated_names),
+        paste(utils::head(duplicated_names, 5), collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+
+  attr(locations, "locations_file") <- file
+  locations
+}
+
+
+# Top-level blocks of a `metadata.yml`, in the order `write_metadata()` writes
+# them. Also used by `util_read_yaml_chunked()` to find where a block ends.
+metadata_blocks <- c(
+  "source", "contributors", "dataset", "identifiers", "locations", "contexts",
+  "traits", "substitutions", "taxonomic_updates", "exclude_observations",
+  "questions"
+)
+
+
+#' Read a `metadata.yml`, parsing a very large `locations:` block in chunks
+#'
+#' `yaml::read_yaml()` costs roughly O(n^2) in the number of *container* nodes
+#' a document contains -- not in its size. A flat sequence of 40,000 scalars
+#' parses in 0.02s; the 40,000-entry map of maps that a `locations:` block is
+#' takes 20s. Datasets compiled from per-record georeferenced occurrences
+#' generate one location per record, so this bites hard: `AVH_2026` in
+#' `austraits.build` has 162,469 locations and took 911s to read (#263).
+#'
+#' The cost is per *parse call*, so this lifts the `locations:` body out of the
+#' file, parses the (now small) remainder normally, and parses the body in
+#' chunks of `chunk` entries. Every chunk still goes through the same YAML
+#' parser, so nothing about how the file is interpreted changes -- on `AVH_2026`
+#' this reads the same 162,469 locations in 1.7s.
+#'
+#' Anything unexpected about the file's structure, and any error from a chunk,
+#' falls back to parsing the whole file with `yaml::read_yaml()`. The fast path
+#' can therefore only ever be slower than the plain one, never disagree with it,
+#' and a genuinely malformed file still reports the real parser's error against
+#' the real line numbers.
+#'
+#' @param path Location of the metadata file
+#' @param chunk Number of `locations:` entries to parse per call
+#' @param threshold Minimum number of entries before chunking is worth its
+#'  overhead. Below this the plain parser is used.
+#'
+#' @return A list, as `yaml::read_yaml()` returns
+#' @noRd
+util_read_yaml_chunked <- function(path, chunk = 500L, threshold = 1000L) {
+
+  plain <- function() yaml::read_yaml(path)
+
+  lines <- readLines(path, encoding = "UTF-8", warn = FALSE)
+
+  # A `locations:` block with its entries on following lines. Anything else --
+  # absent, `locations: .na`, more than one -- is not the case we optimise.
+  opens <- which(lines == "locations:")
+  if (length(opens) != 1L) return(plain())
+
+  # The block runs to the next top-level block. Anchoring on the known block
+  # names rather than on "any unindented line" matters: `custom_R_code` holds
+  # arbitrary R, whose lines are frequently unindented.
+  starts_block <- grep(
+    paste0("^(", paste(metadata_blocks, collapse = "|"), "):"), lines
+  )
+  following <- starts_block[starts_block > opens]
+  last <- if (length(following) > 0) following[1] - 1L else length(lines)
+  if (last <= opens) return(plain())
+
+  body <- lines[(opens + 1L):last]
+  entries <- grep("^  [^ ]", body)
+
+  # Only chunk a block that is unambiguously a map of locations: enough entries
+  # to be worth it, every line indented into the block, and every entry a
+  # mapping key. The last test is what keeps sequence-valued blocks out --
+  # `taxonomic_updates:` writes `- find:` at indent 0 with its remaining keys at
+  # indent 2, so its continuation lines would otherwise read as entry starts and
+  # chunk boundaries would fall inside an entry.
+  worth_it <- length(entries) >= threshold &&
+    all(grepl("^(\\s*$|  )", body)) &&
+    all(grepl("^  [^ #-].*:", body[entries]))
+  if (!worth_it) return(plain())
+
+  breaks <- seq(1L, length(entries), by = chunk)
+
+  out <- try(
+    {
+      parsed <- yaml::yaml.load(
+        paste(lines[-((opens + 1L):last)], collapse = "\n")
+      )
+
+      chunks <- vector("list", length(breaks))
+      for (i in seq_along(breaks)) {
+        from <- entries[breaks[i]]
+        to <- if (breaks[i] + chunk <= length(entries)) {
+          entries[breaks[i] + chunk] - 1L
+        } else {
+          length(body)
+        }
+        # Dedent by one level so each chunk is a document in its own right
+        chunks[[i]] <- yaml::yaml.load(
+          paste(sub("^  ", "", body[from:to]), collapse = "\n")
+        )
+      }
+      parsed$locations <- unlist(chunks, recursive = FALSE)
+      parsed
+    },
+    silent = TRUE
+  )
+
+  # Every entry accounted for, or we did not understand the file after all
+  if (inherits(out, "try-error") || length(out$locations) != length(entries)) {
+    return(plain())
+  }
+
+  out
+}
+
+
 #' Read in a `metadata.yml` file for a study
+#'
+#' A dataset's `locations:` may either list the locations inline, or name a csv
+#' file beside `metadata.yml` -- `locations: locations.csv` -- which is read in
+#' its place and returned as a tibble.
 #'
 #' @param path Location of the metadata file
 #' @importFrom rlang .data
@@ -206,7 +487,11 @@ util_append_to_list <- function(my_list, to_append) {
 #' @export
 read_metadata <- function(path) {
 
-  data <- yaml::read_yaml(path)
+  data <- util_read_yaml_chunked(path)
+
+  if (util_locations_is_file(data[["locations"]])) {
+    data[["locations"]] <- util_read_locations_file(data[["locations"]], path)
+  }
 
   # We want to preserve formatting in custom R code
   # but `read_yaml` loses it
@@ -269,8 +554,21 @@ write_metadata <- function(data, path, style_code = FALSE) {
     y["identifiers"] <- NA
   }
 
-  y <- y[c("source", "contributors", "dataset", "identifiers", "locations", "contexts", "traits",
-               "substitutions", "taxonomic_updates", "exclude_observations", "questions")]
+  # Locations held in a separate csv are written back to it, and referred to
+  # from the yaml by name rather than inlined
+  if (is.data.frame(y[["locations"]])) {
+    file <- attr(y[["locations"]], "locations_file")
+    if (is.null(file)) file <- locations_file_default
+
+    # `na = ""`, matching how the file is read: an empty cell is a property
+    # this location does not record
+    readr::write_csv(
+      y[["locations"]], file.path(dirname(path), file), na = ""
+    )
+    y[["locations"]] <- file
+  }
+
+  y <- y[metadata_blocks]
 
 
   txt <- yaml::as.yaml(y, column.major = FALSE, indent = 2) %>%

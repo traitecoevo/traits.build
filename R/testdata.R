@@ -76,6 +76,13 @@ dataset_test_worker <-
 
         ## Check for other files
         vals <- c("data.csv", "metadata.yml", "raw", "output", "README.md")
+
+        # A dataset whose `locations:` names a csv file is allowed to hold it
+        declared_locations_file <- yaml::read_yaml(files[2])[["locations"]]
+        if (util_locations_is_file(declared_locations_file)) {
+          vals <- c(vals, declared_locations_file)
+        }
+
         test_expect_is_in(
           dir(s), vals,
           info = paste0(red(file.path(path_data, dataset_id)), "\tdisallowed files"),
@@ -100,6 +107,26 @@ dataset_test_worker <-
         f <- files[2]
         test_expect_allowed_text(readLines(f, encoding = "UTF-8"), info = paste0(red(f), "\tmetadata"), label = "metadata")
         testthat::expect_silent(metadata <- yaml::read_yaml(f))
+
+        # Read here rather than via `read_metadata()`, because the checks below
+        # need the yaml exactly as written. A `locations:` entry naming a csv
+        # file is resolved separately, so both forms are checked the same way
+        # from here on.
+        if (util_locations_is_file(metadata[["locations"]])) {
+
+          locations_file <- file.path(s, metadata[["locations"]])
+
+          test_expect_allowed_text(
+            readLines(locations_file, encoding = "UTF-8", warn = FALSE),
+            info = paste0(red(locations_file), "\tlocations"), label = "locations"
+          )
+
+          test_expect_no_error(
+            metadata[["locations"]] <-
+              util_read_locations_file(metadata[["locations"]], f),
+            info = paste0(red(locations_file), "\tlocations")
+          )
+        }
 
         if (!is.null(metadata[["identifiers"]])) {
           test_expect_list_names_exact(
@@ -249,9 +276,19 @@ dataset_test_worker <-
             process_add_all_columns(names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]))
           )
 
-        if (length(unlist(metadata[["locations"]])) > 1) {
+        if (nrow(locations) > 0) {
 
-          test_expect_list(metadata[["locations"]], info = paste0(red(f), "\tlocations"))
+          # An inline `locations:` block has to be a list of lists. Locations
+          # read from a csv file were validated as a table when they were read,
+          # so there is nothing list-shaped to check
+          if (!is.data.frame(metadata[["locations"]])) {
+
+            test_expect_list(metadata[["locations"]], info = paste0(red(f), "\tlocations"))
+
+            for (v in names(metadata$locations)) {
+              test_expect_list(metadata[["locations"]][[v]], info = paste0(red(f), "\tlocation ", v))
+            }
+          }
 
           test_expect_dataframe_names_contain(
             locations,
@@ -259,16 +296,17 @@ dataset_test_worker <-
             info = paste0(red(f), "\tlocations"), label = "field names"
           )
 
-          for (v in names(metadata$locations)) {
+          # Checked on the formatted table, so both forms are checked alike
+          properties <- split(locations$location_property, locations$location_name)
 
-            test_expect_list(metadata[["locations"]][[v]], info = paste0(red(f), "\tlocation ", v))
+          for (v in unique(locations$location_name)) {
 
             # If fields do not contain both 'latitude range (deg)' and 'longitude range (deg)'
-            if (!(all(c("latitude range (deg)", "longitude range (deg)") %in% names(metadata[["locations"]][[v]])))) {
+            if (!(all(c("latitude range (deg)", "longitude range (deg)") %in% properties[[v]]))) {
 
               # Check that it contains 'latitude (deg)' and 'longitude (deg)'
               test_expect_contains(
-                names(metadata[["locations"]][[v]]),
+                properties[[v]],
                 c("latitude (deg)", "longitude (deg)"),
                 info = paste0(red(f), "\tlocation '", v, "'")
               )
@@ -289,8 +327,10 @@ dataset_test_worker <-
               "\tdataset - `location_name` column not found in data")
           )
 
+          location_names <- unique(locations$location_name)
+
           v <- data[[metadata[["dataset"]][["location_name"]]]] %>% unique %>% na.omit
-          i <- v %in% names(metadata$locations)
+          i <- v %in% location_names
           test_expect_true(
             all(i),
             info = paste0(
@@ -299,13 +339,13 @@ dataset_test_worker <-
               v[!i])
           )
 
-          i <- names(metadata$locations) %in% v
+          i <- location_names %in% v
           test_expect_true(
             all(i),
             info = paste0(
               red(f),
               "\tlocations - location names from metadata not present in data file: ",
-              names(metadata$locations)[!i])
+              location_names[!i])
           )
         }
 
@@ -313,7 +353,7 @@ dataset_test_worker <-
         testthat::expect_silent(
           contexts <-
             metadata$contexts %>%
-            process_format_contexts(dataset_id, data)
+            process_format_contexts(dataset_id, data, metadata$traits)
         )
 
         # Check that there are no duplicate `var_in` or `context_property` fields
@@ -736,7 +776,7 @@ dataset_test_worker <-
           )
 
         # Replace original `location_id` with a new `location_id`
-        if (!is.null(names(metadata$locations))) {
+        if (nrow(locations) > 0) {
           parsed_data <-
             parsed_data %>%
             dplyr::select(-dplyr::all_of(c("location_id"))) %>%
@@ -755,7 +795,7 @@ dataset_test_worker <-
         # Trait metadata should probably have precedence -- right now trait metadata
         # is being read in during `process_parse_data` and getting overwritten here #TODO
         # If process.R changes, this needs to be updated
-        if (!is.null(names(metadata$locations))) {
+        if (nrow(locations) > 0) {
           vars <- c("basis_of_record", "life_stage", "collection_date",
                     "measurement_remarks", "entity_type")
 
