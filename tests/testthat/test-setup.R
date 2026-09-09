@@ -933,3 +933,144 @@ testthat::test_that("`dataset_test` is working", {
   expect_in(
     class(out), c("SilentReporter", "Reporter", "R6"))
 })
+
+
+# `targets` is the caching pipeline that replaces `remake` (#17): remake is
+# unmaintained and off CRAN, and a curator's normal loop is editing one dataset,
+# where rebuilding all of them is the whole cost.
+test_that("`build_setup_pipeline(method = 'targets')` builds the same database", {
+
+  skip_if_not_installed("targets")
+
+  # Same fixture state the base/remake pipelines are tested against
+  file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml",
+            overwrite = TRUE)
+  if (!file.exists("config/taxon_list.csv")) {
+    file.copy("config/taxon_list-orig.csv", "config/taxon_list.csv")
+  }
+
+  withr::defer({
+    unlink("_targets", recursive = TRUE)
+    unlink("_targets.R")
+  })
+
+  expect_silent(suppressMessages(build_setup_pipeline(method = "targets")))
+  expect_true(file.exists("_targets.R"))
+
+  # The generated pipeline has to be valid R, and declare the dataset's targets
+  expect_silent(parse("_targets.R"))
+  expect_contains(
+    targets::tar_manifest(callr_function = NULL)$name,
+    c("Test_2022_config", "Test_2022_raw", "Test_2022",
+      "file_Test_2022_metadata", "file_Test_2022_data",
+      "version_number", "git_SHA", "database")
+  )
+
+  # The export is a publishing step, not a target: `tar_make()` rebuilds the
+  # compilation and leaves `export/data/curr` alone
+  expect_false("file_database" %in% targets::tar_manifest(callr_function = NULL)$name)
+
+  # `build_add_version()` is folded into the `database` target rather than given
+  # one of its own, so that the database is written to the store once per
+  # rebuild instead of twice
+  expect_false("database_raw" %in% targets::tar_manifest(callr_function = NULL)$name)
+
+  # `callr_function = NULL` so the pipeline runs in this session, where the
+  # package under test is the one loaded by pkgload rather than an installed one
+  expect_no_error(
+    suppressMessages(targets::tar_make(reporter = "silent", callr_function = NULL))
+  )
+
+  from_targets <- targets::tar_read(database)
+
+  # Same database the base pipeline produces. `build_info` records the packages
+  # used, which differ between the two, so it is compared separately.
+  base_env <- new.env()
+  suppressMessages(build_setup_pipeline(method = "base"))
+  suppressMessages(source("build.R", local = base_env))
+  from_base <- get("database", envir = base_env)
+
+  expect_equal(
+    from_targets[names(from_targets) != "build_info"],
+    from_base[names(from_base) != "build_info"]
+  )
+
+  # `build_export()` writes the file the pipeline deliberately does not
+  exported <- build_export(path = file.path(withr::local_tempdir(), "curr"))
+  expect_true(file.exists(exported))
+  expect_equal(
+    readRDS(exported)[names(from_targets) != "build_info"],
+    from_targets[names(from_targets) != "build_info"]
+  )
+
+  # Nothing changed, so nothing rebuilds
+  expect_no_error(
+    suppressMessages(targets::tar_make(reporter = "silent", callr_function = NULL))
+  )
+  rebuilt <- targets::tar_progress()
+  rebuilt <- rebuilt[rebuilt$progress == "completed", ]
+  # `git_SHA` is deliberately re-read every run; nothing else should move
+  expect_equal(setdiff(rebuilt$name, "git_SHA"), character(0))
+})
+
+
+test_that("`build_setup_pipeline` declares a controller only when parallel", {
+
+  withr::defer({
+    unlink("_targets.R")
+    suppressMessages(build_setup_pipeline(method = "base"))
+  })
+
+  suppressMessages(build_setup_pipeline(method = "targets"))
+  expect_false(any(grepl("crew", readLines("_targets.R"), fixed = TRUE)))
+
+  suppressMessages(build_setup_pipeline(method = "targets", workers = 4))
+  generated <- readLines("_targets.R")
+  expect_true(any(grepl("crew::crew_controller_local(workers = 4)", generated,
+                        fixed = TRUE)))
+  expect_silent(parse("_targets.R"))
+})
+
+
+# Building from `_targets.R` is three steps, not one, and a curator coming from
+# `remake` gets both of the other two wrong: `tar_make()` returns nothing rather
+# than the database, and it does not write the export. Both the setup message
+# and the generated file have to say so, with the name actually in use -- a bare
+# `build_export()` errors against a pipeline named anything but `database`.
+test_that("the `targets` setup names all three steps, with the database's name", {
+
+  withr::defer({
+    unlink("_targets.R")
+    suppressMessages(build_setup_pipeline(method = "base"))
+  })
+
+  instructions <- testthat::capture_messages(
+    build_setup_pipeline(method = "targets", database_name = "austraits")
+  )
+  instructions <- paste(instructions, collapse = "")
+
+  expect_match(instructions, "targets::tar_make()", fixed = TRUE)
+  expect_match(instructions, "targets::tar_read(austraits)", fixed = TRUE)
+  expect_match(instructions, "build_export(\"austraits\")", fixed = TRUE)
+
+  # The same three steps in the file itself, since that is where a curator
+  # returning to the repository looks
+  generated <- paste(readLines("_targets.R"), collapse = "\n")
+  expect_match(generated, "targets::tar_read(austraits)", fixed = TRUE)
+  expect_match(generated, "build_export(\"austraits\")", fixed = TRUE)
+
+  # The header used to credit `remake.yml.whisker`, which is a different template
+  expect_match(generated, "build_targets.whisker", fixed = TRUE)
+  expect_false(grepl("remake.yml.whisker", generated, fixed = TRUE))
+})
+
+
+test_that("`build_export` says what to fix when the database name is wrong", {
+
+  skip_if_not_installed("targets")
+
+  expect_error(
+    build_export("not_a_target_in_this_pipeline"),
+    "must match the one given to `build_setup_pipeline\\(\\)`"
+  )
+})
