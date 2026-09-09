@@ -1,16 +1,16 @@
 
 #' Build reports for listed datasets
 #'
-#' Builds a detailed report for every dataset with a unique `dataset_id`, based on the template Rmd file provided.
+#' Builds a detailed report for every dataset with a unique `dataset_id`, based on the template Qmd file provided.
 #' The reports are rendered as html files and saved in the specified output folder.
 #'
 #' @param dataset_id Name of specific study/dataset
 #' @param austraits Compiled austraits database
 #' @param overwrite Logical value to determine whether to overwrite existing report
 #' @param output_path Location where rendered report will be saved
-#' @param input_file Report script (.Rmd) file to build study report
-#' @param quiet An option to suppress printing during rendering from knitr, pandoc command line and others
-#' @param keep Keep intermediate Rmd file used?
+#' @param input_file Report script (.qmd) file to build study report
+#' @param quiet An option to suppress printing during rendering from knitr, Quarto and pandoc
+#' @param keep Keep intermediate Qmd file used?
 #'
 #' @rdname dataset_report
 #' @return Invisibly, a logical named by `dataset_id`, `TRUE` where the report
@@ -20,7 +20,7 @@
 #' @export
 dataset_report <- function(dataset_id, austraits, overwrite = FALSE,
                            output_path = "export/reports",
-                           input_file = system.file("support", "report_dataset.Rmd", package = "traits.build"),
+                           input_file = system.file("support", "report_dataset.qmd", package = "traits.build"),
                            quiet = TRUE, keep = FALSE) {
 
   built <- vapply(
@@ -43,33 +43,48 @@ dataset_report <- function(dataset_id, austraits, overwrite = FALSE,
 
 dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
                                   output_path = "export/reports",
-                                  input_file = system.file("support", "report_dataset.Rmd", package = "traits.build"),
+                                  input_file = system.file("support", "report_dataset.qmd", package = "traits.build"),
                                   quiet = TRUE, keep = FALSE) {
 
   if (!file.exists(input_file)) {
     stop("Report template not found: ", input_file, call. = FALSE)
   }
 
+  util_require_package("quarto", "to render dataset reports")
+
   if (!file.exists(output_path)) {
     dir.create(output_path, FALSE, TRUE)
   }
 
   # Filenames
-  input_Rmd <- sprintf("tmp_%s_report.Rmd", dataset_id)
-  output_html <- sprintf("%s/%s.html", output_path, dataset_id)
+  input_qmd <- sprintf("tmp_%s_report.qmd", dataset_id)
+  output_filename <- sprintf("%s.html", dataset_id)
+  output_html <- file.path(output_path, output_filename)
 
   if (overwrite || !file.exists(output_html)) {
 
     message(sprintf("Building report for %s ", dataset_id))
 
-    # Create a new Rmd file with name embedded in title
+    # Create a new qmd file with name embedded in title
     x <- readLines(input_file, encoding = "UTF-8")
-    x[2] <- sprintf("title: Report on study `%s` from", dataset_id)
-    writeLines(x, input_Rmd)
+    x[2] <- sprintf("title: Report on study `%s`", dataset_id)
+    writeLines(x, input_qmd)
 
-    # Knit and render. Note, call render directly
-    # in preference to knit, then render, as leaflet widget
-    # requires this to work.
+    # `austraits` cannot go through `execute_params` directly: unlike
+    # rmarkdown::render()'s `params`, which injects R objects into the knit
+    # environment in-process, Quarto's `execute_params` serialises every value
+    # to a YAML metadata file for the external `quarto render` CLI to read --
+    # and YAML has no representation for R's `NA`, which `austraits$traits`
+    # always contains. So the database goes to a temp `.rds` instead, and only
+    # its path (a plain string) is passed as a parameter; the template reads
+    # it back with `readRDS(params$austraits_path)`.
+    austraits_rds <- tempfile(fileext = ".rds")
+    saveRDS(austraits, austraits_rds)
+
+    # Render with Quarto rather than rmarkdown::render() -- the template is a
+    # .qmd file, and `format: html: embed-resources: true` in its YAML is what
+    # keeps the output a single self-contained file, matching what
+    # rmarkdown::render()'s default `self_contained: true` used to give.
     #
     # Rendering is allowed to fail without aborting, so that one bad dataset
     # does not stop a batch of reports. It must still be reported: this was a
@@ -77,21 +92,29 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
     # success line anyway and the only trace was whatever `try()` happened to
     # write to stderr (#244).
     result <- try(
-      rmarkdown::render(
-        input_Rmd,
-        output_file = output_html,
+      quarto::quarto_render(
+        input_qmd,
+        output_file = output_filename,
         quiet = quiet,
-        params = list(
+        execute_params = list(
           dataset_id = dataset_id,
-          austraits = austraits
+          austraits_path = austraits_rds
         )
       ),
       silent = TRUE
     )
 
-    # Remove temporary Rmd
+    unlink(austraits_rds)
+
+    # quarto_render() writes its output beside the input (the current
+    # directory, since `input_qmd` names no path), not into `output_path`
+    if (!inherits(result, "try-error") && !file.exists(output_html)) {
+      file.rename(output_filename, output_html)
+    }
+
+    # Remove temporary qmd
     if (!keep)
-      unlink(input_Rmd)
+      unlink(input_qmd)
 
     if (inherits(result, "try-error")) {
       warning(
@@ -120,7 +143,7 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
 util_kable_styling_html <- function(...) {
     txt <-
       kableExtra::kable(...) %>%
-      kableExtra::kable_styling(...,
+      kableExtra::kable_styling(
                   bootstrap_options = c("striped", "hover", "condensed", "responsive"),
                   full_width = FALSE,
                   position = "left"
@@ -128,4 +151,75 @@ util_kable_styling_html <- function(...) {
 
     # Hack to add margin to plot
     gsub('style="width: auto ', 'style="margin-left:30px; width: auto ', txt)
+}
+
+#' New taxa added by a dataset
+#'
+#' Function to indicate how many new taxa by trait combinations are added with a dataset.
+#'
+#' @param database traits.build database
+#' @param dataset dataset_id for dataset of interest
+#'
+#' @returns table with number of new taxa added for each trait
+#'
+#' @examples
+#' \dontrun{
+#' new_taxa_trait_combinations(austraits, "Falster_2003")
+#' }
+#' @export
+new_taxa_trait_combinations <- function(database, dataset) {
+
+  # extract accepted species from APC
+  accepted_species <- database$taxa %>%
+    filter(taxonomic_status == "accepted") %>%
+    filter(taxon_rank %in% c("species", "subspecies", "varietas", "forma")) %>%
+    select(taxon_name)
+
+  # extract new dataset
+  new_data <- (database %>% extract_dataset(dataset))$traits %>%
+    distinct(dataset_id, taxon_name, trait_name) %>%
+    mutate(combined = paste0(taxon_name,"_", trait_name)) %>%
+    filter(taxon_name %in% accepted_species$taxon_name)
+
+  # Create an empty tibble for instances where none of the input names are `accepted`.
+  if (nrow(new_data) == 0) {
+    return(
+      tibble::tibble(
+        dataset_id = character(),
+        trait_name = character(),
+        new_taxa = integer(),
+        existing_taxa = integer()
+      )
+    )
+  }
+
+  # taxa present in new dataset
+  traits_to_check <- new_data %>% distinct(trait_name)
+
+  # data in database prior to new dataset
+  preexisting_data <- (database %>% extract_trait(traits_to_check$trait_name))$traits %>%
+    filter(dataset_id != dataset) %>%
+    distinct(taxon_name, trait_name) %>%
+    mutate(combined = paste0(taxon_name,"_", trait_name)) %>%
+    filter(taxon_name %in% accepted_species$taxon_name)
+
+  # counts of taxa per trait prior to new dataset
+  preexisting_taxa <- preexisting_data %>%
+    select(-taxon_name, -combined) %>%
+    group_by(trait_name) %>%
+    mutate(existing_taxa = n()) %>%
+    ungroup() %>%
+    distinct()
+
+  # number of new taxa added per trait once the new dataset is added
+  new_taxa <- new_data %>% filter(!combined %in% preexisting_data$combined) %>%
+    select(-taxon_name, -combined) %>%
+    group_by(dataset_id, trait_name) %>%
+    mutate(new_taxa = n()) %>%
+    ungroup() %>%
+    distinct() %>%
+    left_join(preexisting_taxa, by = "trait_name")
+
+  new_taxa
+
 }
