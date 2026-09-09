@@ -257,6 +257,116 @@ util_append_to_list <- function(my_list, to_append) {
   my_list
 }
 
+# Default name for a dataset's separate locations file, and the number of
+# locations beyond which holding them in `metadata.yml` stops being reasonable
+locations_file_default <- "locations.csv"
+locations_file_suggest_at <- 1000
+
+
+#' Is this `locations:` block a reference to a separate csv file?
+#'
+#' @param locations The `locations` element of a metadata list
+#'
+#' @return `TRUE` for a single string naming a `.csv` file
+#' @noRd
+util_locations_is_file <- function(locations) {
+  is.character(locations) &&
+    length(locations) == 1 &&
+    !is.na(locations) &&
+    grepl("\\.csv$", locations, ignore.case = TRUE)
+}
+
+
+#' Read a dataset's locations from a separate csv file
+#'
+#' A `locations:` block holding one entry per georeferenced record makes a
+#' `metadata.yml` unreadable and unreviewable -- `AVH_2026` in `austraits.build`
+#' reaches 162,469 locations and 487,518 lines (#263). Such a dataset can
+#' instead name a csv file, `locations: locations.csv`, kept beside
+#' `metadata.yml` and read from here.
+#'
+#' The file is read one column per location property, which is the shape
+#' `austraits$locations %>% tidyr::spread(location_property, value)` returns and
+#' the shape [metadata_add_locations()] is given. Every column is read as
+#' character, matching what the yaml path is coerced to downstream and leaving
+#' values exactly as they are written in the file.
+#'
+#' A rectangle has no way of saying that a location does not record a property
+#' at all, which an inline `locations:` block says by simply not listing it. An
+#' **empty cell** means exactly that -- this location does not record this
+#' property -- and the property is absent for that location, as it would be in
+#' the yaml. A cell holding **`.na`** is the same "recorded, but unknown" that
+#' `.na` means in the yaml, and is kept as a location property with a missing
+#' value. Nothing else is treated as missing, so a location genuinely named
+#' `NA` survives being written out and read back.
+#'
+#' @param file Name of the csv file, relative to the metadata file
+#' @param path Location of the metadata file
+#'
+#' @return A tibble, carrying the file it was read from as an attribute
+#' @noRd
+util_read_locations_file <- function(file, path) {
+
+  full <- file.path(dirname(path), file)
+
+  if (!file.exists(full)) {
+    stop(
+      sprintf(
+        paste0(
+          "%s declares `locations: %s`, but %s does not exist.\n",
+          "  A `locations:` entry naming a .csv file is read from that file, ",
+          "which must sit beside `metadata.yml`."
+        ),
+        path, file, full
+      ),
+      call. = FALSE
+    )
+  }
+
+  # `na = character()` so that neither an empty cell nor the string "NA" is
+  # read as missing -- an empty cell means the property is absent for this
+  # location, and `.na` means recorded but unknown. Both are handled in
+  # `process_format_locations()`, which is where the distinction matters
+  locations <- readr::read_csv(
+    full,
+    col_types = readr::cols(.default = readr::col_character()),
+    na = character(),
+    progress = FALSE
+  )
+
+  if (!"location_name" %in% names(locations)) {
+    stop(
+      sprintf(
+        paste0(
+          "%s has no `location_name` column, so its rows cannot be matched to ",
+          "the location names in `data.csv`.\n  Columns found: %s"
+        ),
+        full, paste(names(locations), collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+
+  duplicated_names <- unique(
+    locations$location_name[duplicated(locations$location_name)]
+  )
+
+  if (length(duplicated_names) > 0) {
+    stop(
+      sprintf(
+        "%s has %d duplicated `location_name`: %s",
+        full, length(duplicated_names),
+        paste(utils::head(duplicated_names, 5), collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+
+  attr(locations, "locations_file") <- file
+  locations
+}
+
+
 # Top-level blocks of a `metadata.yml`, in the order `write_metadata()` writes
 # them. Also used by `util_read_yaml_chunked()` to find where a block ends.
 metadata_blocks <- c(
@@ -367,6 +477,10 @@ util_read_yaml_chunked <- function(path, chunk = 500L, threshold = 1000L) {
 
 #' Read in a `metadata.yml` file for a study
 #'
+#' A dataset's `locations:` may either list the locations inline, or name a csv
+#' file beside `metadata.yml` -- `locations: locations.csv` -- which is read in
+#' its place and returned as a tibble.
+#'
 #' @param path Location of the metadata file
 #' @importFrom rlang .data
 #'
@@ -374,6 +488,10 @@ util_read_yaml_chunked <- function(path, chunk = 500L, threshold = 1000L) {
 read_metadata <- function(path) {
 
   data <- util_read_yaml_chunked(path)
+
+  if (util_locations_is_file(data[["locations"]])) {
+    data[["locations"]] <- util_read_locations_file(data[["locations"]], path)
+  }
 
   # We want to preserve formatting in custom R code
   # but `read_yaml` loses it
@@ -434,6 +552,20 @@ write_metadata <- function(data, path, style_code = FALSE) {
   # For metadata files that don't yet include "identifiers", add before writing file
   if (!"identifiers" %in% names(y)) {
     y["identifiers"] <- NA
+  }
+
+  # Locations held in a separate csv are written back to it, and referred to
+  # from the yaml by name rather than inlined
+  if (is.data.frame(y[["locations"]])) {
+    file <- attr(y[["locations"]], "locations_file")
+    if (is.null(file)) file <- locations_file_default
+
+    # `na = ""`, matching how the file is read: an empty cell is a property
+    # this location does not record
+    readr::write_csv(
+      y[["locations"]], file.path(dirname(path), file), na = ""
+    )
+    y[["locations"]] <- file
   }
 
   y <- y[metadata_blocks]
