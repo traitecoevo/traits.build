@@ -27,7 +27,8 @@ dataset_report(
 
 \item{quiet}{An option to suppress printing during rendering from knitr, Quarto and pandoc}
 
-\item{keep}{Keep intermediate Qmd file used?}
+\item{keep}{Keep the intermediate \code{.qmd}, the knitted \code{.md} and its
+\verb{_files} directory (see Details)?}
 }
 \value{
 Invisibly, a logical named by \code{dataset_id}, \code{TRUE} where the report
@@ -38,4 +39,11 @@ the batch.
 \description{
 Builds a detailed report for every dataset with a unique \code{dataset_id}, based on the template Qmd file provided.
 The reports are rendered as html files and saved in the specified output folder.
+}
+\details{
+Rendering happens in two Quarto passes rather than one \code{quarto_render()} call straight to
+html: the taxon-list tables' \verb{<a>} links (and their bootstrap classes) do not survive a
+single \code{.qmd} -> html render, but the same knitted content renders correctly a second time
+as markdown -> html. The first pass knits and discards its own (broken) html; the second
+renders the knitted \code{.md} it leaves behind.
 }

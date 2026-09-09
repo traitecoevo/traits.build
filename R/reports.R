@@ -4,13 +4,20 @@
 #' Builds a detailed report for every dataset with a unique `dataset_id`, based on the template Qmd file provided.
 #' The reports are rendered as html files and saved in the specified output folder.
 #'
+#' Rendering happens in two Quarto passes rather than one `quarto_render()` call straight to
+#' html: the taxon-list tables' `<a>` links (and their bootstrap classes) do not survive a
+#' single `.qmd` -> html render, but the same knitted content renders correctly a second time
+#' as markdown -> html. The first pass knits and discards its own (broken) html; the second
+#' renders the knitted `.md` it leaves behind.
+#'
 #' @param dataset_id Name of specific study/dataset
 #' @param austraits Compiled austraits database
 #' @param overwrite Logical value to determine whether to overwrite existing report
 #' @param output_path Location where rendered report will be saved
 #' @param input_file Report script (.qmd) file to build study report
 #' @param quiet An option to suppress printing during rendering from knitr, Quarto and pandoc
-#' @param keep Keep intermediate Qmd file used?
+#' @param keep Keep the intermediate `.qmd`, the knitted `.md` and its
+#'  `_files` directory (see Details)?
 #'
 #' @rdname dataset_report
 #' @return Invisibly, a logical named by `dataset_id`, `TRUE` where the report
@@ -86,21 +93,40 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
     # The output is a single self-contained file; that comes from
     # `embed-resources: true` in the template's YAML.
     #
+    # Rendered in two steps, not one `quarto_render(input_qmd, ...)` call.
+    # Going straight from `.qmd` to html breaks the taxon-list tables' `<a>`
+    # links (and their bootstrap classes): Quarto's pandoc invocation for a
+    # `.qmd` input reprocesses their raw ```{=html} blocks differently than
+    # it does for a plain `.md` file, discarding the tags `as_link()` writes
+    # into them. The exact same knitted content, rendered a second time as
+    # markdown, does not have this problem -- so step one knits and discards
+    # its own (broken) html, `debug = TRUE` being what leaves the knitted
+    # `.md` around for step two to render properly.
+    #
     # Rendering is allowed to fail without aborting, so that one bad dataset
     # does not stop a batch of reports. It must still be reported: this was a
     # bare `try()` whose result was discarded, so a failed render printed the
     # success line anyway and the only trace was whatever `try()` happened to
     # write to stderr (#244).
+    knitted_md <- sub("\\.qmd$", ".html.md", input_qmd)
+    knitted_files <- sub("\\.qmd$", "_files", input_qmd)
     result <- try(
-      quarto::quarto_render(
-        input_qmd,
-        output_file = output_filename,
-        quiet = quiet,
-        execute_params = list(
-          dataset_id = dataset_id,
-          austraits_path = austraits_rds
+      {
+        quarto::quarto_render(
+          input_qmd,
+          output_file = output_filename,
+          quiet = TRUE,
+          debug = TRUE,
+          execute_params = list(
+            dataset_id = dataset_id,
+            austraits_path = austraits_rds
+          )
         )
-      ),
+        if (!file.exists(knitted_md)) {
+          stop("Expected knitted markdown not found: ", knitted_md, call. = FALSE)
+        }
+        quarto::quarto_render(knitted_md, output_file = output_filename, quiet = quiet)
+      },
       silent = TRUE
     )
 
@@ -112,9 +138,12 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
       file.rename(output_filename, output_html)
     }
 
-    # Remove temporary qmd
-    if (!keep)
+    # Remove temporary qmd and the intermediates the two-step render leaves
+    if (!keep) {
       unlink(input_qmd)
+      unlink(knitted_md)
+      unlink(knitted_files, recursive = TRUE)
+    }
 
     if (inherits(result, "try-error")) {
       warning(
