@@ -93,7 +93,7 @@ dataset_process <- function(filename_data_raw,
   # Load and process contextual data
   contexts <-
     metadata$contexts %>%
-    process_format_contexts(dataset_id, traits)
+    process_format_contexts(dataset_id, traits, metadata$traits)
 
   # Load identifiers
   if ("identifiers" %in% names(metadata) && !all(is.na(metadata[["identifiers"]]))) {
@@ -709,6 +709,9 @@ process_generate_method_ids <- function(metadata_traits) {
 #' @param my_list List of input information
 #' @param dataset_id Identifier for a particular study in the AusTraits database
 #' @param traits Table of trait data (for this function, just the data.csv file with custom_R_code applied)
+#' @param metadata_traits The `traits` section of `metadata.yml`, as a list. Supplies the
+#' context values for a context whose `var_in` names a field set literally on the trait
+#' entries rather than a column of `data.csv`.
 #' @return Tibble with context details if available
 #' @importFrom rlang .data
 #'
@@ -716,7 +719,34 @@ process_generate_method_ids <- function(metadata_traits) {
 #' \dontrun{
 #' process_format_contexts(read_metadata("data/Apgaua_2017/metadata.yml")$context, dataset_id, traits)
 #' }
-process_format_contexts <- function(my_list, dataset_id, traits) {
+process_format_contexts <- function(my_list, dataset_id, traits, metadata_traits = NULL) {
+
+  # A context `var_in` is legitimately satisfied either by a column of `data.csv` or by a
+  # field set literally on the `traits` entries of `metadata.yml` -- `process_parse_data()`
+  # accepts both. Only the first could supply the values when `values` is omitted, so the
+  # second route died in the `left_join` below with an unrelated-looking rlang error (#268).
+  trait_entries <- austraits::convert_list_to_df2(metadata_traits)
+
+  if (!is.data.frame(trait_entries)) {
+    trait_entries <- tibble::tibble()
+  } else if ("trait_name" %in% names(trait_entries)) {
+    # Entries without a `trait_name` are dropped from the build, so the values they
+    # declare must not become context values either
+    trait_entries <- trait_entries %>% dplyr::filter(!is.na(.data$trait_name))
+  }
+
+  # The values a trait-entry field takes, read the way `process_parse_data()` reads it:
+  # a value naming a column of `data.csv` stands for that column's contents, anything
+  # else is the literal itself
+  values_from_trait_entries <- function(field) {
+    declared <- unique(stats::na.omit(trait_entries[[field]]))
+
+    declared %>%
+      purrr::map(~if (is.null(traits[[.x]])) .x else unique(traits[[.x]])) %>%
+      unlist(use.names = FALSE) %>%
+      as.character() %>%
+      unique()
+  }
 
   process_content_worker <- function(x, id, traits) {
 
@@ -745,36 +775,47 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
     # the specific context property create them
     ## They are both the unique set of values in the column in the data.csv file
     if (all(!c("find", "value") %in% names(out))) {
-      # With neither `find` nor `value` given, the values can only come from the
-      # named column of `data.csv`. If it isn't there the left_join below returns
-      # zero rows and the context vanishes without a word, so say so instead (#247).
+      # With neither `find` nor `value` given, the values can only be read off whatever
+      # `var_in` names. If it names nothing the left_join below returns zero rows and the
+      # context vanishes without a word, so say so instead (#247).
       var_in <- if (is.null(out[["var_in"]])) NA_character_ else out[["var_in"]][1]
 
-      if (is.na(var_in) || is.null(traits[[var_in]])) {
+      from_data <- !is.na(var_in) && !is.null(traits[[var_in]])
+      from_trait_entries <- !is.na(var_in) && var_in %in% names(trait_entries)
+
+      if (!from_data && !from_trait_entries) {
         stop(
           sprintf(
             paste0(
               "Dataset %s: context_property '%s' gives no `values`, so its context values can only\n",
-              "  come from the column named by `var_in`, and `var_in: %s` is not a column in the data.\n",
-              "  Either fix the column name or list the context `values` in `metadata.yml`.\n",
-              "  Available columns: %s"
+              "  be read off whatever `var_in` names, and `var_in: %s` names neither a column of\n",
+              "  `data.csv` (after `custom_R_code` has run) nor a field on the `traits` entries of\n",
+              "  `metadata.yml`.\n",
+              "  Either fix the name or list the context `values` in `metadata.yml`.\n",
+              "  Columns in the data: %s\n",
+              "  Fields on the `traits` entries: %s"
             ),
             id,
             ifelse(is.null(x$context_property), "(unnamed)", as.character(x$context_property)[1]),
             var_in,
-            paste(names(traits), collapse = ", ")
+            paste(names(traits), collapse = ", "),
+            paste(names(trait_entries), collapse = ", ")
           ),
           call. = FALSE
         )
       }
+
+      values <-
+        if (from_data) unique(traits[[var_in]]) else values_from_trait_entries(var_in)
+
       out <- out %>%
         # The following line shouldn't be needed, as we tested this was missing for the if statement above
         dplyr::select(-any_of(c("value"))) %>%
         dplyr::left_join(
           by = "var_in",
           tibble::tibble(
-            var_in = out[["var_in"]][1],
-            value = unique(traits[[out$var_in[1]]])
+            var_in = var_in,
+            value = values
           ) %>%
         dplyr::filter(!is.na(.data$value))
         ) %>%

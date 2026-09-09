@@ -353,7 +353,7 @@ dataset_test_worker <-
         testthat::expect_silent(
           contexts <-
             metadata$contexts %>%
-            process_format_contexts(dataset_id, data)
+            process_format_contexts(dataset_id, data, metadata$traits)
         )
 
         # Check that there are no duplicate `var_in` or `context_property` fields

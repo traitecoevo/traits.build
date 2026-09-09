@@ -224,22 +224,109 @@ test_that("a context with no `values` and no matching column is rejected", {
                         var_in = "sexx"))
 
   expect_error(
-    process_format_contexts(contexts, "Test_2023_1", data),
+    process_format_contexts(contexts, "Test_2023_1", data, metadata$traits),
     "Test_2023_1.*plant sex.*sexx"
+  )
+
+  # Both routes to a `var_in` are named, so neither reads as the only option (#268)
+  expect_error(
+    process_format_contexts(contexts, "Test_2023_1", data, metadata$traits),
+    "Fields on the `traits` entries:.*method_context"
   )
 
   # Likewise when `var_in` is missing altogether, rather than merely misspelled
   contexts[[1]]$var_in <- NULL
   expect_error(
-    process_format_contexts(contexts, "Test_2023_1", data),
+    process_format_contexts(contexts, "Test_2023_1", data, metadata$traits),
     "Test_2023_1.*plant sex"
   )
   contexts[[1]]$var_in <- "sexx"
 
   # The same context, spelled correctly, takes its values from the column
   contexts[[1]]$var_in <- "sex"
-  expect_no_error(out <- process_format_contexts(contexts, "Test_2023_1", data))
+  expect_no_error(
+    out <- process_format_contexts(contexts, "Test_2023_1", data, metadata$traits)
+  )
   expect_gt(nrow(out), 0)
+})
+
+
+test_that("a context with no `values` takes them from the `traits` entries", {
+  # A context can be populated purely by literals set on individual `traits` entries,
+  # naming no `data.csv` column at all. Omitting `values:` there used to hit the
+  # data.csv-only fallback and die on a column that was never meant to exist (#268).
+  metadata <- read_metadata("examples/Test_2023_1/metadata.yml")
+  data <- read_csv_char("examples/Test_2023_1/data.csv")
+
+  contexts <- list(list(context_property = "branch length",
+                        category = "method_context",
+                        var_in = "method_context"))
+
+  # Guard the premise: the values can only come from the `traits` entries
+  expect_false("method_context" %in% names(data))
+
+  expect_no_error(
+    out <- process_format_contexts(contexts, "Test_2023_1", data, metadata$traits)
+  )
+  expect_setequal(out$value, c("250 mm branch", "50 mm branch", "1000 mm branch"))
+  expect_equal(out$find, out$value)
+  # Nothing supplies a description on this route, so it is left to be written by hand
+  expect_true(all(is.na(out$description)))
+
+  # Entries with no `trait_name` are dropped from the build, so their literals must
+  # not become context values either
+  metadata$traits[[1]]$trait_name <- NULL
+  metadata$traits[[1]]$method_context <- "ghost branch"
+  out <- process_format_contexts(contexts, "Test_2023_1", data, metadata$traits)
+  expect_false("ghost branch" %in% out$value)
+})
+
+
+test_that("a context populated from `traits` entries builds without a `values` block", {
+  # End-to-end: the same context with and without its hand-written `values:` list
+  # must produce the same context values and the same trait rows (#268)
+  # `dataset_configure()` takes the dataset_id from the directory name, so keep it
+  # for the two builds to be comparable
+  metadata_dir <- file.path(withr::local_tempdir(), "Test_2023_1")
+  dir.create(metadata_dir)
+  metadata_path <- file.path(metadata_dir, "metadata.yml")
+  metadata <- readLines("examples/Test_2023_1/metadata.yml")
+
+  # Delete the `values:` block of the `branch length` context, which runs from the
+  # line after `var_in:` to the line before the next (unindented) context entry
+  start <- which(metadata == "  var_in: method_context") + 1
+  expect_equal(metadata[start], "  values:")
+  rest <- seq(start + 1, length(metadata))
+  end <- rest[!startsWith(metadata[rest], " ")][1] - 1
+  writeLines(metadata[-(start:end)], metadata_path)
+
+  baseline <- dataset_process(
+    "examples/Test_2023_1/data.csv",
+    dataset_configure("examples/Test_2023_1/metadata.yml", traits_definitions),
+    schema, resource_metadata, unit_conversions
+  )
+
+  expect_no_error(
+    built <- dataset_process(
+      "examples/Test_2023_1/data.csv",
+      dataset_configure(metadata_path, traits_definitions),
+      schema, resource_metadata, unit_conversions
+    )
+  )
+
+  branch_lengths <- function(x) {
+    x$contexts %>%
+      dplyr::filter(.data$context_property == "branch length") %>%
+      dplyr::select(-dplyr::any_of("description")) %>%
+      dplyr::arrange(.data$value)
+  }
+
+  # Only the hand-written descriptions are lost; the values and their ids are the same
+  expect_equal(branch_lengths(built), branch_lengths(baseline))
+  expect_true(all(is.na(
+    built$contexts$description[built$contexts$context_property == "branch length"]
+  )))
+  expect_equal(built$traits, baseline$traits)
 })
 
 
