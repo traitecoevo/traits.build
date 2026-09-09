@@ -849,12 +849,17 @@ test_that("reports and plots are produced", {
   # nothing about the report existing or containing anything (#244).
   expect_silent(suppressMessages(austraits <- remake::make("test_name")))
 
-  # The report calls `austraits::plot_trait_distribution_beeswarm()`, which uses
-  # `forcats` -- declared in `austraits`' Suggests and used there unguarded, so
-  # without it the whole render fails and no file is written at all. Skipping
-  # rather than failing keeps an upstream packaging problem from reading as a
-  # regression here; `forcats` is in this package's Suggests so CI does run it.
+  # `plot_trait_distribution_jitter()` uses `forcats` unguarded, so without it
+  # the render fails and no file is written at all.
   skip_if_not_installed("forcats")
+
+  # Rendering shells out to the `quarto` CLI, which starts a fresh R session
+  # and does its own `library(traits.build)`. This test therefore exercises the
+  # *installed* package, not `devtools::load_all()`: after editing the plotting
+  # functions or the template, run `devtools::install()` or this checks stale
+  # code. `R CMD check` installs first, so CI is unaffected.
+  skip_if_not_installed("quarto")
+  skip_if(is.null(quarto::quarto_path()), "Quarto CLI not found")
 
   output_path <- withr::local_tempdir()
   output_html <- file.path(output_path, "Test_2022.html")
