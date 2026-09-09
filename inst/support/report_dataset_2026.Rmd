@@ -519,6 +519,15 @@ if (length(context_properties) > 0) {
           austraits::convert_list_to_df2() %>%
           dplyr::select(dplyr::any_of(c("find", "value")))
 
+        # If none of this context property's `values` entries in metadata.yml
+        # specify `find`, `find_value_table` has no `find` column at all, and
+        # the `find` symbol in the `mutate()`/`coalesce()` call below would
+        # otherwise resolve to base R's `find()` function instead of a column,
+        # causing `dplyr::coalesce()` to error. Default it to `value` instead.
+        if (!"find" %in% names(find_value_table)) {
+          find_value_table$find <- find_value_table$value
+        }
+
         context_table <- context_table %>%
           dplyr::distinct() %>%
           dplyr::left_join(find_value_table, by = "value") %>%
@@ -636,6 +645,7 @@ This includes the first records in AusTraits for some trait by taxon combination
 
 ```{r, results='asis', echo=FALSE}
 new_taxa_trait_combinations(database = austraits, dataset = dataset_id) |>
+  arrange(trait_name) |>
   select(-dataset_id) |>
   my_kable_styling()
 ```
@@ -698,7 +708,7 @@ if (nrow(subset(data_study$excluded_data, error != "Missing value")) > 0) {
 }
 ```
 
-```{r, echo=FALSE, message=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 tmp <- data_study$traits %>% filter(!trait_name %in% c("flowering_time", "fruiting_time", "recruitment_time"))
 traits <- tmp$trait_name %>% unique() %>% sort()
 traits_numeric <- traits[util_extract_list_element(traits, definitions, "type") == "numeric"]
@@ -854,7 +864,7 @@ if (nrow(filter(data_study$excluded_data, error == "Value out of allowable range
 
 ## Categorical traits
 
-```{r categorical, results='asis', echo=FALSE, eval=TRUE}
+```{r categorical, results='asis', echo=FALSE, eval=TRUE, warning=FALSE}
 writeLines(
   ifelse(length(traits_categorical) == 0,
     "No categorical traits data are currently available in this dataset.",
