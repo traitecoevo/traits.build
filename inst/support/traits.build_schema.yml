@@ -416,7 +416,7 @@ metadata:
         identifier_type: *identifier_type
         institution_code: *institution_code
     locations:
-      description: A list of study locations (sites) and information about each of the study locations where data were collected. Each should include at least three variables - `latitude (deg)`, `longitude (deg)` and `description`. Additional variables can be included where available. Set to `.na` for botanical collections and field studies where data values are a mean across many locations.
+      description: A list of study locations (sites) and information about each of the study locations where data were collected. Each should include at least three variables - `latitude (deg)`, `longitude (deg)` and `description`. Additional variables can be included where available. Set to `.na` for botanical collections and field studies where data values are a mean across many locations. A dataset with many locations, such as one generating a location per georeferenced record, may instead set this field to the name of a csv file kept beside `metadata.yml`, such as `locations.csv`, holding one row per location, a `location_name` column and one further column per location property.
       type: array
       elements:
         location_name: The location name used by the data contributor or a generic location name designated by AusTraits when one is not provided.

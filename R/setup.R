@@ -340,6 +340,10 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
 #' @param location_data A dataframe of site variables
 #' @param user_responses Named list containing simulated user input for manual selection
 #' of variables, mainly for testing purposes
+#' @param file Name of a csv file to hold the locations, written beside
+#'  `metadata.yml` and referred to from it as `locations: <file>`, instead of
+#'  listing every location in the yaml. Worth using for a dataset with many
+#'  locations, such as one generating a location per georeferenced record.
 #'
 #' @importFrom rlang .data
 #' @export
@@ -348,8 +352,10 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
 #' austraits$locations %>% dplyr::filter(dataset_id == "Falster_2005_1") %>%
 #' select(-dataset_id) %>% spread(location_property, value) %>% type_convert() -> location_data
 #' metadata_add_locations("Falster_2005_1", location_data)
+#' metadata_add_locations("AVH_2026", location_data, file = "locations.csv")
 #' }
-metadata_add_locations <- function(dataset_id, location_data, user_responses = NULL) {
+metadata_add_locations <- function(dataset_id, location_data, user_responses = NULL,
+                                   file = NULL) {
 
   vars <- names(location_data)
 
@@ -390,17 +396,41 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
       )
   }
 
-  metadata$locations <- location_data %>%
-    dplyr::select(-dplyr::any_of(location_name)) %>%
-    split(location_data[[location_name]]) %>%
-    lapply(as.list)
+  location_names <- unique(location_data[[location_name]])
+
+  if (is.null(file)) {
+
+    metadata$locations <- location_data %>%
+      dplyr::select(-dplyr::any_of(location_name)) %>%
+      split(location_data[[location_name]]) %>%
+      lapply(as.list)
+
+    # A location per georeferenced record makes a `metadata.yml` unreadable --
+    # `AVH_2026` in austraits.build reaches 487,518 lines (#263)
+    if (length(location_names) >= locations_file_suggest_at) {
+      message(
+        sprintf(
+          red("%s locations is a lot to hold in `metadata.yml`. ") %+%
+            red("Consider `metadata_add_locations(..., file = \"%s\")`, ") %+%
+            red("which keeps them in a csv file beside it instead."),
+          blue(length(location_names)), blue(locations_file_default)
+        )
+      )
+    }
+
+  } else {
+
+    metadata$locations <- location_data %>%
+      dplyr::rename(dplyr::all_of(c("location_name" = location_name)))
+    attr(metadata$locations, "locations_file") <- file
+  }
 
   message(
     sprintf(
       red("Following locations added to metadata for %s") %+% red(": ") %+% green("'%s'\n\t") %+%
         red("with variables ") %+% green("'%s'\n\t") %+% red("Please complete information in %s"),
       blue(dataset_id),
-      paste(names(metadata$locations), collapse = "', '"),
+      paste(location_names, collapse = "', '"),
       ifelse(is.na(keep[1]), "latitude (deg)', 'longitude (deg)', 'description", paste(keep, collapse = "', '")),
       blue(dataset_id %>% metadata_path_dataset_id())
     )
@@ -1371,8 +1401,31 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 
   message(green(sprintf("Setting up build pipeline for %s studies, using `%s` method", length(dataset_ids), method)))
 
+  # A dataset whose `locations:` names a csv file has to declare it as a
+  # dependency, or edits to it would not trigger a rebuild
+  locations_files <- vapply(
+    dataset_ids,
+    function(id) {
+      declared <- yaml::read_yaml(
+        sprintf("%s/%s/metadata.yml", path, id)
+      )[["locations"]]
+      if (util_locations_is_file(declared)) declared else NA_character_
+    },
+    character(1)
+  )
+
   vals <- list(
-    dataset_ids = whisker::iteratelist(dataset_ids, value = "dataset_id"),
+    dataset_ids = unname(Map(
+      function(id, locations_file) {
+        # FALSE, not NA -- whisker renders a section for any non-false value,
+        # and `ifelse()` here would turn FALSE into the string "FALSE"
+        list(
+          dataset_id = id,
+          locations_file = if (is.na(locations_file)) FALSE else locations_file
+        )
+      },
+      dataset_ids, locations_files
+    )),
     dataset_ids_vector =
       sprintf("c(%s)", sprintf("'%s'", dataset_ids) %>% paste(collapse = ", ")),
     path = path,
