@@ -745,6 +745,28 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
     # the specific context property create them
     ## They are both the unique set of values in the column in the data.csv file
     if (all(!c("find", "value") %in% names(out))) {
+      # With neither `find` nor `value` given, the values can only come from the
+      # named column of `data.csv`. If it isn't there the left_join below returns
+      # zero rows and the context vanishes without a word, so say so instead (#247).
+      var_in <- if (is.null(out[["var_in"]])) NA_character_ else out[["var_in"]][1]
+
+      if (is.na(var_in) || is.null(traits[[var_in]])) {
+        stop(
+          sprintf(
+            paste0(
+              "Dataset %s: context_property '%s' gives no `values`, so its context values can only\n",
+              "  come from the column named by `var_in`, and `var_in: %s` is not a column in the data.\n",
+              "  Either fix the column name or list the context `values` in `metadata.yml`.\n",
+              "  Available columns: %s"
+            ),
+            id,
+            ifelse(is.null(x$context_property), "(unnamed)", as.character(x$context_property)[1]),
+            var_in,
+            paste(names(traits), collapse = ", ")
+          ),
+          call. = FALSE
+        )
+      }
       out <- out %>%
         # The following line shouldn't be needed, as we tested this was missing for the if statement above
         dplyr::select(-any_of(c("value"))) %>%
@@ -1526,6 +1548,37 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
   # NOTE - only need to do this step for wide (non-vertical) data
   if (data_is_long_format == FALSE && any(!traits_table[["var_in"]] %in% colnames(data))) {
     stop(paste(dataset_id, ": missing traits: ", setdiff(traits_table[["var_in"]], colnames(data))))
+  }
+
+  # A context `var_in` naming nothing at all used to survive this far: the
+  # `any_of()` in `process_create_context_ids()` simply returned fewer columns,
+  # and the build aborted deep inside that loop with `Assigned data
+  # `xxx[context_cols[[v]]]` must be compatible with existing data`, naming
+  # neither the dataset, nor the context, nor the missing column (#247).
+  #
+  # A `var_in` is legitimately satisfied two ways, so both are accepted here:
+  #   1. a column of `data.csv` -- checked against `data` rather than the raw
+  #      header because `custom_R_code` has already run, and
+  #   2. a field declared on the `traits` entries of `metadata.yml`, which
+  #      `vars_to_check` below turns into a column of `out`. 35 contexts across
+  #      32 datasets in `austraits.build` use this (`var_in: method_context` and
+  #      friends) and name no csv column at all.
+  # Checked against `data` rather than the already-narrowed `df`: `df` selects
+  # `contexts$var_in`, so a mistyped name drops the column it meant to name and
+  # the intended spelling would be missing from the message's candidate list.
+  context_var_in <- unique(contexts$var_in)
+  missing_var_in <- setdiff(
+    context_var_in[!is.na(context_var_in)],
+    c(names(data), names(traits_table))
+  )
+
+  if (length(missing_var_in) > 0) {
+    stop(
+      util_context_var_in_message(
+        contexts, missing_var_in, names(data), names(traits_table)
+      ),
+      call. = FALSE
+    )
   }
 
   vars_traits <- c(vars, unique(contexts$var_in))

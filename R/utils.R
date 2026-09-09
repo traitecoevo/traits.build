@@ -140,6 +140,65 @@ util_index_locale_independent <- function(x) {
 }
 
 
+#' Build the error message for a context `var_in` that names no column
+#'
+#' Reports the dataset, each affected `context_property`, and the column name
+#' that is missing -- the three things the raw tidyselect failure did not name
+#' (#247). Where a close match exists among the available columns it is
+#' suggested, since the usual cause is a typo.
+#'
+#' @param contexts Contexts tibble, as returned by `process_format_contexts()`
+#' @param missing_var_in Character vector of `var_in` values not found
+#' @param data_columns Character vector of columns in the data, after
+#'   `custom_R_code` has run
+#' @param traits_fields Character vector of fields declared on the `traits`
+#'   entries of `metadata.yml`, the other place a `var_in` may be satisfied
+#'
+#' @return A length-1 character string
+#' @keywords internal
+util_context_var_in_message <- function(contexts, missing_var_in,
+                                        data_columns, traits_fields = character()) {
+
+  dataset_id <- unique(contexts[["dataset_id"]])
+  if (length(dataset_id) != 1 || is.na(dataset_id)) dataset_id <- "(unknown)"
+
+  # `var_in` -> the context properties it was declared for
+  properties <- function(v) {
+    p <- unique(contexts[["context_property"]][contexts[["var_in"]] %in% v])
+    paste(sprintf("'%s'", p), collapse = ", ")
+  }
+
+  # The usual cause is a typo, so point at the nearest available name. Edit
+  # distance rather than `agrep()`, which matches on substrings and so offers
+  # wild suggestions for short names.
+  candidates <- unique(c(data_columns, traits_fields))
+  suggestion <- function(v) {
+    if (length(candidates) == 0) return("")
+    d <- utils::adist(v, candidates, ignore.case = TRUE)[1, ]
+    near <- candidates[d == min(d) & d <= max(1, floor(nchar(v) / 3))]
+    if (length(near) == 0) return("")
+    sprintf(" (did you mean %s?)", paste(sprintf("`%s`", near), collapse = " or "))
+  }
+
+  lines <- purrr::map_chr(
+    missing_var_in,
+    ~sprintf("  - context_property %s declares `var_in: %s`%s",
+             properties(.x), .x, suggestion(.x))
+  )
+
+  paste0(
+    sprintf("Dataset %s declares contexts with `var_in` naming %s not present in the data:\n",
+            dataset_id,
+            ifelse(length(missing_var_in) > 1, "columns", "a column")),
+    paste(lines, collapse = "\n"), "\n",
+    "  A context `var_in` must name either a column of `data.csv` (after `custom_R_code` has run)\n",
+    "  or a field declared on the `traits` entries of `metadata.yml` (e.g. `method_context`).\n",
+    sprintf("  Columns in the data: %s\n", paste(data_columns, collapse = ", ")),
+    sprintf("  Fields on the `traits` entries: %s", paste(traits_fields, collapse = ", "))
+  )
+}
+
+
 #'  Split and sort cells with multiple values
 #'
 #'  `util_separate_and_sort`: For a vector x in which individual cell may have
