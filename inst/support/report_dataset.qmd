@@ -1033,12 +1033,24 @@ tmp <- data_study$taxa %>%
   bind_rows(empty_tibble_taxa)
 
 if (nrow(tmp) < 10000) {
+  # A table whose cells hold real `<a>` tags (rather than plain text) has to
+  # be fenced as an explicit ```{=html} raw block. Quarto/knitr fence most
+  # kable output this way automatically, but not reliably here -- and without
+  # it, Quarto's pandoc reparses the block as an ordinary table: it rewrites
+  # our bootstrap classes into its own, and it does not understand a literal
+  # `<a href=...>` tag placed via `escape = FALSE` any better than it
+  # understood `[text](url)` markdown syntax. rmarkdown's pandoc tolerated
+  # both because it always reparsed raw HTML blocks as markdown; Quarto's
+  # does not, so both the tag and the fence have to be explicit.
+  cat("```{=html}\n")
   tmp %>%
   mutate(
-    taxon_name = ifelse(!is.na(taxon_id), as_link(taxon_id, taxon_name), taxon_name)
+    taxon_name = ifelse(!is.na(taxon_id), as_link(taxon_id, taxon_name, type = "html"), taxon_name)
     ) %>%
   mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
-  my_kable_styling()
+  my_kable_styling(format = "html", escape = FALSE) %>%
+  writeLines()
+  cat("```\n")
 } else {
   cat(crayon::red("\t\tTable too large to display\n"))
   tmp %>%
@@ -1069,6 +1081,9 @@ if (nrow(updated_taxa) > 0) {
     ""
   ))
 
+  # Fenced as an explicit ```{=html} raw block -- see the comment on the
+  # same construct in the `taxon_list2` chunk above
+  cat("```{=html}\n")
   data_study$taxa %>%
     filter(taxon_name %in% updated_taxa$taxon_name) %>%
     left_join(
@@ -1081,13 +1096,16 @@ if (nrow(updated_taxa) > 0) {
     mutate(
       d1 = purrr::map2_dbl(original_name, aligned_name, ~adist(.x, .y)) %>% as.character() %>% str_replace("0", ""),
       d2 = purrr::map2_dbl(taxon_name, aligned_name, ~adist(.x, .y)) %>% as.character() %>% str_replace("0", ""),
-      aligned_name = ifelse(!is.na(aligned_name_taxon_id), as_link(aligned_name_taxon_id, aligned_name), aligned_name),
-      taxon_name = ifelse(!is.na(taxon_id), as_link(taxon_id, taxon_name), taxon_name)
+      # `type = "html"`, not markdown -- see the comment on the same call in
+      # the `taxon_list2` chunk above
+      aligned_name = ifelse(!is.na(aligned_name_taxon_id), as_link(aligned_name_taxon_id, aligned_name, type = "html"), aligned_name),
+      taxon_name = ifelse(!is.na(taxon_id), as_link(taxon_id, taxon_name, type = "html"), taxon_name)
     ) %>%
     select(original_name, d1, aligned_name, d2, taxon_name, aligned_name_taxonomic_status) %>%
     mutate(across(everything(), ~replace_na(.x, replace = ""))) %>%
-    my_kable_styling() %>%
+    my_kable_styling(format = "html", escape = FALSE) %>%
     writeLines()
+  cat("```\n")
 }
 ```
 
