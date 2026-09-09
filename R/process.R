@@ -1780,7 +1780,13 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
         replace = tolower(.data$replace)
       )
 
-    for (i in seq_len(nrow(substitutions_table))) {
+    if (!"match" %in% names(substitutions_table)) {
+      substitutions_table[["match"]] <- NA_character_
+    }
+
+    # `match: value` (the default, when `match` is unset) replaces a cell only when
+    # the whole value equals `find` -- unchanged from previous behaviour.
+    for (i in which(is.na(substitutions_table[["match"]]) | substitutions_table[["match"]] == "value")) {
       j <- which(
         out[["trait_name"]] == substitutions_table[["trait_name"]][i] &
         out[["value"]] == substitutions_table[["find"]][i]
@@ -1791,6 +1797,15 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
       }
 
     }
+
+    # `match: word` replaces `find` wherever it occurs as a whole word/phrase
+    # within a multi-value cell, leaving the rest of the cell untouched -- see
+    # process_word_replace(). Runs *after* the `match: value` loop above, so a
+    # curated exact substitution for an idiosyncratic raw value (e.g. one that
+    # folds a negation into itself, like `wings no wing` -> `wings none`) is fully
+    # resolved before any word rule can partially rewrite it.
+    out <- out %>%
+      process_word_replace(substitutions_table %>% dplyr::filter(.data$match == "word"))
   }
 
   # Apply automatic trait value synonym replacements declared in `traits.yml`.
@@ -1805,6 +1820,74 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
 }
 
 
+#' Replace values matching a whole word/phrase, one trait at a time
+#'
+#' Shared engine behind `process_replace_synonyms()` (database-wide `traits.yml`
+#' synonyms) and `match: word` entries in a dataset's `metadata$substitutions`.
+#' For each trait declaring rules, escapes and word-bounds every `find`, combines
+#' them into one named replacement vector, and applies it with a single
+#' `stringr::str_replace_all()` call. A value that holds several space-delimited
+#' categorical values has each replaced independently, and a `find` occurring as
+#' part of a longer word is left alone.
+#'
+#' `str_replace_all()`'s named-vector form applies its patterns *sequentially*,
+#' each one re-scanning the previous pattern's output -- it is not a simultaneous
+#' single pass. So if one rule's `replace` textually contains another rule's
+#' `find` as a whole word, within the same `trait_name`, the two rules chain
+#' unintentionally (e.g. `c(wing = "wings", wings = "winged_thing")` applied to
+#' `"wing"` yields `"winged_thing"`, not `"wings"`). This function does not guard
+#' against that -- callers validate it instead (see `dataset_test()`'s check on
+#' `match: word` substitutions).
+#'
+#' @param data Tibble with `trait_name` and `value` columns
+#' @param replace_table Tibble with `trait_name`, `find` and `replace` columns,
+#'   already lower-cased
+#'
+#' @return `data`, with matching words/phrases in `value` replaced
+#' @importFrom rlang .data
+#' @noRd
+process_word_replace <- function(data, replace_table) {
+
+  if (nrow(replace_table) == 0 || !all(c("trait_name", "find", "replace") %in% names(replace_table))) {
+    return(data)
+  }
+
+  # One named replacement vector per trait, since a trait value may declare
+  # several rules and a trait several values. Patterns are escaped and word-bounded.
+  replace_table <- replace_table %>%
+    dplyr::filter(.data$find != "", .data$find != .data$replace) %>%
+    dplyr::mutate(
+      pattern = stringr::str_c("\\b", stringr::str_escape(.data$find), "\\b")
+    ) %>%
+    dplyr::group_by(.data$trait_name) %>%
+    dplyr::summarise(
+      replacements = list(purrr::set_names(.data$replace, .data$pattern)),
+      .groups = "drop"
+    )
+
+  # Replace one trait at a time: the traits declaring rules are few, while `data`
+  # can run to millions of rows, so this avoids touching rows that cannot match.
+  for (i in seq_len(nrow(replace_table))) {
+    j <- which(data[["trait_name"]] == replace_table[["trait_name"]][i])
+
+    if (length(j) > 0) {
+      data[["value"]][j] <-
+        stringr::str_replace_all(
+          data[["value"]][j],
+          replace_table[["replacements"]][[i]]
+        ) %>%
+        # Two different raw words can map to the same preferred value (e.g. both
+        # `white` and `cream` -> `white_cream`), which would otherwise leave a
+        # duplicated token in a multi-value cell (`white_cream white_cream`).
+        # Collapsing to unique tokens preserves first-occurrence order.
+        purrr::map_chr(~ stringr::str_c(unique(stringr::str_split(.x, "\\s+")[[1]]), collapse = " "))
+    }
+  }
+
+  data
+}
+
+
 #' Replace trait values with their preferred synonym
 #'
 #' Applies the database-wide trait value synonyms declared in `traits.yml`. A categorical
@@ -1812,10 +1895,9 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
 #' `(Synonyms, first, second)`; every listed synonym found in the data is replaced by the
 #' value that declares it.
 #'
-#' Matching is on whole words, so a value that holds several space-delimited categorical
-#' values has each of them replaced independently, and a synonym occurring as part of a
-#' longer word is left alone. Values reaching this point are already lower-cased, which is
-#' why the synonyms are lower-cased too.
+#' Matching is on whole words -- see `process_word_replace()`, the shared engine this
+#' function builds its replacement table for. Values reaching this point are already
+#' lower-cased, which is why the synonyms are lower-cased too.
 #'
 #' Called from `process_parse_data()` *after* dataset substitutions have been applied, so
 #' that a curated, dataset-specific substitution takes precedence over the database-wide
@@ -1860,38 +1942,7 @@ process_replace_synonyms <- function(data, definitions) {
       )
     })
 
-  if (nrow(synonym_table) == 0) {
-    return(data)
-  }
-
-  # One named replacement vector per trait, since a trait value may declare several
-  # synonyms and a trait several values. Patterns are escaped and word-bounded.
-  synonym_table <- synonym_table %>%
-    dplyr::filter(.data$find != "", .data$find != .data$replace) %>%
-    dplyr::mutate(
-      pattern = stringr::str_c("\\b", stringr::str_escape(.data$find), "\\b")
-    ) %>%
-    dplyr::group_by(.data$trait_name) %>%
-    dplyr::summarise(
-      replacements = list(purrr::set_names(.data$replace, .data$pattern)),
-      .groups = "drop"
-    )
-
-  # Replace one trait at a time: the traits declaring synonyms are few, while `data`
-  # can run to millions of rows, so this avoids touching rows that cannot match.
-  for (i in seq_len(nrow(synonym_table))) {
-    j <- which(data[["trait_name"]] == synonym_table[["trait_name"]][i])
-
-    if (length(j) > 0) {
-      data[["value"]][j] <-
-        stringr::str_replace_all(
-          data[["value"]][j],
-          synonym_table[["replacements"]][[i]]
-        )
-    }
-  }
-
-  data
+  process_word_replace(data, synonym_table)
 }
 
 

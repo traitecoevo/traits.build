@@ -511,18 +511,50 @@ testthat::test_that("`metadata_add_substitutions_table` is working", {
 })
 
 
-testthat::test_that("`metadata_add_substitutions_list` is working", {
+testthat::test_that("`metadata_add_substitutions_list` merges, rather than overwriting, existing substitutions", {
+  path_metadata <- "data/Test_2022/metadata.yml"
+
+  # Start from a known, clean set of substitutions rather than whatever earlier
+  # tests in this file left behind
+  metadata <- read_metadata(path_metadata)
+  metadata$substitutions <- list(
+    list(trait_name = "leaf_type", find = "simple", replace = "unlobed")
+  )
+  write_metadata(metadata, path_metadata)
+
   substitutions_df <- tibble::tibble(
     trait_name = c("fruit_colour", "plant_growth_form", "plant_growth_form"),
     find = c("red", "shrubby", "palm"),
     replace = c("black", "shrub", "tree")
   )
-  expect_message(
-    metadata_add_substitutions_list("Test_2022", substitutions_df),
-    "Existing substitutions have been overwritten."
+  # None of these three collide with the existing `leaf_type` entry, so no
+  # "already exist(s)" message, and nothing is lost
+  expect_no_message(metadata_add_substitutions_list("Test_2022", substitutions_df))
+
+  after_first <- read_metadata(path_metadata)$substitutions
+  expect_equal(length(after_first), 4)
+  expect_true(any(sapply(after_first, function(s) s$trait_name == "leaf_type" && s$find == "simple")))
+
+  # Adding a substitution for a `trait_name`/`find` pair that already exists
+  # updates it in place (with a message) instead of duplicating or wiping the list
+  updated_df <- tibble::tibble(
+    trait_name = "plant_growth_form",
+    find = "shrubby",
+    replace = "shrub_updated"
   )
-  # Expect that this function overwrites existing substitutions, so fourth substitutions should not exist
-  expect_error(read_metadata("data/Test_2022/metadata.yml")$substitutions[[4]])
+  expect_message(
+    metadata_add_substitutions_list("Test_2022", updated_df),
+    "shrubby.*already exist"
+  )
+
+  after_second <- read_metadata(path_metadata)$substitutions
+  expect_equal(length(after_second), 4)
+  shrubby_entry <- Filter(function(s) s$trait_name == "plant_growth_form" && s$find == "shrubby", after_second)
+  expect_equal(length(shrubby_entry), 1)
+  expect_equal(shrubby_entry[[1]]$replace, "shrub_updated")
+  # everything else, including the unrelated `leaf_type` entry, is untouched
+  expect_true(any(sapply(after_second, function(s) s$trait_name == "leaf_type" && s$find == "simple")))
+  expect_true(any(sapply(after_second, function(s) s$trait_name == "fruit_colour" && s$find == "red" && s$replace == "black")))
 })
 
 

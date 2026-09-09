@@ -851,14 +851,21 @@ metadata_add_source_doi <- function(..., doi, bib = NULL) {
 #' @param trait_name The database defined name for a particular trait
 #' @param find Trait value in the original data.csv file
 #' @param replace Trait value supported by database
+#' @param match Optional. `"word"` replaces `find` wherever it occurs as a whole
+#'   word/phrase within a multi-value cell, leaving the rest of the cell
+#'   untouched. Default `"value"` requires `find` to equal the entire cell, and
+#'   is omitted from the written metadata to keep existing files unchanged.
 #'
 #' @return `metadata.yml` file with a substitution added
 #' @export
-metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
+metadata_add_substitution <- function(dataset_id, trait_name, find, replace, match = "value") {
 
   set_name <- "substitutions"
   metadata <- read_metadata_dataset(dataset_id)
   to_add <- list(trait_name = trait_name, find = find, replace = replace)
+  if (match == "word") {
+    to_add[["match"]] <- match
+  }
 
   # Add `set_name` category if it doesn't yet exist
   if (all(is.na(metadata[[set_name]]))) {
@@ -891,6 +898,11 @@ metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
 
 #' Add a dataframe of trait value substitutions into a metadata file for a dataset_id
 #'
+#' Existing substitutions are preserved: a new row updates the existing entry for
+#' the same `trait_name`/`find` pair (with a message), and everything else already
+#' in `metadata$substitutions` is left alone -- mirroring
+#' `metadata_add_taxonomic_changes_list()`.
+#'
 #' @param dataset_id Identifier for a particular study in the database
 #' @param substitutions Dataframe of trait value substitutions
 #'
@@ -904,10 +916,35 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
   metadata <- read_metadata_dataset(dataset_id)
 
   if (!all(is.na(metadata[["substitutions"]]))) {
-    message(red("Existing substitutions have been overwritten"))
+
+    existing <- metadata[["substitutions"]] %>% austraits::convert_list_to_df2()
+    already_exist <- c()
+
+    for (i in seq_len(nrow(substitutions))) {
+      is_match <- existing$trait_name == substitutions$trait_name[i] & existing$find == substitutions$find[i]
+      if (any(is_match)) {
+        already_exist <- c(already_exist, substitutions$find[i])
+      }
+      existing <- existing[!is_match, ] %>% dplyr::bind_rows(substitutions[i, ])
+    }
+
+    if (length(already_exist) > 0) {
+      message(
+        sprintf(
+          green("%s") %+% red(" already exist(s) in `substitutions` and is being overwritten"),
+          paste(already_exist, collapse = ", ")
+        ))
+    }
+
+    substitutions <- existing %>% dplyr::arrange(.data$trait_name, .data$find)
   }
-  # Read in dataframe of substitutions, split into single-row lists, and add to metadata file
-  metadata$substitutions <- substitutions %>% dplyr::group_split(.data$trait_name, .data$find) %>% lapply(as.list)
+
+  # Split into single-row lists, dropping any unused optional field (e.g. `match`
+  # left `NA` for a row that doesn't use it) so untouched rows keep their original shape
+  metadata$substitutions <-
+    substitutions %>%
+    dplyr::group_split(.data$trait_name, .data$find) %>%
+    lapply(function(row) Filter(Negate(is.na), as.list(row)))
 
   # Write metadata
   write_metadata_dataset(metadata, dataset_id)

@@ -648,11 +648,30 @@ dataset_test_worker <-
 
         if (!is.na(metadata[["substitutions"]][1])) {
 
-          test_expect_list_elements_exact_names(
-            metadata[["substitutions"]],
-            schema$metadata$elements$substitutions$values %>% names(),
-            info = paste0(red(f), "\tsubstitution")
+          # `match` is optional (absent/`"value"` means today's exact whole-value
+          # match; `"word"` means word-bounded substring match) -- so each row must
+          # *contain* `trait_name`/`find`/`replace` but is only *allowed* to also
+          # carry `match`, unlike the other substitution-style blocks below where
+          # every field is required on every row.
+          required_names <- schema$metadata$elements$substitutions$values %>% names() %>% setdiff("match")
+          allowed_names <- schema$metadata$elements$substitutions$values %>% names()
+          for (i in seq_along(metadata[["substitutions"]])) {
+            test_expect_contains(
+              names(metadata[["substitutions"]][[i]]), required_names,
+              info = paste0(red(f), "\tsubstitution ", i)
+            )
+            test_expect_allowed(
+              names(metadata[["substitutions"]][[i]]), allowed_names,
+              info = paste0(red(f), "\tsubstitution ", i), label = "field names"
+            )
+          }
+
+          match_values <- sapply(metadata[["substitutions"]], function(s) if (is.null(s[["match"]])) NA_character_ else s[["match"]])
+          test_expect_is_in(
+            match_values, c("word", "value"),
+            info = paste0(red(f), "\tsubstitutions"), label = "`match`'s"
           )
+
           trait_names <- sapply(metadata[["substitutions"]], "[[", "trait_name")
           test_expect_is_in(
             unique(trait_names), definitions$elements %>% names(),
@@ -684,6 +703,40 @@ dataset_test_worker <-
                   collapse = "', '")
               )
             )
+
+            # `match: word` rules for a trait are applied together via a single,
+            # sequential `str_replace_all()` call (see `process_word_replace()`),
+            # so if one rule's `replace` contains, as a whole word, another rule's
+            # `find`, the two rules chain unintentionally -- regardless of the
+            # order they're declared in.
+            if ("match" %in% names(x[[trait]])) {
+
+              word_rules <- x[[trait]] %>% dplyr::filter(.data$match == "word")
+
+              if (nrow(word_rules) > 1) {
+
+                chained <- character()
+                for (a in seq_len(nrow(word_rules))) {
+                  for (b in seq_len(nrow(word_rules))) {
+                    if (a != b && stringr::str_detect(
+                      word_rules[["replace"]][a],
+                      stringr::str_c("\\b", stringr::str_escape(word_rules[["find"]][b]), "\\b")
+                    )) {
+                      chained <- c(chained, sprintf(
+                        "'%s' -> '%s' contains '%s'",
+                        word_rules[["find"]][a], word_rules[["replace"]][a], word_rules[["find"]][b]
+                      ))
+                    }
+                  }
+                }
+
+                test_expect_length_zero(
+                  chained,
+                  info = sprintf("%s\tsubstitutions - `%s` has chaining `match: word` rules", red(f), trait),
+                  label = paste(chained, collapse = "; ")
+                )
+              }
+            }
 
             # If trait is categorical
             if (!is.null(definitions$elements[[trait]]$allowed_values_levels) && definitions$elements[[trait]]$type == "categorical") {
