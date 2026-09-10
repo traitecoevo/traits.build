@@ -459,6 +459,7 @@ metadata:
         trait_name: Trait where substitutions are required.
         find: Contributor's trait value that needs to be changed.
         replace: AusTraits supported replacement value.
+        match: Optional. Either `word` (`find` is replaced wherever it occurs as a whole word/phrase within a multi-value cell, leaving the rest of the cell untouched) or `value` (default, when omitted -- `find` must equal the entire cell).
     taxonomic_updates:
       description: A table of taxonomic name changes needed to align original names in the dataset with aligned names in the chosen taxonomic reference(s).
       type: array

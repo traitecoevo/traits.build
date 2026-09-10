@@ -24,4 +24,6 @@
       examples/Test_2023_9/metadata.yml	contexts - values of 'instrument used' in metadata not detected in context values from data file: 'instrument 4'
       examples/Test_2023_9/metadata.yml	contexts - context values of 'method_context' from data file not present in metadata: '50 mm branch', '1000 mm branch'
       examples/Test_2023_9/metadata.yml	contexts - values of 'method_context' in metadata not detected in context values from traits metadata: 'NA', 'NA'
+      examples/Test_2023_9/metadata.yml	substitutions - `match`'s should not contain: 'sometimes'
+      examples/Test_2023_9/metadata.yml	substitutions - `plant_growth_form` has chaining `match: word` rules: 'chain_test_a' -> 'fern' contains 'fern'
 

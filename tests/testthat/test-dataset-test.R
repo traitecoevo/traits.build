@@ -90,3 +90,21 @@ test_that("`dataset_test` reports the errors Test_2023_9 was built to provoke", 
   # check changed and why.
   expect_snapshot(writeLines(dataset_test_failures("Test_2023_9")))
 })
+
+
+test_that("`dataset_test` rejects invalid `match: word` substitutions (#271)", {
+  # See Test_2023_9/README.md for what these three added substitutions pin:
+  # an invalid `match` value, and two `match: word` rules that chain into each
+  # other. Both are covered by the snapshot above too, but pinned individually
+  # here since they're new checks, not a pre-existing one being extended.
+  failures <- dataset_test_failures("Test_2023_9")
+
+  expect_match(
+    failures, "`match`'s should not contain: 'sometimes'",
+    all = FALSE
+  )
+  expect_match(
+    failures, "`plant_growth_form` has chaining `match: word` rules",
+    all = FALSE
+  )
+})

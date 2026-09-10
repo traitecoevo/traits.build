@@ -4,7 +4,13 @@
 \alias{metadata_add_substitution}
 \title{Add a categorical trait value substitution into a metadata file for a \code{dataset_id}}
 \usage{
-metadata_add_substitution(dataset_id, trait_name, find, replace)
+metadata_add_substitution(
+  dataset_id,
+  trait_name,
+  find,
+  replace,
+  match = "value"
+)
 }
 \arguments{
 \item{dataset_id}{Identifier for a particular study in the database}
@@ -14,6 +20,11 @@ metadata_add_substitution(dataset_id, trait_name, find, replace)
 \item{find}{Trait value in the original data.csv file}
 
 \item{replace}{Trait value supported by database}
+
+\item{match}{Optional. \code{"word"} replaces \code{find} wherever it occurs as a whole
+word/phrase within a multi-value cell, leaving the rest of the cell
+untouched. Default \code{"value"} requires \code{find} to equal the entire cell, and
+is omitted from the written metadata to keep existing files unchanged.}
 }
 \value{
 \code{metadata.yml} file with a substitution added

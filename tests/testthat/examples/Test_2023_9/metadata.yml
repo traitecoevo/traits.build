@@ -393,6 +393,18 @@ substitutions:
 - trait_name: plant_growth_form
   find: herbs
   replace: herb
+- trait_name: plant_growth_form
+  find: shrubby_word_test
+  replace: herb
+  match: sometimes
+- trait_name: plant_growth_form
+  find: chain_test_a
+  replace: fern
+  match: word
+- trait_name: plant_growth_form
+  find: fern
+  replace: herb
+  match: word
 - trait_name: seed_dry_mass
   find: 1--2
   replace: 10--20
