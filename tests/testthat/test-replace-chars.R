@@ -48,6 +48,23 @@ test_that("the wrong-character cases measured in real datasets are corrected", {
 })
 
 
+test_that("HYPHEN is normalised to the ASCII hyphen-minus", {
+  # U+2010 is visually identical to "-" and carries no different meaning --
+  # unlike EN DASH, EM DASH or MINUS SIGN, which are allowed as-is because
+  # they mean something a plain hyphen doesn't. Seen in Ladd_2026's
+  # `metadata.yml` as "south‐west".
+  expect_equal(util_replace_disallowed_chars("1974‐1999"), "1974-1999")
+  expect_true(all(check_disallowed_chars("‐")))
+  expect_false(any(check_disallowed_chars("-")))
+
+  # EN DASH, EM DASH and MINUS SIGN are untouched -- they are correct
+  # typography, not a mistake to flatten
+  for (x in c("1974–1999", "temperature—humidity", "range 10−20")) {
+    expect_equal(util_replace_disallowed_chars(x), x)
+  }
+})
+
+
 test_that("GREEK SMALL LETTER MU is normalised to MICRO SIGN", {
   # The two are visually identical, so a unit written with the Greek letter
   # cannot be told from one written with the micro sign by eye. Only the micro

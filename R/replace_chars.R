@@ -46,7 +46,15 @@ util_disallowed_char_replacements <- function() {
     # A mis-set MICRO SIGN in a unit. The two are visually identical and only
     # the MICRO SIGN is allowed, so permitting both would let the same unit be
     # written two ways.
-    "\u03bc" = "\u00b5"          # GREEK SMALL LETTER MU -> MICRO SIGN
+    "\u03bc" = "\u00b5",         # GREEK SMALL LETTER MU -> MICRO SIGN
+
+    # The "proper" Unicode hyphen, indistinguishable from the plain ASCII
+    # hyphen-minus it's meant to be -- typically introduced when a word
+    # processor or PDF export auto-substitutes the "-" a person actually
+    # typed. Distinct from EN DASH, EM DASH and MINUS SIGN, which carry their
+    # own typographic meaning and are allowed as-is (see `allowed_characters`
+    # in the schema); this is not one of those, it is just a hyphen.
+    "\u2010" = "-"               # HYPHEN -> ASCII hyphen-minus
   )
 }
 
