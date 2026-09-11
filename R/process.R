@@ -1178,6 +1178,29 @@ util_check_all_values_in <- function(x, y, sep = " ") {
   x %>% stringr::str_split(sep) %>% sapply(function(xi) all(xi %in% y))
 }
 
+#' Extract the synonyms declared in a trait value's description
+#'
+#' A categorical trait value's description may list synonyms using the convention
+#' `(Synonyms, first, second)`. Shared by `process_replace_synonyms()` (which applies
+#' these as database-wide replacements) and `test_dataset()`'s check that a dataset's
+#' `substitutions` `replace` values are legitimate trait terms -- canonical or synonym.
+#'
+#' @param description Character scalar, a trait value's description text
+#'
+#' @return Character vector of lower-cased, trimmed synonyms; `character(0)` if the
+#'   description declares none
+util_extract_synonyms <- function(description) {
+  # A description carrying no `(Synonyms, ...)` at all yields a zero-length/NA
+  # extract, so test for that before splitting
+  synonyms <- stringr::str_extract(description, "(?<=\\(Synonyms,)[^)]+")
+  if (length(synonyms) != 1 || is.na(synonyms)) {
+    return(character(0))
+  }
+  stringr::str_split(synonyms, "[,;]")[[1]] %>%
+    stringr::str_trim() %>%
+    tolower()
+}
+
 #' Format BibEntry using RefManageR
 #'
 #' Format BibEntry object according to desired style using RefManageR
@@ -1925,16 +1948,12 @@ process_replace_synonyms <- function(data, definitions) {
       purrr::imap_dfr(
         trait_definition[["allowed_values_levels"]],
         function(trait_value_description, trait_value) {
-          # A value carrying no description at all yields a zero-length extract,
-          # so test the length before the value
-          synonyms <- stringr::str_extract(trait_value_description, "(?<=\\(Synonyms,)[^)]+")
-          if (length(synonyms) != 1 || is.na(synonyms)) {
+          synonyms <- util_extract_synonyms(trait_value_description)
+          if (length(synonyms) == 0) {
             return(NULL)
           }
           tibble::tibble(
-            find = stringr::str_split(synonyms, "[,;]")[[1]] %>%
-              stringr::str_trim() %>%
-              tolower(),
+            find = synonyms,
             replace = trait_value,
             trait_name = trait_name
           )
