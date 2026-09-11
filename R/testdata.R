@@ -870,6 +870,19 @@ dataset_test_worker <-
           }
         }
 
+        ## `collection_date` values must parse -- a year, a year-month, or a
+        # full date, singly or as a `start/end` range (`.na` is fine, garbage
+        # text is not)
+        date_valid <- util_collection_date_is_valid(parsed_data[["collection_date"]])
+        test_expect_true(
+          date_valid,
+          info = sprintf(
+            "%s\tSome date values are not parsing: '%s'",
+            red(f),
+            paste(unique(parsed_data[["collection_date"]][!date_valid]), collapse = "', '")
+          )
+        )
+
         ## Excluded observations
 
         if (!is.na(metadata[["exclude_observations"]][1])) {

@@ -108,3 +108,16 @@ test_that("`dataset_test` rejects invalid `match: word` substitutions (#271)", {
     all = FALSE
   )
 })
+
+
+test_that("`dataset_test` rejects a `collection_date` that doesn't parse", {
+  # See Test_2023_9/README.md: the `huber_value` trait's `collection_date` was
+  # changed to `2002-02-30`, a calendar date that doesn't exist. Also covered
+  # by the snapshot above, pinned individually since it's a new check.
+  failures <- dataset_test_failures("Test_2023_9")
+
+  expect_match(
+    failures, "Some date values are not parsing: '2002-02-30'",
+    all = FALSE
+  )
+})

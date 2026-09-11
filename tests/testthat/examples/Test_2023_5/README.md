@@ -15,5 +15,6 @@ Test_2023_5 is a copy of Richards_2008 with the following modifications:
 - Removed locations, contexts, and substitutions
 - Subsetted to SLA and added units column
 - Added some bin values in leaf lifespan data and add units column
+- The dataset-level `collection_date` was `unknown/2009` until the `collection_date`-parses check was added to `dataset_test` -- `unknown` was never a documented value for that field, so this was an unnoticed bug. Changed to `.na/2009`, `.na` being the correct way to record that the start of the range is unknown while the end (2009) is not.
 
 See output/ for expected output files.
