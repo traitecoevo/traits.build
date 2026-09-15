@@ -4,20 +4,13 @@
 #' Builds a detailed report for every dataset with a unique `dataset_id`, based on the template Qmd file provided.
 #' The reports are rendered as html files and saved in the specified output folder.
 #'
-#' Rendering happens in two Quarto passes rather than one `quarto_render()` call straight to
-#' html: the taxon-list tables' `<a>` links (and their bootstrap classes) do not survive a
-#' single `.qmd` -> html render, but the same knitted content renders correctly a second time
-#' as markdown -> html. The first pass knits and discards its own (broken) html; the second
-#' renders the knitted `.md` it leaves behind.
-#'
 #' @param dataset_id Name of specific study/dataset
 #' @param austraits Compiled austraits database
 #' @param overwrite Logical value to determine whether to overwrite existing report
 #' @param output_path Location where rendered report will be saved
 #' @param input_file Report script (.qmd) file to build study report
 #' @param quiet An option to suppress printing during rendering from knitr, Quarto and pandoc
-#' @param keep Keep the intermediate `.qmd`, the knitted `.md` and its
-#'  `_files` directory (see Details)?
+#' @param keep Keep the temporary, per-dataset copy of the template (see Details)?
 #'
 #' @rdname dataset_report
 #' @return Invisibly, a logical named by `dataset_id`, `TRUE` where the report
@@ -93,56 +86,57 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
     # The output is a single self-contained file; that comes from
     # `embed-resources: true` in the template's YAML.
     #
-    # Rendered in two steps, not one `quarto_render(input_qmd, ...)` call.
-    # Going straight from `.qmd` to html breaks the taxon-list tables' `<a>`
-    # links (and their bootstrap classes): Quarto's pandoc invocation for a
-    # `.qmd` input reprocesses their raw ```{=html} blocks differently than
-    # it does for a plain `.md` file, discarding the tags `as_link()` writes
-    # into them. The exact same knitted content, rendered a second time as
-    # markdown, does not have this problem -- so step one knits and discards
-    # its own (broken) html, `debug = TRUE` being what leaves the knitted
-    # `.md` around for step two to render properly.
+    # This used to render in two Quarto passes -- knit-and-discard, then
+    # re-render the knitted `.md` -- to work around the taxon-list tables'
+    # `<a>` links (and their bootstrap classes) not surviving a single
+    # `.qmd` -> html render. That was fixed at the source instead (the
+    # tables are now emitted as explicit ` ```{=html} ` raw blocks with
+    # `kable(format = "html", escape = FALSE)`; see the taxon-list chunks in
+    # the template), which is what actually made those links/classes
+    # survive -- the two-pass re-render was never the fix, just a
+    # workaround alongside it. It's gone now because it broke htmlwidgets
+    # (e.g. the locations `leaflet` map): a widget's JS/CSS dependencies are
+    # tracked as knitr/pandoc-level metadata during the *original* render,
+    # not as text in the knitted `.md`, so re-rendering that `.md` alone in
+    # a fresh `quarto_render()` call had no way to know a map needed
+    # bundling and silently dropped it -- the map's `<div>` and data were
+    # still there, just inert with no leaflet.js to draw it.
     #
     # Rendering is allowed to fail without aborting, so that one bad dataset
     # does not stop a batch of reports. It must still be reported: this was a
     # bare `try()` whose result was discarded, so a failed render printed the
     # success line anyway and the only trace was whatever `try()` happened to
     # write to stderr (#244).
-    knitted_md <- sub("\\.qmd$", ".html.md", input_qmd)
-    knitted_files <- sub("\\.qmd$", "_files", input_qmd)
     result <- try(
-      {
-        quarto::quarto_render(
-          input_qmd,
-          output_file = output_filename,
-          quiet = TRUE,
-          debug = TRUE,
-          execute_params = list(
-            dataset_id = dataset_id,
-            austraits_path = austraits_rds
-          )
+      quarto::quarto_render(
+        input_qmd,
+        output_file = output_filename,
+        quiet = quiet,
+        execute_params = list(
+          dataset_id = dataset_id,
+          austraits_path = austraits_rds
         )
-        if (!file.exists(knitted_md)) {
-          stop("Expected knitted markdown not found: ", knitted_md, call. = FALSE)
-        }
-        quarto::quarto_render(knitted_md, output_file = output_filename, quiet = quiet)
-      },
+      ),
       silent = TRUE
     )
 
     unlink(austraits_rds)
 
     # quarto_render() writes its output beside the input (the current
-    # directory, since `input_qmd` names no path), not into `output_path`
-    if (!inherits(result, "try-error") && !file.exists(output_html)) {
+    # directory, since `input_qmd` names no path), not into `output_path`.
+    # Guard on the freshly-rendered file existing, not on `output_html`
+    # *not* existing -- the latter broke `overwrite = TRUE` for a dataset
+    # that already had a report: the rebuild would render fine but this
+    # rename was skipped (because the old `output_html` was still there),
+    # silently leaving the stale report in place and orphaning the new one
+    # beside the input. `file.rename()` overwrites an existing destination.
+    if (!inherits(result, "try-error") && file.exists(output_filename)) {
       file.rename(output_filename, output_html)
     }
 
-    # Remove temporary qmd and the intermediates the two-step render leaves
+    # Remove the temporary, per-dataset copy of the template
     if (!keep) {
       unlink(input_qmd)
-      unlink(knitted_md)
-      unlink(knitted_files, recursive = TRUE)
     }
 
     if (inherits(result, "try-error")) {
