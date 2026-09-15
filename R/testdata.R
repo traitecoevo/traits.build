@@ -745,7 +745,15 @@ dataset_test_worker <-
               to_check <- x[[trait]]$replace %>% unique()
               # Filter out `flowering_time` values from to-check list
               to_check <- to_check[!(grepl("^[YyNn]+$", to_check) & stringr::str_length(to_check) == 12)]
-              allowable <- c(definitions$elements[[trait]]$allowed_values_levels %>% names(), NA)
+              # A `replace` value may be the canonical term or one of its declared
+              # synonyms -- `process_replace_synonyms()` resolves synonyms to their
+              # canonical value later in the pipeline, so both are legitimate here.
+              allowable <- c(
+                definitions$elements[[trait]]$allowed_values_levels %>% names(),
+                definitions$elements[[trait]]$allowed_values_levels %>%
+                  purrr::map(util_extract_synonyms) %>% unlist(use.names = FALSE),
+                NA
+              )
               failing <- to_check[!(
                 is.na(to_check) |
                   to_check %in% allowable |
