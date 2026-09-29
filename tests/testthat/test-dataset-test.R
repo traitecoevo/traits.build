@@ -15,7 +15,7 @@
 # the console), and the backtraces (whose line numbers move whenever anything
 # in `R/` is edited, which would make these snapshots churn on unrelated
 # changes).
-dataset_test_failures <- function(dataset_id) {
+dataset_test_failures <- function(dataset_id, path_data = "examples") {
 
   withr::local_options(
     useFancyQuotes = FALSE, cli.unicode = FALSE, crayon.enabled = FALSE,
@@ -24,7 +24,7 @@ dataset_test_failures <- function(dataset_id) {
 
   out <- capture.output(
     suppressMessages(
-      dataset_test(dataset_ids = dataset_id, path_data = "examples")
+      dataset_test(dataset_ids = dataset_id, path_data = path_data)
     )
   )
 
@@ -120,4 +120,41 @@ test_that("`dataset_test` rejects a `collection_date` that doesn't parse", {
     failures, "Some date values are not parsing: '2002-02-30'",
     all = FALSE
   )
+})
+
+
+test_that("`dataset_test` accepts a context scoped to specific traits by a column (#276)", {
+  # Test_2024_1's `wood_density` trait entry sets `leaf_temp: LfT_Rdark`, naming a
+  # column of `data.csv` rather than a literal -- scoping the `leaf temperature`
+  # context (declared once, at the dataset level) to just that trait. Its values
+  # are never listed in `metadata.yml`, so they can only be read off the column.
+  #
+  # The context-consistency check used to compare the column's per-record values
+  # against the literal string "LfT_Rdark" (the field's own declared value, never
+  # resolved against the data), which could never match and always failed (#276).
+  expect_equal(dataset_test_failures("Test_2024_1"), character(0))
+})
+
+
+test_that("`dataset_test` rejects missing `collection_date` values", {
+  # Test_2023_7 reads `collection_date` from its `Date` column. Blank a few of
+  # those cells in a temporary copy, so the shared example (and its `output/`)
+  # stay untouched. An unknown date should be recorded explicitly (e.g.
+  # `.na/2009`), not left as NA.
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_7", path_data, recursive = TRUE)
+
+  data_file <- file.path(path_data, "Test_2023_7", "data.csv")
+  data <- readr::read_csv(data_file, col_types = readr::cols(.default = "c"))
+  data$Date[1:3] <- NA
+  readr::write_csv(data, data_file, na = "")
+
+  failures <- dataset_test_failures("Test_2023_7", path_data = path_data)
+
+  expect_match(
+    failures, "Some date values are NA \\([0-9]+ of [0-9]+ records\\)",
+    all = FALSE
+  )
+  # NA is not a parse failure, so it isn't reported twice
+  expect_false(any(grepl("Some date values are not parsing", failures)))
 })

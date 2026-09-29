@@ -635,10 +635,6 @@ new_taxa_trait_combinations(database = austraits, dataset = dataset_id) |>
 ```{r, results='asis'}
 new_question("(section `traits`) Does this study include other trait data we may have missed?")
 
-if (median(n_records$records_per_taxa) < 2) {
-  new_question("(section `traits`) It appears as though we mostly have means for each taxon. Can you provide individual-level measurements?")
-}
-
 new_question("(section `traits`) Were any of your data sourced from other studies? If so, can you tell us which records and the source (so that we can avoid duplicates, where possible)?")
 
 ```
@@ -732,10 +728,18 @@ writeLines(ifelse(length(traits_numeric) == 0,
         "We have recorded the following traits with continuous numerical values in this dataset. Plots are shown comparing the distribution of values in your study (highlighted in red-orange) to those in other datasets within AusTraits (alternating blue/orange, by dataset). For each trait, please eyeball the information provided and let us know of any issues or updates where appropriate."))
 
 if (length(traits_numeric) > 0) {
-  # value_types that represent a genuine point estimate suitable for plotting on
-  # the x-axis - excludes e.g. bin/range (not a single value), mode/standard_error/
-  # standard_deviation
-  austraits_no_bins <- extract_data(austraits, table = "traits", col = "value_type", col_value = c("mean", "median", "minimum", "maximum", "raw"))
+  # value_types that represent a genuine point estimate suitable for plotting
+  # on the x-axis -- excludes bin/range (not a single value) and
+  # standard_error/standard_deviation (a spread statistic, not a
+  # measurement -- plotting one on the same axis as raw/mean/min/max values
+  # would be comparing different kinds of thing). `mode` IS included: this
+  # loop only ever reaches trait_names already confirmed numeric (from
+  # `traits_numeric`), so a `mode` row here is "the most frequently recorded
+  # value was this number" -- a real point value, exactly as plottable as
+  # `raw` or `mean`. It used to be excluded here too, which silently dropped
+  # ~12,500 real (in-range, correctly counted everywhere else in this
+  # report) numeric observations from every plot across the database.
+  austraits_no_bins <- extract_data(austraits, table = "traits", col = "value_type", col_value = c("mean", "median", "minimum", "maximum", "raw", "mode"))
 }
 
 for (trait in traits_numeric) {

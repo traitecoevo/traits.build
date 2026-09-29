@@ -739,13 +739,8 @@ process_format_contexts <- function(my_list, dataset_id, traits, metadata_traits
   # a value naming a column of `data.csv` stands for that column's contents, anything
   # else is the literal itself
   values_from_trait_entries <- function(field) {
-    declared <- unique(stats::na.omit(trait_entries[[field]]))
-
-    declared %>%
-      purrr::map(~if (is.null(traits[[.x]])) .x else unique(traits[[.x]])) %>%
-      unlist(use.names = FALSE) %>%
-      as.character() %>%
-      unique()
+    unique(stats::na.omit(trait_entries[[field]])) %>%
+      util_resolve_trait_field_values(traits)
   }
 
   process_content_worker <- function(x, id, traits) {

@@ -488,6 +488,8 @@ allowed_characters:
     description: Letters allowed from outside the ranges above.
     values:
       00B5: MICRO SIGN, as in micrometre. Note that 03BC GREEK SMALL LETTER MU is a different code point that looks identical; it is not allowed, so that units are written consistently.
+      03B4: GREEK SMALL LETTER DELTA, for stable isotope composition (e.g. delta13C, delta15N, delta18O), the same role 2030 PER MILLE SIGN plays below.
+      0394: GREEK CAPITAL LETTER DELTA, conventionally used for "difference"/"change" (e.g. deltaT for a temperature change), a distinct meaning from its lower-case form above.
   symbols:
     description: Non-letter characters that carry meaning and so are retained rather than rewritten. A symbol absent from this list is reported, and either belongs here or is a mistake to correct.
     values:

@@ -546,9 +546,13 @@ dataset_test_worker <-
 
             contextsub <- contexts %>% dplyr::filter(var_in == j)
 
-            # Context values align either with a column of data or a column of traits table
+            # Context values align either with a column of data, or a field on the `traits`
+            # entries -- and that field's own declared value can itself name a column of
+            # `data` (resolved per record, scoping the context to just those traits) or be
+            # the literal value itself, the same as `process_parse_data()` and
+            # `process_format_contexts()` both resolve it (#276)
             if (is.null(data[[j]])) {
-              v <- traits[[j]] %>% unique2()
+              v <- traits[[j]] %>% unique2() %>% util_resolve_trait_field_values(data)
             } else {
               v <- data[[j]] %>% unique2()
             }
@@ -888,6 +892,19 @@ dataset_test_worker <-
             "%s\tSome date values are not parsing: '%s'",
             red(f),
             paste(unique(parsed_data[["collection_date"]][!date_valid]), collapse = "', '")
+          )
+        )
+
+        ## `collection_date` must not be missing -- an unknown date should be
+        # recorded explicitly (e.g. `.na/2009`), not left blank
+        date_missing <- is.na(parsed_data[["collection_date"]])
+        test_expect_true(
+          !any(date_missing),
+          info = sprintf(
+            "%s\tSome date values are NA (%s of %s records)",
+            red(f),
+            sum(date_missing),
+            length(date_missing)
           )
         )
 

@@ -282,6 +282,32 @@ test_that("a context with no `values` takes them from the `traits` entries", {
 })
 
 
+test_that("a `traits`-entry field can itself name a column, scoping a context to some traits (#276)", {
+  # A `traits` entry can declare a context field whose value is not a literal but
+  # the name of a `data.csv` column (e.g. `leaf_temp: LfT_Rdark`), read per record --
+  # the same way `process_parse_data()` already reads it. This scopes the context to
+  # just the traits declaring the field, unlike a `var_in` naming a column directly,
+  # which applies dataset-wide.
+  metadata <- read_metadata("examples/Test_2023_1/metadata.yml")
+  data <- read_csv_char("examples/Test_2023_1/data.csv")
+  data[["LfT_Rdark"]] <- as.character(round(seq_len(nrow(data)) / 10 + 15, 1))
+
+  contexts <- list(list(context_property = "leaf temperature",
+                        category = "method_context",
+                        var_in = "leaf_temp"))
+
+  # Only one trait entry declares the field; guard the premise that it is not
+  # itself a `data.csv` column
+  wd <- which(purrr::map_chr(metadata$traits, ~.x$trait_name %||% NA_character_) == "wood_density")[1]
+  metadata$traits[[wd]]$leaf_temp <- "LfT_Rdark"
+  expect_false("leaf_temp" %in% names(data))
+
+  out <- process_format_contexts(contexts, "Test_2023_1", data, metadata$traits)
+  expect_setequal(out$value, unique(data[["LfT_Rdark"]]))
+  expect_equal(out$find, out$value)
+})
+
+
 test_that("a context populated from `traits` entries builds without a `values` block", {
   # End-to-end: the same context with and without its hand-written `values:` list
   # must produce the same context values and the same trait rows (#268)
