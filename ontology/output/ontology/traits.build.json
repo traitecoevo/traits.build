@@ -253,6 +253,34 @@
       }
     },
     {
+      "@id": "http://linked.data.gov.au/def/tern-cv/60d7edf8-98c6-43e9-841c-e176c334d270",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A single, physically distinct plant organism."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://linked.data.gov.au/def/tern-cv/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "plant individual"
+      }
+    },
+    {
+      "@id": "http://linked.data.gov.au/def/tern-cv/ae71c3f6-d430-400f-a1d4-97a333b4ee02",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A group of individuals of the same plant species living in a given area."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://linked.data.gov.au/def/tern-cv/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "plant population"
+      }
+    },
+    {
       "@id": "http://purl.obolibrary.org/obo/IAO_0000708",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -320,6 +348,34 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "population"
+      }
+    },
+    {
+      "@id": "http://purl.org/dc/terms/Agent",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A resource that acts or has the power to act."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Agent"
+      }
+    },
+    {
+      "@id": "http://purl.org/dc/terms/BibliographicResource",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A book, article, or other documentary resource."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://purl.org/dc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Bibliographic Resource"
       }
     },
     {
@@ -477,6 +533,132 @@
       }
     },
     {
+      "@id": "http://qudt.org/schema/qudt/Unit",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A unit of measure, or unit, is a particular quantity, defined and adopted by convention, with which other quantities of the same kind are compared."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://qudt.org/schema/qudt/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Unit"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/iri/assertionType",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A category that best matches the nature of a dwc:Assertion."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/iri/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Assertion Type (IRI)"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/iri/measurementType",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The nature of the measurement, fact, characteristic, or assertion."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/iri/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Measurement Type (IRI)"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/iri/measurementValue",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The value of the measurement, fact, characteristic, or assertion."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/iri/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Measurement Value (IRI)"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/Assertion",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A statement about an rdfs:Resource."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Assertion"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/Identification",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A classification of a resource according to a classification scheme."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Identification"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/MeasurementOrFact",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A measurement of or fact about an rdfs:Resource."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Measurement Or Fact"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/Organism",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A particular organism or defined group of organisms considered to be taxonomically homogeneous."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Organism"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/Protocol",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A method used during an action."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Protocol"
+      }
+    },
+    {
       "@id": "http://rs.tdwg.org/dwc/terms/Taxon",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -503,6 +685,118 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "acceptedNameUsage"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/assertionBy",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A name for a dcterms:Agent responsible for making a dwc:Assertion."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Assertion By"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/assertionEffectiveDate",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A date on which a state or measurement of a dwc:Assertion was deemed to first be in effect."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Assertion Effective Date"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/assertionProtocols",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "Names of, references to, or descriptions of dwc:Protocols used in making a dwc:Assertion."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Assertion Protocols"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/assertionReferences",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A list (concatenated and separated) of dcterms:BibliographicResources associated with a dwc:Assertion."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Assertion References"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/assertionRemarks",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "Comments or notes about a dwc:Assertion."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Assertion Remarks"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/assertionType",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A category that best matches the nature of a dwc:Assertion."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Assertion Type"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/assertionUnit",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A unit associated with the value in dwc:assertionValue."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Assertion Unit"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/assertionValue",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "An asserted value."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Assertion Value"
       }
     },
     {
@@ -619,6 +913,20 @@
       }
     },
     {
+      "@id": "http://rs.tdwg.org/dwc/terms/eventDate",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A date-time or time interval during which a dwc:Event occurred."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Event Date"
+      }
+    },
+    {
       "@id": "http://rs.tdwg.org/dwc/terms/family",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -658,6 +966,20 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "Identification Qualifier"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/individualCount",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The number of individuals present at the time of the dwc:Occurrence."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Individual Count"
       }
     },
     {
@@ -718,6 +1040,34 @@
       }
     },
     {
+      "@id": "http://rs.tdwg.org/dwc/terms/locality",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The specific description of the place."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Locality"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/locationID",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "An identifier for a dcterms:Location."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Location ID"
+      }
+    },
+    {
       "@id": "http://rs.tdwg.org/dwc/terms/materialSampleID",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -729,6 +1079,90 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "Material Sample ID"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/measurementDeterminedBy",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A list (concatenated and separated) of names of people, groups, or organizations who determined the value of the dwc:MeasurementOrFact."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Measurement Determined By"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/measurementDeterminedDate",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The date on which the dwc:MeasurementOrFact was made."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Measurement Determined Date"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/measurementMethod",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A description of or reference to (publication, URI) the method or protocol used to determine the measurement, fact, characteristic, or assertion."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Measurement Method"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/measurementRemarks",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "Comments or notes accompanying the dwc:MeasurementOrFact."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Measurement Remarks"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/measurementType",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The nature of the measurement, fact, characteristic, or assertion."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Measurement Type"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/measurementUnit",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The units associated with the dwc:measurementValue."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Measurement Unit"
       }
     },
     {
@@ -772,6 +1206,76 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "Occurrence ID"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/organismID",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "An identifier for the dwc:Organism instance (as opposed to a particular digital record of the dwc:Organism). May be a globally unique identifier or an identifier specific to the data set."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Organism ID"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/organismScope",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A description of the kind of dwc:Organism instance. Can be used to indicate whether the dwc:Organism instance represents a discrete organism or if it represents a particular type of aggregation."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Organism Scope"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/parentMeasurementID",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "An identifier for a broader dwc:MeasurementOrFact that groups this and potentially other dwc:MeasurementOrFacts."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Parent Measurement ID"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/protocolID",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "An identifier for a dwc:Protocol."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Protocol ID"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/recordedBy",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A name for a dcterms:Agent responsible for recording a dwc:Occurrence."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Recorded By"
       }
     },
     {
@@ -835,6 +1339,20 @@
       }
     },
     {
+      "@id": "http://rs.tdwg.org/dwc/terms/stateProvince",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The name of the next smaller administrative region than country (state, province, canton, department, region, etc.) in which the dcterms:Location occurs."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "First Order Division"
+      }
+    },
+    {
       "@id": "http://rs.tdwg.org/dwc/terms/taxonID",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -888,6 +1406,20 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "Verbatim Elevation"
+      }
+    },
+    {
+      "@id": "http://rs.tdwg.org/dwc/terms/verbatimIdentification",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A string representing the taxonomic identification as it appeared in the original record."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Verbatim Identification"
       }
     },
     {
@@ -1221,6 +1753,62 @@
       }
     },
     {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/aggregateMeasure",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A logical flag indicating whether the value is an aggregate rather than an individual measurement."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "aggregate measure"
+      }
+    },
+    {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/basisOfRecord",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "How and from what kind of specimen the data were obtained, using a controlled vocabulary."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "basis of record"
+      }
+    },
+    {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/basisOfRecordDescription",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "Further detail on the basis of record."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "basis of record description"
+      }
+    },
+    {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/bibliographicCitation",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A reference indicating how the record should be cited when used."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "bibliographic citation"
+      }
+    },
+    {
       "@id": "http://terminologies.gfbio.org/terms/ETS/comments",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -1254,6 +1842,34 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "datasetDescription"
+      }
+    },
+    {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/datasetID",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "An identifier for the dataset, either global or specific to a collection or institution."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "dataset ID"
+      }
+    },
+    {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/elevation",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The geographic elevation in metres above sea level."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "elevation"
       }
     },
     {
@@ -1336,6 +1952,20 @@
       }
     },
     {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/lifeStage",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The age class or life stage of the individual(s) when the occurrence was recorded."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "life stage"
+      }
+    },
+    {
       "@id": "http://terminologies.gfbio.org/terms/ETS/maxAllowedValue",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -1354,6 +1984,62 @@
       }
     },
     {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/measurementMethod",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The method, tools and scales used to measure a trait value, or a reference to the protocol."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "measurement method"
+      }
+    },
+    {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/measurementRemarks",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "Notes on a particular measurement, such as quality, reliability or acknowledgements."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "measurement remarks"
+      }
+    },
+    {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/measurementValue_max",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The upper boundary of observed values, reported instead of or alongside a dispersion metric."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "measurement value max"
+      }
+    },
+    {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/measurementValue_min",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The lower boundary of observed values, reported instead of or alongside a dispersion metric."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "measurement value min"
+      }
+    },
+    {
       "@id": "http://terminologies.gfbio.org/terms/ETS/minAllowedValue",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -1369,6 +2055,48 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "minAllowedValue"
+      }
+    },
+    {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/references",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A precise reference to the source, such as a publication, database, collection or expert."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "references"
+      }
+    },
+    {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/scientificName",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The full taxon name, with authorship and date if known, resolving to the currently valid or accepted taxon."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "scientific name"
+      }
+    },
+    {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/statisticalMethod",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "For aggregated measures, the aggregation method and the variation or range reported."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "statistical method"
       }
     },
     {
@@ -1423,6 +2151,20 @@
       }
     },
     {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/traitName",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A descriptive name of the reported trait, ideally referencing a published trait thesaurus."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "trait name"
+      }
+    },
+    {
       "@id": "http://terminologies.gfbio.org/terms/ETS/traitUnit",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -1460,6 +2202,20 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "valueType"
+      }
+    },
+    {
+      "@id": "http://terminologies.gfbio.org/terms/ETS/verbatimScientificName",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The species name or taxon identifier as originally supplied by the data provider."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "verbatim scientific name"
       }
     },
     {
@@ -1959,6 +2715,328 @@
       }
     },
     {
+      "@id": "http://www.w3.org/ns/sosa/FeatureOfInterest",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://www.w3.org/ns/sosa/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Feature of Interest"
+      }
+    },
+    {
+      "@id": "http://www.w3.org/ns/sosa/ObservableProperty",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "An observable quality (property, characteristic) of a FeatureOfInterest."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://www.w3.org/ns/sosa/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Observable Property"
+      }
+    },
+    {
+      "@id": "http://www.w3.org/ns/sosa/Observation",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "Act of carrying out an (Observation) Procedure to estimate or calculate a value of a property of a FeatureOfInterest."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://www.w3.org/ns/sosa/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Observation"
+      }
+    },
+    {
+      "@id": "http://www.w3.org/ns/sosa/ObservationCollection",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "Collection of one or more observations, whose members share a common value for one or more property."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://www.w3.org/ns/sosa/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Observation Collection"
+      }
+    },
+    {
+      "@id": "http://www.w3.org/ns/sosa/Procedure",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world (via an Actuator)."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://www.w3.org/ns/sosa/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Procedure"
+      }
+    },
+    {
+      "@id": "http://www.w3.org/ns/sosa/Result",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The Result of an Observation, Actuation, or act of Sampling."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://www.w3.org/ns/sosa/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Result"
+      }
+    },
+    {
+      "@id": "http://www.w3.org/ns/sosa/hasSimpleResult",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The simple value of an Observation or Actuation or act of Sampling."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://www.w3.org/ns/sosa/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "has simple result"
+      }
+    },
+    {
+      "@id": "http://www.w3.org/ns/sosa/observedProperty",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "Relation linking an Observation to the property that was observed. The ObservableProperty should be a property of the FeatureOfInterest."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://www.w3.org/ns/sosa/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "observed property"
+      }
+    },
+    {
+      "@id": "http://www.w3.org/ns/sosa/phenomenonTime",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The time that the Result of an Observation, Actuation or Sampling applies to the FeatureOfInterest."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://www.w3.org/ns/sosa/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "phenomenon time"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/Attribute",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A property-value pair to capture attributes of an individual where observations are not suitable."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Attribute"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/FeatureOfInterest",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling. In the TERN Ontology it must carry a feature type from the TERN feature-type vocabulary."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Feature of Interest"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/Method",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A Method describes in detailed steps how a workflow, protocol, plan or algorithm is carried out to make an Observation or a Sample."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Method"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/Observation",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "Act of carrying out an (Observation) Procedure to estimate or calculate a value of a property of a FeatureOfInterest. In the TERN Ontology an Observation must carry an observed property, a procedure, a feature of interest, a typed result, a phenomenon time, a result date-time and a dataset."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Observation"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/ObservationCollection",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "Collection of one or more observations, whose members share a common value for one or more property."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Observation Collection"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/Procedure",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Procedure"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/RDFDataset",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A set of RDF triples that are published, maintained or aggregated by a single provider."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "RDF Dataset"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/Site",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "An ecological monitoring site where observations and samplings occur. A subclass of Sample since ecological sites are designed to be representative of an environmental system."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Site"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/SiteVisit",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A Site Visit is a Survey that visits a Site."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Site Visit"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/Taxon",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A group of organisms (sensu OBI_0100026) considered by taxonomists to form a homogeneous unit."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Taxon"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/Value",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A value of an Attribute or an Observation."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "Value"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/featureType",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The feature type of a Feature of Interest."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "feature type"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/resultDateTime",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The instant of time when the Observation, Actuation or Sampling activity was completed."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "result date time"
+      }
+    },
+    {
+      "@id": "https://w3id.org/tern/ontologies/tern/unit",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The unit of measure of the value. Use the QUDT units of measure vocabulary."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "https://w3id.org/tern/ontologies/tern/"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "unit"
+      }
+    },
+    {
       "@id": "https://w3id.org/traits.build",
       "http://purl.org/dc/terms/created": "01 February 2024^^<xsd:date>",
       "http://purl.org/dc/terms/creator": [
@@ -2237,6 +3315,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "allowed categorical values"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "http://rs.tdwg.org/dwc/iri/measurementValue"
       }
     },
     {
@@ -2401,9 +3482,14 @@
         "@language": "en",
         "@value": "basis_of_record"
       },
-      "http://www.w3.org/2004/02/skos/core#closeMatch": {
-        "@id": "http://rs.tdwg.org/dwc/terms/basisOfRecord"
-      },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/basisOfRecord"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/basisOfRecord"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -2441,6 +3527,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "basis_of_value"
+      },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/basisOfRecordDescription"
       },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#MeasurementType"
@@ -2528,9 +3617,14 @@
         "@language": "en",
         "@value": "collection date"
       },
-      "http://www.w3.org/2002/07/owl#sameAs": {
-        "@id": "http://terminologies.gfbio.org/terms/ETS/eventDate"
-      },
+      "http://www.w3.org/2002/07/owl#sameAs": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/eventDate"
+        },
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/eventDate"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "collection_date"
@@ -2543,9 +3637,28 @@
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#MeasuredValue"
         }
       ],
-      "http://www.w3.org/2004/02/skos/core#exactMatch": {
-        "@id": "http://terminologies.gfbio.org/terms/ETS/eventDate"
-      },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": [
+        {
+          "@id": "https://w3id.org/tern/ontologies/tern/resultDateTime"
+        },
+        {
+          "@id": "http://www.w3.org/ns/sosa/phenomenonTime"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/assertionEffectiveDate"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementDeterminedDate"
+        }
+      ],
+      "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/eventDate"
+        },
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/eventDate"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -2632,6 +3745,9 @@
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/Attribute"
+      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -2676,8 +3792,16 @@
         "@language": "en",
         "@value": "context_property"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservableProperty"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
+        }
+      ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/Attribute"
       },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "https://w3id.org/traits.build#contexts_value"
@@ -2914,12 +4038,18 @@
       },
       "http://www.w3.org/2004/02/skos/core#broader": [
         {
+          "@id": "http://www.w3.org/ns/sosa/Result"
+        },
+        {
           "@id": "http://rs.tdwg.org/dwc/terms/measurementValue"
         },
         {
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#MeasuredValue"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/assertionValue"
+      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -2966,6 +4096,17 @@
         "@language": "en",
         "@value": "contributor"
       },
+      "http://www.w3.org/2004/02/skos/core#broader": {
+        "@id": "http://purl.org/dc/terms/Agent"
+      },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/assertionBy"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementDeterminedBy"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://purl.org/dc/terms/contributor"
       },
@@ -3037,6 +4178,14 @@
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://purl.org/dc/terms/contributor"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementDeterminedBy"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/recordedBy"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://vocab.fairdatacollective.org/gdmt/DataCollector"
       },
@@ -3068,16 +4217,29 @@
         "@language": "en",
         "@value": "dataset"
       },
-      "http://www.w3.org/2002/07/owl#sameAs": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
-      },
+      "http://www.w3.org/2002/07/owl#sameAs": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "dataset"
       },
-      "http://www.w3.org/2004/02/skos/core#exactMatch": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/RDFDataset"
       },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -3179,6 +4341,14 @@
         "@language": "en",
         "@value": "dataset id"
       },
+      "http://www.w3.org/2002/07/owl#sameAs": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/datasetID"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/datasetID"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "dataset_id"
@@ -3186,6 +4356,14 @@
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier"
       },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/datasetID"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/datasetID"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -3292,6 +4470,9 @@
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#MeasuredValue"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/elevation"
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/verbatimElevation"
       },
@@ -3320,16 +4501,29 @@
         "@language": "en",
         "@value": "entity"
       },
-      "http://www.w3.org/2002/07/owl#sameAs": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
-      },
+      "http://www.w3.org/2002/07/owl#sameAs": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/FeatureOfInterest"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "entity"
       },
-      "http://www.w3.org/2004/02/skos/core#exactMatch": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/FeatureOfInterest"
       },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/FeatureOfInterest"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -3423,6 +4617,9 @@
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/Attribute"
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "https://w3id.org/traits.build#contexts_value"
       },
@@ -3461,6 +4658,14 @@
         "@language": "en",
         "@value": "entity_type"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": [
+        {
+          "@id": "https://w3id.org/tern/ontologies/tern/featureType"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/organismScope"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -3491,18 +4696,25 @@
       "http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype": {
         "@id": "http://www.w3.org/2001/XMLSchema#string"
       },
+      "http://www.w3.org/2000/01/rdf-schema#comment": [
+        {
+          "@language": "en",
+          "@value": "a traits.build database records it once per taxon, so the match is close rather than exact."
+        },
+        {
+          "@language": "en",
+          "@value": "Darwin Core applies establishmentMeans to an organism at a place and time"
+        }
+      ],
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
         "@value": "establishment means"
-      },
-      "http://www.w3.org/2002/07/owl#sameAs": {
-        "@id": "http://rs.tdwg.org/dwc/terms/establishmentMeans"
       },
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "establishment_means"
       },
-      "http://www.w3.org/2004/02/skos/core#exactMatch": {
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/establishmentMeans"
       },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
@@ -3741,6 +4953,9 @@
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://purl.org/dc/terms/identifier"
+      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -3776,9 +4991,22 @@
         "@language": "en",
         "@value": "individual"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/FeatureOfInterest"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
+        }
+      ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": [
+        {
+          "@id": "http://linked.data.gov.au/def/tern-cv/60d7edf8-98c6-43e9-841c-e176c334d270"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/Organism"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://purl.obolibrary.org/obo/OBI_0100026"
       },
@@ -3816,12 +5044,18 @@
         "@language": "en",
         "@value": "individual id"
       },
+      "http://www.w3.org/2002/07/owl#sameAs": {
+        "@id": "http://rs.tdwg.org/dwc/terms/organismID"
+      },
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "individual_id"
       },
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier"
+      },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/organismID"
       },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
@@ -4072,9 +5306,14 @@
         "@language": "en",
         "@value": "life stage"
       },
-      "http://www.w3.org/2002/07/owl#sameAs": {
-        "@id": "http://rs.tdwg.org/dwc/terms/lifeStage"
-      },
+      "http://www.w3.org/2002/07/owl#sameAs": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/lifeStage"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/lifeStage"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "life_stage"
@@ -4087,9 +5326,14 @@
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#MeasuredValue"
         }
       ],
-      "http://www.w3.org/2004/02/skos/core#exactMatch": {
-        "@id": "http://rs.tdwg.org/dwc/terms/lifeStage"
-      },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/lifeStage"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/lifeStage"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -4125,8 +5369,16 @@
         "@language": "en",
         "@value": "location"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/FeatureOfInterest"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
+        }
+      ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/Site"
       },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://purl.org/dc/terms/location"
@@ -4170,12 +5422,18 @@
         "@language": "en",
         "@value": "location id"
       },
+      "http://www.w3.org/2002/07/owl#sameAs": {
+        "@id": "http://rs.tdwg.org/dwc/terms/locationID"
+      },
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "location_id"
       },
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier"
+      },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/locationID"
       },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
@@ -4220,6 +5478,9 @@
           "@id": "http://www.w3.org/2000/01/rdf-schema#label"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/locality"
+      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -4261,8 +5522,16 @@
         "@language": "en",
         "@value": "location_property"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservableProperty"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
+        }
+      ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/measurementType"
       },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
@@ -4301,12 +5570,18 @@
       },
       "http://www.w3.org/2004/02/skos/core#broader": [
         {
+          "@id": "http://www.w3.org/ns/sosa/Result"
+        },
+        {
           "@id": "http://rs.tdwg.org/dwc/terms/measurementValue"
         },
         {
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#MeasuredValue"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/assertionValue"
+      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -4387,16 +5662,38 @@
         "@language": "en",
         "@value": "measurement"
       },
-      "http://www.w3.org/2002/07/owl#sameAs": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
-      },
+      "http://www.w3.org/2002/07/owl#sameAs": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/MeasurementOrFact"
+        },
+        {
+          "@id": "http://www.w3.org/ns/sosa/Observation"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "measurement"
       },
-      "http://www.w3.org/2004/02/skos/core#exactMatch": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
+      "http://www.w3.org/2004/02/skos/core#broader": {
+        "@id": "http://rs.tdwg.org/dwc/terms/Assertion"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/Observation"
+      },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/MeasurementOrFact"
+        },
+        {
+          "@id": "http://www.w3.org/ns/sosa/Observation"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -4432,9 +5729,17 @@
         "@language": "en",
         "@value": "measurement_of_entity_context_property"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/MeasurementOrFact"
+        },
+        {
+          "@id": "http://www.w3.org/ns/sosa/Observation"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -4475,9 +5780,17 @@
         "@language": "en",
         "@value": "measurement_of_location_property"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/MeasurementOrFact"
+        },
+        {
+          "@id": "http://www.w3.org/ns/sosa/Observation"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -4513,9 +5826,17 @@
         "@language": "en",
         "@value": "measurement_of_plot_context_property"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/MeasurementOrFact"
+        },
+        {
+          "@id": "http://www.w3.org/ns/sosa/Observation"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -4551,9 +5872,17 @@
         "@language": "en",
         "@value": "measurement_of_temporal_context_property"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/MeasurementOrFact"
+        },
+        {
+          "@id": "http://www.w3.org/ns/sosa/Observation"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -4592,9 +5921,17 @@
         "@language": "en",
         "@value": "measurement_of_treatment_context_property"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/MeasurementOrFact"
+        },
+        {
+          "@id": "http://www.w3.org/ns/sosa/Observation"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -4626,6 +5963,17 @@
         "@language": "en",
         "@value": "measurement remarks"
       },
+      "http://www.w3.org/2002/07/owl#sameAs": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/measurementRemarks"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/assertionRemarks"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementRemarks"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "measurement_remarks"
@@ -4633,6 +5981,17 @@
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://www.w3.org/2000/01/rdf-schema#comment"
       },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/measurementRemarks"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/assertionRemarks"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementRemarks"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -4668,6 +6027,14 @@
         },
         {
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
+        }
+      ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": [
+        {
+          "@id": "https://w3id.org/tern/ontologies/tern/Procedure"
+        },
+        {
+          "@id": "http://www.w3.org/ns/sosa/Procedure"
         }
       ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
@@ -4769,6 +6136,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "method context property"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "http://www.w3.org/ns/sosa/Procedure"
       }
     },
     {
@@ -4818,6 +6188,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "method id"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/protocolID"
       }
     },
     {
@@ -4890,6 +6263,14 @@
         "@language": "en",
         "@value": "methods"
       },
+      "http://www.w3.org/2002/07/owl#sameAs": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/measurementMethod"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementMethod"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "methods"
@@ -4897,9 +6278,31 @@
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Protocol"
       },
-      "http://www.w3.org/2004/02/skos/core#closeMatch": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Protocol"
-      },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": [
+        {
+          "@id": "https://w3id.org/tern/ontologies/tern/Method"
+        },
+        {
+          "@id": "http://www.w3.org/ns/sosa/Procedure"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/Protocol"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/assertionProtocols"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Protocol"
+        }
+      ],
+      "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/measurementMethod"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementMethod"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -4932,22 +6335,38 @@
         "@language": "en",
         "@value": "observation"
       },
-      "http://www.w3.org/2002/07/owl#sameAs": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
-      },
+      "http://www.w3.org/2002/07/owl#sameAs": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "observation"
       },
-      "http://www.w3.org/2004/02/skos/core#exactMatch": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/ObservationCollection"
       },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "observation"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/parentMeasurementID"
       }
     },
     {
@@ -4991,6 +6410,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "observation id"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/parentMeasurementID"
       }
     },
     {
@@ -5034,9 +6456,14 @@
         "@language": "en",
         "@value": "observation_of_entity_context"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5075,9 +6502,14 @@
         "@language": "en",
         "@value": "observation_of_location"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5119,9 +6551,14 @@
         "@language": "en",
         "@value": "observation_of_plot_context"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5167,9 +6604,14 @@
         "@language": "en",
         "@value": "observation_of_temporal_context"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5215,9 +6657,14 @@
         "@language": "en",
         "@value": "observation_of_treatment_context"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Observation"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5269,9 +6716,14 @@
         "@language": "en",
         "@value": "observations_at_location"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5327,9 +6779,14 @@
         "@language": "en",
         "@value": "observations_from_dataset"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5385,9 +6842,14 @@
         "@language": "en",
         "@value": "observations_from_source"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5426,9 +6888,14 @@
         "@language": "en",
         "@value": "observations_of_individual"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5467,9 +6934,14 @@
         "@language": "en",
         "@value": "observations_of_population"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5512,9 +6984,14 @@
         "@language": "en",
         "@value": "observations_of_taxon"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ObservationCollection"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5551,6 +7028,14 @@
         "@language": "en",
         "@value": "original taxon name"
       },
+      "http://www.w3.org/2002/07/owl#sameAs": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/verbatimScientificName"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/verbatimIdentification"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "original_name"
@@ -5561,6 +7046,14 @@
         },
         {
           "@id": "http://www.w3.org/2000/01/rdf-schema#label"
+        }
+      ],
+      "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/verbatimScientificName"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/verbatimIdentification"
         }
       ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
@@ -5594,6 +7087,9 @@
       },
       "http://www.w3.org/2004/02/skos/core#broader": [
         {
+          "@id": "http://www.w3.org/ns/sosa/FeatureOfInterest"
+        },
+        {
           "@id": "https://w3id.org/traits.build#traits.build-contexts"
         },
         {
@@ -5606,6 +7102,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "plot context"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/Site"
       }
     },
     {
@@ -5693,6 +7192,9 @@
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/Attribute"
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "https://w3id.org/traits.build#contexts_value"
       },
@@ -5731,8 +7233,16 @@
         "@language": "en",
         "@value": "population"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/FeatureOfInterest"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
+        }
+      ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://linked.data.gov.au/def/tern-cv/ae71c3f6-d430-400f-a1d4-97a333b4ee02"
       },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://purl.obolibrary.org/obo/PCO_0000001"
@@ -5743,6 +7253,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "population"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/Organism"
       }
     },
     {
@@ -5784,6 +7297,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "population id"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/organismID"
       }
     },
     {
@@ -5824,6 +7340,9 @@
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/parentMeasurementID"
+      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5861,6 +7380,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "replicates"
+      },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/individualCount"
       },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/individualCount"
@@ -5905,6 +7427,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "sampling_strategy"
+      },
+      "http://www.w3.org/2004/02/skos/core#broader": {
+        "@id": "http://www.w3.org/ns/sosa/Procedure"
       },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/samplingProtocol"
@@ -6055,7 +7580,15 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "source id"
-      }
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/references"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/datasetID"
+        }
+      ]
     },
     {
       "@id": "https://w3id.org/traits.build#source_original_dataset_citation",
@@ -6092,6 +7625,9 @@
       },
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://purl.org/dc/terms/bibliographicCitation"
+      },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/bibliographicCitation"
       },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
@@ -6184,6 +7720,14 @@
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://purl.org/dc/terms/bibliographicCitation"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/bibliographicCitation"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/assertionReferences"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -6274,6 +7818,9 @@
       },
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://purl.org/dc/terms/bibliographicCitation"
+      },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/bibliographicCitation"
       },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
@@ -6409,9 +7956,15 @@
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
         },
         {
+          "@id": "http://www.w3.org/ns/sosa/FeatureOfInterest"
+        },
+        {
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/Taxon"
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/Taxon"
       },
@@ -6459,6 +8012,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "taxon distribution"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/stateProvince"
       }
     },
     {
@@ -6576,9 +8132,17 @@
           "@id": "http://www.w3.org/2000/01/rdf-schema#label"
         }
       ],
-      "http://www.w3.org/2004/02/skos/core#closeMatch": {
-        "@id": "http://rs.tdwg.org/dwc/terms/acceptedNameUsage"
-      },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/scientificName"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/scientificName"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/acceptedNameUsage"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -6799,6 +8363,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "temporal context"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/SiteVisit"
       }
     },
     {
@@ -6886,6 +8453,9 @@
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/Attribute"
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "https://w3id.org/traits.build#contexts_value"
       },
@@ -6948,16 +8518,26 @@
         "@language": "en",
         "@value": "trait concept"
       },
-      "http://www.w3.org/2002/07/owl#sameAs": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Standard"
-      },
+      "http://www.w3.org/2002/07/owl#sameAs": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservableProperty"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Standard"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "trait"
       },
-      "http://www.w3.org/2004/02/skos/core#exactMatch": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Standard"
-      },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservableProperty"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Standard"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -7004,6 +8584,14 @@
         "@language": "en",
         "@value": "trait_concept_URI"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/iri/assertionType"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/iri/measurementType"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#exactMatch": [
         {
           "@id": "http://purl.org/dc/terms/identifier"
@@ -7067,9 +8655,17 @@
         "@language": "en",
         "@value": "trait_measurement"
       },
-      "http://www.w3.org/2004/02/skos/core#broader": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
-      },
+      "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/MeasurementOrFact"
+        },
+        {
+          "@id": "http://www.w3.org/ns/sosa/Observation"
+        },
+        {
+          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -7108,6 +8704,12 @@
       },
       "http://www.w3.org/2002/07/owl#sameAs": [
         {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/traitName"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementType"
+        },
+        {
           "@id": "http://www.w3.org/2000/01/rdf-schema#label"
         },
         {
@@ -7118,7 +8720,16 @@
         "@language": "en",
         "@value": "trait_name"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/assertionType"
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/traitName"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementType"
+        },
         {
           "@id": "http://www.w3.org/2000/01/rdf-schema#label"
         },
@@ -7132,6 +8743,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "trait name"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "http://www.w3.org/ns/sosa/observedProperty"
       }
     },
     {
@@ -7154,24 +8768,46 @@
         "@language": "en",
         "@value": "value"
       },
-      "http://www.w3.org/2002/07/owl#sameAs": {
-        "@id": "http://terminologies.gfbio.org/terms/ETS/traitValue"
-      },
+      "http://www.w3.org/2002/07/owl#sameAs": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/assertionValue"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementValue"
+        },
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/traitValue"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "value"
       },
       "http://www.w3.org/2004/02/skos/core#broader": [
         {
-          "@id": "http://rs.tdwg.org/dwc/terms/measurementValue"
+          "@id": "https://w3id.org/tern/ontologies/tern/Value"
+        },
+        {
+          "@id": "http://www.w3.org/ns/sosa/Result"
         },
         {
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#MeasuredValue"
         }
       ],
-      "http://www.w3.org/2004/02/skos/core#exactMatch": {
-        "@id": "http://terminologies.gfbio.org/terms/ETS/traitValue"
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://www.w3.org/ns/sosa/hasSimpleResult"
       },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/assertionValue"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementValue"
+        },
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/traitValue"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -7196,6 +8832,16 @@
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_001330"
       },
+      "http://www.w3.org/2000/01/rdf-schema#comment": [
+        {
+          "@language": "en",
+          "@value": "no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."
+        },
+        {
+          "@language": "en",
+          "@value": "Internal to traits.build"
+        }
+      ],
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
         "@value": "build info"
@@ -7242,7 +8888,15 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "contexts table"
-      }
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/MeasurementOrFact"
+        },
+        {
+          "@id": "https://w3id.org/tern/ontologies/tern/Attribute"
+        }
+      ]
     },
     {
       "@id": "https://w3id.org/traits.build#traits.build-contributors",
@@ -7274,7 +8928,15 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "contributors table"
-      }
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": [
+        {
+          "@id": "http://purl.org/dc/terms/contributor"
+        },
+        {
+          "@id": "http://purl.org/dc/terms/Agent"
+        }
+      ]
     },
     {
       "@id": "https://w3id.org/traits.build#traits.build-database",
@@ -7289,6 +8951,16 @@
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000750"
       },
+      "http://www.w3.org/2000/01/rdf-schema#comment": [
+        {
+          "@language": "en",
+          "@value": "no single counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN. See the dataset term for the observation-collection reading."
+        },
+        {
+          "@language": "en",
+          "@value": "A traits.build database as a whole"
+        }
+      ],
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
         "@value": "traits.build database"
@@ -7363,6 +9035,16 @@
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000754"
       },
+      "http://www.w3.org/2000/01/rdf-schema#comment": [
+        {
+          "@language": "en",
+          "@value": "no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."
+        },
+        {
+          "@language": "en",
+          "@value": "Same structure as the traits table plus an error column"
+        }
+      ],
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
         "@value": "excluded data table"
@@ -7377,6 +9059,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "excluded data table"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "https://w3id.org/traits.build#traits.build-traits"
       }
     },
     {
@@ -7413,6 +9098,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "identifiers table"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "http://purl.org/dc/terms/identifier"
       }
     },
     {
@@ -7450,9 +9138,17 @@
         "@language": "en",
         "@value": "locations table"
       },
-      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
-        "@id": "http://terminologies.gfbio.org/terms/ETS/Occurrence"
-      }
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": [
+        {
+          "@id": "https://w3id.org/tern/ontologies/tern/Site"
+        },
+        {
+          "@id": "http://purl.org/dc/terms/location"
+        },
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/Occurrence"
+        }
+      ]
     },
     {
       "@id": "https://w3id.org/traits.build#traits.build-metadata",
@@ -7520,9 +9216,17 @@
         "@language": "en",
         "@value": "methods table"
       },
-      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
-        "@id": "http://terminologies.gfbio.org/terms/ETS/MeasurementOrFact"
-      }
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/Procedure"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/Protocol"
+        },
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/MeasurementOrFact"
+        }
+      ]
     },
     {
       "@id": "https://w3id.org/traits.build#traits.build-schema",
@@ -7540,6 +9244,16 @@
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_001330"
       },
+      "http://www.w3.org/2000/01/rdf-schema#comment": [
+        {
+          "@language": "en",
+          "@value": "no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."
+        },
+        {
+          "@language": "en",
+          "@value": "Internal to traits.build"
+        }
+      ],
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
         "@value": "schema"
@@ -7586,7 +9300,15 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "sources table"
-      }
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": [
+        {
+          "@id": "http://purl.org/dc/terms/bibliographicCitation"
+        },
+        {
+          "@id": "http://purl.org/dc/terms/BibliographicResource"
+        }
+      ]
     },
     {
       "@id": "https://w3id.org/traits.build#traits.build-taxa",
@@ -7614,6 +9336,9 @@
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "taxa"
+      },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/Taxon"
       },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/Taxon"
@@ -7656,7 +9381,15 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "taxonomic updates table"
-      }
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/verbatimIdentification"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/Identification"
+        }
+      ]
     },
     {
       "@id": "https://w3id.org/traits.build#traits.build-traits",
@@ -7689,6 +9422,9 @@
         "@language": "en",
         "@value": "traits"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/MeasurementOrFact"
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/Traitdata"
       },
@@ -7700,6 +9436,9 @@
         "@value": "traits table"
       },
       "http://www.w3.org/2004/02/skos/core#relatedMatch": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/ObservationCollection"
+        },
         {
           "@id": "http://terminologies.gfbio.org/terms/ETS/Occurrence"
         },
@@ -7730,6 +9469,9 @@
         "@value": "treatment"
       },
       "http://www.w3.org/2004/02/skos/core#broader": [
+        {
+          "@id": "http://www.w3.org/ns/sosa/FeatureOfInterest"
+        },
         {
           "@id": "https://w3id.org/traits.build#traits.build-contexts"
         },
@@ -7829,6 +9571,9 @@
       },
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
+      },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/Attribute"
       },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "https://w3id.org/traits.build#contexts_value"
@@ -7956,6 +9701,12 @@
       },
       "http://www.w3.org/2002/07/owl#sameAs": [
         {
+          "@id": "http://rs.tdwg.org/dwc/terms/assertionUnit"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementUnit"
+        },
+        {
           "@id": "http://terminologies.gfbio.org/terms/ETS/traitUnit"
         },
         {
@@ -7966,7 +9717,16 @@
         "@language": "en",
         "@value": "unit"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://qudt.org/schema/qudt/Unit"
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/assertionUnit"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementUnit"
+        },
         {
           "@id": "http://terminologies.gfbio.org/terms/ETS/traitUnit"
         },
@@ -7980,6 +9740,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "unit"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "https://w3id.org/tern/ontologies/tern/unit"
       }
     },
     {
@@ -8015,6 +9778,9 @@
         "@language": "en",
         "@value": "units"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/measurementUnit"
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/expectedUnit"
       },
@@ -8024,6 +9790,9 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "units"
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
+        "@id": "http://qudt.org/schema/qudt/Unit"
       }
     },
     {
@@ -8056,6 +9825,14 @@
         "@language": "en",
         "@value": "value_type"
       },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/aggregateMeasure"
+        },
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/statisticalMethod"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#BaseCharacteristicQualifier"
       },
@@ -8065,7 +9842,15 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "value type"
-      }
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/measurementValue_max"
+        },
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/measurementValue_min"
+        }
+      ]
     }
   ]
 }

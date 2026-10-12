@@ -206,7 +206,12 @@ rdflib::rdf_serialize(true_triples, file.path(output_path, "traits.build.ttl"),
                                     rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
                                     datacite = "http://purl.org/datacite/v4.4/",
                                     SIO = "http://semanticscience.org/resource/",
-                                    gdmt = "http://vocab.fairdatacollective.org/gdmt/")
+                                    gdmt = "http://vocab.fairdatacollective.org/gdmt/",
+                                    sosa = "http://www.w3.org/ns/sosa/",
+                                    tern = "https://w3id.org/tern/ontologies/tern/",
+                                    terncv = "http://linked.data.gov.au/def/tern-cv/",
+                                    dwciri = "http://rs.tdwg.org/dwc/iri/",
+                                    qudt = "http://qudt.org/schema/qudt/")
 )
 rdflib::rdf_serialize(true_triples, file.path(output_path, "traits.build.json"), format="jsonld")
 
