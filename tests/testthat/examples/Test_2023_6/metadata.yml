@@ -63,7 +63,7 @@ contributors:
 dataset:
   data_is_long_format: yes
   custom_R_code: .na
-  collection_date: unknown/2009
+  collection_date: .na/2009
   taxon_name: name_original
   trait_name: trait_name
   value: value

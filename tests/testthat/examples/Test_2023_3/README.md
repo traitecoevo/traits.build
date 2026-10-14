@@ -16,6 +16,8 @@ This dataset is for testing the following, for long datasets:
 - Test `collection_date` read in from a column at the trait level and as a fixed value at the dataset level #TODO
 - Check that `location_id` is NA for species `entity_type` measurements
 
+The dataset-level `collection_date` was `unknown/2022` until the `collection_date`-parses check was added to `dataset_test` -- `unknown` was never a documented value for that field (see its schema description), so this was an unnoticed bug rather than a deliberate case for that check to allow. Changed to `.na/2022`, `.na` being the correct way to record that the start of the range is unknown while the end (2022) is not.
+
 
 Test_2023_3 is a copy of NHNSW_2023 with the following modifications:
 - Subsetted the dataset to only `fruit_colour`, `fruit_dehiscence`, `fruit_length`, `fruit_width` and randomly sampled 200 rows

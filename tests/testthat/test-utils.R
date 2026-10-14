@@ -291,3 +291,241 @@ test_that("the chunked path is actually taken, and only when it applies", {
     util_read_yaml_chunked("examples/Test_2023_1/metadata.yml"), "fell back"
   )
 })
+
+
+test_that("`util_collection_date_is_valid` accepts the documented formats", {
+  expect_true(util_collection_date_is_valid(NA_character_))
+  expect_true(util_collection_date_is_valid("2020"))
+  expect_true(util_collection_date_is_valid("2020-05"))
+  expect_true(util_collection_date_is_valid("2020-05-15"))
+  expect_true(util_collection_date_is_valid("2020-05/2021-06"))
+  expect_true(util_collection_date_is_valid("2020/2021-06-15"))
+
+  # a range may have one side unknown
+  expect_true(util_collection_date_is_valid(".na/2022"))
+  expect_true(util_collection_date_is_valid("2022/.na"))
+})
+
+
+test_that("`util_collection_date_is_valid` rejects everything else", {
+  expect_false(util_collection_date_is_valid("2020-02-30"))  # no such day
+  expect_false(util_collection_date_is_valid("2021-02-29"))  # not a leap year
+  expect_false(util_collection_date_is_valid("2020-13-01"))  # no such month
+  expect_false(util_collection_date_is_valid("2020-5"))      # month not zero-padded
+  expect_false(util_collection_date_is_valid("20-05-15"))    # year not 4 digits
+  expect_false(util_collection_date_is_valid("not a date"))
+  expect_false(util_collection_date_is_valid("unknown/2022"))  # not the sanctioned `.na` token
+  expect_false(util_collection_date_is_valid("2020-05-15/2020-06-01/2020-07-01"))  # 3-part range
+  expect_false(util_collection_date_is_valid(""))
+})
+
+
+test_that("`util_parse_collection_date` resolves unambiguous formats safely", {
+  # already valid: passed through unchanged
+  expect_equal(util_parse_collection_date("2020-05-15"), "2020-05-15")
+  expect_equal(util_parse_collection_date(NA_character_), NA_character_)
+
+  # a named month removes the day/month ambiguity, however it's written
+  expect_equal(util_parse_collection_date("2-Sep-08"), "2008-09-02")
+  expect_equal(util_parse_collection_date("September 2, 2008"), "2008-09-02")
+  expect_equal(util_parse_collection_date("2008-Sep-02"), "2008-09-02")
+  expect_equal(util_parse_collection_date("29 Feb 2008"), "2008-02-29")  # leap year
+
+  # a named month with no day resolves to yyyy-mm, not a fabricated day
+  expect_equal(util_parse_collection_date("Sep 2008"), "2008-09")
+  expect_equal(util_parse_collection_date("2008 Sep"), "2008-09")
+
+  # 2-digit years expand using the POSIX convention (00-68 -> 20xx, 69-99 -> 19xx)
+  expect_equal(util_parse_collection_date("1-May-05"), "2005-05-01")
+  expect_equal(util_parse_collection_date("1-May-99"), "1999-05-01")
+
+  # Excel serial dates, distinguished from a bare year by digit count
+  expect_equal(util_parse_collection_date("39692"), "2008-09-01")
+
+  # a `start/end` range with named-month components on each side
+  expect_equal(
+    util_parse_collection_date("2 Sep 2008/3 Sep 2008"),
+    "2008-09-02/2008-09-03"
+  )
+
+  # vectorised, and via a `mutate()` pipeline the way `custom_R_code` uses it
+  data <- tibble::tibble(Date = c("2-Sep-08", "3-Sep-08"))
+  expect_equal(
+    dplyr::mutate(data, Date = util_parse_collection_date(Date))$Date,
+    c("2008-09-02", "2008-09-03")
+  )
+})
+
+
+test_that("`util_parse_collection_date` leaves genuinely ambiguous or invalid values untouched", {
+  # a purely numeric date has no way to tell day-first from month-first
+  expect_equal(util_parse_collection_date("01/02/2008"), "01/02/2008")
+  expect_equal(util_parse_collection_date("1.2.2008"), "1.2.2008")
+
+  # an impossible day, even alongside a named month, is not guessed at
+  expect_equal(util_parse_collection_date("35 Sep 2008"), "35 Sep 2008")
+  expect_equal(util_parse_collection_date("29 Feb 2021"), "29 Feb 2021")  # not a leap year
+
+  # more numbers than a day/month/year shape can use
+  expect_equal(
+    util_parse_collection_date("2 Sep 2008 3 Oct 2009"),
+    "2 Sep 2008 3 Oct 2009"
+  )
+
+  expect_equal(util_parse_collection_date("not a date"), "not a date")
+  expect_equal(util_parse_collection_date("unknown/2022"), "unknown/2022")
+
+  # everything it leaves untouched is exactly what `dataset_test`'s
+  # `collection_date`-parses check would still flag -- fixing what's safe to
+  # fix should never silently produce something that still fails
+  untouched <- c("01/02/2008", "35 Sep 2008", "not a date", "unknown/2022")
+  expect_false(any(util_collection_date_is_valid(util_parse_collection_date(untouched))))
+})
+
+
+test_that("`util_parse_collection_date` drops a trailing time-of-day", {
+  # ISO 8601 datetime (Stephens_2024_2's `birthtime` column)
+  expect_equal(util_parse_collection_date("2021-07-16T22:06:14Z"), "2021-07-16")
+  expect_equal(util_parse_collection_date("2021-08-04T23:36:12Z"), "2021-08-04")
+
+  # a plain numeric date with a time suffix (a Google Forms timestamp
+  # column, as in Stephens_2020's `Timestamp`) -- resolvable here because
+  # `9/14` can only be month-first
+  expect_equal(
+    util_parse_collection_date(c("8/11/2020 10:09", "9/14/2020 12:06")),
+    c("2020-08-11", "2020-09-14")
+  )
+})
+
+
+test_that("`util_parse_collection_date` infers a plain numeric date's order from the rest of the column", {
+  # `9/14` and `9/15` can only be month-first (no 14th or 15th month), so
+  # the otherwise-ambiguous `8/11` and `8/6` are read the same way -- the
+  # real shape of Stephens_2020's `Timestamp` column (stripped of time here;
+  # the previous test covers the two combined)
+  expect_equal(
+    util_parse_collection_date(c("8/11/2020", "8/6/2020", "9/14/2020", "9/15/2020")),
+    c("2020-08-11", "2020-08-06", "2020-09-14", "2020-09-15")
+  )
+
+  # one disambiguating value is enough to resolve the rest of the column,
+  # even if it's the second value in the vector rather than the first
+  expect_equal(
+    util_parse_collection_date(c("01/02/2008", "25/03/2008", "04/05/2008")),
+    c("2008-02-01", "2008-03-25", "2008-05-04")  # day-first: 25 can't be a month
+  )
+
+  # nothing in the column resolves the order -- every value must stay
+  # untouched, not just guessed independently
+  expect_equal(
+    util_parse_collection_date(c("01/02/2008", "03/04/2009", "05/06/2010")),
+    c("01/02/2008", "03/04/2009", "05/06/2010")
+  )
+})
+
+
+test_that("`util_parse_collection_date` resolves a value from its own two numbers before deferring to the column", {
+  # `austraits.build`'s Coates_2024 genuinely mixes conventions within one
+  # column: automated camera-trap timestamps in month-first order alongside
+  # hand-entered dates in day-first order. Column-wide agreement (as tested
+  # above) can't apply here -- the column disagrees with itself -- but each
+  # of these is still unambiguous *on its own*, since one of its two leading
+  # numbers exceeds 12.
+  expect_equal(
+    util_parse_collection_date(c("10/23/2021 1:00:00 AM", "28/11/2021")),
+    c("2021-10-23", "2021-11-28")  # month-first and day-first respectively
+  )
+
+  # a value that's ambiguous even on this test (both leading numbers <=12)
+  # still needs column-wide help, and gets none here (contradictory column)
+  expect_equal(
+    util_parse_collection_date(c("10/23/2021", "28/11/2021", "1/12/2021")),
+    c("2021-10-23", "2021-11-28", "1/12/2021")
+  )
+})
+
+
+test_that("`util_parse_collection_date` handles mm-yyyy and dot-separated yy.mm.dd", {
+  # `mm-yyyy`, the reverse of the schema's `yyyy-mm` -- unambiguous since a
+  # 4-digit year can't be mistaken for anything else. From
+  # `austraits.build`'s Sevenello_2026_2, as a `start/end` range.
+  expect_equal(util_parse_collection_date("07-2015"), "2015-07")
+  expect_equal(
+    util_parse_collection_date("07-2015/09-2016"),
+    "2015-07/2016-09"
+  )
+
+  # dot-separated `yy.mm.dd`, confirmed by checking the middle component is
+  # a plausible month and the last a plausible day (from
+  # `austraits.build`'s Doyle_2023)
+  expect_equal(util_parse_collection_date("19.08.20"), "2019-08-20")
+  expect_equal(util_parse_collection_date("19.11.08"), "2019-11-08")
+
+  # a dot-separated triple that *doesn't* fit yy.mm.dd (middle component
+  # isn't a plausible month) is left alone rather than guessed at
+  expect_equal(util_parse_collection_date("19.20.08"), "19.20.08")
+})
+
+
+test_that("`util_parse_collection_date` takes the curator's `order` for numeric dates the column can't settle", {
+  # a lone ambiguous value (Bryant_2021_3's whole `Date` column) -- nothing
+  # to infer from, so it stays untouched unless the order is given
+  expect_equal(util_parse_collection_date("4/07/2022"), "4/07/2022")
+  expect_equal(util_parse_collection_date("4/07/2022", order = "dmy"), "2022-07-04")
+  expect_equal(util_parse_collection_date("4/07/2022", order = "mdy"), "2022-04-07")
+  expect_equal(util_parse_collection_date("04-04-2019/9-12-2019", order = "dmy"), "2019-04-04/2019-12-09")
+
+  # `order` replaces the column-wide inference...
+  expect_equal(
+    util_parse_collection_date(c("01/02/2008", "03/04/2009"), order = "dmy"),
+    c("2008-02-01", "2009-04-03")
+  )
+
+  # ...but a value that settles its own order is still read that way
+  expect_equal(util_parse_collection_date("10/23/2021", order = "dmy"), "2021-10-23")
+
+  # two-digit dotted dates: `yy.mm.dd` by default (Doyle_2023), day-first only
+  # when the curator says so (Bloomfield_2018's `d.m.yy`)
+  expect_equal(util_parse_collection_date("10.3.12"), "2010-03-12")
+  expect_equal(
+    util_parse_collection_date(c("18.3.12", "10.3.12", "1.4.14"), order = "dmy"),
+    c("2012-03-18", "2012-03-10", "2014-04-01")
+  )
+
+  # anything other than "dmy"/"mdy" is an error, not silently ignored
+  expect_error(util_parse_collection_date("4/07/2022", order = "ymd"))
+})
+
+
+test_that("`util_parse_collection_date` handles dotted d.m.yyyy, yyyymmdd, year spans and lists", {
+  # dot-separated `d.m.yyyy`, resolved from the column like `/` and `-`
+  # (Lequerica_Tamara_2025)
+  expect_equal(
+    util_parse_collection_date(c("1.05.2020", "21.11.2019")),
+    c("2020-05-01", "2019-11-21")
+  )
+
+  # compact `yyyymmdd`, which the Excel serial rule would otherwise read as
+  # a date tens of thousands of years from now (Arnold_2021)
+  expect_equal(util_parse_collection_date("20190206"), "2019-02-06")
+  expect_equal(util_parse_collection_date(20190206), "2019-02-06")
+  expect_equal(util_parse_collection_date("20190231"), "20190231")  # no 31 Feb
+
+  # a span of years with a dash rather than `/` (Tsujii_2023, Moore_2019),
+  # but not one that runs backwards
+  expect_equal(util_parse_collection_date("2019-2020"), "2019/2020")
+  expect_equal(util_parse_collection_date("2020-2019"), "2020-2019")
+
+  # a list of dates collapses to the range it spans, or to the one date if
+  # they're all the same (Cochrane_2001's `Time of collection`)
+  expect_equal(util_parse_collection_date("Jan-98, Feb-98, Mar-98"), "1998-01/1998-03")
+  expect_equal(util_parse_collection_date("Oct-96, Oct-96,"), "1996-10")
+  expect_equal(util_parse_collection_date("2001-03; 2000-11"), "2000-11/2001-03")
+
+  # a comma inside a single date is not a list -- `September 2` alone would
+  # be read as 2002
+  expect_equal(util_parse_collection_date("September 2, 2008"), "2008-09-02")
+
+  # a list with any item that doesn't parse is left alone
+  expect_equal(util_parse_collection_date("Jan-98, 35 Sep 1998"), "Jan-98, 35 Sep 1998")
+})
