@@ -834,10 +834,11 @@ util_collection_date_bounds <- function(value) {
 #' Convert `collection_date` values from a declared format to the standard one
 #'
 #' Rewrites dates written in the format a dataset declares as `yyyy-mm-dd`,
-#' `yyyy-mm` or `yyyy`. The format is never inferred: a value that does not
-#' match the declared format is returned unchanged, so `dataset_test()` reports
-#' it rather than the build storing a guess. Values that are already standard
-#' pass through untouched.
+#' `yyyy-mm` or `yyyy`. A value is never guessed at: one that does not match
+#' the declared format is returned unchanged, so `dataset_test()` reports it
+#' rather than the build storing a guess. Values that are already standard pass
+#' through untouched, and a range of years written with a hyphen, `2019-2020`,
+#' becomes `2019/2020`.
 #'
 #' The build calls this on the `collection_date` column(s) of `data.csv` for a
 #' dataset that sets `collection_date_format` or `collection_date_timezone` in
@@ -853,7 +854,16 @@ util_collection_date_bounds <- function(value) {
 #'   full dates, month-year values and bare years is declared
 #'   `c("dmy", "my", "y")` -- or `dmy my y` in `metadata.yml`. Formats that
 #'   could read the same value two ways -- `"dmy"` with `"mdy"`, say -- cannot
-#'   be combined.
+#'   be combined. `"ym"` needs a four-digit year, since `15-Mar` is how Excel
+#'   writes the 15th of March with no year.
+#'
+#'   `"auto"` works the format out from the whole column: it tries
+#'   `dmy my y`, `mdy my y` and `ymd ym y`, and uses the one that reads every
+#'   value any of them can. If more than one does and they give different
+#'   dates -- a column whose values could all be day-first or month-first, such
+#'   as `4/07/2022` -- it converts nothing, so the curator declares which. It
+#'   decides for the column, never value by value, so it cannot read one value
+#'   day-first and the next month-first.
 #'
 #'   Within a value, day, month and year may be separated by `-`, `/`, `.`, `,`
 #'   or spaces, or not at all (`20190206`). Months may be numbers or English
@@ -894,11 +904,91 @@ util_format_collection_date <- function(x, format = NULL, timezone = NULL) {
 
   x <- as.character(x)
   values <- unique(x[!is.na(x)])
+
+  if (identical(format, "auto")) {
+    format <- util_collection_date_auto(values)$format
+  }
+
   converted <- vapply(
     values, util_format_collection_date_one, character(1),
     format = format, timezone = timezone, USE.NAMES = FALSE
   )
   converted[match(x, values)]
+}
+
+# The formats `auto` chooses between: a full date written day-first,
+# month-first or year-first, each followed by the coarser precisions a column
+# of such dates also holds
+util_collection_date_families <- list(
+  dmy = c("dmy", "my", "y"),
+  mdy = c("mdy", "my", "y"),
+  ymd = c("ymd", "ym", "y")
+)
+
+#' Work out the format of a column of dates, or decline to
+#'
+#' Reads every value in each of the formats in `util_collection_date_families`,
+#' and chooses the one that reads all the values any of them can. If more than
+#' one does, they must give the same dates -- as for a column of `Jan-96`
+#' values, which `dmy my y` and `mdy my y` both read as `1996-01`. Otherwise
+#' nothing is chosen, so a column whose values could all be day-first or
+#' month-first (`4/07/2022`) is left for the curator to declare, as is one
+#' mixing values only day-first can read with values only month-first can.
+#' Values no format reads are left out, so one malformed value does not block
+#' the rest.
+#'
+#' @param values Character vector of dates
+#'
+#' @return List with `format`, the chosen formats or `NULL`, and `fits`, the
+#'   names of the formats that read every readable value
+#' @noRd
+util_collection_date_auto <- function(values) {
+  values <- unique(values[!is.na(values)])
+
+  readings <- lapply(util_collection_date_families, function(format) {
+    out <- vapply(
+      values, util_format_collection_date_one, character(1),
+      format = format, timezone = NULL, USE.NAMES = FALSE
+    )
+    ifelse(util_collection_date_is_valid(out) %in% TRUE, out, NA_character_)
+  })
+
+  readable <- Reduce(`|`, lapply(readings, function(r) !is.na(r)))
+  fits <- names(readings)[vapply(readings, function(r) !anyNA(r[readable]), logical(1))]
+  agree <- length(fits) > 0 &&
+    all(vapply(fits, function(f) identical(readings[[f]][readable], readings[[fits[1]]][readable]), logical(1)))
+
+  list(
+    format = if (agree) util_collection_date_families[[fits[1]]] else NULL,
+    fits = fits,
+    readings = readings,
+    values = values
+  )
+}
+
+#' Explain why `auto` could not choose a format, for `dataset_test()`
+#'
+#' @return A sentence, or `""` if `auto` can choose one for these values
+#' @noRd
+util_collection_date_auto_message <- function(values) {
+  auto <- util_collection_date_auto(values)
+  if (!is.null(auto$format)) {
+    return("")
+  }
+
+  if (length(auto$fits) == 0) {
+    return("`auto` found no one format that reads them all, so a column mixing formats needs `custom_R_code`.")
+  }
+
+  # A value the candidate formats read differently, to show why
+  first <- auto$readings[[auto$fits[1]]]
+  differs <- which(Reduce(`|`, lapply(auto$fits[-1], function(f) auto$readings[[f]] != first)) %in% TRUE)[1]
+  sprintf(
+    "`auto` cannot tell whether they are written %s: '%s' reads as %s. Declare the one they are written in.",
+    paste0("`", auto$fits, "`", collapse = " or "),
+    auto$values[differs],
+    paste(vapply(auto$fits, function(f) auto$readings[[f]][differs], character(1)), collapse = " or ")
+  )
 }
 
 #' @noRd
@@ -916,6 +1006,12 @@ util_format_collection_date_one <- function(value, format, timezone) {
     }
     instant <- lubridate::ymd_hms(value, quiet = TRUE)
     return(if (is.na(instant)) value else format(instant, "%Y-%m-%d", tz = timezone))
+  }
+
+  # A range of years written with a hyphen, `2019-2020`, can be read only one way
+  if (grepl("^[0-9]{4} ?[-\u2013] ?[0-9]{4}$", value)) {
+    years <- gsub(" ?[-\u2013] ?", "/", value)
+    return(if (isTRUE(util_collection_date_is_valid(years))) years else value)
   }
 
   # A local time of day does not move the date, so it is dropped
@@ -962,6 +1058,12 @@ util_collection_date_match <- function(value, format) {
   }
 
   if (length(tokens) != length(roles)) {
+    return(NA_character_)
+  }
+
+  # A two-digit year before a month is how Excel writes day-month with no year
+  # (`15-Mar`), not a year-month, so `ym` needs all four digits
+  if (format == "ym" && !grepl("^[0-9]{4}$", tokens[1])) {
     return(NA_character_)
   }
 
@@ -1024,7 +1126,7 @@ util_check_collection_date_format <- function(format) {
     return(character(0))
   }
 
-  allowed <- c("ymd", "dmy", "mdy", "ym", "my", "y")
+  allowed <- c("ymd", "dmy", "mdy", "ym", "my", "y", "auto")
   unknown <- setdiff(format, allowed)
   if (length(unknown) > 0) {
     stop(
@@ -1034,6 +1136,10 @@ util_check_collection_date_format <- function(format) {
       ),
       call. = FALSE
     )
+  }
+
+  if ("auto" %in% format && length(format) > 1) {
+    stop("`collection_date_format: auto` works out the formats itself, so cannot be combined with others", call. = FALSE)
   }
 
   if (sum(format %in% c("ymd", "dmy", "mdy")) > 1 || sum(format %in% c("ym", "my")) > 1) {

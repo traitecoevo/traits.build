@@ -67,6 +67,60 @@ test_that("a value the declared format does not match is returned unchanged", {
 })
 
 
+test_that("`ym` needs a four-digit year, so `15-Mar` is not March 2015", {
+  expect_equal(util_format_collection_date(c("2008/09", "2008-Sep"), "ym"), c("2008-09", "2008-09"))
+  expect_equal(util_format_collection_date("15-Mar", "ym"), "15-Mar")
+})
+
+
+test_that("a range of years written with a hyphen becomes a `/` range", {
+  expect_equal(
+    util_format_collection_date(c("2019-2020", "2019 - 2020", "2019\u20132020", "2020-2019"), "dmy"),
+    c("2019/2020", "2019/2020", "2019/2020", "2020-2019")
+  )
+})
+
+
+test_that("`auto` works out a column's format when only one reading fits", {
+  # One value with a day over 12 settles the whole column as day-first,
+  # including the values that would read either way
+  expect_equal(
+    util_format_collection_date(c("4/07/2022", "25/07/2022", "Aug 2022", "2022"), "auto"),
+    c("2022-07-04", "2022-07-25", "2022-08", "2022")
+  )
+  expect_equal(
+    util_format_collection_date(c("4/07/2022", "7/25/2022"), "auto"),
+    c("2022-04-07", "2022-07-25")
+  )
+  # Formats that read the column the same way are not a conflict
+  expect_equal(util_format_collection_date(c("Jan-96", "Mar-97"), "auto"), c("1996-01", "1997-03"))
+  # A value no format reads is left for `dataset_test` without blocking the rest
+  expect_equal(
+    util_format_collection_date(c("25/07/2022", "sometime in July"), "auto"),
+    c("2022-07-25", "sometime in July")
+  )
+})
+
+
+test_that("`auto` converts nothing when the column could be read more than one way", {
+  # Day-first or month-first?
+  expect_equal(util_format_collection_date(c("4/07/2022", "5/07/2022"), "auto"), c("4/07/2022", "5/07/2022"))
+  # Year-first with two-digit years, or day-first?
+  doyle <- c("19.10.10", "19.10.15", "19.11.02")
+  expect_equal(util_format_collection_date(doyle, "auto"), doyle)
+  # Values only day-first can read, mixed with values only month-first can
+  mixed <- c("25/07/2022", "7/25/2022")
+  expect_equal(util_format_collection_date(mixed, "auto"), mixed)
+  # Read per value, `15-Mar` was March 2015. No format reads it here, so it is
+  # left for `dataset_test`; `2-Sep-08` can only be day-first, as `2` is no year
+  expect_equal(util_format_collection_date(c("2-Sep-08", "15-Mar"), "auto"), c("2008-09-02", "15-Mar"))
+
+  expect_match(util_collection_date_auto_message(doyle), "`dmy` or `ymd`: '19.10.10' reads as 2010-10-19 or 2019-10-10")
+  expect_match(util_collection_date_auto_message(mixed), "no one format that reads them all")
+  expect_equal(util_collection_date_auto_message(c("25/07/2022", "4/07/2022")), "")
+})
+
+
 test_that("values already standard pass through, whatever the format", {
   standard <- c("2008-09-02", "2008", "2010-10/2011-03", "unknown/2022", NA)
   expect_equal(util_format_collection_date(standard, "mdy"), standard)
@@ -126,6 +180,7 @@ test_that("an unknown or ambiguous format, or an unknown time zone, is an error"
   expect_error(util_format_collection_date("1/1/2000", c("dmy", "mdy")), "read the same value two ways")
   expect_error(util_format_collection_date("1/2000", c("ym", "my")), "read the same value two ways")
   expect_error(util_format_collection_date("2000", timezone = "Sydney"), "Olson time zone")
+  expect_error(util_format_collection_date("1/1/2000", c("auto", "y")), "cannot be combined")
 
   # As written in `metadata.yml`
   expect_equal(util_check_collection_date_format("dmy my y"), c("dmy", "my", "y"))
@@ -159,23 +214,23 @@ test_that("the build converts the columns `collection_date` names, and only thos
 })
 
 
-# Test_2023_7, with `edit` applied to its metadata, in a fresh data folder
-dataset_test_dates <- function(edit) {
+# A fixture, with `edit` applied to its metadata, in a fresh data folder
+dataset_test_dates <- function(edit, dataset_id = "Test_2023_7") {
   path_data <- withr::local_tempdir()
-  dir.create(file.path(path_data, "Test_2023_7"))
+  dir.create(file.path(path_data, dataset_id))
   file.copy(
-    list.files(file.path("examples", "Test_2023_7"), full.names = TRUE),
-    file.path(path_data, "Test_2023_7"), recursive = TRUE
+    list.files(file.path("examples", dataset_id), full.names = TRUE),
+    file.path(path_data, dataset_id), recursive = TRUE
   )
-  path_metadata <- file.path(path_data, "Test_2023_7", "metadata.yml")
+  path_metadata <- file.path(path_data, dataset_id, "metadata.yml")
   write_metadata(edit(read_metadata(path_metadata)), path_metadata)
 
   withr::local_options(
     useFancyQuotes = FALSE, cli.unicode = FALSE, crayon.enabled = FALSE,
-    width = 120
+    width = 250
   )
   out <- capture.output(
-    suppressMessages(dataset_test("Test_2023_7", path_data = path_data))
+    suppressMessages(dataset_test(dataset_id, path_data = path_data))
   )
   gsub("\033\\[[0-9]+m", "", out)
 }
@@ -199,6 +254,26 @@ test_that("`dataset_test` reports dates that are not standard in the built datas
     metadata
   })
   expect_match(out, "'2-Sep-08', '3-Sep-08'", all = FALSE)
+})
+
+
+test_that("`auto` reads a fixture's dates, and `dataset_test` says why when it cannot", {
+  # Test_2023_7's `2-Sep-08` can only be day-first
+  out <- dataset_test_dates(function(metadata) {
+    metadata$dataset$collection_date_format <- "auto"
+    metadata
+  })
+  expect_false(any(grepl("`collection_date` has", out, fixed = TRUE)))
+
+  # Test_2023_1's `1/2/2004` and `1/3/2004` could be either
+  out <- dataset_test_dates(function(metadata) {
+    metadata$dataset$collection_date_format <- "auto"
+    metadata
+  }, "Test_2023_1")
+  expect_match(
+    out, "`auto` cannot tell whether they are written `dmy` or `mdy`: '1/2/2004' reads as 2004-02-01 or 2004-01-02",
+    all = FALSE
+  )
 })
 
 

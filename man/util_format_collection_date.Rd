@@ -16,7 +16,16 @@ tried in turn for each value: any of \code{"ymd"}, \code{"dmy"}, \code{"mdy"}, \
 full dates, month-year values and bare years is declared
 \code{c("dmy", "my", "y")} -- or \verb{dmy my y} in \code{metadata.yml}. Formats that
 could read the same value two ways -- \code{"dmy"} with \code{"mdy"}, say -- cannot
-be combined.
+be combined. \code{"ym"} needs a four-digit year, since \code{15-Mar} is how Excel
+writes the 15th of March with no year.
+
+\code{"auto"} works the format out from the whole column: it tries
+\verb{dmy my y}, \verb{mdy my y} and \verb{ymd ym y}, and uses the one that reads every
+value any of them can. If more than one does and they give different
+dates -- a column whose values could all be day-first or month-first, such
+as \code{4/07/2022} -- it converts nothing, so the curator declares which. It
+decides for the column, never value by value, so it cannot read one value
+day-first and the next month-first.
 
 Within a value, day, month and year may be separated by \code{-}, \code{/}, \code{.}, \verb{,}
 or spaces, or not at all (\code{20190206}). Months may be numbers or English
@@ -36,10 +45,11 @@ Character vector the length of \code{x}
 }
 \description{
 Rewrites dates written in the format a dataset declares as \code{yyyy-mm-dd},
-\code{yyyy-mm} or \code{yyyy}. The format is never inferred: a value that does not
-match the declared format is returned unchanged, so \code{dataset_test()} reports
-it rather than the build storing a guess. Values that are already standard
-pass through untouched.
+\code{yyyy-mm} or \code{yyyy}. A value is never guessed at: one that does not match
+the declared format is returned unchanged, so \code{dataset_test()} reports it
+rather than the build storing a guess. Values that are already standard pass
+through untouched, and a range of years written with a hyphen, \code{2019-2020},
+becomes \code{2019/2020}.
 }
 \details{
 The build calls this on the \code{collection_date} column(s) of \code{data.csv} for a
