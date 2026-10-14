@@ -1808,7 +1808,7 @@
 <https://w3id.org/traits.build#type> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
 <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> <http://www.w3.org/2004/02/skos/core#prefLabel> "Identifier"@en .
 <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> <http://purl.org/dc/terms/description> "Provides an identifying sequence of characters to refer to an entity within a context. An Identifier can be unique within a local context or a global context."@en .
-<http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> <http://www.w3.org/2004/02/skos/core#inScheme> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#> .
+<http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> <http://www.w3.org/2004/02/skos/core#inScheme> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#> .
 <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic> <http://www.w3.org/2004/02/skos/core#prefLabel> "Characteristic"@en .
 <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic> <http://purl.org/dc/terms/description> "A characteristic represents a property of an entity that can be measured (e.g., height, length, or color). A characteristic of an entity is observed through a measurement, which further asserts a value of the characteristic for the entity. A characteristic type (e.g., 'height') can be associated with many different entities, whereas an individual characteristic (a particular occurrence of the 'height' characteristic) is associated to exactly one entity."@en .
 <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic> <http://www.w3.org/2004/02/skos/core#inScheme> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#> .
@@ -1936,15 +1936,19 @@
 <http://rs.tdwg.org/dwc/terms/measurementValue> <http://www.w3.org/2004/02/skos/core#prefLabel> "measurementValue"@en .
 <http://rs.tdwg.org/dwc/terms/measurementValue> <http://purl.org/dc/terms/description> "The value of the measurement, fact, characteristic, or assertion."@en .
 <http://rs.tdwg.org/dwc/terms/measurementValue> <http://www.w3.org/2000/01/rdf-schema#comment> "This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value."@en .
+<http://rs.tdwg.org/dwc/terms/measurementValue> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/terms/> .
 <http://rs.tdwg.org/dwc/terms/acceptedNameUsage> <http://www.w3.org/2004/02/skos/core#prefLabel> "acceptedNameUsage"@en .
 <http://rs.tdwg.org/dwc/terms/acceptedNameUsage> <http://purl.org/dc/terms/description> "The full name, with authorship and date information if known, of the currently valid (zoological) or accepted (botanical) dwc:Taxon."@en .
 <http://rs.tdwg.org/dwc/terms/acceptedNameUsage> <http://www.w3.org/2000/01/rdf-schema#comment> "The full scientific name, with authorship and date information if known, of the accepted (botanical) or valid (zoological) name in cases where the provided dwc:scientificName is considered by the reference indicated in the dwc:accordingTo property, or of the content provider, to be a synonym or misapplied name. When applied to a dwc:Organism or dwc:Occurrence, this term should be used in cases where a content provider regards the provided dwc:scientificName to be inconsistent with the taxonomic perspective of the content provider. For example, there are many discrepancies within specimen collections and observation datasets between the recorded name (e.g., the most recent identification from an expert who examined a specimen, or a field identification for an observed dwc:Organism), and the name asserted by the content provider to be taxonomically accepted."@en .
+<http://rs.tdwg.org/dwc/terms/acceptedNameUsage> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/terms/> .
 <http://rs.tdwg.org/dwc/terms/lifeStage> <http://www.w3.org/2004/02/skos/core#prefLabel> "lifeStage"@en .
 <http://rs.tdwg.org/dwc/terms/lifeStage> <http://purl.org/dc/terms/description> "The age class or life stage of the dwc:Organism(s) at the time the dwc:Occurrence was recorded."@en .
 <http://rs.tdwg.org/dwc/terms/lifeStage> <http://www.w3.org/2000/01/rdf-schema#comment> "Recommended best practice is to use a controlled vocabulary. This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value."@en .
+<http://rs.tdwg.org/dwc/terms/lifeStage> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/terms/> .
 <http://rs.tdwg.org/dwc/terms/basisOfRecord> <http://www.w3.org/2004/02/skos/core#prefLabel> "basisOfRecord"@en .
 <http://rs.tdwg.org/dwc/terms/basisOfRecord> <http://purl.org/dc/terms/description> "The specific nature of the data record."@en .
 <http://rs.tdwg.org/dwc/terms/basisOfRecord> <http://www.w3.org/2000/01/rdf-schema#comment> "Recommended best practice is to use a controlled vocabulary such as the set of local names of the identifiers for classes in Darwin Core."@en .
+<http://rs.tdwg.org/dwc/terms/basisOfRecord> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/terms/> .
 <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <http://www.w3.org/2004/02/skos/core#prefLabel> "organizedInClass"@en .
 <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <http://purl.org/dc/terms/description> "Used to organize properties within classes for easier human understanding."@en .
 <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/terms/attributes/> .
@@ -2088,6 +2092,7 @@
 <http://semanticscience.org/resource/SIO_000602> <http://www.w3.org/2004/02/skos/core#inScheme> <http://semanticscience.org/resource/> .
 <http://semanticscience.org/resource/SIO_001330> <http://www.w3.org/2004/02/skos/core#prefLabel> "metadata"@en .
 <http://semanticscience.org/resource/SIO_001330> <http://purl.org/dc/terms/description> "Metadata is data that provides information about data."@en .
+<http://semanticscience.org/resource/SIO_001330> <http://www.w3.org/2004/02/skos/core#inScheme> <http://semanticscience.org/resource/> .
 <http://terminologies.gfbio.org/terms/ETS/traitDescription> <http://www.w3.org/2004/02/skos/core#prefLabel> "traitDescription"@en .
 <http://terminologies.gfbio.org/terms/ETS/traitDescription> <http://purl.org/dc/terms/description> "A short, unambiguous definition of the trait as used in the specific study context; may refer to a method of measurement; may copy the description of a public trait ontology;"@en .
 <http://terminologies.gfbio.org/terms/ETS/traitDescription> <http://www.w3.org/2000/01/rdf-schema#comment> "The definition should make use of terms provided by existing public ontologies, e.g. 'the mass (PATO:mass), either fresh or dried, of a fruit (PO:fruit)'"@en .
@@ -2132,8 +2137,11 @@
 <http://terminologies.gfbio.org/terms/ETS/MeasurementOrFact> <http://www.w3.org/2004/02/skos/core#inScheme> <http://terminologies.gfbio.org/terms/ETS/> .
 <http://terminologies.gfbio.org/terms/ETS/Taxon> <http://www.w3.org/2004/02/skos/core#prefLabel> "Taxon"@en .
 <http://terminologies.gfbio.org/terms/ETS/Taxon> <http://purl.org/dc/terms/description> "An extension provides further terms for specifying the taxonomic resolution of the observation."@en .
+<http://terminologies.gfbio.org/terms/ETS/Taxon> <http://www.w3.org/2004/02/skos/core#inScheme> <http://terminologies.gfbio.org/terms/ETS/> .
 <http://terminologies.gfbio.org/terms/ETS/Traitdata> <http://www.w3.org/2004/02/skos/core#prefLabel> "Traitdata"@en .
+<http://terminologies.gfbio.org/terms/ETS/Traitdata> <http://www.w3.org/2004/02/skos/core#inScheme> <http://terminologies.gfbio.org/terms/ETS/> .
 <http://terminologies.gfbio.org/terms/ETS/Metadata> <http://www.w3.org/2004/02/skos/core#prefLabel> "Metadata"@en .
+<http://terminologies.gfbio.org/terms/ETS/Metadata> <http://www.w3.org/2004/02/skos/core#inScheme> <http://terminologies.gfbio.org/terms/ETS/> .
 <http://terminologies.gfbio.org/terms/ETS/individualCount> <http://www.w3.org/2004/02/skos/core#prefLabel> "individualCount"@en .
 <http://terminologies.gfbio.org/terms/ETS/individualCount> <http://purl.org/dc/terms/description> "If measurement is an aggregate measure of multiple individuals or specimens, report number of specimens as count, i.e. integer number. Defaults to 1"@en .
 <http://terminologies.gfbio.org/terms/ETS/individualCount> <http://www.w3.org/2004/02/skos/core#inScheme> <http://terminologies.gfbio.org/terms/ETS/> .
@@ -2144,12 +2152,16 @@
 <http://terminologies.gfbio.org/terms/ETS/traitID> <http://www.w3.org/2004/02/skos/core#prefLabel> "traitID"@en .
 <http://terminologies.gfbio.org/terms/ETS/traitID> <http://purl.org/dc/terms/description> "Unique identifier of the trait according to a public ontology, or a user-provided thesaurus of traits."@en .
 <http://terminologies.gfbio.org/terms/ETS/traitID> <http://www.w3.org/2000/01/rdf-schema#comment> "Examples: TO:0000181; TOP103; http://top-thesaurus.org/annotationInfo?viz=1&&trait=Seed_mass;"@en .
+<http://terminologies.gfbio.org/terms/ETS/traitID> <http://www.w3.org/2004/02/skos/core#inScheme> <http://terminologies.gfbio.org/terms/ETS/> .
 <http://terminologies.gfbio.org/terms/ETS/eventDate> <http://www.w3.org/2004/02/skos/core#prefLabel> "eventDate"@en .
 <http://terminologies.gfbio.org/terms/ETS/eventDate> <http://purl.org/dc/terms/description> "The date-time or interval during which an Event occurred. For occurrences, this is the date-time when the event was recorded. Not suitable for a time in a geological context. Recommended best practice is to use an encoding scheme, such as ISO 8601:2004(E). For lower precision, use year, month and day field instead."@en .
+<http://terminologies.gfbio.org/terms/ETS/eventDate> <http://www.w3.org/2004/02/skos/core#inScheme> <http://terminologies.gfbio.org/terms/ETS/> .
 <http://terminologies.gfbio.org/terms/ETS/traitValue> <http://www.w3.org/2004/02/skos/core#prefLabel> "traitValue"@en .
 <http://terminologies.gfbio.org/terms/ETS/traitValue> <http://purl.org/dc/terms/description> "Standardized measured value or factor level for this species trait. Numerical values must use the correct unit. Factor levels must be compliant with the thesaurus of traits."@en .
+<http://terminologies.gfbio.org/terms/ETS/traitValue> <http://www.w3.org/2004/02/skos/core#inScheme> <http://terminologies.gfbio.org/terms/ETS/> .
 <http://terminologies.gfbio.org/terms/ETS/traitUnit> <http://www.w3.org/2004/02/skos/core#prefLabel> "traitUnit"@en .
 <http://terminologies.gfbio.org/terms/ETS/traitUnit> <http://purl.org/dc/terms/description> "The units associated with the measurementValue. The expected standard unit for this trait as defined in the traitlist/ thesaurus."@en .
+<http://terminologies.gfbio.org/terms/ETS/traitUnit> <http://www.w3.org/2004/02/skos/core#inScheme> <http://terminologies.gfbio.org/terms/ETS/> .
 <http://purl.obolibrary.org/obo/PCO_0000001> <http://www.w3.org/2004/02/skos/core#prefLabel> "population"@en .
 <http://purl.obolibrary.org/obo/PCO_0000001> <http://purl.org/dc/terms/description> "A collection of organisms, all of the same species, that live in the same place."@en .
 <http://purl.obolibrary.org/obo/PCO_0000001> <http://www.w3.org/2004/02/skos/core#inScheme> <http://purl.obolibrary.org/obo/> .
@@ -2209,19 +2221,19 @@
 <http://vocab.fairdatacollective.org/gdmt/IsMetadataFor> <http://www.w3.org/2004/02/skos/core#inScheme> <http://vocab.fairdatacollective.org/gdmt/> .
 <http://www.w3.org/2002/07/owl#sameAs> <http://www.w3.org/2004/02/skos/core#prefLabel> "sameAs"@en .
 <http://www.w3.org/2002/07/owl#sameAs> <http://purl.org/dc/terms/description> "The property that determines that two given individuals are equal."@en .
-<http://www.w3.org/2002/07/owl#sameAs> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2002/07/owl> .
+<http://www.w3.org/2002/07/owl#sameAs> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2002/07/owl#> .
 <http://www.w3.org/2001/XMLSchema#int> <http://www.w3.org/2004/02/skos/core#prefLabel> "integer"@en .
-<http://www.w3.org/2001/XMLSchema#int> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema> .
+<http://www.w3.org/2001/XMLSchema#int> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema#> .
 <http://www.w3.org/2001/XMLSchema#date> <http://www.w3.org/2004/02/skos/core#prefLabel> "date"@en .
-<http://www.w3.org/2001/XMLSchema#date> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema> .
+<http://www.w3.org/2001/XMLSchema#date> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema#> .
 <http://www.w3.org/2001/XMLSchema#decimal> <http://www.w3.org/2004/02/skos/core#prefLabel> "decimal"@en .
-<http://www.w3.org/2001/XMLSchema#decimal> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema> .
+<http://www.w3.org/2001/XMLSchema#decimal> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema#> .
 <http://www.w3.org/2001/XMLSchema#string> <http://www.w3.org/2004/02/skos/core#prefLabel> "string"@en .
-<http://www.w3.org/2001/XMLSchema#string> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema> .
+<http://www.w3.org/2001/XMLSchema#string> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema#> .
 <http://www.w3.org/2001/XMLSchema#anyURI> <http://www.w3.org/2004/02/skos/core#prefLabel> "anyURI"@en .
-<http://www.w3.org/2001/XMLSchema#anyURI> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema> .
+<http://www.w3.org/2001/XMLSchema#anyURI> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema#> .
 <http://www.w3.org/2001/XMLSchema#Name> <http://www.w3.org/2004/02/skos/core#prefLabel> "Name"@en .
-<http://www.w3.org/2001/XMLSchema#Name> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema> .
+<http://www.w3.org/2001/XMLSchema#Name> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2001/XMLSchema#> .
 <http://rs.tdwg.org/dwc/terms/measurementType> <http://www.w3.org/2004/02/skos/core#prefLabel> "Measurement Type"@en .
 <http://rs.tdwg.org/dwc/terms/measurementType> <http://purl.org/dc/terms/description> "The nature of the measurement, fact, characteristic, or assertion."@en .
 <http://rs.tdwg.org/dwc/terms/measurementType> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/terms/> .

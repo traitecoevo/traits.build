@@ -8,32 +8,21 @@
 # same change that fixes it -- tests/testthat/test-validate.R fails on a
 # register entry that nothing reports any more.
 #
-# Every entry below is a defect in the RDF as published since data model 0.1.0.
-# Each one changes what consumers parse when fixed, so each needs its own
-# reviewed change and a data-model version to ship in, which is why they are
-# registered rather than silently fixed by the refactor that introduced the
-# checks.
+# An entry is a defect in the published RDF whose fix needs a decision, not
+# just a reviewed change: each one changes what consumers parse, so it ships in
+# a data-model version. The mechanical defects found when these checks arrived
+# (2026-10) were fixed in 1.2.0 and their entries deleted.
 
 ONTOLOGY_KNOWN_GAPS <- c(
   `input-duplicate-key` = paste(
-    "`taxon` is the Class of two rows: the entity observed (broader",
-    "oboe:Entity) and the column of the taxa table (exact dwc:Taxon). Both",
-    "become the one IRI https://w3id.org/traits.build#taxon, which therefore",
-    "carries two descriptions. Fixing it renames a published IRI; needs a",
-    "maintainer decision on which row moves."),
-  # Input defects in the published-classes and terms tables, as found by these
-  # checks on arrival. Each is fixed in its own commit, which also deletes its
-  # entry here; they are registered so that the commit that introduced the
-  # checks is itself output-neutral.
-  `published-class-missing-field` = paste(
-    "12 published classes have no skos:inScheme, so no inScheme statement is",
-    "emitted for them, and two rows (the licence and publisher URLs) carry an",
-    "Entity and nothing else."),
-  `published-class-duplicate-key` = paste(
-    "the licence and publisher rows have no prefix or identifier, so both",
-    "have the key NA:NA. They exist only to label the concept scheme's",
-    "licence and publisher, which are written as literals (see",
-    "rdf-uri-inside-literal); fix the two together.")
+    "`taxon` is the Class of two rows of traits.build_ontology.csv: the entity",
+    "observed (broader oboe:Entity, 'A circumscribed set of organisms') and",
+    "the characteristic the taxa table describes (broader",
+    "oboe:Characteristic, exact dwc:Taxon, has property taxon_name ...).",
+    "Both become the one IRI https://w3id.org/traits.build#taxon, which is",
+    "therefore both an Entity and a Characteristic with two descriptions.",
+    "Fixing it renames a published IRI; needs a maintainer decision on which",
+    "row moves.")
 )
 
 new_problem <- function(id, message, details = character()) {
@@ -131,16 +120,26 @@ validate_ontology <- function(data_dir = ontology_path("data"),
 
   # --- namespaces -----------------------------------------------------------
   #
-  # Every namespace a referenced class lives in needs a Turtle prefix, or
-  # traits.build.ttl spells its IRIs out in full and the prefix list in
-  # build.R has drifted from the table.
+  # A published class's IRI must sit in the namespace it claims (the table had
+  # oboe-characteristics#Identifier filed under oboe-core, and XML Schema and
+  # OWL without their `#`), and every namespace needs a Turtle prefix, or
+  # traits.build.ttl spells its IRIs out in full and the prefix list in build.R
+  # has drifted from the table.
 
-  used <- unique(stringr::str_trim(classes$`skos:inScheme`[class_keys %in% external$reference]))
-  used <- used[!is.na(used)]
+  scheme <- stringr::str_trim(classes$`skos:inScheme`)
+  outside <- !is.na(scheme) & !is.na(classes$Entity) &
+    !stringr::str_starts(classes$Entity, stringr::fixed(scheme))
+  if (any(outside)) {
+    add("published-class-outside-scheme",
+        sprintf("%d published class(es) have an IRI outside their skos:inScheme", sum(outside)),
+        sprintf("%s (inScheme %s)", classes$Entity[outside], scheme[outside]))
+  }
+
+  used <- unique(scheme[!is.na(scheme)])
   undeclared <- setdiff(used, unname(ONTOLOGY_NAMESPACES))
   if (length(undeclared) > 0) {
     add("namespace-undeclared",
-        sprintf("%d namespace(s) used by matched classes have no prefix in ONTOLOGY_NAMESPACES",
+        sprintf("%d namespace(s) used by published classes have no prefix in ONTOLOGY_NAMESPACES",
                 length(undeclared)),
         sort(undeclared))
   }

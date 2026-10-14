@@ -12,8 +12,13 @@ Prepared 2026-10-12 (traits.build #275, #276).
 - Exact Darwin Core matches that had been recorded only as labels or as a broader OBOE identifier are now declared exact: `original_name` to `verbatimIdentification`, `trait_name` to `measurementType`, `value` to `measurementValue`, `unit` to `measurementUnit`, `measurement_remarks` to `measurementRemarks`, `individual_id` to `organismID`, `location_id` to `locationID`, `dataset_id` to `datasetID`, `collection_date` to `eventDate`.
 - `establishment_means` is demoted from an exact to a close match: Darwin Core applies it to an organism at a place and time, and the `taxa` table records it once per taxon.
 - `entity_type` and `taxon_distribution`, which had no mapping, now have one; the three terms with no counterpart in any standard (`schema`, `build_info`, the database itself) say so in their comment.
-- 77 external classes added to the published-classes table with their definitions; the Turtle serialisation declares the `sosa`, `tern`, `terncv`, `dwciri` and `qudt` prefixes. 2,054 to 2,468 statements.
+- 77 external classes added to the published-classes table with their definitions; the Turtle serialisation declares the `sosa`, `tern`, `terncv`, `dwciri` and `qudt` prefixes. 2,054 to 2,480 statements.
 - `identifier_value` now links to both `identifier_type` and `institution_code`. The two were separated by a comma rather than `;`, which made one IRI that did not parse, so the statement had been dropped since 1.1.0. `dwc:Taxon` was listed twice in the published-classes table; its statements are now written once.
+- Fixes to the RDF as published since 0.1.0, found by the build checks added in this version:
+  - `traits.build.nt` now ends each statement with `.`; before, it parsed as N-Triples to zero statements.
+  - `dcterms:created` dates are ISO (`2024-02-01`) and typed with the full `http://www.w3.org/2001/XMLSchema#date` IRI. Before, they were written `"1-Feb-24"^^<xsd:date>`: a relative IRI and an invalid lexical form.
+  - The concept scheme's licence, publisher, top concept and `topConceptOf` are IRIs rather than strings holding an IRI. The top concept is `#traits.build-database` (it had lost the `#`). The scheme is typed with `rdf:type`, where it had used `rdfs:type`, which does not exist.
+  - Every published class has a `skos:inScheme`, and the namespace is the one its IRI lives in. 12 classes had none, XML Schema and OWL were missing their `#`, and `Identifier` (defined in `oboe-characteristics`) was filed under `oboe-core`. The Turtle declares the `xsd` and `oboe-characteristics` prefixes.
 - The page gives every term an anchor by its bare name, so `https://w3id.org/traits.build#<term>` lands on the term, and shows the "is property of" relations, which it had never displayed.
 
 ## traits.build data model 1.1.0

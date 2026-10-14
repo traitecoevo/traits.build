@@ -7,7 +7,7 @@
         "@value": "Provides an identifying sequence of characters to refer to an entity within a context. An Identifier can be unique within a local context or a global context."
       },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
-        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#"
+        "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -682,6 +682,9 @@
         "@language": "en",
         "@value": "The full scientific name, with authorship and date information if known, of the accepted (botanical) or valid (zoological) name in cases where the provided dwc:scientificName is considered by the reference indicated in the dwc:accordingTo property, or of the content provider, to be a synonym or misapplied name. When applied to a dwc:Organism or dwc:Occurrence, this term should be used in cases where a content provider regards the provided dwc:scientificName to be inconsistent with the taxonomic perspective of the content provider. For example, there are many discrepancies within specimen collections and observation datasets between the recorded name (e.g., the most recent identification from an expert who examined a specimen, or a field identification for an observed dwc:Organism), and the name asserted by the content provider to be taxonomically accepted."
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "acceptedNameUsage"
@@ -822,6 +825,9 @@
       "http://www.w3.org/2000/01/rdf-schema#comment": {
         "@language": "en",
         "@value": "Recommended best practice is to use a controlled vocabulary such as the set of local names of the identifiers for classes in Darwin Core."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -1034,6 +1040,9 @@
         "@language": "en",
         "@value": "Recommended best practice is to use a controlled vocabulary. This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value."
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "lifeStage"
@@ -1174,6 +1183,9 @@
       "http://www.w3.org/2000/01/rdf-schema#comment": {
         "@language": "en",
         "@value": "This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://rs.tdwg.org/dwc/terms/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -1694,6 +1706,9 @@
         "@language": "en",
         "@value": "Metadata is data that provides information about data."
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://semanticscience.org/resource/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "metadata"
@@ -1715,6 +1730,9 @@
     },
     {
       "@id": "http://terminologies.gfbio.org/terms/ETS/Metadata",
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "Metadata"
@@ -1740,6 +1758,9 @@
         "@language": "en",
         "@value": "An extension provides further terms for specifying the taxonomic resolution of the observation."
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "Taxon"
@@ -1747,6 +1768,9 @@
     },
     {
       "@id": "http://terminologies.gfbio.org/terms/ETS/Traitdata",
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "Traitdata"
@@ -1877,6 +1901,9 @@
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "The date-time or interval during which an Event occurred. For occurrences, this is the date-time when the event was recorded. Not suitable for a time in a geological context. Recommended best practice is to use an encoding scheme, such as ISO 8601:2004(E). For lower precision, use year, month and day field instead."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -2145,6 +2172,9 @@
         "@language": "en",
         "@value": "Examples: TO:0000181; TOP103; http://top-thesaurus.org/annotationInfo?viz=1&&trait=Seed_mass;"
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "traitID"
@@ -2170,6 +2200,9 @@
         "@language": "en",
         "@value": "The units associated with the measurementValue. The expected standard unit for this trait as defined in the traitlist/ thesaurus."
       },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
+      },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "traitUnit"
@@ -2180,6 +2213,9 @@
       "http://purl.org/dc/terms/description": {
         "@language": "en",
         "@value": "Standardized measured value or factor level for this species trait. Numerical values must use the correct unit. Factor levels must be compliant with the thesaurus of traits."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -2475,7 +2511,7 @@
     {
       "@id": "http://www.w3.org/2001/XMLSchema#Name",
       "http://www.w3.org/2004/02/skos/core#inScheme": {
-        "@id": "http://www.w3.org/2001/XMLSchema"
+        "@id": "http://www.w3.org/2001/XMLSchema#"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -2485,7 +2521,7 @@
     {
       "@id": "http://www.w3.org/2001/XMLSchema#anyURI",
       "http://www.w3.org/2004/02/skos/core#inScheme": {
-        "@id": "http://www.w3.org/2001/XMLSchema"
+        "@id": "http://www.w3.org/2001/XMLSchema#"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -2495,7 +2531,7 @@
     {
       "@id": "http://www.w3.org/2001/XMLSchema#date",
       "http://www.w3.org/2004/02/skos/core#inScheme": {
-        "@id": "http://www.w3.org/2001/XMLSchema"
+        "@id": "http://www.w3.org/2001/XMLSchema#"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -2505,7 +2541,7 @@
     {
       "@id": "http://www.w3.org/2001/XMLSchema#decimal",
       "http://www.w3.org/2004/02/skos/core#inScheme": {
-        "@id": "http://www.w3.org/2001/XMLSchema"
+        "@id": "http://www.w3.org/2001/XMLSchema#"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -2515,7 +2551,7 @@
     {
       "@id": "http://www.w3.org/2001/XMLSchema#int",
       "http://www.w3.org/2004/02/skos/core#inScheme": {
-        "@id": "http://www.w3.org/2001/XMLSchema"
+        "@id": "http://www.w3.org/2001/XMLSchema#"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -2525,7 +2561,7 @@
     {
       "@id": "http://www.w3.org/2001/XMLSchema#string",
       "http://www.w3.org/2004/02/skos/core#inScheme": {
-        "@id": "http://www.w3.org/2001/XMLSchema"
+        "@id": "http://www.w3.org/2001/XMLSchema#"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -2539,7 +2575,7 @@
         "@value": "The property that determines that two given individuals are equal."
       },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
-        "@id": "http://www.w3.org/2002/07/owl"
+        "@id": "http://www.w3.org/2002/07/owl#"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
