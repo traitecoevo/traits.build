@@ -6,7 +6,7 @@ Run `make` at the repository root for the targets. There are four.
 
 | Target | What it does | Needs |
 |---|---|---|
-| `make ontology` | Builds `output/ontology/` from `data/`: the labelled triple table and the four RDF serialisations (nq, nt, ttl, json). A few seconds. | R with the packages listed in `scripts/setup.R` |
+| `make ontology` | Builds `output/ontology/` from `data/`: the labelled triple table, the mapping changes since the previous release, and the four RDF serialisations (nq, nt, ttl, json). A few seconds. | R with the packages listed in `scripts/setup.R` |
 | `make ontology-check` | Validates the build (`R/validate.R`) and runs the tests in `tests/testthat/`, including the golden test that rebuilds into a temporary directory and compares against the committed artefacts byte for byte. | `testthat`, `withr` |
 | `make ontology-site` | Renders `index.qmd`, checks every term has an anchor on the page, and publishes `output/ontology/` into `docs/ontology/`, which is what GitHub Pages serves. A minute or two. | the Quarto CLI, `quarto`, `gt`, `htmltools`, `knitr` |
 | `make ontology-release` | Runs the two above, then snapshots the version named in `NEWS.md` into `output/ontology/release/<version>/` and publishes it. Refuses to overwrite a non-empty snapshot unless `TRAITS_BUILD_FORCE_RELEASE=1`. | |
@@ -21,6 +21,7 @@ CI runs the first three on every pull request that touches `ontology/` (`.github
 - `R/build.R`: reading the inputs, turning them into triples, serialising. `ONTOLOGY_NAMESPACES` there is the prefix list the Turtle declares; the validator checks that every namespace a matched class lives in has an entry.
 - `R/validate.R`: the checks, and `ONTOLOGY_KNOWN_GAPS`, the register of defects that are in the published RDF and are reported as `gap` rather than `FAIL`. Anything not on the register fails. Fixing a gap means deleting its entry in the same change.
 - `R/version.R`: the version is the newest `## traits.build data model <X.Y.Z>` heading in `NEWS.md`; the heading below it is the previous release. Nothing else records it.
+- `R/changes.R`: `mapping_changes.csv`, one row per SKOS match a term gained, lost or moved between relations since the previous release's snapshot. The build writes it, so a pull request that edits the mapping shows its changes as a short diff of that file rather than only as thousands of lines of RDF.
 - `R/table.R`, `index.qmd`: the page.
 - `R/site.R`: rendering, the anchor check, and publishing into `docs/ontology/`.
 - `output/ontology/`: the build artefacts, committed. They are the golden fixtures: change `R/` and if `make ontology-check` passes the change was output-neutral. To change the output deliberately, rebuild, review `git diff`, and commit the artefacts in their own commit, separate from the code change.
@@ -30,7 +31,7 @@ CI runs the first three on every pull request that touches `ontology/` (`.github
 
 1. Edit the CSVs in `data/`. Add any new external class to the published-classes table first, with its definition.
 2. `make ontology-check`. Read the report: `FAIL` lines are yours to fix; `gap` lines are the register.
-3. Review `git diff output/`. Every changed statement is either the change you meant or a regression.
+3. Review `output/ontology/mapping_changes.csv` for what the mapping now says against the last release, then `git diff output/`. Every changed statement is either the change you meant or a regression.
 4. If the change is published output, it needs a version: add a `## traits.build data model <X.Y.Z>` heading at the top of `NEWS.md` with what changed, then `make ontology-release`.
 5. Commit `data/`, `output/` and `docs/ontology/` together, open a pull request to `develop`.
 

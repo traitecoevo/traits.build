@@ -1,0 +1,153 @@
+term,relation,change,previous_relation,class,class_label,class_iri
+traits.build-traits,closeMatch,added,,dwc:MeasurementOrFact,Measurement Or Fact,http://rs.tdwg.org/dwc/terms/MeasurementOrFact
+traits.build-traits,relatedMatch,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+traits.build-contexts,relatedMatch,added,,dwc:MeasurementOrFact,Measurement Or Fact,http://rs.tdwg.org/dwc/terms/MeasurementOrFact
+traits.build-contexts,relatedMatch,added,,tern:Attribute,Attribute,https://w3id.org/tern/ontologies/tern/Attribute
+traits.build-locations,relatedMatch,added,,dcterms:location,location,http://purl.org/dc/terms/location
+traits.build-locations,relatedMatch,added,,tern:Site,Site,https://w3id.org/tern/ontologies/tern/Site
+traits.build-identifiers,relatedMatch,added,,dcterms:identifier,identifier,http://purl.org/dc/terms/identifier
+traits.build-methods,relatedMatch,added,,dwc:Protocol,Protocol,http://rs.tdwg.org/dwc/terms/Protocol
+traits.build-methods,relatedMatch,added,,sosa:Procedure,Procedure,http://www.w3.org/ns/sosa/Procedure
+traits.build-taxonomic_updates,relatedMatch,added,,dwc:Identification,Identification,http://rs.tdwg.org/dwc/terms/Identification
+traits.build-taxonomic_updates,relatedMatch,added,,dwc:verbatimIdentification,Verbatim Identification,http://rs.tdwg.org/dwc/terms/verbatimIdentification
+traits.build-taxa,closeMatch,added,,dwc:Taxon,Taxon,http://rs.tdwg.org/dwc/terms/Taxon
+traits.build-contributors,relatedMatch,added,,dcterms:Agent,Agent,http://purl.org/dc/terms/Agent
+traits.build-contributors,relatedMatch,added,,dcterms:contributor,contributor,http://purl.org/dc/terms/contributor
+traits.build-sources,relatedMatch,added,,dcterms:BibliographicResource,Bibliographic Resource,http://purl.org/dc/terms/BibliographicResource
+traits.build-sources,relatedMatch,added,,dcterms:bibliographicCitation,bibliographic citation,http://purl.org/dc/terms/bibliographicCitation
+dataset,exactMatch,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+dataset,closeMatch,added,,tern:RDFDataset,RDF Dataset,https://w3id.org/tern/ontologies/tern/RDFDataset
+observation,exactMatch,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+observation,closeMatch,added,,tern:ObservationCollection,Observation Collection,https://w3id.org/tern/ontologies/tern/ObservationCollection
+observation,relatedMatch,added,,dwc:parentMeasurementID,Parent Measurement ID,http://rs.tdwg.org/dwc/terms/parentMeasurementID
+observations_from_dataset,broader,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+observations_from_source,broader,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+observations_of_taxon,broader,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+observations_at_location,broader,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+observation_of_location,broader,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+observations_of_population,broader,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+observations_of_individual,broader,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+observation_of_treatment_context,broader,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+observation_of_plot_context,broader,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+observation_of_entity_context,broader,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+observation_of_temporal_context,broader,added,,sosa:ObservationCollection,Observation Collection,http://www.w3.org/ns/sosa/ObservationCollection
+measurement,exactMatch,added,,dwc:MeasurementOrFact,Measurement Or Fact,http://rs.tdwg.org/dwc/terms/MeasurementOrFact
+measurement,exactMatch,added,,sosa:Observation,Observation,http://www.w3.org/ns/sosa/Observation
+measurement,closeMatch,added,,tern:Observation,Observation,https://w3id.org/tern/ontologies/tern/Observation
+measurement,broader,added,,dwc:Assertion,Assertion,http://rs.tdwg.org/dwc/terms/Assertion
+trait_measurement,broader,added,,dwc:MeasurementOrFact,Measurement Or Fact,http://rs.tdwg.org/dwc/terms/MeasurementOrFact
+trait_measurement,broader,added,,sosa:Observation,Observation,http://www.w3.org/ns/sosa/Observation
+measurement_of_location_property,broader,added,,dwc:MeasurementOrFact,Measurement Or Fact,http://rs.tdwg.org/dwc/terms/MeasurementOrFact
+measurement_of_location_property,broader,added,,sosa:Observation,Observation,http://www.w3.org/ns/sosa/Observation
+measurement_of_treatment_context_property,broader,added,,dwc:MeasurementOrFact,Measurement Or Fact,http://rs.tdwg.org/dwc/terms/MeasurementOrFact
+measurement_of_treatment_context_property,broader,added,,sosa:Observation,Observation,http://www.w3.org/ns/sosa/Observation
+measurement_of_plot_context_property,broader,added,,dwc:MeasurementOrFact,Measurement Or Fact,http://rs.tdwg.org/dwc/terms/MeasurementOrFact
+measurement_of_plot_context_property,broader,added,,sosa:Observation,Observation,http://www.w3.org/ns/sosa/Observation
+measurement_of_entity_context_property,broader,added,,dwc:MeasurementOrFact,Measurement Or Fact,http://rs.tdwg.org/dwc/terms/MeasurementOrFact
+measurement_of_entity_context_property,broader,added,,sosa:Observation,Observation,http://www.w3.org/ns/sosa/Observation
+measurement_of_temporal_context_property,broader,added,,dwc:MeasurementOrFact,Measurement Or Fact,http://rs.tdwg.org/dwc/terms/MeasurementOrFact
+measurement_of_temporal_context_property,broader,added,,sosa:Observation,Observation,http://www.w3.org/ns/sosa/Observation
+entity,exactMatch,added,,sosa:FeatureOfInterest,Feature of Interest,http://www.w3.org/ns/sosa/FeatureOfInterest
+entity,closeMatch,added,,tern:FeatureOfInterest,Feature of Interest,https://w3id.org/tern/ontologies/tern/FeatureOfInterest
+individual,closeMatch,added,,dwc:Organism,Organism,http://rs.tdwg.org/dwc/terms/Organism
+individual,closeMatch,added,,tern-cv:60d7edf8-98c6-43e9-841c-e176c334d270,plant individual,http://linked.data.gov.au/def/tern-cv/60d7edf8-98c6-43e9-841c-e176c334d270
+individual,broader,added,,sosa:FeatureOfInterest,Feature of Interest,http://www.w3.org/ns/sosa/FeatureOfInterest
+population,closeMatch,added,,tern-cv:ae71c3f6-d430-400f-a1d4-97a333b4ee02,plant population,http://linked.data.gov.au/def/tern-cv/ae71c3f6-d430-400f-a1d4-97a333b4ee02
+population,broader,added,,sosa:FeatureOfInterest,Feature of Interest,http://www.w3.org/ns/sosa/FeatureOfInterest
+population,relatedMatch,added,,dwc:Organism,Organism,http://rs.tdwg.org/dwc/terms/Organism
+taxon,closeMatch,added,,tern:Taxon,Taxon,https://w3id.org/tern/ontologies/tern/Taxon
+taxon,broader,added,,sosa:FeatureOfInterest,Feature of Interest,http://www.w3.org/ns/sosa/FeatureOfInterest
+location,closeMatch,added,,tern:Site,Site,https://w3id.org/tern/ontologies/tern/Site
+location,broader,added,,sosa:FeatureOfInterest,Feature of Interest,http://www.w3.org/ns/sosa/FeatureOfInterest
+context,closeMatch,added,,tern:Attribute,Attribute,https://w3id.org/tern/ontologies/tern/Attribute
+plot,broader,added,,sosa:FeatureOfInterest,Feature of Interest,http://www.w3.org/ns/sosa/FeatureOfInterest
+plot,relatedMatch,added,,tern:Site,Site,https://w3id.org/tern/ontologies/tern/Site
+treatment,broader,added,,sosa:FeatureOfInterest,Feature of Interest,http://www.w3.org/ns/sosa/FeatureOfInterest
+temporal_context,relatedMatch,added,,tern:SiteVisit,Site Visit,https://w3id.org/tern/ontologies/tern/SiteVisit
+method_context,closeMatch,added,,sosa:Procedure,Procedure,http://www.w3.org/ns/sosa/Procedure
+method_context,closeMatch,added,,tern:Procedure,Procedure,https://w3id.org/tern/ontologies/tern/Procedure
+dataset_id,exactMatch,added,,dwc:datasetID,Dataset ID,http://rs.tdwg.org/dwc/terms/datasetID
+dataset_id,exactMatch,added,,ets:datasetID,dataset ID,http://terminologies.gfbio.org/terms/ETS/datasetID
+taxon_name,closeMatch,added,,dwc:scientificName,Scientific Name,http://rs.tdwg.org/dwc/terms/scientificName
+taxon_name,closeMatch,added,,ets:scientificName,scientific name,http://terminologies.gfbio.org/terms/ETS/scientificName
+observation_id,relatedMatch,added,,dwc:parentMeasurementID,Parent Measurement ID,http://rs.tdwg.org/dwc/terms/parentMeasurementID
+trait_name,exactMatch,added,,dwc:measurementType,Measurement Type,http://rs.tdwg.org/dwc/terms/measurementType
+trait_name,exactMatch,added,,ets:traitName,trait name,http://terminologies.gfbio.org/terms/ETS/traitName
+trait_name,closeMatch,added,,dwc:assertionType,Assertion Type,http://rs.tdwg.org/dwc/terms/assertionType
+trait_name,relatedMatch,added,,sosa:observedProperty,observed property,http://www.w3.org/ns/sosa/observedProperty
+trait_value,exactMatch,added,,dwc:assertionValue,Assertion Value,http://rs.tdwg.org/dwc/terms/assertionValue
+trait_value,exactMatch,changed,broader,dwc:measurementValue,measurementValue,http://rs.tdwg.org/dwc/terms/measurementValue
+trait_value,closeMatch,added,,sosa:hasSimpleResult,has simple result,http://www.w3.org/ns/sosa/hasSimpleResult
+trait_value,broader,added,,sosa:Result,Result,http://www.w3.org/ns/sosa/Result
+trait_value,broader,added,,tern:Value,Value,https://w3id.org/tern/ontologies/tern/Value
+unit,exactMatch,added,,dwc:assertionUnit,Assertion Unit,http://rs.tdwg.org/dwc/terms/assertionUnit
+unit,exactMatch,added,,dwc:measurementUnit,Measurement Unit,http://rs.tdwg.org/dwc/terms/measurementUnit
+unit,closeMatch,added,,qudt:Unit,Unit,http://qudt.org/schema/qudt/Unit
+unit,relatedMatch,added,,tern:unit,unit,https://w3id.org/tern/ontologies/tern/unit
+entity_type,closeMatch,added,,dwc:organismScope,Organism Scope,http://rs.tdwg.org/dwc/terms/organismScope
+entity_type,closeMatch,added,,tern:featureType,feature type,https://w3id.org/tern/ontologies/tern/featureType
+value_type,closeMatch,added,,ets:aggregateMeasure,aggregate measure,http://terminologies.gfbio.org/terms/ETS/aggregateMeasure
+value_type,closeMatch,added,,ets:statisticalMethod,statistical method,http://terminologies.gfbio.org/terms/ETS/statisticalMethod
+value_type,relatedMatch,added,,ets:measurementValue_max,measurement value max,http://terminologies.gfbio.org/terms/ETS/measurementValue_max
+value_type,relatedMatch,added,,ets:measurementValue_min,measurement value min,http://terminologies.gfbio.org/terms/ETS/measurementValue_min
+basis_of_value,closeMatch,added,,ets:basisOfRecordDescription,basis of record description,http://terminologies.gfbio.org/terms/ETS/basisOfRecordDescription
+replicates,closeMatch,added,,dwc:individualCount,Individual Count,http://rs.tdwg.org/dwc/terms/individualCount
+basis_of_record,closeMatch,added,,ets:basisOfRecord,basis of record,http://terminologies.gfbio.org/terms/ETS/basisOfRecord
+life_stage,exactMatch,added,,ets:lifeStage,life stage,http://terminologies.gfbio.org/terms/ETS/lifeStage
+population_id,relatedMatch,added,,dwc:organismID,Organism ID,http://rs.tdwg.org/dwc/terms/organismID
+individual_id,exactMatch,added,,dwc:organismID,Organism ID,http://rs.tdwg.org/dwc/terms/organismID
+repeat_measurements_id,closeMatch,added,,dwc:parentMeasurementID,Parent Measurement ID,http://rs.tdwg.org/dwc/terms/parentMeasurementID
+source_id,relatedMatch,added,,dwc:datasetID,Dataset ID,http://rs.tdwg.org/dwc/terms/datasetID
+source_id,relatedMatch,added,,ets:references,references,http://terminologies.gfbio.org/terms/ETS/references
+location_id,exactMatch,added,,dwc:locationID,Location ID,http://rs.tdwg.org/dwc/terms/locationID
+collection_date,exactMatch,added,,dwc:eventDate,Event Date,http://rs.tdwg.org/dwc/terms/eventDate
+collection_date,closeMatch,added,,dwc:assertionEffectiveDate,Assertion Effective Date,http://rs.tdwg.org/dwc/terms/assertionEffectiveDate
+collection_date,closeMatch,added,,dwc:measurementDeterminedDate,Measurement Determined Date,http://rs.tdwg.org/dwc/terms/measurementDeterminedDate
+collection_date,closeMatch,added,,sosa:phenomenonTime,phenomenon time,http://www.w3.org/ns/sosa/phenomenonTime
+collection_date,closeMatch,added,,tern:resultDateTime,result date time,https://w3id.org/tern/ontologies/tern/resultDateTime
+measurement_remarks,exactMatch,added,,dwc:assertionRemarks,Assertion Remarks,http://rs.tdwg.org/dwc/terms/assertionRemarks
+measurement_remarks,exactMatch,added,,dwc:measurementRemarks,Measurement Remarks,http://rs.tdwg.org/dwc/terms/measurementRemarks
+measurement_remarks,exactMatch,added,,ets:measurementRemarks,measurement remarks,http://terminologies.gfbio.org/terms/ETS/measurementRemarks
+method_id,relatedMatch,added,,dwc:protocolID,Protocol ID,http://rs.tdwg.org/dwc/terms/protocolID
+original_name,exactMatch,added,,dwc:verbatimIdentification,Verbatim Identification,http://rs.tdwg.org/dwc/terms/verbatimIdentification
+original_name,exactMatch,added,,ets:verbatimScientificName,verbatim scientific name,http://terminologies.gfbio.org/terms/ETS/verbatimScientificName
+location_name,closeMatch,added,,dwc:locality,Locality,http://rs.tdwg.org/dwc/terms/locality
+location_property,closeMatch,added,,dwc:measurementType,Measurement Type,http://rs.tdwg.org/dwc/terms/measurementType
+location_property,broader,added,,sosa:ObservableProperty,Observable Property,http://www.w3.org/ns/sosa/ObservableProperty
+locations_value,closeMatch,added,,dwc:assertionValue,Assertion Value,http://rs.tdwg.org/dwc/terms/assertionValue
+locations_value,broader,added,,sosa:Result,Result,http://www.w3.org/ns/sosa/Result
+elevation,closeMatch,added,,ets:elevation,elevation,http://terminologies.gfbio.org/terms/ETS/elevation
+context_property,closeMatch,added,,tern:Attribute,Attribute,https://w3id.org/tern/ontologies/tern/Attribute
+context_property,broader,added,,sosa:ObservableProperty,Observable Property,http://www.w3.org/ns/sosa/ObservableProperty
+treatment_context_property,closeMatch,added,,tern:Attribute,Attribute,https://w3id.org/tern/ontologies/tern/Attribute
+plot_context_property,closeMatch,added,,tern:Attribute,Attribute,https://w3id.org/tern/ontologies/tern/Attribute
+entity_context_property,closeMatch,added,,tern:Attribute,Attribute,https://w3id.org/tern/ontologies/tern/Attribute
+temporal_context_property,closeMatch,added,,tern:Attribute,Attribute,https://w3id.org/tern/ontologies/tern/Attribute
+method_context_property,relatedMatch,added,,sosa:Procedure,Procedure,http://www.w3.org/ns/sosa/Procedure
+contexts_value,closeMatch,added,,dwc:assertionValue,Assertion Value,http://rs.tdwg.org/dwc/terms/assertionValue
+contexts_value,broader,added,,sosa:Result,Result,http://www.w3.org/ns/sosa/Result
+identifier_value,closeMatch,added,,dcterms:identifier,identifier,http://purl.org/dc/terms/identifier
+methods_methods,exactMatch,added,,dwc:measurementMethod,Measurement Method,http://rs.tdwg.org/dwc/terms/measurementMethod
+methods_methods,exactMatch,added,,ets:measurementMethod,measurement method,http://terminologies.gfbio.org/terms/ETS/measurementMethod
+methods_methods,closeMatch,added,,dwc:Protocol,Protocol,http://rs.tdwg.org/dwc/terms/Protocol
+methods_methods,closeMatch,added,,dwc:assertionProtocols,Assertion Protocols,http://rs.tdwg.org/dwc/terms/assertionProtocols
+methods_methods,closeMatch,added,,sosa:Procedure,Procedure,http://www.w3.org/ns/sosa/Procedure
+methods_methods,closeMatch,added,,tern:Method,Method,https://w3id.org/tern/ontologies/tern/Method
+sampling_strategy,broader,added,,sosa:Procedure,Procedure,http://www.w3.org/ns/sosa/Procedure
+source_primary_citation,closeMatch,added,,dwc:assertionReferences,Assertion References,http://rs.tdwg.org/dwc/terms/assertionReferences
+source_primary_citation,closeMatch,added,,ets:bibliographicCitation,bibliographic citation,http://terminologies.gfbio.org/terms/ETS/bibliographicCitation
+source_secondary_citation,closeMatch,added,,ets:bibliographicCitation,bibliographic citation,http://terminologies.gfbio.org/terms/ETS/bibliographicCitation
+source_original_dataset_citation,closeMatch,added,,ets:bibliographicCitation,bibliographic citation,http://terminologies.gfbio.org/terms/ETS/bibliographicCitation
+contributor,closeMatch,added,,dwc:assertionBy,Assertion By,http://rs.tdwg.org/dwc/terms/assertionBy
+contributor,closeMatch,added,,dwc:measurementDeterminedBy,Measurement Determined By,http://rs.tdwg.org/dwc/terms/measurementDeterminedBy
+contributor,broader,added,,dcterms:Agent,Agent,http://purl.org/dc/terms/Agent
+data_collectors,closeMatch,added,,dwc:measurementDeterminedBy,Measurement Determined By,http://rs.tdwg.org/dwc/terms/measurementDeterminedBy
+data_collectors,closeMatch,added,,dwc:recordedBy,Recorded By,http://rs.tdwg.org/dwc/terms/recordedBy
+taxon_distribution,relatedMatch,added,,dwc:stateProvince,First Order Division,http://rs.tdwg.org/dwc/terms/stateProvince
+establishment_means,closeMatch,changed,exactMatch,dwc:establishmentMeans,Establishment Means,http://rs.tdwg.org/dwc/terms/establishmentMeans
+trait,exactMatch,added,,sosa:ObservableProperty,Observable Property,http://www.w3.org/ns/sosa/ObservableProperty
+trait_concept_URI,closeMatch,added,,dwciri:assertionType,Assertion Type (IRI),http://rs.tdwg.org/dwc/iri/assertionType
+trait_concept_URI,closeMatch,added,,dwciri:measurementType,Measurement Type (IRI),http://rs.tdwg.org/dwc/iri/measurementType
+units,closeMatch,added,,dwc:measurementUnit,Measurement Unit,http://rs.tdwg.org/dwc/terms/measurementUnit
+units,relatedMatch,added,,qudt:Unit,Unit,http://qudt.org/schema/qudt/Unit
+allowed_values_levels,relatedMatch,added,,dwciri:measurementValue,Measurement Value (IRI),http://rs.tdwg.org/dwc/iri/measurementValue

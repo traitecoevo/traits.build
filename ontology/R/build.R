@@ -17,7 +17,7 @@ XSD <- "http://www.w3.org/2001/XMLSchema#"
 
 # What `ontology_build_data()` writes, relative to its `out_dir`.
 ONTOLOGY_OUTPUTS <- c(
-  "build_triples.csv",
+  "build_triples.csv", "mapping_changes.csv",
   "traits.build.nq", "traits.build.nt", "traits.build.ttl", "traits.build.json"
 )
 
@@ -326,8 +326,9 @@ ontology_write_rdf <- function(triples, out_dir = ontology_output_dir()) {
 
 #' Build the data model from ontology/data/
 #'
-#' Writes the five files in `ONTOLOGY_OUTPUTS`: the labelled triple table the
-#' website renders from, and the four RDF serialisations.
+#' Writes the files in `ONTOLOGY_OUTPUTS`: the labelled triple table the
+#' website renders from, the mapping changes since the previous release, and
+#' the four RDF serialisations.
 #'
 #' @param data_dir Directory holding the input tables.
 #' @param out_dir Directory to write outputs into.
@@ -350,6 +351,15 @@ ontology_build_data <- function(data_dir = ontology_path("data"),
   triples %>%
     ontology_label_triples(inputs) %>%
     readr::write_csv(file.path(out_dir, "build_triples.csv"))
+
+  # Against the previous release's committed snapshot, wherever the build is
+  # written, so a test build in a temp dir produces the same file.
+  baseline <- ontology_baseline_nq()
+  if (!is.na(baseline)) {
+    message("Writing mapping_changes.csv (against ", ontology_previous_version(), ")")
+    ontology_mapping_changes(baseline, file.path(out_dir, "traits.build.nq"), inputs) %>%
+      readr::write_csv(file.path(out_dir, "mapping_changes.csv"), na = "")
+  }
 
   invisible(nrow(triples))
 }
