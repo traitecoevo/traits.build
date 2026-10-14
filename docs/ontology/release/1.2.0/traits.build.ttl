@@ -1635,6 +1635,7 @@ tern:unit
     dcterms:description "A sequence of characters that links an observation within a traits.build database to additional information about observed entity in another database."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-identifiers> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
+    SIO:SIO_000671 <https://w3id.org/traits.build#identifier_type>, <https://w3id.org/traits.build#institution_code> ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "identifier value"@en ;
     skos:altLabel "identifier_value"@en ;

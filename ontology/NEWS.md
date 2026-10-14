@@ -12,7 +12,9 @@ Prepared 2026-10-12 (traits.build #275, #276).
 - Exact Darwin Core matches that had been recorded only as labels or as a broader OBOE identifier are now declared exact: `original_name` to `verbatimIdentification`, `trait_name` to `measurementType`, `value` to `measurementValue`, `unit` to `measurementUnit`, `measurement_remarks` to `measurementRemarks`, `individual_id` to `organismID`, `location_id` to `locationID`, `dataset_id` to `datasetID`, `collection_date` to `eventDate`.
 - `establishment_means` is demoted from an exact to a close match: Darwin Core applies it to an organism at a place and time, and the `taxa` table records it once per taxon.
 - `entity_type` and `taxon_distribution`, which had no mapping, now have one; the three terms with no counterpart in any standard (`schema`, `build_info`, the database itself) say so in their comment.
-- 77 external classes added to the published-classes table with their definitions; the Turtle serialisation declares the `sosa`, `tern`, `terncv`, `dwciri` and `qudt` prefixes. 2,054 to 2,470 statements.
+- 77 external classes added to the published-classes table with their definitions; the Turtle serialisation declares the `sosa`, `tern`, `terncv`, `dwciri` and `qudt` prefixes. 2,054 to 2,468 statements.
+- `identifier_value` now links to both `identifier_type` and `institution_code`. The two were separated by a comma rather than `;`, which made one IRI that did not parse, so the statement had been dropped since 1.1.0. `dwc:Taxon` was listed twice in the published-classes table; its statements are now written once.
+- The page gives every term an anchor by its bare name, so `https://w3id.org/traits.build#<term>` lands on the term, and shows the "is property of" relations, which it had never displayed.
 
 ## traits.build data model 1.1.0
 

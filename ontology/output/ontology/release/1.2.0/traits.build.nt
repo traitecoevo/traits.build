@@ -1203,7 +1203,8 @@
 <https://w3id.org/traits.build#identifier_value> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://purl.org/dc/terms/identifier>
 <https://w3id.org/traits.build#identifier_value> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-identifiers>
 <https://w3id.org/traits.build#identifier_value> <http://www.w3.org/2000/01/rdf-schema#label> "identifier value"@en
-<https://w3id.org/traits.build#identifier_value> <http://semanticscience.org/resource/SIO_000671> <https://w3id.org/traits.build#identifier_type, institution_code>
+<https://w3id.org/traits.build#identifier_value> <http://semanticscience.org/resource/SIO_000671> <https://w3id.org/traits.build#identifier_type>
+<https://w3id.org/traits.build#identifier_value> <http://semanticscience.org/resource/SIO_000671> <https://w3id.org/traits.build#institution_code>
 <https://w3id.org/traits.build#identifier_value> <http://purl.org/dc/terms/description> "A sequence of characters that links an observation within a traits.build database to additional information about observed entity in another database."@en
 <https://w3id.org/traits.build#identifier_value> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string>
 <https://w3id.org/traits.build#identifier_value> <http://purl.org/dc/terms/created> "8-Jun-25"^^<xsd:date>
@@ -1895,9 +1896,6 @@
 <http://rs.tdwg.org/dwc/terms/scientificNameID> <http://www.w3.org/2004/02/skos/core#prefLabel> "Scientific Name ID"@en
 <http://rs.tdwg.org/dwc/terms/scientificNameID> <http://purl.org/dc/terms/description> "An identifier for the nomenclatural (not taxonomic) details of a scientific name."@en
 <http://rs.tdwg.org/dwc/terms/scientificNameID> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/terms/>
-<http://rs.tdwg.org/dwc/terms/Taxon> <http://www.w3.org/2004/02/skos/core#prefLabel> "Taxon"@en
-<http://rs.tdwg.org/dwc/terms/Taxon> <http://purl.org/dc/terms/description> "A group of organisms (sensu http://purl.obolibrary.org/obo/OBI_0100026) considered by taxonomists to form a homogeneous unit."@en
-<http://rs.tdwg.org/dwc/terms/Taxon> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/terms/>
 <http://rs.tdwg.org/dwc/terms/identificationQualifier> <http://www.w3.org/2004/02/skos/core#prefLabel> "Identification Qualifier"@en
 <http://rs.tdwg.org/dwc/terms/identificationQualifier> <http://purl.org/dc/terms/description> "A brief phrase or a standard term ('cf.', 'aff.') to express the determiner's doubts about the dwc:Identification."@en
 <http://rs.tdwg.org/dwc/terms/identificationQualifier> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/terms/>

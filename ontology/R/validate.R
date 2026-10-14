@@ -50,17 +50,10 @@ ONTOLOGY_KNOWN_GAPS <- c(
     "emitted for them, and two rows (the licence and publisher URLs) carry an",
     "Entity and nothing else."),
   `published-class-duplicate-key` = paste(
-    "dwc:Taxon is listed twice, identically, so its four statements are",
-    "written twice; the two label-less rows share the key NA:NA."),
-  `dangling-term-reference` = paste(
-    "identifier_value's `has identifier` cell separates its two references with",
-    "a comma rather than `;`, so the build emits one IRI",
-    "<...#identifier_type, institution_code> that does not parse and the",
-    "statement is dropped."),
-  `rdf-statements-dropped` = paste(
-    "the malformed IRI above makes one N-Quads line unparseable, and the",
-    "duplicated dwc:Taxon rows repeat four more; the parsed graph is smaller",
-    "than the file.")
+    "the licence and publisher rows have no prefix or identifier, so both",
+    "have the key NA:NA. They exist only to label the concept scheme's",
+    "licence and publisher, which are written as literals (see",
+    "rdf-uri-inside-literal); fix the two together.")
 )
 
 new_problem <- function(id, message, details = character()) {
