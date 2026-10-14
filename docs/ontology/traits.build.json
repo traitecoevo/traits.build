@@ -3038,7 +3038,10 @@
     },
     {
       "@id": "https://w3id.org/traits.build",
-      "http://purl.org/dc/terms/created": "01 February 2024^^<xsd:date>",
+      "http://purl.org/dc/terms/created": {
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
+      },
       "http://purl.org/dc/terms/creator": [
         "Sophie Yang",
         "Elizabeth Wenk",
@@ -3079,8 +3082,8 @@
     {
       "@id": "https://w3id.org/traits.build#ORCID",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3126,8 +3129,8 @@
     {
       "@id": "https://w3id.org/traits.build#additional_role",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3170,8 +3173,8 @@
     {
       "@id": "https://w3id.org/traits.build#affiliation",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3214,8 +3217,8 @@
     {
       "@id": "https://w3id.org/traits.build#aligned_name",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3266,8 +3269,8 @@
     {
       "@id": "https://w3id.org/traits.build#allowed_values_levels",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3323,8 +3326,8 @@
     {
       "@id": "https://w3id.org/traits.build#allowed_values_max",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3367,8 +3370,8 @@
     {
       "@id": "https://w3id.org/traits.build#allowed_values_min",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3411,8 +3414,8 @@
     {
       "@id": "https://w3id.org/traits.build#assistants",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3458,8 +3461,8 @@
     {
       "@id": "https://w3id.org/traits.build#basis_of_record",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3501,8 +3504,8 @@
     {
       "@id": "https://w3id.org/traits.build#basis_of_value",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3545,8 +3548,8 @@
     {
       "@id": "https://w3id.org/traits.build#binomial",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3597,8 +3600,8 @@
         "@id": "https://w3id.org/traits.build#observation"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3670,8 +3673,8 @@
     {
       "@id": "https://w3id.org/traits.build#comments",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3724,8 +3727,8 @@
     {
       "@id": "https://w3id.org/traits.build#context",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3762,8 +3765,8 @@
         "@id": "https://w3id.org/traits.build#context"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3817,8 +3820,8 @@
     {
       "@id": "https://w3id.org/traits.build#contexts_category",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3858,8 +3861,8 @@
     {
       "@id": "https://w3id.org/traits.build#contexts_description",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3899,8 +3902,8 @@
     {
       "@id": "https://w3id.org/traits.build#contexts_link_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3954,8 +3957,8 @@
     {
       "@id": "https://w3id.org/traits.build#contexts_link_vals",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4012,8 +4015,8 @@
         "@id": "https://w3id.org/traits.build#context_property"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4061,8 +4064,8 @@
     {
       "@id": "https://w3id.org/traits.build#contributor",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4121,8 +4124,8 @@
     {
       "@id": "https://w3id.org/traits.build#data_collectors",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4200,8 +4203,8 @@
     {
       "@id": "https://w3id.org/traits.build#dataset",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4251,8 +4254,8 @@
     {
       "@id": "https://w3id.org/traits.build#dataset_curators",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4298,8 +4301,8 @@
     {
       "@id": "https://w3id.org/traits.build#dataset_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4375,8 +4378,8 @@
     {
       "@id": "https://w3id.org/traits.build#description",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4432,8 +4435,8 @@
         "@id": "https://w3id.org/traits.build#location"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4487,8 +4490,8 @@
     {
       "@id": "https://w3id.org/traits.build#entity",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4535,8 +4538,8 @@
     {
       "@id": "https://w3id.org/traits.build#entity_context_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4581,8 +4584,8 @@
     {
       "@id": "https://w3id.org/traits.build#entity_context_property",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4634,8 +4637,8 @@
     {
       "@id": "https://w3id.org/traits.build#entity_type",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4677,8 +4680,8 @@
     {
       "@id": "https://w3id.org/traits.build#establishment_means",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4728,8 +4731,8 @@
     {
       "@id": "https://w3id.org/traits.build#family",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4780,8 +4783,8 @@
     {
       "@id": "https://w3id.org/traits.build#genus",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4832,8 +4835,8 @@
     {
       "@id": "https://w3id.org/traits.build#given_name",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4882,8 +4885,8 @@
         "@id": "https://w3id.org/traits.build#identifier_value"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "8-Jun-25"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2025-06-08"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4926,8 +4929,8 @@
     {
       "@id": "https://w3id.org/traits.build#identifier_value",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "8-Jun-25"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2025-06-08"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -4978,8 +4981,8 @@
         "@id": "https://w3id.org/traits.build#life_stage"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5029,8 +5032,8 @@
     {
       "@id": "https://w3id.org/traits.build#individual_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5079,8 +5082,8 @@
         "@id": "https://w3id.org/traits.build#identifier_value"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "8-Jun-25"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2025-06-08"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5129,8 +5132,8 @@
     {
       "@id": "https://w3id.org/traits.build#label",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5189,8 +5192,8 @@
     {
       "@id": "https://w3id.org/traits.build#last_name",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5239,8 +5242,8 @@
         "@id": "https://w3id.org/traits.build#location"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5294,8 +5297,8 @@
         "@id": "https://w3id.org/traits.build#observation_of_entity_context"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5353,8 +5356,8 @@
     {
       "@id": "https://w3id.org/traits.build#location",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5402,8 +5405,8 @@
     {
       "@id": "https://w3id.org/traits.build#location_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5454,8 +5457,8 @@
     {
       "@id": "https://w3id.org/traits.build#location_name",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5506,8 +5509,8 @@
         "@id": "https://w3id.org/traits.build#locations_value"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5552,8 +5555,8 @@
     {
       "@id": "https://w3id.org/traits.build#locations_value",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5604,8 +5607,8 @@
         "@id": "https://w3id.org/traits.build#location"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5656,8 +5659,8 @@
     {
       "@id": "https://w3id.org/traits.build#measurement",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5716,8 +5719,8 @@
         "@id": "https://w3id.org/traits.build#observation_of_entity_context"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5770,8 +5773,8 @@
         }
       ],
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5813,8 +5816,8 @@
         "@id": "https://w3id.org/traits.build#observation_of_plot_context"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5859,8 +5862,8 @@
         "@id": "https://w3id.org/traits.build#observation_of_temporal_context"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5908,8 +5911,8 @@
         "@id": "https://w3id.org/traits.build#observation_of_treatment_context"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -5951,8 +5954,8 @@
     {
       "@id": "https://w3id.org/traits.build#measurement_remarks",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6011,8 +6014,8 @@
     {
       "@id": "https://w3id.org/traits.build#method_context",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6056,8 +6059,8 @@
     {
       "@id": "https://w3id.org/traits.build#method_context_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6099,8 +6102,8 @@
     {
       "@id": "https://w3id.org/traits.build#method_context_property",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6152,8 +6155,8 @@
     {
       "@id": "https://w3id.org/traits.build#method_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6204,8 +6207,8 @@
     {
       "@id": "https://w3id.org/traits.build#methods_description",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6251,8 +6254,8 @@
     {
       "@id": "https://w3id.org/traits.build#methods_methods",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6322,8 +6325,8 @@
     {
       "@id": "https://w3id.org/traits.build#observation",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6380,8 +6383,8 @@
     {
       "@id": "https://w3id.org/traits.build#observation_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6443,8 +6446,8 @@
         }
       ],
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6489,8 +6492,8 @@
         "@id": "https://w3id.org/traits.build#location"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6538,8 +6541,8 @@
         "@id": "https://w3id.org/traits.build#plot"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6587,8 +6590,8 @@
         "@id": "https://w3id.org/traits.build#temporal_context"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6640,8 +6643,8 @@
         "@id": "https://w3id.org/traits.build#treatment"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6703,8 +6706,8 @@
         }
       ],
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6766,8 +6769,8 @@
         "@id": "https://w3id.org/traits.build#dataset"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6829,8 +6832,8 @@
         "@id": "https://w3id.org/traits.build#source_primary_citation"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6875,8 +6878,8 @@
         "@id": "https://w3id.org/traits.build#individual"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6921,8 +6924,8 @@
         "@id": "https://w3id.org/traits.build#population"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -6967,8 +6970,8 @@
         "@id": "https://w3id.org/traits.build#taxon"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7011,8 +7014,8 @@
     {
       "@id": "https://w3id.org/traits.build#original_name",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7075,8 +7078,8 @@
     {
       "@id": "https://w3id.org/traits.build#plot",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7118,8 +7121,8 @@
     {
       "@id": "https://w3id.org/traits.build#plot_context_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7164,8 +7167,8 @@
     {
       "@id": "https://w3id.org/traits.build#plot_context_property",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7220,8 +7223,8 @@
         "@id": "https://w3id.org/traits.build#life_stage"
       },
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7269,8 +7272,8 @@
     {
       "@id": "https://w3id.org/traits.build#population_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7313,8 +7316,8 @@
     {
       "@id": "https://w3id.org/traits.build#repeat_measurements_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7362,8 +7365,8 @@
     {
       "@id": "https://w3id.org/traits.build#replicates",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7406,8 +7409,8 @@
     {
       "@id": "https://w3id.org/traits.build#sampling_strategy",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7453,8 +7456,8 @@
     {
       "@id": "https://w3id.org/traits.build#scientific_name",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7500,8 +7503,8 @@
     {
       "@id": "https://w3id.org/traits.build#scientific_name_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7547,8 +7550,8 @@
     {
       "@id": "https://w3id.org/traits.build#source_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7601,8 +7604,8 @@
     {
       "@id": "https://w3id.org/traits.build#source_original_dataset_citation",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7648,8 +7651,8 @@
     {
       "@id": "https://w3id.org/traits.build#source_original_dataset_key",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7695,8 +7698,8 @@
     {
       "@id": "https://w3id.org/traits.build#source_primary_citation",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7747,8 +7750,8 @@
     {
       "@id": "https://w3id.org/traits.build#source_primary_key",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7794,8 +7797,8 @@
     {
       "@id": "https://w3id.org/traits.build#source_secondary_citation",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7841,8 +7844,8 @@
     {
       "@id": "https://w3id.org/traits.build#source_secondary_key",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7882,8 +7885,8 @@
     {
       "@id": "https://w3id.org/traits.build#taxon",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": [
         {
@@ -7987,8 +7990,8 @@
     {
       "@id": "https://w3id.org/traits.build#taxon_distribution",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8028,8 +8031,8 @@
     {
       "@id": "https://w3id.org/traits.build#taxon_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8075,8 +8078,8 @@
     {
       "@id": "https://w3id.org/traits.build#taxon_name",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8162,8 +8165,8 @@
     {
       "@id": "https://w3id.org/traits.build#taxon_rank",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8210,8 +8213,8 @@
     {
       "@id": "https://w3id.org/traits.build#taxonomic_dataset",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8254,8 +8257,8 @@
     {
       "@id": "https://w3id.org/traits.build#taxonomic_resolution",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8295,8 +8298,8 @@
     {
       "@id": "https://w3id.org/traits.build#taxonomic_status",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8339,8 +8342,8 @@
     {
       "@id": "https://w3id.org/traits.build#temporal_context",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8379,8 +8382,8 @@
     {
       "@id": "https://w3id.org/traits.build#temporal_context_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8425,8 +8428,8 @@
     {
       "@id": "https://w3id.org/traits.build#temporal_context_property",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8478,8 +8481,8 @@
     {
       "@id": "https://w3id.org/traits.build#trait",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8557,8 +8560,8 @@
     {
       "@id": "https://w3id.org/traits.build#trait_concept_URI",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8645,8 +8648,8 @@
         }
       ],
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8685,8 +8688,8 @@
     {
       "@id": "https://w3id.org/traits.build#trait_name",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8759,8 +8762,8 @@
     {
       "@id": "https://w3id.org/traits.build#trait_value",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8827,8 +8830,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-build_info",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8869,8 +8872,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-contexts",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8909,8 +8912,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-contributors",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8949,8 +8952,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-database",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -8992,8 +8995,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-definitions",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9030,8 +9033,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-excluded_data",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9075,8 +9078,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-identifiers",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "8-Jun-25"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2025-06-08"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9114,8 +9117,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-locations",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9161,8 +9164,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-metadata",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9196,8 +9199,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-methods",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9239,8 +9242,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-schema",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9281,8 +9284,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-sources",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9321,8 +9324,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-taxa",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9362,8 +9365,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-taxonomic_updates",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9402,8 +9405,8 @@
     {
       "@id": "https://w3id.org/traits.build#traits.build-traits",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9458,8 +9461,8 @@
     {
       "@id": "https://w3id.org/traits.build#treatment",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9498,8 +9501,8 @@
     {
       "@id": "https://w3id.org/traits.build#treatment_context_id",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9544,8 +9547,8 @@
     {
       "@id": "https://w3id.org/traits.build#treatment_context_property",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9597,8 +9600,8 @@
     {
       "@id": "https://w3id.org/traits.build#trinomial",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9646,8 +9649,8 @@
     {
       "@id": "https://w3id.org/traits.build#type",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9690,8 +9693,8 @@
     {
       "@id": "https://w3id.org/traits.build#unit",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9756,8 +9759,8 @@
     {
       "@id": "https://w3id.org/traits.build#units",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -9806,8 +9809,8 @@
     {
       "@id": "https://w3id.org/traits.build#value_type",
       "http://purl.org/dc/terms/created": {
-        "@type": "xsd:date",
-        "@value": "1-Feb-24"
+        "@type": "http://www.w3.org/2001/XMLSchema#date",
+        "@value": "2024-02-01"
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",

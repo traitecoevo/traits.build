@@ -11,6 +11,10 @@
 ONTOLOGY_SCHEME <- "https://w3id.org/traits.build"
 ONTOLOGY_BASE <- paste0(ONTOLOGY_SCHEME, "#")
 
+# Typed literals are written with the full datatype IRI: `^^<xsd:date>` would
+# be a relative IRI, resolved against the document base rather than XML Schema.
+XSD <- "http://www.w3.org/2001/XMLSchema#"
+
 # What `ontology_build_data()` writes, relative to its `out_dir`.
 ONTOLOGY_OUTPUTS <- c(
   "build_triples.csv",
@@ -66,8 +70,12 @@ ontology_output_dir <- function() ontology_path("output", "ontology")
 #' @return A named list of tibbles: `terms`, `published_classes`, `resource`.
 ontology_read_inputs <- function(data_dir = ontology_path("data")) {
 
+  # Every cell is text that ends up in a triple. Letting readr guess types
+  # turns an ISO date column into a Date, which then cannot be pivoted
+  # alongside the text columns.
   read_input <- function(file) {
-    readr::read_csv(file.path(data_dir, file), show_col_types = FALSE)
+    readr::read_csv(file.path(data_dir, file),
+                    col_types = readr::cols(.default = readr::col_character()))
   }
 
   list(
@@ -214,7 +222,7 @@ ontology_convert_to_triples <- function(inputs) {
                       paste0("<", ONTOLOGY_SCHEME, ">"),
                       Object),
       Object = ifelse(stringr::str_detect(Predicate, "created"),
-                      paste0("\"", Object_tmp, "\"", "^^<xsd:date>"),
+                      paste0("\"", Object_tmp, "\"", "^^<", XSD, "date>"),
                       Object),
       Subject = ifelse(Subject == paste0("<", ONTOLOGY_BASE, "traits.build>"),
                        paste0("<", ONTOLOGY_SCHEME, ">"),
@@ -241,7 +249,10 @@ ontology_label_triples <- function(triples, inputs) {
     dplyr::mutate(
       predicate_tmp = stringr::str_replace(Predicate, "<", ""),
       predicate_tmp = stringr::str_replace(predicate_tmp, ">", ""),
-      object_tmp = stringr::str_replace_all(Object, "<", ""),
+      # A typed literal's datatype is a full XML Schema IRI in the RDF; shorten it
+      # to the xsd: form the label stripping below expects.
+      object_tmp = stringr::str_replace(Object, stringr::fixed(paste0("^^<", XSD)), "^^<xsd:"),
+      object_tmp = stringr::str_replace_all(object_tmp, "<", ""),
       object_tmp = stringr::str_replace_all(object_tmp, ">", ""),
       object_tmp = stringr::str_replace(object_tmp, "\\^\\^", ""),
       object_tmp = stringr::str_replace(object_tmp, "xsd:date", ""),
