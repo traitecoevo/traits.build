@@ -393,6 +393,8 @@ metadata:
         location_name: *location_name
         source_id: *source_id
         entity_type: *entity_type
+        value_type: *value_type
+        basis_of_value: *basis_of_value
         plot_context_id: *plot_context_id
         treatment_context_id: *treatment_context_id
         individual_id: *individual_id
