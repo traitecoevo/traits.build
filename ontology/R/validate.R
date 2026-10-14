@@ -135,6 +135,19 @@ validate_ontology <- function(data_dir = ontology_path("data"),
         sprintf("%s (inScheme %s)", classes$Entity[outside], scheme[outside]))
   }
 
+  # The `prefix:identifier` key is what the terms table writes, so it should
+  # read as the IRI does: `rdfs:subclassOf` and `dcterms:bibliographic
+  # citation` resolved, but to IRIs spelled otherwise.
+  local <- stringr::str_trim(classes$identifier)
+  misnamed <- !is.na(scheme) & !is.na(local) & classes$Entity != paste0(scheme, local)
+  if (any(misnamed)) {
+    add("published-class-key-mismatch",
+        sprintf("%d published class(es) have an identifier that is not their IRI's local name",
+                sum(misnamed)),
+        sprintf("%s:%s (IRI %s)", classes$prefix[misnamed], local[misnamed],
+                classes$Entity[misnamed]))
+  }
+
   used <- unique(scheme[!is.na(scheme)])
   undeclared <- setdiff(used, unname(ONTOLOGY_NAMESPACES))
   if (length(undeclared) > 0) {

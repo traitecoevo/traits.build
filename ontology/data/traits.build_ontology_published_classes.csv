@@ -60,11 +60,11 @@ http://www.w3.org/2004/02/skos/core#topConceptOf,is top concept in scheme,Relate
 http://www.w3.org/2004/02/skos/core#ConceptScheme,concept scheme,skos:ConceptScheme is an instance of owl:Class.,Simple Knowledge Organization System,skos,skos,ConceptScheme,,http://www.w3.org/2004/02/skos/core#
 http://www.w3.org/2000/01/rdf-schema#label,label,,RDF Schema,rdfs,rdfs,label,,http://www.w3.org/2000/01/rdf-schema#
 http://www.w3.org/2000/01/rdf-schema#comment,comment,,RDF Schema,rdfs,rdfs,comment,,http://www.w3.org/2000/01/rdf-schema#
-http://www.w3.org/2000/01/rdf-schema#subClassOf,sub class of,,RDF Schema,rdfs,rdfs,subclassOf,,http://www.w3.org/2000/01/rdf-schema#
+http://www.w3.org/2000/01/rdf-schema#subClassOf,sub class of,,RDF Schema,rdfs,rdfs,subClassOf,,http://www.w3.org/2000/01/rdf-schema#
 http://www.w3.org/1999/02/22-rdf-syntax-ns#type,type,The subject is an instance of a class.,RDF Syntax,rdf,rdf,type,,http://www.w3.org/1999/02/22-rdf-syntax-ns#
 http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype,datatype,Datatype is the class of datatypes. All instances of rdfs:Datatype correspond to the RDF model of a datatype described in the RDF Concepts specification [RDF12-CONCEPTS]. rdfs:Datatype is both an instance of and a subclass of rdfs:Class. Each instance of rdfs:Datatype is a subclass of rdfs:Literal.,RDF Syntax,rdf,rdf,datatype,,http://www.w3.org/1999/02/22-rdf-syntax-ns#
 http://purl.org/dc/terms/description,description,"Description may include but is not limited to: an abstract, a table of contents, a graphical representation, or a free-text account of the resource.",DCMI Metadata Terms,dcterms,dcterms,description,,http://purl.org/dc/terms/
-http://purl.org/dc/terms/bibliographicCitation,bibliographic citation,A bibliographic reference for the resource.,DCMI Metadata Terms,dcterms,dcterms,bibliographic citation,,http://purl.org/dc/terms/
+http://purl.org/dc/terms/bibliographicCitation,bibliographic citation,A bibliographic reference for the resource.,DCMI Metadata Terms,dcterms,dcterms,bibliographicCitation,,http://purl.org/dc/terms/
 http://purl.org/dc/terms/contributor,contributor,An entity responsible for making contributions to the resource.,DCMI Metadata Terms,dcterms,dcterms,contributor,,http://purl.org/dc/terms/
 http://purl.org/dc/terms/location,location,A spatial region or named place.,DCMI Metadata Terms,dcterms,dcterms,location,,http://purl.org/dc/terms/
 http://purl.org/dc/terms/identifier,identifier,An unambiguous reference to the resource within a given context.,DCMI Metadata Terms,dcterms,dcterms,identifier,,http://purl.org/dc/terms/
@@ -134,7 +134,7 @@ http://vocab.fairdatacollective.org/gdmt/HasMetadata,Has Metadata,indicates reso
 http://vocab.fairdatacollective.org/gdmt/HasVersion,Has Version,indicates A has a version (B),Ontology for Generic Dataset Metadata Template,gdmt,gdmt,HasVersion,,http://vocab.fairdatacollective.org/gdmt/
 http://vocab.fairdatacollective.org/gdmt/IsMetadataFor,Is Metadata For,indicates additional metadata A for a resource B,Ontology for Generic Dataset Metadata Template,gdmt,gdmt,IsMetadataFor,,http://vocab.fairdatacollective.org/gdmt/
 http://www.w3.org/2002/07/owl#sameAs,sameAs,The property that determines that two given individuals are equal.,OWL,owl,owl,sameAs,,http://www.w3.org/2002/07/owl#
-http://www.w3.org/2001/XMLSchema#int,integer,,XML Schema 1.0,xsd,xsd,integer,,http://www.w3.org/2001/XMLSchema#
+http://www.w3.org/2001/XMLSchema#int,integer,,XML Schema 1.0,xsd,xsd,int,,http://www.w3.org/2001/XMLSchema#
 http://www.w3.org/2001/XMLSchema#date,date,,XML Schema 1.0,xsd,xsd,date,,http://www.w3.org/2001/XMLSchema#
 http://www.w3.org/2001/XMLSchema#decimal,decimal,,XML Schema 1.0,xsd,xsd,decimal,,http://www.w3.org/2001/XMLSchema#
 http://www.w3.org/2001/XMLSchema#string,string,,XML Schema 1.0,xsd,xsd,string,,http://www.w3.org/2001/XMLSchema#
