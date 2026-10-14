@@ -101,6 +101,6 @@ none of which are tested here. Read the `Depends` section of [`AGENTS.md`](../AG
 The AusTraits family is tracked on one board,
 [AusTraits #9](https://github.com/orgs/traitecoevo/projects/9). Pick one work-type label (`bug` /
 `task` / `epic`); Status and Priority are set on the board, not as labels. See the
-[issue and labelling guide](https://github.com/traitecoevo/austraits-meta/blob/main/governance/issue-guide.md).
+[issue and labelling guide](https://github.com/traitecoevo/austraits-meta/blob/master/governance/issue-guide.md).
 
 For bug reports, include a reproducible example and the output of `sessionInfo()`.
