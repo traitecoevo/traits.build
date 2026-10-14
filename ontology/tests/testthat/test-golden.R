@@ -53,10 +53,18 @@ test_that("the committed release snapshot matches the committed build", {
   version <- ontology_version()
   snapshot <- file.path(ontology_output_dir(), "release", version)
   skip_if_not(dir.exists(snapshot), paste("no snapshot for", version, "yet"))
+  # `TRAITS_BUILD_FORCE_RELEASE=1 make ontology-release` runs these tests before
+  # it replaces the snapshot, so a re-cut of a version that has not shipped
+  # would otherwise fail on the very difference it is about to fix.
+  skip_if(Sys.getenv("TRAITS_BUILD_FORCE_RELEASE") == "1",
+          paste("release/", version, "is being re-cut"))
 
   for (file in setdiff(ONTOLOGY_RELEASE_FILES, "index.html")) {
     expect_identical(ontology_bytes(file.path(snapshot, file)),
                      ontology_bytes(file.path(ontology_output_dir(), file)),
-                     info = paste(file, "in release/", version, "differs from the build"))
+                     info = paste0(file, " in release/", version, " differs from the build: ",
+                                   "add a new version heading to ontology/NEWS.md, or, if ",
+                                   version, " has not shipped, re-cut it with ",
+                                   "TRAITS_BUILD_FORCE_RELEASE=1 make ontology-release"))
   }
 })
