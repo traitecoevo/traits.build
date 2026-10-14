@@ -157,3 +157,61 @@ test_that("a missing config file fails each dataset rather than the run (#129)",
 
   expect_equal(sum(grepl("building dataset", out, fixed = TRUE)), 2)
 })
+
+
+# Test_2023_2, with `edit` applied to its metadata, in a fresh data folder
+dataset_test_edited <- function(edit) {
+  path_data <- withr::local_tempdir()
+  dir.create(file.path(path_data, "Test_2023_2"))
+  file.copy(
+    list.files(file.path("examples", "Test_2023_2"), full.names = TRUE),
+    file.path(path_data, "Test_2023_2"), recursive = TRUE
+  )
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  write_metadata(edit(read_metadata(path_metadata)), path_metadata)
+
+  withr::local_options(
+    useFancyQuotes = FALSE, cli.unicode = FALSE, crayon.enabled = FALSE,
+    width = 120
+  )
+  out <- capture.output(
+    suppressMessages(
+      dataset_test("Test_2023_2", path_data = path_data)
+    )
+  )
+  gsub("\033\\[[0-9]+m", "", out)
+}
+
+
+test_that("`dataset_test` reports each location lacking coordinates, and only those (#129)", {
+  # Locations are tested only once found to be missing coordinates, rather
+  # than one expectation per location, so check that selection is right
+  out <- dataset_test_edited(function(metadata) {
+    # No coordinates at all: reported
+    metadata$locations$Atherton[c("latitude (deg)", "longitude (deg)")] <- NULL
+    # Ranges in place of a point: allowed
+    cape <- metadata$locations$`Cape Tribulation`
+    cape[c("latitude (deg)", "longitude (deg)")] <- NULL
+    cape[["latitude range (deg)"]] <- "-16.2--16.0"
+    cape[["longitude range (deg)"]] <- "145.4--145.5"
+    metadata$locations$`Cape Tribulation` <- cape
+    metadata
+  })
+
+  expect_equal(sum(grepl("location '", out, fixed = TRUE)), 1)
+  expect_match(
+    out, "location 'Atherton'.*does not contain: 'latitude \\(deg\\)', 'longitude \\(deg\\)'",
+    all = FALSE
+  )
+})
+
+
+test_that("`dataset_test` reports an inline location that is not a list (#129)", {
+  out <- dataset_test_edited(function(metadata) {
+    metadata$locations$Atherton <- "not a list"
+    metadata
+  })
+
+  expect_equal(sum(grepl("is not a list", out, fixed = TRUE)), 1)
+  expect_match(out, "location Atherton - is not a list", fixed = TRUE, all = FALSE)
+})
