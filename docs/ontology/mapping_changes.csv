@@ -71,6 +71,7 @@ dataset_id,exactMatch,added,,dwc:datasetID,Dataset ID,http://rs.tdwg.org/dwc/ter
 dataset_id,exactMatch,added,,ets:datasetID,dataset ID,http://terminologies.gfbio.org/terms/ETS/datasetID
 taxon_name,relatedMatch,added,,dwc:scientificName,Scientific Name,http://rs.tdwg.org/dwc/terms/scientificName
 taxon_name,relatedMatch,added,,ets:scientificName,scientific name,http://terminologies.gfbio.org/terms/ETS/scientificName
+taxon_name,relatedMatch,changed,closeMatch,dwc:acceptedNameUsage,acceptedNameUsage,http://rs.tdwg.org/dwc/terms/acceptedNameUsage
 observation_id,relatedMatch,added,,dwc:parentMeasurementID,Parent Measurement ID,http://rs.tdwg.org/dwc/terms/parentMeasurementID
 trait_name,exactMatch,added,,dwc:measurementType,Measurement Type,http://rs.tdwg.org/dwc/terms/measurementType
 trait_name,exactMatch,added,,ets:traitName,trait name,http://terminologies.gfbio.org/terms/ETS/traitName
@@ -152,4 +153,3 @@ trait_concept_URI,closeMatch,added,,dwciri:assertionType,Assertion Type (IRI),ht
 trait_concept_URI,closeMatch,added,,dwciri:measurementType,Measurement Type (IRI),http://rs.tdwg.org/dwc/iri/measurementType
 units,closeMatch,added,,dwc:measurementUnit,Measurement Unit,http://rs.tdwg.org/dwc/terms/measurementUnit
 units,relatedMatch,added,,qudt:Unit,Unit,http://qudt.org/schema/qudt/Unit
-allowed_values_levels,relatedMatch,added,,dwciri:measurementValue,Measurement Value (IRI),http://rs.tdwg.org/dwc/iri/measurementValue

@@ -575,20 +575,6 @@
       }
     },
     {
-      "@id": "http://rs.tdwg.org/dwc/iri/measurementValue",
-      "http://purl.org/dc/terms/description": {
-        "@language": "en",
-        "@value": "The value of the measurement, fact, characteristic, or assertion."
-      },
-      "http://www.w3.org/2004/02/skos/core#inScheme": {
-        "@id": "http://rs.tdwg.org/dwc/iri/"
-      },
-      "http://www.w3.org/2004/02/skos/core#prefLabel": {
-        "@language": "en",
-        "@value": "Measurement Value (IRI)"
-      }
-    },
-    {
       "@id": "http://rs.tdwg.org/dwc/terms/Assertion",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3349,9 +3335,6 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "allowed categorical values"
-      },
-      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
-        "@id": "http://rs.tdwg.org/dwc/iri/measurementValue"
       }
     },
     {
@@ -8151,9 +8134,6 @@
           "@id": "http://www.w3.org/2000/01/rdf-schema#label"
         }
       ],
-      "http://www.w3.org/2004/02/skos/core#closeMatch": {
-        "@id": "http://rs.tdwg.org/dwc/terms/acceptedNameUsage"
-      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -8162,6 +8142,9 @@
         "@value": "taxon name"
       },
       "http://www.w3.org/2004/02/skos/core#relatedMatch": [
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/acceptedNameUsage"
+        },
         {
           "@id": "http://terminologies.gfbio.org/terms/ETS/scientificName"
         },

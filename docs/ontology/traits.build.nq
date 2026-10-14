@@ -587,9 +587,9 @@
 <https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#broader> <http://www.w3.org/2000/01/rdf-schema#label> .
 <https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#broader> <http://www.w3.org/2004/02/skos/core#prefLabel> .
 <https://w3id.org/traits.build#taxon_name> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
-<https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://rs.tdwg.org/dwc/terms/acceptedNameUsage> .
 <https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://rs.tdwg.org/dwc/terms/scientificName> .
 <https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://terminologies.gfbio.org/terms/ETS/scientificName> .
+<https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://rs.tdwg.org/dwc/terms/acceptedNameUsage> .
 <https://w3id.org/traits.build#taxon_name> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-traits> .
 <https://w3id.org/traits.build#taxon_name> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-taxa> .
 <https://w3id.org/traits.build#taxon_name> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-taxonomic_updates> .
@@ -1773,7 +1773,6 @@
 <https://w3id.org/traits.build#allowed_values_levels> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://www.w3.org/2004/02/skos/core#narrower> .
 <https://w3id.org/traits.build#allowed_values_levels> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://terminologies.gfbio.org/terms/ETS/factorLevels> .
 <https://w3id.org/traits.build#allowed_values_levels> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
-<https://w3id.org/traits.build#allowed_values_levels> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://rs.tdwg.org/dwc/iri/measurementValue> .
 <https://w3id.org/traits.build#allowed_values_levels> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-definitions> .
 <https://w3id.org/traits.build#allowed_values_levels> <http://www.w3.org/2000/01/rdf-schema#label> "allowed categorical values"@en .
 <https://w3id.org/traits.build#allowed_values_levels> <http://semanticscience.org/resource/SIO_000224> <https://w3id.org/traits.build#trait> .
@@ -2316,9 +2315,6 @@
 <http://rs.tdwg.org/dwc/iri/measurementType> <http://www.w3.org/2004/02/skos/core#prefLabel> "Measurement Type (IRI)"@en .
 <http://rs.tdwg.org/dwc/iri/measurementType> <http://purl.org/dc/terms/description> "The nature of the measurement, fact, characteristic, or assertion."@en .
 <http://rs.tdwg.org/dwc/iri/measurementType> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/iri/> .
-<http://rs.tdwg.org/dwc/iri/measurementValue> <http://www.w3.org/2004/02/skos/core#prefLabel> "Measurement Value (IRI)"@en .
-<http://rs.tdwg.org/dwc/iri/measurementValue> <http://purl.org/dc/terms/description> "The value of the measurement, fact, characteristic, or assertion."@en .
-<http://rs.tdwg.org/dwc/iri/measurementValue> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/iri/> .
 <http://rs.tdwg.org/dwc/iri/assertionType> <http://www.w3.org/2004/02/skos/core#prefLabel> "Assertion Type (IRI)"@en .
 <http://rs.tdwg.org/dwc/iri/assertionType> <http://purl.org/dc/terms/description> "A category that best matches the nature of a dwc:Assertion."@en .
 <http://rs.tdwg.org/dwc/iri/assertionType> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/iri/> .

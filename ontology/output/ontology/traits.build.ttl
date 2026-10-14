@@ -227,11 +227,6 @@ dwciri:measurementType
     skos:inScheme <http://rs.tdwg.org/dwc/iri/> ;
     skos:prefLabel "Measurement Type (IRI)"@en .
 
-dwciri:measurementValue
-    dcterms:description "The value of the measurement, fact, characteristic, or assertion."@en ;
-    skos:inScheme <http://rs.tdwg.org/dwc/iri/> ;
-    skos:prefLabel "Measurement Value (IRI)"@en .
-
 dwc:Assertion
     dcterms:description "A statement about an rdfs:Resource."@en ;
     skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
@@ -1199,8 +1194,7 @@ tern:unit
     skos:altLabel "allowed_values_levels"@en ;
     skos:exactMatch ets:factorLevels, skos:narrower ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "allowed categorical values"@en ;
-    skos:relatedMatch dwciri:measurementValue .
+    skos:prefLabel "allowed categorical values"@en .
 
 <https://w3id.org/traits.build#allowed_values_max>
     dcterms:created "2024-02-01"^^xsd:date ;
@@ -2513,10 +2507,9 @@ tern:unit
     rdfs:label "taxon name"@en ;
     skos:altLabel "taxon_name"@en ;
     skos:broader rdfs:label, skos:prefLabel ;
-    skos:closeMatch dwc:acceptedNameUsage ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "taxon name"@en ;
-    skos:relatedMatch dwc:scientificName, ets:scientificName .
+    skos:relatedMatch dwc:acceptedNameUsage, dwc:scientificName, ets:scientificName .
 
 <https://w3id.org/traits.build#taxon_rank>
     dcterms:created "2024-02-01"^^xsd:date ;

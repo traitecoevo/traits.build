@@ -13,14 +13,15 @@ Prepared 2026-10-12 (traits.build #275, #276).
 - Relations revised after review on #276. Each change follows the definitions of the two terms:
   - `individual_id` is a close, not exact, match to `dwc:organismID`, because a Darwin Core organism may be a group.
   - `collection_date` is a close match to `dwc:eventDate` and `ets:eventDate`, because it holds the publication date when that is all that is known.
-  - `taxon_name` is a related match to `dwc:scientificName` and `ets:scientificName`, which carry authorship. `scientific_name` remains the exact match.
+  - `taxon_name` is a related match to `dwc:scientificName`, `dwc:acceptedNameUsage` and `ets:scientificName`, which all carry authorship. `scientific_name` remains the exact match.
   - `method_context` is a related match to `sosa:Procedure` and `tern:Procedure`, because the procedure itself is recorded in `methods`.
+  - `allowed_values_levels` no longer relates to `dwciri:measurementValue`, because its levels are text, not IRIs.
   - `location_property` is narrower than `dwc:measurementType`.
   - `elevation` is an exact match to `ets:elevation`.
   - `unit` is a close match to `tern:unit`, which takes a QUDT IRI where `unit` holds text.
 - `establishment_means` is demoted from an exact to a close match: Darwin Core applies it to an organism at a place and time, and the `taxa` table records it once per taxon.
 - `entity_type` and `taxon_distribution`, which had no mapping, now have one; the three terms with no counterpart in any standard (`schema`, `build_info`, the database itself) say so in their comment.
-- 77 external classes added to the published-classes table with their definitions; the Turtle serialisation declares the `sosa`, `tern`, `terncv`, `dwciri` and `qudt` prefixes. 2,054 to 2,480 statements.
+- 76 external classes added to the published-classes table with their definitions; the Turtle serialisation declares the `sosa`, `tern`, `terncv`, `dwciri` and `qudt` prefixes. 2,054 to 2,465 statements.
 - `identifier_value` now links to both `identifier_type` and `institution_code`. The two were separated by a comma rather than `;`, which made one IRI that did not parse, so the statement had been dropped since 1.1.0. `dwc:Taxon` was listed twice in the published-classes table; its statements are now written once.
 - Fixes to the RDF as published since 0.1.0, found by the build checks added in this version:
   - `traits.build.nt` now ends each statement with `.`; before, it parsed as N-Triples to zero statements.
