@@ -497,9 +497,13 @@ dataset_test_worker <-
 
         ## Traits
 
+        # A `value_type` or `basis_of_value` in the `dataset` block is the default
+        # for every trait that does not declare its own, so a trait only needs
+        # the fields the dataset block does not supply (#249)
         test_expect_list_elements_contains_names(
           metadata[["traits"]],
-          c("var_in", "unit_in", "trait_name", "value_type", "basis_of_value"),
+          c("var_in", "unit_in", "trait_name",
+            setdiff(c("value_type", "basis_of_value"), names(metadata[["dataset"]]))),
           info = paste0(red(f), "\ttrait")
         )
 
