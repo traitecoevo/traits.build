@@ -467,9 +467,22 @@ util_collection_date_is_valid <- function(x) {
 #'   anything else
 #' - A dot-separated `yy.mm.dd`/`yyyy.mm.dd`, confirmed (not assumed) by
 #'   checking the middle component is a plausible month and the last a
-#'   plausible day
+#'   plausible day. A two-digit dotted date written day-first instead
+#'   (`18.3.12`) can't be told apart from that by its values, so it needs
+#'   `order = "dmy"`
+#' - A dot-separated `d.m.yyyy` (`21.11.2019`), resolved like the `/` and `-`
+#'   numeric dates above
+#' - A compact `yyyymmdd` (`20190206`)
+#' - A span of years written with a dash (`2019-2020` becomes `2019/2020`)
+#' - A comma- or semicolon-separated list of dates (`Jan-98, Feb-98,
+#'   Mar-98`), collapsed to the `first/last` range it covers (`1998-01/1998-03`)
+#'   -- tried only once the value has failed to parse whole, so a comma
+#'   *inside* one date (`September 2, 2008`) is never split on
 #' - Excel's numeric serial dates (e.g. `39692`), distinguished from a bare
-#'   4-digit year by digit count
+#'   4-digit year by digit count. A number that is really R's own day count
+#'   (left behind when `ifelse()` strips a `Date` column's class) looks exactly
+#'   like one and would be read decades too early -- pass the raw column to
+#'   this function instead of converting it with `lubridate` first
 #' - A trailing time-of-day is dropped, both `"yyyy-mm-ddTHH:MM:SSZ"` (ISO
 #'   8601) and `"d/m/y HH:MM"` (e.g. a Google Forms timestamp column) --
 #'   `collection_date` has no way to record a time, only the date
@@ -484,6 +497,13 @@ util_collection_date_is_valid <- function(x) {
 #' @param x A character, `Date`, or `POSIXct` vector of raw date values --
 #'  the whole column at once, not one value at a time, since resolving a
 #'  plain numeric date's order depends on seeing the rest of `x`
+#' @param order Optional, `"dmy"` or `"mdy"`: the curator's own statement of
+#'  which way round an all-numeric date is written, for when nothing in the
+#'  column can settle it -- e.g. a single `4/07/2022`, or two-digit dotted
+#'  dates like `18.3.12` (`d.m.yy`). It replaces the column-wide inference,
+#'  but a value that settles its own order (e.g. `10/23/2021`, since no month
+#'  is `23`) is still read that way. Converting a `custom_R_code` that called
+#'  `lubridate::dmy()` or `lubridate::mdy()` is then a like-for-like swap
 #' @param excel_origin Origin date for numeric Excel serial dates. The
 #'  default (`1899-12-30`) is correct for a workbook built on Windows Excel;
 #'  one built on old Mac Excel needs `1904-01-01` instead
@@ -501,8 +521,15 @@ util_collection_date_is_valid <- function(x) {
 #' # the whole column is used to resolve a plain numeric date's order:
 #' # `9/14/2020` can only be month-first, so `8/11/2020` is read the same way
 #' util_parse_collection_date(c("8/11/2020 10:09", "9/14/2020 12:06"))
+#'
+#' # nothing in a lone `4/07/2022` says which way round it is, so say so:
+#' util_parse_collection_date("4/07/2022", order = "dmy")
 #' @export
-util_parse_collection_date <- function(x, excel_origin = "1899-12-30") {
+util_parse_collection_date <- function(x, order = NULL, excel_origin = "1899-12-30") {
+
+  if (!is.null(order)) {
+    order <- match.arg(order, c("dmy", "mdy"))
+  }
 
   if (inherits(x, "Date") || inherits(x, "POSIXt")) {
     return(format(x, "%Y-%m-%d"))
@@ -511,7 +538,7 @@ util_parse_collection_date <- function(x, excel_origin = "1899-12-30") {
   x <- as.character(x)
   x <- vapply(x, util_strip_time_of_day, character(1), USE.NAMES = FALSE)
 
-  numeric_order <- util_infer_numeric_date_order(x)
+  numeric_order <- if (!is.null(order)) order else util_infer_numeric_date_order(x)
 
   vapply(
     x,
@@ -519,6 +546,7 @@ util_parse_collection_date <- function(x, excel_origin = "1899-12-30") {
     character(1),
     excel_origin = excel_origin,
     numeric_order = numeric_order,
+    order = order,
     USE.NAMES = FALSE
   )
 }
@@ -546,20 +574,24 @@ util_strip_time_of_day <- function(value) {
 
 
 # Does any value in `x` unambiguously reveal whether a plain numeric
-# `_/_/_`- or `_-_-_`-shaped date is day-first or month-first -- i.e. does the
-# first or second number exceed 12 anywhere, ruling out that slot being a
-# month? Both separators are pooled into one inference, on the view that this
-# is a property of who/what recorded the dates, not of which punctuation a
-# given row happens to use. Returns "dmy", "mdy", or `NULL` if nothing in `x`
-# resolves it (or if values disagree, which shouldn't happen in a single
-# column, and isn't trusted if it does).
+# `_/_/_`-, `_-_-_`- or `_._.yyyy`-shaped date is day-first or month-first --
+# i.e. does the first or second number exceed 12 anywhere, ruling out that
+# slot being a month? All separators are pooled into one inference, on the
+# view that this is a property of who/what recorded the dates, not of which
+# punctuation a given row happens to use. A dotted date only counts with a
+# 4-digit year: a two-digit dotted triple is read as `yy.mm.dd` unless the
+# caller says otherwise, so it has no say here. Returns "dmy", "mdy", or
+# `NULL` if nothing in `x` resolves it (or if values disagree, which
+# shouldn't happen in a single column, and isn't trusted if it does).
 util_infer_numeric_date_order <- function(x) {
-  candidates <- x[!is.na(x) & grepl("^[0-9]{1,2}[/-][0-9]{1,2}[/-][0-9]{2,4}$", trimws(x))]
+  candidates <- x[!is.na(x) & grepl(
+    "^[0-9]{1,2}([/-][0-9]{1,2}[/-][0-9]{2,4}|\\.[0-9]{1,2}\\.[0-9]{4})$", trimws(x)
+  )]
   if (length(candidates) == 0) {
     return(NULL)
   }
 
-  parts <- strsplit(trimws(candidates), "[/-]")
+  parts <- strsplit(trimws(candidates), "[/.-]")
   first <- vapply(parts, function(p) as.integer(p[1]), integer(1))
   second <- vapply(parts, function(p) as.integer(p[2]), integer(1))
 
@@ -613,12 +645,52 @@ util_resolve_numeric_dmy_date <- function(first, second, year_str, numeric_order
 }
 
 
-# One value's worth of `util_parse_collection_date()`'s logic, split out so
-# the `start/end` range case can recurse on each side. `numeric_order`
-# ("dmy", "mdy", or NULL) is decided once, up front, by
-# `util_infer_numeric_date_order()` looking at the *whole* column -- a
-# single value has no way to resolve its own ambiguity.
-util_parse_collection_date_one <- function(value, excel_origin, numeric_order = NULL) {
+# One value's worth of `util_parse_collection_date()`'s logic. `numeric_order`
+# ("dmy", "mdy", or NULL) is decided once, up front, for the *whole* column --
+# the caller's `order` if given, otherwise `util_infer_numeric_date_order()`
+# -- since a single value has no way to resolve its own ambiguity. `order` is
+# passed through separately because one shape (a two-digit dotted triple) is
+# only re-read on the caller's say-so, never on inference alone.
+#
+# A value that doesn't parse whole but holds a comma- or semicolon-separated
+# list of dates (e.g. `Jan-98, Feb-98, Mar-98`, the months a collection
+# spanned) is collapsed to the `first/last` range they cover. That is only
+# tried *after* the whole value has failed, because a comma can also sit
+# inside a single date -- `September 2, 2008` split on its comma would read
+# `September 2` as 2002.
+util_parse_collection_date_one <- function(value, excel_origin, numeric_order = NULL, order = NULL) {
+
+  parsed <- util_parse_collection_date_single(value, excel_origin, numeric_order, order)
+
+  if (is.na(parsed) || util_collection_date_is_valid(parsed) || !grepl("[,;]", parsed)) {
+    return(parsed)
+  }
+
+  items <- trimws(strsplit(parsed, "[,;]")[[1]])
+  items <- items[nzchar(items)]
+  items_parsed <- vapply(
+    items, util_parse_collection_date_single, character(1),
+    excel_origin = excel_origin, numeric_order = numeric_order, order = order,
+    USE.NAMES = FALSE
+  )
+  if (length(items_parsed) == 0 || anyNA(items_parsed) ||
+      !all(util_collection_date_is_valid(items_parsed))) {
+    return(parsed)
+  }
+
+  # Every item is a valid `yyyy[-mm[-dd]]` (or a range of two), and those sort
+  # correctly as plain strings, so the span is just the smallest and largest
+  # endpoint
+  endpoints <- unlist(strsplit(items_parsed, "/", fixed = TRUE))
+  if (".na" %in% endpoints) {
+    return(parsed)
+  }
+  span <- unique(c(min(endpoints), max(endpoints)))
+  paste(span, collapse = "/")
+}
+
+
+util_parse_collection_date_single <- function(value, excel_origin, numeric_order = NULL, order = NULL) {
 
   if (is.na(value) || !nzchar(trimws(value))) {
     return(NA_character_)
@@ -630,6 +702,16 @@ util_parse_collection_date_one <- function(value, excel_origin, numeric_order = 
     return(value)
   }
 
+  # A span of years written with a dash (`2019-2020`) rather than the schema's
+  # `/`. Two 4-digit years can't be read as anything else.
+  if (grepl("^[0-9]{4}\\s*-\\s*[0-9]{4}$", value)) {
+    years <- as.integer(strsplit(gsub("\\s", "", value), "-", fixed = TRUE)[[1]])
+    if (years[2] >= years[1]) {
+      return(paste(years, collapse = "/"))
+    }
+    return(value)
+  }
+
   # An unambiguous `mm-yyyy` (month first, dash, 4-digit year) -- the
   # reverse of the schema's `yyyy-mm`. A 4-digit year in the second slot
   # rules out any other reading, so this needs no column-wide context.
@@ -638,6 +720,25 @@ util_parse_collection_date_one <- function(value, excel_origin, numeric_order = 
     month <- suppressWarnings(as.integer(date_parts[1]))
     if (!is.na(month) && month >= 1 && month <= 12) {
       return(sprintf("%s-%02d", date_parts[2], month))
+    }
+    return(value)
+  }
+
+  # A dot-separated `d.m.yyyy` (e.g. Lequerica_Tamara_2025's `21.11.2019`) is
+  # the `/`- and `-`-separated numeric date again with different punctuation,
+  # and is resolved the same way. A two-digit dotted triple is less settled:
+  # Doyle_2023 writes `yy.mm.dd` (`19.08.20`), Bloomfield_2018 writes `d.m.yy`
+  # (`18.3.12`), and nothing in the values tells the two apart -- so it is
+  # only read as day/month-first when the caller passed `order`, and as
+  # `yy.mm.dd` (just below) otherwise.
+  if (grepl("^[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{4}$", value) ||
+      (!is.null(order) && grepl("^[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{2}$", value))) {
+    date_parts <- strsplit(value, ".", fixed = TRUE)[[1]]
+    resolved <- util_resolve_numeric_dmy_date(
+      as.integer(date_parts[1]), as.integer(date_parts[2]), date_parts[3], numeric_order
+    )
+    if (!is.na(resolved)) {
+      return(resolved)
     }
     return(value)
   }
@@ -698,12 +799,24 @@ util_parse_collection_date_one <- function(value, excel_origin, numeric_order = 
     parts <- strsplit(value, "/", fixed = TRUE)[[1]]
     if (length(parts) == 2) {
       fixed_parts <- vapply(
-        parts, util_parse_collection_date_one, character(1),
-        excel_origin = excel_origin, numeric_order = numeric_order
+        parts, util_parse_collection_date_single, character(1),
+        excel_origin = excel_origin, numeric_order = numeric_order, order = order
       )
       if (!anyNA(fixed_parts) && all(vapply(fixed_parts, util_collection_date_is_valid, logical(1)))) {
         return(paste(fixed_parts, collapse = "/"))
       }
+    }
+    return(value)
+  }
+
+  # A compact `yyyymmdd` (e.g. Arnold_2021's `20190206`), checked before the
+  # Excel serial rule below would claim it: a serial for any real collection
+  # date has 5 digits, so 8 digits starting with a plausible century can't be
+  # one. Checked against the real calendar, not just its shape.
+  if (grepl("^(18|19|20)[0-9]{6}$", value)) {
+    full_date <- sprintf("%s-%s-%s", substr(value, 1, 4), substr(value, 5, 6), substr(value, 7, 8))
+    if (!is.na(as.Date(full_date, format = "%Y-%m-%d"))) {
+      return(full_date)
     }
     return(value)
   }

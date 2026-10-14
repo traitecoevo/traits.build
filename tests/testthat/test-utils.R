@@ -465,3 +465,67 @@ test_that("`util_parse_collection_date` handles mm-yyyy and dot-separated yy.mm.
   # isn't a plausible month) is left alone rather than guessed at
   expect_equal(util_parse_collection_date("19.20.08"), "19.20.08")
 })
+
+
+test_that("`util_parse_collection_date` takes the curator's `order` for numeric dates the column can't settle", {
+  # a lone ambiguous value (Bryant_2021_3's whole `Date` column) -- nothing
+  # to infer from, so it stays untouched unless the order is given
+  expect_equal(util_parse_collection_date("4/07/2022"), "4/07/2022")
+  expect_equal(util_parse_collection_date("4/07/2022", order = "dmy"), "2022-07-04")
+  expect_equal(util_parse_collection_date("4/07/2022", order = "mdy"), "2022-04-07")
+  expect_equal(util_parse_collection_date("04-04-2019/9-12-2019", order = "dmy"), "2019-04-04/2019-12-09")
+
+  # `order` replaces the column-wide inference...
+  expect_equal(
+    util_parse_collection_date(c("01/02/2008", "03/04/2009"), order = "dmy"),
+    c("2008-02-01", "2009-04-03")
+  )
+
+  # ...but a value that settles its own order is still read that way
+  expect_equal(util_parse_collection_date("10/23/2021", order = "dmy"), "2021-10-23")
+
+  # two-digit dotted dates: `yy.mm.dd` by default (Doyle_2023), day-first only
+  # when the curator says so (Bloomfield_2018's `d.m.yy`)
+  expect_equal(util_parse_collection_date("10.3.12"), "2010-03-12")
+  expect_equal(
+    util_parse_collection_date(c("18.3.12", "10.3.12", "1.4.14"), order = "dmy"),
+    c("2012-03-18", "2012-03-10", "2014-04-01")
+  )
+
+  # anything other than "dmy"/"mdy" is an error, not silently ignored
+  expect_error(util_parse_collection_date("4/07/2022", order = "ymd"))
+})
+
+
+test_that("`util_parse_collection_date` handles dotted d.m.yyyy, yyyymmdd, year spans and lists", {
+  # dot-separated `d.m.yyyy`, resolved from the column like `/` and `-`
+  # (Lequerica_Tamara_2025)
+  expect_equal(
+    util_parse_collection_date(c("1.05.2020", "21.11.2019")),
+    c("2020-05-01", "2019-11-21")
+  )
+
+  # compact `yyyymmdd`, which the Excel serial rule would otherwise read as
+  # a date tens of thousands of years from now (Arnold_2021)
+  expect_equal(util_parse_collection_date("20190206"), "2019-02-06")
+  expect_equal(util_parse_collection_date(20190206), "2019-02-06")
+  expect_equal(util_parse_collection_date("20190231"), "20190231")  # no 31 Feb
+
+  # a span of years with a dash rather than `/` (Tsujii_2023, Moore_2019),
+  # but not one that runs backwards
+  expect_equal(util_parse_collection_date("2019-2020"), "2019/2020")
+  expect_equal(util_parse_collection_date("2020-2019"), "2020-2019")
+
+  # a list of dates collapses to the range it spans, or to the one date if
+  # they're all the same (Cochrane_2001's `Time of collection`)
+  expect_equal(util_parse_collection_date("Jan-98, Feb-98, Mar-98"), "1998-01/1998-03")
+  expect_equal(util_parse_collection_date("Oct-96, Oct-96,"), "1996-10")
+  expect_equal(util_parse_collection_date("2001-03; 2000-11"), "2000-11/2001-03")
+
+  # a comma inside a single date is not a list -- `September 2` alone would
+  # be read as 2002
+  expect_equal(util_parse_collection_date("September 2, 2008"), "2008-09-02")
+
+  # a list with any item that doesn't parse is left alone
+  expect_equal(util_parse_collection_date("Jan-98, 35 Sep 1998"), "Jan-98, 35 Sep 1998")
+})

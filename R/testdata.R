@@ -919,6 +919,19 @@ dataset_test_worker <-
           )
         )
 
+        ## `collection_date` must not be missing -- an unknown date should be
+        # recorded explicitly (e.g. `.na/2009`), not left blank
+        date_missing <- is.na(parsed_data[["collection_date"]])
+        test_expect_true(
+          !any(date_missing),
+          info = sprintf(
+            "%s\tSome date values are NA (%s of %s records)",
+            red(f),
+            sum(date_missing),
+            length(date_missing)
+          )
+        )
+
         ## Excluded observations
 
         if (!is.na(metadata[["exclude_observations"]][1])) {

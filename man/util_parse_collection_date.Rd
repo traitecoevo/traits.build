@@ -4,12 +4,20 @@
 \alias{util_parse_collection_date}
 \title{Standardise a messy \code{collection_date} (or raw date) column}
 \usage{
-util_parse_collection_date(x, excel_origin = "1899-12-30")
+util_parse_collection_date(x, order = NULL, excel_origin = "1899-12-30")
 }
 \arguments{
 \item{x}{A character, \code{Date}, or \code{POSIXct} vector of raw date values --
 the whole column at once, not one value at a time, since resolving a
 plain numeric date's order depends on seeing the rest of \code{x}}
+
+\item{order}{Optional, \code{"dmy"} or \code{"mdy"}: the curator's own statement of
+which way round an all-numeric date is written, for when nothing in the
+column can settle it -- e.g. a single \code{4/07/2022}, or two-digit dotted
+dates like \verb{18.3.12} (\code{d.m.yy}). It replaces the column-wide inference,
+but a value that settles its own order (e.g. \code{10/23/2021}, since no month
+is \code{23}) is still read that way. Converting a \code{custom_R_code} that called
+\code{lubridate::dmy()} or \code{lubridate::mdy()} is then a like-for-like swap}
 
 \item{excel_origin}{Origin date for numeric Excel serial dates. The
 default (\code{1899-12-30}) is correct for a workbook built on Windows Excel;
@@ -64,9 +72,21 @@ unambiguous on its own, since a 4-digit year can't be mistaken for
 anything else
 \item A dot-separated \code{yy.mm.dd}/\code{yyyy.mm.dd}, confirmed (not assumed) by
 checking the middle component is a plausible month and the last a
-plausible day
+plausible day. A two-digit dotted date written day-first instead
+(\verb{18.3.12}) can't be told apart from that by its values, so it needs
+\code{order = "dmy"}
+\item A dot-separated \code{d.m.yyyy} (\verb{21.11.2019}), resolved like the \code{/} and \code{-}
+numeric dates above
+\item A compact \code{yyyymmdd} (\code{20190206})
+\item A span of years written with a dash (\code{2019-2020} becomes \code{2019/2020})
+\item A comma- or semicolon-separated list of dates (\verb{Jan-98, Feb-98, Mar-98}), collapsed to the \code{first/last} range it covers (\code{1998-01/1998-03})
+-- tried only once the value has failed to parse whole, so a comma
+\emph{inside} one date (\verb{September 2, 2008}) is never split on
 \item Excel's numeric serial dates (e.g. \code{39692}), distinguished from a bare
-4-digit year by digit count
+4-digit year by digit count. A number that is really R's own day count
+(left behind when \code{ifelse()} strips a \code{Date} column's class) looks exactly
+like one and would be read decades too early -- pass the raw column to
+this function instead of converting it with \code{lubridate} first
 \item A trailing time-of-day is dropped, both \code{"yyyy-mm-ddTHH:MM:SSZ"} (ISO
 8601) and \code{"d/m/y HH:MM"} (e.g. a Google Forms timestamp column) --
 \code{collection_date} has no way to record a time, only the date
@@ -88,4 +108,7 @@ util_parse_collection_date(c(
 # the whole column is used to resolve a plain numeric date's order:
 # `9/14/2020` can only be month-first, so `8/11/2020` is read the same way
 util_parse_collection_date(c("8/11/2020 10:09", "9/14/2020 12:06"))
+
+# nothing in a lone `4/07/2022` says which way round it is, so say so:
+util_parse_collection_date("4/07/2022", order = "dmy")
 }

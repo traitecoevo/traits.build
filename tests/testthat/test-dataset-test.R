@@ -15,7 +15,7 @@
 # the console), and the backtraces (whose line numbers move whenever anything
 # in `R/` is edited, which would make these snapshots churn on unrelated
 # changes).
-dataset_test_failures <- function(dataset_id) {
+dataset_test_failures <- function(dataset_id, path_data = "examples") {
 
   withr::local_options(
     useFancyQuotes = FALSE, cli.unicode = FALSE, crayon.enabled = FALSE,
@@ -24,7 +24,7 @@ dataset_test_failures <- function(dataset_id) {
 
   out <- capture.output(
     suppressMessages(
-      dataset_test(dataset_ids = dataset_id, path_data = "examples")
+      dataset_test(dataset_ids = dataset_id, path_data = path_data)
     )
   )
 
@@ -135,8 +135,8 @@ test_that("`dataset_test` reads every config file from `path_config` (#129)", {
   # The build step read `config/traits.yml`, `config/metadata.yml`,
   # `config/unit_conversions.csv` and `config/taxon_list.csv` regardless of
   # `path_config`, so a run from anywhere else failed "building dataset".
-  # Test_2023_2 passes every check, so any failure here is the config.
-  out <- dataset_test_elsewhere("Test_2023_2", "config")
+  # Test_2023_5 passes every check, so any failure here is the config.
+  out <- dataset_test_elsewhere("Test_2023_5", "config")
 
   expect_false(any(grepl("building dataset", out, fixed = TRUE)))
   # The last progress line is the final tally
@@ -231,8 +231,10 @@ test_that("`dataset_test` runs on the package's testthat edition (#234)", {
   )
   results <- as.data.frame(reporter$get_results())
 
+  # Test_2023_1's 4 failures include blank and ambiguous (`1/2/2004`)
+  # `collection_date` values, which the date checks report
   expect_equal(results$test, "Test_2023_1")
-  expect_equal(results$failed, 2)
+  expect_equal(results$failed, 4)
 })
 
 
@@ -246,4 +248,28 @@ test_that("`dataset_test` rejects a `collection_date` that doesn't parse", {
     failures, "Some date values are not parsing: '2002-02-30'",
     all = FALSE
   )
+})
+
+
+test_that("`dataset_test` rejects missing `collection_date` values", {
+  # Test_2023_7 reads `collection_date` from its `Date` column. Blank a few of
+  # those cells in a temporary copy, so the shared example (and its `output/`)
+  # stay untouched. An unknown date should be recorded explicitly (e.g.
+  # `.na/2009`), not left as NA.
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_7", path_data, recursive = TRUE)
+
+  data_file <- file.path(path_data, "Test_2023_7", "data.csv")
+  data <- readr::read_csv(data_file, col_types = readr::cols(.default = "c"))
+  data$Date[1:3] <- NA
+  readr::write_csv(data, data_file, na = "")
+
+  failures <- dataset_test_failures("Test_2023_7", path_data = path_data)
+
+  expect_match(
+    failures, "Some date values are NA \\([0-9]+ of [0-9]+ records\\)",
+    all = FALSE
+  )
+  # NA is not a parse failure, so it isn't reported twice
+  expect_false(any(grepl("Some date values are not parsing", failures)))
 })
