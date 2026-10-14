@@ -65,6 +65,16 @@ test_that("HYPHEN is normalised to the ASCII hyphen-minus", {
 })
 
 
+test_that("LATIN SMALL LIGATURE FI is expanded to the two ASCII letters", {
+  # A single glyph for "fi", not a distinct letter -- PDF text extraction
+  # commonly produces it in place of the two letters someone actually typed.
+  expect_equal(util_replace_disallowed_chars("scientific"), "scientific")
+  expect_equal(util_replace_disallowed_chars("scientiﬁc"), "scientific")
+  expect_true(all(check_disallowed_chars("ﬁ")))
+  expect_false(any(check_disallowed_chars(util_replace_disallowed_chars("scientiﬁc"))))
+})
+
+
 test_that("GREEK SMALL LETTER MU is normalised to MICRO SIGN", {
   # The two are visually identical, so a unit written with the Greek letter
   # cannot be told from one written with the micro sign by eye. Only the micro
