@@ -7915,7 +7915,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "A circumscribed set of organisms, assumed to form a homogeneous unit with regard to associated trait measurements."
+        "@value": "A group of organisms (sensu http://purl.obolibrary.org/obo/OBI_0100026) considered by taxonomists to form a homogeneous unit."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-taxa"

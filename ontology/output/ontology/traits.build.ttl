@@ -2457,7 +2457,7 @@ tern:unit
 
 <https://w3id.org/traits.build#taxon>
     dcterms:created "2024-02-01"^^xsd:date ;
-    dcterms:description "A circumscribed set of organisms, assumed to form a homogeneous unit with regard to associated trait measurements."@en ;
+    dcterms:description "A group of organisms (sensu http://purl.obolibrary.org/obo/OBI_0100026) considered by taxonomists to form a homogeneous unit."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-taxa> ;
     SIO:SIO_000223 <https://w3id.org/traits.build#establishment_means>, <https://w3id.org/traits.build#taxon_distribution> ;
     SIO:SIO_000602 SIO:SIO_000756 ;
