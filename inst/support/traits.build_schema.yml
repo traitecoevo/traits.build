@@ -389,6 +389,8 @@ metadata:
         data_is_long_format: Indicates if the data spreadsheet has a vertical (long) or  horizontal (wide) configuration with `yes` or `no` terminology.
         custom_R_code: A field where additional R code can be included. This allows for custom manipulation of the data in the submitted spreadsheet into a different format for easy integration with AusTraits. `.na` indicates no custom R code was used.
         collection_date: *collection_date
+        collection_date_format: The format the `collection_date` column of the data.csv file is written in, when it is not already `yyyy-mm-dd`, `yyyy-mm` or `yyyy`. One or more of `ymd`, `dmy`, `mdy`, `ym`, `my` and `y`, separated by spaces and tried in turn for each value, so a column holding full dates, month-year values and bare years is declared `dmy my y`. Formats that could read the same value two ways, such as `dmy` and `mdy`, cannot be combined. Values matching none of the formats are left unchanged and reported by `dataset_test()`.
+        collection_date_timezone: The time zone to take the date in, for a `collection_date` column holding points in time, such as timestamps ending in `Z`, as an Olson name such as `Australia/Sydney`. Without it, timestamps are left unchanged and reported by `dataset_test()`.
         taxon_name: *taxon_name
         location_name: *location_name
         source_id: *source_id
