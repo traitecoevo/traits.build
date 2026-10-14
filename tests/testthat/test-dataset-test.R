@@ -215,3 +215,22 @@ test_that("`dataset_test` reports an inline location that is not a list (#129)",
   expect_equal(sum(grepl("is not a list", out, fixed = TRUE)), 1)
   expect_match(out, "location Atherton - is not a list", fixed = TRUE, all = FALSE)
 })
+
+
+test_that("`dataset_test` runs on the package's testthat edition (#234)", {
+  # It used to switch to edition 2 for `context()`, which edition 3
+  # deprecates, and relied on `context("end")` to make the reporter print the
+  # failures at all; the tests above cover that they are still printed.
+  # Running outside a test file, it now opens a context of its own, so a
+  # reporter that collects results rather than printing them works too.
+  # `ListReporter` used to abort with "attempt to use zero-length variable name".
+  reporter <- testthat::ListReporter$new()
+  testthat::with_reporter(
+    reporter,
+    dataset_test_worker("Test_2023_1", path_data = "examples")
+  )
+  results <- as.data.frame(reporter$get_results())
+
+  expect_equal(results$test, "Test_2023_1")
+  expect_equal(results$failed, 2)
+})
