@@ -57,6 +57,7 @@ population,broader,added,,sosa:FeatureOfInterest,Feature of Interest,http://www.
 population,relatedMatch,added,,dwc:Organism,Organism,http://rs.tdwg.org/dwc/terms/Organism
 taxon,closeMatch,added,,tern:Taxon,Taxon,https://w3id.org/tern/ontologies/tern/Taxon
 taxon,broader,added,,sosa:FeatureOfInterest,Feature of Interest,http://www.w3.org/ns/sosa/FeatureOfInterest
+taxon,broader,removed,,oboe-core:Characteristic,Characteristic,http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic
 location,closeMatch,added,,tern:Site,Site,https://w3id.org/tern/ontologies/tern/Site
 location,broader,added,,sosa:FeatureOfInterest,Feature of Interest,http://www.w3.org/ns/sosa/FeatureOfInterest
 context,closeMatch,added,,tern:Attribute,Attribute,https://w3id.org/tern/ontologies/tern/Attribute

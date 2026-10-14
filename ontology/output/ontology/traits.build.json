@@ -7919,16 +7919,10 @@
         "@type": "http://www.w3.org/2001/XMLSchema#date",
         "@value": "2024-02-01"
       },
-      "http://purl.org/dc/terms/description": [
-        {
-          "@language": "en",
-          "@value": "A group of organisms assumed to form a homogeneous unit with regard to associated trait measurements."
-        },
-        {
-          "@language": "en",
-          "@value": "A circumscribed set of organisms."
-        }
-      ],
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A circumscribed set of organisms, assumed to form a homogeneous unit with regard to associated trait measurements."
+      },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-taxa"
       },
@@ -7940,14 +7934,9 @@
           "@id": "https://w3id.org/traits.build#taxon_distribution"
         }
       ],
-      "http://semanticscience.org/resource/SIO_000602": [
-        {
-          "@id": "http://semanticscience.org/resource/SIO_000757"
-        },
-        {
-          "@id": "http://semanticscience.org/resource/SIO_000756"
-        }
-      ],
+      "http://semanticscience.org/resource/SIO_000602": {
+        "@id": "http://semanticscience.org/resource/SIO_000756"
+      },
       "http://semanticscience.org/resource/SIO_000671": [
         {
           "@id": "https://w3id.org/traits.build#family"
@@ -7979,9 +7968,6 @@
           "@id": "https://w3id.org/traits.build#taxon_name"
         }
       ],
-      "http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype": {
-        "@id": "http://www.w3.org/2001/XMLSchema#string"
-      },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
         "@value": "taxon"
@@ -7994,9 +7980,6 @@
         "@value": "taxon"
       },
       "http://www.w3.org/2004/02/skos/core#broader": [
-        {
-          "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
-        },
         {
           "@id": "http://www.w3.org/ns/sosa/FeatureOfInterest"
         },

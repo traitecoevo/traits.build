@@ -10,20 +10,10 @@
 #
 # An entry is a defect in the published RDF whose fix needs a decision, not
 # just a reviewed change: each one changes what consumers parse, so it ships in
-# a data-model version. The mechanical defects found when these checks arrived
-# (2026-10) were fixed in 1.2.0 and their entries deleted.
+# a data-model version. Every defect found when these checks arrived (2026-10)
+# was fixed in 1.2.0 and its entry deleted, so the register is empty.
 
-ONTOLOGY_KNOWN_GAPS <- c(
-  `input-duplicate-key` = paste(
-    "`taxon` is the Class of two rows of traits.build_ontology.csv: the entity",
-    "observed (broader oboe:Entity, 'A circumscribed set of organisms') and",
-    "the characteristic the taxa table describes (broader",
-    "oboe:Characteristic, exact dwc:Taxon, has property taxon_name ...).",
-    "Both become the one IRI https://w3id.org/traits.build#taxon, which is",
-    "therefore both an Entity and a Characteristic with two descriptions.",
-    "Fixing it renames a published IRI; needs a maintainer decision on which",
-    "row moves.")
-)
+ONTOLOGY_KNOWN_GAPS <- character()
 
 new_problem <- function(id, message, details = character()) {
   list(id = id, message = message, details = as.character(details))

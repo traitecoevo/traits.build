@@ -39,4 +39,4 @@ The published site updates when `develop` is released to `master` (GitHub Pages 
 
 ## Known gaps in the published RDF
 
-The register in `R/validate.R` lists them with reasons. As of data model 1.2.0 there is one: the term `taxon` is defined by two rows (the entity observed, and the characteristic the taxa table describes), so its IRI carries both descriptions. Fixing it renames a published IRI, which needs a maintainer decision on which row moves. The other defects the checks found on arrival (an unterminated `.nt`, relative datatype IRIs and non-ISO dates, IRIs written as literals, `rdfs:type`, published classes with a missing or wrong `skos:inScheme`) were fixed in 1.2.0.
+The register in `R/validate.R` is empty as of data model 1.2.0. The defects the checks found on arrival (an unterminated `.nt`, relative datatype IRIs and non-ISO dates, IRIs written as literals, `rdfs:type`, published classes with a missing or wrong `skos:inScheme`, and the term `taxon` defined by two rows) were fixed in 1.2.0. A new entry needs a reason a fix has to wait for a decision; anything else gets fixed.
