@@ -61,7 +61,7 @@ http://www.w3.org/2004/02/skos/core#ConceptScheme,concept scheme,skos:ConceptSch
 http://www.w3.org/2000/01/rdf-schema#label,label,,RDF Schema,rdfs,rdfs,label,,http://www.w3.org/2000/01/rdf-schema#
 http://www.w3.org/2000/01/rdf-schema#comment,comment,,RDF Schema,rdfs,rdfs,comment,,http://www.w3.org/2000/01/rdf-schema#
 http://www.w3.org/2000/01/rdf-schema#subClassOf,sub class of,,RDF Schema,rdfs,rdfs,subclassOf,,http://www.w3.org/2000/01/rdf-schema#
-http://www.w3.org/2000/01/rdf-schema#type,type,The subject is an instance of a class.,RDF Schema,rdfs,rdfs,type,,http://www.w3.org/2000/01/rdf-schema#
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type,type,The subject is an instance of a class.,RDF Syntax,rdf,rdf,type,,http://www.w3.org/1999/02/22-rdf-syntax-ns#
 http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype,datatype,Datatype is the class of datatypes. All instances of rdfs:Datatype correspond to the RDF model of a datatype described in the RDF Concepts specification [RDF12-CONCEPTS]. rdfs:Datatype is both an instance of and a subclass of rdfs:Class. Each instance of rdfs:Datatype is a subclass of rdfs:Literal.,RDF Syntax,rdf,rdf,datatype,,http://www.w3.org/1999/02/22-rdf-syntax-ns#
 http://purl.org/dc/terms/description,description,"Description may include but is not limited to: an abstract, a table of contents, a graphical representation, or a free-text account of the resource.",DCMI Metadata Terms,dcterms,dcterms,description,,http://purl.org/dc/terms/
 http://purl.org/dc/terms/bibliographicCitation,bibliographic citation,A bibliographic reference for the resource.,DCMI Metadata Terms,dcterms,dcterms,bibliographic citation,,http://purl.org/dc/terms/

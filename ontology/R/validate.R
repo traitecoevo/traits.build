@@ -21,21 +21,6 @@ ONTOLOGY_KNOWN_GAPS <- c(
     "become the one IRI https://w3id.org/traits.build#taxon, which therefore",
     "carries two descriptions. Fixing it renames a published IRI; needs a",
     "maintainer decision on which row moves."),
-  `rdf-datatype-relative-uri` = paste(
-    "typed literals are written `^^<xsd:date>` rather than",
-    "`^^<http://www.w3.org/2001/XMLSchema#date>`, so the datatype is a",
-    "relative IRI that resolves against the base rather than XML Schema;",
-    "the dates themselves (`1-Feb-24`) are not valid xsd:date lexical forms",
-    "either. Fixing it changes every dcterms:created and resource literal."),
-  `rdf-uri-inside-literal` = paste(
-    "traits.build_resource.csv writes the licence, publisher and top-concept",
-    "IRIs as string literals in angle brackets (`\"<https://...>\"^^<xsd:anyURI>`)",
-    "rather than as IRIs, and the top-concept literal names",
-    "`traits.build-database` without the `#`. Fixing it changes four",
-    "statements about the concept scheme."),
-  `rdf-rdfs-type` = paste(
-    "the concept scheme's type is asserted with rdfs:type, which does not",
-    "exist; rdf:type is meant. One statement in traits.build_resource.csv."),
   # Input defects in the published-classes and terms tables, as found by these
   # checks on arrival. Each is fixed in its own commit, which also deletes its
   # entry here; they are registered so that the commit that introduced the

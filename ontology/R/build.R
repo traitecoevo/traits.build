@@ -261,8 +261,10 @@ ontology_label_triples <- function(triples, inputs) {
       object_tmp = stringr::str_replace(object_tmp, "xsd:int", ""),
       object_tmp = stringr::str_replace(object_tmp, "xsd:decimal", ""),
       object_tmp = stringr::str_replace(object_tmp, "@en", ""),
-      object_tmp = stringr::str_replace(object_tmp, "[:punct:]$", ""),
-      object_tmp = stringr::str_replace(object_tmp, "^[:punct:]", ""),
+      # Only the quotes of a literal: stripping any trailing punctuation also
+      # cut the `/` or `#` that ends a namespace or licence IRI.
+      object_tmp = stringr::str_replace(object_tmp, "\"$", ""),
+      object_tmp = stringr::str_replace(object_tmp, "^\"", ""),
       subject_tmp = stringr::str_replace(Subject, paste0("<", ONTOLOGY_BASE), ""),
       subject_tmp = stringr::str_replace(subject_tmp, "<", ""),
       subject_tmp = stringr::str_replace(subject_tmp, ">", "")

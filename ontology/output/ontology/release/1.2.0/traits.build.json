@@ -2429,6 +2429,20 @@
       }
     },
     {
+      "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "The subject is an instance of a class."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "type"
+      }
+    },
+    {
       "@id": "http://www.w3.org/2000/01/rdf-schema#comment",
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "http://www.w3.org/2000/01/rdf-schema#"
@@ -2456,20 +2470,6 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "sub class of"
-      }
-    },
-    {
-      "@id": "http://www.w3.org/2000/01/rdf-schema#type",
-      "http://purl.org/dc/terms/description": {
-        "@language": "en",
-        "@value": "The subject is an instance of a class."
-      },
-      "http://www.w3.org/2004/02/skos/core#inScheme": {
-        "@id": "http://www.w3.org/2000/01/rdf-schema#"
-      },
-      "http://www.w3.org/2004/02/skos/core#prefLabel": {
-        "@language": "en",
-        "@value": "type"
       }
     },
     {
@@ -3038,6 +3038,7 @@
     },
     {
       "@id": "https://w3id.org/traits.build",
+      "@type": "http://www.w3.org/2004/02/skos/core#ConceptScheme",
       "http://purl.org/dc/terms/created": {
         "@type": "http://www.w3.org/2001/XMLSchema#date",
         "@value": "2024-02-01"
@@ -3052,12 +3053,10 @@
         "@value": "The traits.build ontology documents the output structure of a database built using the {traits.build} R package."
       },
       "http://purl.org/dc/terms/license": {
-        "@type": "xsd:anyURI",
-        "@value": "<https://creativecommons.org/licenses/by/4.0/>"
+        "@id": "https://creativecommons.org/licenses/by/4.0/"
       },
       "http://purl.org/dc/terms/publisher": {
-        "@type": "xsd:anyURI",
-        "@value": "<https://austraits.org/>"
+        "@id": "https://austraits.org/"
       },
       "http://purl.org/dc/terms/title": {
         "@language": "en",
@@ -3067,12 +3066,8 @@
         "@language": "en",
         "@value": "traits.build"
       },
-      "http://www.w3.org/2000/01/rdf-schema#type": {
-        "@id": "http://www.w3.org/2004/02/skos/core#ConceptScheme"
-      },
       "http://www.w3.org/2004/02/skos/core#hasTopConcept": {
-        "@type": "xsd:anyURI",
-        "@value": "<https://w3id.org/traits.build-database>"
+        "@id": "https://w3id.org/traits.build#traits.build-database"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
@@ -8988,8 +8983,7 @@
         "@value": "traits.build database"
       },
       "http://www.w3.org/2004/02/skos/core#topConceptOf": {
-        "@type": "xsd:anyURI",
-        "@value": "<https://w3id.org/traits.build>"
+        "@id": "https://w3id.org/traits.build"
       }
     },
     {
