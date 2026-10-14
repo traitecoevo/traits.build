@@ -70,9 +70,18 @@ build_traits <- function(dataset_id, path_data) {
 test_that("`dataset_test` accepts `value_type`/`basis_of_value` in the dataset block (#249)", {
   path_data <- example_with_metadata("Test_2023_2", move_to_dataset_block)
 
-  # Test_2023_2 passes every check, so this one must too
+  # The move must add no failures to those of the unedited Test_2023_2 (which
+  # has one: blank `collection_date` values)
+  failures <- function(out) {
+    sub("^.*metadata\\.yml\t", "", grep("metadata\\.yml\t", out, value = TRUE))
+  }
+  baseline <- dataset_test_output("Test_2023_2", "examples")
   out <- dataset_test_output("Test_2023_2", path_data)
-  expect_match(tail(grep("^\\[ FAIL", out, value = TRUE), 1), "[ FAIL 0 |", fixed = TRUE)
+  expect_equal(failures(out), failures(baseline))
+  expect_equal(
+    tail(grep("^\\[ FAIL", out, value = TRUE), 1),
+    tail(grep("^\\[ FAIL", baseline, value = TRUE), 1)
+  )
 })
 
 
