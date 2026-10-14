@@ -2450,6 +2450,10 @@ write_plaintext <- function(austraits, path) {
 
 #' Identify duplicates preventing pivoting wider
 #'
+#' Run on a compiled database, this cannot see rows that are identical in every
+#' column, because [austraits::bind_databases()] drops them. To find the rows
+#' behind a [dataset_test()] pivot failure, use [dataset_find_pivot_duplicates()].
+#'
 #' @param database_object Database object
 #' @param dataset_ids `dataset_id`'s to check for duplicates; default is all of them
 #'

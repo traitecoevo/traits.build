@@ -51,6 +51,7 @@ reference:
     desc: Functions that help you create metadata files.
     contents:
     - '`dataset_test`'
+    - '`dataset_find_pivot_duplicates`'
     - '`metadata_create_template`'
     - '`metadata_check_custom_R_code`'
     - '`metadata_add_traits`'
