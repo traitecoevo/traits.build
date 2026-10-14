@@ -131,9 +131,12 @@ test_that("the allowed characters come from the schema, and are case-symmetric",
                        toupper(letters_only), tolower(letters_only))
   has_case <- tolower(letters_only) != toupper(letters_only)
 
-  # The exceptions are letters whose other case is ASCII or Greek, so they cannot
-  # be in a non-ASCII set: U+0130 dotted capital I, U+0131 dotless i, U+017F long
-  # s, and U+00B5 micro sign.
+  # The exceptions are letters whose other case is ASCII, or U+00B5 micro
+  # sign, which has no case pairing at all -- it isn't really a letter.
+  # GREEK (SMALL|CAPITAL) LETTER DELTA are both allowed despite meaning
+  # different things (isotope composition vs. "difference") in different
+  # case, but that's still a real case pairing -- each has its other case
+  # allowed too -- so neither shows up here.
   asymmetric <- letters_only[has_case & !(other_case %in% letters_only)]
   expect_setequal(asymmetric, c("İ", "ı", "ſ", "µ"))
 
@@ -158,7 +161,9 @@ test_that("the ordinal indicators stay disallowed despite being letters", {
 test_that("names and symbols that used to be reported are now allowed", {
   # Measured occurrences in the three downstream databases, all of them genuine
   for (x in c("Ósvaldsson", "Briceño", "Klimešová",
-              "16°17′24″S", "(d13C, ‰)", "∼38 Pa")) {
+              "16°17′24″S", "(d13C, ‰)", "∼38 Pa",
+              "δ13C", "δ15N",  # GREEK SMALL LETTER DELTA, isotope composition
+              "ΔT")) {         # GREEK CAPITAL LETTER DELTA, "difference"
     expect_false(any(check_disallowed_chars(x)), info = x)
   }
 })

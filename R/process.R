@@ -739,13 +739,8 @@ process_format_contexts <- function(my_list, dataset_id, traits, metadata_traits
   # a value naming a column of `data.csv` stands for that column's contents, anything
   # else is the literal itself
   values_from_trait_entries <- function(field) {
-    declared <- unique(stats::na.omit(trait_entries[[field]]))
-
-    declared %>%
-      purrr::map(~if (is.null(traits[[.x]])) .x else unique(traits[[.x]])) %>%
-      unlist(use.names = FALSE) %>%
-      as.character() %>%
-      unique()
+    unique(stats::na.omit(trait_entries[[field]])) %>%
+      util_resolve_trait_field_values(traits)
   }
 
   process_content_worker <- function(x, id, traits) {
@@ -1555,11 +1550,11 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
             "basis_of_record", "life_stage", "repeat_measurements_id",
             "measurement_remarks", "source_id", "methods")
 
-  df <-
-    df %>%
-    dplyr::bind_cols(
-      metadata[["dataset"]][names(metadata[["dataset"]]) %in% vars[!vars %in% names(df)]] %>% tibble::as_tibble()
-    )
+  # Skip when every one of these vars is already a data column (binding a 0-row tibble would fail)
+  constants <- metadata[["dataset"]][names(metadata[["dataset"]]) %in% vars[!vars %in% names(df)]]
+  if (length(constants) > 0) {
+    df <- df %>% dplyr::bind_cols(tibble::as_tibble(constants))
+  }
 
   # MAKE PARSING_ID
 
@@ -2449,6 +2444,10 @@ write_plaintext <- function(austraits, path) {
 }
 
 #' Identify duplicates preventing pivoting wider
+#'
+#' Run on a compiled database, this cannot see rows that are identical in every
+#' column, because [austraits::bind_databases()] drops them. To find the rows
+#' behind a [dataset_test()] pivot failure, use [dataset_find_pivot_duplicates()].
 #'
 #' @param database_object Database object
 #' @param dataset_ids `dataset_id`'s to check for duplicates; default is all of them

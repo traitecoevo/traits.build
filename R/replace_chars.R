@@ -31,6 +31,7 @@ util_disallowed_char_replacements <- function() {
 
     # Characters that occupy space but are not a space
     "\u00a0" = " ",              # NO-BREAK SPACE
+    "\u2003" = " ",              # EM SPACE
     "\u2007" = " ",              # FIGURE SPACE
     "\u2009" = " ",              # THIN SPACE
     "\u202f" = " ",              # NARROW NO-BREAK SPACE
@@ -54,7 +55,19 @@ util_disallowed_char_replacements <- function() {
     # typed. Distinct from EN DASH, EM DASH and MINUS SIGN, which carry their
     # own typographic meaning and are allowed as-is (see `allowed_characters`
     # in the schema); this is not one of those, it is just a hyphen.
-    "\u2010" = "-"               # HYPHEN -> ASCII hyphen-minus
+    "\u2010" = "-",              # HYPHEN -> ASCII hyphen-minus
+
+    # A discretionary line-break hint, invisible unless a word wraps there.
+    # Same word-processor/PDF-export origin as the HYPHEN case above, and
+    # rendered the same way: as the hyphen it's standing in for.
+    "\u00ad" = "-",              # SOFT HYPHEN -> ASCII hyphen-minus
+
+    # A typographic ligature glyph for the two letters "fi", introduced by
+    # PDF text extraction (common in scientific PDFs, e.g. "scientific"
+    # copies out as "scienti\ufb01c"). It is not a distinct letter, just a
+    # rendering of these exact two ASCII letters, so unlike a real letter it
+    # belongs here rather than in `exceptions`.
+    "\ufb01" = "fi"              # LATIN SMALL LIGATURE FI -> "fi"
   )
 }
 
