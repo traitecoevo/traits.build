@@ -294,10 +294,10 @@ ontology_write_rdf <- function(triples, out_dir = ontology_output_dir()) {
   triples %>%
     readr::write_delim(nq, col_names = FALSE, escape = "none", quote = "none")
 
-  triples %>%
-    dplyr::select(-graph) %>%
-    readr::write_delim(file.path(out_dir, "traits.build.nt"),
-                       col_names = FALSE, escape = "none", quote = "none")
+  # Every statement is in the default graph, so the `graph` column holds only
+  # the terminating `.` and the N-Quads file is already valid N-Triples.
+  # (Dropping that column, as the nt writer once did, dropped the terminator.)
+  file.copy(nq, file.path(out_dir, "traits.build.nt"), overwrite = TRUE)
 
   graph <- rdflib::rdf_parse(nq, format = "nquads")
 

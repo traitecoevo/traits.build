@@ -21,11 +21,6 @@ ONTOLOGY_KNOWN_GAPS <- c(
     "become the one IRI https://w3id.org/traits.build#taxon, which therefore",
     "carries two descriptions. Fixing it renames a published IRI; needs a",
     "maintainer decision on which row moves."),
-  `nt-unterminated` = paste(
-    "traits.build.nt is written without the statement terminator, so no line",
-    "ends in `.` and the file is not valid N-Triples (traits.build.nq, which",
-    "carries the terminator in its graph column, is what rdflib parses).",
-    "Fixing it rewrites every line of a published file."),
   `rdf-datatype-relative-uri` = paste(
     "typed literals are written `^^<xsd:date>` rather than",
     "`^^<http://www.w3.org/2001/XMLSchema#date>`, so the datatype is a",
@@ -218,24 +213,31 @@ validate_ontology <- function(data_dir = ontology_path("data"),
     }
   }
 
-  if (file.exists(nq)) {
-    parsed <- tryCatch(rdflib::rdf_parse(nq, format = "nquads"), error = function(e) e)
+  # Each line-based file is parsed in its own format: an N-Triples file that
+  # only parses as N-Quads is not N-Triples.
+  for (file in c(nquads = nq, ntriples = nt)) {
+    if (!file.exists(file)) next
+    format <- names(which(c(nquads = nq, ntriples = nt) == file))
+
+    parsed <- tryCatch(rdflib::rdf_parse(file, format = format), error = function(e) e)
     if (inherits(parsed, "error")) {
-      add("rdf-parse-failed", paste("traits.build.nq does not parse:", conditionMessage(parsed)))
-    } else {
-      # librdf reports a malformed line on stderr and carries on, so a dropped
-      # statement never fails the parse. Count what came through against what
-      # was written: a repeated statement is stored once, so compare with the
-      # distinct lines.
-      lines <- readr::read_lines(nq)
-      lines <- lines[nzchar(lines)]
-      n_parsed <- nrow(rdflib::rdf_query(parsed, "SELECT ?s ?p ?o WHERE { ?s ?p ?o }"))
-      n_distinct <- length(unique(lines))
-      if (n_parsed != n_distinct) {
-        add("rdf-statements-dropped",
-            sprintf("traits.build.nq: %d distinct statement(s) written, %d parsed; %d repeated line(s)",
-                    n_distinct, n_parsed, length(lines) - n_distinct))
-      }
+      add("rdf-parse-failed", sprintf("%s does not parse as %s: %s",
+                                      basename(file), format, conditionMessage(parsed)))
+      next
+    }
+
+    # librdf reports a malformed line on stderr and carries on, so a dropped
+    # statement never fails the parse. Count what came through against what
+    # was written: a repeated statement is stored once, so compare with the
+    # distinct lines.
+    lines <- readr::read_lines(file)
+    lines <- lines[nzchar(lines)]
+    n_parsed <- nrow(rdflib::rdf_query(parsed, "SELECT ?s ?p ?o WHERE { ?s ?p ?o }"))
+    n_distinct <- length(unique(lines))
+    if (n_parsed != n_distinct) {
+      add("rdf-statements-dropped",
+          sprintf("%s: %d distinct statement(s) written, %d parsed as %s; %d repeated line(s)",
+                  basename(file), n_distinct, n_parsed, format, length(lines) - n_distinct))
     }
   }
 
