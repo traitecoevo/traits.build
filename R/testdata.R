@@ -44,7 +44,7 @@ dataset_test <-
 #' @param unit_conversions Unit conversions, as returned by `get_unit_conversions()`
 #' @param resource_metadata Database metadata (`metadata.yml` in the config folder)
 #' @param taxon_list Taxon list (`taxon_list.csv` in the config folder)
-#' @importFrom testthat local_edition test_that context expect_silent
+#' @importFrom testthat test_that expect_silent
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
 dataset_test_worker <-
@@ -65,10 +65,16 @@ dataset_test_worker <-
            taxon_list = read_csv_char(file.path(path_config, "taxon_list.csv"))
            ) {
 
-    # We're using 2nd edition of test that, which has "context" field
-    # https://cran.r-project.org/web/packages/testthat/vignettes/third-edition.html
-
-    local_edition(2)
+    # testthat reporters print a context's failures when it ends, and open one
+    # per test file. Nothing here runs from a test file, so open and close one
+    # by hand, as `context("end")` did under edition 2.
+    reporter <- testthat::get_reporter()
+    reporter$start_file("dataset_test")
+    testthat::context_start_file("dataset_test")
+    on.exit({
+      reporter$end_context_if_started()
+      reporter$end_file()
+    }, add = TRUE)
 
     # Run tests for each dataset
 
@@ -77,8 +83,6 @@ dataset_test_worker <-
       s <- file.path(path_data, dataset_id)
 
       test_that(dataset_id, {
-
-        context(sprintf("%s", dataset_id))
 
         ## Files exist
         files <- file.path(s, c("data.csv", "metadata.yml"))
@@ -1052,7 +1056,4 @@ dataset_test_worker <-
         }
       })
     }
-
-    # Keep this
-    context("end")
   }
