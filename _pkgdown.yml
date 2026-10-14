@@ -84,6 +84,7 @@ reference:
     desc: Functions to work with compiled traits.build objects.
     contents:
     - '`check_pivot_duplicates`'
+    - '`dataset_check_duplicate_values`'
     - '`check_pivot_wider`'
 
   - title: Building a compilation (private)
