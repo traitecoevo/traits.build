@@ -9,7 +9,10 @@ dataset_test_worker(
   path_config = "config",
   path_data = "data",
   schema = get_schema(),
-  definitions = get_schema(file.path(path_config, "traits.yml"), I("traits"))
+  definitions = get_schema(file.path(path_config, "traits.yml"), I("traits")),
+  unit_conversions = get_unit_conversions(file.path(path_config, "unit_conversions.csv")),
+  resource_metadata = get_schema(file.path(path_config, "metadata.yml"), "metadata"),
+  taxon_list = read_csv_char(file.path(path_config, "taxon_list.csv"))
 )
 }
 \arguments{
@@ -22,6 +25,12 @@ dataset_test_worker(
 \item{schema}{Data schema}
 
 \item{definitions}{Trait defininitons}
+
+\item{unit_conversions}{Unit conversions, as returned by \code{get_unit_conversions()}}
+
+\item{resource_metadata}{Database metadata (\code{metadata.yml} in the config folder)}
+
+\item{taxon_list}{Taxon list (\code{taxon_list.csv} in the config folder)}
 }
 \description{
 Run tests to ensure that specified \code{dataset_id} has the correct setup.

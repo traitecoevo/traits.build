@@ -3,9 +3,9 @@
     Code
       writeLines(dataset_test_failures("Test_2023_9"))
     Output
+      == Testing dataset_test ========================================================
       examples/Test_2023_9/metadata.yml	metadata - disallowed characters in metadata detected:
       - ln 149:     leaves at the tip of each individual. Testing of disallowed characters - Ψ◦℃.
-      examples/Test_2023_9/metadata.yml	dataset - `dataset` field names include(s) invalid terms: 'basis_of_value', 'value_type'
       examples/Test_2023_9/metadata.yml	contexts - `value`'s should only have one unique description each: 'NA'
       examples/Test_2023_9/metadata.yml	contexts - duplicate `find` values detected: 'NA'
       examples/Test_2023_9/metadata.yml	contexts - `find: bottom slope` in the `context_property` 'slope position' is not accompanied by a `value` field
