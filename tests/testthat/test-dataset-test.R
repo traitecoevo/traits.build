@@ -108,3 +108,52 @@ test_that("`dataset_test` rejects invalid `match: word` substitutions (#271)", {
     all = FALSE
   )
 })
+
+
+# Run `dataset_test` from a directory with no `config/` folder, so any config
+# file it reads from a hardcoded `config/` rather than `path_config` fails.
+dataset_test_elsewhere <- function(dataset_id, path_config) {
+  # Both paths must resolve before leaving the tests directory
+  path_config <- normalizePath(path_config)
+  path_data <- normalizePath("examples")
+
+  withr::local_dir(withr::local_tempdir())
+  withr::local_options(
+    useFancyQuotes = FALSE, cli.unicode = FALSE, crayon.enabled = FALSE,
+    width = 120
+  )
+
+  capture.output(
+    suppressMessages(
+      dataset_test(dataset_id, path_config = path_config, path_data = path_data)
+    )
+  )
+}
+
+
+test_that("`dataset_test` reads every config file from `path_config` (#129)", {
+  # The build step read `config/traits.yml`, `config/metadata.yml`,
+  # `config/unit_conversions.csv` and `config/taxon_list.csv` regardless of
+  # `path_config`, so a run from anywhere else failed "building dataset".
+  # Test_2023_2 passes every check, so any failure here is the config.
+  out <- dataset_test_elsewhere("Test_2023_2", "config")
+
+  expect_false(any(grepl("building dataset", out, fixed = TRUE)))
+  # The last progress line is the final tally
+  expect_match(tail(grep("^\\[ FAIL", out, value = TRUE), 1), "[ FAIL 0 |", fixed = TRUE)
+})
+
+
+test_that("a missing config file fails each dataset rather than the run (#129)", {
+  # The config files are read once per run, not once per dataset. Reading one
+  # that is missing must still be a failure reported against the dataset, as it
+  # was when each dataset read the files itself, not an error that aborts the
+  # run before any dataset is checked.
+  config <- withr::local_tempdir()
+  file.copy(list.files("config", full.names = TRUE), config)
+  unlink(file.path(config, "taxon_list.csv"))
+
+  out <- dataset_test_elsewhere(c("Test_2023_2", "Test_2023_3"), config)
+
+  expect_equal(sum(grepl("building dataset", out, fixed = TRUE)), 2)
+})

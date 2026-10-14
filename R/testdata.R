@@ -41,6 +41,9 @@ dataset_test <-
 #' @inheritParams dataset_test
 #' @param schema Data schema
 #' @param definitions Trait defininitons
+#' @param unit_conversions Unit conversions, as returned by `get_unit_conversions()`
+#' @param resource_metadata Database metadata (`metadata.yml` in the config folder)
+#' @param taxon_list Taxon list (`taxon_list.csv` in the config folder)
 #' @importFrom testthat local_edition test_that context expect_silent
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
@@ -50,7 +53,16 @@ dataset_test_worker <-
            path_data = "data",
            schema = get_schema(),
            definitions =
-             get_schema(file.path(path_config, "traits.yml"), I("traits"))
+             get_schema(file.path(path_config, "traits.yml"), I("traits")),
+           # Defaults are evaluated lazily, on first use inside the loop, so
+           # each file is read once for the whole run rather than once per
+           # dataset. A file that fails to read is retried on the next use, so
+           # it is still reported against each dataset rather than aborting.
+           unit_conversions =
+             get_unit_conversions(file.path(path_config, "unit_conversions.csv")),
+           resource_metadata =
+             get_schema(file.path(path_config, "metadata.yml"), "metadata"),
+           taxon_list = read_csv_char(file.path(path_config, "taxon_list.csv"))
            ) {
 
     # We're using 2nd edition of test that, which has "context" field
@@ -987,11 +999,11 @@ dataset_test_worker <-
               file.path(path_data, dataset_id, "metadata.yml"),
               file.path(path_data, dataset_id, "data.csv"),
               dataset_id,
-              get_schema("config/traits.yml", "traits"),
-              get_unit_conversions("config/unit_conversions.csv"),
-              get_schema(),
-              get_schema("config/metadata.yml", "metadata"),
-              read_csv_char("config/taxon_list.csv")
+              definitions,
+              unit_conversions,
+              schema,
+              resource_metadata,
+              taxon_list
             ),
             info = sprintf("%s\tbuilding dataset", red(dataset_id)))
 
