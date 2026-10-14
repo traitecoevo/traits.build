@@ -555,8 +555,8 @@
 <https://w3id.org/traits.build#method_context> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity> .
 <https://w3id.org/traits.build#method_context> <http://www.w3.org/2004/02/skos/core#broader> <https://w3id.org/traits.build#traits.build-contexts> .
 <https://w3id.org/traits.build#method_context> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000756> .
-<https://w3id.org/traits.build#method_context> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://www.w3.org/ns/sosa/Procedure> .
-<https://w3id.org/traits.build#method_context> <http://www.w3.org/2004/02/skos/core#closeMatch> <https://w3id.org/tern/ontologies/tern/Procedure> .
+<https://w3id.org/traits.build#method_context> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://www.w3.org/ns/sosa/Procedure> .
+<https://w3id.org/traits.build#method_context> <http://www.w3.org/2004/02/skos/core#relatedMatch> <https://w3id.org/tern/ontologies/tern/Procedure> .
 <https://w3id.org/traits.build#method_context> <http://www.w3.org/2000/01/rdf-schema#label> "method context"@en .
 <https://w3id.org/traits.build#method_context> <http://purl.org/dc/terms/description> "A compment of a trait measurement protocol that is changed between individual trait measurements and might cause the measured trait values of individuals or populations to change."@en .
 <https://w3id.org/traits.build#method_context> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
@@ -588,8 +588,8 @@
 <https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#broader> <http://www.w3.org/2004/02/skos/core#prefLabel> .
 <https://w3id.org/traits.build#taxon_name> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
 <https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://rs.tdwg.org/dwc/terms/acceptedNameUsage> .
-<https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://rs.tdwg.org/dwc/terms/scientificName> .
-<https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://terminologies.gfbio.org/terms/ETS/scientificName> .
+<https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://rs.tdwg.org/dwc/terms/scientificName> .
+<https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://terminologies.gfbio.org/terms/ETS/scientificName> .
 <https://w3id.org/traits.build#taxon_name> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-traits> .
 <https://w3id.org/traits.build#taxon_name> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-taxa> .
 <https://w3id.org/traits.build#taxon_name> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-taxonomic_updates> .
@@ -663,7 +663,7 @@
 <https://w3id.org/traits.build#unit> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://rs.tdwg.org/dwc/terms/assertionUnit> .
 <https://w3id.org/traits.build#unit> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
 <https://w3id.org/traits.build#unit> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://qudt.org/schema/qudt/Unit> .
-<https://w3id.org/traits.build#unit> <http://www.w3.org/2004/02/skos/core#relatedMatch> <https://w3id.org/tern/ontologies/tern/unit> .
+<https://w3id.org/traits.build#unit> <http://www.w3.org/2004/02/skos/core#closeMatch> <https://w3id.org/tern/ontologies/tern/unit> .
 <https://w3id.org/traits.build#unit> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-traits> .
 <https://w3id.org/traits.build#unit> <http://www.w3.org/2000/01/rdf-schema#label> "unit"@en .
 <https://w3id.org/traits.build#unit> <http://purl.org/dc/terms/description> "Units of the sampled trait value after aligning with AusTraits standards."@en .
@@ -764,16 +764,15 @@
 <https://w3id.org/traits.build#population_id> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
 <https://w3id.org/traits.build#individual_id> <http://www.w3.org/2004/02/skos/core#prefLabel> "individual id"@en .
 <https://w3id.org/traits.build#individual_id> <http://www.w3.org/2004/02/skos/core#altLabel> "individual_id"@en .
-<https://w3id.org/traits.build#individual_id> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://rs.tdwg.org/dwc/terms/organismID> .
 <https://w3id.org/traits.build#individual_id> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> .
 <https://w3id.org/traits.build#individual_id> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
+<https://w3id.org/traits.build#individual_id> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://rs.tdwg.org/dwc/terms/organismID> .
 <https://w3id.org/traits.build#individual_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-traits> .
 <https://w3id.org/traits.build#individual_id> <http://www.w3.org/2000/01/rdf-schema#label> "individual id"@en .
 <https://w3id.org/traits.build#individual_id> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build#observations_of_individual> .
 <https://w3id.org/traits.build#individual_id> <http://purl.org/dc/terms/description> "A unique integer identifier for an individual, with individuals numbered sequentially within each dataset by taxon by population grouping. Most often each row of data represents an individual, but in some datasets trait data collected on a single individual is presented across multiple rows of data, such as if the same trait is measured using different methods or the same individual is measured repeatedly across time."@en .
 <https://w3id.org/traits.build#individual_id> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#int> .
 <https://w3id.org/traits.build#individual_id> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
-<https://w3id.org/traits.build#individual_id> <http://www.w3.org/2002/07/owl#sameAs> <http://rs.tdwg.org/dwc/terms/organismID> .
 <https://w3id.org/traits.build#individual_id> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
 <https://w3id.org/traits.build#repeat_measurements_id> <http://www.w3.org/2004/02/skos/core#prefLabel> "repeat measurements id"@en .
 <https://w3id.org/traits.build#repeat_measurements_id> <http://www.w3.org/2004/02/skos/core#altLabel> "repeat_measurements_id"@en .
@@ -877,8 +876,6 @@
 <https://w3id.org/traits.build#method_context_id> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
 <https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#prefLabel> "collection date"@en .
 <https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#altLabel> "collection_date"@en .
-<https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://terminologies.gfbio.org/terms/ETS/eventDate> .
-<https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://rs.tdwg.org/dwc/terms/eventDate> .
 <https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#MeasuredValue> .
 <https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#broader> <http://rs.tdwg.org/dwc/terms/measurementValue> .
 <https://w3id.org/traits.build#collection_date> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
@@ -886,14 +883,14 @@
 <https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://rs.tdwg.org/dwc/terms/assertionEffectiveDate> .
 <https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://www.w3.org/ns/sosa/phenomenonTime> .
 <https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#closeMatch> <https://w3id.org/tern/ontologies/tern/resultDateTime> .
+<https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://rs.tdwg.org/dwc/terms/eventDate> .
+<https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://terminologies.gfbio.org/terms/ETS/eventDate> .
 <https://w3id.org/traits.build#collection_date> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-traits> .
 <https://w3id.org/traits.build#collection_date> <http://www.w3.org/2000/01/rdf-schema#label> "collection date"@en .
 <https://w3id.org/traits.build#collection_date> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build#observation> .
 <https://w3id.org/traits.build#collection_date> <http://purl.org/dc/terms/description> "Date sample was taken, in the format `yyyy-mm-dd`, `yyyy-mm` or `yyyy`, depending on the resoluton specified. Alternatively an overall range for the study can be indicating, with the starting and ending sample date sepatated by a `/`, as in 2010-10/2011-03"@en .
 <https://w3id.org/traits.build#collection_date> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#collection_date> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
-<https://w3id.org/traits.build#collection_date> <http://www.w3.org/2002/07/owl#sameAs> <http://terminologies.gfbio.org/terms/ETS/eventDate> .
-<https://w3id.org/traits.build#collection_date> <http://www.w3.org/2002/07/owl#sameAs> <http://rs.tdwg.org/dwc/terms/eventDate> .
 <https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
 <https://w3id.org/traits.build#measurement_remarks> <http://www.w3.org/2004/02/skos/core#prefLabel> "measurement remarks"@en .
 <https://w3id.org/traits.build#measurement_remarks> <http://www.w3.org/2004/02/skos/core#altLabel> "measurement_remarks"@en .
@@ -957,8 +954,8 @@
 <https://w3id.org/traits.build#location_property> <http://www.w3.org/2004/02/skos/core#altLabel> "location_property"@en .
 <https://w3id.org/traits.build#location_property> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic> .
 <https://w3id.org/traits.build#location_property> <http://www.w3.org/2004/02/skos/core#broader> <http://www.w3.org/ns/sosa/ObservableProperty> .
+<https://w3id.org/traits.build#location_property> <http://www.w3.org/2004/02/skos/core#broader> <http://rs.tdwg.org/dwc/terms/measurementType> .
 <https://w3id.org/traits.build#location_property> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
-<https://w3id.org/traits.build#location_property> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://rs.tdwg.org/dwc/terms/measurementType> .
 <https://w3id.org/traits.build#location_property> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-locations> .
 <https://w3id.org/traits.build#location_property> <http://www.w3.org/2000/01/rdf-schema#label> "location property"@en .
 <https://w3id.org/traits.build#location_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build#location> .
@@ -1013,10 +1010,10 @@
 <https://w3id.org/traits.build#elevation> <http://www.w3.org/2004/02/skos/core#prefLabel> "elevation (m)"@en .
 <https://w3id.org/traits.build#elevation> <http://www.w3.org/2004/02/skos/core#altLabel> "elevation"@en .
 <https://w3id.org/traits.build#elevation> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://rs.tdwg.org/dwc/terms/verbatimElevation> .
+<https://w3id.org/traits.build#elevation> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://terminologies.gfbio.org/terms/ETS/elevation> .
 <https://w3id.org/traits.build#elevation> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#MeasuredValue> .
 <https://w3id.org/traits.build#elevation> <http://www.w3.org/2004/02/skos/core#broader> <http://rs.tdwg.org/dwc/terms/measurementValue> .
 <https://w3id.org/traits.build#elevation> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
-<https://w3id.org/traits.build#elevation> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://terminologies.gfbio.org/terms/ETS/elevation> .
 <https://w3id.org/traits.build#elevation> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-locations> .
 <https://w3id.org/traits.build#elevation> <http://www.w3.org/2000/01/rdf-schema#label> "elevation (m)"@en .
 <https://w3id.org/traits.build#elevation> <http://semanticscience.org/resource/SIO_001096> <https://w3id.org/traits.build#location_property> .
@@ -1025,6 +1022,7 @@
 <https://w3id.org/traits.build#elevation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#decimal> .
 <https://w3id.org/traits.build#elevation> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#elevation> <http://www.w3.org/2002/07/owl#sameAs> <http://rs.tdwg.org/dwc/terms/verbatimElevation> .
+<https://w3id.org/traits.build#elevation> <http://www.w3.org/2002/07/owl#sameAs> <http://terminologies.gfbio.org/terms/ETS/elevation> .
 <https://w3id.org/traits.build#elevation> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
 <https://w3id.org/traits.build#context_property> <http://www.w3.org/2004/02/skos/core#prefLabel> "context property"@en .
 <https://w3id.org/traits.build#context_property> <http://www.w3.org/2004/02/skos/core#altLabel> "context_property"@en .

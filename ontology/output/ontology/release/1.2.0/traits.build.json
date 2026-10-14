@@ -3651,14 +3651,6 @@
         "@language": "en",
         "@value": "collection date"
       },
-      "http://www.w3.org/2002/07/owl#sameAs": [
-        {
-          "@id": "http://rs.tdwg.org/dwc/terms/eventDate"
-        },
-        {
-          "@id": "http://terminologies.gfbio.org/terms/ETS/eventDate"
-        }
-      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "collection_date"
@@ -3673,6 +3665,12 @@
       ],
       "http://www.w3.org/2004/02/skos/core#closeMatch": [
         {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/eventDate"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/eventDate"
+        },
+        {
           "@id": "https://w3id.org/tern/ontologies/tern/resultDateTime"
         },
         {
@@ -3683,14 +3681,6 @@
         },
         {
           "@id": "http://rs.tdwg.org/dwc/terms/measurementDeterminedDate"
-        }
-      ],
-      "http://www.w3.org/2004/02/skos/core#exactMatch": [
-        {
-          "@id": "http://rs.tdwg.org/dwc/terms/eventDate"
-        },
-        {
-          "@id": "http://terminologies.gfbio.org/terms/ETS/eventDate"
         }
       ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
@@ -4489,9 +4479,14 @@
         "@language": "en",
         "@value": "elevation (m)"
       },
-      "http://www.w3.org/2002/07/owl#sameAs": {
-        "@id": "http://rs.tdwg.org/dwc/terms/verbatimElevation"
-      },
+      "http://www.w3.org/2002/07/owl#sameAs": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/elevation"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/verbatimElevation"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "elevation"
@@ -4504,12 +4499,14 @@
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#MeasuredValue"
         }
       ],
-      "http://www.w3.org/2004/02/skos/core#closeMatch": {
-        "@id": "http://terminologies.gfbio.org/terms/ETS/elevation"
-      },
-      "http://www.w3.org/2004/02/skos/core#exactMatch": {
-        "@id": "http://rs.tdwg.org/dwc/terms/verbatimElevation"
-      },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/elevation"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/verbatimElevation"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5086,9 +5083,6 @@
         "@language": "en",
         "@value": "individual id"
       },
-      "http://www.w3.org/2002/07/owl#sameAs": {
-        "@id": "http://rs.tdwg.org/dwc/terms/organismID"
-      },
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "individual_id"
@@ -5096,7 +5090,7 @@
       "http://www.w3.org/2004/02/skos/core#broader": {
         "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier"
       },
-      "http://www.w3.org/2004/02/skos/core#exactMatch": {
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/organismID"
       },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
@@ -5566,15 +5560,15 @@
       },
       "http://www.w3.org/2004/02/skos/core#broader": [
         {
+          "@id": "http://rs.tdwg.org/dwc/terms/measurementType"
+        },
+        {
           "@id": "http://www.w3.org/ns/sosa/ObservableProperty"
         },
         {
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
         }
       ],
-      "http://www.w3.org/2004/02/skos/core#closeMatch": {
-        "@id": "http://rs.tdwg.org/dwc/terms/measurementType"
-      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -6071,21 +6065,21 @@
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
         }
       ],
-      "http://www.w3.org/2004/02/skos/core#closeMatch": [
-        {
-          "@id": "https://w3id.org/tern/ontologies/tern/Procedure"
-        },
-        {
-          "@id": "http://www.w3.org/ns/sosa/Procedure"
-        }
-      ],
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "method context"
-      }
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": [
+        {
+          "@id": "https://w3id.org/tern/ontologies/tern/Procedure"
+        },
+        {
+          "@id": "http://www.w3.org/ns/sosa/Procedure"
+        }
+      ]
     },
     {
       "@id": "https://w3id.org/traits.build#method_context_id",
@@ -8157,24 +8151,24 @@
           "@id": "http://www.w3.org/2000/01/rdf-schema#label"
         }
       ],
-      "http://www.w3.org/2004/02/skos/core#closeMatch": [
-        {
-          "@id": "http://terminologies.gfbio.org/terms/ETS/scientificName"
-        },
-        {
-          "@id": "http://rs.tdwg.org/dwc/terms/scientificName"
-        },
-        {
-          "@id": "http://rs.tdwg.org/dwc/terms/acceptedNameUsage"
-        }
-      ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/acceptedNameUsage"
+      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "taxon name"
-      }
+      },
+      "http://www.w3.org/2004/02/skos/core#relatedMatch": [
+        {
+          "@id": "http://terminologies.gfbio.org/terms/ETS/scientificName"
+        },
+        {
+          "@id": "http://rs.tdwg.org/dwc/terms/scientificName"
+        }
+      ]
     },
     {
       "@id": "https://w3id.org/traits.build#taxon_rank",
@@ -9741,9 +9735,14 @@
         "@language": "en",
         "@value": "unit"
       },
-      "http://www.w3.org/2004/02/skos/core#closeMatch": {
-        "@id": "http://qudt.org/schema/qudt/Unit"
-      },
+      "http://www.w3.org/2004/02/skos/core#closeMatch": [
+        {
+          "@id": "https://w3id.org/tern/ontologies/tern/unit"
+        },
+        {
+          "@id": "http://qudt.org/schema/qudt/Unit"
+        }
+      ],
       "http://www.w3.org/2004/02/skos/core#exactMatch": [
         {
           "@id": "http://rs.tdwg.org/dwc/terms/assertionUnit"
@@ -9764,9 +9763,6 @@
       "http://www.w3.org/2004/02/skos/core#prefLabel": {
         "@language": "en",
         "@value": "unit"
-      },
-      "http://www.w3.org/2004/02/skos/core#relatedMatch": {
-        "@id": "https://w3id.org/tern/ontologies/tern/unit"
       }
     },
     {

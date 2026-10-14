@@ -1293,11 +1293,9 @@ tern:unit
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdf:datatype xsd:date ;
     rdfs:label "collection date"@en ;
-    owl:sameAs dwc:eventDate, ets:eventDate ;
     skos:altLabel "collection_date"@en ;
     skos:broader oboe:MeasuredValue, dwc:measurementValue ;
-    skos:closeMatch dwc:assertionEffectiveDate, dwc:measurementDeterminedDate, sosa:phenomenonTime, tern:resultDateTime ;
-    skos:exactMatch dwc:eventDate, ets:eventDate ;
+    skos:closeMatch dwc:assertionEffectiveDate, dwc:eventDate, dwc:measurementDeterminedDate, ets:eventDate, sosa:phenomenonTime, tern:resultDateTime ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "collection date"@en .
 
@@ -1508,11 +1506,10 @@ tern:unit
     SIO:SIO_001096 <https://w3id.org/traits.build#location_property> ;
     rdf:datatype xsd:decimal ;
     rdfs:label "elevation (m)"@en ;
-    owl:sameAs dwc:verbatimElevation ;
+    owl:sameAs dwc:verbatimElevation, ets:elevation ;
     skos:altLabel "elevation"@en ;
     skos:broader oboe:MeasuredValue, dwc:measurementValue ;
-    skos:closeMatch ets:elevation ;
-    skos:exactMatch dwc:verbatimElevation ;
+    skos:exactMatch dwc:verbatimElevation, ets:elevation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "elevation (m)"@en .
 
@@ -1680,10 +1677,9 @@ tern:unit
     SIO:SIO_000674 <https://w3id.org/traits.build#observations_of_individual> ;
     rdf:datatype xsd:int ;
     rdfs:label "individual id"@en ;
-    owl:sameAs dwc:organismID ;
     skos:altLabel "individual_id"@en ;
     skos:broader oboe-characteristics:Identifier ;
-    skos:exactMatch dwc:organismID ;
+    skos:closeMatch dwc:organismID ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "individual id"@en .
 
@@ -1816,8 +1812,7 @@ tern:unit
     rdf:datatype xsd:string ;
     rdfs:label "location property"@en ;
     skos:altLabel "location_property"@en ;
-    skos:broader oboe:Characteristic, sosa:ObservableProperty ;
-    skos:closeMatch dwc:measurementType ;
+    skos:broader oboe:Characteristic, dwc:measurementType, sosa:ObservableProperty ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "location property"@en .
 
@@ -1945,9 +1940,9 @@ tern:unit
     rdfs:label "method context"@en ;
     skos:altLabel "method_context"@en ;
     skos:broader oboe:Entity, <https://w3id.org/traits.build#traits.build-contexts> ;
-    skos:closeMatch sosa:Procedure, tern:Procedure ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "method context"@en .
+    skos:prefLabel "method context"@en ;
+    skos:relatedMatch sosa:Procedure, tern:Procedure .
 
 <https://w3id.org/traits.build#method_context_id>
     dcterms:created "2024-02-01"^^xsd:date ;
@@ -2518,9 +2513,10 @@ tern:unit
     rdfs:label "taxon name"@en ;
     skos:altLabel "taxon_name"@en ;
     skos:broader rdfs:label, skos:prefLabel ;
-    skos:closeMatch dwc:acceptedNameUsage, dwc:scientificName, ets:scientificName ;
+    skos:closeMatch dwc:acceptedNameUsage ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "taxon name"@en .
+    skos:prefLabel "taxon name"@en ;
+    skos:relatedMatch dwc:scientificName, ets:scientificName .
 
 <https://w3id.org/traits.build#taxon_rank>
     dcterms:created "2024-02-01"^^xsd:date ;
@@ -2941,11 +2937,10 @@ tern:unit
     rdfs:label "unit"@en ;
     owl:sameAs oboe:Unit, dwc:assertionUnit, dwc:measurementUnit, ets:traitUnit ;
     skos:altLabel "unit"@en ;
-    skos:closeMatch qudt:Unit ;
+    skos:closeMatch qudt:Unit, tern:unit ;
     skos:exactMatch oboe:Unit, dwc:assertionUnit, dwc:measurementUnit, ets:traitUnit ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "unit"@en ;
-    skos:relatedMatch tern:unit .
+    skos:prefLabel "unit"@en .
 
 <https://w3id.org/traits.build#units>
     dcterms:created "2024-02-01"^^xsd:date ;
