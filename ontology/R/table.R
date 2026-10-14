@@ -156,3 +156,26 @@ create_term_table <- function(thisterm, triples) {
   output %>%
     single("datatype")
 }
+
+#' The heading of a term's section, with its anchors
+#'
+#' Three ways to land on a term: its full IRI (`id="https://...#trait_name"`),
+#' its bare name, which is the fragment of that IRI and so what
+#' w3id.org/traits.build#trait_name resolves to, and the id Quarto gives the
+#' heading, a slug of its text (`#trait-name`), which is what the table of
+#' contents links to and so what readers have copied. The bare-name span is
+#' left out when the heading text is the term, because Quarto's id is then the
+#' same and a second element with it is invalid HTML.
+#'
+#' @param anchor The term's full IRI.
+#' @param heading The text of the heading.
+#' @return Markdown for the anchors and the level-3 heading.
+term_heading <- function(anchor, heading) {
+  term <- sub(ONTOLOGY_BASE, "", anchor, fixed = TRUE)
+  spans <- sprintf('<span id="%s"> </span>', anchor)
+  if (heading != term) {
+    spans <- paste0(spans, sprintf('<span id="%s"> </span>', term))
+  }
+  sprintf("\n\n %s\n\n### %s ", spans, heading)
+}
+

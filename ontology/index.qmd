@@ -268,7 +268,7 @@ for (k in seq_along(1:length(data_tables_sub))) {
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- data_tables_sub[[k]]$Subject_labels[1]
   anchor <- paste0(base_url, data_tables_sub[[k]]$term[1])
-  writeLines(sprintf('\n\n <span id="%s"> </span><span id="%s"> </span>\n\n### %s ', anchor, sub(base_url, "", anchor, fixed = TRUE), term_to_display))
+  writeLines(term_heading(anchor, term_to_display))
   thisterm <- table_seq$term[[k]]
 
   create_term_table(thisterm, data_tables_sub[[k]]) %>% 
@@ -395,7 +395,7 @@ for (i in seq_along(1:length(database_columns_sub_0))) {
       # creating header makes anchor using header name. Also create an anchor using identifier
       term_to_display <- database_columns_sub[[j]]$Subject_labels[1]
       anchor <- paste0(base_url, database_columns_sub[[j]]$subject_tmp[1])
-      writeLines(sprintf('\n\n <span id="%s"> </span><span id="%s"> </span>\n\n### %s ', anchor, sub(base_url, "", anchor, fixed = TRUE), term_to_display))
+      writeLines(term_heading(anchor, term_to_display))
       thisterm <- column_seq$term[[j]]
       
       create_term_table(thisterm, database_columns_sub[[j]]) %>% 
@@ -435,7 +435,7 @@ for (thisterm in names(database_entries_sub)) {
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- database_entries_sub[[thisterm]]$Subject_labels[1]
   anchor <- paste0(base_url, thisterm)
-  writeLines(sprintf('\n\n <span id="%s"> </span><span id="%s"> </span>\n\n### %s ', anchor, sub(base_url, "", anchor, fixed = TRUE), term_to_display))
+  writeLines(term_heading(anchor, term_to_display))
 
   create_term_table(thisterm, database_entries_sub[[thisterm]]) %>% 
     print_table(id = paste0("gt-", thisterm))
@@ -460,7 +460,7 @@ for (thisterm in names(database_rows_sub)) {
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- database_rows_sub[[thisterm]]$Subject_labels[1]
   anchor <- paste0(base_url, thisterm)
-  writeLines(sprintf('\n\n <span id="%s"> </span><span id="%s"> </span>\n\n### %s ', anchor, sub(base_url, "", anchor, fixed = TRUE), term_to_display))
+  writeLines(term_heading(anchor, term_to_display))
 
   create_term_table(thisterm, database_rows_sub[[thisterm]]) %>% 
     print_table(id = paste0("gt-", thisterm))
