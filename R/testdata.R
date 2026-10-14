@@ -41,6 +41,9 @@ dataset_test <-
 #' @inheritParams dataset_test
 #' @param schema Data schema
 #' @param definitions Trait defininitons
+#' @param unit_conversions Unit conversions, as returned by `get_unit_conversions()`
+#' @param resource_metadata Database metadata (`metadata.yml` in the config folder)
+#' @param taxon_list Taxon list (`taxon_list.csv` in the config folder)
 #' @importFrom testthat local_edition test_that context expect_silent
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
@@ -50,7 +53,16 @@ dataset_test_worker <-
            path_data = "data",
            schema = get_schema(),
            definitions =
-             get_schema(file.path(path_config, "traits.yml"), I("traits"))
+             get_schema(file.path(path_config, "traits.yml"), I("traits")),
+           # Defaults are evaluated lazily, on first use inside the loop, so
+           # each file is read once for the whole run rather than once per
+           # dataset. A file that fails to read is retried on the next use, so
+           # it is still reported against each dataset rather than aborting.
+           unit_conversions =
+             get_unit_conversions(file.path(path_config, "unit_conversions.csv")),
+           resource_metadata =
+             get_schema(file.path(path_config, "metadata.yml"), "metadata"),
+           taxon_list = read_csv_char(file.path(path_config, "taxon_list.csv"))
            ) {
 
     # We're using 2nd edition of test that, which has "context" field
@@ -285,7 +297,12 @@ dataset_test_worker <-
 
             test_expect_list(metadata[["locations"]], info = paste0(red(f), "\tlocations"))
 
-            for (v in names(metadata$locations)) {
+            # Each expectation costs a few milliseconds, which for a dataset
+            # with one location per record (`AVH_2026` has 162,469) is minutes,
+            # so find the offending locations first and test only those (#129)
+            is_list <- vapply(metadata[["locations"]], function(x) "list" %in% class(x), logical(1))
+
+            for (v in names(metadata$locations)[!is_list]) {
               test_expect_list(metadata[["locations"]][[v]], info = paste0(red(f), "\tlocation ", v))
             }
           }
@@ -296,21 +313,26 @@ dataset_test_worker <-
             info = paste0(red(f), "\tlocations"), label = "field names"
           )
 
-          # Checked on the formatted table, so both forms are checked alike
+          # Checked on the formatted table, so both forms are checked alike.
+          # A location needs either both of 'latitude range (deg)' and
+          # 'longitude range (deg)', or both of 'latitude (deg)' and
+          # 'longitude (deg)'. As above, only the locations that have neither
+          # are tested, so the cost does not scale with the number of locations.
           properties <- split(locations$location_property, locations$location_name)
 
-          for (v in unique(locations$location_name)) {
+          has_coordinates <- vapply(properties, function(p) {
+            all(c("latitude range (deg)", "longitude range (deg)") %in% p) ||
+              all(c("latitude (deg)", "longitude (deg)") %in% p)
+          }, logical(1))
 
-            # If fields do not contain both 'latitude range (deg)' and 'longitude range (deg)'
-            if (!(all(c("latitude range (deg)", "longitude range (deg)") %in% properties[[v]]))) {
+          location_names <- unique(locations$location_name)
 
-              # Check that it contains 'latitude (deg)' and 'longitude (deg)'
-              test_expect_contains(
-                properties[[v]],
-                c("latitude (deg)", "longitude (deg)"),
-                info = paste0(red(f), "\tlocation '", v, "'")
-              )
-            }
+          for (v in location_names[!has_coordinates[location_names]]) {
+            test_expect_contains(
+              properties[[v]],
+              c("latitude (deg)", "longitude (deg)"),
+              info = paste0(red(f), "\tlocation '", v, "'")
+            )
           }
 
           # Check `location_name`'s from metadata are in dataset and vice versa
@@ -326,8 +348,6 @@ dataset_test_worker <-
               red(files[2]),
               "\tdataset - `location_name` column not found in data")
           )
-
-          location_names <- unique(locations$location_name)
 
           v <- data[[metadata[["dataset"]][["location_name"]]]] %>% unique %>% na.omit
           i <- v %in% location_names
@@ -987,11 +1007,11 @@ dataset_test_worker <-
               file.path(path_data, dataset_id, "metadata.yml"),
               file.path(path_data, dataset_id, "data.csv"),
               dataset_id,
-              get_schema("config/traits.yml", "traits"),
-              get_unit_conversions("config/unit_conversions.csv"),
-              get_schema(),
-              get_schema("config/metadata.yml", "metadata"),
-              read_csv_char("config/taxon_list.csv")
+              definitions,
+              unit_conversions,
+              schema,
+              resource_metadata,
+              taxon_list
             ),
             info = sprintf("%s\tbuilding dataset", red(dataset_id)))
 
