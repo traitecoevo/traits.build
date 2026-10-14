@@ -67,6 +67,7 @@ reference:
     - '`metadata_remove_taxonomic_change`'
     - '`metadata_update_taxonomic_change`'
     - '`metadata_exclude_observations`'
+    - '`metadata_dewrap_fields`'
     - '`metadata_add_identifiers`'
     - '`dataset_find_taxon`'
 
