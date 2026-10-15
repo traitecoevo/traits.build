@@ -147,10 +147,12 @@ Learn more at the [AusTraits website](https://austraits.org).
 
 This document describes the information we have for the study **` `r dataset_id` `**. 
 
+```{asis, echo = show_questions}
 This report gives both you, as a data contributor, and us, as AusTraits compilers, the opportunity to:
 
 1. Verify that our understanding and handling of your data is correct
 2. Provide any missing information about the data
+```
 
 Each study is assigned a unique `dataset_id`, with information for that dataset in its own folder, organised into two files:
 
@@ -159,9 +161,9 @@ Each study is assigned a unique `dataset_id`, with information for that dataset 
 
 Data from those files have been used to generate the report below.
 
-Please review the report, check it is correct, and send updates where appropriate. 
-
 ```{asis, echo = show_questions}
+Please review the report, check it is correct, and send updates where appropriate.
+
 There are two sets of queries in this report:
 
 1. <font color='orange'>*Queries in orange scattered throughout the report.*</font> These are automatically generated for all reports and do not indicate we have a concern about your dataset submission; consider them prompts to draw your attention to each section of the report.
@@ -169,13 +171,11 @@ There are two sets of queries in this report:
 2. <font color='blue'>*Queries in blue that (might) appear at the start of the report.*</font> These are explicit questions pertaining to your dataset that the dataset curator had when adding your study.
 
 All questions appear again as a list at the end of the document.
-```
 
 To aid your review, we have attached the following files:
 
 - `r dataset_id`/data.csv and `r dataset_id`/metadata.yml: The raw inputs for your study.
 
-```{asis, echo = show_questions}
 ### Send feedback by
 
 1. **Copying and pasting the questions at the end of the report into an email and answering as many as possible.**
@@ -741,7 +741,9 @@ define_variable <- function(var, schema) {
 
 writeLines(ifelse(length(traits_numeric) == 0,
         "No numerical traits data are currently available in this dataset",
-        "We have recorded the following traits with continuous numerical values in this dataset. Plots are shown comparing the distribution of values in your study (highlighted in red-orange) to those in other datasets within AusTraits (alternating blue/orange, by dataset). For each trait, please eyeball the information provided and let us know of any issues or updates where appropriate."))
+        paste0(
+          "We have recorded the following traits with continuous numerical values in this dataset. Plots are shown comparing the distribution of values in your study (highlighted in red-orange) to those in other datasets within AusTraits (alternating blue/orange, by dataset).",
+          if (show_questions) " For each trait, please eyeball the information provided and let us know of any issues or updates where appropriate." else "")))
 
 if (length(traits_numeric) > 0) {
   # value_types that represent a genuine point estimate suitable for plotting
@@ -804,7 +806,10 @@ for (trait in traits_numeric) {
 
   writeLines(
     ifelse(nrow(filter(data_study$excluded_data, error == "Value out of allowable range" & trait_name == trait)) > 0,
-    "The following data points were excluded because the values were outside the allowable range (error = `Value out of allowable range`). Our ranges of allowable values are sufficiently generous that most excluded data are well outside the expected range for the trait, but if you believe these data are valid, accurate measurements that will be useful to future AusTraits users, let us know.", "")
+    paste0(
+      "The following data points were excluded because the values were outside the allowable range (error = `Value out of allowable range`). Our ranges of allowable values are sufficiently generous that most excluded data are well outside the expected range for the trait",
+      if (show_questions) ", but if you believe these data are valid, accurate measurements that will be useful to future AusTraits users, let us know." else "."),
+    "")
   )
 
 if (nrow(filter(data_study$excluded_data, error == "Value out of allowable range" & trait_name == trait)) > 0) {

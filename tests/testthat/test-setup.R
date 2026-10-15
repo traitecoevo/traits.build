@@ -915,6 +915,7 @@ test_that("reports and plots are produced", {
   expect_no_match(report, "there is no package called", fixed = TRUE)
   expect_match(report, "Review of questions", fixed = TRUE)
   expect_match(report, "Question:", fixed = TRUE)
+  expect_match(report, "Please review the report", fixed = TRUE)
 
   # The final copy leaves out every question and the list of them at the end
   final_path <- withr::local_tempdir()
@@ -929,6 +930,9 @@ test_that("reports and plots are produced", {
   expect_no_match(final, "Review of questions", fixed = TRUE)
   expect_no_match(final, "Question:", fixed = TRUE)
   expect_no_match(final, "There are two sets of queries", fixed = TRUE)
+  expect_no_match(final, "Please review the report", fixed = TRUE)
+  expect_no_match(final, "To aid your review", fixed = TRUE)
+  expect_no_match(final, "let us know", fixed = TRUE)
 })
 
 
