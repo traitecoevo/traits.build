@@ -120,6 +120,7 @@ create_term_table <- function(thisterm, triples) {
     single("alternative label") %>%
     single("description") %>%
     single("comment") %>%
+    single("editorial note") %>%
     single("computational entity") %>%
     multiple("organizedInClass", "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass") %>%
     multiple("has exact match", "http://www.w3.org/2004/02/skos/core#exactMatch") %>%

@@ -119,6 +119,7 @@ ONTOLOGY_PREDICATES <- c(
   "<http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasMeasurement>" = "oboe-core:hasMeasurement",
   "<http://purl.org/dc/terms/description>" = "dcterms:description",
   "<http://www.w3.org/2000/01/rdf-schema#comment>" = "rdfs:comment",
+  "<http://www.w3.org/2004/02/skos/core#editorialNote>" = "skos:editorialNote",
   "<http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype>" = "rdf:datatype",
   "<http://purl.org/dc/terms/created>" = "dcterms:created"
 )
@@ -136,7 +137,8 @@ ontology_references <- function(terms) {
     dplyr::select(Class, dplyr::any_of(unname(ONTOLOGY_PREDICATES))) %>%
     dplyr::select(-dplyr::any_of(c("prefLabel", "altLabel", "label",
                                    "dcterms:description", "rdfs:comment",
-                                   "rdf:datatype", "dcterms:created"))) %>%
+                                   "skos:editorialNote", "rdf:datatype",
+                                   "dcterms:created"))) %>%
     dplyr::mutate(dplyr::across(-Class, as.character)) %>%
     tidyr::pivot_longer(-Class, names_to = "column", values_to = "reference") %>%
     dplyr::filter(!is.na(reference)) %>%
@@ -205,11 +207,11 @@ ontology_convert_to_triples <- function(inputs) {
     tidyr::unnest_longer(Object_tmp) %>%
     dplyr::mutate(Object_tmp = stringr::str_trim(Object_tmp)) %>%
     dplyr::mutate(
-      Object = ifelse(stringr::str_detect(Predicate, "description|[Ll]abel|[Cc]omment"),
+      Object = ifelse(stringr::str_detect(Predicate, "description|[Ll]abel|[Cc]omment|editorialNote"),
                       paste0("\"", Object_tmp, "\"@en"),
                       NA),
       Object = ifelse(!stringr::str_detect(Object_tmp, "\\:") &
-                        !stringr::str_detect(Predicate, "description|label|comment") &
+                        !stringr::str_detect(Predicate, "description|label|comment|editorialNote") &
                         is.na(Object),
                       paste0("<", ONTOLOGY_BASE, stringr::str_trim(Object_tmp), ">"),
                       Object),
