@@ -62,6 +62,18 @@ for (dataset_id in dataset_ids) {
     ) %>%
     dataset_update_taxonomy(taxon_list)
 
+  # The traits.build version recorded in `metadata.yml` changes on every
+  # version bump, and `test-examples.R` drops it before comparing, so write a
+  # fixed placeholder rather than a number that goes stale
+  built$metadata[["related_identifiers"]] <-
+    built$metadata[["related_identifiers"]] %>%
+    lapply(function(entry) {
+      if (identical(entry[["identifier"]], "https://github.com/traitecoevo/traits.build")) {
+        entry[["version"]] <- "<not compared>"
+      }
+      entry
+    })
+
   path <- file.path("examples", dataset_id, "output")
   write_plaintext(built, path)
 
