@@ -1,8 +1,5 @@
 ---
 title:  traits.build Data Model
-params:
-  version: 1.1.0
-  previous_version: 1.0.0
 format: 
   html:
     smooth-scroll: true
@@ -12,7 +9,11 @@ format:
 ---
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-version <- params$version
+# The data-model version is the newest heading in ontology/NEWS.md; see
+# ontology/R/version.R. setup.R finds the repository root from here.
+source("scripts/setup.R")
+version <- ontology_version()
+previous_version <- ontology_previous_version(version)
 
 link_version <- function(v) sprintf("<https://w3id.org/traits.build/release/%s/index.html>", v)
 ```
@@ -27,11 +28,11 @@ link_version <- function(v) sprintf("<https://w3id.org/traits.build/release/%s/i
 
 <dt>**This version**:</dt>
 
-<dd>`r link_version(params$version)`</dd>
+<dd>`r link_version(version)`</dd>
 
 <dt>**Previous version**:</dt>
 
-<dd>`r link_version(params$previous_version)`</dd>
+<dd>`r link_version(previous_version)`</dd>
 
 <dt>**Authors**:</dt>
 
@@ -90,33 +91,23 @@ gt package: https://gt.rstudio.com/
 
 ```{r, include=FALSE, message=FALSE, warning=FALSE, echo=FALSE}
 library(knitr)
-library(readr)
-library(tidyr)
-library(dplyr)
 library(gt)
-library(purrr)
-library(traits.build)
 
-source("helpers.R")
-source("create_term_table.R")
-
+# Packages and ontology/R/ were loaded by the first chunk. The page renders
+# from the labelled triples that `make ontology` writes.
 triples_with_labels <-
-  read_csv("output/ontology/build_triples.csv")
+  read_csv(file.path(ontology_output_dir(), "build_triples.csv"), show_col_types = FALSE)
 
-base_url <- "https://w3id.org/traits.build#"
+base_url <- ONTOLOGY_BASE
 
-if (knitr::is_html_output()) {
-  print_table <- print_table_html
-} else if (knitr::is_latex_output()) {
-  print_table <- print_table_pdf
-} else {
-  print_table <- print_table_docx
-}
+# The page is only ever rendered to HTML; `id` makes every table's HTML id
+# deterministic, so a re-render differs only where the content does.
+print_table <- print_table_html
 ```
 
 # Abstract
 
-This document presents the traits.build data model (data standard), formally published within the w3id.org/traits.build namespace. The traits.build ontology documents the output structure of a database built using the {traits.build} R package. It terms are both the output variables in each of the databases's relational tables and additional conceptual terms inherent to the database structure. The ontology describes these terms and the semantic relationships between them. The traits.build data model adheres to the [OBOE ontology](https://bioportal.bioontology.org/ontologies/OBOE) and draws upon previously published terms whenever possible, especially [DarwinCore](https://dwc.tdwg.org/terms/) and the [Ecological Trait-data Standard](https://ecologicaltraitdata.github.io/ETS/).
+This document presents the traits.build data model (data standard), formally published within the w3id.org/traits.build namespace. The traits.build ontology documents the output structure of a database built using the {traits.build} R package. It terms are both the output variables in each of the databases's relational tables and additional conceptual terms inherent to the database structure. The ontology describes these terms and the semantic relationships between them. The traits.build data model adheres to the [OBOE ontology](https://bioportal.bioontology.org/ontologies/OBOE) and draws upon previously published terms whenever possible, especially [DarwinCore](https://dwc.tdwg.org/terms/) and the [Ecological Trait-data Standard](https://ecologicaltraitdata.github.io/ETS/). Since release 1.2.0 every OBOE relation is also expressed against [SOSA/SSN](https://www.w3.org/TR/vocab-ssn/) and the [TERN Ontology](https://ternaustralia.github.io/ontology_tern/), and measurement terms are matched to the Darwin Core `MeasurementOrFact` and `Assertion` terms used by the Darwin Core Data Package.
 
 # Table of Contents
 
@@ -128,7 +119,7 @@ This document presents the traits.build data model (data standard), formally pub
 
 A database must be accompanied by a published data model to be: 1) efficiently and accurately interpreted and used by researchers; and 2) easily integrated with other databases. A published data model should be machine-readable for easy integration into future data products, yet also tractable to human readers. A data model (a.k.a. data standard, ontology) must document the meanings behind each database output variable and should also record the semantic relationships between columns. For instance, within the traits.build ontology, indicating that `observation_id` is an identifier for a unique `observation`.
 
-To the extent possible, a data model should draw upon previously published vocabularies and ontologies, explicitly indicating when terms within the data model are identical to those used by other databases (or other bioinformatics outputs). For instance, the traits.build data standard maps terms related to taxonomy and species occurrences to [DarwinCore](https://dwc.tdwg.org/terms/) and terms related to trait measurements to the [Ecological Trait-data Standard](https://ecologicaltraitdata.github.io/ETS/). The semantic relationships between terms adhere to the [OBOE ontology](https://bioportal.bioontology.org/ontologies/OBOE), a generic relational ontology developed explicitly for documenting ecological trait observations and the context properties that are essential to document for ecological data. It further draws upon properties defined by the Semanticscience Integrated Ontology (https://bioportal.bioontology.org/ontologies/SIO) to describe relationships between terms.
+To the extent possible, a data model should draw upon previously published vocabularies and ontologies, explicitly indicating when terms within the data model are identical to those used by other databases (or other bioinformatics outputs). For instance, the traits.build data standard maps terms related to taxonomy and species occurrences to [DarwinCore](https://dwc.tdwg.org/terms/) and terms related to trait measurements to the [Ecological Trait-data Standard](https://ecologicaltraitdata.github.io/ETS/). The semantic relationships between terms adhere to the [OBOE ontology](https://bioportal.bioontology.org/ontologies/OBOE), a generic relational ontology developed explicitly for documenting ecological trait observations and the context properties that are essential to document for ecological data. Each OBOE class used is also matched to its counterpart in [SOSA/SSN](https://www.w3.org/TR/vocab-ssn/) (following the published [SOSA-to-OBOE alignment](https://www.w3.org/ns/sosa/oboe)) and in the [TERN Ontology](https://ternaustralia.github.io/ontology_tern/), the SOSA profile used by TERN and the Australian Biodiversity Information Standard; trait-measurement terms are additionally matched to the Darwin Core `MeasurementOrFact` terms (used by Darwin Core Archives) and `Assertion` terms (used by the Darwin Core Data Package), and the ETS terms `statisticalMethod` and `aggregateMeasure` are recorded as the only published counterparts of `value_type`. Where a term has no counterpart in any of these standards, its comment says so. Where the strength of a match is not obvious from the two definitions, the term's editorial note gives the reason. It further draws upon properties defined by the Semanticscience Integrated Ontology (https://bioportal.bioontology.org/ontologies/SIO) to describe relationships between terms.
 
 Within the traits.build ontology, there are 5 main categories of terms, differentiated based on whether they are database tables, rows, or columns:
 
@@ -178,9 +169,11 @@ for (i in seq_len(nrow(concept_scheme_terms))) {
 }
 
 output %>%
-  print_table()
+  print_table(id = "gt-scheme")
 ```
 
+
+<span id="https://w3id.org/traits.build#traits.build-database"> </span><span id="traits.build-database"> </span>
 
 ##    Database
 
@@ -222,7 +215,7 @@ for (i in seq_len(nrow(database_overview))) {
 }
 
 output %>%
-  print_table()
+  print_table(id = "gt-database")
 ```
 
 ##    Database Tables
@@ -242,16 +235,11 @@ remaining <-
   filter(Subject != "<https://w3id.org/traits.build#traits.build-database>") %>%
   filter(Subject != "<https://w3id.org/traits.build>")
 
-# load traits.build schema
-# !!! WARNING !!!
-# XX - WARNING - XX if the tables have changed since the last release, running `traits.build::get_schema()` 
-# will cause the new tables to be omitted unless you're recently reinstalled traits.build
-
-devtools::load_all()
-
-y <- get_schema()
-
-#y <- traits.build::get_schema()
+# The schema is read from the repository, not from an installed traits.build,
+# so the page always describes the tables this checkout produces. (It used to
+# call get_schema() after devtools::load_all(), which rendered whatever
+# version happened to be installed.)
+y <- yaml::read_yaml(repo_path("inst", "support", "traits.build_schema.yml"))
 
 # create vector of table names from traits.build schema
 table_tmp <- names(y$austraits$elements) %>% as.vector()
@@ -280,11 +268,11 @@ for (k in seq_along(1:length(data_tables_sub))) {
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- data_tables_sub[[k]]$Subject_labels[1]
   anchor <- paste0(base_url, data_tables_sub[[k]]$term[1])
-  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
+  writeLines(term_heading(anchor, term_to_display))
   thisterm <- table_seq$term[[k]]
 
   create_term_table(thisterm, data_tables_sub[[k]]) %>% 
-    print_table()
+    print_table(id = paste0("gt-", thisterm))
 }
 ```
 
@@ -407,11 +395,11 @@ for (i in seq_along(1:length(database_columns_sub_0))) {
       # creating header makes anchor using header name. Also create an anchor using identifier
       term_to_display <- database_columns_sub[[j]]$Subject_labels[1]
       anchor <- paste0(base_url, database_columns_sub[[j]]$subject_tmp[1])
-      writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
+      writeLines(term_heading(anchor, term_to_display))
       thisterm <- column_seq$term[[j]]
       
       create_term_table(thisterm, database_columns_sub[[j]]) %>% 
-      print_table()
+      print_table(id = paste0("gt-", thisterm))
       
       terms_already_displayed <- unique(c(terms_already_displayed, database_columns_sub_0[[i]]$subject_tmp))
       terms_already_displayed
@@ -447,10 +435,10 @@ for (thisterm in names(database_entries_sub)) {
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- database_entries_sub[[thisterm]]$Subject_labels[1]
   anchor <- paste0(base_url, thisterm)
-  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
+  writeLines(term_heading(anchor, term_to_display))
 
   create_term_table(thisterm, database_entries_sub[[thisterm]]) %>% 
-    print_table()
+    print_table(id = paste0("gt-", thisterm))
 }
 ```
 
@@ -472,10 +460,10 @@ for (thisterm in names(database_rows_sub)) {
   # creating header makes anchor using header name. Also create an anchor using identifier
   term_to_display <- database_rows_sub[[thisterm]]$Subject_labels[1]
   anchor <- paste0(base_url, thisterm)
-  writeLines(sprintf('\n\n <span id="%s"> </span>\n\n### %s ', anchor, term_to_display))
+  writeLines(term_heading(anchor, term_to_display))
 
   create_term_table(thisterm, database_rows_sub[[thisterm]]) %>% 
-    print_table()
+    print_table(id = paste0("gt-", thisterm))
 }
 ```
 
