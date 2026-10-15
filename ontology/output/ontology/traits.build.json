@@ -547,34 +547,6 @@
       }
     },
     {
-      "@id": "http://rs.tdwg.org/dwc/iri/assertionType",
-      "http://purl.org/dc/terms/description": {
-        "@language": "en",
-        "@value": "A category that best matches the nature of a dwc:Assertion."
-      },
-      "http://www.w3.org/2004/02/skos/core#inScheme": {
-        "@id": "http://rs.tdwg.org/dwc/iri/"
-      },
-      "http://www.w3.org/2004/02/skos/core#prefLabel": {
-        "@language": "en",
-        "@value": "Assertion Type (IRI)"
-      }
-    },
-    {
-      "@id": "http://rs.tdwg.org/dwc/iri/measurementType",
-      "http://purl.org/dc/terms/description": {
-        "@language": "en",
-        "@value": "The nature of the measurement, fact, characteristic, or assertion."
-      },
-      "http://www.w3.org/2004/02/skos/core#inScheme": {
-        "@id": "http://rs.tdwg.org/dwc/iri/"
-      },
-      "http://www.w3.org/2004/02/skos/core#prefLabel": {
-        "@language": "en",
-        "@value": "Measurement Type (IRI)"
-      }
-    },
-    {
       "@id": "http://rs.tdwg.org/dwc/terms/Assertion",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -7047,14 +7019,9 @@
         "@language": "en",
         "@value": "original taxon name"
       },
-      "http://www.w3.org/2002/07/owl#sameAs": [
-        {
-          "@id": "http://terminologies.gfbio.org/terms/ETS/verbatimScientificName"
-        },
-        {
-          "@id": "http://rs.tdwg.org/dwc/terms/verbatimIdentification"
-        }
-      ],
+      "http://www.w3.org/2002/07/owl#sameAs": {
+        "@id": "http://rs.tdwg.org/dwc/terms/verbatimIdentification"
+      },
       "http://www.w3.org/2004/02/skos/core#altLabel": {
         "@language": "en",
         "@value": "original_name"
@@ -7067,14 +7034,12 @@
           "@id": "http://www.w3.org/2000/01/rdf-schema#label"
         }
       ],
-      "http://www.w3.org/2004/02/skos/core#exactMatch": [
-        {
-          "@id": "http://terminologies.gfbio.org/terms/ETS/verbatimScientificName"
-        },
-        {
-          "@id": "http://rs.tdwg.org/dwc/terms/verbatimIdentification"
-        }
-      ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://terminologies.gfbio.org/terms/ETS/verbatimScientificName"
+      },
+      "http://www.w3.org/2004/02/skos/core#exactMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/verbatimIdentification"
+      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -8134,6 +8099,9 @@
           "@id": "http://www.w3.org/2000/01/rdf-schema#label"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#closeMatch": {
+        "@id": "http://rs.tdwg.org/dwc/terms/acceptedNameUsage"
+      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -8142,9 +8110,6 @@
         "@value": "taxon name"
       },
       "http://www.w3.org/2004/02/skos/core#relatedMatch": [
-        {
-          "@id": "http://rs.tdwg.org/dwc/terms/acceptedNameUsage"
-        },
         {
           "@id": "http://terminologies.gfbio.org/terms/ETS/scientificName"
         },
@@ -8586,14 +8551,6 @@
         "@language": "en",
         "@value": "trait_concept_URI"
       },
-      "http://www.w3.org/2004/02/skos/core#closeMatch": [
-        {
-          "@id": "http://rs.tdwg.org/dwc/iri/assertionType"
-        },
-        {
-          "@id": "http://rs.tdwg.org/dwc/iri/measurementType"
-        }
-      ],
       "http://www.w3.org/2004/02/skos/core#exactMatch": [
         {
           "@id": "http://purl.org/dc/terms/identifier"

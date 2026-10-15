@@ -19,7 +19,6 @@
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
 @prefix tern: <https://w3id.org/tern/ontologies/tern/> .
 @prefix terncv: <http://linked.data.gov.au/def/tern-cv/> .
-@prefix dwciri: <http://rs.tdwg.org/dwc/iri/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 
 oboe-characteristics:Identifier
@@ -216,16 +215,6 @@ qudt:Unit
     dcterms:description "A unit of measure, or unit, is a particular quantity, defined and adopted by convention, with which other quantities of the same kind are compared."@en ;
     skos:inScheme <http://qudt.org/schema/qudt/> ;
     skos:prefLabel "Unit"@en .
-
-dwciri:assertionType
-    dcterms:description "A category that best matches the nature of a dwc:Assertion."@en ;
-    skos:inScheme <http://rs.tdwg.org/dwc/iri/> ;
-    skos:prefLabel "Assertion Type (IRI)"@en .
-
-dwciri:measurementType
-    dcterms:description "The nature of the measurement, fact, characteristic, or assertion."@en ;
-    skos:inScheme <http://rs.tdwg.org/dwc/iri/> ;
-    skos:prefLabel "Measurement Type (IRI)"@en .
 
 dwc:Assertion
     dcterms:description "A statement about an rdfs:Resource."@en ;
@@ -2197,10 +2186,11 @@ tern:unit
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdf:datatype xsd:string ;
     rdfs:label "original taxon name"@en ;
-    owl:sameAs dwc:verbatimIdentification, ets:verbatimScientificName ;
+    owl:sameAs dwc:verbatimIdentification ;
     skos:altLabel "original_name"@en ;
     skos:broader rdfs:label, skos:prefLabel ;
-    skos:exactMatch dwc:verbatimIdentification, ets:verbatimScientificName ;
+    skos:closeMatch ets:verbatimScientificName ;
+    skos:exactMatch dwc:verbatimIdentification ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "original taxon name"@en .
 
@@ -2507,9 +2497,10 @@ tern:unit
     rdfs:label "taxon name"@en ;
     skos:altLabel "taxon_name"@en ;
     skos:broader rdfs:label, skos:prefLabel ;
+    skos:closeMatch dwc:acceptedNameUsage ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "taxon name"@en ;
-    skos:relatedMatch dwc:acceptedNameUsage, dwc:scientificName, ets:scientificName .
+    skos:relatedMatch dwc:scientificName, ets:scientificName .
 
 <https://w3id.org/traits.build#taxon_rank>
     dcterms:created "2024-02-01"^^xsd:date ;
@@ -2634,7 +2625,6 @@ tern:unit
     rdfs:label "trait identifier"@en ;
     owl:sameAs dcterms:identifier, ets:traitID ;
     skos:altLabel "trait_concept_URI"@en ;
-    skos:closeMatch dwciri:assertionType, dwciri:measurementType ;
     skos:exactMatch dcterms:identifier, ets:traitID ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "trait identifier"@en .

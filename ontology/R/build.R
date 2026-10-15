@@ -57,7 +57,6 @@ ONTOLOGY_NAMESPACES <- c(
   sosa = "http://www.w3.org/ns/sosa/",
   tern = "https://w3id.org/tern/ontologies/tern/",
   terncv = "http://linked.data.gov.au/def/tern-cv/",
-  dwciri = "http://rs.tdwg.org/dwc/iri/",
   qudt = "http://qudt.org/schema/qudt/"
 )
 

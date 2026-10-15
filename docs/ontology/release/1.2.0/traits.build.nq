@@ -587,9 +587,9 @@
 <https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#broader> <http://www.w3.org/2000/01/rdf-schema#label> .
 <https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#broader> <http://www.w3.org/2004/02/skos/core#prefLabel> .
 <https://w3id.org/traits.build#taxon_name> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
+<https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://rs.tdwg.org/dwc/terms/acceptedNameUsage> .
 <https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://rs.tdwg.org/dwc/terms/scientificName> .
 <https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://terminologies.gfbio.org/terms/ETS/scientificName> .
-<https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://rs.tdwg.org/dwc/terms/acceptedNameUsage> .
 <https://w3id.org/traits.build#taxon_name> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-traits> .
 <https://w3id.org/traits.build#taxon_name> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-taxa> .
 <https://w3id.org/traits.build#taxon_name> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-taxonomic_updates> .
@@ -925,10 +925,10 @@
 <https://w3id.org/traits.build#original_name> <http://www.w3.org/2004/02/skos/core#prefLabel> "original taxon name"@en .
 <https://w3id.org/traits.build#original_name> <http://www.w3.org/2004/02/skos/core#altLabel> "original_name"@en .
 <https://w3id.org/traits.build#original_name> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://rs.tdwg.org/dwc/terms/verbatimIdentification> .
-<https://w3id.org/traits.build#original_name> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://terminologies.gfbio.org/terms/ETS/verbatimScientificName> .
 <https://w3id.org/traits.build#original_name> <http://www.w3.org/2004/02/skos/core#broader> <http://www.w3.org/2000/01/rdf-schema#label> .
 <https://w3id.org/traits.build#original_name> <http://www.w3.org/2004/02/skos/core#broader> <http://www.w3.org/2004/02/skos/core#prefLabel> .
 <https://w3id.org/traits.build#original_name> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
+<https://w3id.org/traits.build#original_name> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://terminologies.gfbio.org/terms/ETS/verbatimScientificName> .
 <https://w3id.org/traits.build#original_name> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-traits> .
 <https://w3id.org/traits.build#original_name> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-taxonomic_updates> .
 <https://w3id.org/traits.build#original_name> <http://www.w3.org/2000/01/rdf-schema#label> "original taxon name"@en .
@@ -936,7 +936,6 @@
 <https://w3id.org/traits.build#original_name> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#original_name> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#original_name> <http://www.w3.org/2002/07/owl#sameAs> <http://rs.tdwg.org/dwc/terms/verbatimIdentification> .
-<https://w3id.org/traits.build#original_name> <http://www.w3.org/2002/07/owl#sameAs> <http://terminologies.gfbio.org/terms/ETS/verbatimScientificName> .
 <https://w3id.org/traits.build#original_name> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
 <https://w3id.org/traits.build#location_name> <http://www.w3.org/2004/02/skos/core#prefLabel> "location name"@en .
 <https://w3id.org/traits.build#location_name> <http://www.w3.org/2004/02/skos/core#altLabel> "location_name"@en .
@@ -1675,8 +1674,6 @@
 <https://w3id.org/traits.build#trait_concept_URI> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://terminologies.gfbio.org/terms/ETS/traitID> .
 <https://w3id.org/traits.build#trait_concept_URI> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://purl.org/dc/terms/identifier> .
 <https://w3id.org/traits.build#trait_concept_URI> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
-<https://w3id.org/traits.build#trait_concept_URI> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://rs.tdwg.org/dwc/iri/measurementType> .
-<https://w3id.org/traits.build#trait_concept_URI> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://rs.tdwg.org/dwc/iri/assertionType> .
 <https://w3id.org/traits.build#trait_concept_URI> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-definitions> .
 <https://w3id.org/traits.build#trait_concept_URI> <http://www.w3.org/2000/01/rdf-schema#label> "trait identifier"@en .
 <https://w3id.org/traits.build#trait_concept_URI> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build#trait> .
@@ -2312,12 +2309,6 @@
 <http://rs.tdwg.org/dwc/terms/Identification> <http://www.w3.org/2004/02/skos/core#prefLabel> "Identification"@en .
 <http://rs.tdwg.org/dwc/terms/Identification> <http://purl.org/dc/terms/description> "A classification of a resource according to a classification scheme."@en .
 <http://rs.tdwg.org/dwc/terms/Identification> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/terms/> .
-<http://rs.tdwg.org/dwc/iri/measurementType> <http://www.w3.org/2004/02/skos/core#prefLabel> "Measurement Type (IRI)"@en .
-<http://rs.tdwg.org/dwc/iri/measurementType> <http://purl.org/dc/terms/description> "The nature of the measurement, fact, characteristic, or assertion."@en .
-<http://rs.tdwg.org/dwc/iri/measurementType> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/iri/> .
-<http://rs.tdwg.org/dwc/iri/assertionType> <http://www.w3.org/2004/02/skos/core#prefLabel> "Assertion Type (IRI)"@en .
-<http://rs.tdwg.org/dwc/iri/assertionType> <http://purl.org/dc/terms/description> "A category that best matches the nature of a dwc:Assertion."@en .
-<http://rs.tdwg.org/dwc/iri/assertionType> <http://www.w3.org/2004/02/skos/core#inScheme> <http://rs.tdwg.org/dwc/iri/> .
 <http://terminologies.gfbio.org/terms/ETS/traitName> <http://www.w3.org/2004/02/skos/core#prefLabel> "trait name"@en .
 <http://terminologies.gfbio.org/terms/ETS/traitName> <http://purl.org/dc/terms/description> "A descriptive name of the reported trait, ideally referencing a published trait thesaurus."@en .
 <http://terminologies.gfbio.org/terms/ETS/traitName> <http://www.w3.org/2004/02/skos/core#inScheme> <http://terminologies.gfbio.org/terms/ETS/> .

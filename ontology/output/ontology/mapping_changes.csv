@@ -71,7 +71,6 @@ dataset_id,exactMatch,added,,dwc:datasetID,Dataset ID,http://rs.tdwg.org/dwc/ter
 dataset_id,exactMatch,added,,ets:datasetID,dataset ID,http://terminologies.gfbio.org/terms/ETS/datasetID
 taxon_name,relatedMatch,added,,dwc:scientificName,Scientific Name,http://rs.tdwg.org/dwc/terms/scientificName
 taxon_name,relatedMatch,added,,ets:scientificName,scientific name,http://terminologies.gfbio.org/terms/ETS/scientificName
-taxon_name,relatedMatch,changed,closeMatch,dwc:acceptedNameUsage,acceptedNameUsage,http://rs.tdwg.org/dwc/terms/acceptedNameUsage
 observation_id,relatedMatch,added,,dwc:parentMeasurementID,Parent Measurement ID,http://rs.tdwg.org/dwc/terms/parentMeasurementID
 trait_name,exactMatch,added,,dwc:measurementType,Measurement Type,http://rs.tdwg.org/dwc/terms/measurementType
 trait_name,exactMatch,added,,ets:traitName,trait name,http://terminologies.gfbio.org/terms/ETS/traitName
@@ -113,7 +112,7 @@ measurement_remarks,exactMatch,added,,dwc:measurementRemarks,Measurement Remarks
 measurement_remarks,exactMatch,added,,ets:measurementRemarks,measurement remarks,http://terminologies.gfbio.org/terms/ETS/measurementRemarks
 method_id,relatedMatch,added,,dwc:protocolID,Protocol ID,http://rs.tdwg.org/dwc/terms/protocolID
 original_name,exactMatch,added,,dwc:verbatimIdentification,Verbatim Identification,http://rs.tdwg.org/dwc/terms/verbatimIdentification
-original_name,exactMatch,added,,ets:verbatimScientificName,verbatim scientific name,http://terminologies.gfbio.org/terms/ETS/verbatimScientificName
+original_name,closeMatch,added,,ets:verbatimScientificName,verbatim scientific name,http://terminologies.gfbio.org/terms/ETS/verbatimScientificName
 location_name,closeMatch,added,,dwc:locality,Locality,http://rs.tdwg.org/dwc/terms/locality
 location_property,broader,added,,dwc:measurementType,Measurement Type,http://rs.tdwg.org/dwc/terms/measurementType
 location_property,broader,added,,sosa:ObservableProperty,Observable Property,http://www.w3.org/ns/sosa/ObservableProperty
@@ -149,7 +148,5 @@ data_collectors,closeMatch,added,,dwc:recordedBy,Recorded By,http://rs.tdwg.org/
 taxon_distribution,relatedMatch,added,,dwc:stateProvince,First Order Division,http://rs.tdwg.org/dwc/terms/stateProvince
 establishment_means,closeMatch,changed,exactMatch,dwc:establishmentMeans,Establishment Means,http://rs.tdwg.org/dwc/terms/establishmentMeans
 trait,exactMatch,added,,sosa:ObservableProperty,Observable Property,http://www.w3.org/ns/sosa/ObservableProperty
-trait_concept_URI,closeMatch,added,,dwciri:assertionType,Assertion Type (IRI),http://rs.tdwg.org/dwc/iri/assertionType
-trait_concept_URI,closeMatch,added,,dwciri:measurementType,Measurement Type (IRI),http://rs.tdwg.org/dwc/iri/measurementType
 units,closeMatch,added,,dwc:measurementUnit,Measurement Unit,http://rs.tdwg.org/dwc/terms/measurementUnit
 units,relatedMatch,added,,qudt:Unit,Unit,http://qudt.org/schema/qudt/Unit
