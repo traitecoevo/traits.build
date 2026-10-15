@@ -4682,16 +4682,10 @@
       "http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype": {
         "@id": "http://www.w3.org/2001/XMLSchema#string"
       },
-      "http://www.w3.org/2000/01/rdf-schema#comment": [
-        {
-          "@language": "en",
-          "@value": "a traits.build database records it once per taxon, so the match is close rather than exact."
-        },
-        {
-          "@language": "en",
-          "@value": "Darwin Core applies establishmentMeans to an organism at a place and time"
-        }
-      ],
+      "http://www.w3.org/2000/01/rdf-schema#comment": {
+        "@language": "en",
+        "@value": "Darwin Core applies establishmentMeans to an organism at a place and time; a traits.build database records it once per taxon, so the match is close rather than exact."
+      },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
         "@value": "establishment means"
@@ -8791,16 +8785,10 @@
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_001330"
       },
-      "http://www.w3.org/2000/01/rdf-schema#comment": [
-        {
-          "@language": "en",
-          "@value": "no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."
-        },
-        {
-          "@language": "en",
-          "@value": "Internal to traits.build"
-        }
-      ],
+      "http://www.w3.org/2000/01/rdf-schema#comment": {
+        "@language": "en",
+        "@value": "Internal to traits.build; no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."
+      },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
         "@value": "build info"
@@ -8910,16 +8898,10 @@
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000750"
       },
-      "http://www.w3.org/2000/01/rdf-schema#comment": [
-        {
-          "@language": "en",
-          "@value": "no single counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN. See the dataset term for the observation-collection reading."
-        },
-        {
-          "@language": "en",
-          "@value": "A traits.build database as a whole"
-        }
-      ],
+      "http://www.w3.org/2000/01/rdf-schema#comment": {
+        "@language": "en",
+        "@value": "A traits.build database as a whole; no single counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN. See the dataset term for the observation-collection reading."
+      },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
         "@value": "traits.build database"
@@ -8993,16 +8975,10 @@
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_000754"
       },
-      "http://www.w3.org/2000/01/rdf-schema#comment": [
-        {
-          "@language": "en",
-          "@value": "no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."
-        },
-        {
-          "@language": "en",
-          "@value": "Same structure as the traits table plus an error column"
-        }
-      ],
+      "http://www.w3.org/2000/01/rdf-schema#comment": {
+        "@language": "en",
+        "@value": "Same structure as the traits table plus an error column; no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."
+      },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
         "@value": "excluded data table"
@@ -9202,16 +9178,10 @@
       "http://semanticscience.org/resource/SIO_000602": {
         "@id": "http://semanticscience.org/resource/SIO_001330"
       },
-      "http://www.w3.org/2000/01/rdf-schema#comment": [
-        {
-          "@language": "en",
-          "@value": "no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."
-        },
-        {
-          "@language": "en",
-          "@value": "Internal to traits.build"
-        }
-      ],
+      "http://www.w3.org/2000/01/rdf-schema#comment": {
+        "@language": "en",
+        "@value": "Internal to traits.build; no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."
+      },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
         "@value": "schema"

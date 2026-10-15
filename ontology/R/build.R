@@ -203,15 +203,23 @@ ontology_convert_to_triples <- function(inputs) {
     tidyr::pivot_longer(cols = -Subject) %>%
     dplyr::rename(Predicate = name, Object_tmp = value) %>%
     dplyr::filter(!is.na(Object_tmp)) %>%
-    dplyr::mutate(Object_tmp = stringr::str_split(Object_tmp, "\\;\\ ")) %>%
+    # Only a relation cell lists several references separated by `; `. A text
+    # cell is one literal whatever punctuation it holds: splitting it cut five
+    # 1.2.0 comments into separate statements mid-sentence.
+    dplyr::mutate(
+      literal = stringr::str_detect(Predicate, "description|[Ll]abel|[Cc]omment|editorialNote"),
+      Object_tmp = purrr::map2(Object_tmp, literal, function(x, is_literal) {
+        if (is_literal) x else stringr::str_split_1(x, "\\;\\ ")
+      })
+    ) %>%
     tidyr::unnest_longer(Object_tmp) %>%
     dplyr::mutate(Object_tmp = stringr::str_trim(Object_tmp)) %>%
     dplyr::mutate(
-      Object = ifelse(stringr::str_detect(Predicate, "description|[Ll]abel|[Cc]omment|editorialNote"),
+      Object = ifelse(literal,
                       paste0("\"", Object_tmp, "\"@en"),
                       NA),
       Object = ifelse(!stringr::str_detect(Object_tmp, "\\:") &
-                        !stringr::str_detect(Predicate, "description|label|comment|editorialNote") &
+                        !literal &
                         is.na(Object),
                       paste0("<", ONTOLOGY_BASE, stringr::str_trim(Object_tmp), ">"),
                       Object),
@@ -231,7 +239,7 @@ ontology_convert_to_triples <- function(inputs) {
                        paste0("<", ONTOLOGY_SCHEME, ">"),
                        Subject)
     ) %>%
-    dplyr::select(-Object_tmp)
+    dplyr::select(-Object_tmp, -literal)
 
   reformatted_ontology %>%
     dplyr::bind_rows(reformatted_classes) %>%

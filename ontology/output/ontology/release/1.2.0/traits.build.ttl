@@ -1557,7 +1557,7 @@ tern:unit
     SIO:SIO_000224 <https://w3id.org/traits.build#taxon> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdf:datatype xsd:string ;
-    rdfs:comment "Darwin Core applies establishmentMeans to an organism at a place and time"@en, "a traits.build database records it once per taxon, so the match is close rather than exact."@en ;
+    rdfs:comment "Darwin Core applies establishmentMeans to an organism at a place and time; a traits.build database records it once per taxon, so the match is close rather than exact."@en ;
     rdfs:label "establishment means"@en ;
     skos:altLabel "establishment_means"@en ;
     skos:closeMatch dwc:establishmentMeans ;
@@ -2674,7 +2674,7 @@ tern:unit
     dcterms:description "A description of the computing environment used to create this version of the dataset, including version number, git commit and R session_info."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-database> ;
     SIO:SIO_000602 SIO:SIO_001330 ;
-    rdfs:comment "Internal to traits.build"@en, "no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."@en ;
+    rdfs:comment "Internal to traits.build; no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."@en ;
     rdfs:label "build info"@en ;
     skos:altLabel "build_info"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
@@ -2706,7 +2706,7 @@ tern:unit
     dcterms:created "2024-02-01"^^xsd:date ;
     dcterms:description "A database of 13 relational tables build using the {traits.build} R-package for harmonizing trait data."@en ;
     SIO:SIO_000602 SIO:SIO_000750 ;
-    rdfs:comment "A traits.build database as a whole"@en, "no single counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN. See the dataset term for the observation-collection reading."@en ;
+    rdfs:comment "A traits.build database as a whole; no single counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN. See the dataset term for the observation-collection reading."@en ;
     rdfs:label "traits.build database"@en ;
     skos:altLabel "traits.build_database"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
@@ -2730,7 +2730,7 @@ tern:unit
     dcterms:description "A table of data that did not pass quality tests and so were excluded from the master dataset. The structure is identical to that presented in the `traits` table, only with an extra column called `error` indicating why the record was excluded. Common reasons are missing_unit_conversions, missing_value, and unsupported_trait_value."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-database> ;
     SIO:SIO_000602 SIO:SIO_000754 ;
-    rdfs:comment "Same structure as the traits table plus an error column"@en, "no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."@en ;
+    rdfs:comment "Same structure as the traits table plus an error column; no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."@en ;
     rdfs:label "excluded data table"@en ;
     skos:altLabel "excluded_data"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
@@ -2788,7 +2788,7 @@ tern:unit
     dcterms:description "A copy of the schema for all tables and terms. Information included here was used to process data and generate any documentation for the study."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-database> ;
     SIO:SIO_000602 SIO:SIO_001330 ;
-    rdfs:comment "Internal to traits.build"@en, "no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."@en ;
+    rdfs:comment "Internal to traits.build; no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."@en ;
     rdfs:label "schema"@en ;
     skos:altLabel "schema"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
