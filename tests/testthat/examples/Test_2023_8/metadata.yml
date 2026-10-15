@@ -30,6 +30,7 @@ dataset:
       ungroup()
   '
   collection_date: Date
+  collection_date_format: dmy y
   taxon_name: Species
   trait_name: name
   value: value

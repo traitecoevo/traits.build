@@ -260,6 +260,21 @@ dataset_test_worker <-
           info = paste0(red(f), "\tdataset"), label = "`data_is_long_format`"
         )
 
+        test_expect_true(
+          length(metadata[["dataset"]][["collection_date_format"]]) <= 1,
+          info = paste0(red(f), "\tdataset - write `collection_date_format` as one space-separated value, such as `dmy my y`")
+        )
+
+        test_expect_no_error(
+          util_check_collection_date_format(metadata[["dataset"]][["collection_date_format"]]),
+          info = paste0(red(f), "\tdataset - `collection_date_format`")
+        )
+
+        test_expect_no_error(
+          util_check_collection_date_timezone(metadata[["dataset"]][["collection_date_timezone"]]),
+          info = paste0(red(f), "\tdataset - `collection_date_timezone`")
+        )
+
         test_expect_type(
           metadata[["dataset"]], "list",
           info = paste0(red(f), "\tdataset"), label = "metadata"
@@ -1037,6 +1052,30 @@ dataset_test_worker <-
               info = sprintf("%s\tduplicate rows detected; `traits` table cannot pivot wider", red(dataset_id))
             )
           }
+
+          ## `collection_date` values must be standard. Checked on the built
+          ## table, so it sees what the database will hold -- after
+          ## `collection_date_format` is applied, location-level values are
+          ## filled in and rows without a trait value are dropped.
+          dates <- dataset$traits[["collection_date"]]
+          invalid_dates <- unique(dates[util_collection_date_is_valid(dates) %in% FALSE])
+          declared_auto <- tryCatch(
+            identical(util_check_collection_date_format(metadata[["dataset"]][["collection_date_format"]]), "auto"),
+            error = function(e) FALSE
+          )
+          test_expect_true(
+            length(invalid_dates) == 0,
+            info = sprintf(
+              paste0(
+                "%s\t`collection_date` has %d value%s not written as `yyyy-mm-dd`, `yyyy-mm`, `yyyy` or a `/` range of these: '%s'. ",
+                "Declare the format they are written in with `collection_date_format` in the `dataset` block of metadata.yml ",
+                "(and `collection_date_timezone` for timestamps), or convert them in `custom_R_code`. %s"
+              ),
+              red(dataset_id), length(invalid_dates), ifelse(length(invalid_dates) == 1, "", "s"),
+              paste(utils::head(invalid_dates, 10), collapse = "', '"),
+              if (declared_auto && length(invalid_dates) > 0) util_collection_date_auto_message(invalid_dates) else ""
+            )
+          )
 
           # Test `austraits` functions
           # Testing per study, not on all studies combined (is this ideal?)

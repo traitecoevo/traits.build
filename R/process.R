@@ -88,7 +88,8 @@ dataset_process <- function(filename_data_raw,
   # Load and clean trait data
   traits <-
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
-    process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
+    process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
+    process_format_collection_date(metadata)
 
   # Load and process contextual data
   contexts <-
@@ -457,6 +458,43 @@ process_custom_code <- function(txt) {
 
   }
 
+}
+
+#' Convert `collection_date` columns from the format declared in metadata
+#'
+#' Applies [util_format_collection_date()] to each `data.csv` column that a
+#' `collection_date` field names, on the `dataset` block or on a trait, using
+#' the dataset's `collection_date_format` and `collection_date_timezone`. It
+#' runs after `custom_R_code`, so custom code can build or tidy a column first.
+#' Values typed into `metadata.yml` itself are not converted: those are
+#' written by the curator, so should already be standard. A dataset declaring
+#' neither field is returned unchanged.
+#'
+#' @param data Tibble of `data.csv`, after `custom_R_code`
+#' @param metadata Metadata for the dataset, as read by `read_metadata()`
+#'
+#' @return `data`, with its `collection_date` columns converted
+#' @noRd
+process_format_collection_date <- function(data, metadata) {
+
+  format <- util_check_collection_date_format(metadata[["dataset"]][["collection_date_format"]])
+  timezone <- util_check_collection_date_timezone(metadata[["dataset"]][["collection_date_timezone"]])
+
+  if (length(format) == 0 && is.null(timezone)) {
+    return(data)
+  }
+
+  columns <- c(
+    metadata[["dataset"]][["collection_date"]],
+    unlist(lapply(metadata[["traits"]], function(trait) trait[["collection_date"]]))
+  )
+  columns <- intersect(unique(columns[!is.na(columns)]), names(data))
+
+  for (column in columns) {
+    data[[column]] <- util_format_collection_date(data[[column]], format, timezone)
+  }
+
+  data
 }
 
 #' Create entity id
@@ -2083,6 +2121,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
             c("original_file", "notes", "data_is_long_format", "taxon_name", "trait_name",
               "population_id", "individual_id", "repeat_measurements_id", "value_type",
               "location_name", "source_id", "value", "entity_type", "collection_date",
+              "collection_date_format", "collection_date_timezone",
               "custom_R_code", "replicates", "measurement_remarks", "basis_of_value",
               "basis_of_record", "life_stage", "unit_in")))
       ) %>%
