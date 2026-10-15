@@ -49,7 +49,14 @@ test_that("`util_categorical_value_matches` pairs identical values within the di
 })
 
 test_that("`dataset_check_duplicate_values` finds a dataset copied with rounded values", {
-  database <- readRDS("test_austraits.rds")
+  # Built here rather than read from `test_austraits.rds`, which `test-setup.R`
+  # writes only after this file has run, so reading it passed only where an
+  # earlier run had left a copy behind -- never on a fresh checkout or on CI
+  database <- suppressMessages(dataset_build(
+    "data/Test_2022/metadata.yml", "data/Test_2022/data.csv",
+    get_schema("config/traits.yml", "traits"), get_unit_conversions("config/unit_conversions.csv"),
+    get_schema(), get_schema("config/metadata.yml", "metadata"), read_csv_char("config/taxon_list.csv")
+  ))
 
   copy <- database$traits %>%
     dplyr::mutate(
