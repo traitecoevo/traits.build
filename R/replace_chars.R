@@ -40,6 +40,13 @@ util_disallowed_char_replacements <- function() {
     "\u200b" = "",               # ZERO WIDTH SPACE
     "\u200d" = "",               # ZERO WIDTH JOINER
 
+    # A discretionary line-break hint, invisible unless a word wraps at it, so
+    # in text that no longer wraps it stands for nothing. Rewriting it as "-"
+    # would hyphenate the word it sat in: both occurrences in `austraits.build`
+    # (`non-\u00adrhizomatous`, `to \u00ad\u00b1 prostrate`) come out right only
+    # when it is deleted.
+    "\u00ad" = "",               # SOFT HYPHEN
+
     # Look-alikes for the degree sign, which the exception list already allows
     "\u00ba" = "\u00b0",         # MASCULINE ORDINAL INDICATOR
     "\u25e6" = "\u00b0",         # WHITE BULLET
@@ -49,6 +56,10 @@ util_disallowed_char_replacements <- function() {
     # written two ways.
     "\u03bc" = "\u00b5",         # GREEK SMALL LETTER MU -> MICRO SIGN
 
+    # The same look-alike problem for the allowed GREEK CAPITAL LETTER DELTA:
+    # INCREMENT is what Option-J types on a Mac, and is indistinguishable from it.
+    "\u2206" = "\u0394",         # INCREMENT -> GREEK CAPITAL LETTER DELTA
+
     # The "proper" Unicode hyphen, indistinguishable from the plain ASCII
     # hyphen-minus it's meant to be -- typically introduced when a word
     # processor or PDF export auto-substitutes the "-" a person actually
@@ -56,11 +67,6 @@ util_disallowed_char_replacements <- function() {
     # own typographic meaning and are allowed as-is (see `allowed_characters`
     # in the schema); this is not one of those, it is just a hyphen.
     "\u2010" = "-",              # HYPHEN -> ASCII hyphen-minus
-
-    # A discretionary line-break hint, invisible unless a word wraps there.
-    # Same word-processor/PDF-export origin as the HYPHEN case above, and
-    # rendered the same way: as the hyphen it's standing in for.
-    "\u00ad" = "-",              # SOFT HYPHEN -> ASCII hyphen-minus
 
     # A typographic ligature glyph for the two letters "fi", introduced by
     # PDF text extraction (common in scientific PDFs, e.g. "scientific"

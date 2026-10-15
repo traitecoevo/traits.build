@@ -131,12 +131,11 @@ test_that("the allowed characters come from the schema, and are case-symmetric",
                        toupper(letters_only), tolower(letters_only))
   has_case <- tolower(letters_only) != toupper(letters_only)
 
-  # The exceptions are letters whose other case is ASCII, or U+00B5 micro
-  # sign, which has no case pairing at all -- it isn't really a letter.
-  # GREEK (SMALL|CAPITAL) LETTER DELTA are both allowed despite meaning
-  # different things (isotope composition vs. "difference") in different
-  # case, but that's still a real case pairing -- each has its other case
-  # allowed too -- so neither shows up here.
+  # The exceptions are letters whose other case is ASCII, which is never in
+  # the set (U+0130 dotted capital I, U+0131 dotless i, U+017F long s), and
+  # U+00B5 micro sign, whose upper case is U+039C GREEK CAPITAL LETTER MU,
+  # deliberately not allowed. The two Greek deltas are allowed as a pair, so
+  # neither appears here.
   asymmetric <- letters_only[has_case & !(other_case %in% letters_only)]
   expect_setequal(asymmetric, c("İ", "ı", "ſ", "µ"))
 
