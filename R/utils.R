@@ -211,16 +211,21 @@ util_context_var_in_message <- function(contexts, missing_var_in,
 #' both need this same resolution, so it lives here rather than being
 #' duplicated and drifting between the two (#276).
 #'
+#' A blank cell in such a column is a record with no value for the context,
+#' not a context value, so `NA` is dropped -- as it is for a `var_in` naming a
+#' column directly. Otherwise `dataset_test()` reported `NA` as a context value
+#' missing from the metadata whenever the column had a gap.
+#'
 #' @param declared Character vector of values declared on the `traits` entries
 #'   for one field (already unique and stripped of `NA`)
 #' @param data Data frame to check declared values against -- `data.csv` with
 #'   `custom_R_code` applied
 #'
-#' @return Character vector of resolved values
+#' @return Character vector of resolved values, without `NA`
 #' @keywords internal
 util_resolve_trait_field_values <- function(declared, data) {
   declared %>%
-    purrr::map(~if (is.null(data[[.x]])) .x else unique(data[[.x]])) %>%
+    purrr::map(~if (is.null(data[[.x]])) .x else unique(stats::na.omit(data[[.x]]))) %>%
     unlist(use.names = FALSE) %>%
     as.character() %>%
     unique()

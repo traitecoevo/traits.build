@@ -245,6 +245,8 @@ test_that("`dataset_test` accepts a context scoped to specific traits by a colum
   # The context-consistency check used to compare the column's per-record values
   # against the literal string "LfT_Rdark" (the field's own declared value, never
   # resolved against the data), which could never match and always failed (#276).
+  # One record leaves `LfT_Rdark` blank, as a column scoped to some traits
+  # usually will: a blank is no value for the context, not a value of `NA`.
   # Nothing beyond the "== Testing dataset_test ==" header
   failures <- dataset_test_failures("Test_2024_1")
   expect_equal(grep("^== Testing", failures, invert = TRUE, value = TRUE), character(0))

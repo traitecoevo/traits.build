@@ -14,7 +14,7 @@ for one field (already unique and stripped of \code{NA})}
 \code{custom_R_code} applied}
 }
 \value{
-Character vector of resolved values
+Character vector of resolved values, without \code{NA}
 }
 \description{
 A field set on the \code{traits} entries of \code{metadata.yml} for a context's
@@ -26,5 +26,11 @@ else is the literal value itself (e.g. \verb{method_context: 250 mm branch}).
 \code{process_format_contexts()} and \code{dataset_test()}'s context-consistency check
 both need this same resolution, so it lives here rather than being
 duplicated and drifting between the two (#276).
+}
+\details{
+A blank cell in such a column is a record with no value for the context,
+not a context value, so \code{NA} is dropped -- as it is for a \code{var_in} naming a
+column directly. Otherwise \code{dataset_test()} reported \code{NA} as a context value
+missing from the metadata whenever the column had a gap.
 }
 \keyword{internal}
