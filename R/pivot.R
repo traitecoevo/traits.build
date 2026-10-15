@@ -30,9 +30,13 @@ pivot_id_cols <- c(
 # One row per combination of `pivot_id_cols` and `trait_name` holding more than
 # one value, with the count in `number_of_duplicates`. Equivalent to pivoting
 # wider with `values_fn = length` and keeping the cells greater than 1.
-util_pivot_duplicates <- function(traits) {
+# `extra_cols` are grouped on as well, to carry them into the result.
+util_pivot_duplicates <- function(traits, extra_cols = character()) {
   traits %>%
-    dplyr::count(dplyr::across(dplyr::all_of(c(pivot_id_cols, "trait_name"))), name = "number_of_duplicates") %>%
+    dplyr::count(
+      dplyr::across(dplyr::all_of(c(pivot_id_cols, extra_cols, "trait_name"))),
+      name = "number_of_duplicates"
+    ) %>%
     dplyr::filter(.data$number_of_duplicates > 1)
 }
 

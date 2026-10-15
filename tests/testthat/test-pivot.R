@@ -29,3 +29,31 @@ test_that("`dataset_find_pivot_duplicates` finds and flags exact duplicates", {
 test_that("`dataset_find_pivot_duplicates` rejects a database object", {
   expect_error(dataset_find_pivot_duplicates(list()), "character vector of dataset ids")
 })
+
+
+test_that("`check_pivot_duplicates` reports cells holding more than one value", {
+  traits <- tibble::tibble(
+    dataset_id = c("A", "A", "A", "B"),
+    taxon_name = "Sp one",
+    original_name = "Sp one",
+    observation_id = c("A_01", "A_01", "A_02", "B_01"),
+    trait_name = c("leaf_length", "leaf_length", "leaf_length", "leaf_length"),
+    value = c("1.2", "1.3", "1.2", "1.2"),
+    value_type = "mean",
+    repeat_measurements_id = NA_character_,
+    method_id = "01",
+    method_context_id = NA_character_
+  )
+  database <- list(traits = traits)
+
+  dupes <- check_pivot_duplicates(database)
+  expect_equal(nrow(dupes), 1)
+  expect_equal(dupes$observation_id, "A_01")
+  expect_equal(dupes$number_of_duplicates, 2L)
+  expect_equal(
+    names(dupes)[1:7],
+    c("dataset_id", "trait_name", "number_of_duplicates", "taxon_name", "original_name",
+      "observation_id", "value_type")
+  )
+  expect_equal(nrow(check_pivot_duplicates(database, "B")), 0)
+})
