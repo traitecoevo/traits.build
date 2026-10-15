@@ -199,6 +199,39 @@ util_context_var_in_message <- function(contexts, missing_var_in,
 }
 
 
+#' Resolve declared `traits`-entry field values against the data
+#'
+#' A field set on the `traits` entries of `metadata.yml` for a context's
+#' `var_in` (e.g. `leaf_temp: LfT_Rdark`, scoping that context to just the
+#' traits declaring it) is read the way `process_parse_data()` reads every such
+#' field: a declared value naming a column of `data.csv` (after `custom_R_code`
+#' has run) stands for that column's contents, read per record, and anything
+#' else is the literal value itself (e.g. `method_context: 250 mm branch`).
+#' `process_format_contexts()` and `dataset_test()`'s context-consistency check
+#' both need this same resolution, so it lives here rather than being
+#' duplicated and drifting between the two (#276).
+#'
+#' A blank cell in such a column is a record with no value for the context,
+#' not a context value, so `NA` is dropped -- as it is for a `var_in` naming a
+#' column directly. Otherwise `dataset_test()` reported `NA` as a context value
+#' missing from the metadata whenever the column had a gap.
+#'
+#' @param declared Character vector of values declared on the `traits` entries
+#'   for one field (already unique and stripped of `NA`)
+#' @param data Data frame to check declared values against -- `data.csv` with
+#'   `custom_R_code` applied
+#'
+#' @return Character vector of resolved values, without `NA`
+#' @keywords internal
+util_resolve_trait_field_values <- function(declared, data) {
+  declared %>%
+    purrr::map(~if (is.null(data[[.x]])) .x else unique(stats::na.omit(data[[.x]]))) %>%
+    unlist(use.names = FALSE) %>%
+    as.character() %>%
+    unique()
+}
+
+
 #'  Split and sort cells with multiple values
 #'
 #'  `util_separate_and_sort`: For a vector x in which individual cell may have
