@@ -8,6 +8,7 @@ metadata_dewrap_fields(
   dataset_id,
   path_data = "data",
   fields = c("sampling_strategy", "methods"),
+  dehyphenate = FALSE,
   dry_run = TRUE
 )
 }
@@ -18,12 +19,17 @@ metadata_dewrap_fields(
 
 \item{fields}{Names of the fields to dewrap}
 
+\item{dehyphenate}{Remove the hyphen at a line break that splits a
+lowercase word, rather than keep it? Default \code{FALSE}.}
+
 \item{dry_run}{Print a preview without writing anything. Default \code{TRUE};
 pass \code{FALSE} to apply the rewrite.}
 }
 \value{
 A data frame with one row per field that had continuation lines to
-join, with columns \code{dataset_id}, \code{field}, \code{line} and \code{n_lines_joined}.
+join, with columns \code{dataset_id}, \code{field}, \code{line}, \code{n_lines_joined},
+\code{hyphen_joins} (the words formed at line breaks ending in a hyphen,
+separated by \code{"; "}, or \code{NA}) and \code{value} (the joined value as written).
 Returned invisibly when \code{dry_run = FALSE}.
 }
 \description{
@@ -37,18 +43,26 @@ then can't tell the difference between a wrapped continuation and a new
 key, and the file fails to parse (each wrapped line is read as an attempt
 at a new mapping key). This finds every \code{fields} entry in the file --
 \code{methods} occurs once per trait -- and rejoins its continuation lines into
-one, using \code{\link[=util_dewrap_join]{util_dewrap_join()}} to undo mid-word hyphen breaks along the
-way.
+one, using \code{\link[=util_dewrap_join]{util_dewrap_join()}}.
 }
 \details{
-A continuation line is anything following the field's \verb{key:} line up to
-the next line that is itself structurally a new field (\verb{word:}, at or
-above the key's own indentation) or a new list item (\verb{- }, at or above
-that indentation) -- not indentation on its own, since pasted text is
-often left completely unindented, shallower than the key it belongs to.
-That means this relies on the paragraph never containing a bare line of
-the form \verb{word:} or \code{- ...} at or above the key's own indentation -- true
-of ordinary prose, but worth checking in the diff.
+A continuation line is anything following the field's \verb{key:} line up to a
+blank line, or the next line at or above the key's own indentation that is
+itself structurally a new field or a new list item (\verb{- }) -- not
+indentation on its own, since pasted text is often left completely
+unindented, shallower than the key it belongs to. A new field is a key
+written as a single word (\verb{word:}), or one of the file's \code{var_in} values:
+a \code{traits} entry can carry a field named after a context's \code{var_in}, such
+as \verb{stem type: branch}, which contains a space. So this relies on the
+paragraph never containing a line of the form \verb{word:} or \code{- ...} at or
+above the key's own indentation -- true of ordinary prose, and when it is
+not, the joined field stops early and the file still fails to parse,
+rather than a key being absorbed into the text.
+
+At a line that ends in a hyphen the hyphen is kept and the next line joined
+to it without a space; pass \code{dehyphenate = TRUE} to remove it instead where
+it splits a lowercase word (see \code{\link[=util_dewrap_join]{util_dewrap_join()}}). The preview lists
+every such join, since neither rule is right every time.
 
 Only \code{fields} are rewritten; everything else in the file -- other fields,
 comments, formatting -- is left exactly as it was. \code{custom_R_code} in
@@ -60,9 +74,11 @@ through \code{\link[=write_metadata]{write_metadata()}}, which would reflow the 
 unreviewable diff.
 
 A field already spread over several properly indented lines is valid YAML,
-but is joined all the same. That changes nothing in the value read, only
-the layout, so run this on the dataset being fixed rather than across a
-whole compilation.
+but is joined all the same. That changes nothing in the value read except
+at a line ending in a hyphen, which YAML reads as \code{"oven- dried"} and this
+writes as \code{"oven-dried"}. Run this on the dataset being fixed rather than
+across a whole compilation: run on \code{austraits.build}, it rewrites 400 of
+442 files that already parse.
 }
 \examples{
 \dontrun{

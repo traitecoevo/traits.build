@@ -16,9 +16,11 @@ util_quote_if_needed(x)
 A prose paragraph joined onto one line very often contains \code{": "} --
 "as follows: ...", "note: ...", a time like "9:30" is rarer but no safer
 -- and a plain (unquoted) YAML scalar cannot contain that sequence at all;
-\code{yaml::read_yaml()} reads it as a mapping starting mid-value. Wrapping the
-value in single quotes, doubling any literal \verb{'} it contains, sidesteps
-this regardless of where the colon falls.
+\code{yaml::read_yaml()} reads it as a mapping starting mid-value. Nor can it
+contain \code{" #"}, which starts a comment, so \code{"plot #3 was"} would silently be
+read as \code{"plot"}, or begin with a character YAML reserves (\verb{\{} starts a flow
+mapping). Wrapping the value in single quotes, doubling any literal \verb{'} it
+contains, sidesteps all of these.
 }
 \details{
 Left alone when \code{x} is empty, or already begins with \verb{'} or \verb{"} -- that

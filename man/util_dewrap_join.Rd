@@ -2,26 +2,35 @@
 % Please edit documentation in R/metadata_dewrap.R
 \name{util_dewrap_join}
 \alias{util_dewrap_join}
-\title{Join a hard-wrapped word, if the break falls mid-word}
+\title{Join the lines of a hard-wrapped paragraph}
 \usage{
-util_dewrap_join(parts)
+util_dewrap_join(parts, dehyphenate = FALSE)
 }
 \arguments{
 \item{parts}{character vector of trimmed lines to join, in order}
+
+\item{dehyphenate}{remove the hyphen at a lowercase-to-lowercase break?}
 }
 \value{
-a single character string
+a list: \code{text}, the joined string, and \code{hyphen_joins}, the word
+formed at each break that ended in a hyphen
 }
 \description{
 \code{parts} are lines from a paragraph pasted out of a PDF or Word document,
 where the source's own line wrapping -- not paragraph structure -- put a
-break between them. A break that lands mid-word leaves the first line
-ending in a hyphen after a lowercase letter, with the next line resuming
-in lowercase (\code{"collec-"} / \code{"tion"}); that hyphen is an artefact of the
-wrap; those two \code{parts} become \code{"collection"}. Anything else -- including a
-genuine hyphenated compound that happens to sit at a wrap point -- is
-joined with a space instead, since a real hyphen can't be told apart from
-a wrap artefact by this rule alone, and leaving it untouched is the safer
-guess.
+break between them. Lines are joined with a space, except where a line ends
+in a hyphen attached to a word: there the break is joined without a space,
+and the hyphen is kept (\code{"oven-"} / \code{"dried"} becomes \code{"oven-dried"}).
+}
+\details{
+A hyphen at a break cannot be told apart from the source's own: a word
+split mid-word (\code{"collec-"} / \code{"tion"}) and a genuine compound
+(\code{"erosion-"} / \code{"resistant"}) look the same. Keeping the hyphen never
+deletes a character; with \code{dehyphenate = TRUE} it is removed instead where
+a lowercase letter precedes it and the next line resumes in lowercase,
+giving \code{"collection"} but also \code{"erosionresistant"}. Either way, every join
+at a hyphen is returned in \code{hyphen_joins} so it can be checked. A line
+ending in a hyphen before "and" or "or" (\code{"pre-"} / \code{"and post-fire"}) is a
+suspended hyphen and keeps its space, as does a line ending in \verb{+/-}.
 }
 \keyword{internal}
