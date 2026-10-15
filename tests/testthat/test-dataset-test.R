@@ -234,3 +234,20 @@ test_that("`dataset_test` runs on the package's testthat edition (#234)", {
   expect_equal(results$test, "Test_2023_1")
   expect_equal(results$failed, 2)
 })
+
+
+test_that("`dataset_test` accepts a context scoped to specific traits by a column (#276)", {
+  # Test_2024_1's `wood_density` trait entry sets `leaf_temp: LfT_Rdark`, naming a
+  # column of `data.csv` rather than a literal -- scoping the `leaf temperature`
+  # context (declared once, at the dataset level) to just that trait. Its values
+  # are never listed in `metadata.yml`, so they can only be read off the column.
+  #
+  # The context-consistency check used to compare the column's per-record values
+  # against the literal string "LfT_Rdark" (the field's own declared value, never
+  # resolved against the data), which could never match and always failed (#276).
+  # One record leaves `LfT_Rdark` blank, as a column scoped to some traits
+  # usually will: a blank is no value for the context, not a value of `NA`.
+  # Nothing beyond the "== Testing dataset_test ==" header
+  failures <- dataset_test_failures("Test_2024_1")
+  expect_equal(grep("^== Testing", failures, invert = TRUE, value = TRUE), character(0))
+})
