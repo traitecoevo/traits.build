@@ -913,6 +913,26 @@ test_that("reports and plots are produced", {
   report <- paste(readLines(output_html, warn = FALSE), collapse = "\n")
   expect_match(report, "Test_2022", fixed = TRUE)
   expect_no_match(report, "there is no package called", fixed = TRUE)
+  expect_match(report, "Review of questions", fixed = TRUE)
+  expect_match(report, "Question:", fixed = TRUE)
+  expect_match(report, "Please review the report", fixed = TRUE)
+
+  # The final copy leaves out every question and the list of them at the end
+  final_path <- withr::local_tempdir()
+  suppressMessages(
+    dataset_report(
+      dataset_id = "Test_2022", austraits = austraits,
+      output_path = final_path, overwrite = TRUE, show_questions = FALSE
+    )
+  )
+  final <- paste(readLines(file.path(final_path, "Test_2022.html"), warn = FALSE), collapse = "\n")
+  expect_match(final, "Test_2022", fixed = TRUE)
+  expect_no_match(final, "Review of questions", fixed = TRUE)
+  expect_no_match(final, "Question:", fixed = TRUE)
+  expect_no_match(final, "There are two sets of queries", fixed = TRUE)
+  expect_no_match(final, "Please review the report", fixed = TRUE)
+  expect_no_match(final, "To aid your review", fixed = TRUE)
+  expect_no_match(final, "let us know", fixed = TRUE)
 })
 
 
