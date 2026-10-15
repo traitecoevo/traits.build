@@ -796,9 +796,10 @@ database_create_combined_table <- function(database, ...) {
 #' A value is valid when it is one ISO 8601 date -- `yyyy`, `yyyy-mm` or
 #' `yyyy-mm-dd` -- or a range of two such dates separated by a `/` whose start
 #' is not after its end. Each date must exist in the calendar and fall between
-#' 1700 and today. `unknown/yyyy`, the form the traits.build book documents
-#' for a date that is not known, is also accepted. Nothing else is: no
-#' surrounding whitespace, no other separators and no time of day.
+#' 1700 and today. Nothing else is: no surrounding whitespace, no other
+#' separators and no time of day. In particular not `unknown/yyyy` or
+#' `.na/yyyy`, which the build writes as the year alone, `yyyy`
+#' (see [util_drop_unknown_collection_date_start()]).
 #'
 #' Each distinct value is checked once, so the cost follows the number of
 #' distinct dates rather than the number of records.
@@ -814,12 +815,24 @@ util_collection_date_is_valid <- function(x) {
   valid[match(x, values)]
 }
 
+#' Write `unknown/yyyy` and `.na/yyyy` `collection_date` values as `yyyy`
+#'
+#' A range with an unknown start says no more than its end does, so the end
+#' alone is kept. `.na` here is the literal text: only a whole field of `.na`
+#' is read as missing. The end may be any one `yyyy`, `yyyy-mm` or
+#' `yyyy-mm-dd` date; anything else is left as it is, for `dataset_test()`
+#' to report.
+#'
+#' @param x Vector of `collection_date` values
+#'
+#' @return `x`, with those values replaced by their end date
+#' @noRd
+util_drop_unknown_collection_date_start <- function(x) {
+  sub("^(unknown|\\.na)/([0-9]{4}(-[0-9]{2}){0,2})$", "\\2", x)
+}
+
 #' @noRd
 util_collection_date_is_valid_one <- function(value) {
-  if (grepl("^unknown/[0-9]{4}$", value)) {
-    return(!is.null(util_collection_date_bounds(substring(value, 9))))
-  }
-
   # `strsplit()` drops an empty trailing piece, so `2020/` would pass as a
   # single date if the separators were not counted separately
   n_separators <- nchar(gsub("[^/]", "", value))

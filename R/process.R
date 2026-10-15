@@ -202,6 +202,12 @@ dataset_process <- function(filename_data_raw,
     locations <- locations %>% dplyr::filter(!(.data$location_property %in% vars))
   }
 
+  # Now that `collection_date` holds its final values, from metadata, data or
+  # locations, write `unknown/yyyy` and `.na/yyyy` as the year alone
+  if ("collection_date" %in% names(traits)) {
+    traits[["collection_date"]] <- util_drop_unknown_collection_date_start(traits[["collection_date"]])
+  }
+
   traits <- traits %>%
     process_flag_unsupported_traits(definitions) %>%
     process_flag_excluded_observations(metadata) %>%
