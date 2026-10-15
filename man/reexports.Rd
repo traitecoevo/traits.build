@@ -15,6 +15,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{austraits}{\code{\link[austraits]{bind_databases}}, \code{\link[austraits]{convert_df_to_list}}, \code{\link[austraits]{convert_list_to_df1}}, \code{\link[austraits]{convert_list_to_df2}}, \code{\link[austraits]{flatten_database}}}
+  \item{austraits}{\code{\link[austraits:bind_databases]{bind_databases()}}, \code{\link[austraits:convert_df_to_list]{convert_df_to_list()}}, \code{\link[austraits:convert_list_to_df1]{convert_list_to_df1()}}, \code{\link[austraits:convert_list_to_df2]{convert_list_to_df2()}}, \code{\link[austraits:flatten_database]{flatten_database()}}}
 }}
 

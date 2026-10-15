@@ -39,6 +39,7 @@ dataset:
       )
     '
   collection_date: 2004/2004
+  collection_date_format: dmy
   taxon_name: Species
   location_name: site
   individual_id: individual_id
@@ -63,7 +64,7 @@ dataset:
   notes: none
 identifiers:
 - var_in: herbarium_voucher
-  identifier_type: specimentID
+  identifier_type: specimenID
   institution_code: National Herbarium NSW
 - var_in: collection_id
   identifier_type: collectionID

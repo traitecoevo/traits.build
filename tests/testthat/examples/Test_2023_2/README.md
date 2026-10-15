@@ -22,6 +22,8 @@ Test_2023_2 is a copy of Falster_2005_1 with the following modifications:
 - Removed latitude and longitude fields for both locations
 - Add duplicate of LASA1000 to test `method_id` when `value_type` is read from a column at the trait level
 - Added `collection_date` as location-level metadata and added a column for `collection_date` at dataset level (duplicated row for Acacia celsa to test `observation_id`)
-- Added `specimen` with fake hypothetical specimen numbers. In this case the `identifier_type` is not a value specified in the schema, so confirming that these are suggestions rather than requirements.
+- Added `specimen` with fake hypothetical specimen numbers. In this case the `identifier_type` is not a value specified in the schema, so confirming that these are suggestions rather than requirements. Two rows leave `specimen` blank, so that the build dropping identifier values that are NA is exercised rather than assumed.
+
+  This column was described here but never actually committed to `data.csv`, so from the dataset's creation until Stage 0 of #225 the declared identifier resolved to nothing and the build produced an empty identifiers table -- silently, because `process_add_all_columns` supplies a missing `var_in` as all-NA. Nothing noticed, because `identifiers.csv` was not among the tables the tests compared. The committed `output/identifiers.csv` held 506 rows that no build could reproduce. The column is now present and its values are regenerated from the build; the original numbers were not recoverable.
 
 See output/ for expected output files.

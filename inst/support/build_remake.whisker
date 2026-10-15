@@ -36,6 +36,10 @@ targets:
       dataset_configure("{{path}}/{{dataset_id}}/metadata.yml",
                  definitions
                  )
+{{#locations_file}}
+    depends:
+      - {{path}}/{{dataset_id}}/{{locations_file}}
+{{/locations_file}}
   {{dataset_id}}_raw:
     command: >
       dataset_process("{{path}}/{{dataset_id}}/data.csv",

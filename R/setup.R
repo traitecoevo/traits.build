@@ -256,7 +256,8 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
   metadata <- read_metadata_dataset(dataset_id)
 
   # Load and clean trait data
-  data <- readr::read_csv(file.path("data", dataset_id, "data.csv"), col_types = cols()) %>%
+  data <- readr::read_csv(file.path("data", dataset_id, "data.csv"),
+                          col_types = cols(), guess_max = 100000) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
 
   # Get list of potential traits
@@ -339,6 +340,10 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
 #' @param location_data A dataframe of site variables
 #' @param user_responses Named list containing simulated user input for manual selection
 #' of variables, mainly for testing purposes
+#' @param file Name of a csv file to hold the locations, written beside
+#'  `metadata.yml` and referred to from it as `locations: <file>`, instead of
+#'  listing every location in the yaml. Worth using for a dataset with many
+#'  locations, such as one generating a location per georeferenced record.
 #'
 #' @importFrom rlang .data
 #' @export
@@ -347,8 +352,10 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
 #' austraits$locations %>% dplyr::filter(dataset_id == "Falster_2005_1") %>%
 #' select(-dataset_id) %>% spread(location_property, value) %>% type_convert() -> location_data
 #' metadata_add_locations("Falster_2005_1", location_data)
+#' metadata_add_locations("AVH_2026", location_data, file = "locations.csv")
 #' }
-metadata_add_locations <- function(dataset_id, location_data, user_responses = NULL) {
+metadata_add_locations <- function(dataset_id, location_data, user_responses = NULL,
+                                   file = NULL) {
 
   vars <- names(location_data)
 
@@ -389,17 +396,41 @@ metadata_add_locations <- function(dataset_id, location_data, user_responses = N
       )
   }
 
-  metadata$locations <- location_data %>%
-    dplyr::select(-dplyr::any_of(location_name)) %>%
-    split(location_data[[location_name]]) %>%
-    lapply(as.list)
+  location_names <- unique(location_data[[location_name]])
+
+  if (is.null(file)) {
+
+    metadata$locations <- location_data %>%
+      dplyr::select(-dplyr::any_of(location_name)) %>%
+      split(location_data[[location_name]]) %>%
+      lapply(as.list)
+
+    # A location per georeferenced record makes a `metadata.yml` unreadable --
+    # `AVH_2026` in austraits.build reaches 487,518 lines (#263)
+    if (length(location_names) >= locations_file_suggest_at) {
+      message(
+        sprintf(
+          red("%s locations is a lot to hold in `metadata.yml`. ") %+%
+            red("Consider `metadata_add_locations(..., file = \"%s\")`, ") %+%
+            red("which keeps them in a csv file beside it instead."),
+          blue(length(location_names)), blue(locations_file_default)
+        )
+      )
+    }
+
+  } else {
+
+    metadata$locations <- location_data %>%
+      dplyr::rename(dplyr::all_of(c("location_name" = location_name)))
+    attr(metadata$locations, "locations_file") <- file
+  }
 
   message(
     sprintf(
       red("Following locations added to metadata for %s") %+% red(": ") %+% green("'%s'\n\t") %+%
         red("with variables ") %+% green("'%s'\n\t") %+% red("Please complete information in %s"),
       blue(dataset_id),
-      paste(names(metadata$locations), collapse = "', '"),
+      paste(location_names, collapse = "', '"),
       ifelse(is.na(keep[1]), "latitude (deg)', 'longitude (deg)', 'description", paste(keep, collapse = "', '")),
       blue(dataset_id %>% metadata_path_dataset_id())
     )
@@ -444,8 +475,28 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
   # Load and clean trait data
   data <-
-    readr::read_csv(file.path("data", dataset_id, "data.csv"), col_types = cols()) %>%
+    readr::read_csv(file.path("data", dataset_id, "data.csv"),
+                    col_types = cols(), guess_max = 100000) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
+
+  # `read_csv` parses time-like columns as `hms`, which reformats the text in
+  # data.csv ("9:00" is read as "09:00:00"). Record the reformatted strings,
+  # since those are what the build and `dataset_test` compare against, and warn
+  # the user so the values written here don't look inconsistent with data.csv.
+  time_cols <- names(data)[purrr::map_lgl(data, ~ inherits(.x, "hms"))]
+
+  if (length(time_cols) > 0) {
+    data <- data %>%
+      dplyr::mutate(dplyr::across(dplyr::all_of(time_cols), as.character))
+
+    message(
+      sprintf(
+        red("Time data detected in column(s) ") %+% green("'%s'") %+%
+          red("\n\tValues are reformatted to 'hh:mm:ss' to match how the build reads them"),
+        paste(time_cols, collapse = "', '")
+      )
+    )
+  }
 
   # Get list of potential columns
   v <- names(data)
@@ -530,7 +581,7 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 
       ii <- n_existing + i
       category <- categories[i]
-      context_values <- data[[var_in[i]]] %>% unique() %>% na.omit()
+      context_values <- data[[var_in[i]]] %>% unique() %>% na.omit() %>% as.character()
 
       contexts[[ii]] <-
         list(
@@ -567,63 +618,100 @@ metadata_add_contexts <- function(dataset_id, overwrite = FALSE, user_responses 
 #'
 #' @inheritParams metadata_path_dataset_id
 #' @param overwrite Overwrite existing information
+#' @param user_responses Named list containing simulated user input, so the
+#' function can be driven without an interactive prompt. Expects `var_in`, a
+#' vector of column names, and `identifier_type`, one type per column.
+#'
+#' @return Invisibly, the updated metadata list. Called for the side effect of
+#' writing `metadata.yml` for `dataset_id`.
 #'
 #' @importFrom rlang .data
 #' @export
-metadata_add_identifiers <- function(dataset_id, overwrite = FALSE) {
+metadata_add_identifiers <- function(dataset_id, overwrite = FALSE,
+                                     user_responses = NULL) {
 
   # Read metadata
   metadata <- read_metadata_dataset(dataset_id)
 
   # Load and clean trait data
   data <-
-    readr::read_csv(file.path("data", dataset_id, "data.csv"), col_types = cols()) %>%
+    readr::read_csv(file.path("data", dataset_id, "data.csv"),
+                    col_types = cols(), guess_max = 100000) %>%
     process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
 
   # Get list of potential columns
   v <- names(data)
 
   # Check for existing info and if it exists, retain information if overwrite = FALSE
-  if (!overwrite && !is.na(metadata$identifiers[1])) {
-    
+  #
+  # `metadata$identifiers` is NULL when the key is absent, which is the case for
+  # every dataset the first time this is called. `is.na(NULL[1])` is
+  # `logical(0)`, so the previous guard reduced to `if (NA)` and failed with
+  # "missing value where TRUE/FALSE needed". Matching the test used in
+  # `dataset_process()` short-circuits correctly, since `all(is.na(NULL))` is
+  # TRUE.
+  has_existing <-
+    "identifiers" %in% names(metadata) &&
+    !all(is.na(metadata[["identifiers"]]))
+
+  if (!overwrite && has_existing) {
+
     identifiers <- metadata$identifiers
     n_existing <- length(metadata$identifiers)
-      
+
     message(
       sprintf(
         red("Existing identifier information detected, from the following columns in the dataset: ") %+%
         green("'%s'\n\t") %+% red("Metadata is being appended; please review duplicates manually"),
       identifiers %>% purrr::map_chr(~.x[["var_in"]]) %>% paste(collapse = "', '"))
     )
-    
+
   } else {
-    
+
     identifiers <- list()
     n_existing <- 0
-    
-  }
 
-    var_in <- metadata_user_select_names(
-      paste("Indicate all columns that contain identifiers that cross-reference between observations in ", dataset_id, " and an herbarium voucher or another database."), v)
+  }
 
     types <-
       c("catalogNumber", "collectionID", "institutionCode", "institutionID", "materialSampleID", "occurrenceID")
 
+    if (!is.null(user_responses)) {
+      var_in <- user_responses[["var_in"]]
+      identifier_types <- user_responses[["identifier_type"]]
+
+      if (length(identifier_types) != length(var_in)) {
+        stop("`user_responses` needs one `identifier_type` per `var_in` column")
+      }
+    } else {
+      var_in <- metadata_user_select_names(
+        paste("Indicate all columns that contain identifiers that cross-reference between observations in ", dataset_id, " and an herbarium voucher or another database."), v)
+
+      identifier_types <- purrr::map_chr(
+        var_in,
+        ~ metadata_user_select_names(
+          paste("What identifier type does ", .x, "fit in?"), types)
+      )
+    }
+
     for (i in seq_along(var_in)) {
 
       ii <- n_existing + i
-      identifier_type <- metadata_user_select_names(
-        paste("What identifier type does ", var_in[i], "fit in?"), types)
 
       identifiers[[ii]] <-
         list(
           var_in = var_in[i],
-          identifier_type = identifier_type,
-          institution_code = .na
+          identifier_type = identifier_types[i],
+          # `institution_code` is not asked for, since it cannot be inferred
+          # from the data; the user fills it in afterwards. This was written as
+          # a bare `.na`, which is YAML's null but not an R object, so the
+          # function errored with "object '.na' not found" the moment a column
+          # was selected -- i.e. it never worked at all.
+          institution_code = NA_character_
         )
-      
+
     }
-    
+
   metadata$identifiers <- identifiers
   write_metadata_dataset(metadata, dataset_id)
   return(invisible(metadata))
@@ -719,7 +807,9 @@ util_standardise_doi <- function(doi) {
 #' Adds citation details from a doi to a metadata file for a `dataset_id`
 #'
 #' Uses rcrossref package to access publication details from the crossref
-#' database
+#' database. `rcrossref` is an optional dependency; it is only needed when
+#' `bib` is not supplied, and can be installed with
+#' `install.packages("rcrossref")`.
 #'
 #' @param bib (Only use for testing purposes) Result of calling `bib rcrossref::cr_cn(doi)`
 #' @inheritParams metadata_path_dataset_id
@@ -733,8 +823,10 @@ metadata_add_source_doi <- function(..., doi, bib = NULL) {
 
   doi <- util_standardise_doi(doi)
 
-  if (is.null(bib))
+  if (is.null(bib)) {
+    util_require_package("rcrossref", "to look up citation details for a doi.")
     bib <- rcrossref::cr_cn(doi)
+  }
 
   if (is.null(bib)) {
     message(red("DOI not available in Crossref database, please fill record manually"))
@@ -759,14 +851,21 @@ metadata_add_source_doi <- function(..., doi, bib = NULL) {
 #' @param trait_name The database defined name for a particular trait
 #' @param find Trait value in the original data.csv file
 #' @param replace Trait value supported by database
+#' @param match Optional. `"word"` replaces `find` wherever it occurs as a whole
+#'   word/phrase within a multi-value cell, leaving the rest of the cell
+#'   untouched. Default `"value"` requires `find` to equal the entire cell, and
+#'   is omitted from the written metadata to keep existing files unchanged.
 #'
 #' @return `metadata.yml` file with a substitution added
 #' @export
-metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
+metadata_add_substitution <- function(dataset_id, trait_name, find, replace, match = "value") {
 
   set_name <- "substitutions"
   metadata <- read_metadata_dataset(dataset_id)
   to_add <- list(trait_name = trait_name, find = find, replace = replace)
+  if (match == "word") {
+    to_add[["match"]] <- match
+  }
 
   # Add `set_name` category if it doesn't yet exist
   if (all(is.na(metadata[[set_name]]))) {
@@ -799,6 +898,11 @@ metadata_add_substitution <- function(dataset_id, trait_name, find, replace) {
 
 #' Add a dataframe of trait value substitutions into a metadata file for a dataset_id
 #'
+#' Existing substitutions are preserved: a new row updates the existing entry for
+#' the same `trait_name`/`find` pair (with a message), and everything else already
+#' in `metadata$substitutions` is left alone -- mirroring
+#' `metadata_add_taxonomic_changes_list()`.
+#'
 #' @param dataset_id Identifier for a particular study in the database
 #' @param substitutions Dataframe of trait value substitutions
 #'
@@ -812,10 +916,35 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
   metadata <- read_metadata_dataset(dataset_id)
 
   if (!all(is.na(metadata[["substitutions"]]))) {
-    message(red("Existing substitutions have been overwritten"))
+
+    existing <- metadata[["substitutions"]] %>% austraits::convert_list_to_df2()
+    already_exist <- c()
+
+    for (i in seq_len(nrow(substitutions))) {
+      is_match <- existing$trait_name == substitutions$trait_name[i] & existing$find == substitutions$find[i]
+      if (any(is_match)) {
+        already_exist <- c(already_exist, substitutions$find[i])
+      }
+      existing <- existing[!is_match, ] %>% dplyr::bind_rows(substitutions[i, ])
+    }
+
+    if (length(already_exist) > 0) {
+      message(
+        sprintf(
+          green("%s") %+% red(" already exist(s) in `substitutions` and is being overwritten"),
+          paste(already_exist, collapse = ", ")
+        ))
+    }
+
+    substitutions <- existing %>% dplyr::arrange(.data$trait_name, .data$find)
   }
-  # Read in dataframe of substitutions, split into single-row lists, and add to metadata file
-  metadata$substitutions <- substitutions %>% dplyr::group_split(.data$trait_name, .data$find) %>% lapply(as.list)
+
+  # Split into single-row lists, dropping any unused optional field (e.g. `match`
+  # left `NA` for a row that doesn't use it) so untouched rows keep their original shape
+  metadata$substitutions <-
+    substitutions %>%
+    dplyr::group_split(.data$trait_name, .data$find) %>%
+    lapply(function(row) Filter(Negate(is.na), as.list(row)))
 
   # Write metadata
   write_metadata_dataset(metadata, dataset_id)
@@ -834,6 +963,9 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
 #' @param trait_name Name of column containing trait name(s) for which a trait value replacement needs to be made
 #' @param find Name of column containing trait values submitted by the contributor for a data observation
 #' @param replace Name of column containing database aligned trait values
+#' @param match Optional. Name of column containing `"word"` or `"value"` (or `NA`)
+#'   for each row -- see `metadata_add_substitution()`. When omitted, every row is
+#'   added as `match: value` (today's default, exact whole-cell match).
 #'
 #' @importFrom rlang .data
 #'
@@ -846,10 +978,10 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
 #'   filter(dataset_id == "Angevin_2011") -> dataframe_of_substitutions
 #' metadata_add_substitutions_table(dataframe_of_substitutions, dataset_id, trait_name, find, replace)
 #' }
-metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset_id, trait_name, find, replace) {
+metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset_id, trait_name, find, replace, match = NULL) {
 
   # Throw error if the column doesn't exist in the dataframe
-  for (col in c(dataset_id, trait_name, find, replace)) {
+  for (col in c(dataset_id, trait_name, find, replace, match)) {
     if (!col %in% names(dataframe_of_substitutions)) {
       stop(sprintf(green("'%s'") %+% red(" is not a column in the substitutions table"), col))
     }
@@ -888,6 +1020,9 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
       find = dataframe_of_substitutions[[i]][[find]],
       replace = dataframe_of_substitutions[[i]][[replace]]
     )
+    if (!is.null(match) && identical(dataframe_of_substitutions[[i]][[match]], "word")) {
+      to_add[["match"]] <- "word"
+    }
     # If `substitutions` is empty, make new list
     if (all(is.na(metadata[[set_name]]))) {
 
@@ -1234,13 +1369,52 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' studies.
 #'
 #' @param dataset_ids `dataset_id`'s to include; by default includes all
-#' @param method Approach to use in build
+#' @param method Approach to use in build. `"base"` writes a plain `build.R`
+#'  that rebuilds everything; `"furrr"` does the same in parallel; `"remake"`
+#'  and `"targets"` write a pipeline that caches, so that editing one dataset
+#'  rebuilds only that dataset. `"targets"` is the maintained, CRAN-available
+#'  option of the two.
 #' @param database_name Name of database to be built
 #' @param template Template used to build
 #' @param workers Number of workers/parallel processes to use when using
-#' method = "furrr"
+#' method = "furrr" or method = "targets"
 #'
-#' @return Updated `remake.yml` file
+#' @return Updated pipeline file: `build.R` for `"base"` and `"furrr"`,
+#'  `remake.yml` for `"remake"`, `_targets.R` for `"targets"`
+#'
+#' @section Using the `targets` pipeline:
+#'
+#' `method = "targets"` writes `_targets.R`, and building from it is three
+#' steps rather than one. The other three methods return the database from a
+#' single call, so the habits they teach do not carry over:
+#'
+#' ```
+#' build_setup_pipeline(method = "targets", database_name = "austraits")
+#' targets::tar_make()                       # rebuild the compilation
+#' austraits <- targets::tar_read(austraits) # load it into your session
+#' build_export("austraits")                 # write export/data/curr
+#' ```
+#'
+#' `targets::tar_make()` returns nothing. It builds into the `_targets/` store
+#' and prints what it did, so the direct translation of
+#' `austraits <- remake::make("austraits")` leaves you holding `NULL`. Use
+#' [targets::tar_read()] to read the built compilation back.
+#'
+#' `tar_make()` also does not write `export/data/curr`. That write is around a
+#' third of a one-dataset rebuild and is a publishing step rather than part of
+#' checking a dataset, so [build_export()] does it when it is wanted. Pass
+#' [build_export()] the same `database_name` given here.
+#'
+#' `tar_make()` prints two lines per target, several hundred on a large
+#' compilation, and in the order its scheduler reaches them rather than
+#' alphabetically. Neither is adjustable: `targets` collapses only dynamic
+#' branches into a progress bar, and it deprecated target priorities in 1.10.1
+#' when it moved to the current scheduler, so execution order is no longer
+#' controllable. `targets::tar_make(reporter = "silent")` builds quietly, and
+#' `targets::tar_config_set(reporter_make = "silent")` sets that for the
+#' repository.
+#'
+#' @seealso [build_export()]
 #' @export
 build_setup_pipeline <- function(dataset_ids = dir("data"),
                                  method = "base",
@@ -1249,7 +1423,7 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
                                  workers = 1
                                  ) {
 
-  if (!method %in% c("base", "remake", "furrr")) {
+  if (!method %in% c("base", "remake", "furrr", "targets")) {
     stop(sprintf("Invalid method selected in `build_setup_pipeline`: %s", method))
   }
 
@@ -1270,13 +1444,37 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 
   message(green(sprintf("Setting up build pipeline for %s studies, using `%s` method", length(dataset_ids), method)))
 
+  # A dataset whose `locations:` names a csv file has to declare it as a
+  # dependency, or edits to it would not trigger a rebuild
+  locations_files <- vapply(
+    dataset_ids,
+    function(id) {
+      declared <- yaml::read_yaml(
+        sprintf("%s/%s/metadata.yml", path, id)
+      )[["locations"]]
+      if (util_locations_is_file(declared)) declared else NA_character_
+    },
+    character(1)
+  )
+
   vals <- list(
-    dataset_ids = whisker::iteratelist(dataset_ids, value = "dataset_id"),
+    dataset_ids = unname(Map(
+      function(id, locations_file) {
+        # FALSE, not NA -- whisker renders a section for any non-false value,
+        # and `ifelse()` here would turn FALSE into the string "FALSE"
+        list(
+          dataset_id = id,
+          locations_file = if (is.na(locations_file)) FALSE else locations_file
+        )
+      },
+      dataset_ids, locations_files
+    )),
     dataset_ids_vector =
       sprintf("c(%s)", sprintf("'%s'", dataset_ids) %>% paste(collapse = ", ")),
     path = path,
     database_name = database_name,
-    workers = workers
+    workers = workers,
+    parallel = workers > 1
     )
 
   # Setup pipeline based on selected method for building
@@ -1300,6 +1498,20 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
   if (method == "remake") {
     writeLines(pipeline, "remake.yml")
     message(green("\t-> build compilation using file `remake.yml`"))
+  }
+
+  if (method == "targets") {
+    writeLines(pipeline, "_targets.R")
+    # Three separate steps, each of which the `remake` idiom gets wrong:
+    # `tar_make()` returns nothing rather than the database, and it does not
+    # write the export. Name the actual database, so the lines can be pasted.
+    message(green("\t-> build compilation using file `_targets.R`, via `targets::tar_make()`"))
+    message(green(sprintf(
+      "\t-> then `targets::tar_read(%s)` to load it; `tar_make()` itself returns nothing",
+      database_name)))
+    message(green(sprintf(
+      "\t-> then `build_export(\"%s\")` to write export/data/curr, which `tar_make()` leaves alone",
+      database_name)))
   }
 
   # Check file R/custom_R_code.R exists
@@ -1334,6 +1546,65 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 }
 
 
+#' Write a built database to `export/data/curr`
+#'
+#' The `targets` pipeline rebuilds the compilation but does not write the
+#' exported `.rds`: that write is around a third of a one-dataset rebuild, and
+#' it is a publishing step rather than part of checking a dataset. This writes
+#' it, reading the compilation `targets::tar_make()` has already built.
+#'
+#' @param database_name Name of the database, matching the one given to
+#'  [build_setup_pipeline()]. A pipeline set up with a `database_name` other
+#'  than the default must be exported with that same name.
+#' @param path Directory to write into
+#'
+#' @return The path written, invisibly
+#' @seealso [build_setup_pipeline()]
+#' @export
+#' @examples
+#' \dontrun{
+#' build_setup_pipeline(method = "targets", database_name = "austraits")
+#' targets::tar_make()
+#' build_export("austraits")
+#' }
+build_export <- function(database_name = "database",
+                         path = file.path("export", "data", "curr")) {
+
+  util_require_package(
+    "targets",
+    "to read the database built by the `targets` pipeline"
+  )
+
+  # `tar_read_raw()` reports only "target <name> not found", which does not say
+  # that the name is the `database_name` the pipeline was set up with. Someone
+  # who used a non-default name and then ran a bare `build_export()`, as the
+  # setup message used to tell them to, hit exactly that.
+  database <- tryCatch(
+    targets::tar_read_raw(database_name),
+    error = function(e) {
+      stop(sprintf(
+        paste0(
+          "cannot read `%s` from the targets store: %s\n",
+          "  `database_name` must match the one given to ",
+          "`build_setup_pipeline()`,\n",
+          "  and `targets::tar_make()` must have built it. ",
+          "`targets::tar_manifest()` lists the pipeline's targets."
+        ),
+        database_name, conditionMessage(e)
+      ), call. = FALSE)
+    }
+  )
+
+  dir.create(path, showWarnings = FALSE, recursive = TRUE)
+  file <- file.path(path, paste0(database_name, ".rds"))
+  saveRDS(database, file)
+
+  message(green(sprintf("\t-> written to `%s`", file)))
+
+  invisible(file)
+}
+
+
 select_pipeline_template <- function(method) {
 
   file <-
@@ -1341,6 +1612,7 @@ select_pipeline_template <- function(method) {
     base = "build_base.whisker",
     remake = "build_remake.whisker",
     furrr = "build_furrr.whisker",
+    targets = "build_targets.whisker",
     default = "build_base.whisker"
   )
 

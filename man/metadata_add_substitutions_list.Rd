@@ -15,5 +15,8 @@ metadata_add_substitutions_list(dataset_id, substitutions)
 \code{metadata.yml} file with multiple trait value substitutions added
 }
 \description{
-Add a dataframe of trait value substitutions into a metadata file for a dataset_id
+Existing substitutions are preserved: a new row updates the existing entry for
+the same \code{trait_name}/\code{find} pair (with a message), and everything else already
+in \code{metadata$substitutions} is left alone -- mirroring
+\code{metadata_add_taxonomic_changes_list()}.
 }

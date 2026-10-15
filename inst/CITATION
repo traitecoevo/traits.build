@@ -1,0 +1,26 @@
+citHeader("To cite traits.build in publications use:")
+
+bibentry(
+  bibtype  = "Article",
+  title    = "traits.build: A data model, workflow and R package for building harmonised ecological trait databases",
+  author   = c(
+    person("Elizabeth", "Wenk"),
+    person("Payal", "Bal"),
+    person("David", "Coleman"),
+    person("Rachael", "Gallagher"),
+    person("Sophie", "Yang"),
+    person("Daniel S.", "Falster")
+  ),
+  journal  = "Ecological Informatics",
+  year     = "2024",
+  volume   = "83",
+  pages    = "102773",
+  doi      = "10.1016/j.ecoinf.2024.102773",
+  url      = "https://doi.org/10.1016/j.ecoinf.2024.102773",
+  textVersion = paste(
+    "Wenk, E., Bal, P., Coleman, D., Gallagher, R., Yang, S., Falster, D.S. (2024)",
+    "traits.build: A data model, workflow and R package for building harmonised",
+    "ecological trait databases. Ecological Informatics 83, 102773.",
+    "https://doi.org/10.1016/j.ecoinf.2024.102773"
+  )
+)

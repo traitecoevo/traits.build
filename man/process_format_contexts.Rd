@@ -4,7 +4,7 @@
 \alias{process_format_contexts}
 \title{Format context data from list to tibble}
 \usage{
-process_format_contexts(my_list, dataset_id, traits)
+process_format_contexts(my_list, dataset_id, traits, metadata_traits = NULL)
 }
 \arguments{
 \item{my_list}{List of input information}
@@ -12,6 +12,10 @@ process_format_contexts(my_list, dataset_id, traits)
 \item{dataset_id}{Identifier for a particular study in the AusTraits database}
 
 \item{traits}{Table of trait data (for this function, just the data.csv file with custom_R_code applied)}
+
+\item{metadata_traits}{The \code{traits} section of \code{metadata.yml}, as a list. Supplies the
+context values for a context whose \code{var_in} names a field set literally on the trait
+entries rather than a column of \code{data.csv}.}
 }
 \value{
 Tibble with context details if available

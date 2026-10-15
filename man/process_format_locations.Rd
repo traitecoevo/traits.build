@@ -2,12 +2,13 @@
 % Please edit documentation in R/process.R
 \name{process_format_locations}
 \alias{process_format_locations}
-\title{Format location data from list to tibble}
+\title{Format location data as a tibble}
 \usage{
 process_format_locations(my_list, dataset_id, schema)
 }
 \arguments{
-\item{my_list}{List of input information}
+\item{my_list}{List of input information, or a data frame with a
+\code{location_name} column and one further column per location property}
 
 \item{dataset_id}{Identifier for a particular study in the AusTraits database}
 
@@ -17,7 +18,10 @@ process_format_locations(my_list, dataset_id, schema)
 Tibble with location details if available
 }
 \description{
-Format location data read in from the \code{metadata.yml} file. Converts from list to tibble.
+Format location data read in from the \code{metadata.yml} file, in either of the
+two forms \code{\link[=read_metadata]{read_metadata()}} returns it: the list of locations given by an
+inline \verb{locations:} block, or the data frame read from the csv file a
+\code{locations: locations.csv} entry names.
 }
 \examples{
 \dontrun{

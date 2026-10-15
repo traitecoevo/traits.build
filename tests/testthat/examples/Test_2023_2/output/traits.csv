@@ -459,5 +459,5 @@ Test_2023_2,Trema tomentosa var. aspera,100,huber_value,0.000183823529411765,mm2
 Test_2023_2,Trema tomentosa var. aspera,100,seed_dry_mass,5.12,mg,population,standard_error,unknown,unknown,field_experiment,juvenile,02,,,,Test_2022,02,,,,2002/2003,Made-up measurement remarks for Cape Tribulation,01,,Trema aspera
 Test_2023_2,Trema tomentosa var. aspera,101,leaf_N_per_dry_mass,29.9,mg/g,species,standard_error,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
 Test_2023_2,Trema tomentosa var. aspera,101,leaf_area,2071,mm2,species,standard_error,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
-Test_2023_2,Trema tomentosa var. aspera,101,leaf_mass_per_area,53,g/m2,species,standard_error   ,measurement,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
+Test_2023_2,Trema tomentosa var. aspera,101,leaf_mass_per_area,53,g/m2,species,standard_error,measurement,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera
 Test_2023_2,Trema tomentosa var. aspera,101,wood_density,0.357,mg/mm3,species,standard_error,unknown,2,field,adult,,,,,Test_2022,,,,,,,01,,Trema aspera

@@ -1,7 +1,7 @@
 Type: Package
 Package: traits.build
-Title: A workflow for harmonising trait data from diverse sources into a documented standard structure
-Version: 2.1.0
+Title: A Workflow for Harmonising Trait Data from Diverse Sources into a Documented Standard Structure
+Version: 2.2.0
 Maintainer: Daniel Falster <daniel.falster@unsw.edu.au>
 Authors@R: c(
     person(given = "Daniel", family = "Falster", role = c("cre", "aut"), email = "daniel.falster@unsw.edu.au", comment = c(ORCID = "0000-0002-9814-092X")),
@@ -11,17 +11,16 @@ Authors@R: c(
     person("ARDC", role = c("fnd")),
     person("ARC", role = c("fnd"))
     )
-Description: The `traits.build` package provides a workflow to harmonise trait data from diverse sources. A description of the data model, workflow, and R package are presented in Wenk et al, 2024, <doi:10.1016/j.ecoinf.2024.102773>. The code was originally built to support AusTraits (see Falster et al 2021, <doi:10.1038/s41597-021-01006-6>, <https://github.com/traitecoevo/autraits.build>) and has been generalised here to support construction of other trait databases. For detailed instructions and examples see <https://traitecoevo.github.io/traits.build-book/>.
+Description: The `traits.build` package provides a workflow to harmonise trait data from diverse sources. A description of the data model, workflow, and R package are presented in Wenk et al, 2024, <doi:10.1016/j.ecoinf.2024.102773>. The code was originally built to support AusTraits (see Falster et al 2021, <doi:10.1038/s41597-021-01006-6>, <https://github.com/traitecoevo/austraits.build>) and has been generalised here to support construction of other trait databases. For detailed instructions and examples see <https://traitecoevo.github.io/traits.build-book/>.
 BugReports: https://github.com/traitecoevo/traits.build/issues
-URL: http://traitecoevo.github.io/traits.build/
+URL: https://traitecoevo.github.io/traits.build/
 License: BSD_2_clause + file LICENCE
 Depends:
     R (>= 4.3.0),
-    base,
     dplyr,
     lubridate,
     readr,
-    stringr,
+    stringr (>= 1.5.0),
     tidyr,
     austraits
 Imports:
@@ -30,10 +29,8 @@ Imports:
     kableExtra,
     magrittr,
     purrr,
-    forcats,
     RefManageR,
     rlang,
-    rmarkdown,
     stringi,
     styler,
     testthat,
@@ -44,25 +41,32 @@ Imports:
 Suggests:
     furrr,
     remake,
+    targets,
+    crew,
+    qs2,
+    forcats,
     leaflet,
     bibtex,
     knitr,
     bench,
+    cli,
     devtools,
     markdown,
     pkgdown,
+    quarto,
     rcrossref,
+    rmarkdown,
     ggplot2,
     ggbeeswarm,
     gridExtra,
     scales,
+    withr,
     zip,
     covr
 Remotes:
     richfitz/remake,
     traitecoevo/austraits
 Encoding: UTF-8
-VignetteBuilder: knitr
-RoxygenNote: 7.3.2
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.0.0

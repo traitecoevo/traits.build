@@ -18,5 +18,7 @@ metadata_add_source_doi(..., doi, bib = NULL)
 }
 \description{
 Uses rcrossref package to access publication details from the crossref
-database
+database. \code{rcrossref} is an optional dependency; it is only needed when
+\code{bib} is not supplied, and can be installed with
+\code{install.packages("rcrossref")}.
 }

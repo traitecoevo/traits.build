@@ -26,3 +26,10 @@ _pkgdown.yml$
 ^tests/build$
 ^doc$
 ^Meta$
+^planning$
+^ontology$
+^Makefile$
+^\.claude$
+^AGENTS\.md$
+^\.lintr$
+^CITATION\.cff$

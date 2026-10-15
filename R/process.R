@@ -88,17 +88,47 @@ dataset_process <- function(filename_data_raw,
   # Load and clean trait data
   traits <-
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
-    process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
+    process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
+    process_format_collection_date(metadata)
 
   # Load and process contextual data
   contexts <-
     metadata$contexts %>%
-    process_format_contexts(dataset_id, traits)
-  
+    process_format_contexts(dataset_id, traits, metadata$traits)
+
   # Load identifiers
-  if ("identifiers" %in% names(metadata) & !all(is.na(metadata[["identifiers"]]))) {
+  if ("identifiers" %in% names(metadata) && !all(is.na(metadata[["identifiers"]]))) {
     identifiers <-
       metadata[["identifiers"]] %>% austraits::convert_list_to_df2()
+
+    # A `var_in` naming a column that does not exist used to pass silently:
+    # `process_add_all_columns()` creates the missing column as all-NA, and the
+    # `!is.na(identifier_value)` filter below then drops every row, so the
+    # dataset lost its identifiers with no error, warning or empty-table hint
+    # (#232).
+    #
+    # Checked against `traits` rather than the raw csv header, because
+    # `custom_R_code` has already run above and legitimately creates these
+    # columns -- every dataset currently using this feature relies on that, so
+    # validating the raw header would reject all of them.
+    missing_var_in <- setdiff(identifiers$var_in, names(traits))
+
+    if (length(missing_var_in) > 0) {
+      stop(
+        sprintf(
+          paste0(
+            "Dataset %s declares identifiers with `var_in` naming %s not present in the data: %s.\n",
+            "  Available columns: %s\n",
+            "  If the column is meant to be created by `custom_R_code`, check that it runs and spells the name identically."
+          ),
+          dataset_id,
+          ifelse(length(missing_var_in) > 1, "columns", "a column"),
+          paste(missing_var_in, collapse = ", "),
+          paste(names(traits), collapse = ", ")
+        ),
+        call. = FALSE
+      )
+    }
   } else {
     identifiers <- list(
       "var_in",
@@ -110,8 +140,8 @@ dataset_process <- function(filename_data_raw,
   # Load and clean trait data
   traits <-
     traits %>%
-    process_parse_data(dataset_id, metadata, contexts, schema, identifiers)
-  
+    process_parse_data(dataset_id, metadata, contexts, schema, identifiers, definitions)
+
   # Context ids needed to continue processing
   context_ids <- traits$context_ids
 
@@ -126,7 +156,7 @@ dataset_process <- function(filename_data_raw,
       c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
         "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in", identifiers$var_in)
     )
-  
+
   # Replace old `location_id` with a new `location_id`
   if (nrow(locations) > 0) {
     traits <-
@@ -172,6 +202,12 @@ dataset_process <- function(filename_data_raw,
     locations <- locations %>% dplyr::filter(!(.data$location_property %in% vars))
   }
 
+  # Now that `collection_date` holds its final values, from metadata, data or
+  # locations, write `unknown/yyyy` and `.na/yyyy` as the year alone
+  if ("collection_date" %in% names(traits)) {
+    traits[["collection_date"]] <- util_drop_unknown_collection_date_start(traits[["collection_date"]])
+  }
+
   traits <- traits %>%
     process_flag_unsupported_traits(definitions) %>%
     process_flag_excluded_observations(metadata) %>%
@@ -190,21 +226,25 @@ dataset_process <- function(filename_data_raw,
     dplyr::arrange(.data$observation_id, .data$trait_name, .data$value_type) %>%
     # Ensure everything converted to character type
     util_df_convert_character()
-  
+
   # Separate identifiers into a standalone table that is in long format.
   # Needs to happen now after `observation_id` is set.
 
-  identifiers_tmp <- traits %>% 
+  identifiers_tmp <- traits %>%
     dplyr::select(dplyr::all_of(c("dataset_id", "observation_id", identifiers$var_in)))
-  
+
   if (ncol(identifiers_tmp) >= 3) {
     identifiers_tmp <- identifiers_tmp %>%
-      tidyr::pivot_longer(cols = 3:ncol(identifiers_tmp)) %>%
-      dplyr::rename(identifier_value = value, var_in = name) %>%
-      dplyr::left_join(identifiers, by = join_by(var_in)) %>%
-      dplyr::select(dataset_id, observation_id, identifier_type, institution_code, identifier_value) %>%
+      tidyr::pivot_longer(
+        cols = 3:ncol(identifiers_tmp),
+        names_to = "var_in", values_to = "identifier_value"
+      ) %>%
+      dplyr::left_join(identifiers, by = "var_in") %>%
+      dplyr::select(dplyr::all_of(c(
+        "dataset_id", "observation_id", "identifier_type", "institution_code", "identifier_value"
+      ))) %>%
       dplyr::filter(!is.na(.data$identifier_value), !is.na(.data$observation_id)) %>%
-      dplyr::arrange(observation_id, identifier_type) %>%
+      dplyr::arrange(.data$observation_id, .data$identifier_type) %>%
       dplyr::distinct()
   } else {
     identifiers_tmp <- tibble::tibble(
@@ -215,7 +255,7 @@ dataset_process <- function(filename_data_raw,
       identifier_value = character(0),
     )
   }
-  
+
   traits <- traits %>%
     dplyr::select(-dplyr::all_of(identifiers$var_in))
 
@@ -424,6 +464,43 @@ process_custom_code <- function(txt) {
 
   }
 
+}
+
+#' Convert `collection_date` columns from the format declared in metadata
+#'
+#' Applies [util_format_collection_date()] to each `data.csv` column that a
+#' `collection_date` field names, on the `dataset` block or on a trait, using
+#' the dataset's `collection_date_format` and `collection_date_timezone`. It
+#' runs after `custom_R_code`, so custom code can build or tidy a column first.
+#' Values typed into `metadata.yml` itself are not converted: those are
+#' written by the curator, so should already be standard. A dataset declaring
+#' neither field is returned unchanged.
+#'
+#' @param data Tibble of `data.csv`, after `custom_R_code`
+#' @param metadata Metadata for the dataset, as read by `read_metadata()`
+#'
+#' @return `data`, with its `collection_date` columns converted
+#' @noRd
+process_format_collection_date <- function(data, metadata) {
+
+  format <- util_check_collection_date_format(metadata[["dataset"]][["collection_date_format"]])
+  timezone <- util_check_collection_date_timezone(metadata[["dataset"]][["collection_date_timezone"]])
+
+  if (length(format) == 0 && is.null(timezone)) {
+    return(data)
+  }
+
+  columns <- c(
+    metadata[["dataset"]][["collection_date"]],
+    unlist(lapply(metadata[["traits"]], function(trait) trait[["collection_date"]]))
+  )
+  columns <- intersect(unique(columns[!is.na(columns)]), names(data))
+
+  for (column in columns) {
+    data[[column]] <- util_format_collection_date(data[[column]], format, timezone)
+  }
+
+  data
 }
 
 #' Create entity id
@@ -644,7 +721,7 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
     unique() %>%
     subset(., !is.na(.))
 
-  if (sort) d <- sort(d, na.last = TRUE)
+  if (sort) d <- util_sort_locale_independent(d)
 
   id <- make_id_segment(length(d), prefix)
 
@@ -676,6 +753,9 @@ process_generate_method_ids <- function(metadata_traits) {
 #' @param my_list List of input information
 #' @param dataset_id Identifier for a particular study in the AusTraits database
 #' @param traits Table of trait data (for this function, just the data.csv file with custom_R_code applied)
+#' @param metadata_traits The `traits` section of `metadata.yml`, as a list. Supplies the
+#' context values for a context whose `var_in` names a field set literally on the trait
+#' entries rather than a column of `data.csv`.
 #' @return Tibble with context details if available
 #' @importFrom rlang .data
 #'
@@ -683,7 +763,29 @@ process_generate_method_ids <- function(metadata_traits) {
 #' \dontrun{
 #' process_format_contexts(read_metadata("data/Apgaua_2017/metadata.yml")$context, dataset_id, traits)
 #' }
-process_format_contexts <- function(my_list, dataset_id, traits) {
+process_format_contexts <- function(my_list, dataset_id, traits, metadata_traits = NULL) {
+
+  # A context `var_in` is legitimately satisfied either by a column of `data.csv` or by a
+  # field set literally on the `traits` entries of `metadata.yml` -- `process_parse_data()`
+  # accepts both. Only the first could supply the values when `values` is omitted, so the
+  # second route died in the `left_join` below with an unrelated-looking rlang error (#268).
+  trait_entries <- austraits::convert_list_to_df2(metadata_traits)
+
+  if (!is.data.frame(trait_entries)) {
+    trait_entries <- tibble::tibble()
+  } else if ("trait_name" %in% names(trait_entries)) {
+    # Entries without a `trait_name` are dropped from the build, so the values they
+    # declare must not become context values either
+    trait_entries <- trait_entries %>% dplyr::filter(!is.na(.data$trait_name))
+  }
+
+  # The values a trait-entry field takes, read the way `process_parse_data()` reads it:
+  # a value naming a column of `data.csv` stands for that column's contents, anything
+  # else is the literal itself
+  values_from_trait_entries <- function(field) {
+    unique(stats::na.omit(trait_entries[[field]])) %>%
+      util_resolve_trait_field_values(traits)
+  }
 
   process_content_worker <- function(x, id, traits) {
 
@@ -712,14 +814,47 @@ process_format_contexts <- function(my_list, dataset_id, traits) {
     # the specific context property create them
     ## They are both the unique set of values in the column in the data.csv file
     if (all(!c("find", "value") %in% names(out))) {
+      # With neither `find` nor `value` given, the values can only be read off whatever
+      # `var_in` names. If it names nothing the left_join below returns zero rows and the
+      # context vanishes without a word, so say so instead (#247).
+      var_in <- if (is.null(out[["var_in"]])) NA_character_ else out[["var_in"]][1]
+
+      from_data <- !is.na(var_in) && !is.null(traits[[var_in]])
+      from_trait_entries <- !is.na(var_in) && var_in %in% names(trait_entries)
+
+      if (!from_data && !from_trait_entries) {
+        stop(
+          sprintf(
+            paste0(
+              "Dataset %s: context_property '%s' gives no `values`, so its context values can only\n",
+              "  be read off whatever `var_in` names, and `var_in: %s` names neither a column of\n",
+              "  `data.csv` (after `custom_R_code` has run) nor a field on the `traits` entries of\n",
+              "  `metadata.yml`.\n",
+              "  Either fix the name or list the context `values` in `metadata.yml`.\n",
+              "  Columns in the data: %s\n",
+              "  Fields on the `traits` entries: %s"
+            ),
+            id,
+            ifelse(is.null(x$context_property), "(unnamed)", as.character(x$context_property)[1]),
+            var_in,
+            paste(names(traits), collapse = ", "),
+            paste(names(trait_entries), collapse = ", ")
+          ),
+          call. = FALSE
+        )
+      }
+
+      values <-
+        if (from_data) unique(traits[[var_in]]) else values_from_trait_entries(var_in)
+
       out <- out %>%
         # The following line shouldn't be needed, as we tested this was missing for the if statement above
         dplyr::select(-any_of(c("value"))) %>%
         dplyr::left_join(
           by = "var_in",
           tibble::tibble(
-            var_in = out[["var_in"]][1],
-            value = unique(traits[[out$var_in[1]]])
+            var_in = var_in,
+            value = values
           ) %>%
         dplyr::filter(!is.na(.data$value))
         ) %>%
@@ -817,7 +952,7 @@ process_create_context_ids <- function(data, contexts) {
       dplyr::mutate(
         combined = ifelse(.data$combined == NAs, NA, .data$combined),
         id = ifelse(!is.na(.data$combined), .data$combined %>%
-          as.factor() %>% as.integer() %>% make_id(), NA)
+          util_index_locale_independent() %>% make_id(), NA)
       ) %>%
       dplyr::select(-dplyr::all_of(c("combined")))
 
@@ -858,17 +993,22 @@ process_create_context_ids <- function(data, contexts) {
   )
 }
 
-#' Format location data from list to tibble
+#' Format location data as a tibble
 #'
-#' Format location data read in from the `metadata.yml` file. Converts from list to tibble.
+#' Format location data read in from the `metadata.yml` file, in either of the
+#' two forms [read_metadata()] returns it: the list of locations given by an
+#' inline `locations:` block, or the data frame read from the csv file a
+#' `locations: locations.csv` entry names.
 #'
-#' @param my_list List of input information
+#' @param my_list List of input information, or a data frame with a
+#'  `location_name` column and one further column per location property
 #' @param dataset_id Identifier for a particular study in the AusTraits database
 #' @param schema Schema for traits.build
 #'
 #' @return Tibble with location details if available
 #' @importFrom rlang .data
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
+#' @importFrom tidyr pivot_longer
 
 #'
 #' @examples
@@ -877,26 +1017,54 @@ process_create_context_ids <- function(data, contexts) {
 #' }
 process_format_locations <- function(my_list, dataset_id, schema) {
 
-  # Default, if length 1 then it's an "na"
-  if (length(unlist(my_list)) == 1) {
-    empty_locations <- tibble::tibble() %>%
-      process_add_all_columns(
-        names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]),
-        add_error_column = FALSE
+  location_columns <-
+    names(schema[["austraits"]][["elements"]][["locations"]][["elements"]])
+
+  empty_locations <- function() {
+    tibble::tibble() %>%
+      process_add_all_columns(location_columns, add_error_column = FALSE)
+  }
+
+  if (is.data.frame(my_list)) {
+
+    # Locations read from a separate csv file, one column per property
+    if (nrow(my_list) == 0 || ncol(my_list) < 2) return(empty_locations())
+
+    long <-
+      my_list %>%
+      util_df_convert_character() %>%
+      tidyr::pivot_longer(
+        -dplyr::all_of("location_name"),
+        names_to = "location_property",
+        values_to = "value"
+      ) %>%
+      # An empty cell means this location does not record the property, so it
+      # gets no row -- as it would have no entry in an inline `locations:`
+      # block. `.na` is the same "recorded, but unknown" it means in the yaml,
+      # and keeps its row
+      dplyr::filter(!is.na(.data$value), .data$value != "") %>%
+      dplyr::mutate(
+        value = dplyr::if_else(.data$value == ".na", NA_character_, .data$value)
       )
-    return(empty_locations)
+
+  } else {
+
+    # Default, if length 1 then it's an "na"
+    if (length(unlist(my_list)) == 1) return(empty_locations())
+
+    long <-
+      my_list %>%
+      lapply(lapply, as.character) %>%
+      purrr::map_df(austraits::convert_list_to_df1, .id = "name") %>%
+      dplyr::rename(
+        dplyr::all_of(c("location_property" = "key", "location_name" = "name"))
+      )
   }
 
   out <-
-    my_list %>%
-    lapply(lapply, as.character) %>%
-    purrr::map_df(austraits::convert_list_to_df1, .id = "name") %>%
+    long %>%
     dplyr::mutate(dataset_id = dataset_id) %>%
-    dplyr::rename(dplyr::all_of(c("location_property" = "key", "location_name" = "name"))) %>%
-    process_add_all_columns(
-      names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]),
-      add_error_column = FALSE
-    ) %>%
+    process_add_all_columns(location_columns, add_error_column = FALSE) %>%
     dplyr::group_by(.data$dataset_id) %>%
     dplyr::mutate(
       location_id = process_generate_id(.data$location_name, "", sort = TRUE)
@@ -1049,6 +1217,29 @@ util_check_all_values_in <- function(x, y, sep = " ") {
   x %>% stringr::str_split(sep) %>% sapply(function(xi) all(xi %in% y))
 }
 
+#' Extract the synonyms declared in a trait value's description
+#'
+#' A categorical trait value's description may list synonyms using the convention
+#' `(Synonyms, first, second)`. Shared by `process_replace_synonyms()` (which applies
+#' these as database-wide replacements) and `test_dataset()`'s check that a dataset's
+#' `substitutions` `replace` values are legitimate trait terms -- canonical or synonym.
+#'
+#' @param description Character scalar, a trait value's description text
+#'
+#' @return Character vector of lower-cased, trimmed synonyms; `character(0)` if the
+#'   description declares none
+util_extract_synonyms <- function(description) {
+  # A description carrying no `(Synonyms, ...)` at all yields a zero-length/NA
+  # extract, so test for that before splitting
+  synonyms <- stringr::str_extract(description, "(?<=\\(Synonyms,)[^)]+")
+  if (length(synonyms) != 1 || is.na(synonyms)) {
+    return(character(0))
+  }
+  stringr::str_split(synonyms, "[,;]")[[1]] %>%
+    stringr::str_trim() %>%
+    tolower()
+}
+
 #' Format BibEntry using RefManageR
 #'
 #' Format BibEntry object according to desired style using RefManageR
@@ -1064,6 +1255,13 @@ bib_print <- function(bib, .opts = list(first.inits = TRUE, max.names = 1000, st
   # Set format
   oldopts <- RefManageR::BibOptions(.opts)
   on.exit(RefManageR::BibOptions(oldopts))
+
+  # RefManageR quotes titles with `dQuote()`, which honours `useFancyQuotes`.
+  # That option defaults to TRUE, so a plain `Rscript` build renders titles with
+  # curly quotes while testthat (which forces it FALSE) renders straight ones.
+  # Pin it so citations do not depend on how the build was launched.
+  oldquotes <- options(useFancyQuotes = FALSE)
+  on.exit(options(oldquotes), add = TRUE)
 
   bib %>%
     format.BibEntry(.sort = FALSE) %>%
@@ -1360,11 +1558,18 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' @param metadata Yaml file with metadata
 #' @param contexts Dataframe of contexts for this study
 #' @param schema Schema for traits.build
+#' @param identifiers Dataframe of identifiers for this study, as returned by
+#' [process_format_identifiers()]. Its `var_in` column names the columns of
+#' `data` holding identifier values, which are carried through so they can be
+#' split into the identifiers table once `observation_id` is set.
+#' @param definitions Trait definitions for this dataset -- the `elements` of the
+#' `traits.yml` schema, keyed by `trait_name`, as returned by [dataset_configure()].
+#' Used to apply database-wide trait value synonyms.
 #' @return Tibble in long format with AusTraits formatted trait names, trait
 #' substitutions and unique observation id added
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
 #' @importFrom rlang .data
-process_parse_data <- function(data, dataset_id, metadata, contexts, schema, identifiers) {
+process_parse_data <- function(data, dataset_id, metadata, contexts, schema, identifiers, definitions) {
 
   # Get config data for dataset
   data_is_long_format <- metadata[["dataset"]][["data_is_long_format"]]
@@ -1389,11 +1594,11 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
             "basis_of_record", "life_stage", "repeat_measurements_id",
             "measurement_remarks", "source_id", "methods")
 
-  df <-
-    df %>%
-    dplyr::bind_cols(
-      metadata[["dataset"]][names(metadata[["dataset"]]) %in% vars[!vars %in% names(df)]] %>% tibble::as_tibble()
-    )
+  # Skip when every one of these vars is already a data column (binding a 0-row tibble would fail)
+  constants <- metadata[["dataset"]][names(metadata[["dataset"]]) %in% vars[!vars %in% names(df)]]
+  if (length(constants) > 0) {
+    df <- df %>% dplyr::bind_cols(tibble::as_tibble(constants))
+  }
 
   # MAKE PARSING_ID
 
@@ -1479,6 +1684,37 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
   # NOTE - only need to do this step for wide (non-vertical) data
   if (data_is_long_format == FALSE && any(!traits_table[["var_in"]] %in% colnames(data))) {
     stop(paste(dataset_id, ": missing traits: ", setdiff(traits_table[["var_in"]], colnames(data))))
+  }
+
+  # A context `var_in` naming nothing at all used to survive this far: the
+  # `any_of()` in `process_create_context_ids()` simply returned fewer columns,
+  # and the build aborted deep inside that loop with `Assigned data
+  # `xxx[context_cols[[v]]]` must be compatible with existing data`, naming
+  # neither the dataset, nor the context, nor the missing column (#247).
+  #
+  # A `var_in` is legitimately satisfied two ways, so both are accepted here:
+  #   1. a column of `data.csv` -- checked against `data` rather than the raw
+  #      header because `custom_R_code` has already run, and
+  #   2. a field declared on the `traits` entries of `metadata.yml`, which
+  #      `vars_to_check` below turns into a column of `out`. 35 contexts across
+  #      32 datasets in `austraits.build` use this (`var_in: method_context` and
+  #      friends) and name no csv column at all.
+  # Checked against `data` rather than the already-narrowed `df`: `df` selects
+  # `contexts$var_in`, so a mistyped name drops the column it meant to name and
+  # the intended spelling would be missing from the message's candidate list.
+  context_var_in <- unique(contexts$var_in)
+  missing_var_in <- setdiff(
+    context_var_in[!is.na(context_var_in)],
+    c(names(data), names(traits_table))
+  )
+
+  if (length(missing_var_in) > 0) {
+    stop(
+      util_context_var_in_message(
+        contexts, missing_var_in, names(data), names(traits_table)
+      ),
+      call. = FALSE
+    )
   }
 
   vars_traits <- c(vars, unique(contexts$var_in))
@@ -1606,7 +1842,13 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
         replace = tolower(.data$replace)
       )
 
-    for (i in seq_len(nrow(substitutions_table))) {
+    if (!"match" %in% names(substitutions_table)) {
+      substitutions_table[["match"]] <- NA_character_
+    }
+
+    # `match: value` (the default, when `match` is unset) replaces a cell only when
+    # the whole value equals `find` -- unchanged from previous behaviour.
+    for (i in which(is.na(substitutions_table[["match"]]) | substitutions_table[["match"]] == "value")) {
       j <- which(
         out[["trait_name"]] == substitutions_table[["trait_name"]][i] &
         out[["value"]] == substitutions_table[["find"]][i]
@@ -1617,12 +1859,148 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
       }
 
     }
+
+    # `match: word` replaces `find` wherever it occurs as a whole word/phrase
+    # within a multi-value cell, leaving the rest of the cell untouched -- see
+    # process_word_replace(). Runs *after* the `match: value` loop above, so a
+    # curated exact substitution for an idiosyncratic raw value (e.g. one that
+    # folds a negation into itself, like `wings no wing` -> `wings none`) is fully
+    # resolved before any word rule can partially rewrite it.
+    out <- out %>%
+      process_word_replace(substitutions_table %>% dplyr::filter(.data$match == "word"))
   }
+
+  # Apply automatic trait value synonym replacements declared in `traits.yml`.
+  # This runs *after* substitutions, so a dataset's own curated substitution always
+  # wins over the database-wide synonym for the same value.
+  out <- process_replace_synonyms(out, definitions)
 
   list(
     traits = out,
     context_ids = context_ids
   )
+}
+
+
+#' Replace values matching a whole word/phrase, one trait at a time
+#'
+#' Shared engine behind `process_replace_synonyms()` (database-wide `traits.yml`
+#' synonyms) and `match: word` entries in a dataset's `metadata$substitutions`.
+#' For each trait declaring rules, escapes and word-bounds every `find`, combines
+#' them into one named replacement vector, and applies it with a single
+#' `stringr::str_replace_all()` call. A value that holds several space-delimited
+#' categorical values has each replaced independently, and a `find` occurring as
+#' part of a longer word is left alone.
+#'
+#' `str_replace_all()`'s named-vector form applies its patterns *sequentially*,
+#' each one re-scanning the previous pattern's output -- it is not a simultaneous
+#' single pass. So if one rule's `replace` textually contains another rule's
+#' `find` as a whole word, within the same `trait_name`, the two rules chain
+#' unintentionally (e.g. `c(wing = "wings", wings = "winged_thing")` applied to
+#' `"wing"` yields `"winged_thing"`, not `"wings"`). This function does not guard
+#' against that -- callers validate it instead (see `dataset_test()`'s check on
+#' `match: word` substitutions).
+#'
+#' @param data Tibble with `trait_name` and `value` columns
+#' @param replace_table Tibble with `trait_name`, `find` and `replace` columns,
+#'   already lower-cased
+#'
+#' @return `data`, with matching words/phrases in `value` replaced
+#' @importFrom rlang .data
+#' @noRd
+process_word_replace <- function(data, replace_table) {
+
+  if (nrow(replace_table) == 0 || !all(c("trait_name", "find", "replace") %in% names(replace_table))) {
+    return(data)
+  }
+
+  # One named replacement vector per trait, since a trait value may declare
+  # several rules and a trait several values. Patterns are escaped and word-bounded.
+  replace_table <- replace_table %>%
+    dplyr::filter(.data$find != "", .data$find != .data$replace) %>%
+    dplyr::mutate(
+      pattern = stringr::str_c("\\b", stringr::str_escape(.data$find), "\\b")
+    ) %>%
+    dplyr::group_by(.data$trait_name) %>%
+    dplyr::summarise(
+      replacements = list(purrr::set_names(.data$replace, .data$pattern)),
+      .groups = "drop"
+    )
+
+  # Replace one trait at a time: the traits declaring rules are few, while `data`
+  # can run to millions of rows, so this avoids touching rows that cannot match.
+  for (i in seq_len(nrow(replace_table))) {
+    j <- which(data[["trait_name"]] == replace_table[["trait_name"]][i])
+
+    if (length(j) > 0) {
+      data[["value"]][j] <-
+        stringr::str_replace_all(
+          data[["value"]][j],
+          replace_table[["replacements"]][[i]]
+        ) %>%
+        # Two different raw words can map to the same preferred value (e.g. both
+        # `white` and `cream` -> `white_cream`), which would otherwise leave a
+        # duplicated token in a multi-value cell (`white_cream white_cream`).
+        # Collapsing to unique tokens preserves first-occurrence order.
+        purrr::map_chr(~ stringr::str_c(unique(stringr::str_split(.x, "\\s+")[[1]]), collapse = " "))
+    }
+  }
+
+  data
+}
+
+
+#' Replace trait values with their preferred synonym
+#'
+#' Applies the database-wide trait value synonyms declared in `traits.yml`. A categorical
+#' trait value may list synonyms in its description using the convention
+#' `(Synonyms, first, second)`; every listed synonym found in the data is replaced by the
+#' value that declares it.
+#'
+#' Matching is on whole words -- see `process_word_replace()`, the shared engine this
+#' function builds its replacement table for. Values reaching this point are already
+#' lower-cased, which is why the synonyms are lower-cased too.
+#'
+#' Called from `process_parse_data()` *after* dataset substitutions have been applied, so
+#' that a curated, dataset-specific substitution takes precedence over the database-wide
+#' synonym for the same value.
+#'
+#' @param data Tibble with `trait_name` and `value` columns
+#' @param definitions Trait definitions for this dataset -- the `elements` of the
+#'   `traits.yml` schema, keyed by `trait_name`
+#'
+#' @return `data`, with synonyms in `value` replaced by their preferred value
+#' @importFrom rlang .data
+#' @noRd
+process_replace_synonyms <- function(data, definitions) {
+
+  if (is.null(definitions) || length(definitions) == 0) {
+    return(data)
+  }
+
+  # Collect the synonyms declared by each trait value's description
+  synonym_table <-
+    purrr::imap_dfr(definitions, function(trait_definition, trait_name) {
+      if (is.null(trait_definition[["allowed_values_levels"]])) {
+        return(NULL)
+      }
+      purrr::imap_dfr(
+        trait_definition[["allowed_values_levels"]],
+        function(trait_value_description, trait_value) {
+          synonyms <- util_extract_synonyms(trait_value_description)
+          if (length(synonyms) == 0) {
+            return(NULL)
+          }
+          tibble::tibble(
+            find = synonyms,
+            replace = trait_value,
+            trait_name = trait_name
+          )
+        }
+      )
+    })
+
+  process_word_replace(data, synonym_table)
 }
 
 
@@ -1679,9 +2057,10 @@ process_format_contributors <- function(my_list, dataset_id, schema) {
 #' }
 process_format_identifiers <- function(my_list, dataset_id, schema) {
 
-    if (length(unlist(my_list$identifiers)) > 1) {
+    # `my_list` is the identifiers list itself, as read from `metadata.yml`
+    if (length(unlist(my_list)) > 0) {
       identifiers <-
-        my_list$identifiers %>%
+        my_list %>%
         austraits::convert_list_to_df2() %>%
         dplyr::mutate(dataset_id = dataset_id)
     } else {
@@ -1748,6 +2127,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
             c("original_file", "notes", "data_is_long_format", "taxon_name", "trait_name",
               "population_id", "individual_id", "repeat_measurements_id", "value_type",
               "location_name", "source_id", "value", "entity_type", "collection_date",
+              "collection_date_format", "collection_date_timezone",
               "custom_R_code", "replicates", "measurement_remarks", "basis_of_value",
               "basis_of_record", "life_stage", "unit_in")))
       ) %>%
@@ -1899,6 +2279,42 @@ process_taxonomic_updates <- function(data, metadata) {
 
 }
 
+# Ranks at or below species, whose names are binomials or trinomials and so are
+# matched against the taxon list in full. Names at any coarser rank are matched
+# on their first word alone -- see `util_name_to_match_to()`.
+#
+# The list is botanical, which is a limitation rather than a decision. The
+# invertebrate ranks used by `ausinvertraits.build` (subfamily, suborder,
+# subgenus, superfamily, supertribe, tribe) are all coarser than species, so
+# first-word matching is right for them -- but a rank *below* species that is
+# missing here would be silently truncated to its genus. Moving this into the
+# schema is tracked as part of #225; `test-taxonomic-resolution.R` pins the
+# behaviour meanwhile.
+ranks_at_or_below_species <-
+  c("species", "subspecies", "series", "variety", "form")
+
+
+#' Find the part of a taxon name that matches can be made against
+#'
+#' Names at or below species rank are matched in full; names at coarser ranks
+#' (genus, family, order, and the invertebrate ranks) are matched on their
+#' first word, since that is the only part naming the taxon. A bracketed
+#' qualifier -- `Acacia sp. [Kimberley]` -- is dropped either way.
+#'
+#' @param taxon_name Character vector of taxon names
+#' @param taxon_rank Character vector of ranks, the same length as `taxon_name`
+#'
+#' @return Character vector of names to match against the taxon list
+#' @keywords internal
+util_name_to_match_to <- function(taxon_name, taxon_rank) {
+  ifelse(
+    !taxon_rank %in% ranks_at_or_below_species,
+    stringr::word(taxon_name, 1),
+    stringr::str_replace(taxon_name, " \\[.+", "")
+  )
+}
+
+
 #' Apply taxonomic updates to austraits_raw
 #'
 #' Applies taxonomic updates to austraits_raw.
@@ -1941,12 +2357,12 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
       taxon_name = ifelse(is.na(.data$taxon_name), .data$aligned_name, .data$taxon_name),
     ) %>%
     dplyr::select(-dplyr::all_of(c("aligned_name")))
-  
+
   # in the chunk above, if the traits table is empty (i.e. all values in excluded data)
   # the column `taxon_name` becomes logical and then datasets can't bind
   if (nrow(austraits_raw$traits) == 0) {
     austraits_raw$traits <- austraits_raw$traits %>%
-      mutate(taxon_name = as.character(taxon_name))
+      dplyr::mutate(taxon_name = as.character(.data$taxon_name))
   }
 
   species_tmp <-
@@ -1962,12 +2378,10 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
         taxa$taxon_rank[match(.data$taxon_name, taxa$aligned_name)],
         .data$taxonomic_resolution),
       taxon_rank = .data$taxonomic_resolution,
-      name_to_match_to = .data$taxon_name,
       # Create variable `name_to_match_to` which specifies the part of the taxon name to which matches can be made
       # This step requires `taxon_rank`
-      name_to_match_to = stringr::str_replace(.data$taxon_name, " \\[.+", ""),
-      name_to_match_to = ifelse(!.data$taxon_rank %in% c("species", "subspecies", "series", "variety", "form"),
-                                stringr::word(.data$taxon_name, 1), .data$name_to_match_to)
+      name_to_match_to =
+        util_name_to_match_to(.data$taxon_name, .data$taxon_rank)
     ) %>%
     # Remove `taxon_rank`, as it is about to be merged back in, but matches will now be possible to more rows
     dplyr::select(-dplyr::any_of(c("taxon_rank", "taxonomic_resolution"))) %>%
@@ -1999,6 +2413,26 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
 
   austraits_raw
 }
+
+
+#' Apply taxonomic updates to austraits_raw
+#'
+#' Alias for [dataset_update_taxonomy()].
+#'
+#' Wenk et al. 2024 (*Ecological Informatics* 83:102773) names this step
+#' `data_update_taxonomy` in the Fig. 1 pipeline diagram, but no such function
+#' has ever existed, so the published workflow could not be run as written.
+#' The paper is the public specification of this workflow, so the name it
+#' documents resolves here rather than being treated as an erratum.
+#'
+#' @inheritParams dataset_update_taxonomy
+#'
+#' @return List of AusTraits compiled data with taxonomic updates applied
+#' @export
+data_update_taxonomy <- function(austraits_raw, taxa) {
+  dataset_update_taxonomy(austraits_raw, taxa)
+}
+
 
 #' Add version information to AusTraits
 #'
@@ -2043,16 +2477,22 @@ write_plaintext <- function(austraits, path) {
   # Save references
   RefManageR::WriteBib(austraits$sources, sprintf("%s/sources", path))
 
-  # Save tables
-  for (v in c(
-    "traits", "locations", "contexts", "methods", "excluded_data",
-    "taxonomic_updates", "taxa", "contributors")
-  ) {
-    readr::write_csv(austraits[[v]], sprintf("%s/%s.csv", path, v), na = "")
+  # Save tables. Which tables exist is taken from the database itself rather
+  # than hardcoded, so a table added to the structure is exported without
+  # needing an edit here -- `identifiers` was missing from this list for the
+  # whole of 2.1.0, so exports silently dropped it.
+  for (v in names(austraits)) {
+    if (is.data.frame(austraits[[v]])) {
+      readr::write_csv(austraits[[v]], sprintf("%s/%s.csv", path, v), na = "")
+    }
   }
 }
 
 #' Identify duplicates preventing pivoting wider
+#'
+#' Run on a compiled database, this cannot see rows that are identical in every
+#' column, because [austraits::bind_databases()] drops them. To find the rows
+#' behind a [dataset_test()] pivot failure, use [dataset_find_pivot_duplicates()].
 #'
 #' @param database_object Database object
 #' @param dataset_ids `dataset_id`'s to check for duplicates; default is all of them
@@ -2064,22 +2504,15 @@ check_pivot_duplicates <- function(
   dataset_ids = unique(database_object$traits$dataset_id)
 ) {
 
-  # Check for duplicates
+  # Check for duplicates, as `check_pivot_wider()` does. `taxon_name` and
+  # `original_name` are not needed for pivoting but are included for
+  # informative purposes
   database_object$traits %>%
     dplyr::filter(.data$dataset_id %in% dataset_ids) %>%
-    dplyr::select(
-      # `taxon_name` and `original_name` are not needed for pivoting but are included for informative purposes
-      dplyr::all_of(
-        c("dataset_id", "trait_name", "value", "taxon_name", "original_name", "observation_id",
-        "value_type", "repeat_measurements_id", "method_id", "method_context_id"))
-    ) %>%
-    tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
-    tidyr::pivot_longer(cols = 9:ncol(.)) %>%
-    dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
+    util_pivot_duplicates(extra_cols = c("taxon_name", "original_name")) %>%
     dplyr::select(
       dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates",
-      "taxon_name", "original_name", "observation_id", "value_type")), everything()
-    ) %>%
-    dplyr::filter(.data$number_of_duplicates > 1)
+      "taxon_name", "original_name", "observation_id", "value_type")), dplyr::everything()
+    )
 
 }

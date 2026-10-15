@@ -10,5 +10,7 @@ read_metadata(path)
 \item{path}{Location of the metadata file}
 }
 \description{
-Read in a \code{metadata.yml} file for a study
+A dataset's \verb{locations:} may either list the locations inline, or name a csv
+file beside \code{metadata.yml} -- \code{locations: locations.csv} -- which is read in
+its place and returned as a tibble.
 }

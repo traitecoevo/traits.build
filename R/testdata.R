@@ -41,7 +41,10 @@ dataset_test <-
 #' @inheritParams dataset_test
 #' @param schema Data schema
 #' @param definitions Trait defininitons
-#' @importFrom testthat local_edition test_that context expect_silent
+#' @param unit_conversions Unit conversions, as returned by `get_unit_conversions()`
+#' @param resource_metadata Database metadata (`metadata.yml` in the config folder)
+#' @param taxon_list Taxon list (`taxon_list.csv` in the config folder)
+#' @importFrom testthat test_that expect_silent
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
 dataset_test_worker <-
@@ -50,13 +53,28 @@ dataset_test_worker <-
            path_data = "data",
            schema = get_schema(),
            definitions =
-             get_schema(file.path(path_config, "traits.yml"), I("traits"))
+             get_schema(file.path(path_config, "traits.yml"), I("traits")),
+           # Defaults are evaluated lazily, on first use inside the loop, so
+           # each file is read once for the whole run rather than once per
+           # dataset. A file that fails to read is retried on the next use, so
+           # it is still reported against each dataset rather than aborting.
+           unit_conversions =
+             get_unit_conversions(file.path(path_config, "unit_conversions.csv")),
+           resource_metadata =
+             get_schema(file.path(path_config, "metadata.yml"), "metadata"),
+           taxon_list = read_csv_char(file.path(path_config, "taxon_list.csv"))
            ) {
 
-    # We're using 2nd edition of test that, which has "context" field
-    # https://cran.r-project.org/web/packages/testthat/vignettes/third-edition.html
-
-    local_edition(2)
+    # testthat reporters print a context's failures when it ends, and open one
+    # per test file. Nothing here runs from a test file, so open and close one
+    # by hand, as `context("end")` did under edition 2.
+    reporter <- testthat::get_reporter()
+    reporter$start_file("dataset_test")
+    testthat::context_start_file("dataset_test")
+    on.exit({
+      reporter$end_context_if_started()
+      reporter$end_file()
+    }, add = TRUE)
 
     # Run tests for each dataset
 
@@ -66,8 +84,6 @@ dataset_test_worker <-
 
       test_that(dataset_id, {
 
-        context(sprintf("%s", dataset_id))
-
         ## Files exist
         files <- file.path(s, c("data.csv", "metadata.yml"))
         for (f in files) {
@@ -76,6 +92,13 @@ dataset_test_worker <-
 
         ## Check for other files
         vals <- c("data.csv", "metadata.yml", "raw", "output", "README.md")
+
+        # A dataset whose `locations:` names a csv file is allowed to hold it
+        declared_locations_file <- yaml::read_yaml(files[2])[["locations"]]
+        if (util_locations_is_file(declared_locations_file)) {
+          vals <- c(vals, declared_locations_file)
+        }
+
         test_expect_is_in(
           dir(s), vals,
           info = paste0(red(file.path(path_data, dataset_id)), "\tdisallowed files"),
@@ -100,6 +123,26 @@ dataset_test_worker <-
         f <- files[2]
         test_expect_allowed_text(readLines(f, encoding = "UTF-8"), info = paste0(red(f), "\tmetadata"), label = "metadata")
         testthat::expect_silent(metadata <- yaml::read_yaml(f))
+
+        # Read here rather than via `read_metadata()`, because the checks below
+        # need the yaml exactly as written. A `locations:` entry naming a csv
+        # file is resolved separately, so both forms are checked the same way
+        # from here on.
+        if (util_locations_is_file(metadata[["locations"]])) {
+
+          locations_file <- file.path(s, metadata[["locations"]])
+
+          test_expect_allowed_text(
+            readLines(locations_file, encoding = "UTF-8", warn = FALSE),
+            info = paste0(red(locations_file), "\tlocations"), label = "locations"
+          )
+
+          test_expect_no_error(
+            metadata[["locations"]] <-
+              util_read_locations_file(metadata[["locations"]], f),
+            info = paste0(red(locations_file), "\tlocations")
+          )
+        }
 
         if (!is.null(metadata[["identifiers"]])) {
           test_expect_list_names_exact(
@@ -217,33 +260,44 @@ dataset_test_worker <-
           info = paste0(red(f), "\tdataset"), label = "`data_is_long_format`"
         )
 
+        test_expect_true(
+          length(metadata[["dataset"]][["collection_date_format"]]) <= 1,
+          info = paste0(red(f), "\tdataset - write `collection_date_format` as one space-separated value, such as `dmy my y`")
+        )
+
+        test_expect_no_error(
+          util_check_collection_date_format(metadata[["dataset"]][["collection_date_format"]]),
+          info = paste0(red(f), "\tdataset - `collection_date_format`")
+        )
+
+        test_expect_no_error(
+          util_check_collection_date_timezone(metadata[["dataset"]][["collection_date_timezone"]]),
+          info = paste0(red(f), "\tdataset - `collection_date_timezone`")
+        )
+
         test_expect_type(
           metadata[["dataset"]], "list",
           info = paste0(red(f), "\tdataset"), label = "metadata"
         )
 
         ## Identifiers
-        if (!is.null(metadata$identifiers)) {
-          if (!is.na(metadata$identifiers)) {
-            testthat::expect_silent(
-              identifiers <-
-                metadata$identifiers %>%
-                process_format_identifiers(dataset_id, schema)
-            )
-          }
-        }
-        
-        
-        if (!is.null(metadata$identifiers)) {
-          if (!is.na(metadata$identifiers)) {
+        # A dataset may declare several identifiers, so `metadata$identifiers`
+        # is a list and `is.na()` on it returns one value per element
+        if ("identifiers" %in% names(metadata) & !all(is.na(metadata[["identifiers"]]))) {
+
+          testthat::expect_silent(
+            identifiers <-
+              metadata$identifiers %>%
+              process_format_identifiers(dataset_id, schema)
+          )
+
           test_expect_list_elements_exact_names(
             metadata$identifiers,
             schema$metadata$elements$identifiers$elements %>% names(),
             info = paste0(red(f), "\tidentifiers")
           )
-          }
         }
-        
+
         ## Locations
 
         testthat::expect_silent(
@@ -253,9 +307,24 @@ dataset_test_worker <-
             process_add_all_columns(names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]))
           )
 
-        if (length(unlist(metadata[["locations"]])) > 1) {
+        if (nrow(locations) > 0) {
 
-          test_expect_list(metadata[["locations"]], info = paste0(red(f), "\tlocations"))
+          # An inline `locations:` block has to be a list of lists. Locations
+          # read from a csv file were validated as a table when they were read,
+          # so there is nothing list-shaped to check
+          if (!is.data.frame(metadata[["locations"]])) {
+
+            test_expect_list(metadata[["locations"]], info = paste0(red(f), "\tlocations"))
+
+            # Each expectation costs a few milliseconds, which for a dataset
+            # with one location per record (`AVH_2026` has 162,469) is minutes,
+            # so find the offending locations first and test only those (#129)
+            is_list <- vapply(metadata[["locations"]], function(x) "list" %in% class(x), logical(1))
+
+            for (v in names(metadata$locations)[!is_list]) {
+              test_expect_list(metadata[["locations"]][[v]], info = paste0(red(f), "\tlocation ", v))
+            }
+          }
 
           test_expect_dataframe_names_contain(
             locations,
@@ -263,20 +332,26 @@ dataset_test_worker <-
             info = paste0(red(f), "\tlocations"), label = "field names"
           )
 
-          for (v in names(metadata$locations)) {
+          # Checked on the formatted table, so both forms are checked alike.
+          # A location needs either both of 'latitude range (deg)' and
+          # 'longitude range (deg)', or both of 'latitude (deg)' and
+          # 'longitude (deg)'. As above, only the locations that have neither
+          # are tested, so the cost does not scale with the number of locations.
+          properties <- split(locations$location_property, locations$location_name)
 
-            test_expect_list(metadata[["locations"]][[v]], info = paste0(red(f), "\tlocation ", v))
+          has_coordinates <- vapply(properties, function(p) {
+            all(c("latitude range (deg)", "longitude range (deg)") %in% p) ||
+              all(c("latitude (deg)", "longitude (deg)") %in% p)
+          }, logical(1))
 
-            # If fields do not contain both 'latitude range (deg)' and 'longitude range (deg)'
-            if (!(all(c("latitude range (deg)", "longitude range (deg)") %in% names(metadata[["locations"]][[v]])))) {
+          location_names <- unique(locations$location_name)
 
-              # Check that it contains 'latitude (deg)' and 'longitude (deg)'
-              test_expect_contains(
-                names(metadata[["locations"]][[v]]),
-                c("latitude (deg)", "longitude (deg)"),
-                info = paste0(red(f), "\tlocation '", v, "'")
-              )
-            }
+          for (v in location_names[!has_coordinates[location_names]]) {
+            test_expect_contains(
+              properties[[v]],
+              c("latitude (deg)", "longitude (deg)"),
+              info = paste0(red(f), "\tlocation '", v, "'")
+            )
           }
 
           # Check `location_name`'s from metadata are in dataset and vice versa
@@ -294,7 +369,7 @@ dataset_test_worker <-
           )
 
           v <- data[[metadata[["dataset"]][["location_name"]]]] %>% unique %>% na.omit
-          i <- v %in% names(metadata$locations)
+          i <- v %in% location_names
           test_expect_true(
             all(i),
             info = paste0(
@@ -303,13 +378,13 @@ dataset_test_worker <-
               v[!i])
           )
 
-          i <- names(metadata$locations) %in% v
+          i <- location_names %in% v
           test_expect_true(
             all(i),
             info = paste0(
               red(f),
               "\tlocations - location names from metadata not present in data file: ",
-              names(metadata$locations)[!i])
+              location_names[!i])
           )
         }
 
@@ -317,7 +392,7 @@ dataset_test_worker <-
         testthat::expect_silent(
           contexts <-
             metadata$contexts %>%
-            process_format_contexts(dataset_id, data)
+            process_format_contexts(dataset_id, data, metadata$traits)
         )
 
         # Check that there are no duplicate `var_in` or `context_property` fields
@@ -441,9 +516,13 @@ dataset_test_worker <-
 
         ## Traits
 
+        # A `value_type` or `basis_of_value` in the `dataset` block is the default
+        # for every trait that does not declare its own, so a trait only needs
+        # the fields the dataset block does not supply (#249)
         test_expect_list_elements_contains_names(
           metadata[["traits"]],
-          c("var_in", "unit_in", "trait_name", "value_type", "basis_of_value"),
+          c("var_in", "unit_in", "trait_name",
+            setdiff(c("value_type", "basis_of_value"), names(metadata[["dataset"]]))),
           info = paste0(red(f), "\ttrait")
         )
 
@@ -467,9 +546,9 @@ dataset_test_worker <-
         )
 
         # Check units are found in `unit_conversions.csv`
-        # This test is being commented out, because fails anytime columns are read in 
+        # This test is being commented out, because fails anytime columns are read in
         # or anytime there are units not in unit_conversions because they are never converted.
-        
+
         #units <- read_csv("config/unit_conversions.csv")
         #expect_is_in(
         #  traits$unit_in, units$unit_from,
@@ -510,9 +589,13 @@ dataset_test_worker <-
 
             contextsub <- contexts %>% dplyr::filter(var_in == j)
 
-            # Context values align either with a column of data or a column of traits table
+            # Context values align either with a column of data, or a field on the `traits`
+            # entries -- and that field's own declared value can itself name a column of
+            # `data` (resolved per record, scoping the context to just those traits) or be
+            # the literal value itself, the same as `process_parse_data()` and
+            # `process_format_contexts()` both resolve it (#276)
             if (is.null(data[[j]])) {
-              v <- traits[[j]] %>% unique2()
+              v <- traits[[j]] %>% unique2() %>% util_resolve_trait_field_values(data)
             } else {
               v <- data[[j]] %>% unique2()
             }
@@ -612,11 +695,30 @@ dataset_test_worker <-
 
         if (!is.na(metadata[["substitutions"]][1])) {
 
-          test_expect_list_elements_exact_names(
-            metadata[["substitutions"]],
-            schema$metadata$elements$substitutions$values %>% names(),
-            info = paste0(red(f), "\tsubstitution")
+          # `match` is optional (absent/`"value"` means today's exact whole-value
+          # match; `"word"` means word-bounded substring match) -- so each row must
+          # *contain* `trait_name`/`find`/`replace` but is only *allowed* to also
+          # carry `match`, unlike the other substitution-style blocks below where
+          # every field is required on every row.
+          required_names <- schema$metadata$elements$substitutions$values %>% names() %>% setdiff("match")
+          allowed_names <- schema$metadata$elements$substitutions$values %>% names()
+          for (i in seq_along(metadata[["substitutions"]])) {
+            test_expect_contains(
+              names(metadata[["substitutions"]][[i]]), required_names,
+              info = paste0(red(f), "\tsubstitution ", i)
+            )
+            test_expect_allowed(
+              names(metadata[["substitutions"]][[i]]), allowed_names,
+              info = paste0(red(f), "\tsubstitution ", i), label = "field names"
+            )
+          }
+
+          match_values <- sapply(metadata[["substitutions"]], function(s) if (is.null(s[["match"]])) NA_character_ else s[["match"]])
+          test_expect_is_in(
+            match_values, c("word", "value"),
+            info = paste0(red(f), "\tsubstitutions"), label = "`match`'s"
           )
+
           trait_names <- sapply(metadata[["substitutions"]], "[[", "trait_name")
           test_expect_is_in(
             unique(trait_names), definitions$elements %>% names(),
@@ -649,6 +751,40 @@ dataset_test_worker <-
               )
             )
 
+            # `match: word` rules for a trait are applied together via a single,
+            # sequential `str_replace_all()` call (see `process_word_replace()`),
+            # so if one rule's `replace` contains, as a whole word, another rule's
+            # `find`, the two rules chain unintentionally -- regardless of the
+            # order they're declared in.
+            if ("match" %in% names(x[[trait]])) {
+
+              word_rules <- x[[trait]] %>% dplyr::filter(.data$match == "word")
+
+              if (nrow(word_rules) > 1) {
+
+                chained <- character()
+                for (a in seq_len(nrow(word_rules))) {
+                  for (b in seq_len(nrow(word_rules))) {
+                    if (a != b && stringr::str_detect(
+                      word_rules[["replace"]][a],
+                      stringr::str_c("\\b", stringr::str_escape(word_rules[["find"]][b]), "\\b")
+                    )) {
+                      chained <- c(chained, sprintf(
+                        "'%s' -> '%s' contains '%s'",
+                        word_rules[["find"]][a], word_rules[["replace"]][a], word_rules[["find"]][b]
+                      ))
+                    }
+                  }
+                }
+
+                test_expect_length_zero(
+                  chained,
+                  info = sprintf("%s\tsubstitutions - `%s` has chaining `match: word` rules", red(f), trait),
+                  label = paste(chained, collapse = "; ")
+                )
+              }
+            }
+
             # If trait is categorical
             if (!is.null(definitions$elements[[trait]]$allowed_values_levels) && definitions$elements[[trait]]$type == "categorical") {
 
@@ -656,7 +792,15 @@ dataset_test_worker <-
               to_check <- x[[trait]]$replace %>% unique()
               # Filter out `flowering_time` values from to-check list
               to_check <- to_check[!(grepl("^[YyNn]+$", to_check) & stringr::str_length(to_check) == 12)]
-              allowable <- c(definitions$elements[[trait]]$allowed_values_levels %>% names(), NA)
+              # A `replace` value may be the canonical term or one of its declared
+              # synonyms -- `process_replace_synonyms()` resolves synonyms to their
+              # canonical value later in the pipeline, so both are legitimate here.
+              allowable <- c(
+                definitions$elements[[trait]]$allowed_values_levels %>% names(),
+                definitions$elements[[trait]]$allowed_values_levels %>%
+                  purrr::map(util_extract_synonyms) %>% unlist(use.names = FALSE),
+                NA
+              )
               failing <- to_check[!(
                 is.na(to_check) |
                   to_check %in% allowable |
@@ -722,7 +866,8 @@ dataset_test_worker <-
         ## Check that special characters do not make it into the data
         test_expect_no_error(
           parsed_data <- data %>%
-            process_parse_data(dataset_id, metadata, contexts, schema, identifiers),
+            process_parse_data(dataset_id, metadata, contexts, schema, identifiers,
+                               definitions[["elements"]]),
           info = sprintf("%s\t`process_parse_data`", red(dataset_id)))
 
         test_expect_allowed_text(
@@ -739,7 +884,7 @@ dataset_test_worker <-
           )
 
         # Replace original `location_id` with a new `location_id`
-        if (!is.null(names(metadata$locations))) {
+        if (nrow(locations) > 0) {
           parsed_data <-
             parsed_data %>%
             dplyr::select(-dplyr::all_of(c("location_id"))) %>%
@@ -758,7 +903,7 @@ dataset_test_worker <-
         # Trait metadata should probably have precedence -- right now trait metadata
         # is being read in during `process_parse_data` and getting overwritten here #TODO
         # If process.R changes, this needs to be updated
-        if (!is.null(names(metadata$locations))) {
+        if (nrow(locations) > 0) {
           vars <- c("basis_of_record", "life_stage", "collection_date",
                     "measurement_remarks", "entity_type")
 
@@ -889,11 +1034,11 @@ dataset_test_worker <-
               file.path(path_data, dataset_id, "metadata.yml"),
               file.path(path_data, dataset_id, "data.csv"),
               dataset_id,
-              get_schema("config/traits.yml", "traits"),
-              get_unit_conversions("config/unit_conversions.csv"),
-              get_schema(),
-              get_schema("config/metadata.yml", "metadata"),
-              read_csv_char("config/taxon_list.csv")
+              definitions,
+              unit_conversions,
+              schema,
+              resource_metadata,
+              taxon_list
             ),
             info = sprintf("%s\tbuilding dataset", red(dataset_id)))
 
@@ -908,6 +1053,30 @@ dataset_test_worker <-
             )
           }
 
+          ## `collection_date` values must be standard. Checked on the built
+          ## table, so it sees what the database will hold -- after
+          ## `collection_date_format` is applied, location-level values are
+          ## filled in and rows without a trait value are dropped.
+          dates <- dataset$traits[["collection_date"]]
+          invalid_dates <- unique(dates[util_collection_date_is_valid(dates) %in% FALSE])
+          declared_auto <- tryCatch(
+            identical(util_check_collection_date_format(metadata[["dataset"]][["collection_date_format"]]), "auto"),
+            error = function(e) FALSE
+          )
+          test_expect_true(
+            length(invalid_dates) == 0,
+            info = sprintf(
+              paste0(
+                "%s\t`collection_date` has %d value%s not written as `yyyy-mm-dd`, `yyyy-mm`, `yyyy` or a `/` range of these: '%s'. ",
+                "Declare the format they are written in with `collection_date_format` in the `dataset` block of metadata.yml ",
+                "(and `collection_date_timezone` for timestamps), or convert them in `custom_R_code`. %s"
+              ),
+              red(dataset_id), length(invalid_dates), ifelse(length(invalid_dates) == 1, "", "s"),
+              paste(utils::head(invalid_dates, 10), collapse = "', '"),
+              if (declared_auto && length(invalid_dates) > 0) util_collection_date_auto_message(invalid_dates) else ""
+            )
+          )
+
           # Test `austraits` functions
           # Testing per study, not on all studies combined (is this ideal?)
           # I'm not testing whether the functions work as intended, just that they throw no error
@@ -918,7 +1087,7 @@ dataset_test_worker <-
           )
 
           # Commenting out test Dec 2024, because `check_pivot_longer` has been deprecated
-          
+
           #if (exists("dataset_wider")) {
           #  test_expect_no_warning(
           #    test_expect_no_error(
@@ -930,7 +1099,4 @@ dataset_test_worker <-
         }
       })
     }
-
-    # Keep this
-    context("end")
   }

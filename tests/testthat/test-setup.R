@@ -188,6 +188,31 @@ test_that("`metadata_add_source_doi` is working", {
 })
 
 
+test_that("`metadata_add_source_doi` reports informatively when `rcrossref` is missing", {
+  # `rcrossref` is an optional (Suggests) dependency, needed only when `bib` is
+  # not supplied. Pretend it is absent to check the error names the package and
+  # says what it is for, rather than reporting a bare `loadNamespace` failure.
+  local_mocked_bindings(
+    util_require_package = function(pkg, reason) {
+      rlang::abort(sprintf("The package `%s` is required %s", pkg, reason))
+    }
+  )
+
+  expect_error(
+    metadata_add_source_doi(dataset_id = "Test_2022", doi = "10.3389/fmars.2021.671145"),
+    "`rcrossref` is required to look up citation details"
+  )
+
+  # Supplying `bib` bypasses crossref, so it must not consult the package at all
+  bib <- readLines("data/test.bib", encoding = "UTF-8") %>% paste(collapse = "\n")
+  expect_invisible(
+    suppressMessages(
+      metadata_add_source_doi(dataset_id = "Test_2022", doi = "10.3389/fmars.2021.671145", bib = bib)
+    )
+  )
+})
+
+
 test_that("`metadata_check_custom_R_code` is working", {
   # Check that the `custom_R_code` produces a tibble class object
   expect_equal(class(metadata_check_custom_R_code("Test_2022")), c("spec_tbl_df", "tbl_df", "tbl", "data.frame"))
@@ -226,6 +251,55 @@ test_that("`metadata_add_locations` is working", {
 })
 
 
+test_that("`metadata_add_identifiers` is working", {
+  # This was the only `metadata_add_*` function with no test, precisely because
+  # it was the only one with no `user_responses` hook to test through -- and
+  # with nothing exercising it, `institution_code = .na` shipped. `.na` is
+  # YAML's null, not an R object, so the function errored with
+  # "object '.na' not found" the moment a column was selected. It never worked.
+  expect_true(file.copy("data/Test_2022/test-metadata.yml",
+                        "data/Test_2022/metadata.yml", overwrite = TRUE))
+
+  expect_no_error(
+    x <- metadata_add_identifiers(
+      "Test_2022",
+      user_responses = list(
+        var_in = c("species_abb", "site"),
+        identifier_type = c("catalogNumber", "institutionCode")))
+  )
+
+  expect_length(x$identifiers, 2)
+  expect_equal(purrr::map_chr(x$identifiers, "var_in"), c("species_abb", "site"))
+  expect_equal(purrr::map_chr(x$identifiers, "identifier_type"),
+               c("catalogNumber", "institutionCode"))
+
+  # Not asked for, since it cannot be inferred from the data -- but it has to be
+  # a real NA the user can fill in, not an error
+  expect_true(all(is.na(purrr::map_chr(x$identifiers, "institution_code"))))
+
+  # Round-trips through `metadata.yml` rather than only existing in memory
+  written <- read_metadata_dataset("Test_2022")
+  expect_equal(written$identifiers, x$identifiers)
+
+  # Appends rather than overwrites, matching its siblings
+  expect_message(
+    y <- metadata_add_identifiers(
+      "Test_2022",
+      user_responses = list(var_in = "Species", identifier_type = "occurrenceID"))
+  )
+  expect_length(y$identifiers, 3)
+
+  expect_error(
+    suppressMessages(
+      metadata_add_identifiers(
+        "Test_2022",
+        user_responses = list(var_in = c("Species", "site"),
+                              identifier_type = "occurrenceID"))),
+    "one `identifier_type` per `var_in`"
+  )
+})
+
+
 test_that("`metadata_add_contexts` is working", {
   expect_true(file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml", overwrite = TRUE))
   var_in <- c("test_context_1", "test_context_2")
@@ -260,6 +334,45 @@ test_that("`metadata_add_contexts` is working", {
     ".*(?=Existing context information detected, from the following columns)", perl = TRUE
   )
   expect_no_error(x$contexts[[3]])
+})
+
+
+test_that("`metadata_add_contexts` records time values as the build reads them", {
+  # `read_csv` types time-like columns as `hms`, which reached `yaml::as.yaml`
+  # as the underlying number of seconds, so "9:00:00" was written to the
+  # metadata as `32400.0` and never matched the data (#49).
+
+  # Build the dataset on the fly and remove it again, so that it is not picked
+  # up as a dataset by the functions that scan the whole `data` directory
+  dir.create("data/Test_time")
+  withr::defer(unlink("data/Test_time", recursive = TRUE))
+  writeLines(
+    c("Species,site,sampling_time,LMA (mg mm-2)",
+      "Acacia celsa,Atherton,9:00:00,0.145",
+      "Acmena graveolens,Atherton,11:30,0.180",
+      "Neolitsea dealbata,Cape Tribulation,,0.200",
+      "Brombya platynema,Cape Tribulation,9:00:00,0.210"),
+    "data/Test_time/data.csv"
+  )
+
+  expect_no_error(suppressMessages(metadata_create_template("Test_time", skip_manual = TRUE)))
+
+  expect_message(
+    x <- metadata_add_contexts(
+      "Test_time",
+      user_responses = list(
+        var_in = "sampling_time",
+        categories = "temporal_context",
+        replace_needed = "y")),
+    ".*(?=Time data detected in column)", perl = TRUE
+  )
+
+  # "9:00:00" is zero-padded and bare "11:30" gains seconds, matching the
+  # reformatting `read_csv` applies during the build
+  expect_equal(sort(x$contexts[[1]][["values"]][["find"]]), c("09:00:00", "11:30:00"))
+
+  # The seconds-since-midnight representation must not reach the metadata file
+  expect_false(any(grepl("32400", readLines("data/Test_time/metadata.yml"), fixed = TRUE)))
 })
 
 
@@ -398,18 +511,50 @@ testthat::test_that("`metadata_add_substitutions_table` is working", {
 })
 
 
-testthat::test_that("`metadata_add_substitutions_list` is working", {
+testthat::test_that("`metadata_add_substitutions_list` merges, rather than overwriting, existing substitutions", {
+  path_metadata <- "data/Test_2022/metadata.yml"
+
+  # Start from a known, clean set of substitutions rather than whatever earlier
+  # tests in this file left behind
+  metadata <- read_metadata(path_metadata)
+  metadata$substitutions <- list(
+    list(trait_name = "leaf_type", find = "simple", replace = "unlobed")
+  )
+  write_metadata(metadata, path_metadata)
+
   substitutions_df <- tibble::tibble(
     trait_name = c("fruit_colour", "plant_growth_form", "plant_growth_form"),
     find = c("red", "shrubby", "palm"),
     replace = c("black", "shrub", "tree")
   )
-  expect_message(
-    metadata_add_substitutions_list("Test_2022", substitutions_df),
-    "Existing substitutions have been overwritten."
+  # None of these three collide with the existing `leaf_type` entry, so no
+  # "already exist(s)" message, and nothing is lost
+  expect_no_message(metadata_add_substitutions_list("Test_2022", substitutions_df))
+
+  after_first <- read_metadata(path_metadata)$substitutions
+  expect_equal(length(after_first), 4)
+  expect_true(any(sapply(after_first, function(s) s$trait_name == "leaf_type" && s$find == "simple")))
+
+  # Adding a substitution for a `trait_name`/`find` pair that already exists
+  # updates it in place (with a message) instead of duplicating or wiping the list
+  updated_df <- tibble::tibble(
+    trait_name = "plant_growth_form",
+    find = "shrubby",
+    replace = "shrub_updated"
   )
-  # Expect that this function overwrites existing substitutions, so fourth substitutions should not exist
-  expect_error(read_metadata("data/Test_2022/metadata.yml")$substitutions[[4]])
+  expect_message(
+    metadata_add_substitutions_list("Test_2022", updated_df),
+    "shrubby.*already exist"
+  )
+
+  after_second <- read_metadata(path_metadata)$substitutions
+  expect_equal(length(after_second), 4)
+  shrubby_entry <- Filter(function(s) s$trait_name == "plant_growth_form" && s$find == "shrubby", after_second)
+  expect_equal(length(shrubby_entry), 1)
+  expect_equal(shrubby_entry[[1]]$replace, "shrub_updated")
+  # everything else, including the unrelated `leaf_type` entry, is untouched
+  expect_true(any(sapply(after_second, function(s) s$trait_name == "leaf_type" && s$find == "simple")))
+  expect_true(any(sapply(after_second, function(s) s$trait_name == "fruit_colour" && s$find == "red" && s$replace == "black")))
 })
 
 
@@ -646,10 +791,10 @@ test_that("`build_setup_pipeline` is working", {
 
   out1 <- get("Test_2022", envir = base_tmp_env)
   out2 <- get("sources", envir = furrr_tmp_env)[["Test_2022"]]
-  
+
   # don't compare build_info, as these differ through packages used.
   expect_equal(out1[names(out1) != "build_info"], out2[names(out2) != "build_info"])
-  
+
   # Remake workflow
   expect_silent(suppressMessages(build_setup_pipeline(method = "remake")))
   expect_true(file.exists("remake.yml"))
@@ -729,11 +874,112 @@ testthat::test_that("`dataset_find_taxon` is working", {
 
 
 test_that("reports and plots are produced", {
-  expect_silent(suppressMessages(austraits <- remake::make("test_name")))  
-  expect_silent(
+  # This used to assert only `expect_silent()`. `dataset_report()` renders in a
+  # child process, so a failure there writes to that process's stderr and
+  # `expect_silent()` cannot see it -- and `dataset_report()` swallowed the
+  # failure anyway. The test passed on a render that had errored, and asserted
+  # nothing about the report existing or containing anything (#244).
+  expect_silent(suppressMessages(austraits <- remake::make("test_name")))
+
+  # `plot_trait_distribution_jitter()` uses `forcats` unguarded, so without it
+  # the render fails and no file is written at all.
+  skip_if_not_installed("forcats")
+
+  # Rendering shells out to the `quarto` CLI, which starts a fresh R session
+  # and does its own `library(traits.build)`. This test therefore exercises the
+  # *installed* package, not `devtools::load_all()`: after editing the plotting
+  # functions or the template, run `devtools::install()` or this checks stale
+  # code. `R CMD check` installs first, so CI is unaffected.
+  skip_if_not_installed("quarto")
+  skip_if(is.null(quarto::quarto_path()), "Quarto CLI not found")
+
+  output_path <- withr::local_tempdir()
+  output_html <- file.path(output_path, "Test_2022.html")
+
+  expect_no_warning(
     suppressMessages(
-      dataset_report(dataset_id = "Test_2022", austraits = austraits, overwrite = TRUE)
+      built <- dataset_report(
+        dataset_id = "Test_2022", austraits = austraits,
+        output_path = output_path, overwrite = TRUE
+      )
     ))
+
+  # The report was actually written, not merely attempted
+  expect_true(file.exists(output_html))
+  expect_gt(file.size(output_html), 10000)
+
+  # ...and carries the sections it is built to carry, rather than being a
+  # rendered shell with the failing chunks silently dropped
+  report <- paste(readLines(output_html, warn = FALSE), collapse = "\n")
+  expect_match(report, "Test_2022", fixed = TRUE)
+  expect_no_match(report, "there is no package called", fixed = TRUE)
+  expect_match(report, "Review of questions", fixed = TRUE)
+  expect_match(report, "Question:", fixed = TRUE)
+  expect_match(report, "Please review the report", fixed = TRUE)
+
+  # The final copy leaves out every question and the list of them at the end
+  final_path <- withr::local_tempdir()
+  suppressMessages(
+    dataset_report(
+      dataset_id = "Test_2022", austraits = austraits,
+      output_path = final_path, overwrite = TRUE, show_questions = FALSE
+    )
+  )
+  final <- paste(readLines(file.path(final_path, "Test_2022.html"), warn = FALSE), collapse = "\n")
+  expect_match(final, "Test_2022", fixed = TRUE)
+  expect_no_match(final, "Review of questions", fixed = TRUE)
+  expect_no_match(final, "Question:", fixed = TRUE)
+  expect_no_match(final, "There are two sets of queries", fixed = TRUE)
+  expect_no_match(final, "Please review the report", fixed = TRUE)
+  expect_no_match(final, "To aid your review", fixed = TRUE)
+  expect_no_match(final, "let us know", fixed = TRUE)
+})
+
+
+test_that("`dataset_report` reports a failed render instead of swallowing it", {
+  # A render failure used to be discarded by a bare `try()` whose result was
+  # never inspected, so the success line printed regardless and no file was
+  # written. In CI that is not hypothetical: `forcats` is absent there, the
+  # render failed on every run, and this test suite reported success (#244).
+  expect_silent(suppressMessages(austraits <- remake::make("test_name")))
+
+  output_path <- withr::local_tempdir()
+
+  # A template that parses but stops during knitting, so the failure happens
+  # where a real one does rather than in argument handling
+  template <- file.path(withr::local_tempdir(), "boom.Rmd")
+  writeLines(
+    c("---", "title: t", "output: html_document",
+      "params:", "    dataset_id: provide", "    austraits: provide", "---",
+      "", "```{r}", "stop('deliberate render failure')", "```"),
+    template
+  )
+
+  expect_warning(
+    suppressMessages(
+      built <- dataset_report(
+        dataset_id = "Test_2022", austraits = austraits,
+        output_path = output_path, overwrite = TRUE, input_file = template
+      )
+    ),
+    "failed to build"
+  )
+  expect_false(built)
+  expect_false(file.exists(file.path(output_path, "Test_2022.html")))
+})
+
+
+test_that("`dataset_report` rejects a missing template clearly", {
+  # `readLines()` on a nonexistent template gave "cannot open the connection",
+  # which names neither the file nor the argument
+  expect_silent(suppressMessages(austraits <- remake::make("test_name")))
+  expect_error(
+    dataset_report(
+      dataset_id = "Test_2022", austraits = austraits,
+      output_path = withr::local_tempdir(), input_file = "no-such-template.Rmd"
+    ),
+    "Report template not found"
+  )
 })
 
 testthat::test_that("`dataset_test` is working", {
@@ -743,4 +989,145 @@ testthat::test_that("`dataset_test` is working", {
     out <- dataset_test("Test_2022", reporter = testthat::SilentReporter))
   expect_in(
     class(out), c("SilentReporter", "Reporter", "R6"))
+})
+
+
+# `targets` is the caching pipeline that replaces `remake` (#17): remake is
+# unmaintained and off CRAN, and a curator's normal loop is editing one dataset,
+# where rebuilding all of them is the whole cost.
+test_that("`build_setup_pipeline(method = 'targets')` builds the same database", {
+
+  skip_if_not_installed("targets")
+
+  # Same fixture state the base/remake pipelines are tested against
+  file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml",
+            overwrite = TRUE)
+  if (!file.exists("config/taxon_list.csv")) {
+    file.copy("config/taxon_list-orig.csv", "config/taxon_list.csv")
+  }
+
+  withr::defer({
+    unlink("_targets", recursive = TRUE)
+    unlink("_targets.R")
+  })
+
+  expect_silent(suppressMessages(build_setup_pipeline(method = "targets")))
+  expect_true(file.exists("_targets.R"))
+
+  # The generated pipeline has to be valid R, and declare the dataset's targets
+  expect_silent(parse("_targets.R"))
+  expect_contains(
+    targets::tar_manifest(callr_function = NULL)$name,
+    c("Test_2022_config", "Test_2022_raw", "Test_2022",
+      "file_Test_2022_metadata", "file_Test_2022_data",
+      "version_number", "git_SHA", "database")
+  )
+
+  # The export is a publishing step, not a target: `tar_make()` rebuilds the
+  # compilation and leaves `export/data/curr` alone
+  expect_false("file_database" %in% targets::tar_manifest(callr_function = NULL)$name)
+
+  # `build_add_version()` is folded into the `database` target rather than given
+  # one of its own, so that the database is written to the store once per
+  # rebuild instead of twice
+  expect_false("database_raw" %in% targets::tar_manifest(callr_function = NULL)$name)
+
+  # `callr_function = NULL` so the pipeline runs in this session, where the
+  # package under test is the one loaded by pkgload rather than an installed one
+  expect_no_error(
+    suppressMessages(targets::tar_make(reporter = "silent", callr_function = NULL))
+  )
+
+  from_targets <- targets::tar_read(database)
+
+  # Same database the base pipeline produces. `build_info` records the packages
+  # used, which differ between the two, so it is compared separately.
+  base_env <- new.env()
+  suppressMessages(build_setup_pipeline(method = "base"))
+  suppressMessages(source("build.R", local = base_env))
+  from_base <- get("database", envir = base_env)
+
+  expect_equal(
+    from_targets[names(from_targets) != "build_info"],
+    from_base[names(from_base) != "build_info"]
+  )
+
+  # `build_export()` writes the file the pipeline deliberately does not
+  exported <- build_export(path = file.path(withr::local_tempdir(), "curr"))
+  expect_true(file.exists(exported))
+  expect_equal(
+    readRDS(exported)[names(from_targets) != "build_info"],
+    from_targets[names(from_targets) != "build_info"]
+  )
+
+  # Nothing changed, so nothing rebuilds
+  expect_no_error(
+    suppressMessages(targets::tar_make(reporter = "silent", callr_function = NULL))
+  )
+  rebuilt <- targets::tar_progress()
+  rebuilt <- rebuilt[rebuilt$progress == "completed", ]
+  # `git_SHA` is deliberately re-read every run; nothing else should move
+  expect_equal(setdiff(rebuilt$name, "git_SHA"), character(0))
+})
+
+
+test_that("`build_setup_pipeline` declares a controller only when parallel", {
+
+  withr::defer({
+    unlink("_targets.R")
+    suppressMessages(build_setup_pipeline(method = "base"))
+  })
+
+  suppressMessages(build_setup_pipeline(method = "targets"))
+  expect_false(any(grepl("crew", readLines("_targets.R"), fixed = TRUE)))
+
+  suppressMessages(build_setup_pipeline(method = "targets", workers = 4))
+  generated <- readLines("_targets.R")
+  expect_true(any(grepl("crew::crew_controller_local(workers = 4)", generated,
+                        fixed = TRUE)))
+  expect_silent(parse("_targets.R"))
+})
+
+
+# Building from `_targets.R` is three steps, not one, and a curator coming from
+# `remake` gets both of the other two wrong: `tar_make()` returns nothing rather
+# than the database, and it does not write the export. Both the setup message
+# and the generated file have to say so, with the name actually in use -- a bare
+# `build_export()` errors against a pipeline named anything but `database`.
+test_that("the `targets` setup names all three steps, with the database's name", {
+
+  withr::defer({
+    unlink("_targets.R")
+    suppressMessages(build_setup_pipeline(method = "base"))
+  })
+
+  instructions <- testthat::capture_messages(
+    build_setup_pipeline(method = "targets", database_name = "austraits")
+  )
+  instructions <- paste(instructions, collapse = "")
+
+  expect_match(instructions, "targets::tar_make()", fixed = TRUE)
+  expect_match(instructions, "targets::tar_read(austraits)", fixed = TRUE)
+  expect_match(instructions, "build_export(\"austraits\")", fixed = TRUE)
+
+  # The same three steps in the file itself, since that is where a curator
+  # returning to the repository looks
+  generated <- paste(readLines("_targets.R"), collapse = "\n")
+  expect_match(generated, "targets::tar_read(austraits)", fixed = TRUE)
+  expect_match(generated, "build_export(\"austraits\")", fixed = TRUE)
+
+  # The header used to credit `remake.yml.whisker`, which is a different template
+  expect_match(generated, "build_targets.whisker", fixed = TRUE)
+  expect_false(grepl("remake.yml.whisker", generated, fixed = TRUE))
+})
+
+
+test_that("`build_export` says what to fix when the database name is wrong", {
+
+  skip_if_not_installed("targets")
+
+  expect_error(
+    build_export("not_a_target_in_this_pipeline"),
+    "must match the one given to `build_setup_pipeline\\(\\)`"
+  )
 })

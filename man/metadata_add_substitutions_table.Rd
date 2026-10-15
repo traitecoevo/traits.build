@@ -9,7 +9,8 @@ metadata_add_substitutions_table(
   dataset_id,
   trait_name,
   find,
-  replace
+  replace,
+  match = NULL
 )
 }
 \arguments{
@@ -23,6 +24,10 @@ original trait values (\code{find}), and database aligned trait value (\code{rep
 \item{find}{Name of column containing trait values submitted by the contributor for a data observation}
 
 \item{replace}{Name of column containing database aligned trait values}
+
+\item{match}{Optional. Name of column containing \code{"word"} or \code{"value"} (or \code{NA})
+for each row -- see \code{metadata_add_substitution()}. When omitted, every row is
+added as \code{match: value} (today's default, exact whole-cell match).}
 }
 \value{
 Modified metadata files with trait value replacements
