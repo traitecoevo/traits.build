@@ -8,7 +8,7 @@
 test_that("`util_collection_date_is_valid` accepts only the standard forms", {
   valid <- c(
     "2020", "2020-05", "2020-05-15", "2010-10/2011-03", "2004/2004",
-    "1818-10-06", "unknown/2022"
+    "1818-10-06"
   )
   invalid <- c(
     # Not ISO
@@ -19,12 +19,28 @@ test_that("`util_collection_date_is_valid` accepts only the standard forms", {
     "2020/", "/2020", "2020/2019", "2020/2021/2022", ".na/.na",
     # Whitespace and time of day are not stripped
     " 2020", "2020 ", "2022-06-03 14:00:00",
-    "unknown", "unknown/20"
+    # A year alone is written `yyyy`, not as an open-ended range
+    "unknown", "unknown/20", "unknown/2022", ".na/2009"
   )
 
   expect_equal(util_collection_date_is_valid(valid), rep(TRUE, length(valid)))
   expect_equal(util_collection_date_is_valid(invalid), rep(FALSE, length(invalid)))
   expect_equal(util_collection_date_is_valid(c(NA, "2020")), c(NA, TRUE))
+})
+
+
+test_that("`util_drop_unknown_collection_date_start` writes an unknown start as the end alone", {
+  expect_equal(
+    util_drop_unknown_collection_date_start(
+      c("unknown/2022", ".na/2009", "unknown/2009-05", ".na/2009-05-14", NA, "2004/2005")
+    ),
+    c("2022", "2009", "2009-05", "2009-05-14", NA, "2004/2005")
+  )
+  # Left for `dataset_test()` to report
+  expect_equal(
+    util_drop_unknown_collection_date_start(c("unknown", "unknown/20", "unknown/.na", "2009/unknown")),
+    c("unknown", "unknown/20", "unknown/.na", "2009/unknown")
+  )
 })
 
 
