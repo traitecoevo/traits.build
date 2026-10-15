@@ -16,6 +16,7 @@ execute:
 params:
     dataset_id: provide
     austraits_path: provide
+    show_questions: true
 ---
 
 ```{r setup, message=FALSE, warning=FALSE, results="hide"}
@@ -76,6 +77,9 @@ library(austraits)
 # YAML and YAML cannot represent the `NA`s in `austraits$traits`.
 dataset_id <- params$dataset_id
 austraits <- readRDS(params$austraits_path)
+# FALSE renders a "final" copy for distribution, with every question (and the
+# text that only exists to explain or accompany them) left out.
+show_questions <- !isFALSE(params$show_questions)
 
 my_kable_styling <- util_kable_styling_html
 
@@ -101,6 +105,7 @@ apcalign_data_release <- if (!is.null(apcalign_identifier)) {
 questions <-  traits.build:::notetaker_start()
 
 new_question <- function(txt) {
+  if (!show_questions) return(invisible(NULL))
   txt_formatted <- sprintf("<font color='orange'>**Question:** %s</font>", txt)
   x <- questions(traits.build:::notetaker_add_note, traits.build:::notetaker_as_note(txt_formatted)) %>%
     traits.build:::notetaker_print_notes(as_anchor = TRUE)
@@ -108,6 +113,7 @@ new_question <- function(txt) {
 }
 
 new_question_2 <- function(txt) {
+  if (!show_questions) return(invisible(NULL))
   txt_formatted <- sprintf("<font color='blue'>**Dataset-specific question:** %s</font>", txt)
   x <- questions(traits.build:::notetaker_add_note, traits.build:::notetaker_as_note(txt_formatted)) %>%
     traits.build:::notetaker_print_notes(as_anchor = TRUE)
@@ -141,10 +147,12 @@ Learn more at the [AusTraits website](https://austraits.org).
 
 This document describes the information we have for the study **` `r dataset_id` `**. 
 
+```{asis, echo = show_questions}
 This report gives both you, as a data contributor, and us, as AusTraits compilers, the opportunity to:
 
 1. Verify that our understanding and handling of your data is correct
 2. Provide any missing information about the data
+```
 
 Each study is assigned a unique `dataset_id`, with information for that dataset in its own folder, organised into two files:
 
@@ -153,7 +161,8 @@ Each study is assigned a unique `dataset_id`, with information for that dataset 
 
 Data from those files have been used to generate the report below.
 
-Please review the report, check it is correct, and send updates where appropriate. 
+```{asis, echo = show_questions}
+Please review the report, check it is correct, and send updates where appropriate.
 
 There are two sets of queries in this report:
 
@@ -178,12 +187,13 @@ To aid your review, we have attached the following files:
 2. Sending back your responses and any additional metadata required.
 
 3. If appropriate, send a new spreadsheet to replace the existing `data.csv` file.
+```
 
 
 ```{r, results='asis'}
 # Any additional questions from metadata
 
-if (!is.null(metadata$questions) && !is.na(metadata$questions[1])) {
+if (show_questions && !is.null(metadata$questions) && !is.na(metadata$questions[1])) {
 
   x <-
     names(metadata$questions)[!(names(metadata$questions) %in% c("additional_traits", "austraits"))]
@@ -278,7 +288,7 @@ missing <- metadata$dataset %>%
   filter(value == "unknown") %>%
   pull(key)
 
-for (v in missing) {
+for (v in missing[show_questions]) {
   sprintf("(section `dataset`) Can you provide missing details for the variable `%s`?\n", v) %>%
     new_question()
   sprintf("The variable `%s` captures *'%s'*\n", v, schema$metadata$elements$dataset$values[[v]]) %>%
@@ -585,13 +595,19 @@ writeLines("")
 
 if (nrow(data_study$identifiers) > 0) {
   identifiers_meta <- metadata$identifiers %>% austraits::convert_list_to_df2()
+  if (!"institution_code" %in% names(identifiers_meta)) {
+    identifiers_meta$institution_code <- NA_character_
+  }
 
-  tibble::tibble(
-    var_in = paste(unique(identifiers_meta$var_in), collapse = ", "),
-    identifier_type = paste(unique(identifiers_meta$identifier_type), collapse = ", "),
-    institution_code = paste(unique(identifiers_meta$institution_code), collapse = ", "),
-    records = nrow(data_study$identifiers)
-  ) %>%
+  # One row per identifier declared in metadata. The identifiers table has no
+  # `var_in`, so records are counted per identifier_type x institution_code
+  identifier_counts <- data_study$identifiers %>%
+    dplyr::count(.data$identifier_type, .data$institution_code, name = "records")
+
+  identifiers_meta %>%
+    dplyr::select(dplyr::any_of(c("var_in", "identifier_type", "institution_code"))) %>%
+    dplyr::left_join(identifier_counts, by = c("identifier_type", "institution_code")) %>%
+    dplyr::mutate(records = tidyr::replace_na(.data$records, 0L)) %>%
     my_kable_styling() %>%
     writeLines()
 
@@ -626,7 +642,7 @@ n_records %>%
 This includes the first records in AusTraits for some trait by taxon combinations - thanks for helping to gap-fill our knowledge about Australian plants.
 
 ```{r, results='asis'}
-new_taxa_trait_combinations(database = austraits, dataset = dataset_id) |>
+dataset_new_taxa_trait_combinations(database = austraits, dataset = dataset_id) |>
   arrange(trait_name) |>
   select(-dataset_id) |>
   my_kable_styling()
@@ -634,10 +650,6 @@ new_taxa_trait_combinations(database = austraits, dataset = dataset_id) |>
 
 ```{r, results='asis'}
 new_question("(section `traits`) Does this study include other trait data we may have missed?")
-
-if (median(n_records$records_per_taxa) < 2) {
-  new_question("(section `traits`) It appears as though we mostly have means for each taxon. Can you provide individual-level measurements?")
-}
 
 new_question("(section `traits`) Were any of your data sourced from other studies? If so, can you tell us which records and the source (so that we can avoid duplicates, where possible)?")
 
@@ -729,13 +741,23 @@ define_variable <- function(var, schema) {
 
 writeLines(ifelse(length(traits_numeric) == 0,
         "No numerical traits data are currently available in this dataset",
-        "We have recorded the following traits with continuous numerical values in this dataset. Plots are shown comparing the distribution of values in your study (highlighted in red-orange) to those in other datasets within AusTraits (alternating blue/orange, by dataset). For each trait, please eyeball the information provided and let us know of any issues or updates where appropriate."))
+        paste0(
+          "We have recorded the following traits with continuous numerical values in this dataset. Plots are shown comparing the distribution of values in your study (highlighted in red-orange) to those in other datasets within AusTraits (alternating blue/orange, by dataset).",
+          if (show_questions) " For each trait, please eyeball the information provided and let us know of any issues or updates where appropriate." else "")))
 
 if (length(traits_numeric) > 0) {
-  # value_types that represent a genuine point estimate suitable for plotting on
-  # the x-axis - excludes e.g. bin/range (not a single value), mode/standard_error/
-  # standard_deviation
-  austraits_no_bins <- extract_data(austraits, table = "traits", col = "value_type", col_value = c("mean", "median", "minimum", "maximum", "raw"))
+  # value_types that represent a genuine point estimate suitable for plotting
+  # on the x-axis -- excludes bin/range (not a single value) and
+  # standard_error/standard_deviation (a spread statistic, not a
+  # measurement -- plotting one on the same axis as raw/mean/min/max values
+  # would be comparing different kinds of thing). `mode` IS included: this
+  # loop only ever reaches trait_names already confirmed numeric (from
+  # `traits_numeric`), so a `mode` row here is "the most frequently recorded
+  # value was this number" -- a real point value, exactly as plottable as
+  # `raw` or `mean`. It used to be excluded here too, which silently dropped
+  # ~12,500 real (in-range, correctly counted everywhere else in this
+  # report) numeric observations from every plot across the database.
+  austraits_no_bins <- extract_data(austraits, table = "traits", col = "value_type", col_value = c("mean", "median", "minimum", "maximum", "raw", "mode"))
 }
 
 for (trait in traits_numeric) {
@@ -784,7 +806,10 @@ for (trait in traits_numeric) {
 
   writeLines(
     ifelse(nrow(filter(data_study$excluded_data, error == "Value out of allowable range" & trait_name == trait)) > 0,
-    "The following data points were excluded because the values were outside the allowable range (error = `Value out of allowable range`). Our ranges of allowable values are sufficiently generous that most excluded data are well outside the expected range for the trait, but if you believe these data are valid, accurate measurements that will be useful to future AusTraits users, let us know.", "")
+    paste0(
+      "The following data points were excluded because the values were outside the allowable range (error = `Value out of allowable range`). Our ranges of allowable values are sufficiently generous that most excluded data are well outside the expected range for the trait",
+      if (show_questions) ", but if you believe these data are valid, accurate measurements that will be useful to future AusTraits users, let us know." else "."),
+    "")
   )
 
 if (nrow(filter(data_study$excluded_data, error == "Value out of allowable range" & trait_name == trait)) > 0) {
@@ -830,7 +855,7 @@ if (nrow(filter(data_study$excluded_data, error == "Value out of allowable range
 
   for (v in c("value_type", "replicates", "methods")) {
 
-    if (v %in% names_missing) {
+    if (show_questions && v %in% names_missing) {
       question_x(v, trait)
 
       if (!(v %in% structures_already_defined)) {
@@ -967,7 +992,7 @@ for (trait in traits_categorical) {
 
   for (v in c("value_type", "replicates", "methods")) {
 
-    if (v %in% names_missing) {
+    if (show_questions && v %in% names_missing) {
       question_x(v, trait)
 
       if (!(v %in% structures_already_defined)) {
@@ -1138,19 +1163,15 @@ if (nrow(unknown_taxa) > 0) {
 new_question("(section `taxonomic_updates`) Do these taxonomic alignments and corrections look reasonable?")
 ```
 
-# Review of questions
-
-Here is a summary of the questions we would like answers to. Clicking on the links will take you back to the appropriate spot in the document. Please copy and paste these into an email when you respond.
-
-<font size = '3'>
-
-
 ```{r, results='asis'}
-questions() %>% traits.build:::notetaker_print_all() %>% writeLines()
+if (show_questions) {
+  writeLines("# Review of questions\n")
+  writeLines("Here is a summary of the questions we would like answers to. Clicking on the links will take you back to the appropriate spot in the document. Please copy and paste these into an email when you respond.\n")
+  writeLines("<font size = '3'>\n")
+  questions() %>% traits.build:::notetaker_print_all() %>% writeLines()
+  writeLines("\n</font>\n")
+}
 ```
-
-
-</font>
 
 
 # Session information

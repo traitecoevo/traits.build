@@ -31,6 +31,7 @@ util_disallowed_char_replacements <- function() {
 
     # Characters that occupy space but are not a space
     "\u00a0" = " ",              # NO-BREAK SPACE
+    "\u2003" = " ",              # EM SPACE
     "\u2007" = " ",              # FIGURE SPACE
     "\u2009" = " ",              # THIN SPACE
     "\u202f" = " ",              # NARROW NO-BREAK SPACE
@@ -38,6 +39,13 @@ util_disallowed_char_replacements <- function() {
     # Characters that are invisible entirely
     "\u200b" = "",               # ZERO WIDTH SPACE
     "\u200d" = "",               # ZERO WIDTH JOINER
+
+    # A discretionary line-break hint, invisible unless a word wraps at it, so
+    # in text that no longer wraps it stands for nothing. Rewriting it as "-"
+    # would hyphenate the word it sat in: both occurrences in `austraits.build`
+    # (`non-\u00adrhizomatous`, `to \u00ad\u00b1 prostrate`) come out right only
+    # when it is deleted.
+    "\u00ad" = "",               # SOFT HYPHEN
 
     # Look-alikes for the degree sign, which the exception list already allows
     "\u00ba" = "\u00b0",         # MASCULINE ORDINAL INDICATOR
@@ -48,13 +56,24 @@ util_disallowed_char_replacements <- function() {
     # written two ways.
     "\u03bc" = "\u00b5",         # GREEK SMALL LETTER MU -> MICRO SIGN
 
+    # The same look-alike problem for the allowed GREEK CAPITAL LETTER DELTA:
+    # INCREMENT is what Option-J types on a Mac, and is indistinguishable from it.
+    "\u2206" = "\u0394",         # INCREMENT -> GREEK CAPITAL LETTER DELTA
+
     # The "proper" Unicode hyphen, indistinguishable from the plain ASCII
     # hyphen-minus it's meant to be -- typically introduced when a word
     # processor or PDF export auto-substitutes the "-" a person actually
     # typed. Distinct from EN DASH, EM DASH and MINUS SIGN, which carry their
     # own typographic meaning and are allowed as-is (see `allowed_characters`
     # in the schema); this is not one of those, it is just a hyphen.
-    "\u2010" = "-"               # HYPHEN -> ASCII hyphen-minus
+    "\u2010" = "-",              # HYPHEN -> ASCII hyphen-minus
+
+    # A typographic ligature glyph for the two letters "fi", introduced by
+    # PDF text extraction (common in scientific PDFs, e.g. "scientific"
+    # copies out as "scienti\ufb01c"). It is not a distinct letter, just a
+    # rendering of these exact two ASCII letters, so unlike a real letter it
+    # belongs here rather than in `exceptions`.
+    "\ufb01" = "fi"              # LATIN SMALL LIGATURE FI -> "fi"
   )
 }
 

@@ -199,6 +199,39 @@ util_context_var_in_message <- function(contexts, missing_var_in,
 }
 
 
+#' Resolve declared `traits`-entry field values against the data
+#'
+#' A field set on the `traits` entries of `metadata.yml` for a context's
+#' `var_in` (e.g. `leaf_temp: LfT_Rdark`, scoping that context to just the
+#' traits declaring it) is read the way `process_parse_data()` reads every such
+#' field: a declared value naming a column of `data.csv` (after `custom_R_code`
+#' has run) stands for that column's contents, read per record, and anything
+#' else is the literal value itself (e.g. `method_context: 250 mm branch`).
+#' `process_format_contexts()` and `dataset_test()`'s context-consistency check
+#' both need this same resolution, so it lives here rather than being
+#' duplicated and drifting between the two (#276).
+#'
+#' A blank cell in such a column is a record with no value for the context,
+#' not a context value, so `NA` is dropped -- as it is for a `var_in` naming a
+#' column directly. Otherwise `dataset_test()` reported `NA` as a context value
+#' missing from the metadata whenever the column had a gap.
+#'
+#' @param declared Character vector of values declared on the `traits` entries
+#'   for one field (already unique and stripped of `NA`)
+#' @param data Data frame to check declared values against -- `data.csv` with
+#'   `custom_R_code` applied
+#'
+#' @return Character vector of resolved values, without `NA`
+#' @keywords internal
+util_resolve_trait_field_values <- function(declared, data) {
+  declared %>%
+    purrr::map(~if (is.null(data[[.x]])) .x else unique(stats::na.omit(data[[.x]]))) %>%
+    unlist(use.names = FALSE) %>%
+    as.character() %>%
+    unique()
+}
+
+
 #'  Split and sort cells with multiple values
 #'
 #'  `util_separate_and_sort`: For a vector x in which individual cell may have
@@ -756,4 +789,425 @@ austraits::flatten_database
 #' @export
 database_create_combined_table <- function(database, ...) {
   austraits::flatten_database(database, ...)
+}
+
+#' Check `collection_date` values against the standard formats
+#'
+#' A value is valid when it is one ISO 8601 date -- `yyyy`, `yyyy-mm` or
+#' `yyyy-mm-dd` -- or a range of two such dates separated by a `/` whose start
+#' is not after its end. Each date must exist in the calendar and fall between
+#' 1700 and today. `unknown/yyyy`, the form the traits.build book documents
+#' for a date that is not known, is also accepted. Nothing else is: no
+#' surrounding whitespace, no other separators and no time of day.
+#'
+#' Each distinct value is checked once, so the cost follows the number of
+#' distinct dates rather than the number of records.
+#'
+#' @param x Vector of `collection_date` values
+#'
+#' @return Logical vector the length of `x`, `NA` where `x` is `NA`
+#' @noRd
+util_collection_date_is_valid <- function(x) {
+  x <- as.character(x)
+  values <- unique(x[!is.na(x)])
+  valid <- vapply(values, util_collection_date_is_valid_one, logical(1), USE.NAMES = FALSE)
+  valid[match(x, values)]
+}
+
+#' @noRd
+util_collection_date_is_valid_one <- function(value) {
+  if (grepl("^unknown/[0-9]{4}$", value)) {
+    return(!is.null(util_collection_date_bounds(substring(value, 9))))
+  }
+
+  # `strsplit()` drops an empty trailing piece, so `2020/` would pass as a
+  # single date if the separators were not counted separately
+  n_separators <- nchar(gsub("[^/]", "", value))
+  parts <- strsplit(value, "/", fixed = TRUE)[[1]]
+  if (n_separators > 1 || length(parts) != n_separators + 1) {
+    return(FALSE)
+  }
+
+  bounds <- lapply(parts, util_collection_date_bounds)
+  if (any(vapply(bounds, is.null, logical(1)))) {
+    return(FALSE)
+  }
+
+  length(bounds) == 1 || bounds[[1]][1] <= bounds[[2]][2]
+}
+
+#' First and last day covered by one `yyyy`, `yyyy-mm` or `yyyy-mm-dd` date
+#'
+#' @return Date vector of length two, or `NULL` when `value` is not one of those
+#' forms, is not a real date, or falls outside 1700 to today
+#' @noRd
+util_collection_date_bounds <- function(value) {
+  if (!grepl("^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$", value)) {
+    return(NULL)
+  }
+
+  precision <- nchar(value)
+  first <- as.Date(
+    switch(as.character(precision), "4" = paste0(value, "-01-01"), "7" = paste0(value, "-01"), value),
+    format = "%Y-%m-%d"
+  )
+  if (is.na(first) || first < as.Date("1700-01-01") || first > Sys.Date()) {
+    return(NULL)
+  }
+
+  last <- switch(
+    as.character(precision),
+    "4" = as.Date(paste0(value, "-12-31")),
+    "7" = seq(first, by = "month", length.out = 2)[2] - 1,
+    first
+  )
+  c(first, last)
+}
+
+#' Convert `collection_date` values from a declared format to the standard one
+#'
+#' Rewrites dates written in the format a dataset declares as `yyyy-mm-dd`,
+#' `yyyy-mm` or `yyyy`. A value is never guessed at: one that does not match
+#' the declared format is returned unchanged, so `dataset_test()` reports it
+#' rather than the build storing a guess. Values that are already standard pass
+#' through untouched, and a range of years written with a hyphen, `2019-2020`,
+#' becomes `2019/2020`.
+#'
+#' The build calls this on the `collection_date` column(s) of `data.csv` for a
+#' dataset that sets `collection_date_format` or `collection_date_timezone` in
+#' its `metadata.yml`, after `custom_R_code` has run. It can also be called from
+#' `custom_R_code`, for a dataset that needs to convert dates before combining
+#' them -- for example, to paste a start and an end column into a range.
+#'
+#' @param x Vector of dates as read from `data.csv`: character, numeric, `Date`
+#'   or `POSIXct`
+#' @param format Character vector of the formats the values are written in,
+#'   tried in turn for each value: any of `"ymd"`, `"dmy"`, `"mdy"`, `"ym"`,
+#'   `"my"` and `"y"`. The order sets the precision kept, so a column holding
+#'   full dates, month-year values and bare years is declared
+#'   `c("dmy", "my", "y")` -- or `dmy my y` in `metadata.yml`. Formats that
+#'   could read the same value two ways -- `"dmy"` with `"mdy"`, say -- cannot
+#'   be combined. `"ym"` needs a four-digit year, since `15-Mar` is how Excel
+#'   writes the 15th of March with no year.
+#'
+#'   `"auto"` works the format out from the whole column: it tries
+#'   `dmy my y`, `mdy my y` and `ymd ym y`, and uses the one that reads every
+#'   value any of them can. If more than one does and they give different
+#'   dates -- a column whose values could all be day-first or month-first, such
+#'   as `4/07/2022` -- it converts nothing, so the curator declares which. It
+#'   decides for the column, never value by value, so it cannot read one value
+#'   day-first and the next month-first.
+#'
+#'   Within a value, day, month and year may be separated by `-`, `/`, `.`, `,`
+#'   or spaces, or not at all (`20190206`). Months may be numbers or English
+#'   names, full or abbreviated, and a leading weekday name is ignored
+#'   (`Thr Nov 18 2010`, as LI-6400 files write it). A two-digit year is taken as the most recent
+#'   year ending in those digits that is not in the future, so `08` is 2008 and
+#'   `78` is 1978. A time of day following the date is dropped.
+#' @param timezone Time zone to take the date in, for values that are a point in
+#'   time -- a `POSIXct` column, or text ending in `Z` or a UTC offset -- as an
+#'   Olson name such as `"Australia/Sydney"`. Without it those values are
+#'   returned unchanged: `2022-06-03T14:00:00Z` is 3 June in UTC but 4 June in
+#'   Sydney, and only the dataset's curator knows which is meant.
+#'
+#' @return Character vector the length of `x`
+#' @export
+#'
+#' @examples
+#' util_format_collection_date(c("2-Sep-08", "15/10/2008", "Oct 2008", "2008"), c("dmy", "my", "y"))
+#' util_format_collection_date("2022-06-03T14:00:00Z", timezone = "Australia/Sydney")
+util_format_collection_date <- function(x, format = NULL, timezone = NULL) {
+  format <- util_check_collection_date_format(format)
+  timezone <- util_check_collection_date_timezone(timezone)
+
+  if (inherits(x, "POSIXt")) {
+    if (is.null(timezone)) {
+      return(ifelse(is.na(x), NA_character_, format(x, "%Y-%m-%d %H:%M:%S %Z")))
+    }
+    return(ifelse(is.na(x), NA_character_, format(x, "%Y-%m-%d", tz = timezone)))
+  }
+
+  if (inherits(x, "Date")) {
+    return(ifelse(is.na(x), NA_character_, format(x, "%Y-%m-%d")))
+  }
+
+  if (is.numeric(x)) {
+    x <- ifelse(is.na(x), NA_character_, format(x, scientific = FALSE, trim = TRUE))
+  }
+
+  x <- as.character(x)
+  values <- unique(x[!is.na(x)])
+
+  if (identical(format, "auto")) {
+    format <- util_collection_date_auto(values)$format
+  }
+
+  converted <- vapply(
+    values, util_format_collection_date_one, character(1),
+    format = format, timezone = timezone, USE.NAMES = FALSE
+  )
+  converted[match(x, values)]
+}
+
+# The formats `auto` chooses between: a full date written day-first,
+# month-first or year-first, each followed by the coarser precisions a column
+# of such dates also holds
+util_collection_date_families <- list(
+  dmy = c("dmy", "my", "y"),
+  mdy = c("mdy", "my", "y"),
+  ymd = c("ymd", "ym", "y")
+)
+
+#' Work out the format of a column of dates, or decline to
+#'
+#' Reads every value in each of the formats in `util_collection_date_families`,
+#' and chooses the one that reads all the values any of them can. If more than
+#' one does, they must give the same dates -- as for a column of `Jan-96`
+#' values, which `dmy my y` and `mdy my y` both read as `1996-01`. Otherwise
+#' nothing is chosen, so a column whose values could all be day-first or
+#' month-first (`4/07/2022`) is left for the curator to declare, as is one
+#' mixing values only day-first can read with values only month-first can.
+#' Values no format reads are left out, so one malformed value does not block
+#' the rest.
+#'
+#' @param values Character vector of dates
+#'
+#' @return List with `format`, the chosen formats or `NULL`, and `fits`, the
+#'   names of the formats that read every readable value
+#' @noRd
+util_collection_date_auto <- function(values) {
+  values <- unique(values[!is.na(values)])
+
+  readings <- lapply(util_collection_date_families, function(format) {
+    out <- vapply(
+      values, util_format_collection_date_one, character(1),
+      format = format, timezone = NULL, USE.NAMES = FALSE
+    )
+    ifelse(util_collection_date_is_valid(out) %in% TRUE, out, NA_character_)
+  })
+
+  readable <- Reduce(`|`, lapply(readings, function(r) !is.na(r)))
+  fits <- names(readings)[vapply(readings, function(r) !anyNA(r[readable]), logical(1))]
+  agree <- length(fits) > 0 &&
+    all(vapply(fits, function(f) identical(readings[[f]][readable], readings[[fits[1]]][readable]), logical(1)))
+
+  list(
+    format = if (agree) util_collection_date_families[[fits[1]]] else NULL,
+    fits = fits,
+    readings = readings,
+    values = values
+  )
+}
+
+#' Explain why `auto` could not choose a format, for `dataset_test()`
+#'
+#' @return A sentence, or `""` if `auto` can choose one for these values
+#' @noRd
+util_collection_date_auto_message <- function(values) {
+  auto <- util_collection_date_auto(values)
+  if (!is.null(auto$format)) {
+    return("")
+  }
+
+  if (length(auto$fits) == 0) {
+    return("`auto` found no one format that reads them all, so a column mixing formats needs `custom_R_code`.")
+  }
+
+  # A value the candidate formats read differently, to show why
+  first <- auto$readings[[auto$fits[1]]]
+  differs <- which(Reduce(`|`, lapply(auto$fits[-1], function(f) auto$readings[[f]] != first)) %in% TRUE)[1]
+  sprintf(
+    "`auto` cannot tell whether they are written %s: '%s' reads as %s. Declare the one they are written in.",
+    paste0("`", auto$fits, "`", collapse = " or "),
+    auto$values[differs],
+    paste(vapply(auto$fits, function(f) auto$readings[[f]][differs], character(1)), collapse = " or ")
+  )
+}
+
+#' @noRd
+util_format_collection_date_one <- function(value, format, timezone) {
+  value <- trimws(value)
+
+  if (isTRUE(util_collection_date_is_valid(value))) {
+    return(value)
+  }
+
+  # A point in time, which falls on different dates in different time zones
+  if (grepl("[0-9]:[0-9]{2}(:[0-9]{2}(\\.[0-9]+)?)? ?(Z|[+-][0-9]{2}:?[0-9]{2})$", value)) {
+    if (is.null(timezone)) {
+      return(value)
+    }
+    instant <- lubridate::ymd_hms(value, quiet = TRUE)
+    return(if (is.na(instant)) value else format(instant, "%Y-%m-%d", tz = timezone))
+  }
+
+  # A range of years written with a hyphen, `2019-2020`, can be read only one way
+  if (grepl("^[0-9]{4} ?[-\u2013] ?[0-9]{4}$", value)) {
+    years <- gsub(" ?[-\u2013] ?", "/", value)
+    return(if (isTRUE(util_collection_date_is_valid(years))) years else value)
+  }
+
+  # A local time of day does not move the date, so it is dropped
+  date <- sub("[ T][0-9]{1,2}:[0-9]{2}(:[0-9]{2}(\\.[0-9]+)?)?( ?[AaPp][Mm])?$", "", value)
+
+  for (f in format) {
+    converted <- util_collection_date_match(date, f)
+    if (!is.na(converted) && isTRUE(util_collection_date_is_valid(converted))) {
+      return(converted)
+    }
+  }
+
+  value
+}
+
+#' Read one value as one declared format
+#'
+#' @return The value as `yyyy-mm-dd`, `yyyy-mm` or `yyyy`, to the precision
+#' `format` gives, or `NA` if it does not have that shape. Whether the date
+#' exists is left to the caller.
+#' @noRd
+util_collection_date_match <- function(value, format) {
+  roles <- strsplit(format, "")[[1]]
+  tokens <- strsplit(value, "[-/., ]+")[[1]]
+  tokens <- tokens[tokens != ""]
+
+  # A leading weekday adds nothing to the date. LI-6400 files write them, with
+  # Thursday as `Thr`: `Thr Nov 18 2010`
+  weekdays <- c(
+    "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday",
+    "mon", "tue", "tues", "wed", "thu", "thur", "thurs", "thr", "fri", "sat", "sun"
+  )
+  if (length(tokens) > length(roles) && tolower(tokens[1]) %in% weekdays) {
+    tokens <- tokens[-1]
+  }
+
+  # Written without separators: yyyymmdd, ddmmyyyy, mmddyyyy, yyyymm or mmyyyy
+  if (length(tokens) == 1 && length(roles) > 1 && grepl("^[0-9]+$", tokens)) {
+    widths <- list(ymd = c(4, 2, 2), dmy = c(2, 2, 4), mdy = c(2, 2, 4), ym = c(4, 2), my = c(2, 4))[[format]]
+    if (nchar(tokens) != sum(widths)) {
+      return(NA_character_)
+    }
+    tokens <- substring(tokens, cumsum(widths) - widths + 1, cumsum(widths))
+  }
+
+  if (length(tokens) != length(roles)) {
+    return(NA_character_)
+  }
+
+  # A two-digit year before a month is how Excel writes day-month with no year
+  # (`15-Mar`), not a year-month, so `ym` needs all four digits
+  if (format == "ym" && !grepl("^[0-9]{4}$", tokens[1])) {
+    return(NA_character_)
+  }
+
+  year <- util_collection_date_year(tokens[roles == "y"])
+  month <- if ("m" %in% roles) util_collection_date_month(tokens[roles == "m"]) else NULL
+  day <- NULL
+  if ("d" %in% roles) {
+    day <- if (grepl("^[0-9]{1,2}$", tokens[roles == "d"])) as.integer(tokens[roles == "d"]) else NA_integer_
+  }
+
+  if (is.na(year) || isTRUE(is.na(month)) || isTRUE(is.na(day))) {
+    return(NA_character_)
+  }
+
+  paste0(
+    sprintf("%04d", year),
+    if (!is.null(month)) sprintf("-%02d", month),
+    if (!is.null(day)) sprintf("-%02d", day)
+  )
+}
+
+#' @noRd
+util_collection_date_year <- function(token) {
+  if (grepl("^[0-9]{4}$", token)) {
+    return(as.integer(token))
+  }
+  if (grepl("^[0-9]{2}$", token)) {
+    # The most recent year ending in these digits that is not in the future
+    this_year <- as.integer(format(Sys.Date(), "%Y"))
+    year <- this_year - (this_year - as.integer(token)) %% 100
+    return(year)
+  }
+  NA_integer_
+}
+
+#' @noRd
+util_collection_date_month <- function(token) {
+  if (grepl("^[0-9]{1,2}$", token)) {
+    month <- as.integer(token)
+    return(if (month >= 1 && month <= 12) month else NA_integer_)
+  }
+  token <- tolower(token)
+  month <- match(token, tolower(month.name))
+  if (is.na(month)) month <- match(token, tolower(month.abb))
+  if (is.na(month) && token == "sept") month <- 9L
+  month
+}
+
+#' Validate a dataset's `collection_date_format`
+#'
+#' In `metadata.yml` several formats are written as one space-separated value,
+#' `dmy my y`, the convention for multiple values elsewhere in traits.build.
+#'
+#' @return The formats as a character vector, empty when none is declared
+#' @noRd
+util_check_collection_date_format <- function(format) {
+  format <- unlist(strsplit(as.character(unlist(format)), "\\s+"))
+  format <- format[!is.na(format) & format != "" & format != ".na"]
+  if (length(format) == 0) {
+    return(character(0))
+  }
+
+  allowed <- c("ymd", "dmy", "mdy", "ym", "my", "y", "auto")
+  unknown <- setdiff(format, allowed)
+  if (length(unknown) > 0) {
+    stop(
+      sprintf(
+        "`collection_date_format` must be one or more of %s, not '%s'",
+        paste0("`", allowed, "`", collapse = ", "), paste(unknown, collapse = "', '")
+      ),
+      call. = FALSE
+    )
+  }
+
+  if ("auto" %in% format && length(format) > 1) {
+    stop("`collection_date_format: auto` works out the formats itself, so cannot be combined with others", call. = FALSE)
+  }
+
+  if (sum(format %in% c("ymd", "dmy", "mdy")) > 1 || sum(format %in% c("ym", "my")) > 1) {
+    stop(
+      sprintf(
+        paste0(
+          "`collection_date_format` combines formats that read the same value two ways ('%s'). ",
+          "Convert a column that mixes them with `custom_R_code` instead."
+        ),
+        paste(format, collapse = "', '")
+      ),
+      call. = FALSE
+    )
+  }
+
+  format
+}
+
+#' Validate a dataset's `collection_date_timezone`
+#'
+#' @return The time zone, or `NULL` when none is declared
+#' @noRd
+util_check_collection_date_timezone <- function(timezone) {
+  timezone <- unlist(timezone)
+  if (length(timezone) == 0 || (length(timezone) == 1 && (is.na(timezone) || timezone == ".na"))) {
+    return(NULL)
+  }
+  if (length(timezone) != 1 || !timezone %in% OlsonNames()) {
+    stop(
+      sprintf(
+        "`collection_date_timezone` must be one Olson time zone name, such as 'Australia/Sydney', not '%s'",
+        paste(timezone, collapse = "', '")
+      ),
+      call. = FALSE
+    )
+  }
+  timezone
 }
