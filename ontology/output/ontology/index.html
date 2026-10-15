@@ -2454,7 +2454,7 @@ gt package: https://gt.rstudio.com/
 <section id="introduction" class="level1">
 <h1>1. Introduction</h1>
 <p>A database must be accompanied by a published data model to be: 1) efficiently and accurately interpreted and used by researchers; and 2) easily integrated with other databases. A published data model should be machine-readable for easy integration into future data products, yet also tractable to human readers. A data model (a.k.a. data standard, ontology) must document the meanings behind each database output variable and should also record the semantic relationships between columns. For instance, within the traits.build ontology, indicating that <code>observation_id</code> is an identifier for a unique <code>observation</code>.</p>
-<p>To the extent possible, a data model should draw upon previously published vocabularies and ontologies, explicitly indicating when terms within the data model are identical to those used by other databases (or other bioinformatics outputs). For instance, the traits.build data standard maps terms related to taxonomy and species occurrences to <a href="https://dwc.tdwg.org/terms/">DarwinCore</a> and terms related to trait measurements to the <a href="https://ecologicaltraitdata.github.io/ETS/">Ecological Trait-data Standard</a>. The semantic relationships between terms adhere to the <a href="https://bioportal.bioontology.org/ontologies/OBOE">OBOE ontology</a>, a generic relational ontology developed explicitly for documenting ecological trait observations and the context properties that are essential to document for ecological data. Each OBOE class used is also matched to its counterpart in <a href="https://www.w3.org/TR/vocab-ssn/">SOSA/SSN</a> (following the published <a href="https://www.w3.org/ns/sosa/oboe">SOSA-to-OBOE alignment</a>) and in the <a href="https://ternaustralia.github.io/ontology_tern/">TERN Ontology</a>, the SOSA profile used by TERN and the Australian Biodiversity Information Standard; trait-measurement terms are additionally matched to the Darwin Core <code>MeasurementOrFact</code> terms (used by Darwin Core Archives) and <code>Assertion</code> terms (used by the Darwin Core Data Package), and the ETS terms <code>statisticalMethod</code> and <code>aggregateMeasure</code> are recorded as the only published counterparts of <code>value_type</code>. Where a term has no counterpart in any of these standards, its comment says so. It further draws upon properties defined by the Semanticscience Integrated Ontology (https://bioportal.bioontology.org/ontologies/SIO) to describe relationships between terms.</p>
+<p>To the extent possible, a data model should draw upon previously published vocabularies and ontologies, explicitly indicating when terms within the data model are identical to those used by other databases (or other bioinformatics outputs). For instance, the traits.build data standard maps terms related to taxonomy and species occurrences to <a href="https://dwc.tdwg.org/terms/">DarwinCore</a> and terms related to trait measurements to the <a href="https://ecologicaltraitdata.github.io/ETS/">Ecological Trait-data Standard</a>. The semantic relationships between terms adhere to the <a href="https://bioportal.bioontology.org/ontologies/OBOE">OBOE ontology</a>, a generic relational ontology developed explicitly for documenting ecological trait observations and the context properties that are essential to document for ecological data. Each OBOE class used is also matched to its counterpart in <a href="https://www.w3.org/TR/vocab-ssn/">SOSA/SSN</a> (following the published <a href="https://www.w3.org/ns/sosa/oboe">SOSA-to-OBOE alignment</a>) and in the <a href="https://ternaustralia.github.io/ontology_tern/">TERN Ontology</a>, the SOSA profile used by TERN and the Australian Biodiversity Information Standard; trait-measurement terms are additionally matched to the Darwin Core <code>MeasurementOrFact</code> terms (used by Darwin Core Archives) and <code>Assertion</code> terms (used by the Darwin Core Data Package), and the ETS terms <code>statisticalMethod</code> and <code>aggregateMeasure</code> are recorded as the only published counterparts of <code>value_type</code>. Where a term has no counterpart in any of these standards, its comment says so. Where the strength of a match is not obvious from the two definitions, the term’s editorial note gives the reason. It further draws upon properties defined by the Semanticscience Integrated Ontology (https://bioportal.bioontology.org/ontologies/SIO) to describe relationships between terms.</p>
 <p>Within the traits.build ontology, there are 5 main categories of terms, differentiated based on whether they are database tables, rows, or columns:</p>
 <ol type="1">
 <li><strong>Database tables:</strong> The relational tables (traits, contexts, locations, methods, taxa, contributors, taxonomic_updates). These terms are all mapped as having the property <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a> = <a href="http://semanticscience.org/resource/SIO_000754">database table</a><br>
@@ -2471,7 +2471,7 @@ gt package: https://gt.rstudio.com/
 <section id="traits.build-data-model" class="level1">
 <h1>2. Traits.build data model</h1>
 <p>The traits.build resource</p>
-<div id="wewssevflr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-scheme" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -2522,7 +2522,7 @@ The traits.build ontology documents the output structure of a database built usi
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2000/01/rdf-schema#type">type</a>
+<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">type</a>
 </td>
 <td headers="description" class="gt_row gt_left">
 <a href="http://www.w3.org/2004/02/skos/core#ConceptScheme">concept scheme</a>
@@ -2541,7 +2541,7 @@ traits.build
 <a href="http://www.w3.org/2004/02/skos/core#hasTopConcept">has top concept</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-<a href="https://w3id.org/traits.build-database">https://w3id.org/traits.build-database</a>
+<a href="https://w3id.org/traits.build#traits.build-database">traits.build database</a>
 </td>
 </tr>
 <tr>
@@ -2573,16 +2573,17 @@ Sophie Yang
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-01 February 2024
+2024-02-01
 </td>
 </tr>
 </tbody>
 </table>
 </div>
+<p><span id="https://w3id.org/traits.build#traits.build-database"> </span><span id="traits.build-database"> </span></p>
 <section id="database" class="level2">
 <h2 class="anchored" data-anchor-id="database">Database</h2>
 <p>A traits.build database</p>
-<div id="ojrdyuvveq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-database" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -2644,15 +2645,7 @@ A database of 13 relational tables build using the {traits.build} R-package for 
 <a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-A traits.build database as a whole
-</td>
-</tr>
-<tr>
-<td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
-</td>
-<td headers="description" class="gt_row gt_left">
-no single counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN. See the dataset term for the observation-collection reading.
+A traits.build database as a whole; no single counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN. See the dataset term for the observation-collection reading.
 </td>
 </tr>
 <tr>
@@ -2660,7 +2653,7 @@ no single counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN. See the dataset
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+2024-02-01
 </td>
 </tr>
 <tr>
@@ -2686,10 +2679,10 @@ no single counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN. See the dataset
 <section id="database-tables" class="level2">
 <h2 class="anchored" data-anchor-id="database-tables">Database Tables</h2>
 <p>The traits.build output tables</p>
-<p><span id="https://w3id.org/traits.build#traits.build-traits"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-traits"> </span><span id="traits.build-traits"> </span></p>
 <section id="traits-table" class="level3">
 <h3 class="anchored" data-anchor-id="traits-table">traits table</h3>
-<div id="gyrgrqnqan" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-traits" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -2791,7 +2784,7 @@ Includes information that must be recorded at the Measurement or Observation lev
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -2805,11 +2798,11 @@ Includes information that must be recorded at the Measurement or Observation lev
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#traits.build-locations"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-locations"> </span><span id="traits.build-locations"> </span></p>
 </section>
 <section id="locations-table" class="level3">
 <h3 class="anchored" data-anchor-id="locations-table">locations table</h3>
-<div id="xomufmfnfx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-locations" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -2895,7 +2888,7 @@ Includes information about Location properties.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -2909,11 +2902,11 @@ Includes information about Location properties.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#traits.build-contexts"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-contexts"> </span><span id="traits.build-contexts"> </span></p>
 </section>
 <section id="contexts-table" class="level3">
 <h3 class="anchored" data-anchor-id="contexts-table">contexts table</h3>
-<div id="zphkyxkhdo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-contexts" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -2991,7 +2984,7 @@ A table containing observations of contextual characteristics associated with in
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -3005,11 +2998,11 @@ A table containing observations of contextual characteristics associated with in
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#traits.build-methods"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-methods"> </span><span id="traits.build-methods"> </span></p>
 </section>
 <section id="methods-table" class="level3">
 <h3 class="anchored" data-anchor-id="methods-table">methods table</h3>
-<div id="gnkxrnqpgz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-methods" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -3087,7 +3080,7 @@ A table containing details on methods with which data were collected, including 
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -3101,11 +3094,11 @@ A table containing details on methods with which data were collected, including 
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#traits.build-excluded_data"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-excluded_data"> </span><span id="traits.build-excluded_data"> </span></p>
 </section>
 <section id="excluded-data-table" class="level3">
 <h3 class="anchored" data-anchor-id="excluded-data-table">excluded data table</h3>
-<div id="fpovtsdgzb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-excluded_data" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -3156,10 +3149,10 @@ A table of data that did not pass quality tests and so were excluded from the ma
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a> <a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
+<a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-Same structure as the traits table plus an error column no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN.
+Same structure as the traits table plus an error column; no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN.
 </td>
 </tr>
 <tr>
@@ -3191,7 +3184,7 @@ Same structure as the traits table plus an error column no counterpart in Darwin
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -3205,11 +3198,11 @@ Same structure as the traits table plus an error column no counterpart in Darwin
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#traits.build-taxonomic_updates"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-taxonomic_updates"> </span><span id="traits.build-taxonomic_updates"> </span></p>
 </section>
 <section id="taxonomic-updates-table" class="level3">
 <h3 class="anchored" data-anchor-id="taxonomic-updates-table">taxonomic updates table</h3>
-<div id="dijpznpkbx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-taxonomic_updates" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -3287,7 +3280,7 @@ A table of all taxonomic changes implemented in the construction of AusTraits. C
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -3301,11 +3294,11 @@ A table of all taxonomic changes implemented in the construction of AusTraits. C
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#traits.build-taxa"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-taxa"> </span><span id="traits.build-taxa"> </span></p>
 </section>
 <section id="taxa-table" class="level3">
 <h3 class="anchored" data-anchor-id="taxa-table">taxa table</h3>
-<div id="fuioftuebr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-taxa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -3391,7 +3384,7 @@ A table containing details on taxa associated with information in <code>traits</
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -3405,11 +3398,11 @@ A table containing details on taxa associated with information in <code>traits</
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#traits.build-contributors"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-contributors"> </span><span id="traits.build-contributors"> </span></p>
 </section>
 <section id="contributors-table" class="level3">
 <h3 class="anchored" data-anchor-id="contributors-table">contributors table</h3>
-<div id="xgqzzxzczr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-contributors" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -3487,7 +3480,7 @@ A table of people contributing to each study.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -3501,11 +3494,11 @@ A table of people contributing to each study.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#traits.build-identifiers"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-identifiers"> </span><span id="traits.build-identifiers"> </span></p>
 </section>
 <section id="identifiers-table" class="level3">
 <h3 class="anchored" data-anchor-id="identifiers-table">identifiers table</h3>
-<div id="qqhntmiwjt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-identifiers" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -3591,7 +3584,7 @@ Includes information about specimen identifiers
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-8-Jun-25
+<a href="2025-06-08">2025-06-08</a>
 </td>
 </tr>
 <tr>
@@ -3605,11 +3598,11 @@ Includes information about specimen identifiers
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#traits.build-sources"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-sources"> </span><span id="traits.build-sources"> </span></p>
 </section>
 <section id="sources-table" class="level3">
 <h3 class="anchored" data-anchor-id="sources-table">sources table</h3>
-<div id="wdchbcanek" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-sources" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -3687,7 +3680,7 @@ A list containing citation details for all database sources.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -3701,11 +3694,11 @@ A list containing citation details for all database sources.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#traits.build-definitions"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-definitions"> </span><span id="traits.build-definitions"> </span></p>
 </section>
 <section id="definitions-table" class="level3">
 <h3 class="anchored" data-anchor-id="definitions-table">definitions table</h3>
-<div id="gbviaxvnft" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-definitions" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -3783,7 +3776,7 @@ A list containing trait concept descriptions used to build the database.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -3797,11 +3790,11 @@ A list containing trait concept descriptions used to build the database.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#traits.build-schema"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-schema"> </span><span id="traits.build-schema"> </span></p>
 </section>
 <section id="schema" class="level3">
 <h3 class="anchored" data-anchor-id="schema">schema</h3>
-<div id="ixyevthzhu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-schema" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -3852,10 +3845,10 @@ A copy of the schema for all tables and terms. Information included here was use
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a> <a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
+<a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-Internal to traits.build no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN.
+Internal to traits.build; no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN.
 </td>
 </tr>
 <tr>
@@ -3879,7 +3872,7 @@ Internal to traits.build no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TER
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -3893,11 +3886,11 @@ Internal to traits.build no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TER
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#traits.build-metadata"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-metadata"> </span><span id="traits.build-metadata"> </span></p>
 </section>
 <section id="metadata-table" class="level3">
 <h3 class="anchored" data-anchor-id="metadata-table">metadata table</h3>
-<div id="ihasvzaxft" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-metadata" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -3975,7 +3968,7 @@ A list containing database metadata.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -3989,11 +3982,11 @@ A list containing database metadata.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#traits.build-build_info"> </span></p>
+<p><span id="https://w3id.org/traits.build#traits.build-build_info"> </span><span id="traits.build-build_info"> </span></p>
 </section>
 <section id="build-info" class="level3">
 <h3 class="anchored" data-anchor-id="build-info">build info</h3>
-<div id="cylqlcpxum" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-traits-build-build_info" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -4044,10 +4037,10 @@ A description of the computing environment used to create this version of the da
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a> <a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
+<a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-Internal to traits.build no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN.
+Internal to traits.build; no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN.
 </td>
 </tr>
 <tr>
@@ -4071,7 +4064,7 @@ Internal to traits.build no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TER
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -4092,11 +4085,11 @@ Internal to traits.build no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TER
 <p>Columns within the traits.build output tables</p>
 <section id="traits-table-1" class="level3">
 <h3 class="anchored" data-anchor-id="traits-table-1">traits table</h3>
-<p><span id="https://w3id.org/traits.build#dataset_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#dataset_id"> </span><span id="dataset_id"> </span></p>
 </section>
 <section id="dataset-id" class="level3">
 <h3 class="anchored" data-anchor-id="dataset-id">dataset id</h3>
-<div id="hqokimmmqj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-dataset_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -4190,7 +4183,7 @@ Primary identifier for each study contributed to AusTraits, most often these are
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -4204,11 +4197,11 @@ Primary identifier for each study contributed to AusTraits, most often these are
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#taxon_name"> </span></p>
+<p><span id="https://w3id.org/traits.build#taxon_name"> </span><span id="taxon_name"> </span></p>
 </section>
 <section id="taxon-name" class="level3">
 <h3 class="anchored" data-anchor-id="taxon-name">taxon name</h3>
-<div id="pizojcqmrg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-taxon_name" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -4259,6 +4252,14 @@ Scientific name of the taxon on which traits were sampled, without authorship. W
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Related to dwc:scientificName and ets:scientificName, which carry authorship where taxon_name does not; scientific_name in the taxa table is the exact match to dwc:scientificName. Close to dwc:acceptedNameUsage, as in 1.1.0: where possible taxon_name is the currently accepted name, which is what acceptedNameUsage holds, without its authorship. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -4278,7 +4279,15 @@ Scientific name of the taxon on which traits were sampled, without authorship. W
 <a href="http://www.w3.org/2004/02/skos/core#closeMatch">has close match</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-<a href="http://rs.tdwg.org/dwc/terms/acceptedNameUsage">acceptedNameUsage</a><br> <a href="http://rs.tdwg.org/dwc/terms/scientificName">Scientific Name</a><br> <a href="http://terminologies.gfbio.org/terms/ETS/scientificName">scientific name</a>
+<a href="http://rs.tdwg.org/dwc/terms/acceptedNameUsage">acceptedNameUsage</a>
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#relatedMatch">has related match</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+<a href="http://rs.tdwg.org/dwc/terms/scientificName">Scientific Name</a><br> <a href="http://terminologies.gfbio.org/terms/ETS/scientificName">scientific name</a>
 </td>
 </tr>
 <tr>
@@ -4326,7 +4335,7 @@ Scientific name of the taxon on which traits were sampled, without authorship. W
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -4348,11 +4357,11 @@ Scientific name of the taxon on which traits were sampled, without authorship. W
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#observation_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#observation_id"> </span><span id="observation_id"> </span></p>
 </section>
 <section id="observation-id" class="level3">
 <h3 class="anchored" data-anchor-id="observation-id">observation id</h3>
-<div id="kfniaimhpu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-observation_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -4446,7 +4455,7 @@ A unique integral identifier for the observation, where an observation is all me
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -4460,11 +4469,11 @@ A unique integral identifier for the observation, where an observation is all me
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#trait_name"> </span></p>
+<p><span id="https://w3id.org/traits.build#trait_name"> </span><span id="trait_name"> </span></p>
 </section>
 <section id="trait-name" class="level3">
 <h3 class="anchored" data-anchor-id="trait-name">trait name</h3>
-<div id="aojducugjy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-trait_name" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -4558,7 +4567,7 @@ Name of the trait sampled. Allowable values specified in the table <code>definit
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -4572,11 +4581,11 @@ Name of the trait sampled. Allowable values specified in the table <code>definit
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#trait_value"> </span></p>
+<p><span id="https://w3id.org/traits.build#trait_value"> </span><span id="trait_value"> </span></p>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">value</h3>
-<div id="sscbdnqrxe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-trait_value" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -4627,6 +4636,14 @@ The measured value of a trait.
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Exact to dwc:measurementValue, although Darwin Core measurements are often read as species-level. The term is defined as the value of the measurement, fact, characteristic, or assertion, and a MeasurementOrFact record can attach to an Occurrence (one organism) as well as to a Taxon. Questioned and kept on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -4670,7 +4687,7 @@ The measured value of a trait.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -4688,7 +4705,7 @@ The measured value of a trait.
 </section>
 <section id="unit" class="level3">
 <h3 class="anchored" data-anchor-id="unit">unit</h3>
-<div id="fclnodkbpd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-unit" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -4739,6 +4756,14 @@ Units of the sampled trait value after aligning with AusTraits standards.
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Close to tern:unit, which takes a QUDT unit IRI where unit holds the unit as text. dwc:measurementUnit and dwc:assertionUnit hold text and are exact matches. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -4766,15 +4791,7 @@ Units of the sampled trait value after aligning with AusTraits standards.
 <a href="http://www.w3.org/2004/02/skos/core#closeMatch">has close match</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-<a href="http://qudt.org/schema/qudt/Unit">Unit</a>
-</td>
-</tr>
-<tr>
-<td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2004/02/skos/core#relatedMatch">has related match</a>
-</td>
-<td headers="description" class="gt_row gt_left">
-<a href="https://w3id.org/tern/ontologies/tern/unit">unit</a>
+<a href="http://qudt.org/schema/qudt/Unit">Unit</a><br> <a href="https://w3id.org/tern/ontologies/tern/unit">unit</a>
 </td>
 </tr>
 <tr>
@@ -4782,7 +4799,7 @@ Units of the sampled trait value after aligning with AusTraits standards.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -4796,11 +4813,11 @@ Units of the sampled trait value after aligning with AusTraits standards.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#entity_type"> </span></p>
+<p><span id="https://w3id.org/traits.build#entity_type"> </span><span id="entity_type"> </span></p>
 </section>
 <section id="entity-type" class="level3">
 <h3 class="anchored" data-anchor-id="entity-type">entity type</h3>
-<div id="weoibvytlf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-entity_type" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -4878,7 +4895,7 @@ A categorical variable specifying the entity corresponding to the trait values r
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -4900,11 +4917,11 @@ A categorical variable specifying the entity corresponding to the trait values r
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#value_type"> </span></p>
+<p><span id="https://w3id.org/traits.build#value_type"> </span><span id="value_type"> </span></p>
 </section>
 <section id="value-type" class="level3">
 <h3 class="anchored" data-anchor-id="value-type">value type</h3>
-<div id="rieaizxxwd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-value_type" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -4998,7 +5015,7 @@ A categorical variable describing the statistical nature of the trait value reco
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -5020,11 +5037,11 @@ A categorical variable describing the statistical nature of the trait value reco
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#basis_of_value"> </span></p>
+<p><span id="https://w3id.org/traits.build#basis_of_value"> </span><span id="basis_of_value"> </span></p>
 </section>
 <section id="basis-of-value" class="level3">
 <h3 class="anchored" data-anchor-id="basis-of-value">basis of value</h3>
-<div id="dlqypavsil" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-basis_of_value" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -5110,7 +5127,7 @@ A categorical variable describing how the trait value was obtained.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -5136,7 +5153,7 @@ A categorical variable describing how the trait value was obtained.
 </section>
 <section id="replicates" class="level3">
 <h3 class="anchored" data-anchor-id="replicates">replicates</h3>
-<div id="owdbuqpahz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-replicates" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -5222,7 +5239,7 @@ Number of replicate measurements that comprise a recorded trait measurement. A n
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -5244,11 +5261,11 @@ Number of replicate measurements that comprise a recorded trait measurement. A n
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#basis_of_record"> </span></p>
+<p><span id="https://w3id.org/traits.build#basis_of_record"> </span><span id="basis_of_record"> </span></p>
 </section>
 <section id="basis-of-record" class="level3">
 <h3 class="anchored" data-anchor-id="basis-of-record">basis of record</h3>
-<div id="mnninxxrlt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-basis_of_record" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -5326,7 +5343,7 @@ A categorical variable specifying from which kind of specimen traits were record
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -5348,11 +5365,11 @@ A categorical variable specifying from which kind of specimen traits were record
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#life_stage"> </span></p>
+<p><span id="https://w3id.org/traits.build#life_stage"> </span><span id="life_stage"> </span></p>
 </section>
 <section id="life-stage" class="level3">
 <h3 class="anchored" data-anchor-id="life-stage">life stage</h3>
-<div id="fqltszrchy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-life_stage" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -5446,7 +5463,7 @@ A field to indicate the life stage or age class of the entity measured. Standard
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -5468,11 +5485,11 @@ A field to indicate the life stage or age class of the entity measured. Standard
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#population_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#population_id"> </span><span id="population_id"> </span></p>
 </section>
 <section id="population-id" class="level3">
 <h3 class="anchored" data-anchor-id="population-id">population id</h3>
-<div id="ojkuxjvnfj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-population_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -5566,7 +5583,7 @@ A unique integer identifier for a population, where a population is defined as i
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -5588,11 +5605,11 @@ A unique integer identifier for a population, where a population is defined as i
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#individual_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#individual_id"> </span><span id="individual_id"> </span></p>
 </section>
 <section id="individual-id" class="level3">
 <h3 class="anchored" data-anchor-id="individual-id">individual id</h3>
-<div id="swbffkehol" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-individual_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -5643,6 +5660,14 @@ A unique integer identifier for an individual, with individuals numbered sequent
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Close, not exact, to dwc:organismID: a Darwin Core organism may be a group of organisms (see dwc:Organism), where individual_id identifies one. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -5659,7 +5684,7 @@ A unique integer identifier for an individual, with individuals numbered sequent
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2004/02/skos/core#exactMatch">has exact match</a>
+<a href="http://www.w3.org/2004/02/skos/core#closeMatch">has close match</a>
 </td>
 <td headers="description" class="gt_row gt_left">
 <a href="http://rs.tdwg.org/dwc/terms/organismID">Organism ID</a>
@@ -5686,7 +5711,7 @@ A unique integer identifier for an individual, with individuals numbered sequent
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -5708,11 +5733,11 @@ A unique integer identifier for an individual, with individuals numbered sequent
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#repeat_measurements_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#repeat_measurements_id"> </span><span id="repeat_measurements_id"> </span></p>
 </section>
 <section id="repeat-measurements-id" class="level3">
 <h3 class="anchored" data-anchor-id="repeat-measurements-id">repeat measurements id</h3>
-<div id="khunfixqrg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-repeat_measurements_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -5806,7 +5831,7 @@ A unique integer identifier for repeat measurements of a trait that comprise a s
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -5828,11 +5853,11 @@ A unique integer identifier for repeat measurements of a trait that comprise a s
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#temporal_context_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#temporal_context_id"> </span><span id="temporal_context_id"> </span></p>
 </section>
 <section id="temporal-context-id" class="level3">
 <h3 class="anchored" data-anchor-id="temporal-context-id">temporal context id</h3>
-<div id="cjdaxjkrof" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-temporal_context_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -5918,7 +5943,7 @@ A unique integer identifier assigned where repeat observations are made on the s
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -5940,11 +5965,11 @@ A unique integer identifier assigned where repeat observations are made on the s
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#source_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#source_id"> </span><span id="source_id"> </span></p>
 </section>
 <section id="source-id" class="level3">
 <h3 class="anchored" data-anchor-id="source-id">source id</h3>
-<div id="xolkpmifuj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-source_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -6038,7 +6063,7 @@ For datasets that are compilations, an identifier for the original data source.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -6060,11 +6085,11 @@ For datasets that are compilations, an identifier for the original data source.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#location_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#location_id"> </span><span id="location_id"> </span></p>
 </section>
 <section id="location-id" class="level3">
 <h3 class="anchored" data-anchor-id="location-id">location id</h3>
-<div id="tyjikxyrau" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-location_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -6158,7 +6183,7 @@ A unique integer identifier for a location, with locations numbered sequentially
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -6180,11 +6205,11 @@ A unique integer identifier for a location, with locations numbered sequentially
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#entity_context_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#entity_context_id"> </span><span id="entity_context_id"> </span></p>
 </section>
 <section id="entity-context-id" class="level3">
 <h3 class="anchored" data-anchor-id="entity-context-id">entity context id</h3>
-<div id="qxowlvmzsu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-entity_context_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -6270,7 +6295,7 @@ A unique integer identifier indicating specific contextual properties of an indi
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -6292,11 +6317,11 @@ A unique integer identifier indicating specific contextual properties of an indi
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#plot_context_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#plot_context_id"> </span><span id="plot_context_id"> </span></p>
 </section>
 <section id="plot-context-id" class="level3">
 <h3 class="anchored" data-anchor-id="plot-context-id">plot context id</h3>
-<div id="cpjjewcyvt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-plot_context_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -6382,7 +6407,7 @@ A unique integer identifier for a plot, where a plot is a distinct collection of
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -6404,11 +6429,11 @@ A unique integer identifier for a plot, where a plot is a distinct collection of
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#treatment_context_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#treatment_context_id"> </span><span id="treatment_context_id"> </span></p>
 </section>
 <section id="treatment-context-id" class="level3">
 <h3 class="anchored" data-anchor-id="treatment-context-id">treatment context id</h3>
-<div id="tddbpyqzwv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-treatment_context_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -6494,7 +6519,7 @@ A unique integer identifier for a treatment, where a treatment is any experiment
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -6516,11 +6541,11 @@ A unique integer identifier for a treatment, where a treatment is any experiment
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#collection_date"> </span></p>
+<p><span id="https://w3id.org/traits.build#collection_date"> </span><span id="collection_date"> </span></p>
 </section>
 <section id="collection-date" class="level3">
 <h3 class="anchored" data-anchor-id="collection-date">collection date</h3>
-<div id="rcwcsnxtix" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-collection_date" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -6571,6 +6596,14 @@ Date sample was taken, in the format <code>yyyy-mm-dd</code>, <code>yyyy-mm</cod
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Close, not exact, to dwc:eventDate, ets:eventDate and the other date terms: when the sampling date is unknown, collection_date holds the publication date, which is not when the event occurred. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -6587,18 +6620,10 @@ Date sample was taken, in the format <code>yyyy-mm-dd</code>, <code>yyyy-mm</cod
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2004/02/skos/core#exactMatch">has exact match</a>
-</td>
-<td headers="description" class="gt_row gt_left">
-<a href="http://terminologies.gfbio.org/terms/ETS/eventDate">eventDate</a><br> <a href="http://rs.tdwg.org/dwc/terms/eventDate">Event Date</a>
-</td>
-</tr>
-<tr>
-<td headers="name" class="gt_row gt_left">
 <a href="http://www.w3.org/2004/02/skos/core#closeMatch">has close match</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-<a href="http://rs.tdwg.org/dwc/terms/measurementDeterminedDate">Measurement Determined Date</a><br> <a href="http://rs.tdwg.org/dwc/terms/assertionEffectiveDate">Assertion Effective Date</a><br> <a href="http://www.w3.org/ns/sosa/phenomenonTime">phenomenon time</a><br> <a href="https://w3id.org/tern/ontologies/tern/resultDateTime">result date time</a>
+<a href="http://rs.tdwg.org/dwc/terms/measurementDeterminedDate">Measurement Determined Date</a><br> <a href="http://rs.tdwg.org/dwc/terms/assertionEffectiveDate">Assertion Effective Date</a><br> <a href="http://www.w3.org/ns/sosa/phenomenonTime">phenomenon time</a><br> <a href="https://w3id.org/tern/ontologies/tern/resultDateTime">result date time</a><br> <a href="http://rs.tdwg.org/dwc/terms/eventDate">Event Date</a><br> <a href="http://terminologies.gfbio.org/terms/ETS/eventDate">eventDate</a>
 </td>
 </tr>
 <tr>
@@ -6622,7 +6647,7 @@ Date sample was taken, in the format <code>yyyy-mm-dd</code>, <code>yyyy-mm</cod
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -6644,11 +6669,11 @@ Date sample was taken, in the format <code>yyyy-mm-dd</code>, <code>yyyy-mm</cod
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#measurement_remarks"> </span></p>
+<p><span id="https://w3id.org/traits.build#measurement_remarks"> </span><span id="measurement_remarks"> </span></p>
 </section>
 <section id="measurement-remarks" class="level3">
 <h3 class="anchored" data-anchor-id="measurement-remarks">measurement remarks</h3>
-<div id="uksknehnph" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-measurement_remarks" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -6734,7 +6759,7 @@ Brief comments or notes accompanying the trait measurement.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -6756,11 +6781,11 @@ Brief comments or notes accompanying the trait measurement.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#method_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#method_id"> </span><span id="method_id"> </span></p>
 </section>
 <section id="method-id" class="level3">
 <h3 class="anchored" data-anchor-id="method-id">method id</h3>
-<div id="rjxppfwnsn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-method_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -6862,7 +6887,7 @@ A unique integer identifier to distinguish between multiple sets of methods used
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -6884,11 +6909,11 @@ A unique integer identifier to distinguish between multiple sets of methods used
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#method_context_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#method_context_id"> </span><span id="method_context_id"> </span></p>
 </section>
 <section id="method-context-id" class="level3">
 <h3 class="anchored" data-anchor-id="method-context-id">method context id</h3>
-<div id="lvdbbekyar" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-method_context_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -6966,7 +6991,7 @@ A unique integer identifier indicating a trait is measured multiple times on the
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -6988,11 +7013,11 @@ A unique integer identifier indicating a trait is measured multiple times on the
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#original_name"> </span></p>
+<p><span id="https://w3id.org/traits.build#original_name"> </span><span id="original_name"> </span></p>
 </section>
 <section id="original-taxon-name" class="level3">
 <h3 class="anchored" data-anchor-id="original-taxon-name">original taxon name</h3>
-<div id="crqsjtsiuf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-original_name" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -7043,6 +7068,14 @@ Name given to taxon in the original data supplied by the authors.
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Exact to dwc:verbatimIdentification. Close, not related, to ets:verbatimScientificName, the species name or taxon identifier as originally supplied by the data provider: unlike dwc:scientificName its definition does not call for authorship. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -7062,7 +7095,15 @@ Name given to taxon in the original data supplied by the authors.
 <a href="http://www.w3.org/2004/02/skos/core#exactMatch">has exact match</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-<a href="http://rs.tdwg.org/dwc/terms/verbatimIdentification">Verbatim Identification</a><br> <a href="http://terminologies.gfbio.org/terms/ETS/verbatimScientificName">verbatim scientific name</a>
+<a href="http://rs.tdwg.org/dwc/terms/verbatimIdentification">Verbatim Identification</a>
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#closeMatch">has close match</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+<a href="http://terminologies.gfbio.org/terms/ETS/verbatimScientificName">verbatim scientific name</a>
 </td>
 </tr>
 <tr>
@@ -7078,7 +7119,7 @@ Name given to taxon in the original data supplied by the authors.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -7103,11 +7144,11 @@ Name given to taxon in the original data supplied by the authors.
 </section>
 <section id="locations-table-1" class="level3">
 <h3 class="anchored" data-anchor-id="locations-table-1">locations table</h3>
-<p><span id="https://w3id.org/traits.build#location_name"> </span></p>
+<p><span id="https://w3id.org/traits.build#location_name"> </span><span id="location_name"> </span></p>
 </section>
 <section id="location-name" class="level3">
 <h3 class="anchored" data-anchor-id="location-name">location name</h3>
-<div id="wzpzwafqod" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-location_name" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -7193,7 +7234,7 @@ The location name used by the data contributor or a generic location name design
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -7215,11 +7256,11 @@ The location name used by the data contributor or a generic location name design
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#location_property"> </span></p>
+<p><span id="https://w3id.org/traits.build#location_property"> </span><span id="location_property"> </span></p>
 </section>
 <section id="location-property" class="level3">
 <h3 class="anchored" data-anchor-id="location-property">location property</h3>
-<div id="ksvcapnpnd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-location_property" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -7270,6 +7311,14 @@ The location characteristic being recorded. The name should include units of mea
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+dwc:measurementType is broader: it names the type of any measurement, where location_property names only a property of a location. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -7286,18 +7335,10 @@ The location characteristic being recorded. The name should include units of mea
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2004/02/skos/core#closeMatch">has close match</a>
-</td>
-<td headers="description" class="gt_row gt_left">
-<a href="http://rs.tdwg.org/dwc/terms/measurementType">Measurement Type</a>
-</td>
-</tr>
-<tr>
-<td headers="name" class="gt_row gt_left">
 <a href="http://www.w3.org/2004/02/skos/core#broader">has broader</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-<a href="http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic">Characteristic</a><br> <a href="http://www.w3.org/ns/sosa/ObservableProperty">Observable Property</a>
+<a href="http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic">Characteristic</a><br> <a href="http://www.w3.org/ns/sosa/ObservableProperty">Observable Property</a><br> <a href="http://rs.tdwg.org/dwc/terms/measurementType">Measurement Type</a>
 </td>
 </tr>
 <tr>
@@ -7321,7 +7362,7 @@ The location characteristic being recorded. The name should include units of mea
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -7343,11 +7384,11 @@ The location characteristic being recorded. The name should include units of mea
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#locations_value"> </span></p>
+<p><span id="https://w3id.org/traits.build#locations_value"> </span><span id="locations_value"> </span></p>
 </section>
 <section id="location-property-value" class="level3">
 <h3 class="anchored" data-anchor-id="location-property-value">location property value</h3>
-<div id="fsmmkbhvjx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-locations_value" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -7433,7 +7474,7 @@ The measured value of a location property.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -7455,11 +7496,11 @@ The measured value of a location property.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#latitude"> </span></p>
+<p><span id="https://w3id.org/traits.build#latitude"> </span><span id="latitude"> </span></p>
 </section>
 <section id="latitude-deg" class="level3">
 <h3 class="anchored" data-anchor-id="latitude-deg">latitude (deg)</h3>
-<div id="urxdvqsysx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-latitude" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -7561,7 +7602,7 @@ The geographic latitude (in decimal degrees, using the spatial reference system 
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -7583,11 +7624,11 @@ The geographic latitude (in decimal degrees, using the spatial reference system 
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#longitude"> </span></p>
+<p><span id="https://w3id.org/traits.build#longitude"> </span><span id="longitude"> </span></p>
 </section>
 <section id="longitude-deg" class="level3">
 <h3 class="anchored" data-anchor-id="longitude-deg">longitude (deg)</h3>
-<div id="iayzinvlov" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-longitude" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -7689,7 +7730,7 @@ The geographic longitude (in decimal degrees, using the spatial reference system
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -7711,11 +7752,11 @@ The geographic longitude (in decimal degrees, using the spatial reference system
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#elevation"> </span></p>
+<p><span id="https://w3id.org/traits.build#elevation"> </span><span id="elevation"> </span></p>
 </section>
 <section id="elevation-m" class="level3">
 <h3 class="anchored" data-anchor-id="elevation-m">elevation (m)</h3>
-<div id="rvoevrrdrw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-elevation" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -7766,6 +7807,14 @@ The elevation above mean sea level in meters.
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Exact to ets:elevation, the geographic elevation in metres above sea level. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -7785,15 +7834,7 @@ The elevation above mean sea level in meters.
 <a href="http://www.w3.org/2004/02/skos/core#exactMatch">has exact match</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-<a href="http://rs.tdwg.org/dwc/terms/verbatimElevation">Verbatim Elevation</a>
-</td>
-</tr>
-<tr>
-<td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2004/02/skos/core#closeMatch">has close match</a>
-</td>
-<td headers="description" class="gt_row gt_left">
-<a href="http://terminologies.gfbio.org/terms/ETS/elevation">elevation</a>
+<a href="http://rs.tdwg.org/dwc/terms/verbatimElevation">Verbatim Elevation</a><br> <a href="http://terminologies.gfbio.org/terms/ETS/elevation">elevation</a>
 </td>
 </tr>
 <tr>
@@ -7825,7 +7866,7 @@ The elevation above mean sea level in meters.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -7850,11 +7891,11 @@ The elevation above mean sea level in meters.
 </section>
 <section id="contexts-table-1" class="level3">
 <h3 class="anchored" data-anchor-id="contexts-table-1">contexts table</h3>
-<p><span id="https://w3id.org/traits.build#context_property"> </span></p>
+<p><span id="https://w3id.org/traits.build#context_property"> </span><span id="context_property"> </span></p>
 </section>
 <section id="context-property" class="level3">
 <h3 class="anchored" data-anchor-id="context-property">context property</h3>
-<div id="otzwvjglph" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-context_property" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -7964,7 +8005,7 @@ The contextual characteristic being recorded. If applicable, name should include
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -7986,11 +8027,11 @@ The contextual characteristic being recorded. If applicable, name should include
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#contexts_category"> </span></p>
+<p><span id="https://w3id.org/traits.build#contexts_category"> </span><span id="contexts_category"> </span></p>
 </section>
 <section id="context-property-category" class="level3">
 <h3 class="anchored" data-anchor-id="context-property-category">context property category</h3>
-<div id="jqdsgzfozm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-contexts_category" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -8076,7 +8117,7 @@ The category of context property, with options being <code>plot</code>, <code>tr
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -8098,11 +8139,11 @@ The category of context property, with options being <code>plot</code>, <code>tr
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#contexts_value"> </span></p>
+<p><span id="https://w3id.org/traits.build#contexts_value"> </span><span id="contexts_value"> </span></p>
 </section>
 <section id="context-property-value" class="level3">
 <h3 class="anchored" data-anchor-id="context-property-value">context property value</h3>
-<div id="pnidetmpet" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-contexts_value" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -8196,7 +8237,7 @@ The measured value of a context property.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -8218,11 +8259,11 @@ The measured value of a context property.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#contexts_description"> </span></p>
+<p><span id="https://w3id.org/traits.build#contexts_description"> </span><span id="contexts_description"> </span></p>
 </section>
 <section id="context-property-value-description" class="level3">
 <h3 class="anchored" data-anchor-id="context-property-value-description">context property value description</h3>
-<div id="osffnmtinu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-contexts_description" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -8308,7 +8349,7 @@ Description of a specific context property value.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -8330,11 +8371,11 @@ Description of a specific context property value.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#contexts_link_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#contexts_link_id"> </span><span id="contexts_link_id"> </span></p>
 </section>
 <section id="context-propety-link-id" class="level3">
 <h3 class="anchored" data-anchor-id="context-propety-link-id">context propety link id</h3>
-<div id="tnpvrmxarp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-contexts_link_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -8420,7 +8461,7 @@ Variable indicating which identifier column in the traits table contains the spe
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -8442,11 +8483,11 @@ Variable indicating which identifier column in the traits table contains the spe
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#contexts_link_vals"> </span></p>
+<p><span id="https://w3id.org/traits.build#contexts_link_vals"> </span><span id="contexts_link_vals"> </span></p>
 </section>
 <section id="context-propety-link-vals" class="level3">
 <h3 class="anchored" data-anchor-id="context-propety-link-vals">context propety link vals</h3>
-<div id="mgdauwzdng" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-contexts_link_vals" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -8532,7 +8573,7 @@ Unique integer identifiers that link between identifier columns in the <code>tra
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -8554,11 +8595,11 @@ Unique integer identifiers that link between identifier columns in the <code>tra
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#treatment_context_property"> </span></p>
+<p><span id="https://w3id.org/traits.build#treatment_context_property"> </span><span id="treatment_context_property"> </span></p>
 </section>
 <section id="treatment-context-property" class="level3">
 <h3 class="anchored" data-anchor-id="treatment-context-property">treatment context property</h3>
-<div id="luyugkszdm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-treatment_context_property" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -8668,7 +8709,7 @@ A context characteristic indicating stratified treatments that might affect the 
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -8690,11 +8731,11 @@ A context characteristic indicating stratified treatments that might affect the 
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#plot_context_property"> </span></p>
+<p><span id="https://w3id.org/traits.build#plot_context_property"> </span><span id="plot_context_property"> </span></p>
 </section>
 <section id="plot-context-property" class="level3">
 <h3 class="anchored" data-anchor-id="plot-context-property">plot context property</h3>
-<div id="abkbyfsphy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-plot_context_property" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -8804,7 +8845,7 @@ A context characteristic indicating stratified variation within a location that 
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -8826,11 +8867,11 @@ A context characteristic indicating stratified variation within a location that 
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#entity_context_property"> </span></p>
+<p><span id="https://w3id.org/traits.build#entity_context_property"> </span><span id="entity_context_property"> </span></p>
 </section>
 <section id="entity-context-property" class="level3">
 <h3 class="anchored" data-anchor-id="entity-context-property">entity context property</h3>
-<div id="kecuoplvsi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-entity_context_property" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -8940,7 +8981,7 @@ A context characteristic indicating stratified variation across individuals or p
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -8962,11 +9003,11 @@ A context characteristic indicating stratified variation across individuals or p
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#temporal_context_property"> </span></p>
+<p><span id="https://w3id.org/traits.build#temporal_context_property"> </span><span id="temporal_context_property"> </span></p>
 </section>
 <section id="temporal-context-property" class="level3">
 <h3 class="anchored" data-anchor-id="temporal-context-property">temporal context property</h3>
-<div id="nlrtidcatv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-temporal_context_property" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -9076,7 +9117,7 @@ A context characteristic indicating stratified variation across time might affec
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -9098,11 +9139,11 @@ A context characteristic indicating stratified variation across time might affec
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#method_context_property"> </span></p>
+<p><span id="https://w3id.org/traits.build#method_context_property"> </span><span id="method_context_property"> </span></p>
 </section>
 <section id="method-context-property" class="level3">
 <h3 class="anchored" data-anchor-id="method-context-property">method context property</h3>
-<div id="ftrciofmmm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-method_context_property" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -9212,7 +9253,7 @@ A context characteristic indicating stratified variation in the protocol used to
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -9237,11 +9278,11 @@ A context characteristic indicating stratified variation in the protocol used to
 </section>
 <section id="methods-table-1" class="level3">
 <h3 class="anchored" data-anchor-id="methods-table-1">methods table</h3>
-<p><span id="https://w3id.org/traits.build#methods_methods"> </span></p>
+<p><span id="https://w3id.org/traits.build#methods_methods"> </span><span id="methods_methods"> </span></p>
 </section>
 <section id="methods" class="level3">
 <h3 class="anchored" data-anchor-id="methods">methods</h3>
-<div id="mcldptykvt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-methods_methods" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -9335,7 +9376,7 @@ A textual description of the methods used to collect the trait data. Whenever av
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -9357,11 +9398,11 @@ A textual description of the methods used to collect the trait data. Whenever av
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#methods_description"> </span></p>
+<p><span id="https://w3id.org/traits.build#methods_description"> </span><span id="methods_description"> </span></p>
 </section>
 <section id="dataset-description" class="level3">
 <h3 class="anchored" data-anchor-id="dataset-description">dataset description</h3>
-<div id="vcopvbmekz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-methods_description" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -9455,7 +9496,7 @@ A 1-2 sentence description of the purpose of the study.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -9477,11 +9518,11 @@ A 1-2 sentence description of the purpose of the study.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#sampling_strategy"> </span></p>
+<p><span id="https://w3id.org/traits.build#sampling_strategy"> </span><span id="sampling_strategy"> </span></p>
 </section>
 <section id="dataset-sampling-strategy" class="level3">
 <h3 class="anchored" data-anchor-id="dataset-sampling-strategy">dataset sampling strategy</h3>
-<div id="vyppasaipc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-sampling_strategy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -9575,7 +9616,7 @@ When available, this information is lifted verbatim from a published manuscript.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -9597,11 +9638,11 @@ When available, this information is lifted verbatim from a published manuscript.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#source_primary_key"> </span></p>
+<p><span id="https://w3id.org/traits.build#source_primary_key"> </span><span id="source_primary_key"> </span></p>
 </section>
 <section id="source-primary-key" class="level3">
 <h3 class="anchored" data-anchor-id="source-primary-key">source primary key</h3>
-<div id="xyqjnntbma" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-source_primary_key" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -9695,7 +9736,7 @@ Citation key for the primary source in <code>sources</code>. The key is typicall
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -9717,11 +9758,11 @@ Citation key for the primary source in <code>sources</code>. The key is typicall
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#source_primary_citation"> </span></p>
+<p><span id="https://w3id.org/traits.build#source_primary_citation"> </span><span id="source_primary_citation"> </span></p>
 </section>
 <section id="source-primary-citation" class="level3">
 <h3 class="anchored" data-anchor-id="source-primary-citation">source primary citation</h3>
-<div id="vbzwjsxpal" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-source_primary_citation" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -9823,7 +9864,7 @@ Citation for the primary source. This detail is generated from the primary sourc
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -9845,11 +9886,11 @@ Citation for the primary source. This detail is generated from the primary sourc
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#source_secondary_key"> </span></p>
+<p><span id="https://w3id.org/traits.build#source_secondary_key"> </span><span id="source_secondary_key"> </span></p>
 </section>
 <section id="source-secondary-key" class="level3">
 <h3 class="anchored" data-anchor-id="source-secondary-key">source secondary key</h3>
-<div id="kkaibvblaw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-source_secondary_key" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -9935,7 +9976,7 @@ Citation key for the secondary source in <code>sources</code>. The key is typica
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -9957,11 +9998,11 @@ Citation key for the secondary source in <code>sources</code>. The key is typica
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#source_secondary_citation"> </span></p>
+<p><span id="https://w3id.org/traits.build#source_secondary_citation"> </span><span id="source_secondary_citation"> </span></p>
 </section>
 <section id="source-secondary-citation" class="level3">
 <h3 class="anchored" data-anchor-id="source-secondary-citation">source secondary citation</h3>
-<div id="ymppuwikfd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-source_secondary_citation" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -10063,7 +10104,7 @@ Citations for the secondary source. This detail is generated from the secondary 
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -10085,11 +10126,11 @@ Citations for the secondary source. This detail is generated from the secondary 
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#source_original_dataset_key"> </span></p>
+<p><span id="https://w3id.org/traits.build#source_original_dataset_key"> </span><span id="source_original_dataset_key"> </span></p>
 </section>
 <section id="source-original-dataset-key" class="level3">
 <h3 class="anchored" data-anchor-id="source-original-dataset-key">source original dataset key</h3>
-<div id="oqehbcoosy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-source_original_dataset_key" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -10183,7 +10224,7 @@ Citation key for the original dataset_id in sources, for compilations. The key i
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -10205,11 +10246,11 @@ Citation key for the original dataset_id in sources, for compilations. The key i
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#source_original_dataset_citation"> </span></p>
+<p><span id="https://w3id.org/traits.build#source_original_dataset_citation"> </span><span id="source_original_dataset_citation"> </span></p>
 </section>
 <section id="source-original-dataset-citation" class="level3">
 <h3 class="anchored" data-anchor-id="source-original-dataset-citation">source original dataset citation</h3>
-<div id="grqorvlofs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-source_original_dataset_citation" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -10311,7 +10352,7 @@ Citations for the original dataset_id in sources, for compilationse. This detail
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -10333,11 +10374,11 @@ Citations for the original dataset_id in sources, for compilationse. This detail
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#data_collectors"> </span></p>
+<p><span id="https://w3id.org/traits.build#data_collectors"> </span><span id="data_collectors"> </span></p>
 </section>
 <section id="data-collectors" class="level3">
 <h3 class="anchored" data-anchor-id="data-collectors">data collectors</h3>
-<div id="byrkqwbsxr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-data_collectors" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -10455,7 +10496,7 @@ Person contributing to a dataset as a data collector.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -10481,7 +10522,7 @@ Person contributing to a dataset as a data collector.
 </section>
 <section id="assistants" class="level3">
 <h3 class="anchored" data-anchor-id="assistants">assistants</h3>
-<div id="zdriktodjp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-assistants" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -10575,7 +10616,7 @@ People who played a more minor role in data collection for the study.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -10597,11 +10638,11 @@ People who played a more minor role in data collection for the study.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#dataset_curators"> </span></p>
+<p><span id="https://w3id.org/traits.build#dataset_curators"> </span><span id="dataset_curators"> </span></p>
 </section>
 <section id="dataset-curators" class="level3">
 <h3 class="anchored" data-anchor-id="dataset-curators">dataset curators</h3>
-<div id="jzswuzlztk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-dataset_curators" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -10695,7 +10736,7 @@ Database team member(s) who contacted the data collectors and added the study to
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -10721,7 +10762,7 @@ Database team member(s) who contacted the data collectors and added the study to
 </section>
 <section id="contributor" class="level3">
 <h3 class="anchored" data-anchor-id="contributor">contributor</h3>
-<div id="iylaxhubpy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-contributor" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -10823,7 +10864,7 @@ A person contributing to a dataset.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -10848,11 +10889,11 @@ A person contributing to a dataset.
 </section>
 <section id="taxonomic-updates-table-1" class="level3">
 <h3 class="anchored" data-anchor-id="taxonomic-updates-table-1">taxonomic updates table</h3>
-<p><span id="https://w3id.org/traits.build#aligned_name"> </span></p>
+<p><span id="https://w3id.org/traits.build#aligned_name"> </span><span id="aligned_name"> </span></p>
 </section>
 <section id="aligned-name" class="level3">
 <h3 class="anchored" data-anchor-id="aligned-name">aligned name</h3>
-<div id="acxouaiffg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-aligned_name" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -10954,7 +10995,7 @@ The taxon name without authorship after implementing automated syntax standardis
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -10976,11 +11017,11 @@ The taxon name without authorship after implementing automated syntax standardis
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#taxonomic_resolution"> </span></p>
+<p><span id="https://w3id.org/traits.build#taxonomic_resolution"> </span><span id="taxonomic_resolution"> </span></p>
 </section>
 <section id="taxonomic-resolution" class="level3">
 <h3 class="anchored" data-anchor-id="taxonomic-resolution">taxonomic resolution</h3>
-<div id="mypbviyrly" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-taxonomic_resolution" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -11055,10 +11096,18 @@ The rank of the most specific taxon name (or scientific name) to which a submitt
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://semanticscience.org/resource/SIO_000224">is property of</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+<a href="https://w3id.org/traits.build#aligned_name">aligned name</a>
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -11083,11 +11132,11 @@ The rank of the most specific taxon name (or scientific name) to which a submitt
 </section>
 <section id="taxa-table-1" class="level3">
 <h3 class="anchored" data-anchor-id="taxa-table-1">taxa table</h3>
-<p><span id="https://w3id.org/traits.build#taxonomic_dataset"> </span></p>
+<p><span id="https://w3id.org/traits.build#taxonomic_dataset"> </span><span id="taxonomic_dataset"> </span></p>
 </section>
 <section id="taxonomic-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="taxonomic-dataset">taxonomic dataset</h3>
-<div id="nznzpgapjt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-taxonomic_dataset" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -11162,10 +11211,18 @@ Name of the taxonomy (tree) that contains this concept. ie. APC, AusMoss etc.
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://semanticscience.org/resource/SIO_000224">is property of</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+<a href="https://w3id.org/traits.build#taxon_name">taxon name</a>
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -11187,11 +11244,11 @@ Name of the taxonomy (tree) that contains this concept. ie. APC, AusMoss etc.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#taxon_rank"> </span></p>
+<p><span id="https://w3id.org/traits.build#taxon_rank"> </span><span id="taxon_rank"> </span></p>
 </section>
 <section id="taxon-rank" class="level3">
 <h3 class="anchored" data-anchor-id="taxon-rank">taxon rank</h3>
-<div id="pdjhsucaoe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-taxon_rank" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -11274,10 +11331,18 @@ This is to clarify cases where information is not given on a species level.
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://semanticscience.org/resource/SIO_000224">is property of</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+<a href="https://w3id.org/traits.build#taxon_name">taxon name</a>
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -11303,7 +11368,7 @@ This is to clarify cases where information is not given on a species level.
 </section>
 <section id="trinomial" class="level3">
 <h3 class="anchored" data-anchor-id="trinomial">trinomial</h3>
-<div id="fcdzdqqckf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-trinomial" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -11397,7 +11462,7 @@ The infraspecific taxon name match for an original name. This column is assigned
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -11423,7 +11488,7 @@ The infraspecific taxon name match for an original name. This column is assigned
 </section>
 <section id="binomial" class="level3">
 <h3 class="anchored" data-anchor-id="binomial">binomial</h3>
-<div id="wxhjdzqysi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-binomial" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -11517,7 +11582,7 @@ The species-level taxon name match for an original name. This column is assigned
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -11543,7 +11608,7 @@ The species-level taxon name match for an original name. This column is assigned
 </section>
 <section id="genus" class="level3">
 <h3 class="anchored" data-anchor-id="genus">genus</h3>
-<div id="stybiiogjg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-genus" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -11637,7 +11702,7 @@ Genus of the taxon without authorship.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -11663,7 +11728,7 @@ Genus of the taxon without authorship.
 </section>
 <section id="family" class="level3">
 <h3 class="anchored" data-anchor-id="family">family</h3>
-<div id="kqtidxzady" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-family" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -11757,7 +11822,7 @@ Family of the taxon.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -11779,11 +11844,11 @@ Family of the taxon.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#taxon_distribution"> </span></p>
+<p><span id="https://w3id.org/traits.build#taxon_distribution"> </span><span id="taxon_distribution"> </span></p>
 </section>
 <section id="taxon-distribution" class="level3">
 <h3 class="anchored" data-anchor-id="taxon-distribution">taxon distribution</h3>
-<div id="eybnachmcj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-taxon_distribution" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -11858,10 +11923,18 @@ Known distribution of the taxon, by Australian state.
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://semanticscience.org/resource/SIO_000224">is property of</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+<a href="https://w3id.org/traits.build#taxon">taxon</a>
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -11883,11 +11956,11 @@ Known distribution of the taxon, by Australian state.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#establishment_means"> </span></p>
+<p><span id="https://w3id.org/traits.build#establishment_means"> </span><span id="establishment_means"> </span></p>
 </section>
 <section id="establishment-means" class="level3">
 <h3 class="anchored" data-anchor-id="establishment-means">establishment means</h3>
-<div id="mptwdbbjie" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-establishment_means" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -11938,10 +12011,10 @@ Statement about whether an organism or organisms have been introduced to a given
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a> <a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-Darwin Core applies establishmentMeans to an organism at a place and time a traits.build database records it once per taxon, so the match is close rather than exact.
+Close, not exact, to dwc:establishmentMeans: Darwin Core applies establishmentMeans to an organism at a place and time; a traits.build database records it once per taxon.
 </td>
 </tr>
 <tr>
@@ -11970,10 +12043,18 @@ Darwin Core applies establishmentMeans to an organism at a place and time a trai
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://semanticscience.org/resource/SIO_000224">is property of</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+<a href="https://w3id.org/traits.build#taxon">taxon</a>
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -11995,11 +12076,11 @@ Darwin Core applies establishmentMeans to an organism at a place and time a trai
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#taxonomic_status"> </span></p>
+<p><span id="https://w3id.org/traits.build#taxonomic_status"> </span><span id="taxonomic_status"> </span></p>
 </section>
 <section id="taxonomic-status" class="level3">
 <h3 class="anchored" data-anchor-id="taxonomic-status">taxonomic status</h3>
-<div id="kpqghnqpnb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-taxonomic_status" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -12074,10 +12155,18 @@ The status of the use of the scientificName as a label for the taxon in regard t
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://semanticscience.org/resource/SIO_000224">is property of</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+<a href="https://w3id.org/traits.build#taxon_name">taxon name</a>
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -12099,11 +12188,11 @@ The status of the use of the scientificName as a label for the taxon in regard t
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#taxon_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#taxon_id"> </span><span id="taxon_id"> </span></p>
 </section>
 <section id="taxon-id" class="level3">
 <h3 class="anchored" data-anchor-id="taxon-id">taxon id</h3>
-<div id="qvqtakmsju" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-taxon_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -12197,7 +12286,7 @@ An identifier for the set of taxon information (data associated with the taxon c
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -12219,11 +12308,11 @@ An identifier for the set of taxon information (data associated with the taxon c
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#scientific_name"> </span></p>
+<p><span id="https://w3id.org/traits.build#scientific_name"> </span><span id="scientific_name"> </span></p>
 </section>
 <section id="scientific-name" class="level3">
 <h3 class="anchored" data-anchor-id="scientific-name">scientific name</h3>
-<div id="bqyvxrknqe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-scientific_name" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -12317,7 +12406,7 @@ The full scientific name, with authorship and date information if known.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -12339,11 +12428,11 @@ The full scientific name, with authorship and date information if known.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#scientific_name_id"> </span></p>
+<p><span id="https://w3id.org/traits.build#scientific_name_id"> </span><span id="scientific_name_id"> </span></p>
 </section>
 <section id="scientific-name-id" class="level3">
 <h3 class="anchored" data-anchor-id="scientific-name-id">scientific name id</h3>
-<div id="euvkwqprvx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-scientific_name_id" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -12437,7 +12526,7 @@ An identifier for the set of taxon information (data associated with the taxon c
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -12463,7 +12552,7 @@ An identifier for the set of taxon information (data associated with the taxon c
 </section>
 <section id="taxon" class="level3">
 <h3 class="anchored" data-anchor-id="taxon">taxon</h3>
-<div id="amyvluwdee" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-taxon" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -12490,34 +12579,42 @@ URI
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2004/02/skos/core#prefLabel">preferred label</a> <a href="http://www.w3.org/2004/02/skos/core#prefLabel">preferred label</a>
+<a href="http://www.w3.org/2004/02/skos/core#prefLabel">preferred label</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-taxon taxon
+taxon
 </td>
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2004/02/skos/core#altLabel">alternative label</a> <a href="http://www.w3.org/2004/02/skos/core#altLabel">alternative label</a>
+<a href="http://www.w3.org/2004/02/skos/core#altLabel">alternative label</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-taxon taxon
+taxon
 </td>
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://purl.org/dc/terms/description">description</a> <a href="http://purl.org/dc/terms/description">description</a>
+<a href="http://purl.org/dc/terms/description">description</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-A circumscribed set of organisms. A group of organisms assumed to form a homogeneous unit with regard to associated trait measurements.
+<a href="A group of organisms (sensu http://purl.obolibrary.org/obo/OBI_0100026) considered by taxonomists to form a homogeneous unit.">A group of organisms (sensu http://purl.obolibrary.org/obo/OBI_0100026) considered by taxonomists to form a homogeneous unit.</a>
 </td>
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://semanticscience.org/resource/SIO_000602">computational entity</a> <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-<a href="http://semanticscience.org/resource/SIO_000756">database entry</a> <a href="http://semanticscience.org/resource/SIO_000757">database column</a>
+Close, not exact, to tern:Taxon. TERN takes the Darwin Core definition but makes tern:Taxon a subclass of tern:Value: a taxon is the result of an identification. Here a taxon is the thing observed, a feature of interest. The meaning is the same, the role in the model is different. dwc:Taxon has no such role and is the exact match. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
+<a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+<a href="http://semanticscience.org/resource/SIO_000756">database entry</a>
 </td>
 </tr>
 <tr>
@@ -12549,7 +12646,7 @@ A circumscribed set of organisms. A group of organisms assumed to form a homogen
 <a href="http://www.w3.org/2004/02/skos/core#broader">has broader</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-<a href="http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity">Entity</a><br> <a href="http://www.w3.org/ns/sosa/FeatureOfInterest">Feature of Interest</a><br> <a href="http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic">Characteristic</a>
+<a href="http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity">Entity</a><br> <a href="http://www.w3.org/ns/sosa/FeatureOfInterest">Feature of Interest</a>
 </td>
 </tr>
 <tr>
@@ -12578,26 +12675,18 @@ A circumscribed set of organisms. A group of organisms assumed to form a homogen
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://purl.org/dc/terms/created">created</a> <a href="http://purl.org/dc/terms/created">created</a>
+<a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24 1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2004/02/skos/core#inScheme">is in scheme</a> <a href="http://www.w3.org/2004/02/skos/core#inScheme">is in scheme</a>
+<a href="http://www.w3.org/2004/02/skos/core#inScheme">is in scheme</a>
 </td>
 <td headers="description" class="gt_row gt_left">
 <a href="https://w3id.org/traits.build">w3id.org/traits.build</a>
-</td>
-</tr>
-<tr>
-<td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype">datatype</a>
-</td>
-<td headers="description" class="gt_row gt_left">
-<a href="http://www.w3.org/2001/XMLSchema#string">string</a>
 </td>
 </tr>
 </tbody>
@@ -12606,11 +12695,11 @@ A circumscribed set of organisms. A group of organisms assumed to form a homogen
 </section>
 <section id="contributors-table-1" class="level3">
 <h3 class="anchored" data-anchor-id="contributors-table-1">contributors table</h3>
-<p><span id="https://w3id.org/traits.build#last_name"> </span></p>
+<p><span id="https://w3id.org/traits.build#last_name"> </span><span id="last_name"> </span></p>
 </section>
 <section id="last-name" class="level3">
 <h3 class="anchored" data-anchor-id="last-name">last name</h3>
-<div id="uxtumgxyjc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-last_name" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -12704,7 +12793,7 @@ Last name of the data collector.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -12726,11 +12815,11 @@ Last name of the data collector.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#given_name"> </span></p>
+<p><span id="https://w3id.org/traits.build#given_name"> </span><span id="given_name"> </span></p>
 </section>
 <section id="given-name" class="level3">
 <h3 class="anchored" data-anchor-id="given-name">given name</h3>
-<div id="hzzkmicayk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-given_name" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -12824,7 +12913,7 @@ Given names of the data collector.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -12846,11 +12935,11 @@ Given names of the data collector.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#ORCID"> </span></p>
+<p><span id="https://w3id.org/traits.build#ORCID"> </span><span id="ORCID"> </span></p>
 </section>
 <section id="orcid-identifier" class="level3">
 <h3 class="anchored" data-anchor-id="orcid-identifier">ORCID identifier</h3>
-<div id="abwqdxxzhp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-ORCID" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -12944,7 +13033,7 @@ ORCID (Open Researcher and Contributor ID) for the data collector, if available.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -12970,7 +13059,7 @@ ORCID (Open Researcher and Contributor ID) for the data collector, if available.
 </section>
 <section id="affiliation" class="level3">
 <h3 class="anchored" data-anchor-id="affiliation">affiliation</h3>
-<div id="cwqczfwkgk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-affiliation" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -13056,7 +13145,7 @@ Affiliation of data collector.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -13078,11 +13167,11 @@ Affiliation of data collector.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#additional_role"> </span></p>
+<p><span id="https://w3id.org/traits.build#additional_role"> </span><span id="additional_role"> </span></p>
 </section>
 <section id="additional-role" class="level3">
 <h3 class="anchored" data-anchor-id="additional-role">additional role</h3>
-<div id="rbwmpajmlo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-additional_role" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -13168,7 +13257,7 @@ Any additional roles the data collector had in the study, a field most frequentl
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -13193,11 +13282,11 @@ Any additional roles the data collector had in the study, a field most frequentl
 </section>
 <section id="identifiers-table-1" class="level3">
 <h3 class="anchored" data-anchor-id="identifiers-table-1">identifiers table</h3>
-<p><span id="https://w3id.org/traits.build#identifier_type"> </span></p>
+<p><span id="https://w3id.org/traits.build#identifier_type"> </span><span id="identifier_type"> </span></p>
 </section>
 <section id="identifier-type" class="level3">
 <h3 class="anchored" data-anchor-id="identifier-type">identifier type</h3>
-<div id="rbekvbbofx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-identifier_type" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -13299,7 +13388,7 @@ The type of identifier whose identifying characters are recorded, referencing gl
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-8-Jun-25
+<a href="2025-06-08">2025-06-08</a>
 </td>
 </tr>
 <tr>
@@ -13321,11 +13410,11 @@ The type of identifier whose identifying characters are recorded, referencing gl
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#institution_code"> </span></p>
+<p><span id="https://w3id.org/traits.build#institution_code"> </span><span id="institution_code"> </span></p>
 </section>
 <section id="institution-code" class="level3">
 <h3 class="anchored" data-anchor-id="institution-code">institution code</h3>
-<div id="vjolkmbfpp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-institution_code" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -13435,7 +13524,7 @@ The name (or acronym) in use by the institution having custody of the object(s) 
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-8-Jun-25
+<a href="2025-06-08">2025-06-08</a>
 </td>
 </tr>
 <tr>
@@ -13457,11 +13546,11 @@ The name (or acronym) in use by the institution having custody of the object(s) 
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#identifier_value"> </span></p>
+<p><span id="https://w3id.org/traits.build#identifier_value"> </span><span id="identifier_value"> </span></p>
 </section>
 <section id="identifier-value" class="level3">
 <h3 class="anchored" data-anchor-id="identifier-value">identifier value</h3>
-<div id="smucidkmfg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-identifier_value" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -13547,7 +13636,7 @@ A sequence of characters that links an observation within a traits.build databas
 <a href="http://semanticscience.org/resource/SIO_000671">has identifier</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-<a href="https://w3id.org/traits.build#identifier_type, institution_code">https://w3id.org/traits.build#identifier_type, institution_code</a>
+<a href="https://w3id.org/traits.build#identifier_type">identifier type</a><br> <a href="https://w3id.org/traits.build#institution_code">institution code</a>
 </td>
 </tr>
 <tr>
@@ -13555,7 +13644,7 @@ A sequence of characters that links an observation within a traits.build databas
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-8-Jun-25
+<a href="2025-06-08">2025-06-08</a>
 </td>
 </tr>
 <tr>
@@ -13580,11 +13669,11 @@ A sequence of characters that links an observation within a traits.build databas
 </section>
 <section id="definitions-table-1" class="level3">
 <h3 class="anchored" data-anchor-id="definitions-table-1">definitions table</h3>
-<p><span id="https://w3id.org/traits.build#trait"> </span></p>
+<p><span id="https://w3id.org/traits.build#trait"> </span><span id="trait"> </span></p>
 </section>
 <section id="trait-concept" class="level3">
 <h3 class="anchored" data-anchor-id="trait-concept">trait concept</h3>
-<div id="akwfezbmld" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-trait" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -13686,7 +13775,7 @@ A collection of trait values pertaining to a distinct characteristic of a specif
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -13708,11 +13797,11 @@ A collection of trait values pertaining to a distinct characteristic of a specif
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#trait_concept_URI"> </span></p>
+<p><span id="https://w3id.org/traits.build#trait_concept_URI"> </span><span id="trait_concept_URI"> </span></p>
 </section>
 <section id="trait-identifier" class="level3">
 <h3 class="anchored" data-anchor-id="trait-identifier">trait identifier</h3>
-<div id="pxhcmeyewm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-trait_concept_URI" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -13787,14 +13876,6 @@ Unique identifier of the trait according to a public ontology, or a user-provide
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2004/02/skos/core#closeMatch">has close match</a>
-</td>
-<td headers="description" class="gt_row gt_left">
-<a href="http://rs.tdwg.org/dwc/iri/measurementType">Measurement Type (IRI)</a><br> <a href="http://rs.tdwg.org/dwc/iri/assertionType">Assertion Type (IRI)</a>
-</td>
-</tr>
-<tr>
-<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000674">is unique identifier for</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -13806,7 +13887,7 @@ Unique identifier of the trait according to a public ontology, or a user-provide
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -13832,7 +13913,7 @@ Unique identifier of the trait according to a public ontology, or a user-provide
 </section>
 <section id="label" class="level3">
 <h3 class="anchored" data-anchor-id="label">label</h3>
-<div id="pjqjzzfwxq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-label" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -13918,7 +13999,7 @@ A concise English label for the trait.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -13944,7 +14025,7 @@ A concise English label for the trait.
 </section>
 <section id="description" class="level3">
 <h3 class="anchored" data-anchor-id="description">description</h3>
-<div id="giwbytxlcp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-description" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -14030,7 +14111,7 @@ A short description, generally ranging from 1-3 sentences that clearly indicates
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -14056,7 +14137,7 @@ A short description, generally ranging from 1-3 sentences that clearly indicates
 </section>
 <section id="comments" class="level3">
 <h3 class="anchored" data-anchor-id="comments">comments</h3>
-<div id="vixybciuri" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-comments" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -14142,7 +14223,7 @@ Additional notes about the scope of the trait or acceptable methods.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -14164,11 +14245,11 @@ Additional notes about the scope of the trait or acceptable methods.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#allowed_values_max"> </span></p>
+<p><span id="https://w3id.org/traits.build#allowed_values_max"> </span><span id="allowed_values_max"> </span></p>
 </section>
 <section id="max-allowed-values" class="level3">
 <h3 class="anchored" data-anchor-id="max-allowed-values">max allowed values</h3>
-<div id="wkdxbgxkzc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-allowed_values_max" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -14243,10 +14324,18 @@ An upper boundary for accepted numerical values.
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://semanticscience.org/resource/SIO_000224">is property of</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+<a href="https://w3id.org/traits.build#trait">trait concept</a>
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -14268,11 +14357,11 @@ An upper boundary for accepted numerical values.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#allowed_values_min"> </span></p>
+<p><span id="https://w3id.org/traits.build#allowed_values_min"> </span><span id="allowed_values_min"> </span></p>
 </section>
 <section id="min-allowed-values" class="level3">
 <h3 class="anchored" data-anchor-id="min-allowed-values">min allowed values</h3>
-<div id="slfmjzcboe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-allowed_values_min" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -14347,10 +14436,18 @@ A lower boundary for accepted numerical values.
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://semanticscience.org/resource/SIO_000224">is property of</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+<a href="https://w3id.org/traits.build#trait">trait concept</a>
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -14376,7 +14473,7 @@ A lower boundary for accepted numerical values.
 </section>
 <section id="units" class="level3">
 <h3 class="anchored" data-anchor-id="units">units</h3>
-<div id="bnevylzhre" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-units" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -14467,10 +14564,18 @@ The preferred units for the trait, conforming to the Unified Code for Units of M
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://semanticscience.org/resource/SIO_000224">is property of</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+<a href="https://w3id.org/traits.build#trait">trait concept</a>
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -14492,11 +14597,11 @@ The preferred units for the trait, conforming to the Unified Code for Units of M
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#allowed_values_levels"> </span></p>
+<p><span id="https://w3id.org/traits.build#allowed_values_levels"> </span><span id="allowed_values_levels"> </span></p>
 </section>
 <section id="allowed-categorical-values" class="level3">
 <h3 class="anchored" data-anchor-id="allowed-categorical-values">allowed categorical values</h3>
-<div id="ffkgysrvii" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-allowed_values_levels" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -14571,10 +14676,10 @@ Allowed trait values for a categorical trait, including a brief description of t
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2004/02/skos/core#relatedMatch">has related match</a>
+<a href="http://semanticscience.org/resource/SIO_000224">is property of</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-<a href="http://rs.tdwg.org/dwc/iri/measurementValue">Measurement Value (IRI)</a>
+<a href="https://w3id.org/traits.build#trait">trait concept</a>
 </td>
 </tr>
 <tr>
@@ -14582,7 +14687,7 @@ Allowed trait values for a categorical trait, including a brief description of t
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -14608,7 +14713,7 @@ Allowed trait values for a categorical trait, including a brief description of t
 </section>
 <section id="type" class="level3">
 <h3 class="anchored" data-anchor-id="type">type</h3>
-<div id="gjaflqkuem" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-type" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -14683,10 +14788,18 @@ Type of trait, specifying if traits are categorical, numeric, or ordinal.
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://semanticscience.org/resource/SIO_000224">is property of</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+<a href="https://w3id.org/traits.build#trait">trait concept</a>
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -14716,7 +14829,7 @@ Type of trait, specifying if traits are categorical, numeric, or ordinal.
 <p><span id="https://w3id.org/traits.build#context"> </span></p>
 <section id="context" class="level3">
 <h3 class="anchored" data-anchor-id="context">context</h3>
-<div id="wfelxneewz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-context" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -14794,7 +14907,7 @@ The situation within which a trait measurement is made, which can help explain t
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -14812,7 +14925,7 @@ The situation within which a trait measurement is made, which can help explain t
 </section>
 <section id="entity" class="level3">
 <h3 class="anchored" data-anchor-id="entity">entity</h3>
-<div id="ljepjaigqd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-entity" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -14863,6 +14976,14 @@ An entity is an object (e.g., a tree, a community, an ecological process). Entit
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Exact to sosa:FeatureOfInterest but close to tern:FeatureOfInterest. TERN’s SHACL shapes (TERN Ontology 0.9.0) require every tern:FeatureOfInterest to have a tern:featureType and a dataset; an entity requires neither. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -14890,7 +15011,7 @@ An entity is an object (e.g., a tree, a community, an ecological process). Entit
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -14908,7 +15029,7 @@ An entity is an object (e.g., a tree, a community, an ecological process). Entit
 </section>
 <section id="individual" class="level3">
 <h3 class="anchored" data-anchor-id="individual">individual</h3>
-<div id="rmqxxqahvd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-individual" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -14959,6 +15080,14 @@ An individual living organism.
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Close to dwc:Organism, which is a particular organism or defined group of organisms considered to be taxonomically homogeneous, where an individual is one organism. individual_id is close to dwc:organismID for the same reason.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -15002,7 +15131,7 @@ An individual living organism.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -15020,7 +15149,7 @@ An individual living organism.
 </section>
 <section id="location" class="level3">
 <h3 class="anchored" data-anchor-id="location">location</h3>
-<div id="pksjkpnwuw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-location" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -15114,7 +15243,7 @@ A spatial region or named place.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -15128,11 +15257,11 @@ A spatial region or named place.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#method_context"> </span></p>
+<p><span id="https://w3id.org/traits.build#method_context"> </span><span id="method_context"> </span></p>
 </section>
 <section id="method-context" class="level3">
 <h3 class="anchored" data-anchor-id="method-context">method context</h3>
-<div id="kmruqsgnsz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-method_context" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -15183,6 +15312,14 @@ A compment of a trait measurement protocol that is changed between individual tr
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Related, not close, to sosa:Procedure and tern:Procedure. A method context is one component of a protocol that varies between measurements; the procedure itself is recorded in methods, which is the close match to both. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -15191,7 +15328,7 @@ A compment of a trait measurement protocol that is changed between individual tr
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2004/02/skos/core#closeMatch">has close match</a>
+<a href="http://www.w3.org/2004/02/skos/core#relatedMatch">has related match</a>
 </td>
 <td headers="description" class="gt_row gt_left">
 <a href="http://www.w3.org/ns/sosa/Procedure">Procedure</a><br> <a href="https://w3id.org/tern/ontologies/tern/Procedure">Procedure</a>
@@ -15210,7 +15347,7 @@ A compment of a trait measurement protocol that is changed between individual tr
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -15224,11 +15361,11 @@ A compment of a trait measurement protocol that is changed between individual tr
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#plot"> </span></p>
+<p><span id="https://w3id.org/traits.build#plot"> </span><span id="plot"> </span></p>
 </section>
 <section id="plot-context" class="level3">
 <h3 class="anchored" data-anchor-id="plot-context">plot context</h3>
-<div id="qohzykaeqm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-plot" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -15306,7 +15443,7 @@ A subdivision of a location, designated because some properties differ across pl
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -15324,7 +15461,7 @@ A subdivision of a location, designated because some properties differ across pl
 </section>
 <section id="population" class="level3">
 <h3 class="anchored" data-anchor-id="population">population</h3>
-<div id="gxapwzdafq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-population" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -15426,7 +15563,7 @@ A collection of organisms, all of the same species, that live in the same place.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -15440,11 +15577,11 @@ A collection of organisms, all of the same species, that live in the same place.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#temporal_context"> </span></p>
+<p><span id="https://w3id.org/traits.build#temporal_context"> </span><span id="temporal_context"> </span></p>
 </section>
 <section id="temporal-context" class="level3">
 <h3 class="anchored" data-anchor-id="temporal-context">temporal context</h3>
-<div id="jvlphjhvhz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-temporal_context" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -15522,7 +15659,7 @@ A situation or process that varies across time and might cause the measured trai
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -15536,11 +15673,11 @@ A situation or process that varies across time and might cause the measured trai
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#treatment"> </span></p>
+<p><span id="https://w3id.org/traits.build#treatment"> </span><span id="treatment"> </span></p>
 </section>
 <section id="treatment-context" class="level3">
 <h3 class="anchored" data-anchor-id="treatment-context">treatment context</h3>
-<div id="kogydchtpb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-treatment" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -15610,7 +15747,7 @@ An experimental manipulation that subjects different individuals or populations 
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -15632,7 +15769,7 @@ An experimental manipulation that subjects different individuals or populations 
 <p><span id="https://w3id.org/traits.build#dataset"> </span></p>
 <section id="dataset" class="level3">
 <h3 class="anchored" data-anchor-id="dataset">dataset</h3>
-<div id="sftaicklrk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-dataset" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -15718,7 +15855,7 @@ dataset
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -15736,7 +15873,7 @@ dataset
 </section>
 <section id="measurement" class="level3">
 <h3 class="anchored" data-anchor-id="measurement">measurement</h3>
-<div id="zrrlmffoze" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-measurement" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -15787,6 +15924,14 @@ A measurement is an assertion that a characteristic of an entity had a particula
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Exact to sosa:Observation but close to tern:Observation. TERN’s SHACL shapes (TERN Ontology 0.9.0) require every tern:Observation to have a dataset, procedure, phenomenon time, result date-time, observed property, result and feature of interest. A measurement requires none of these (many records have no date), so it is as general as the SOSA class and broader than the TERN one. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -15822,7 +15967,7 @@ A measurement is an assertion that a characteristic of an entity had a particula
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -15836,11 +15981,11 @@ A measurement is an assertion that a characteristic of an entity had a particula
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#measurement_of_entity_context_property"> </span></p>
+<p><span id="https://w3id.org/traits.build#measurement_of_entity_context_property"> </span><span id="measurement_of_entity_context_property"> </span></p>
 </section>
 <section id="measurement-of-entity-context-property" class="level3">
 <h3 class="anchored" data-anchor-id="measurement-of-entity-context-property">measurement of entity context property</h3>
-<div id="kbpoxpsdka" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-measurement_of_entity_context_property" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -15926,7 +16071,7 @@ A measurement made on an entity context property.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -15940,11 +16085,11 @@ A measurement made on an entity context property.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#measurement_of_location_property"> </span></p>
+<p><span id="https://w3id.org/traits.build#measurement_of_location_property"> </span><span id="measurement_of_location_property"> </span></p>
 </section>
 <section id="measurement-of-location-property" class="level3">
 <h3 class="anchored" data-anchor-id="measurement-of-location-property">measurement of location property</h3>
-<div id="mpuxlsvpdh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-measurement_of_location_property" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -16030,7 +16175,7 @@ A measurement made on a location property.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -16044,11 +16189,11 @@ A measurement made on a location property.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#measurement_of_plot_context_property"> </span></p>
+<p><span id="https://w3id.org/traits.build#measurement_of_plot_context_property"> </span><span id="measurement_of_plot_context_property"> </span></p>
 </section>
 <section id="measurement-of-plot-context-property" class="level3">
 <h3 class="anchored" data-anchor-id="measurement-of-plot-context-property">measurement of plot context property</h3>
-<div id="ojwaebdsup" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-measurement_of_plot_context_property" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -16134,7 +16279,7 @@ A measurement made on a plot context property.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -16148,11 +16293,11 @@ A measurement made on a plot context property.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#measurement_of_temporal_context_property"> </span></p>
+<p><span id="https://w3id.org/traits.build#measurement_of_temporal_context_property"> </span><span id="measurement_of_temporal_context_property"> </span></p>
 </section>
 <section id="measurement-of-temporal-context-property" class="level3">
 <h3 class="anchored" data-anchor-id="measurement-of-temporal-context-property">measurement of temporal context property</h3>
-<div id="fqapourahv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-measurement_of_temporal_context_property" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -16238,7 +16383,7 @@ A measurement made on a temporal context property.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -16252,11 +16397,11 @@ A measurement made on a temporal context property.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#measurement_of_treatment_context_property"> </span></p>
+<p><span id="https://w3id.org/traits.build#measurement_of_treatment_context_property"> </span><span id="measurement_of_treatment_context_property"> </span></p>
 </section>
 <section id="measurement-of-treatment-context-property" class="level3">
 <h3 class="anchored" data-anchor-id="measurement-of-treatment-context-property">measurement of treatment context property</h3>
-<div id="yholvxxytw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-measurement_of_treatment_context_property" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -16350,7 +16495,7 @@ A measurement made on a treatment context property.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -16368,7 +16513,7 @@ A measurement made on a treatment context property.
 </section>
 <section id="observation" class="level3">
 <h3 class="anchored" data-anchor-id="observation">observation</h3>
-<div id="svuxxltkzw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-observation" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -16470,7 +16615,7 @@ An observation is an assertion that an entity (e.g., biological organisms, geogr
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -16484,11 +16629,11 @@ An observation is an assertion that an entity (e.g., biological organisms, geogr
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#observation_of_entity_context"> </span></p>
+<p><span id="https://w3id.org/traits.build#observation_of_entity_context"> </span><span id="observation_of_entity_context"> </span></p>
 </section>
 <section id="observation-of-entity-context" class="level3">
 <h3 class="anchored" data-anchor-id="observation-of-entity-context">observation of entity context</h3>
-<div id="cqpbkckncf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-observation_of_entity_context" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -16590,7 +16735,7 @@ Observation where entity is a category of context indicating repeat observations
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -16604,11 +16749,11 @@ Observation where entity is a category of context indicating repeat observations
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#observation_of_location"> </span></p>
+<p><span id="https://w3id.org/traits.build#observation_of_location"> </span><span id="observation_of_location"> </span></p>
 </section>
 <section id="observation-of-location" class="level3">
 <h3 class="anchored" data-anchor-id="observation-of-location">observation of location</h3>
-<div id="gjssitrlzt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-observation_of_location" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -16702,7 +16847,7 @@ Observation of location properties at a single location.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -16716,11 +16861,11 @@ Observation of location properties at a single location.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#observation_of_plot_context"> </span></p>
+<p><span id="https://w3id.org/traits.build#observation_of_plot_context"> </span><span id="observation_of_plot_context"> </span></p>
 </section>
 <section id="observation-of-plot-context" class="level3">
 <h3 class="anchored" data-anchor-id="observation-of-plot-context">observation of plot context</h3>
-<div id="qasqkitzph" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-observation_of_plot_context" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -16822,7 +16967,7 @@ Observation where entity is a category of context indicating variation across pl
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -16836,11 +16981,11 @@ Observation where entity is a category of context indicating variation across pl
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#observation_of_temporal_context"> </span></p>
+<p><span id="https://w3id.org/traits.build#observation_of_temporal_context"> </span><span id="observation_of_temporal_context"> </span></p>
 </section>
 <section id="observation-of-temporal-context" class="level3">
 <h3 class="anchored" data-anchor-id="observation-of-temporal-context">observation of temporal context</h3>
-<div id="yprlixlnzu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-observation_of_temporal_context" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -16950,7 +17095,7 @@ Examples of temporal contexts are <code>sampling season</code>, <code>sampling t
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -16964,11 +17109,11 @@ Examples of temporal contexts are <code>sampling season</code>, <code>sampling t
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#observation_of_treatment_context"> </span></p>
+<p><span id="https://w3id.org/traits.build#observation_of_treatment_context"> </span><span id="observation_of_treatment_context"> </span></p>
 </section>
 <section id="observation-of-a-treatment-context" class="level3">
 <h3 class="anchored" data-anchor-id="observation-of-a-treatment-context">observation of a treatment context</h3>
-<div id="iiiickbwnl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-observation_of_treatment_context" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -17078,7 +17223,7 @@ Examples include growing temperature, growing CO2 concentrations, and nutrient a
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -17092,11 +17237,11 @@ Examples include growing temperature, growing CO2 concentrations, and nutrient a
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#observations_at_location"> </span></p>
+<p><span id="https://w3id.org/traits.build#observations_at_location"> </span><span id="observations_at_location"> </span></p>
 </section>
 <section id="observations-at-location" class="level3">
 <h3 class="anchored" data-anchor-id="observations-at-location">observations at location</h3>
-<div id="gerlfddydx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-observations_at_location" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -17190,7 +17335,7 @@ Observation collection of location properties and organismal traits at a single 
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -17204,11 +17349,11 @@ Observation collection of location properties and organismal traits at a single 
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#observations_from_dataset"> </span></p>
+<p><span id="https://w3id.org/traits.build#observations_from_dataset"> </span><span id="observations_from_dataset"> </span></p>
 </section>
 <section id="observations-from-dataset" class="level3">
 <h3 class="anchored" data-anchor-id="observations-from-dataset">observations from dataset</h3>
-<div id="izqwdmkozp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-observations_from_dataset" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -17302,7 +17447,7 @@ Observation collection encompassing all observations that comprise a dataset.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -17316,11 +17461,11 @@ Observation collection encompassing all observations that comprise a dataset.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#observations_from_source"> </span></p>
+<p><span id="https://w3id.org/traits.build#observations_from_source"> </span><span id="observations_from_source"> </span></p>
 </section>
 <section id="observations-from-source" class="level3">
 <h3 class="anchored" data-anchor-id="observations-from-source">observations from source</h3>
-<div id="wyeuwfnypa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-observations_from_source" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -17414,7 +17559,7 @@ Observation collection encompassing all observations for a single published or u
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -17428,11 +17573,11 @@ Observation collection encompassing all observations for a single published or u
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#observations_of_individual"> </span></p>
+<p><span id="https://w3id.org/traits.build#observations_of_individual"> </span><span id="observations_of_individual"> </span></p>
 </section>
 <section id="observations-of-individual" class="level3">
 <h3 class="anchored" data-anchor-id="observations-of-individual">observations of individual</h3>
-<div id="hdgiodxoxi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-observations_of_individual" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -17526,7 +17671,7 @@ Observation collection encompassing all observations on a single individual.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -17540,11 +17685,11 @@ Observation collection encompassing all observations on a single individual.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#observations_of_population"> </span></p>
+<p><span id="https://w3id.org/traits.build#observations_of_population"> </span><span id="observations_of_population"> </span></p>
 </section>
 <section id="observations-of-population" class="level3">
 <h3 class="anchored" data-anchor-id="observations-of-population">observations of population</h3>
-<div id="kvsgxantuh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-observations_of_population" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -17638,7 +17783,7 @@ Observation collection encompassing all observations on a single population.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -17652,11 +17797,11 @@ Observation collection encompassing all observations on a single population.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#observations_of_taxon"> </span></p>
+<p><span id="https://w3id.org/traits.build#observations_of_taxon"> </span><span id="observations_of_taxon"> </span></p>
 </section>
 <section id="observations-of-taxon" class="level3">
 <h3 class="anchored" data-anchor-id="observations-of-taxon">observations of taxon</h3>
-<div id="hgxaneakpz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-observations_of_taxon" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -17758,7 +17903,7 @@ An observation collection is a container for a set of observations.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
@@ -17772,11 +17917,11 @@ An observation collection is a container for a set of observations.
 </tbody>
 </table>
 </div>
-<p><span id="https://w3id.org/traits.build#trait_measurement"> </span></p>
+<p><span id="https://w3id.org/traits.build#trait_measurement"> </span><span id="trait_measurement"> </span></p>
 </section>
 <section id="trait-measurement" class="level3">
 <h3 class="anchored" data-anchor-id="trait-measurement">trait measurement</h3>
-<div id="hrjrdjgnvw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gt-trait_measurement" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <table class="gt_table" style="table-layout:fixed;width:0px;" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
 <col style="width:150px;">
@@ -17862,7 +18007,7 @@ A measurement made on a trait.
 <a href="http://purl.org/dc/terms/created">created</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-1-Feb-24
+<a href="2024-02-01">2024-02-01</a>
 </td>
 </tr>
 <tr>
