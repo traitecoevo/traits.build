@@ -9,7 +9,10 @@ AusTraits project in 2023 (see Wenk et al. 2024, doi:10.1016/j.ecoinf.2024.10277
 - **Code:** `R/` (functions), `tests/` (testthat), `man/` (generated docs), `NAMESPACE`.
 - **Data-model ontology:** `ontology/` documents the ontology of the *data model*
   (entities/relations). This is **not** APD's trait-definition vocabulary — they're parallel, don't
-  conflate them (see family context below).
+  conflate them (see family context below). It has its own build, version and change log: run
+  `make` at the root for the targets and read [`ontology/README.md`](ontology/README.md) before
+  editing anything there. `make ontology-check` before you finish; the committed artefacts in
+  `ontology/output/` are golden fixtures, so an unintended change to the published RDF fails there.
 - **Schema:** the relational `traits.build` schema is the source of truth for the data structure
   that other family repos conform to.
 - **Docs:** user manual at the [traits.build-book](https://traitecoevo.github.io/traits.build-book/);
