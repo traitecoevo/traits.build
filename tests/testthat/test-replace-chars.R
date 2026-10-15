@@ -65,6 +65,37 @@ test_that("HYPHEN is normalised to the ASCII hyphen-minus", {
 })
 
 
+test_that("LATIN SMALL LIGATURE FI is expanded to the two ASCII letters", {
+  # A single glyph for "fi", not a distinct letter -- PDF text extraction
+  # commonly produces it in place of the two letters someone actually typed.
+  expect_equal(util_replace_disallowed_chars("scientific"), "scientific")
+  expect_equal(util_replace_disallowed_chars("scientiﬁc"), "scientific")
+  expect_true(all(check_disallowed_chars("ﬁ")))
+  expect_false(any(check_disallowed_chars(util_replace_disallowed_chars("scientiﬁc"))))
+})
+
+
+test_that("EM SPACE becomes a space and SOFT HYPHEN is deleted", {
+  expect_equal(util_replace_disallowed_chars("leaf\u2003area"), "leaf area")
+  # A SOFT HYPHEN only marks where a word may wrap, so it stands for nothing in
+  # text that no longer wraps. Both cases are from `austraits.build`, where
+  # rewriting it as "-" gave "non--rhizomatous" and "to -\u00b1 prostrate".
+  expect_equal(util_replace_disallowed_chars("non-\u00adrhizomatous"), "non-rhizomatous")
+  expect_equal(util_replace_disallowed_chars("to \u00ad\u00b1 prostrate"), "to \u00b1 prostrate")
+  expect_equal(util_replace_disallowed_chars("photo\u00adsynthesis"), "photosynthesis")
+  expect_true(all(check_disallowed_chars("\u2003\u00ad")))
+})
+
+
+test_that("INCREMENT is normalised to GREEK CAPITAL LETTER DELTA", {
+  # Option-J on a Mac types INCREMENT, which looks identical to the allowed
+  # capital delta -- the same reason GREEK SMALL LETTER MU converges on MICRO SIGN
+  expect_equal(util_replace_disallowed_chars("\u2206T"), "\u0394T")
+  expect_true(all(check_disallowed_chars("\u2206")))
+  expect_false(any(check_disallowed_chars(util_replace_disallowed_chars("\u2206T"))))
+})
+
+
 test_that("GREEK SMALL LETTER MU is normalised to MICRO SIGN", {
   # The two are visually identical, so a unit written with the Greek letter
   # cannot be told from one written with the micro sign by eye. Only the micro
