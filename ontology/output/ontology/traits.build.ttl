@@ -14,6 +14,11 @@
 @prefix datacite: <http://purl.org/datacite/v4.4/> .
 @prefix SIO: <http://semanticscience.org/resource/> .
 @prefix gdmt: <http://vocab.fairdatacollective.org/gdmt/> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix tern: <https://w3id.org/tern/ontologies/tern/> .
+@prefix terncv: <http://linked.data.gov.au/def/tern-cv/> .
+@prefix dwciri: <http://rs.tdwg.org/dwc/iri/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
 
 <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier>
     dcterms:description "Provides an identifying sequence of characters to refer to an entity within a context. An Identifier can be unique within a local context or a global context."@en ;
@@ -105,6 +110,16 @@ oboe:ofEntity
     skos:inScheme <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#> ;
     skos:prefLabel "of entity"@en .
 
+<http://linked.data.gov.au/def/tern-cv/60d7edf8-98c6-43e9-841c-e176c334d270>
+    dcterms:description "A single, physically distinct plant organism."@en ;
+    skos:inScheme <http://linked.data.gov.au/def/tern-cv/> ;
+    skos:prefLabel "plant individual"@en .
+
+terncv:ae71c3f6-d430-400f-a1d4-97a333b4ee02
+    dcterms:description "A group of individuals of the same plant species living in a given area."@en ;
+    skos:inScheme <http://linked.data.gov.au/def/tern-cv/> ;
+    skos:prefLabel "plant population"@en .
+
 obo:IAO_0000708
     dcterms:description "A centrally registered identifier that is issued by ORCID (https://orcid.org/) and used to persistantly identify oneself as a human researcher or contributor."@en ;
     skos:inScheme <http://purl.obolibrary.org/obo/> ;
@@ -129,6 +144,16 @@ obo:PCO_0000001
     dcterms:description "A collection of organisms, all of the same species, that live in the same place."@en ;
     skos:inScheme <http://purl.obolibrary.org/obo/> ;
     skos:prefLabel "population"@en .
+
+dcterms:Agent
+    dcterms:description "A resource that acts or has the power to act."@en ;
+    skos:inScheme <http://purl.org/dc/terms/> ;
+    skos:prefLabel "Agent"@en .
+
+dcterms:BibliographicResource
+    dcterms:description "A book, article, or other documentary resource."@en ;
+    skos:inScheme <http://purl.org/dc/terms/> ;
+    skos:prefLabel "Bibliographic Resource"@en .
 
 dcterms:bibliographicCitation
     dcterms:description "A bibliographic reference for the resource."@en ;
@@ -185,6 +210,51 @@ dcterms:title
     skos:inScheme <http://purl.org/dc/terms/> ;
     skos:prefLabel "title"@en .
 
+qudt:Unit
+    dcterms:description "A unit of measure, or unit, is a particular quantity, defined and adopted by convention, with which other quantities of the same kind are compared."@en ;
+    skos:inScheme <http://qudt.org/schema/qudt/> ;
+    skos:prefLabel "Unit"@en .
+
+dwciri:assertionType
+    dcterms:description "A category that best matches the nature of a dwc:Assertion."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/iri/> ;
+    skos:prefLabel "Assertion Type (IRI)"@en .
+
+dwciri:measurementType
+    dcterms:description "The nature of the measurement, fact, characteristic, or assertion."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/iri/> ;
+    skos:prefLabel "Measurement Type (IRI)"@en .
+
+dwciri:measurementValue
+    dcterms:description "The value of the measurement, fact, characteristic, or assertion."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/iri/> ;
+    skos:prefLabel "Measurement Value (IRI)"@en .
+
+dwc:Assertion
+    dcterms:description "A statement about an rdfs:Resource."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Assertion"@en .
+
+dwc:Identification
+    dcterms:description "A classification of a resource according to a classification scheme."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Identification"@en .
+
+dwc:MeasurementOrFact
+    dcterms:description "A measurement of or fact about an rdfs:Resource."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Measurement Or Fact"@en .
+
+dwc:Organism
+    dcterms:description "A particular organism or defined group of organisms considered to be taxonomically homogeneous."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Organism"@en .
+
+dwc:Protocol
+    dcterms:description "A method used during an action."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Protocol"@en .
+
 dwc:Taxon
     dcterms:description "A group of organisms (sensu http://purl.obolibrary.org/obo/OBI_0100026) considered by taxonomists to form a homogeneous unit."@en ;
     skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
@@ -194,6 +264,46 @@ dwc:acceptedNameUsage
     dcterms:description "The full name, with authorship and date information if known, of the currently valid (zoological) or accepted (botanical) dwc:Taxon."@en ;
     rdfs:comment "The full scientific name, with authorship and date information if known, of the accepted (botanical) or valid (zoological) name in cases where the provided dwc:scientificName is considered by the reference indicated in the dwc:accordingTo property, or of the content provider, to be a synonym or misapplied name. When applied to a dwc:Organism or dwc:Occurrence, this term should be used in cases where a content provider regards the provided dwc:scientificName to be inconsistent with the taxonomic perspective of the content provider. For example, there are many discrepancies within specimen collections and observation datasets between the recorded name (e.g., the most recent identification from an expert who examined a specimen, or a field identification for an observed dwc:Organism), and the name asserted by the content provider to be taxonomically accepted."@en ;
     skos:prefLabel "acceptedNameUsage"@en .
+
+dwc:assertionBy
+    dcterms:description "A name for a dcterms:Agent responsible for making a dwc:Assertion."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Assertion By"@en .
+
+dwc:assertionEffectiveDate
+    dcterms:description "A date on which a state or measurement of a dwc:Assertion was deemed to first be in effect."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Assertion Effective Date"@en .
+
+dwc:assertionProtocols
+    dcterms:description "Names of, references to, or descriptions of dwc:Protocols used in making a dwc:Assertion."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Assertion Protocols"@en .
+
+dwc:assertionReferences
+    dcterms:description "A list (concatenated and separated) of dcterms:BibliographicResources associated with a dwc:Assertion."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Assertion References"@en .
+
+dwc:assertionRemarks
+    dcterms:description "Comments or notes about a dwc:Assertion."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Assertion Remarks"@en .
+
+dwc:assertionType
+    dcterms:description "A category that best matches the nature of a dwc:Assertion."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Assertion Type"@en .
+
+dwc:assertionUnit
+    dcterms:description "A unit associated with the value in dwc:assertionValue."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Assertion Unit"@en .
+
+dwc:assertionValue
+    dcterms:description "An asserted value."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Assertion Value"@en .
 
 dwcattributes:organizedInClass
     dcterms:description "Used to organize properties within classes for easier human understanding."@en ;
@@ -235,6 +345,11 @@ dwc:establishmentMeans
     skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
     skos:prefLabel "Establishment Means"@en .
 
+dwc:eventDate
+    dcterms:description "A date-time or time interval during which a dwc:Event occurred."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Event Date"@en .
+
 dwc:family
     dcterms:description "The full scientific name of the family in which the taxon is classified."@en ;
     skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
@@ -249,6 +364,11 @@ dwc:identificationQualifier
     dcterms:description "A brief phrase or a standard term ('cf.', 'aff.') to express the determiner's doubts about the dwc:Identification."@en ;
     skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
     skos:prefLabel "Identification Qualifier"@en .
+
+dwc:individualCount
+    dcterms:description "The number of individuals present at the time of the dwc:Occurrence."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Individual Count"@en .
 
 dwc:infraspecificEpithet
     dcterms:description "The name of the lowest or terminal infraspecific epithet of the dwc:scientificName, excluding any rank designation."@en ;
@@ -270,10 +390,50 @@ dwc:lifeStage
     rdfs:comment "Recommended best practice is to use a controlled vocabulary. This term has an equivalent in the dwciri: namespace that allows only an IRI as a value, whereas this term allows for any string literal value."@en ;
     skos:prefLabel "lifeStage"@en .
 
+dwc:locality
+    dcterms:description "The specific description of the place."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Locality"@en .
+
+dwc:locationID
+    dcterms:description "An identifier for a dcterms:Location."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Location ID"@en .
+
 dwc:materialSampleID
     dcterms:description "An identifier for the dwc:MaterialSample (as opposed to a particular digital record of the dwc:MaterialSample). In the absence of a persistent global unique identifier, construct one from a combination of identifiers in the record that will most closely make the dwc:materialSampleID globally unique."@en ;
     skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
     skos:prefLabel "Material Sample ID"@en .
+
+dwc:measurementDeterminedBy
+    dcterms:description "A list (concatenated and separated) of names of people, groups, or organizations who determined the value of the dwc:MeasurementOrFact."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Measurement Determined By"@en .
+
+dwc:measurementDeterminedDate
+    dcterms:description "The date on which the dwc:MeasurementOrFact was made."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Measurement Determined Date"@en .
+
+dwc:measurementMethod
+    dcterms:description "A description of or reference to (publication, URI) the method or protocol used to determine the measurement, fact, characteristic, or assertion."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Measurement Method"@en .
+
+dwc:measurementRemarks
+    dcterms:description "Comments or notes accompanying the dwc:MeasurementOrFact."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Measurement Remarks"@en .
+
+dwc:measurementType
+    dcterms:description "The nature of the measurement, fact, characteristic, or assertion."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Measurement Type"@en .
+
+dwc:measurementUnit
+    dcterms:description "The units associated with the dwc:measurementValue."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Measurement Unit"@en .
 
 dwc:measurementValue
     dcterms:description "The value of the measurement, fact, characteristic, or assertion."@en ;
@@ -289,6 +449,31 @@ dwc:occurrenceID
     dcterms:description "An identifier for the dwc:Occurrence (as opposed to a particular digital record of the dwc:Occurrence). In the absence of a persistent global unique identifier, construct one from a combination of identifiers in the record that will most closely make the dwc:occurrenceID globally unique."@en ;
     skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
     skos:prefLabel "Occurrence ID"@en .
+
+dwc:organismID
+    dcterms:description "An identifier for the dwc:Organism instance (as opposed to a particular digital record of the dwc:Organism). May be a globally unique identifier or an identifier specific to the data set."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Organism ID"@en .
+
+dwc:organismScope
+    dcterms:description "A description of the kind of dwc:Organism instance. Can be used to indicate whether the dwc:Organism instance represents a discrete organism or if it represents a particular type of aggregation."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Organism Scope"@en .
+
+dwc:parentMeasurementID
+    dcterms:description "An identifier for a broader dwc:MeasurementOrFact that groups this and potentially other dwc:MeasurementOrFacts."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Parent Measurement ID"@en .
+
+dwc:protocolID
+    dcterms:description "An identifier for a dwc:Protocol."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Protocol ID"@en .
+
+dwc:recordedBy
+    dcterms:description "A name for a dcterms:Agent responsible for recording a dwc:Occurrence."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Recorded By"@en .
 
 dwc:samplingProtocol
     dcterms:description "The names of, references to, or descriptions of the methods or protocols used during a dwc:Event."@en ;
@@ -311,6 +496,11 @@ dwc:specificEpithet
     skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
     skos:prefLabel "Specific Epithet"@en .
 
+dwc:stateProvince
+    dcterms:description "The name of the next smaller administrative region than country (state, province, canton, department, region, etc.) in which the dcterms:Location occurs."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "First Order Division"@en .
+
 dwc:taxonID
     dcterms:description "An identifier for the set of dwc:Taxon information. May be a global unique identifier or an identifier specific to the data set."@en ;
     skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
@@ -330,6 +520,11 @@ dwc:verbatimElevation
     dcterms:description "The original description of the elevation (altitude, usually above sea level) of the Location."@en ;
     skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
     skos:prefLabel "Verbatim Elevation"@en .
+
+dwc:verbatimIdentification
+    dcterms:description "A string representing the taxonomic identification as it appeared in the original record."@en ;
+    skos:inScheme <http://rs.tdwg.org/dwc/terms/> ;
+    skos:prefLabel "Verbatim Identification"@en .
 
 SIO:SIO_000001
     dcterms:description "A is related to B iff there is some relation between A and B."@en ;
@@ -450,6 +645,26 @@ ets:Taxon
 ets:Traitdata
     skos:prefLabel "Traitdata"@en .
 
+ets:aggregateMeasure
+    dcterms:description "A logical flag indicating whether the value is an aggregate rather than an individual measurement."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "aggregate measure"@en .
+
+ets:basisOfRecord
+    dcterms:description "How and from what kind of specimen the data were obtained, using a controlled vocabulary."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "basis of record"@en .
+
+ets:basisOfRecordDescription
+    dcterms:description "Further detail on the basis of record."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "basis of record description"@en .
+
+ets:bibliographicCitation
+    dcterms:description "A reference indicating how the record should be cited when used."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "bibliographic citation"@en .
+
 ets:comments
     dcterms:description "Details and Examples for clarification of the trait definition."@en ;
     rdfs:comment "Can contain definition of trait levels or requirements for standardized conditions."@en ;
@@ -461,6 +676,16 @@ ets:datasetDescription
     rdfs:comment "Description may include but is not limited to: an abstract, a table of contents, a graphical representation, or a free-text account of the resource."@en ;
     skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
     skos:prefLabel "datasetDescription"@en .
+
+ets:datasetID
+    dcterms:description "An identifier for the dataset, either global or specific to a collection or institution."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "dataset ID"@en .
+
+ets:elevation
+    dcterms:description "The geographic elevation in metres above sea level."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "elevation"@en .
 
 ets:eventDate
     dcterms:description "The date-time or interval during which an Event occurred. For occurrences, this is the date-time when the event was recorded. Not suitable for a time in a geological context. Recommended best practice is to use an encoding scheme, such as ISO 8601:2004(E). For lower precision, use year, month and day field instead."@en ;
@@ -489,17 +714,57 @@ ets:individualCount
     skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
     skos:prefLabel "individualCount"@en .
 
+ets:lifeStage
+    dcterms:description "The age class or life stage of the individual(s) when the occurrence was recorded."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "life stage"@en .
+
 ets:maxAllowedValue
     dcterms:description "An upper boundary for accepted numerical values."@en ;
     rdfs:comment "May be used for eliminating invalid data. This boundary may constrain a range of values of meaningful orders of magnitude, or constrain entries to positive values."@en ;
     skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
     skos:prefLabel "maxAllowedValue"@en .
 
+ets:measurementMethod
+    dcterms:description "The method, tools and scales used to measure a trait value, or a reference to the protocol."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "measurement method"@en .
+
+ets:measurementRemarks
+    dcterms:description "Notes on a particular measurement, such as quality, reliability or acknowledgements."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "measurement remarks"@en .
+
+ets:measurementValue_max
+    dcterms:description "The upper boundary of observed values, reported instead of or alongside a dispersion metric."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "measurement value max"@en .
+
+ets:measurementValue_min
+    dcterms:description "The lower boundary of observed values, reported instead of or alongside a dispersion metric."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "measurement value min"@en .
+
 ets:minAllowedValue
     dcterms:description "A lower boundary for accepted numerical values."@en ;
     rdfs:comment "May be used for eliminating invalid data. This boundary may constrain a range of values of meaningful orders of magnitude."@en ;
     skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
     skos:prefLabel "minAllowedValue"@en .
+
+ets:references
+    dcterms:description "A precise reference to the source, such as a publication, database, collection or expert."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "references"@en .
+
+ets:scientificName
+    dcterms:description "The full taxon name, with authorship and date if known, resolving to the currently valid or accepted taxon."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "scientific name"@en .
+
+ets:statisticalMethod
+    dcterms:description "For aggregated measures, the aggregation method and the variation or range reported."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "statistical method"@en .
 
 ets:trait
     dcterms:description "A descriptive trait name."@en ;
@@ -518,6 +783,11 @@ ets:traitID
     rdfs:comment "Examples: TO:0000181; TOP103; http://top-thesaurus.org/annotationInfo?viz=1&&trait=Seed_mass;"@en ;
     skos:prefLabel "traitID"@en .
 
+ets:traitName
+    dcterms:description "A descriptive name of the reported trait, ideally referencing a published trait thesaurus."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "trait name"@en .
+
 ets:traitUnit
     dcterms:description "The units associated with the measurementValue. The expected standard unit for this trait as defined in the traitlist/ thesaurus."@en ;
     skos:prefLabel "traitUnit"@en .
@@ -531,6 +801,11 @@ ets:valueType
     rdfs:comment "Numerical values represent measurements of length, volumes, ratios, rates or timespans. Integer values apply to count data (e.g. eggs per clutch). Binary data (encoded as 0 or 1) or logical data (coded as TRUE or FALSE) may apply to qualitative traits such as specific behavior during mating (e.g. are territories defended) or specialization to a given habitat (e.g. species restricted to relicts of primeval forests). Categorical traits should define a constrained set of factor levels, such as sex differences in wing morphology (both sexes winged, both sexes unwinged, only males winged, only females winged) or unconstrained entries such as color. Ordinal categorical traits may be better encoded as integer values, e.g. a logical sequence as in the case of life stages or hibernation stages, or habitat preference traits such as horizontal stratum use."@en ;
     skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
     skos:prefLabel "valueType"@en .
+
+ets:verbatimScientificName
+    dcterms:description "The species name or taxon identifier as originally supplied by the data provider."@en ;
+    skos:inScheme <http://terminologies.gfbio.org/terms/ETS/> ;
+    skos:prefLabel "verbatim scientific name"@en .
 
 gdmt:Cites
     dcterms:description "indicates that A includes B in a citation"@en ;
@@ -713,6 +988,121 @@ skos:topConceptOf
     skos:inScheme <http://www.w3.org/2004/02/skos/core#> ;
     skos:prefLabel "is top concept in scheme"@en .
 
+sosa:FeatureOfInterest
+    dcterms:description "The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling."@en ;
+    skos:inScheme <http://www.w3.org/ns/sosa/> ;
+    skos:prefLabel "Feature of Interest"@en .
+
+sosa:ObservableProperty
+    dcterms:description "An observable quality (property, characteristic) of a FeatureOfInterest."@en ;
+    skos:inScheme <http://www.w3.org/ns/sosa/> ;
+    skos:prefLabel "Observable Property"@en .
+
+sosa:Observation
+    dcterms:description "Act of carrying out an (Observation) Procedure to estimate or calculate a value of a property of a FeatureOfInterest."@en ;
+    skos:inScheme <http://www.w3.org/ns/sosa/> ;
+    skos:prefLabel "Observation"@en .
+
+sosa:ObservationCollection
+    dcterms:description "Collection of one or more observations, whose members share a common value for one or more property."@en ;
+    skos:inScheme <http://www.w3.org/ns/sosa/> ;
+    skos:prefLabel "Observation Collection"@en .
+
+sosa:Procedure
+    dcterms:description "A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world (via an Actuator)."@en ;
+    skos:inScheme <http://www.w3.org/ns/sosa/> ;
+    skos:prefLabel "Procedure"@en .
+
+sosa:Result
+    dcterms:description "The Result of an Observation, Actuation, or act of Sampling."@en ;
+    skos:inScheme <http://www.w3.org/ns/sosa/> ;
+    skos:prefLabel "Result"@en .
+
+sosa:hasSimpleResult
+    dcterms:description "The simple value of an Observation or Actuation or act of Sampling."@en ;
+    skos:inScheme <http://www.w3.org/ns/sosa/> ;
+    skos:prefLabel "has simple result"@en .
+
+sosa:observedProperty
+    dcterms:description "Relation linking an Observation to the property that was observed. The ObservableProperty should be a property of the FeatureOfInterest."@en ;
+    skos:inScheme <http://www.w3.org/ns/sosa/> ;
+    skos:prefLabel "observed property"@en .
+
+sosa:phenomenonTime
+    dcterms:description "The time that the Result of an Observation, Actuation or Sampling applies to the FeatureOfInterest."@en ;
+    skos:inScheme <http://www.w3.org/ns/sosa/> ;
+    skos:prefLabel "phenomenon time"@en .
+
+tern:Attribute
+    dcterms:description "A property-value pair to capture attributes of an individual where observations are not suitable."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "Attribute"@en .
+
+tern:FeatureOfInterest
+    dcterms:description "The thing whose property is being estimated or calculated in the course of an Observation to arrive at a Result or whose property is being manipulated by an Actuator, or which is being sampled or transformed in an act of Sampling. In the TERN Ontology it must carry a feature type from the TERN feature-type vocabulary."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "Feature of Interest"@en .
+
+tern:Method
+    dcterms:description "A Method describes in detailed steps how a workflow, protocol, plan or algorithm is carried out to make an Observation or a Sample."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "Method"@en .
+
+tern:Observation
+    dcterms:description "Act of carrying out an (Observation) Procedure to estimate or calculate a value of a property of a FeatureOfInterest. In the TERN Ontology an Observation must carry an observed property, a procedure, a feature of interest, a typed result, a phenomenon time, a result date-time and a dataset."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "Observation"@en .
+
+tern:ObservationCollection
+    dcterms:description "Collection of one or more observations, whose members share a common value for one or more property."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "Observation Collection"@en .
+
+tern:Procedure
+    dcterms:description "A workflow, protocol, plan, algorithm, or computational method specifying how to make an Observation, create a Sample, or make a change to the state of the world."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "Procedure"@en .
+
+tern:RDFDataset
+    dcterms:description "A set of RDF triples that are published, maintained or aggregated by a single provider."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "RDF Dataset"@en .
+
+tern:Site
+    dcterms:description "An ecological monitoring site where observations and samplings occur. A subclass of Sample since ecological sites are designed to be representative of an environmental system."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "Site"@en .
+
+tern:SiteVisit
+    dcterms:description "A Site Visit is a Survey that visits a Site."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "Site Visit"@en .
+
+tern:Taxon
+    dcterms:description "A group of organisms (sensu OBI_0100026) considered by taxonomists to form a homogeneous unit."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "Taxon"@en .
+
+tern:Value
+    dcterms:description "A value of an Attribute or an Observation."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "Value"@en .
+
+tern:featureType
+    dcterms:description "The feature type of a Feature of Interest."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "feature type"@en .
+
+tern:resultDateTime
+    dcterms:description "The instant of time when the Observation, Actuation or Sampling activity was completed."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "result date time"@en .
+
+tern:unit
+    dcterms:description "The unit of measure of the value. Use the QUDT units of measure vocabulary."@en ;
+    skos:inScheme <https://w3id.org/tern/ontologies/tern/> ;
+    skos:prefLabel "unit"@en .
+
 <https://w3id.org/traits.build>
     dcterms:created "01 February 2024^^<xsd:date>" ;
     dcterms:creator "Daniel Falster", "Elizabeth Wenk", "Sophie Yang" ;
@@ -795,7 +1185,8 @@ skos:topConceptOf
     skos:altLabel "allowed_values_levels"@en ;
     skos:exactMatch ets:factorLevels, skos:narrower ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "allowed categorical values"@en .
+    skos:prefLabel "allowed categorical values"@en ;
+    skos:relatedMatch dwciri:measurementValue .
 
 <https://w3id.org/traits.build#allowed_values_max>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -848,7 +1239,7 @@ skos:topConceptOf
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "basis of record"@en ;
     skos:altLabel "basis_of_record"@en ;
-    skos:closeMatch dwc:basisOfRecord ;
+    skos:closeMatch dwc:basisOfRecord, ets:basisOfRecord ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "basis of record"@en .
 
@@ -861,6 +1252,7 @@ skos:topConceptOf
     rdfs:label "basis of value"@en ;
     owl:sameAs oboe:MeasurementType ;
     skos:altLabel "basis_of_value"@en ;
+    skos:closeMatch ets:basisOfRecordDescription ;
     skos:exactMatch oboe:MeasurementType ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "basis of value"@en .
@@ -887,10 +1279,11 @@ skos:topConceptOf
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#date> ;
     rdfs:label "collection date"@en ;
-    owl:sameAs ets:eventDate ;
+    owl:sameAs dwc:eventDate, ets:eventDate ;
     skos:altLabel "collection_date"@en ;
     skos:broader oboe:MeasuredValue, dwc:measurementValue ;
-    skos:exactMatch ets:eventDate ;
+    skos:closeMatch dwc:assertionEffectiveDate, dwc:measurementDeterminedDate, sosa:phenomenonTime, tern:resultDateTime ;
+    skos:exactMatch dwc:eventDate, ets:eventDate ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "collection date"@en .
 
@@ -915,6 +1308,7 @@ skos:topConceptOf
     rdfs:label "context"@en ;
     skos:altLabel "context"@en ;
     skos:broader oboe:Entity ;
+    skos:closeMatch tern:Attribute ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "context"@en .
 
@@ -929,7 +1323,8 @@ skos:topConceptOf
     rdfs:label "context property"@en ;
     owl:sameAs <https://w3id.org/traits.build#contexts_value> ;
     skos:altLabel "context_property"@en ;
-    skos:broader oboe:Characteristic ;
+    skos:broader oboe:Characteristic, sosa:ObservableProperty ;
+    skos:closeMatch tern:Attribute ;
     skos:exactMatch <https://w3id.org/traits.build#contexts_value> ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "context property"@en .
@@ -995,7 +1390,8 @@ skos:topConceptOf
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "context property value"@en ;
     skos:altLabel "value"@en ;
-    skos:broader oboe:MeasuredValue, dwc:measurementValue ;
+    skos:broader oboe:MeasuredValue, dwc:measurementValue, sosa:Result ;
+    skos:closeMatch dwc:assertionValue ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "context property value"@en .
 
@@ -1009,6 +1405,8 @@ skos:topConceptOf
     rdfs:label "contributor"@en ;
     owl:sameAs dcterms:contributor ;
     skos:altLabel "contributor"@en ;
+    skos:broader dcterms:Agent ;
+    skos:closeMatch dwc:assertionBy, dwc:measurementDeterminedBy ;
     skos:exactMatch dcterms:contributor ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "contributor"@en .
@@ -1026,6 +1424,7 @@ skos:topConceptOf
     owl:sameAs gdmt:DataCollector ;
     skos:altLabel "data_collectors"@en ;
     skos:broader dcterms:contributor ;
+    skos:closeMatch dwc:measurementDeterminedBy, dwc:recordedBy ;
     skos:exactMatch gdmt:DataCollector ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "data collectors"@en .
@@ -1036,9 +1435,10 @@ skos:topConceptOf
     SIO:SIO_000602 SIO:SIO_000750 ;
     SIO:SIO_000673 <https://w3id.org/traits.build#dataset_id> ;
     rdfs:label "dataset"@en ;
-    owl:sameAs oboe:ObservationCollection ;
+    owl:sameAs oboe:ObservationCollection, sosa:ObservationCollection ;
     skos:altLabel "dataset"@en ;
-    skos:exactMatch oboe:ObservationCollection ;
+    skos:closeMatch tern:RDFDataset ;
+    skos:exactMatch oboe:ObservationCollection, sosa:ObservationCollection ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "dataset"@en .
 
@@ -1064,8 +1464,10 @@ skos:topConceptOf
     SIO:SIO_000602 SIO:SIO_000757 ;
     SIO:SIO_000674 <https://w3id.org/traits.build#observations_from_dataset> ;
     rdfs:label "dataset id"@en ;
+    owl:sameAs dwc:datasetID, ets:datasetID ;
     skos:altLabel "dataset_id"@en ;
     skos:broader <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> ;
+    skos:exactMatch dwc:datasetID, ets:datasetID ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "dataset id"@en .
 
@@ -1095,6 +1497,7 @@ skos:topConceptOf
     owl:sameAs dwc:verbatimElevation ;
     skos:altLabel "elevation"@en ;
     skos:broader oboe:MeasuredValue, dwc:measurementValue ;
+    skos:closeMatch ets:elevation ;
     skos:exactMatch dwc:verbatimElevation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "elevation (m)"@en .
@@ -1104,9 +1507,10 @@ skos:topConceptOf
     dcterms:description "An entity is an object (e.g., a tree, a community, an ecological process). Entities constitute the foci of observations, i.e., every observation is of exactly one entity."@en ;
     SIO:SIO_000602 SIO:SIO_000756 ;
     rdfs:label "entity"@en ;
-    owl:sameAs oboe:Entity ;
+    owl:sameAs oboe:Entity, sosa:FeatureOfInterest ;
     skos:altLabel "entity"@en ;
-    skos:exactMatch oboe:Entity ;
+    skos:closeMatch tern:FeatureOfInterest ;
+    skos:exactMatch oboe:Entity, sosa:FeatureOfInterest ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "entity"@en .
 
@@ -1135,6 +1539,7 @@ skos:topConceptOf
     owl:sameAs <https://w3id.org/traits.build#contexts_value> ;
     skos:altLabel "entity_context_property"@en ;
     skos:broader oboe:Characteristic ;
+    skos:closeMatch tern:Attribute ;
     skos:exactMatch <https://w3id.org/traits.build#contexts_value> ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "entity context property"@en .
@@ -1147,6 +1552,7 @@ skos:topConceptOf
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "entity type"@en ;
     skos:altLabel "entity_type"@en ;
+    skos:closeMatch dwc:organismScope, tern:featureType ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "entity type"@en .
 
@@ -1157,10 +1563,10 @@ skos:topConceptOf
     SIO:SIO_000224 <https://w3id.org/traits.build#taxon> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
+    rdfs:comment "Darwin Core applies establishmentMeans to an organism at a place and time"@en, "a traits.build database records it once per taxon, so the match is close rather than exact."@en ;
     rdfs:label "establishment means"@en ;
-    owl:sameAs dwc:establishmentMeans ;
     skos:altLabel "establishment_means"@en ;
-    skos:exactMatch dwc:establishmentMeans ;
+    skos:closeMatch dwc:establishmentMeans ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "establishment means"@en .
 
@@ -1233,6 +1639,7 @@ skos:topConceptOf
     rdfs:label "identifier value"@en ;
     skos:altLabel "identifier_value"@en ;
     skos:broader <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> ;
+    skos:closeMatch dcterms:identifier ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "identifier value"@en .
 
@@ -1244,7 +1651,8 @@ skos:topConceptOf
     rdfs:label "individual"@en ;
     owl:sameAs obo:OBI_0100026 ;
     skos:altLabel "individual"@en ;
-    skos:broader oboe:Entity ;
+    skos:broader oboe:Entity, sosa:FeatureOfInterest ;
+    skos:closeMatch <http://linked.data.gov.au/def/tern-cv/60d7edf8-98c6-43e9-841c-e176c334d270>, dwc:Organism ;
     skos:exactMatch obo:OBI_0100026 ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "individual"@en .
@@ -1257,8 +1665,10 @@ skos:topConceptOf
     SIO:SIO_000674 <https://w3id.org/traits.build#observations_of_individual> ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#int> ;
     rdfs:label "individual id"@en ;
+    owl:sameAs dwc:organismID ;
     skos:altLabel "individual_id"@en ;
     skos:broader <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> ;
+    skos:exactMatch dwc:organismID ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "individual id"@en .
 
@@ -1332,10 +1742,10 @@ skos:topConceptOf
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "life stage"@en ;
-    owl:sameAs dwc:lifeStage ;
+    owl:sameAs dwc:lifeStage, ets:lifeStage ;
     skos:altLabel "life_stage"@en ;
     skos:broader oboe:MeasuredValue, dwc:measurementValue ;
-    skos:exactMatch dwc:lifeStage ;
+    skos:exactMatch dwc:lifeStage, ets:lifeStage ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "life stage"@en .
 
@@ -1347,7 +1757,8 @@ skos:topConceptOf
     rdfs:label "location"@en ;
     owl:sameAs dcterms:location ;
     skos:altLabel "location"@en ;
-    skos:broader oboe:Entity ;
+    skos:broader oboe:Entity, sosa:FeatureOfInterest ;
+    skos:closeMatch tern:Site ;
     skos:exactMatch dcterms:location ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "location"@en .
@@ -1360,8 +1771,10 @@ skos:topConceptOf
     SIO:SIO_000674 <https://w3id.org/traits.build#observations_at_location> ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#int> ;
     rdfs:label "location id"@en ;
+    owl:sameAs dwc:locationID ;
     skos:altLabel "location_id"@en ;
     skos:broader <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> ;
+    skos:exactMatch dwc:locationID ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "location id"@en .
 
@@ -1374,6 +1787,7 @@ skos:topConceptOf
     rdfs:label "location name"@en ;
     skos:altLabel "location_name"@en ;
     skos:broader rdfs:label, skos:prefLabel ;
+    skos:closeMatch dwc:locality ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "location name"@en .
 
@@ -1387,7 +1801,8 @@ skos:topConceptOf
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "location property"@en ;
     skos:altLabel "location_property"@en ;
-    skos:broader oboe:Characteristic ;
+    skos:broader oboe:Characteristic, sosa:ObservableProperty ;
+    skos:closeMatch dwc:measurementType ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "location property"@en .
 
@@ -1399,7 +1814,8 @@ skos:topConceptOf
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "location property value"@en ;
     skos:altLabel "value"@en ;
-    skos:broader oboe:MeasuredValue, dwc:measurementValue ;
+    skos:broader oboe:MeasuredValue, dwc:measurementValue, sosa:Result ;
+    skos:closeMatch dwc:assertionValue ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "location property value"@en .
 
@@ -1424,9 +1840,11 @@ skos:topConceptOf
     dcterms:description "A measurement is an assertion that a characteristic of an entity had a particular value with respect to an observation event."@en ;
     SIO:SIO_000602 SIO:SIO_001187 ;
     rdfs:label "measurement"@en ;
-    owl:sameAs oboe:Measurement ;
+    owl:sameAs oboe:Measurement, dwc:MeasurementOrFact, sosa:Observation ;
     skos:altLabel "measurement"@en ;
-    skos:exactMatch oboe:Measurement ;
+    skos:broader dwc:Assertion ;
+    skos:closeMatch tern:Observation ;
+    skos:exactMatch oboe:Measurement, dwc:MeasurementOrFact, sosa:Observation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "measurement"@en .
 
@@ -1438,7 +1856,7 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#entity_context_id> ;
     rdfs:label "measurement of entity context property"@en ;
     skos:altLabel "measurement_of_entity_context_property"@en ;
-    skos:broader oboe:Measurement ;
+    skos:broader oboe:Measurement, dwc:MeasurementOrFact, sosa:Observation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "measurement of entity context property"@en .
 
@@ -1450,7 +1868,7 @@ skos:topConceptOf
     SIO:SIO_000602 SIO:SIO_001187 ;
     rdfs:label "measurement of location property"@en ;
     skos:altLabel "measurement_of_location_property"@en ;
-    skos:broader oboe:Measurement ;
+    skos:broader oboe:Measurement, dwc:MeasurementOrFact, sosa:Observation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "measurement of location property"@en .
 
@@ -1462,7 +1880,7 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#plot_context_id> ;
     rdfs:label "measurement of plot context property"@en ;
     skos:altLabel "measurement_of_plot_context_property"@en ;
-    skos:broader oboe:Measurement ;
+    skos:broader oboe:Measurement, dwc:MeasurementOrFact, sosa:Observation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "measurement of plot context property"@en .
 
@@ -1474,7 +1892,7 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#temporal_context_id> ;
     rdfs:label "measurement of temporal context property"@en ;
     skos:altLabel "measurement_of_temporal_context_property"@en ;
-    skos:broader oboe:Measurement ;
+    skos:broader oboe:Measurement, dwc:MeasurementOrFact, sosa:Observation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "measurement of temporal context property"@en .
 
@@ -1487,7 +1905,7 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#treatment_context_id> ;
     rdfs:label "measurement of treatment context property"@en ;
     skos:altLabel "measurement_of_treatment_context_property"@en ;
-    skos:broader oboe:Measurement ;
+    skos:broader oboe:Measurement, dwc:MeasurementOrFact, sosa:Observation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "measurement of treatment context property"@en .
 
@@ -1498,8 +1916,10 @@ skos:topConceptOf
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "measurement remarks"@en ;
+    owl:sameAs dwc:assertionRemarks, dwc:measurementRemarks, ets:measurementRemarks ;
     skos:altLabel "measurement_remarks"@en ;
     skos:broader rdfs:comment ;
+    skos:exactMatch dwc:assertionRemarks, dwc:measurementRemarks, ets:measurementRemarks ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "measurement remarks"@en .
 
@@ -1510,6 +1930,7 @@ skos:topConceptOf
     rdfs:label "method context"@en ;
     skos:altLabel "method_context"@en ;
     skos:broader oboe:Entity, <https://w3id.org/traits.build#traits.build-contexts> ;
+    skos:closeMatch sosa:Procedure, tern:Procedure ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "method context"@en .
 
@@ -1539,7 +1960,8 @@ skos:topConceptOf
     skos:broader oboe:Characteristic ;
     skos:exactMatch <https://w3id.org/traits.build#contexts_value> ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "method context property"@en .
+    skos:prefLabel "method context property"@en ;
+    skos:relatedMatch sosa:Procedure .
 
 <https://w3id.org/traits.build#method_id>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -1553,7 +1975,8 @@ skos:topConceptOf
     skos:altLabel "method_id"@en ;
     skos:broader <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "method id"@en .
+    skos:prefLabel "method id"@en ;
+    skos:relatedMatch dwc:protocolID .
 
 <https://w3id.org/traits.build#methods_description>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -1577,9 +2000,11 @@ skos:topConceptOf
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "methods"@en ;
+    owl:sameAs dwc:measurementMethod, ets:measurementMethod ;
     skos:altLabel "methods"@en ;
     skos:broader oboe:Protocol ;
-    skos:closeMatch oboe:Protocol ;
+    skos:closeMatch oboe:Protocol, dwc:Protocol, dwc:assertionProtocols, sosa:Procedure, tern:Method ;
+    skos:exactMatch dwc:measurementMethod, ets:measurementMethod ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "methods"@en .
 
@@ -1590,11 +2015,13 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#observation_id> ;
     rdfs:comment "An observation is an assertion that an entity (e.g., biological organisms, geographic locations, or environmental features, among others) was observed by an observer. An observation primarily serves to group a set of measurements together into a single &quot;observation event&quot;. Observations are often made within a broader context. The context of an observation is given by other observations, implying that an observed entity (and specifically each corresponding measurement) contextualizes another observed entity (and its corresponding measurements). For example, an observation associated with a location may serve as context for an observation associated with an organism. In this case, the observed characteristic values of the location (such as humidity) are assumed constant for the corresponding measurements of the organism."@en ;
     rdfs:label "observation"@en ;
-    owl:sameAs oboe:Observation ;
+    owl:sameAs oboe:Observation, sosa:ObservationCollection ;
     skos:altLabel "observation"@en ;
-    skos:exactMatch oboe:Observation ;
+    skos:closeMatch tern:ObservationCollection ;
+    skos:exactMatch oboe:Observation, sosa:ObservationCollection ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "observation"@en .
+    skos:prefLabel "observation"@en ;
+    skos:relatedMatch dwc:parentMeasurementID .
 
 <https://w3id.org/traits.build#observation_id>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -1606,7 +2033,8 @@ skos:topConceptOf
     skos:altLabel "observation_id"@en ;
     skos:broader <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "observation id"@en .
+    skos:prefLabel "observation id"@en ;
+    skos:relatedMatch dwc:parentMeasurementID .
 
 <https://w3id.org/traits.build#observation_of_entity_context>
     oboe:characteristicFor <https://w3id.org/traits.build#entity_context_property> ;
@@ -1618,7 +2046,7 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#entity_context_id> ;
     rdfs:label "observation of entity context"@en ;
     skos:altLabel "observation_of_entity_context"@en ;
-    skos:broader oboe:Observation ;
+    skos:broader oboe:Observation, sosa:ObservationCollection ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "observation of entity context"@en .
 
@@ -1631,7 +2059,7 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#location_id> ;
     rdfs:label "observation of location"@en ;
     skos:altLabel "observation_of_location"@en ;
-    skos:broader oboe:Observation ;
+    skos:broader oboe:Observation, sosa:ObservationCollection ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "observation of location"@en .
 
@@ -1645,7 +2073,7 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#plot_context_id> ;
     rdfs:label "observation of plot context"@en ;
     skos:altLabel "observation_of_plot_context"@en ;
-    skos:broader oboe:Observation ;
+    skos:broader oboe:Observation, sosa:ObservationCollection ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "observation of plot context"@en .
 
@@ -1660,7 +2088,7 @@ skos:topConceptOf
     rdfs:comment "Examples of temporal contexts are `sampling season`, `sampling time of day`, and sequential `observation numbers` without any linked categorical description."@en ;
     rdfs:label "observation of temporal context"@en ;
     skos:altLabel "observation_of_temporal_context"@en ;
-    skos:broader oboe:Observation ;
+    skos:broader oboe:Observation, sosa:ObservationCollection ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "observation of temporal context"@en .
 
@@ -1675,7 +2103,7 @@ skos:topConceptOf
     rdfs:comment "Examples include growing temperature, growing CO2 concentrations, and nutrient amendments."@en ;
     rdfs:label "observation of a treatment context"@en ;
     skos:altLabel "observation_of_treatment_context"@en ;
-    skos:broader oboe:Observation ;
+    skos:broader oboe:Observation, sosa:ObservationCollection ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "observation of a treatment context"@en .
 
@@ -1688,7 +2116,7 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#location_id> ;
     rdfs:label "observations at location"@en ;
     skos:altLabel "observations_at_location"@en ;
-    skos:broader oboe:ObservationCollection ;
+    skos:broader oboe:ObservationCollection, sosa:ObservationCollection ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "observations at location"@en .
 
@@ -1701,7 +2129,7 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#dataset_id> ;
     rdfs:label "observations from dataset"@en ;
     skos:altLabel "observations_from_dataset"@en ;
-    skos:broader oboe:ObservationCollection ;
+    skos:broader oboe:ObservationCollection, sosa:ObservationCollection ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "observations from dataset"@en .
 
@@ -1714,7 +2142,7 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#source_id> ;
     rdfs:label "observations from source"@en ;
     skos:altLabel "observations_from_source"@en ;
-    skos:broader oboe:ObservationCollection ;
+    skos:broader oboe:ObservationCollection, sosa:ObservationCollection ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "observations from source"@en .
 
@@ -1727,7 +2155,7 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#individual_id> ;
     rdfs:label "observations of individual"@en ;
     skos:altLabel "observations_of_individual"@en ;
-    skos:broader oboe:ObservationCollection ;
+    skos:broader oboe:ObservationCollection, sosa:ObservationCollection ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "observations of individual"@en .
 
@@ -1740,7 +2168,7 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#population_id> ;
     rdfs:label "observations of population"@en ;
     skos:altLabel "observations_of_population"@en ;
-    skos:broader oboe:ObservationCollection ;
+    skos:broader oboe:ObservationCollection, sosa:ObservationCollection ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "observations of population"@en .
 
@@ -1754,7 +2182,7 @@ skos:topConceptOf
     rdfs:comment "An observation collection is a container for a set of observations."@en ;
     rdfs:label "observations of taxon"@en ;
     skos:altLabel "observations_of_taxon"@en ;
-    skos:broader oboe:ObservationCollection ;
+    skos:broader oboe:ObservationCollection, sosa:ObservationCollection ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "observations of taxon"@en .
 
@@ -1765,8 +2193,10 @@ skos:topConceptOf
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "original taxon name"@en ;
+    owl:sameAs dwc:verbatimIdentification, ets:verbatimScientificName ;
     skos:altLabel "original_name"@en ;
     skos:broader rdfs:label, skos:prefLabel ;
+    skos:exactMatch dwc:verbatimIdentification, ets:verbatimScientificName ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "original taxon name"@en .
 
@@ -1776,9 +2206,10 @@ skos:topConceptOf
     SIO:SIO_000602 SIO:SIO_000756 ;
     rdfs:label "plot context"@en ;
     skos:altLabel "plot"@en ;
-    skos:broader oboe:Entity, <https://w3id.org/traits.build#traits.build-contexts> ;
+    skos:broader oboe:Entity, sosa:FeatureOfInterest, <https://w3id.org/traits.build#traits.build-contexts> ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "plot context"@en .
+    skos:prefLabel "plot context"@en ;
+    skos:relatedMatch tern:Site .
 
 <https://w3id.org/traits.build#plot_context_id>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -1805,6 +2236,7 @@ skos:topConceptOf
     owl:sameAs <https://w3id.org/traits.build#contexts_value> ;
     skos:altLabel "plot_context_property"@en ;
     skos:broader oboe:Characteristic ;
+    skos:closeMatch tern:Attribute ;
     skos:exactMatch <https://w3id.org/traits.build#contexts_value> ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "plot context property"@en .
@@ -1817,10 +2249,12 @@ skos:topConceptOf
     rdfs:label "population"@en ;
     owl:sameAs obo:PCO_0000001 ;
     skos:altLabel "population"@en ;
-    skos:broader oboe:Entity ;
+    skos:broader oboe:Entity, sosa:FeatureOfInterest ;
+    skos:closeMatch terncv:ae71c3f6-d430-400f-a1d4-97a333b4ee02 ;
     skos:exactMatch obo:PCO_0000001 ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "population"@en .
+    skos:prefLabel "population"@en ;
+    skos:relatedMatch dwc:Organism .
 
 <https://w3id.org/traits.build#population_id>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -1833,7 +2267,8 @@ skos:topConceptOf
     skos:altLabel "population_id"@en ;
     skos:broader <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "population id"@en .
+    skos:prefLabel "population id"@en ;
+    skos:relatedMatch dwc:organismID .
 
 <https://w3id.org/traits.build#repeat_measurements_id>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -1845,6 +2280,7 @@ skos:topConceptOf
     rdfs:label "repeat measurements id"@en ;
     skos:altLabel "repeat_measurements_id"@en ;
     skos:broader <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> ;
+    skos:closeMatch dwc:parentMeasurementID ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "repeat measurements id"@en .
 
@@ -1857,6 +2293,7 @@ skos:topConceptOf
     rdfs:label "replicates"@en ;
     owl:sameAs ets:individualCount ;
     skos:altLabel "replicates"@en ;
+    skos:closeMatch dwc:individualCount ;
     skos:exactMatch ets:individualCount ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "replicates"@en .
@@ -1871,6 +2308,7 @@ skos:topConceptOf
     rdfs:label "dataset sampling strategy"@en ;
     owl:sameAs dwc:samplingProtocol ;
     skos:altLabel "sampling_strategy"@en ;
+    skos:broader sosa:Procedure ;
     skos:exactMatch dwc:samplingProtocol ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "dataset sampling strategy"@en .
@@ -1916,7 +2354,8 @@ skos:topConceptOf
     skos:altLabel "source_id"@en ;
     skos:broader <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "source id"@en .
+    skos:prefLabel "source id"@en ;
+    skos:relatedMatch dwc:datasetID, ets:references .
 
 <https://w3id.org/traits.build#source_original_dataset_citation>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -1929,6 +2368,7 @@ skos:topConceptOf
     rdfs:label "source original dataset citation"@en ;
     skos:altLabel "source_original_dataset_citation"@en ;
     skos:broader dcterms:bibliographicCitation ;
+    skos:closeMatch ets:bibliographicCitation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "source original dataset citation"@en .
 
@@ -1958,6 +2398,7 @@ skos:topConceptOf
     rdfs:label "source primary citation"@en ;
     skos:altLabel "source_primary_citation"@en ;
     skos:broader dcterms:bibliographicCitation ;
+    skos:closeMatch dwc:assertionReferences, ets:bibliographicCitation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "source primary citation"@en .
 
@@ -1987,6 +2428,7 @@ skos:topConceptOf
     rdfs:label "source secondary citation"@en ;
     skos:altLabel "source_secondary_citation"@en ;
     skos:broader dcterms:bibliographicCitation ;
+    skos:closeMatch ets:bibliographicCitation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "source secondary citation"@en .
 
@@ -2015,7 +2457,8 @@ skos:topConceptOf
     rdfs:label "taxon"@en ;
     owl:sameAs dwc:Taxon ;
     skos:altLabel "taxon"@en ;
-    skos:broader oboe:Characteristic, oboe:Entity ;
+    skos:broader oboe:Characteristic, oboe:Entity, sosa:FeatureOfInterest ;
+    skos:closeMatch tern:Taxon ;
     skos:exactMatch dwc:Taxon ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "taxon"@en .
@@ -2030,7 +2473,8 @@ skos:topConceptOf
     rdfs:label "taxon distribution"@en ;
     skos:altLabel "taxon_distribution"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "taxon distribution"@en .
+    skos:prefLabel "taxon distribution"@en ;
+    skos:relatedMatch dwc:stateProvince .
 
 <https://w3id.org/traits.build#taxon_id>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -2060,7 +2504,7 @@ skos:topConceptOf
     rdfs:label "taxon name"@en ;
     skos:altLabel "taxon_name"@en ;
     skos:broader rdfs:label, skos:prefLabel ;
-    skos:closeMatch dwc:acceptedNameUsage ;
+    skos:closeMatch dwc:acceptedNameUsage, dwc:scientificName, ets:scientificName ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "taxon name"@en .
 
@@ -2128,7 +2572,8 @@ skos:topConceptOf
     skos:altLabel "temporal_context"@en ;
     skos:broader oboe:Entity, <https://w3id.org/traits.build#traits.build-contexts> ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "temporal context"@en .
+    skos:prefLabel "temporal context"@en ;
+    skos:relatedMatch tern:SiteVisit .
 
 <https://w3id.org/traits.build#temporal_context_id>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -2155,6 +2600,7 @@ skos:topConceptOf
     owl:sameAs <https://w3id.org/traits.build#contexts_value> ;
     skos:altLabel "temporal_context_property"@en ;
     skos:broader oboe:Characteristic ;
+    skos:closeMatch tern:Attribute ;
     skos:exactMatch <https://w3id.org/traits.build#contexts_value> ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "temporal context property"@en .
@@ -2169,9 +2615,9 @@ skos:topConceptOf
     SIO:SIO_000673 <https://w3id.org/traits.build#trait_concept_URI> ;
     rdf:datatype <http://www.w3.org/2001/XMLSchema#string> ;
     rdfs:label "trait concept"@en ;
-    owl:sameAs oboe:Standard ;
+    owl:sameAs oboe:Standard, sosa:ObservableProperty ;
     skos:altLabel "trait"@en ;
-    skos:exactMatch oboe:Standard ;
+    skos:exactMatch oboe:Standard, sosa:ObservableProperty ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "trait concept"@en .
 
@@ -2185,6 +2631,7 @@ skos:topConceptOf
     rdfs:label "trait identifier"@en ;
     owl:sameAs dcterms:identifier, ets:traitID ;
     skos:altLabel "trait_concept_URI"@en ;
+    skos:closeMatch dwciri:assertionType, dwciri:measurementType ;
     skos:exactMatch dcterms:identifier, ets:traitID ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "trait identifier"@en .
@@ -2197,7 +2644,7 @@ skos:topConceptOf
     SIO:SIO_000602 SIO:SIO_001187 ;
     rdfs:label "trait measurement"@en ;
     skos:altLabel "trait_measurement"@en ;
-    skos:broader oboe:Measurement ;
+    skos:broader oboe:Measurement, dwc:MeasurementOrFact, sosa:Observation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "trait measurement"@en .
 
@@ -2207,11 +2654,13 @@ skos:topConceptOf
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-definitions>, <https://w3id.org/traits.build#traits.build-methods>, <https://w3id.org/traits.build#traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdfs:label "trait name"@en ;
-    owl:sameAs rdfs:label, skos:altLabel ;
+    owl:sameAs dwc:measurementType, ets:traitName, rdfs:label, skos:altLabel ;
     skos:altLabel "trait_name"@en ;
-    skos:exactMatch rdfs:label, skos:altLabel ;
+    skos:closeMatch dwc:assertionType ;
+    skos:exactMatch dwc:measurementType, ets:traitName, rdfs:label, skos:altLabel ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "trait name"@en .
+    skos:prefLabel "trait name"@en ;
+    skos:relatedMatch sosa:observedProperty .
 
 <https://w3id.org/traits.build#trait_value>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -2219,10 +2668,11 @@ skos:topConceptOf
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdfs:label "value"@en ;
-    owl:sameAs ets:traitValue ;
+    owl:sameAs dwc:assertionValue, dwc:measurementValue, ets:traitValue ;
     skos:altLabel "value"@en ;
-    skos:broader oboe:MeasuredValue, dwc:measurementValue ;
-    skos:exactMatch ets:traitValue ;
+    skos:broader oboe:MeasuredValue, sosa:Result, tern:Value ;
+    skos:closeMatch sosa:hasSimpleResult ;
+    skos:exactMatch dwc:assertionValue, dwc:measurementValue, ets:traitValue ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "value"@en .
 
@@ -2231,6 +2681,7 @@ skos:topConceptOf
     dcterms:description "A description of the computing environment used to create this version of the dataset, including version number, git commit and R session_info."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-database> ;
     SIO:SIO_000602 SIO:SIO_001330 ;
+    rdfs:comment "Internal to traits.build"@en, "no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."@en ;
     rdfs:label "build info"@en ;
     skos:altLabel "build_info"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
@@ -2244,7 +2695,8 @@ skos:topConceptOf
     rdfs:label "contexts table"@en ;
     skos:altLabel "contexts"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "contexts table"@en .
+    skos:prefLabel "contexts table"@en ;
+    skos:relatedMatch dwc:MeasurementOrFact, tern:Attribute .
 
 <https://w3id.org/traits.build#traits.build-contributors>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -2254,12 +2706,14 @@ skos:topConceptOf
     rdfs:label "contributors table"@en ;
     skos:altLabel "contributors"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "contributors table"@en .
+    skos:prefLabel "contributors table"@en ;
+    skos:relatedMatch dcterms:Agent, dcterms:contributor .
 
 <https://w3id.org/traits.build#traits.build-database>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
     dcterms:description "A database of 13 relational tables build using the {traits.build} R-package for harmonizing trait data."@en ;
     SIO:SIO_000602 SIO:SIO_000750 ;
+    rdfs:comment "A traits.build database as a whole"@en, "no single counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN. See the dataset term for the observation-collection reading."@en ;
     rdfs:label "traits.build database"@en ;
     skos:altLabel "traits.build_database"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
@@ -2283,10 +2737,12 @@ skos:topConceptOf
     dcterms:description "A table of data that did not pass quality tests and so were excluded from the master dataset. The structure is identical to that presented in the `traits` table, only with an extra column called `error` indicating why the record was excluded. Common reasons are missing_unit_conversions, missing_value, and unsupported_trait_value."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-database> ;
     SIO:SIO_000602 SIO:SIO_000754 ;
+    rdfs:comment "Same structure as the traits table plus an error column"@en, "no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."@en ;
     rdfs:label "excluded data table"@en ;
     skos:altLabel "excluded_data"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "excluded data table"@en .
+    skos:prefLabel "excluded data table"@en ;
+    skos:relatedMatch <https://w3id.org/traits.build#traits.build-traits> .
 
 <https://w3id.org/traits.build#traits.build-identifiers>
     dcterms:created "8-Jun-25"^^<xsd:date> ;
@@ -2297,7 +2753,8 @@ skos:topConceptOf
     rdfs:label "identifiers table"@en ;
     skos:altLabel "identifiers"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "identifiers table"@en .
+    skos:prefLabel "identifiers table"@en ;
+    skos:relatedMatch dcterms:identifier .
 
 <https://w3id.org/traits.build#traits.build-locations>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -2309,7 +2766,7 @@ skos:topConceptOf
     skos:altLabel "locations"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "locations table"@en ;
-    skos:relatedMatch ets:Occurrence .
+    skos:relatedMatch dcterms:location, ets:Occurrence, tern:Site .
 
 <https://w3id.org/traits.build#traits.build-metadata>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -2331,13 +2788,14 @@ skos:topConceptOf
     skos:altLabel "methods"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "methods table"@en ;
-    skos:relatedMatch ets:MeasurementOrFact .
+    skos:relatedMatch dwc:Protocol, ets:MeasurementOrFact, sosa:Procedure .
 
 <https://w3id.org/traits.build#traits.build-schema>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
     dcterms:description "A copy of the schema for all tables and terms. Information included here was used to process data and generate any documentation for the study."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-database> ;
     SIO:SIO_000602 SIO:SIO_001330 ;
+    rdfs:comment "Internal to traits.build"@en, "no counterpart in Darwin Core, DwC-DP, ETS, SOSA or TERN."@en ;
     rdfs:label "schema"@en ;
     skos:altLabel "schema"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
@@ -2351,7 +2809,8 @@ skos:topConceptOf
     rdfs:label "sources table"@en ;
     skos:altLabel "sources"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "sources table"@en .
+    skos:prefLabel "sources table"@en ;
+    skos:relatedMatch dcterms:BibliographicResource, dcterms:bibliographicCitation .
 
 <https://w3id.org/traits.build#traits.build-taxa>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -2361,6 +2820,7 @@ skos:topConceptOf
     rdfs:label "taxa table"@en ;
     owl:sameAs ets:Taxon ;
     skos:altLabel "taxa"@en ;
+    skos:closeMatch dwc:Taxon ;
     skos:exactMatch ets:Taxon ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "taxa table"@en .
@@ -2373,7 +2833,8 @@ skos:topConceptOf
     rdfs:label "taxonomic updates table"@en ;
     skos:altLabel "taxonomic_updates"@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "taxonomic updates table"@en .
+    skos:prefLabel "taxonomic updates table"@en ;
+    skos:relatedMatch dwc:Identification, dwc:verbatimIdentification .
 
 <https://w3id.org/traits.build#traits.build-traits>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -2384,10 +2845,11 @@ skos:topConceptOf
     rdfs:label "traits table"@en ;
     owl:sameAs ets:Traitdata ;
     skos:altLabel "traits"@en ;
+    skos:closeMatch dwc:MeasurementOrFact ;
     skos:exactMatch ets:Traitdata ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "traits table"@en ;
-    skos:relatedMatch ets:MeasurementOrFact, ets:Occurrence .
+    skos:relatedMatch ets:MeasurementOrFact, ets:Occurrence, sosa:ObservationCollection .
 
 <https://w3id.org/traits.build#treatment>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -2395,7 +2857,7 @@ skos:topConceptOf
     SIO:SIO_000602 SIO:SIO_000756 ;
     rdfs:label "treatment context"@en ;
     skos:altLabel "treatment"@en ;
-    skos:broader oboe:Entity, <https://w3id.org/traits.build#traits.build-contexts> ;
+    skos:broader oboe:Entity, sosa:FeatureOfInterest, <https://w3id.org/traits.build#traits.build-contexts> ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "treatment context"@en .
 
@@ -2424,6 +2886,7 @@ skos:topConceptOf
     owl:sameAs <https://w3id.org/traits.build#contexts_value> ;
     skos:altLabel "treatment_context_property"@en ;
     skos:broader oboe:Characteristic ;
+    skos:closeMatch tern:Attribute ;
     skos:exactMatch <https://w3id.org/traits.build#contexts_value> ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "treatment context property"@en .
@@ -2462,11 +2925,13 @@ skos:topConceptOf
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdfs:label "unit"@en ;
-    owl:sameAs oboe:Unit, ets:traitUnit ;
+    owl:sameAs oboe:Unit, dwc:assertionUnit, dwc:measurementUnit, ets:traitUnit ;
     skos:altLabel "unit"@en ;
-    skos:exactMatch oboe:Unit, ets:traitUnit ;
+    skos:closeMatch qudt:Unit ;
+    skos:exactMatch oboe:Unit, dwc:assertionUnit, dwc:measurementUnit, ets:traitUnit ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "unit"@en .
+    skos:prefLabel "unit"@en ;
+    skos:relatedMatch tern:unit .
 
 <https://w3id.org/traits.build#units>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -2478,9 +2943,11 @@ skos:topConceptOf
     rdfs:label "units"@en ;
     owl:sameAs ets:expectedUnit ;
     skos:altLabel "units"@en ;
+    skos:closeMatch dwc:measurementUnit ;
     skos:exactMatch ets:expectedUnit ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "units"@en .
+    skos:prefLabel "units"@en ;
+    skos:relatedMatch qudt:Unit .
 
 <https://w3id.org/traits.build#value_type>
     dcterms:created "1-Feb-24"^^<xsd:date> ;
@@ -2491,7 +2958,9 @@ skos:topConceptOf
     rdfs:label "value type"@en ;
     owl:sameAs oboe:BaseCharacteristicQualifier ;
     skos:altLabel "value_type"@en ;
+    skos:closeMatch ets:aggregateMeasure, ets:statisticalMethod ;
     skos:exactMatch oboe:BaseCharacteristicQualifier ;
     skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "value type"@en .
+    skos:prefLabel "value type"@en ;
+    skos:relatedMatch ets:measurementValue_max, ets:measurementValue_min .
 
