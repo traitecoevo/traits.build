@@ -589,9 +589,13 @@ dataset_test_worker <-
 
             contextsub <- contexts %>% dplyr::filter(var_in == j)
 
-            # Context values align either with a column of data or a column of traits table
+            # Context values align either with a column of data, or a field on the `traits`
+            # entries -- and that field's own declared value can itself name a column of
+            # `data` (resolved per record, scoping the context to just those traits) or be
+            # the literal value itself, the same as `process_parse_data()` and
+            # `process_format_contexts()` both resolve it (#276)
             if (is.null(data[[j]])) {
-              v <- traits[[j]] %>% unique2()
+              v <- traits[[j]] %>% unique2() %>% util_resolve_trait_field_values(data)
             } else {
               v <- data[[j]] %>% unique2()
             }
