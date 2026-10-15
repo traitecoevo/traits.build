@@ -20,9 +20,10 @@ Prepared 2026-10-12 (traits.build #275, #276).
   - `location_property` is narrower than `dwc:measurementType`.
   - `elevation` is an exact match to `ets:elevation`.
   - `unit` is a close match to `tern:unit`, which takes a QUDT IRI where `unit` holds text.
+- Where the strength of a match is not obvious from the two definitions, a new `skos:editorialNote` says why, and the page shows it on the term's entry: every match revised or questioned on #276, and each term matched more closely to SOSA than to TERN. The conventions they follow are in `ontology/README.md`. `establishment_means`'s reason moves there from its comment.
 - `establishment_means` is demoted from an exact to a close match: Darwin Core applies it to an organism at a place and time, and the `taxa` table records it once per taxon.
 - `entity_type` and `taxon_distribution`, which had no mapping, now have one; the three terms with no counterpart in any standard (`schema`, `build_info`, the database itself) say so in their comment.
-- 74 external classes added to the published-classes table with their definitions; the Turtle serialisation declares the `sosa`, `tern`, `terncv` and `qudt` prefixes. 2,054 to 2,451 statements.
+- 74 external classes added to the published-classes table with their definitions; the Turtle serialisation declares the `sosa`, `tern`, `terncv` and `qudt` prefixes. 2,054 to 2,467 statements.
 - `identifier_value` now links to both `identifier_type` and `institution_code`. The two were separated by a comma rather than `;`, which made one IRI that did not parse, so the statement had been dropped since 1.1.0. `dwc:Taxon` was listed twice in the published-classes table; its statements are now written once.
 - Fixes to the RDF as published since 0.1.0, found by the build checks added in this version:
   - `traits.build.nt` now ends each statement with `.`; before, it parsed as N-Triples to zero statements.

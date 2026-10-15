@@ -344,6 +344,7 @@
 <https://w3id.org/traits.build#measurement> <http://www.w3.org/2004/02/skos/core#closeMatch> <https://w3id.org/tern/ontologies/tern/Observation> .
 <https://w3id.org/traits.build#measurement> <http://www.w3.org/2000/01/rdf-schema#label> "measurement"@en .
 <https://w3id.org/traits.build#measurement> <http://purl.org/dc/terms/description> "A measurement is an assertion that a characteristic of an entity had a particular value with respect to an observation event."@en .
+<https://w3id.org/traits.build#measurement> <http://www.w3.org/2004/02/skos/core#editorialNote> "Exact to sosa:Observation but close to tern:Observation. TERN's SHACL shapes (TERN Ontology 0.9.0) require every tern:Observation to have a dataset, procedure, phenomenon time, result date-time, observed property, result and feature of interest. A measurement requires none of these (many records have no date), so it is as general as the SOSA class and broader than the TERN one. Reviewed on #276."@en .
 <https://w3id.org/traits.build#measurement> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#measurement> <http://www.w3.org/2002/07/owl#sameAs> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Measurement> .
 <https://w3id.org/traits.build#measurement> <http://www.w3.org/2002/07/owl#sameAs> <http://www.w3.org/ns/sosa/Observation> .
@@ -437,6 +438,7 @@
 <https://w3id.org/traits.build#entity> <http://www.w3.org/2004/02/skos/core#closeMatch> <https://w3id.org/tern/ontologies/tern/FeatureOfInterest> .
 <https://w3id.org/traits.build#entity> <http://www.w3.org/2000/01/rdf-schema#label> "entity"@en .
 <https://w3id.org/traits.build#entity> <http://purl.org/dc/terms/description> "An entity is an object (e.g., a tree, a community, an ecological process). Entities constitute the foci of observations, i.e., every observation is of exactly one entity."@en .
+<https://w3id.org/traits.build#entity> <http://www.w3.org/2004/02/skos/core#editorialNote> "Exact to sosa:FeatureOfInterest but close to tern:FeatureOfInterest. TERN's SHACL shapes (TERN Ontology 0.9.0) require every tern:FeatureOfInterest to have a tern:featureType and a dataset; an entity requires neither. Reviewed on #276."@en .
 <https://w3id.org/traits.build#entity> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#entity> <http://www.w3.org/2002/07/owl#sameAs> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity> .
 <https://w3id.org/traits.build#entity> <http://www.w3.org/2002/07/owl#sameAs> <http://www.w3.org/ns/sosa/FeatureOfInterest> .
@@ -452,6 +454,7 @@
 <https://w3id.org/traits.build#individual> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasContext> <https://w3id.org/traits.build#life_stage> .
 <https://w3id.org/traits.build#individual> <http://www.w3.org/2000/01/rdf-schema#label> "individual"@en .
 <https://w3id.org/traits.build#individual> <http://purl.org/dc/terms/description> "An individual living organism."@en .
+<https://w3id.org/traits.build#individual> <http://www.w3.org/2004/02/skos/core#editorialNote> "Close to dwc:Organism, which is a particular organism or defined group of organisms considered to be taxonomically homogeneous, where an individual is one organism. individual_id is close to dwc:organismID for the same reason."@en .
 <https://w3id.org/traits.build#individual> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#individual> <http://www.w3.org/2002/07/owl#sameAs> <http://purl.obolibrary.org/obo/OBI_0100026> .
 <https://w3id.org/traits.build#individual> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -490,6 +493,7 @@
 <https://w3id.org/traits.build#taxon> <http://semanticscience.org/resource/SIO_000223> <https://w3id.org/traits.build#taxon_distribution> .
 <https://w3id.org/traits.build#taxon> <http://semanticscience.org/resource/SIO_000223> <https://w3id.org/traits.build#establishment_means> .
 <https://w3id.org/traits.build#taxon> <http://purl.org/dc/terms/description> "A group of organisms (sensu http://purl.obolibrary.org/obo/OBI_0100026) considered by taxonomists to form a homogeneous unit."@en .
+<https://w3id.org/traits.build#taxon> <http://www.w3.org/2004/02/skos/core#editorialNote> "Close, not exact, to tern:Taxon. TERN takes the Darwin Core definition but makes tern:Taxon a subclass of tern:Value: a taxon is the result of an identification. Here a taxon is the thing observed, a feature of interest. The meaning is the same, the role in the model is different. dwc:Taxon has no such role and is the exact match. Reviewed on #276."@en .
 <https://w3id.org/traits.build#taxon> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#taxon> <http://www.w3.org/2002/07/owl#sameAs> <http://rs.tdwg.org/dwc/terms/Taxon> .
 <https://w3id.org/traits.build#taxon> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -555,6 +559,7 @@
 <https://w3id.org/traits.build#method_context> <http://www.w3.org/2004/02/skos/core#relatedMatch> <https://w3id.org/tern/ontologies/tern/Procedure> .
 <https://w3id.org/traits.build#method_context> <http://www.w3.org/2000/01/rdf-schema#label> "method context"@en .
 <https://w3id.org/traits.build#method_context> <http://purl.org/dc/terms/description> "A compment of a trait measurement protocol that is changed between individual trait measurements and might cause the measured trait values of individuals or populations to change."@en .
+<https://w3id.org/traits.build#method_context> <http://www.w3.org/2004/02/skos/core#editorialNote> "Related, not close, to sosa:Procedure and tern:Procedure. A method context is one component of a protocol that varies between measurements; the procedure itself is recorded in methods, which is the close match to both. Reviewed on #276."@en .
 <https://w3id.org/traits.build#method_context> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#method_context> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
 <https://w3id.org/traits.build#dataset_id> <http://www.w3.org/2004/02/skos/core#prefLabel> "dataset id"@en .
@@ -598,6 +603,7 @@
 <https://w3id.org/traits.build#taxon_name> <http://semanticscience.org/resource/SIO_000641> <https://w3id.org/traits.build#aligned_name> .
 <https://w3id.org/traits.build#taxon_name> <http://semanticscience.org/resource/SIO_000641> <https://w3id.org/traits.build#original_name> .
 <https://w3id.org/traits.build#taxon_name> <http://purl.org/dc/terms/description> "Scientific name of the taxon on which traits were sampled, without authorship. When possible, this is the currently accepted (botanical) or valid (zoological) scientific name, but might also be a higher taxonomic level."@en .
+<https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#editorialNote> "Related to dwc:scientificName and ets:scientificName, which carry authorship where taxon_name does not; scientific_name in the taxa table is the exact match to dwc:scientificName. Close to dwc:acceptedNameUsage, as in 1.1.0: where possible taxon_name is the currently accepted name, which is what acceptedNameUsage holds, without its authorship. Reviewed on #276."@en .
 <https://w3id.org/traits.build#taxon_name> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#taxon_name> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#taxon_name> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -646,6 +652,7 @@
 <https://w3id.org/traits.build#trait_value> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-traits> .
 <https://w3id.org/traits.build#trait_value> <http://www.w3.org/2000/01/rdf-schema#label> "value"@en .
 <https://w3id.org/traits.build#trait_value> <http://purl.org/dc/terms/description> "The measured value of a trait."@en .
+<https://w3id.org/traits.build#trait_value> <http://www.w3.org/2004/02/skos/core#editorialNote> "Exact to dwc:measurementValue, although Darwin Core measurements are often read as species-level. The term is defined as the value of the measurement, fact, characteristic, or assertion, and a MeasurementOrFact record can attach to an Occurrence (one organism) as well as to a Taxon. Questioned and kept on #276."@en .
 <https://w3id.org/traits.build#trait_value> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#trait_value> <http://www.w3.org/2002/07/owl#sameAs> <http://terminologies.gfbio.org/terms/ETS/traitValue> .
 <https://w3id.org/traits.build#trait_value> <http://www.w3.org/2002/07/owl#sameAs> <http://rs.tdwg.org/dwc/terms/measurementValue> .
@@ -663,6 +670,7 @@
 <https://w3id.org/traits.build#unit> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-traits> .
 <https://w3id.org/traits.build#unit> <http://www.w3.org/2000/01/rdf-schema#label> "unit"@en .
 <https://w3id.org/traits.build#unit> <http://purl.org/dc/terms/description> "Units of the sampled trait value after aligning with AusTraits standards."@en .
+<https://w3id.org/traits.build#unit> <http://www.w3.org/2004/02/skos/core#editorialNote> "Close to tern:unit, which takes a QUDT unit IRI where unit holds the unit as text. dwc:measurementUnit and dwc:assertionUnit hold text and are exact matches. Reviewed on #276."@en .
 <https://w3id.org/traits.build#unit> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#unit> <http://www.w3.org/2002/07/owl#sameAs> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Unit> .
 <https://w3id.org/traits.build#unit> <http://www.w3.org/2002/07/owl#sameAs> <http://terminologies.gfbio.org/terms/ETS/traitUnit> .
@@ -767,6 +775,7 @@
 <https://w3id.org/traits.build#individual_id> <http://www.w3.org/2000/01/rdf-schema#label> "individual id"@en .
 <https://w3id.org/traits.build#individual_id> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build#observations_of_individual> .
 <https://w3id.org/traits.build#individual_id> <http://purl.org/dc/terms/description> "A unique integer identifier for an individual, with individuals numbered sequentially within each dataset by taxon by population grouping. Most often each row of data represents an individual, but in some datasets trait data collected on a single individual is presented across multiple rows of data, such as if the same trait is measured using different methods or the same individual is measured repeatedly across time."@en .
+<https://w3id.org/traits.build#individual_id> <http://www.w3.org/2004/02/skos/core#editorialNote> "Close, not exact, to dwc:organismID: a Darwin Core organism may be a group of organisms (see dwc:Organism), where individual_id identifies one. Reviewed on #276."@en .
 <https://w3id.org/traits.build#individual_id> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#int> .
 <https://w3id.org/traits.build#individual_id> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#individual_id> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -885,6 +894,7 @@
 <https://w3id.org/traits.build#collection_date> <http://www.w3.org/2000/01/rdf-schema#label> "collection date"@en .
 <https://w3id.org/traits.build#collection_date> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build#observation> .
 <https://w3id.org/traits.build#collection_date> <http://purl.org/dc/terms/description> "Date sample was taken, in the format `yyyy-mm-dd`, `yyyy-mm` or `yyyy`, depending on the resoluton specified. Alternatively an overall range for the study can be indicating, with the starting and ending sample date sepatated by a `/`, as in 2010-10/2011-03"@en .
+<https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#editorialNote> "Close, not exact, to dwc:eventDate, ets:eventDate and the other date terms: when the sampling date is unknown, collection_date holds the publication date, which is not when the event occurred. Reviewed on #276."@en .
 <https://w3id.org/traits.build#collection_date> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#collection_date> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#collection_date> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -929,6 +939,7 @@
 <https://w3id.org/traits.build#original_name> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-taxonomic_updates> .
 <https://w3id.org/traits.build#original_name> <http://www.w3.org/2000/01/rdf-schema#label> "original taxon name"@en .
 <https://w3id.org/traits.build#original_name> <http://purl.org/dc/terms/description> "Name given to taxon in the original data supplied by the authors."@en .
+<https://w3id.org/traits.build#original_name> <http://www.w3.org/2004/02/skos/core#editorialNote> "Exact to dwc:verbatimIdentification. Close, not related, to ets:verbatimScientificName, the species name or taxon identifier as originally supplied by the data provider: unlike dwc:scientificName its definition does not call for authorship. Reviewed on #276."@en .
 <https://w3id.org/traits.build#original_name> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#original_name> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#original_name> <http://www.w3.org/2002/07/owl#sameAs> <http://rs.tdwg.org/dwc/terms/verbatimIdentification> .
@@ -956,6 +967,7 @@
 <https://w3id.org/traits.build#location_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build#location> .
 <https://w3id.org/traits.build#location_property> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#hasValue> <https://w3id.org/traits.build#locations_value> .
 <https://w3id.org/traits.build#location_property> <http://purl.org/dc/terms/description> "The location characteristic being recorded. The name should include units of measurement, e.g. `MAT (C)`. Ideally we have at least the following variables for each location, `longitude (deg)`, `latitude (deg)`, `description`."@en .
+<https://w3id.org/traits.build#location_property> <http://www.w3.org/2004/02/skos/core#editorialNote> "dwc:measurementType is broader: it names the type of any measurement, where location_property names only a property of a location. Reviewed on #276."@en .
 <https://w3id.org/traits.build#location_property> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#location_property> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#location_property> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -1014,6 +1026,7 @@
 <https://w3id.org/traits.build#elevation> <http://semanticscience.org/resource/SIO_001096> <https://w3id.org/traits.build#location_property> .
 <https://w3id.org/traits.build#elevation> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#characteristicFor> <https://w3id.org/traits.build#location> .
 <https://w3id.org/traits.build#elevation> <http://purl.org/dc/terms/description> "The elevation above mean sea level in meters."@en .
+<https://w3id.org/traits.build#elevation> <http://www.w3.org/2004/02/skos/core#editorialNote> "Exact to ets:elevation, the geographic elevation in metres above sea level. Reviewed on #276."@en .
 <https://w3id.org/traits.build#elevation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#decimal> .
 <https://w3id.org/traits.build#elevation> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#elevation> <http://www.w3.org/2002/07/owl#sameAs> <http://rs.tdwg.org/dwc/terms/verbatimElevation> .
@@ -1563,7 +1576,7 @@
 <https://w3id.org/traits.build#establishment_means> <http://www.w3.org/2000/01/rdf-schema#label> "establishment means"@en .
 <https://w3id.org/traits.build#establishment_means> <http://semanticscience.org/resource/SIO_000224> <https://w3id.org/traits.build#taxon> .
 <https://w3id.org/traits.build#establishment_means> <http://purl.org/dc/terms/description> "Statement about whether an organism or organisms have been introduced to a given place and time through the direct or indirect activity of modern humans."@en .
-<https://w3id.org/traits.build#establishment_means> <http://www.w3.org/2000/01/rdf-schema#comment> "Darwin Core applies establishmentMeans to an organism at a place and time; a traits.build database records it once per taxon, so the match is close rather than exact."@en .
+<https://w3id.org/traits.build#establishment_means> <http://www.w3.org/2004/02/skos/core#editorialNote> "Close, not exact, to dwc:establishmentMeans: Darwin Core applies establishmentMeans to an organism at a place and time; a traits.build database records it once per taxon."@en .
 <https://w3id.org/traits.build#establishment_means> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#establishment_means> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#establishment_means> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -1935,6 +1948,9 @@
 <http://www.w3.org/2004/02/skos/core#scopeNote> <http://www.w3.org/2004/02/skos/core#prefLabel> "scope note"@en .
 <http://www.w3.org/2004/02/skos/core#scopeNote> <http://purl.org/dc/terms/description> "A note that helps to clarify the meaning and/or the use of a concept."@en .
 <http://www.w3.org/2004/02/skos/core#scopeNote> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2004/02/skos/core#> .
+<http://www.w3.org/2004/02/skos/core#editorialNote> <http://www.w3.org/2004/02/skos/core#prefLabel> "editorial note"@en .
+<http://www.w3.org/2004/02/skos/core#editorialNote> <http://purl.org/dc/terms/description> "A note for an editor, translator or maintainer of the vocabulary."@en .
+<http://www.w3.org/2004/02/skos/core#editorialNote> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2004/02/skos/core#> .
 <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2004/02/skos/core#prefLabel> "is in scheme"@en .
 <http://www.w3.org/2004/02/skos/core#inScheme> <http://purl.org/dc/terms/description> "Relates a resource (for example a concept) to a concept scheme in which it is included."@en .
 <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2004/02/skos/core#inScheme> <http://www.w3.org/2004/02/skos/core#> .

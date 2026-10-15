@@ -2454,7 +2454,7 @@ gt package: https://gt.rstudio.com/
 <section id="introduction" class="level1">
 <h1>1. Introduction</h1>
 <p>A database must be accompanied by a published data model to be: 1) efficiently and accurately interpreted and used by researchers; and 2) easily integrated with other databases. A published data model should be machine-readable for easy integration into future data products, yet also tractable to human readers. A data model (a.k.a. data standard, ontology) must document the meanings behind each database output variable and should also record the semantic relationships between columns. For instance, within the traits.build ontology, indicating that <code>observation_id</code> is an identifier for a unique <code>observation</code>.</p>
-<p>To the extent possible, a data model should draw upon previously published vocabularies and ontologies, explicitly indicating when terms within the data model are identical to those used by other databases (or other bioinformatics outputs). For instance, the traits.build data standard maps terms related to taxonomy and species occurrences to <a href="https://dwc.tdwg.org/terms/">DarwinCore</a> and terms related to trait measurements to the <a href="https://ecologicaltraitdata.github.io/ETS/">Ecological Trait-data Standard</a>. The semantic relationships between terms adhere to the <a href="https://bioportal.bioontology.org/ontologies/OBOE">OBOE ontology</a>, a generic relational ontology developed explicitly for documenting ecological trait observations and the context properties that are essential to document for ecological data. Each OBOE class used is also matched to its counterpart in <a href="https://www.w3.org/TR/vocab-ssn/">SOSA/SSN</a> (following the published <a href="https://www.w3.org/ns/sosa/oboe">SOSA-to-OBOE alignment</a>) and in the <a href="https://ternaustralia.github.io/ontology_tern/">TERN Ontology</a>, the SOSA profile used by TERN and the Australian Biodiversity Information Standard; trait-measurement terms are additionally matched to the Darwin Core <code>MeasurementOrFact</code> terms (used by Darwin Core Archives) and <code>Assertion</code> terms (used by the Darwin Core Data Package), and the ETS terms <code>statisticalMethod</code> and <code>aggregateMeasure</code> are recorded as the only published counterparts of <code>value_type</code>. Where a term has no counterpart in any of these standards, its comment says so. It further draws upon properties defined by the Semanticscience Integrated Ontology (https://bioportal.bioontology.org/ontologies/SIO) to describe relationships between terms.</p>
+<p>To the extent possible, a data model should draw upon previously published vocabularies and ontologies, explicitly indicating when terms within the data model are identical to those used by other databases (or other bioinformatics outputs). For instance, the traits.build data standard maps terms related to taxonomy and species occurrences to <a href="https://dwc.tdwg.org/terms/">DarwinCore</a> and terms related to trait measurements to the <a href="https://ecologicaltraitdata.github.io/ETS/">Ecological Trait-data Standard</a>. The semantic relationships between terms adhere to the <a href="https://bioportal.bioontology.org/ontologies/OBOE">OBOE ontology</a>, a generic relational ontology developed explicitly for documenting ecological trait observations and the context properties that are essential to document for ecological data. Each OBOE class used is also matched to its counterpart in <a href="https://www.w3.org/TR/vocab-ssn/">SOSA/SSN</a> (following the published <a href="https://www.w3.org/ns/sosa/oboe">SOSA-to-OBOE alignment</a>) and in the <a href="https://ternaustralia.github.io/ontology_tern/">TERN Ontology</a>, the SOSA profile used by TERN and the Australian Biodiversity Information Standard; trait-measurement terms are additionally matched to the Darwin Core <code>MeasurementOrFact</code> terms (used by Darwin Core Archives) and <code>Assertion</code> terms (used by the Darwin Core Data Package), and the ETS terms <code>statisticalMethod</code> and <code>aggregateMeasure</code> are recorded as the only published counterparts of <code>value_type</code>. Where a term has no counterpart in any of these standards, its comment says so. Where the strength of a match is not obvious from the two definitions, the term’s editorial note gives the reason. It further draws upon properties defined by the Semanticscience Integrated Ontology (https://bioportal.bioontology.org/ontologies/SIO) to describe relationships between terms.</p>
 <p>Within the traits.build ontology, there are 5 main categories of terms, differentiated based on whether they are database tables, rows, or columns:</p>
 <ol type="1">
 <li><strong>Database tables:</strong> The relational tables (traits, contexts, locations, methods, taxa, contributors, taxonomic_updates). These terms are all mapped as having the property <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a> = <a href="http://semanticscience.org/resource/SIO_000754">database table</a><br>
@@ -4252,6 +4252,14 @@ Scientific name of the taxon on which traits were sampled, without authorship. W
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Related to dwc:scientificName and ets:scientificName, which carry authorship where taxon_name does not; scientific_name in the taxa table is the exact match to dwc:scientificName. Close to dwc:acceptedNameUsage, as in 1.1.0: where possible taxon_name is the currently accepted name, which is what acceptedNameUsage holds, without its authorship. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -4628,6 +4636,14 @@ The measured value of a trait.
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Exact to dwc:measurementValue, although Darwin Core measurements are often read as species-level. The term is defined as the value of the measurement, fact, characteristic, or assertion, and a MeasurementOrFact record can attach to an Occurrence (one organism) as well as to a Taxon. Questioned and kept on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -4736,6 +4752,14 @@ unit
 </td>
 <td headers="description" class="gt_row gt_left">
 Units of the sampled trait value after aligning with AusTraits standards.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Close to tern:unit, which takes a QUDT unit IRI where unit holds the unit as text. dwc:measurementUnit and dwc:assertionUnit hold text and are exact matches. Reviewed on #276.
 </td>
 </tr>
 <tr>
@@ -5632,6 +5656,14 @@ individual_id
 </td>
 <td headers="description" class="gt_row gt_left">
 A unique integer identifier for an individual, with individuals numbered sequentially within each dataset by taxon by population grouping. Most often each row of data represents an individual, but in some datasets trait data collected on a single individual is presented across multiple rows of data, such as if the same trait is measured using different methods or the same individual is measured repeatedly across time.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Close, not exact, to dwc:organismID: a Darwin Core organism may be a group of organisms (see dwc:Organism), where individual_id identifies one. Reviewed on #276.
 </td>
 </tr>
 <tr>
@@ -6564,6 +6596,14 @@ Date sample was taken, in the format <code>yyyy-mm-dd</code>, <code>yyyy-mm</cod
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Close, not exact, to dwc:eventDate, ets:eventDate and the other date terms: when the sampling date is unknown, collection_date holds the publication date, which is not when the event occurred. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -7028,6 +7068,14 @@ Name given to taxon in the original data supplied by the authors.
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Exact to dwc:verbatimIdentification. Close, not related, to ets:verbatimScientificName, the species name or taxon identifier as originally supplied by the data provider: unlike dwc:scientificName its definition does not call for authorship. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -7259,6 +7307,14 @@ location_property
 </td>
 <td headers="description" class="gt_row gt_left">
 The location characteristic being recorded. The name should include units of measurement, e.g. <code>MAT (C)</code>. Ideally we have at least the following variables for each location, <code>longitude (deg)</code>, <code>latitude (deg)</code>, <code>description</code>.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+dwc:measurementType is broader: it names the type of any measurement, where location_property names only a property of a location. Reviewed on #276.
 </td>
 </tr>
 <tr>
@@ -7747,6 +7803,14 @@ elevation
 </td>
 <td headers="description" class="gt_row gt_left">
 The elevation above mean sea level in meters.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Exact to ets:elevation, the geographic elevation in metres above sea level. Reviewed on #276.
 </td>
 </tr>
 <tr>
@@ -11947,10 +12011,10 @@ Statement about whether an organism or organisms have been introduced to a given
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
-<a href="http://www.w3.org/2000/01/rdf-schema#comment">comment</a>
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-Darwin Core applies establishmentMeans to an organism at a place and time; a traits.build database records it once per taxon, so the match is close rather than exact.
+Close, not exact, to dwc:establishmentMeans: Darwin Core applies establishmentMeans to an organism at a place and time; a traits.build database records it once per taxon.
 </td>
 </tr>
 <tr>
@@ -12535,6 +12599,14 @@ taxon
 </td>
 <td headers="description" class="gt_row gt_left">
 <a href="A group of organisms (sensu http://purl.obolibrary.org/obo/OBI_0100026) considered by taxonomists to form a homogeneous unit.">A group of organisms (sensu http://purl.obolibrary.org/obo/OBI_0100026) considered by taxonomists to form a homogeneous unit.</a>
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Close, not exact, to tern:Taxon. TERN takes the Darwin Core definition but makes tern:Taxon a subclass of tern:Value: a taxon is the result of an identification. Here a taxon is the thing observed, a feature of interest. The meaning is the same, the role in the model is different. dwc:Taxon has no such role and is the exact match. Reviewed on #276.
 </td>
 </tr>
 <tr>
@@ -14904,6 +14976,14 @@ An entity is an object (e.g., a tree, a community, an ecological process). Entit
 </tr>
 <tr>
 <td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Exact to sosa:FeatureOfInterest but close to tern:FeatureOfInterest. TERN’s SHACL shapes (TERN Ontology 0.9.0) require every tern:FeatureOfInterest to have a tern:featureType and a dataset; an entity requires neither. Reviewed on #276.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
 <a href="http://semanticscience.org/resource/SIO_000602">computational entity</a>
 </td>
 <td headers="description" class="gt_row gt_left">
@@ -14996,6 +15076,14 @@ individual
 </td>
 <td headers="description" class="gt_row gt_left">
 An individual living organism.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Close to dwc:Organism, which is a particular organism or defined group of organisms considered to be taxonomically homogeneous, where an individual is one organism. individual_id is close to dwc:organismID for the same reason.
 </td>
 </tr>
 <tr>
@@ -15220,6 +15308,14 @@ method_context
 </td>
 <td headers="description" class="gt_row gt_left">
 A compment of a trait measurement protocol that is changed between individual trait measurements and might cause the measured trait values of individuals or populations to change.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Related, not close, to sosa:Procedure and tern:Procedure. A method context is one component of a protocol that varies between measurements; the procedure itself is recorded in methods, which is the close match to both. Reviewed on #276.
 </td>
 </tr>
 <tr>
@@ -15824,6 +15920,14 @@ measurement
 </td>
 <td headers="description" class="gt_row gt_left">
 A measurement is an assertion that a characteristic of an entity had a particular value with respect to an observation event.
+</td>
+</tr>
+<tr>
+<td headers="name" class="gt_row gt_left">
+<a href="http://www.w3.org/2004/02/skos/core#editorialNote">editorial note</a>
+</td>
+<td headers="description" class="gt_row gt_left">
+Exact to sosa:Observation but close to tern:Observation. TERN’s SHACL shapes (TERN Ontology 0.9.0) require every tern:Observation to have a dataset, procedure, phenomenon time, result date-time, observed property, result and feature of interest. A measurement requires none of these (many records have no date), so it is as general as the SOSA class and broader than the TERN one. Reviewed on #276.
 </td>
 </tr>
 <tr>

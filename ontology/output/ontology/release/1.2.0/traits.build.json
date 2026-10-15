@@ -2597,6 +2597,20 @@
       }
     },
     {
+      "@id": "http://www.w3.org/2004/02/skos/core#editorialNote",
+      "http://purl.org/dc/terms/description": {
+        "@language": "en",
+        "@value": "A note for an editor, translator or maintainer of the vocabulary."
+      },
+      "http://www.w3.org/2004/02/skos/core#inScheme": {
+        "@id": "http://www.w3.org/2004/02/skos/core#"
+      },
+      "http://www.w3.org/2004/02/skos/core#prefLabel": {
+        "@language": "en",
+        "@value": "editorial note"
+      }
+    },
+    {
       "@id": "http://www.w3.org/2004/02/skos/core#exactMatch",
       "http://purl.org/dc/terms/description": {
         "@language": "en",
@@ -3638,6 +3652,10 @@
           "@id": "http://rs.tdwg.org/dwc/terms/measurementDeterminedDate"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "Close, not exact, to dwc:eventDate, ets:eventDate and the other date terms: when the sampling date is unknown, collection_date holds the publication date, which is not when the event occurred. Reviewed on #276."
+      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -4454,6 +4472,10 @@
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#MeasuredValue"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "Exact to ets:elevation, the geographic elevation in metres above sea level. Reviewed on #276."
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": [
         {
           "@id": "http://terminologies.gfbio.org/terms/ETS/elevation"
@@ -4501,6 +4523,10 @@
       },
       "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "https://w3id.org/tern/ontologies/tern/FeatureOfInterest"
+      },
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "Exact to sosa:FeatureOfInterest but close to tern:FeatureOfInterest. TERN's SHACL shapes (TERN Ontology 0.9.0) require every tern:FeatureOfInterest to have a tern:featureType and a dataset; an entity requires neither. Reviewed on #276."
       },
       "http://www.w3.org/2004/02/skos/core#exactMatch": [
         {
@@ -4682,10 +4708,6 @@
       "http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype": {
         "@id": "http://www.w3.org/2001/XMLSchema#string"
       },
-      "http://www.w3.org/2000/01/rdf-schema#comment": {
-        "@language": "en",
-        "@value": "Darwin Core applies establishmentMeans to an organism at a place and time; a traits.build database records it once per taxon, so the match is close rather than exact."
-      },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
         "@value": "establishment means"
@@ -4696,6 +4718,10 @@
       },
       "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/establishmentMeans"
+      },
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "Close, not exact, to dwc:establishmentMeans: Darwin Core applies establishmentMeans to an organism at a place and time; a traits.build database records it once per taxon."
       },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
@@ -4995,6 +5021,10 @@
           "@id": "http://rs.tdwg.org/dwc/terms/Organism"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "Close to dwc:Organism, which is a particular organism or defined group of organisms considered to be taxonomically homogeneous, where an individual is one organism. individual_id is close to dwc:organismID for the same reason."
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://purl.obolibrary.org/obo/OBI_0100026"
       },
@@ -5041,6 +5071,10 @@
       },
       "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/organismID"
+      },
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "Close, not exact, to dwc:organismID: a Darwin Core organism may be a group of organisms (see dwc:Organism), where individual_id identifies one. Reviewed on #276."
       },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
@@ -5518,6 +5552,10 @@
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Characteristic"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "dwc:measurementType is broader: it names the type of any measurement, where location_property names only a property of a location. Reviewed on #276."
+      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -5667,6 +5705,10 @@
       },
       "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "https://w3id.org/tern/ontologies/tern/Observation"
+      },
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "Exact to sosa:Observation but close to tern:Observation. TERN's SHACL shapes (TERN Ontology 0.9.0) require every tern:Observation to have a dataset, procedure, phenomenon time, result date-time, observed property, result and feature of interest. A measurement requires none of these (many records have no date), so it is as general as the SOSA class and broader than the TERN one. Reviewed on #276."
       },
       "http://www.w3.org/2004/02/skos/core#exactMatch": [
         {
@@ -6014,6 +6056,10 @@
           "@id": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#Entity"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "Related, not close, to sosa:Procedure and tern:Procedure. A method context is one component of a protocol that varies between measurements; the procedure itself is recorded in methods, which is the close match to both. Reviewed on #276."
+      },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
       },
@@ -7031,6 +7077,10 @@
       "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "http://terminologies.gfbio.org/terms/ETS/verbatimScientificName"
       },
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "Exact to dwc:verbatimIdentification. Close, not related, to ets:verbatimScientificName, the species name or taxon identifier as originally supplied by the data provider: unlike dwc:scientificName its definition does not call for authorship. Reviewed on #276."
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/verbatimIdentification"
       },
@@ -7926,6 +7976,10 @@
       "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "https://w3id.org/tern/ontologies/tern/Taxon"
       },
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "Close, not exact, to tern:Taxon. TERN takes the Darwin Core definition but makes tern:Taxon a subclass of tern:Value: a taxon is the result of an identification. Here a taxon is the thing observed, a feature of interest. The meaning is the same, the role in the model is different. dwc:Taxon has no such role and is the exact match. Reviewed on #276."
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/Taxon"
       },
@@ -8095,6 +8149,10 @@
       ],
       "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "http://rs.tdwg.org/dwc/terms/acceptedNameUsage"
+      },
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "Related to dwc:scientificName and ets:scientificName, which carry authorship where taxon_name does not; scientific_name in the taxa table is the exact match to dwc:scientificName. Close to dwc:acceptedNameUsage, as in 1.1.0: where possible taxon_name is the currently accepted name, which is what acceptedNameUsage holds, without its authorship. Reviewed on #276."
       },
       "http://www.w3.org/2004/02/skos/core#inScheme": {
         "@id": "https://w3id.org/traits.build"
@@ -8749,6 +8807,10 @@
       ],
       "http://www.w3.org/2004/02/skos/core#closeMatch": {
         "@id": "http://www.w3.org/ns/sosa/hasSimpleResult"
+      },
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "Exact to dwc:measurementValue, although Darwin Core measurements are often read as species-level. The term is defined as the value of the measurement, fact, characteristic, or assertion, and a MeasurementOrFact record can attach to an Occurrence (one organism) as well as to a Taxon. Questioned and kept on #276."
       },
       "http://www.w3.org/2004/02/skos/core#exactMatch": [
         {
@@ -9653,6 +9715,10 @@
           "@id": "http://qudt.org/schema/qudt/Unit"
         }
       ],
+      "http://www.w3.org/2004/02/skos/core#editorialNote": {
+        "@language": "en",
+        "@value": "Close to tern:unit, which takes a QUDT unit IRI where unit holds the unit as text. dwc:measurementUnit and dwc:assertionUnit hold text and are exact matches. Reviewed on #276."
+      },
       "http://www.w3.org/2004/02/skos/core#exactMatch": [
         {
           "@id": "http://rs.tdwg.org/dwc/terms/assertionUnit"

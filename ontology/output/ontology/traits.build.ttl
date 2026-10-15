@@ -946,6 +946,11 @@ skos:closeMatch
     skos:inScheme <http://www.w3.org/2004/02/skos/core#> ;
     skos:prefLabel "has close match"@en .
 
+skos:editorialNote
+    dcterms:description "A note for an editor, translator or maintainer of the vocabulary."@en ;
+    skos:inScheme <http://www.w3.org/2004/02/skos/core#> ;
+    skos:prefLabel "editorial note"@en .
+
 skos:exactMatch
     dcterms:description "skos:exactMatch is used to link two concepts, indicating a high degree of confidence that the concepts can be used interchangeably across a wide range of information retrieval applications."@en ;
     skos:inScheme <http://www.w3.org/2004/02/skos/core#> ;
@@ -1279,6 +1284,7 @@ tern:unit
     skos:altLabel "collection_date"@en ;
     skos:broader oboe:MeasuredValue, dwc:measurementValue ;
     skos:closeMatch dwc:assertionEffectiveDate, dwc:eventDate, dwc:measurementDeterminedDate, ets:eventDate, sosa:phenomenonTime, tern:resultDateTime ;
+    skos:editorialNote "Close, not exact, to dwc:eventDate, ets:eventDate and the other date terms: when the sampling date is unknown, collection_date holds the publication date, which is not when the event occurred. Reviewed on #276."@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "collection date"@en .
 
@@ -1492,6 +1498,7 @@ tern:unit
     owl:sameAs dwc:verbatimElevation, ets:elevation ;
     skos:altLabel "elevation"@en ;
     skos:broader oboe:MeasuredValue, dwc:measurementValue ;
+    skos:editorialNote "Exact to ets:elevation, the geographic elevation in metres above sea level. Reviewed on #276."@en ;
     skos:exactMatch dwc:verbatimElevation, ets:elevation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "elevation (m)"@en .
@@ -1504,6 +1511,7 @@ tern:unit
     owl:sameAs oboe:Entity, sosa:FeatureOfInterest ;
     skos:altLabel "entity"@en ;
     skos:closeMatch tern:FeatureOfInterest ;
+    skos:editorialNote "Exact to sosa:FeatureOfInterest but close to tern:FeatureOfInterest. TERN's SHACL shapes (TERN Ontology 0.9.0) require every tern:FeatureOfInterest to have a tern:featureType and a dataset; an entity requires neither. Reviewed on #276."@en ;
     skos:exactMatch oboe:Entity, sosa:FeatureOfInterest ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "entity"@en .
@@ -1557,10 +1565,10 @@ tern:unit
     SIO:SIO_000224 <https://w3id.org/traits.build#taxon> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
     rdf:datatype xsd:string ;
-    rdfs:comment "Darwin Core applies establishmentMeans to an organism at a place and time; a traits.build database records it once per taxon, so the match is close rather than exact."@en ;
     rdfs:label "establishment means"@en ;
     skos:altLabel "establishment_means"@en ;
     skos:closeMatch dwc:establishmentMeans ;
+    skos:editorialNote "Close, not exact, to dwc:establishmentMeans: Darwin Core applies establishmentMeans to an organism at a place and time; a traits.build database records it once per taxon."@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "establishment means"@en .
 
@@ -1648,6 +1656,7 @@ tern:unit
     skos:altLabel "individual"@en ;
     skos:broader oboe:Entity, sosa:FeatureOfInterest ;
     skos:closeMatch <http://linked.data.gov.au/def/tern-cv/60d7edf8-98c6-43e9-841c-e176c334d270>, dwc:Organism ;
+    skos:editorialNote "Close to dwc:Organism, which is a particular organism or defined group of organisms considered to be taxonomically homogeneous, where an individual is one organism. individual_id is close to dwc:organismID for the same reason."@en ;
     skos:exactMatch obo:OBI_0100026 ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "individual"@en .
@@ -1663,6 +1672,7 @@ tern:unit
     skos:altLabel "individual_id"@en ;
     skos:broader oboe-characteristics:Identifier ;
     skos:closeMatch dwc:organismID ;
+    skos:editorialNote "Close, not exact, to dwc:organismID: a Darwin Core organism may be a group of organisms (see dwc:Organism), where individual_id identifies one. Reviewed on #276."@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "individual id"@en .
 
@@ -1796,6 +1806,7 @@ tern:unit
     rdfs:label "location property"@en ;
     skos:altLabel "location_property"@en ;
     skos:broader oboe:Characteristic, dwc:measurementType, sosa:ObservableProperty ;
+    skos:editorialNote "dwc:measurementType is broader: it names the type of any measurement, where location_property names only a property of a location. Reviewed on #276."@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "location property"@en .
 
@@ -1837,6 +1848,7 @@ tern:unit
     skos:altLabel "measurement"@en ;
     skos:broader dwc:Assertion ;
     skos:closeMatch tern:Observation ;
+    skos:editorialNote "Exact to sosa:Observation but close to tern:Observation. TERN's SHACL shapes (TERN Ontology 0.9.0) require every tern:Observation to have a dataset, procedure, phenomenon time, result date-time, observed property, result and feature of interest. A measurement requires none of these (many records have no date), so it is as general as the SOSA class and broader than the TERN one. Reviewed on #276."@en ;
     skos:exactMatch oboe:Measurement, dwc:MeasurementOrFact, sosa:Observation ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "measurement"@en .
@@ -1923,6 +1935,7 @@ tern:unit
     rdfs:label "method context"@en ;
     skos:altLabel "method_context"@en ;
     skos:broader oboe:Entity, <https://w3id.org/traits.build#traits.build-contexts> ;
+    skos:editorialNote "Related, not close, to sosa:Procedure and tern:Procedure. A method context is one component of a protocol that varies between measurements; the procedure itself is recorded in methods, which is the close match to both. Reviewed on #276."@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "method context"@en ;
     skos:relatedMatch sosa:Procedure, tern:Procedure .
@@ -2190,6 +2203,7 @@ tern:unit
     skos:altLabel "original_name"@en ;
     skos:broader rdfs:label, skos:prefLabel ;
     skos:closeMatch ets:verbatimScientificName ;
+    skos:editorialNote "Exact to dwc:verbatimIdentification. Close, not related, to ets:verbatimScientificName, the species name or taxon identifier as originally supplied by the data provider: unlike dwc:scientificName its definition does not call for authorship. Reviewed on #276."@en ;
     skos:exactMatch dwc:verbatimIdentification ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "original taxon name"@en .
@@ -2452,6 +2466,7 @@ tern:unit
     skos:altLabel "taxon"@en ;
     skos:broader oboe:Entity, sosa:FeatureOfInterest ;
     skos:closeMatch tern:Taxon ;
+    skos:editorialNote "Close, not exact, to tern:Taxon. TERN takes the Darwin Core definition but makes tern:Taxon a subclass of tern:Value: a taxon is the result of an identification. Here a taxon is the thing observed, a feature of interest. The meaning is the same, the role in the model is different. dwc:Taxon has no such role and is the exact match. Reviewed on #276."@en ;
     skos:exactMatch dwc:Taxon ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "taxon"@en .
@@ -2498,6 +2513,7 @@ tern:unit
     skos:altLabel "taxon_name"@en ;
     skos:broader rdfs:label, skos:prefLabel ;
     skos:closeMatch dwc:acceptedNameUsage ;
+    skos:editorialNote "Related to dwc:scientificName and ets:scientificName, which carry authorship where taxon_name does not; scientific_name in the taxa table is the exact match to dwc:scientificName. Close to dwc:acceptedNameUsage, as in 1.1.0: where possible taxon_name is the currently accepted name, which is what acceptedNameUsage holds, without its authorship. Reviewed on #276."@en ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "taxon name"@en ;
     skos:relatedMatch dwc:scientificName, ets:scientificName .
@@ -2665,6 +2681,7 @@ tern:unit
     skos:altLabel "value"@en ;
     skos:broader oboe:MeasuredValue, sosa:Result, tern:Value ;
     skos:closeMatch sosa:hasSimpleResult ;
+    skos:editorialNote "Exact to dwc:measurementValue, although Darwin Core measurements are often read as species-level. The term is defined as the value of the measurement, fact, characteristic, or assertion, and a MeasurementOrFact record can attach to an Occurrence (one organism) as well as to a Taxon. Questioned and kept on #276."@en ;
     skos:exactMatch dwc:assertionValue, dwc:measurementValue, ets:traitValue ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "value"@en .
@@ -2921,6 +2938,7 @@ tern:unit
     owl:sameAs oboe:Unit, dwc:assertionUnit, dwc:measurementUnit, ets:traitUnit ;
     skos:altLabel "unit"@en ;
     skos:closeMatch qudt:Unit, tern:unit ;
+    skos:editorialNote "Close to tern:unit, which takes a QUDT unit IRI where unit holds the unit as text. dwc:measurementUnit and dwc:assertionUnit hold text and are exact matches. Reviewed on #276."@en ;
     skos:exactMatch oboe:Unit, dwc:assertionUnit, dwc:measurementUnit, ets:traitUnit ;
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "unit"@en .
