@@ -7572,7 +7572,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "For datasets that are compilations, an identifier for the original data source."
+        "@value": "For a dataset compiled from several studies, the `key` of the reference in `sources` that the record was taken from, which is the dataset's primary reference or one of its `original_source` references. NA, or the primary key, both mean the record was collected in the primary study."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": [
         {
@@ -7626,7 +7626,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "Citations for the original dataset_id in sources, for compilationse. This detail is generated from the original source in the metadata."
+        "@value": "Citations, separated by `; `, for the `original_source` references. This detail is generated from the `original_source` references in the metadata."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-methods"
@@ -7673,7 +7673,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "Citation key for the original dataset_id in sources, for compilations.  The key is typically formatted as `Surname_year`."
+        "@value": "Citation keys, separated by `; `, for the dataset's `original_source` references in `sources`, which for a compilation are the studies records were taken from. Each record names its own in `source_id` in the `traits` table. Each key is typically formatted as `Surname_year`."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-methods"
@@ -7819,7 +7819,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "Citations for the secondary source. This detail is generated from the secondary source in the metadata."
+        "@value": "Citations, separated by `; `, for the `secondary` references. This detail is generated from the `secondary` references in the metadata."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-methods"
@@ -7866,7 +7866,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "Citation key for the secondary source in `sources`.  The key is typically formatted as `Surname_year`."
+        "@value": "Citation keys, separated by `; `, for the `secondary` references in `sources`, the later publications that re-used the same dataset. Each key is typically formatted as `Surname_year`."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-methods"
