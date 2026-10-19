@@ -720,10 +720,16 @@ metadata_add_identifiers <- function(dataset_id, overwrite = FALSE,
 
 #' Adds citation details to a metadata file for given study
 #'
+#' A dataset's `primary` reference is a single entry, which this overwrites.
+#' Its `secondary` references (later publications re-using the same data) and
+#' `original_source` references (for a compilation, the studies records were
+#' taken from, each named in the data's `source_id`) are lists: the reference is
+#' appended, or replaces the listed entry that already has its `key`. See
+#' `util_flatten_sources()` for the shape of the block.
+#'
 #' @inheritParams metadata_path_dataset_id
 #' @param file Name of file where reference is saved
-#' @param type Type of reference: `primary`, `secondary` or `original`
-#' (or `original_01`, `original_02`, etc., for multiple sources)
+#' @param type Type of reference: `primary`, `secondary` or `original_source`
 #' @param drop Variables in bibtex to ignore
 #'
 #' @return `metadata.yml` file with citation details added
@@ -732,6 +738,13 @@ metadata_add_identifiers <- function(dataset_id, overwrite = FALSE,
 metadata_add_source_bibtex <- function(dataset_id, file,
                                        type = "primary",
                                        drop = c("dateobj", "month")) {
+
+  types <- c("primary", "secondary", "original_source")
+  if (length(type) != 1 || !type %in% types) {
+    stop(sprintf(
+      "`type` must be one of %s. References of one type are listed together under that key, so numbered types such as `secondary_02` are no longer used.",
+      paste(sprintf("'%s'", types), collapse = ", ")), call. = FALSE)
+  }
 
   # Read in file, convert to list, set key
   bib <- RefManageR::ReadBib(file) %>% util_bib_to_list()
@@ -770,16 +783,33 @@ metadata_add_source_bibtex <- function(dataset_id, file,
   v <-  c(order, names(bib)) %>% unique()
   v <- v[v %in% names(bib)]
 
-  # Output message if source metadata already exists
   metadata <- read_metadata_dataset(dataset_id)
-  if (type == "primary" && any(metadata[["source"]][["primary"]][c("year", "author", "journal", "title", "volume", "doi")] != "unknown")) {
-    message(sprintf(red("Primary source metadata for %s ") %+% red("already exists and is being overwritten"), blue(dataset_id)))
-  }
-  if (type != "primary" && length(metadata[["source"]][[type]]) > 0)
-    message(sprintf(red("Source metadata of type ") %+% green("'%s'") %+% red(" for %s") %+% red(" already exists and is being overwritten"), type, blue(bib$key)))
+  # Stops, naming the entry to convert, if the file is still in the old shape
+  util_flatten_sources(metadata[["source"]])
 
-  # Save to metadata
-  metadata$source[[type]] <- bib[v]
+  if (type == "primary") {
+    # Output message if source metadata already exists
+    if (any(metadata[["source"]][["primary"]][c("year", "author", "journal", "title", "volume", "doi")] != "unknown")) {
+      message(sprintf(red("Primary source metadata for %s ") %+% red("already exists and is being overwritten"), blue(dataset_id)))
+    }
+    metadata$source$primary <- bib[v]
+  } else {
+    # Append to the list, or replace the entry already carrying this key
+    existing <- metadata[["source"]][[type]]
+    if (is.null(existing)) existing <- list()
+    existing_keys <- vapply(existing, function(e) {
+      if (is.null(e[["key"]])) NA_character_ else as.character(e[["key"]])
+    }, character(1))
+    i <- which(existing_keys == bib$key)
+    if (length(i) > 0) {
+      message(sprintf(red("Source metadata of type ") %+% green("'%s'") %+% red(" for %s") %+% red(" already exists and is being overwritten"), type, blue(bib$key)))
+      existing[[i[1]]] <- bib[v]
+    } else {
+      existing <- c(existing, list(bib[v]))
+    }
+    metadata$source[[type]] <- existing
+  }
+
   write_metadata_dataset(metadata, dataset_id)
 
 }

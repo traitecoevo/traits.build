@@ -6,8 +6,8 @@ source:
     author: Anna Richards and Ian J. Wright
     title: 'Unpublished data: Transcription of Australian plant functional trait data
       from Ian Wright''s collection of papers, Macquarie University'
-  original_01:
-    key: Bell_1985
+  original_source:
+  - key: Bell_1985
     bibtype: Conference
     year: '1985'
     author: Bell
@@ -16,8 +16,7 @@ source:
     volume: .na
     number: .na
     pages: .na
-  original_02:
-    key: Bevege_1978
+  - key: Bevege_1978
     bibtype: TechReport
     year: '1978'
     author: D. I. Bevege
@@ -26,16 +25,14 @@ source:
     volume: 6
     number: .na
     pages: 20
-  original_03:
-    key: Lambert_1979
+  - key: Lambert_1979
     bibtype: Thesis
     year: '1979'
     author: M. J. Lambert
     title: Sulphur relationships of native and exotic tree species
     type: Masters
     institution: Macquarie University, Sydney
-  secondary_01:
-    key: Leuning_1991
+  - key: Leuning_1991
     bibtype: Article
     year: '1991'
     author: R. Leuning and R. N. Cromer and S. Rance
@@ -46,12 +43,21 @@ source:
     number: '4'
     pages: 504--510
     doi: 10.1007/bf00317712
-  secondary_02:
-    key: Meakins_0000
+  - key: Meakins_0000
     bibtype: Unpublished
     year: unknown
     author: Meakins
     title: 'Unpublished data: Study of Brindabella species'
+  secondary:
+  - key: Richards_2010
+    bibtype: Article
+    year: '2010'
+    author: Anna Richards and Ian J. Wright
+    journal: Test Journal of Trait Ecology
+    title: 'Re-analysis of transcribed Australian plant functional trait data: a fictional
+      later publication, so the fixture carries a true secondary reference'
+    volume: '1'
+    pages: 1--10
 contributors:
   data_collectors:
   - last_name: Richards

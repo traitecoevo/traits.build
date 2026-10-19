@@ -251,3 +251,95 @@ test_that("`dataset_test` accepts a context scoped to specific traits by a colum
   failures <- dataset_test_failures("Test_2024_1")
   expect_equal(grep("^== Testing", failures, invert = TRUE, value = TRUE), character(0))
 })
+
+
+# `source_id` links each record to the reference it was taken from (#296).
+# Test_2023_2 maps a `source_id` column holding `Test_2022` and `Test_2002`, and
+# lists both as `original_source` references, so it passes; each edit below
+# breaks one thing and must be reported for that thing.
+
+test_that("`dataset_test` reports a `source` block in the old shape, and the build refuses it (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    # One named entry per reference, as traits.build wrote before 2.3.0
+    originals <- metadata$source$original_source
+    metadata$source$original_source <- NULL
+    metadata$source$original_01 <- originals[[1]]
+    metadata$source$original_02 <- originals[[2]]
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "`original_01`, `original_02`: not in the expected shape, so the dataset will not build",
+    fixed = TRUE
+  )
+  # The lenient read lets the other source checks run: both keys still link
+  expect_false(any(grepl("should not contain", out, fixed = TRUE)))
+  # ...and the build itself stops, naming the entries
+  expect_true(any(grepl("building dataset", out, fixed = TRUE)))
+  expect_true(any(grepl("entries in a shape traits.build no longer reads: `original_01`, `original_02`", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` reports `source_id` values that match no reference (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    metadata$source$original_source <- NULL
+    metadata
+  })
+
+  hits <- grep("`source_id` (each value must be the `key` of the primary or an `original_source` reference)", out, fixed = TRUE)
+  expect_length(hits, 1)
+  expect_match(out[hits], "should not contain: 'Test_2022', 'Test_2002'|should not contain: 'Test_2002', 'Test_2022'")
+  # Not an old-shape problem, and the dataset still builds
+  expect_false(any(grepl("not in the expected shape", out, fixed = TRUE)))
+  expect_false(any(grepl("building dataset", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` says to move a `secondary` reference that records are taken from (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    moved <- metadata$source$original_source[[2]]
+    metadata$source$original_source <- metadata$source$original_source[1]
+    metadata$source$secondary <- list(moved)
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "move these entries to `original_source`: 'Test_2002'",
+    fixed = TRUE
+  )
+  # The moved key is reported once, as misplaced, not again as unmatched
+  expect_false(any(grepl("should not contain: 'Test_2002'", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` reports an `original_source` reference no record names (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    unused <- metadata$source$original_source[[1]]
+    unused$key <- "Test_1999"
+    metadata$source$original_source <- c(metadata$source$original_source, list(unused))
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "no record's `source_id` names these `original_source` references (a typo in the data, or the reference is really `secondary`): 'Test_1999'",
+    fixed = TRUE
+  )
+})
+
+
+test_that("`dataset_test` hints when `source_id` holds an entry's name rather than its key (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    # A constant, as `process_parse_data()` would read it: no such column
+    metadata$dataset$source_id <- "original_source"
+    metadata
+  })
+
+  hits <- grep("a value such as `secondary_01` is the name of an entry, not its `key`", out, fixed = TRUE)
+  expect_length(hits, 1)
+  expect_match(out[hits], "should not contain: 'original_source'", fixed = TRUE)
+  # Nothing links to the two originals now, so they are reported as unused
+  expect_true(any(grepl("no record's `source_id` names these `original_source` references", out, fixed = TRUE)))
+})

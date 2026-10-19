@@ -265,7 +265,12 @@ dataset_process <- function(filename_data_raw,
     process_format_contributors(dataset_id, schema)
 
   # Record sources
-  sources <- metadata$source %>% lapply(util_list_to_bib) %>% purrr::reduce(c)
+  # A file still written in the old shape (`secondary_01`, `original_01`, ...)
+  # stops here, naming the entry to convert
+  sources <-
+    util_flatten_sources(metadata$source)$entry %>%
+    lapply(util_list_to_bib) %>%
+    purrr::reduce(c)
 
   # Record methods
   methods <- process_format_methods(metadata, dataset_id, sources, contributors)
@@ -2078,27 +2083,17 @@ process_format_identifiers <- function(my_list, dataset_id, schema) {
 
 process_format_methods <- function(metadata, dataset_id, sources, contributors) {
 
-  # Identify sources as being `primary`, `secondary` or `original`
-  # Secondary datasets are additional publications associated with the primary citation
-  # Original dataset keys are used for compilations indicating the original data sources
-  citation_types <-
-    tibble::tibble(
-      source_key = names(metadata$source),
-      type = str_replace_all(.data$source_key, "_[:digit:]+", ""),
-      source_id = metadata$source %>%
-        austraits::convert_list_to_df2() %>%
-        purrr::pluck("key")
-    )
+  # References are `primary` (the dataset itself), `secondary` (later
+  # publications re-using the same data, attached to the whole dataset) or
+  # `original_source` (for a compilation, the studies records were taken from;
+  # each record names its own in `source_id`, so these link at the record level
+  # and the columns written here are the dataset-level summary)
+  sources_flat <- util_flatten_sources(metadata$source)
 
   source_primary_key <- metadata$source$primary$key
   source_primary_type <- metadata$source$primary$bibtype
-  source_secondary_keys <- citation_types %>%
-    dplyr::filter(.data$type == "secondary") %>%
-    purrr::pluck("source_id")
-
-  source_original_dataset_keys <- citation_types %>%
-    dplyr::filter(.data$type == "original") %>%
-    purrr::pluck("source_id")
+  source_secondary_keys <- sources_flat$key[sources_flat$type == "secondary"]
+  source_original_dataset_keys <- sources_flat$key[sources_flat$type == "original_source"]
 
   # Combine collectors to add into the methods table
   collectors_tmp <-

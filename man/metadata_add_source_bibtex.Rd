@@ -16,8 +16,7 @@ metadata_add_source_bibtex(
 
 \item{file}{Name of file where reference is saved}
 
-\item{type}{Type of reference: \code{primary}, \code{secondary} or \code{original}
-(or \code{original_01}, \code{original_02}, etc., for multiple sources)}
+\item{type}{Type of reference: \code{primary}, \code{secondary} or \code{original_source}}
 
 \item{drop}{Variables in bibtex to ignore}
 }
@@ -25,5 +24,10 @@ metadata_add_source_bibtex(
 \code{metadata.yml} file with citation details added
 }
 \description{
-Adds citation details to a metadata file for given study
+A dataset's \code{primary} reference is a single entry, which this overwrites.
+Its \code{secondary} references (later publications re-using the same data) and
+\code{original_source} references (for a compilation, the studies records were
+taken from, each named in the data's \code{source_id}) are lists: the reference is
+appended, or replaces the listed entry that already has its \code{key}. See
+\code{util_flatten_sources()} for the shape of the block.
 }

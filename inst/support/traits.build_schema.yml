@@ -104,7 +104,7 @@ austraits:
         individual_id: &individual_id A unique integer identifier for an individual, with individuals numbered sequentially within each dataset by taxon by population grouping. Most often each row of data represents an individual, but in some datasets trait data collected on a single individual is presented across multiple rows of data, such as if the same trait is measured using different methods or the same individual is measured repeatedly across time.
         repeat_measurements_id: &repeat_measurements_id A unique integer identifier for repeat measurements of a trait that comprise a single observation, such as a response curve.
         temporal_context_id: &temporal_context_id A unique integer identifier assigned where repeat observations are made on the same individual (or population, or taxon) across time. The identifier links to specific information in the context table.
-        source_id: &source_id For datasets that are compilations, an identifier for the original data source.
+        source_id: &source_id For a dataset compiled from several studies, the `key` of the reference in `sources` that the record was taken from, which is the dataset's primary reference or one of its `original_source` references. NA, or the primary key, both mean the record was collected in the primary study.
         location_id: &location_id A unique integer identifier for a location, with locations numbered sequentially within a dataset. The identifier links to specific information in the location table.
         entity_context_id: &entity_context_id A unique integer identifier indicating specific contextual properties of an individual, possibly including the individual's sex or caste (for social insects).
         plot_context_id: &plot_context_id A unique integer identifier for a plot, where a plot is a distinct collection of organisms within a single geographic location, such as plants growing on different aspects or blocks in an experiment. The identifier links to specific information in the context table.
@@ -147,10 +147,10 @@ austraits:
         source_primary_key: Citation key for the primary source in `sources`. The key is typically formatted as `Surname_year`.
         source_primary_type: Citation type for the primary source in `sources`, using standard BibTex citation types (Article, Book, Misc, Online, Report, Techreport, Thesis, Unpublished).
         source_primary_citation: Citation for the primary source. This detail is generated from the primary source in the metadata.
-        source_secondary_key: Citation key for the secondary source in `sources`.  The key is typically formatted as `Surname_year`.
-        source_secondary_citation: Citations for the secondary source. This detail is generated from the secondary source in the metadata.
-        source_original_dataset_key: Citation key for the original dataset_id in sources; for compilations.  The key is typically formatted as `Surname_year`.
-        source_original_dataset_citation: Citations for the original dataset_id in sources; for compilations. This detail is generated from the original source in the metadata.
+        source_secondary_key: Citation keys, separated by `; `, for the `secondary` references in `sources`, the later publications that re-used the same dataset. Each key is typically formatted as `Surname_year`.
+        source_secondary_citation: Citations, separated by `; `, for the `secondary` references. This detail is generated from the `secondary` references in the metadata.
+        source_original_dataset_key: Citation keys, separated by `; `, for the dataset's `original_source` references in `sources`, which for a compilation are the studies records were taken from. Each record names its own in `source_id` in the `traits` table. Each key is typically formatted as `Surname_year`.
+        source_original_dataset_citation: Citations, separated by `; `, for the `original_source` references. This detail is generated from the `original_source` references in the metadata.
         data_collectors: &data_collectors The person (people) leading data collection for this study.
         assistants: &assistants Names of people who played a more minor role in data collection for the study.
         dataset_curators: &dataset_curators Names of database team member(s) who contacted the data collectors and added the study to the database repository.
@@ -235,7 +235,7 @@ austraits:
         institution_code: &institution_code The name (or acronym) in use by the institution having custody of the object(s) or information referred to by the identifier value.
         identifier_value: A sequence of characters that links an observation within a traits.build database to additional information about observed entity in another database.
     sources:
-      description: Bibtex entries for all primary and secondary sources in the compilation.
+      description: Bibtex entries for every reference a dataset cites, that is its primary reference, any `original_source` references records were taken from, and any `secondary` references that re-used the data.
       type: list
     definitions:
       description: A copy of the definitions for all tables and terms. Information included here was used to process data and generate any documentation for the study.
@@ -319,11 +319,11 @@ metadata:
   type: list
   elements:
     source:
-      description: Citation details for the original source(s) for the data, whether it is a published journal article, book, website, or thesis.
+      description: Citation details for the sources of the data, whether published journal articles, books, websites or theses. The `primary` reference is the dataset itself; `secondary` references are later publications that re-used the same data; `original_source` references are, for a compilation, the studies records were taken from, each named in the data's `source_id`.
       type: categorical
       values:
         primary:
-          description: &source_primary The original study in which data were collected.
+          description: &source_primary The study the dataset is taken from and cited by, where the data were collected or, for a compilation, where they were assembled. A single reference.
           type: catergorical
           values:
             key: &key The key is used to identify the exact reference using authors last name and year of publication.
@@ -344,9 +344,30 @@ metadata:
             place: &place The location where the reference was written or published.
             note: &note Additional notes for the reference which are not contained in the other fields.
         secondary:
-          description: &source_secondary A subsequent study where data were compiled or re-analysed.
-          type: categorical
-          values:
+          description: &source_secondary A later study that re-used or re-analysed data from the primary source. Attached to the whole dataset; no record is taken from a secondary reference. A list of references, one `- key:` item per reference.
+          type: array
+          elements:
+            key: *key
+            bibtype: *bibtype
+            year: *year
+            author: *author
+            journal: *journal
+            title: *title
+            volume: *volume
+            number: *number
+            pages: *pages
+            doi: *doi
+            url: *url
+            type: *type
+            institution: *institution
+            publisher: *publisher
+            isbn: *isbn
+            place: *place
+            note: *note
+        original_source:
+          description: &source_original_source For a compilation, a study from which records were taken. Each record's `source_id` holds the `key` of the entry it came from. A list of references, one `- key:` item per reference.
+          type: array
+          elements:
             key: *key
             bibtype: *bibtype
             year: *year

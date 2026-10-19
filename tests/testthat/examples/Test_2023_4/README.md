@@ -5,7 +5,7 @@ This dataset is for testing the following, for long datasets:
 - Input of `basis_of_record`, `life_stage`, `entity_type`, `value_type`, `basis_of_value`, `measurement_remarks` and `replicates` from a column at the dataset level versus at the trait and location level (or from a column at the trait level)
 - Units read in from a column
 - Replicates in numeric format
-- `source_id` column
+- `source_id` column, with `original_source` references for the keys it holds
 - Locations (latitude and longitude not missing)
 - `repeat_measurements_id` at the trait level, for individuals (using and not using `individual_id`), populations and species (including when it is specified as TRUE and FALSE when a trait is entered twice)
 - Test `collection_date` read in from a column at the dataset level (`observation_id` is created properly)

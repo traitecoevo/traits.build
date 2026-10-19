@@ -170,34 +170,43 @@ dataset_test_worker <-
         ## Source
         test_expect_list_names_valid(metadata[["source"]], info = sprintf("%s\tsource", red(f)), label = "field names")
 
-        v <- names(metadata[["source"]])
-        i <- grepl("primary", v) | grepl("secondary", v) | grepl("original", v)
+        # Read leniently, so an entry in the old shape is reported here (and
+        # again when the build refuses it) rather than stopping the checks
+        sources_flat <- util_flatten_sources(metadata[["source"]], strict = FALSE)
+        source_types <- names(schema$metadata$elements$source$values)
 
-        test_expect_contains(v, "primary", info = paste0(red(f), "\tsource"))
+        test_expect_contains(sources_flat$type, "primary", info = paste0(red(f), "\tsource"))
 
         test_expect_true(
-          sum(grepl("primary", v)) <= 1,
-          info = paste0(red(f), "\tsources can have max 1 type labelled 'primary': ", paste(v, collapse = ", "))
+          sum(sources_flat$type == "primary") <= 1,
+          info = paste0(red(f), "\tsources can have max 1 type labelled 'primary': ", paste(sources_flat$slot, collapse = ", "))
+        )
+
+        test_expect_is_in(
+          unique(sources_flat$type), source_types,
+          info = paste0(red(f), "\tsource"),
+          label = sprintf("reference types (%s)", paste(sprintf("`%s`", source_types), collapse = ", "))
         )
 
         test_expect_true(
-          all(i),
-          info = paste0(red(f), "\tsources must be primary, secondary or original: ", paste(v[!i], collapse = ", "))
+          !any(sources_flat$legacy),
+          info = sprintf(
+            "%s\tsource - `%s`: not in the expected shape, so the dataset will not build. `primary` is a single reference; `secondary` and `original_source` each hold a list of references, one `- key:` item per reference (entries named `secondary_NN` or `original_NN` belong in those lists)",
+            red(f), paste(unique(sources_flat$slot[sources_flat$legacy]), collapse = "`, `"))
         )
 
         vals <- c("key", "bibtype", "author", "title", "year")
 
-        for (bib in names(metadata[["source"]])) {
+        for (k in seq_len(nrow(sources_flat))) {
           test_expect_contains(
-            names(metadata[["source"]][[bib]]), vals,
-            info = sprintf("%s\tsource '%s'", red(f), bib)
+            names(sources_flat$entry[[k]]), vals,
+            info = sprintf("%s\tsource '%s'", red(f),
+                           ifelse(is.na(sources_flat$key[k]), sources_flat$slot[k], sources_flat$key[k]))
           )
         }
 
-        keys <- unlist(lapply(metadata[["source"]], "[[", "key"))
-
         test_expect_unique(
-          keys,
+          sources_flat$key,
           info = paste0(red(f), "\tsources"),
           label = "keys"
         )
@@ -691,6 +700,41 @@ dataset_test_worker <-
           }
         }
 
+        ## Source id
+        # Each record's `source_id` is the `key` of the reference it was taken
+        # from -- the dataset's primary reference or one of its `original_source`
+        # references -- so that `sources[[source_id]]` returns that reference (#296)
+        source_ids <- dataset_test_source_id_values(metadata, traits, data)
+        keys_by_type <- split(sources_flat$key, sources_flat$type)
+        original_keys <- keys_by_type[["original_source"]]
+        linkable_keys <- c(keys_by_type[["primary"]], original_keys)
+
+        i <- source_ids %in% keys_by_type[["secondary"]]
+        test_expect_true(
+          !any(i),
+          info = sprintf(
+            "%s\tsource - `source_id` values name `secondary` references; a reference that records are taken from is an original source, so move these entries to `original_source`: '%s'",
+            red(f), paste(source_ids[i], collapse = "', '"))
+        )
+
+        unmatched <- source_ids[!i & !source_ids %in% linkable_keys]
+        hint <- ifelse(
+          any(unmatched %in% sources_flat$slot),
+          "; a value such as `secondary_01` is the name of an entry, not its `key`", "")
+        test_expect_is_in(
+          source_ids[!i], linkable_keys,
+          info = paste0(red(f), "\tsource"),
+          label = paste0("`source_id` (each value must be the `key` of the primary or an `original_source` reference", hint, ")")
+        )
+
+        j <- !original_keys %in% source_ids
+        test_expect_true(
+          !any(j),
+          info = sprintf(
+            "%s\tsource - no record's `source_id` names these `original_source` references (a typo in the data, or the reference is really `secondary`): '%s'",
+            red(f), paste(original_keys[j], collapse = "', '"))
+        )
+
         ## Substitutions
 
         if (!is.na(metadata[["substitutions"]][1])) {
@@ -1100,3 +1144,35 @@ dataset_test_worker <-
       })
     }
   }
+
+
+#' Values that `traits$source_id` will hold once a dataset is built
+#'
+#' Resolves the dataset-level `source_id` in `metadata.yml`, and any trait-level
+#' `source_id`, the way `process_parse_data()` does: a value naming a column of
+#' the data reads that column; any other value is a constant.
+#'
+#' @param metadata Metadata list, as read by `yaml::read_yaml()` in `dataset_test()`
+#' @param traits The `traits` block of the metadata as a data frame
+#' @param data The data, with `custom_R_code` applied
+#'
+#' @return Character vector of the distinct non-NA values
+#' @noRd
+dataset_test_source_id_values <- function(metadata, traits, data) {
+
+  resolve <- function(v) {
+    v <- as.character(v)
+    v <- v[!is.na(v)]
+    unlist(lapply(v, function(x) {
+      if (!is.null(data[[x]])) as.character(data[[x]]) else x
+    }))
+  }
+
+  values <- resolve(metadata[["dataset"]][["source_id"]])
+
+  if (is.data.frame(traits) && "source_id" %in% names(traits)) {
+    values <- c(values, resolve(traits[["source_id"]]))
+  }
+
+  unique(values[!is.na(values)])
+}

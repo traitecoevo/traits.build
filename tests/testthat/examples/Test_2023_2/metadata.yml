@@ -11,6 +11,19 @@ source:
     pages: 521--535
     publisher: Wiley-Blackwell
     doi: 10.1111/j.0022-0477.2005.00992.x
+  original_source:
+  - key: Test_2022
+    bibtype: Unpublished
+    year: '2022'
+    author: Test Author
+    title: 'Unpublished data: fixture original source for the records whose source_id
+      is Test_2022'
+  - key: Test_2002
+    bibtype: Unpublished
+    year: '2002'
+    author: Test Author
+    title: 'Unpublished data: fixture original source for the records whose source_id
+      is Test_2002'
 contributors:
   data_collectors:
   - last_name: Falster

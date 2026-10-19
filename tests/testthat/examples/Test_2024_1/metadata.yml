@@ -20,7 +20,6 @@ dataset:
   collection_date: .na/2009
   taxon_name: name_original
   location_name: .na
-  source_id: primary
   individual_id: individual_id
   description: Fixture for a context property scoped to specific traits, its
     values read per record from a data column named on the trait entry (#276).

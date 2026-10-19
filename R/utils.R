@@ -1224,3 +1224,123 @@ util_check_collection_date_timezone <- function(timezone) {
   }
   timezone
 }
+
+
+#' Flatten the `source` block of a `metadata.yml` into one row per reference
+#'
+#' A dataset's `source:` block holds its `primary` reference as a single entry,
+#' and its `secondary` references (later publications re-using the same data)
+#' and `original_source` references (for a compilation, the studies records were
+#' taken from, each named in the data's `source_id`) as lists:
+#'
+#' ```yaml
+#' source:
+#'   primary:
+#'     key: Smith_2020
+#'     ...
+#'   secondary:
+#'   - key: Smith_2021
+#'     ...
+#'   original_source:
+#'   - key: Jones_1999
+#'     ...
+#'   - key: Brown_2005
+#'     ...
+#' ```
+#'
+#' Earlier versions of traits.build wrote every reference as its own named
+#' entry (`secondary`, `secondary_01`, `original_01`, ...). That shape is no
+#' longer read: with `strict = TRUE` it is an error naming the entry to
+#' convert. `dataset_test()` reads with `strict = FALSE`, so that it can report
+#' the old shape as a failure and still check everything else about the file.
+#'
+#' @param source The `source` element of a metadata list, as read by
+#'   `read_metadata()`
+#' @param strict Stop on an entry that is not in the expected shape (the
+#'   default), or flatten it and flag it in the `legacy` column
+#'
+#' @return A tibble with one row per reference: `slot` (the entry's name in
+#'   `metadata.yml`), `type` (`primary`, `secondary` or `original_source`),
+#'   `key`, `legacy` (`TRUE` for an entry written in the old shape) and `entry`,
+#'   a list-column holding the reference's fields.
+#' @export
+#' @examples
+#' source <- list(
+#'   primary = list(key = "Smith_2020", bibtype = "Article"),
+#'   original_source = list(
+#'     list(key = "Jones_1999", bibtype = "Thesis"),
+#'     list(key = "Brown_2005", bibtype = "Book")
+#'   )
+#' )
+#' util_flatten_sources(source)
+util_flatten_sources <- function(source, strict = TRUE) {
+
+  empty <- tibble::tibble(
+    slot = character(), type = character(), key = character(),
+    legacy = logical(), entry = list()
+  )
+
+  if (is.null(source) || !is.list(source) || length(source) == 0 || is.null(names(source))) {
+    return(empty)
+  }
+
+  list_types <- c("secondary", "original_source")
+  known_types <- c("primary", list_types)
+
+  rows <- lapply(names(source), function(slot) {
+
+    x <- source[[slot]]
+    # `secondary: .na`, or an empty entry: nothing to record
+    if (is.null(x) || !is.list(x) || length(x) == 0) return(NULL)
+
+    is_entry <- !is.null(names(x))   # one reference, as a mapping
+    entries <- if (is_entry) list(x) else x
+
+    if (slot == "primary") {
+      type <- "primary"
+      legacy <- !is_entry
+    } else if (slot %in% list_types) {
+      type <- slot
+      legacy <- is_entry
+    } else {
+      # `secondary_01`, `original_01`, `original_source_01`, or an unknown name
+      type <- stringr::str_remove(slot, "_[0-9]+$")
+      if (type == "original") type <- "original_source"
+      legacy <- type %in% known_types
+    }
+
+    tibble::tibble(
+      slot = slot,
+      type = type,
+      key = vapply(entries, function(e) {
+        if (is.null(e[["key"]])) NA_character_ else as.character(e[["key"]])
+      }, character(1)),
+      legacy = legacy,
+      entry = entries
+    )
+  })
+
+  out <- dplyr::bind_rows(c(list(empty), rows))
+
+  if (strict) {
+    bad <- unique(out$slot[out$legacy])
+    if (length(bad) > 0) {
+      stop(sprintf(
+        paste0(
+          "`source` in metadata.yml has entries in a shape traits.build no ",
+          "longer reads: `%s`. `primary` is a single reference; `secondary` ",
+          "and `original_source` each hold a list of references, one `- key:` ",
+          "item per reference. Entries named `secondary_NN` or `original_NN` ",
+          "belong in those lists."),
+        paste(bad, collapse = "`, `")), call. = FALSE)
+    }
+    unknown <- unique(out$slot[!out$type %in% known_types])
+    if (length(unknown) > 0) {
+      stop(sprintf(
+        "`source` in metadata.yml: `%s` is not a type of reference; use `primary`, `secondary` or `original_source`.",
+        paste(unknown, collapse = "`, `")), call. = FALSE)
+    }
+  }
+
+  out
+}
