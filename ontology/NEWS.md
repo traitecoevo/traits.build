@@ -2,6 +2,12 @@
 
 The data model (the ontology published at <https://w3id.org/traits.build>) is versioned separately from the traits.build R package. The newest heading below is the version `make ontology` builds and `make ontology-release` snapshots into `ontology/output/ontology/release/<version>/`; the heading under it is what the site shows as the previous version. To cut a new version, add a heading. The package's own `NEWS.md` records the same changes from the package's side.
 
+## traits.build data model 1.2.1
+
+Prepared 2026-10-20 (traits.build #296).
+
+- Definitions revised, no mapping changes. `source_id` is the `key` of the reference a record was taken from, which is the dataset's primary reference or one of its `original_source` references, so `sources[[source_id]]` is that record's citation. `source_secondary_key` and `source_secondary_citation` are the dataset's `secondary` references, the later publications that re-used the same data; `source_original_dataset_key` and `source_original_dataset_citation` are its `original_source` references, the studies a compilation's records were taken from, each `; `-separated. The `source_original_dataset_citation` definition also loses a typo (`compilationse`).
+
 ## traits.build data model 1.2.0
 
 Prepared 2026-10-12 (traits.build #275, #276).
