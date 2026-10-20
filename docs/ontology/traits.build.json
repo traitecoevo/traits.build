@@ -9633,7 +9633,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "Type of trait, specifying if traits are categorical, numeric, or ordinal."
+        "@value": "Type of trait, which decides the checks its values must pass: `numeric`, `categorical` (values drawn from `allowed_values_levels`), `month_presence` (twelve characters, one `y` or `n` per month starting with January) or `text` (open-ended values with no fixed list)."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-definitions"

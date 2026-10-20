@@ -2917,7 +2917,7 @@ tern:unit
 
 <https://w3id.org/traits.build#type>
     dcterms:created "2024-02-01"^^xsd:date ;
-    dcterms:description "Type of trait, specifying if traits are categorical, numeric, or ordinal."@en ;
+    dcterms:description "Type of trait, which decides the checks its values must pass: `numeric`, `categorical` (values drawn from `allowed_values_levels`), `month_presence` (twelve characters, one `y` or `n` per month starting with January) or `text` (open-ended values with no fixed list)."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-definitions> ;
     SIO:SIO_000224 <https://w3id.org/traits.build#trait> ;
     SIO:SIO_000602 SIO:SIO_000757 ;

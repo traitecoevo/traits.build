@@ -1794,7 +1794,7 @@
 <https://w3id.org/traits.build#type> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-definitions> .
 <https://w3id.org/traits.build#type> <http://www.w3.org/2000/01/rdf-schema#label> "type"@en .
 <https://w3id.org/traits.build#type> <http://semanticscience.org/resource/SIO_000224> <https://w3id.org/traits.build#trait> .
-<https://w3id.org/traits.build#type> <http://purl.org/dc/terms/description> "Type of trait, specifying if traits are categorical, numeric, or ordinal."@en .
+<https://w3id.org/traits.build#type> <http://purl.org/dc/terms/description> "Type of trait, which decides the checks its values must pass: `numeric`, `categorical` (values drawn from `allowed_values_levels`), `month_presence` (twelve characters, one `y` or `n` per month starting with January) or `text` (open-ended values with no fixed list)."@en .
 <https://w3id.org/traits.build#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#type> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#type> <http://www.w3.org/2002/07/owl#sameAs> <http://terminologies.gfbio.org/terms/ETS/valueType> .

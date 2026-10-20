@@ -2,6 +2,12 @@
 
 The data model (the ontology published at <https://w3id.org/traits.build>) is versioned separately from the traits.build R package. The newest heading below is the version `make ontology` builds and `make ontology-release` snapshots into `ontology/output/ontology/release/<version>/`; the heading under it is what the site shows as the previous version. To cut a new version, add a heading. The package's own `NEWS.md` records the same changes from the package's side.
 
+## traits.build data model 1.3.0
+
+Prepared 2026-10-21 (traits.build #87).
+
+- A trait's `type` gains two values, `month_presence` (twelve characters, one `y` or `n` per month starting with January, recording whether a phenophase occurs in that month) and `text` (open-ended values with no fixed list of allowed values), alongside `numeric` and `categorical`. The definition of `type` lists all four and what each means, in place of "categorical, numeric, or ordinal": traits.build has never had an ordinal type. A minor version because the set of values a data-model term takes has grown. Definition only; no mapping changes.
+
 ## traits.build data model 1.2.0
 
 Prepared 2026-10-12 (traits.build #275, #276).
