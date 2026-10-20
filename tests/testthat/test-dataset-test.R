@@ -281,6 +281,24 @@ test_that("`dataset_test` reports a `source` block in the old shape, and the bui
 })
 
 
+test_that("`dataset_test` reports a bare value where a reference belongs, and the build refuses it (#296)", {
+  # `secondary: Smith_2021` names a reference without giving its fields; it
+  # must not pass and then drop out of the build unseen
+  out <- dataset_test_edited(function(metadata) {
+    metadata$source$secondary <- "Smith_2021"
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "`secondary`: not in the expected shape, so the dataset will not build",
+    fixed = TRUE
+  )
+  expect_true(any(grepl("source 'secondary' - does not contain: 'key'", out, fixed = TRUE)))
+  expect_true(any(grepl("entries in a shape traits.build no longer reads: `secondary`", out, fixed = TRUE)))
+})
+
+
 test_that("`dataset_test` reports `source_id` values that match no reference (#296)", {
   out <- dataset_test_edited(function(metadata) {
     metadata$source$original_source <- NULL

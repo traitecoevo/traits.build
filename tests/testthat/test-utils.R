@@ -351,6 +351,27 @@ test_that("`util_flatten_sources` refuses the old shape, naming the entry", {
   expect_equal(out$type, c("primary", "secondary", "secondary"))
   expect_equal(out$key, c("Smith_2020", "Smith_2021", "Smith_2022"))
 
+  # A bare value where a reference belongs is refused too, rather than dropped
+  # unseen: `secondary: Smith_2021`, a list of bare keys, or one such item
+  bare <- list(
+    list(primary = primary, secondary = "Smith_2021"),
+    list(primary = primary, secondary = c("Smith_2021", "Jones_2000")),
+    list(primary = primary,
+         original_source = list(list(key = "Jones_1999", bibtype = "Thesis"), "Brown_2005")),
+    list(primary = "Smith_2020")
+  )
+  for (source in bare) {
+    expect_error(util_flatten_sources(source), "a shape traits.build no longer reads")
+  }
+  # Leniently, each is flagged, with no key to report
+  out <- util_flatten_sources(bare[[2]], strict = FALSE)
+  expect_equal(out$type, c("primary", "secondary", "secondary"))
+  expect_equal(out$legacy, c(FALSE, TRUE, TRUE))
+  expect_equal(out$key, c("Smith_2020", NA, NA))
+  out <- util_flatten_sources(bare[[3]], strict = FALSE)
+  expect_equal(out$key, c("Smith_2020", "Jones_1999", NA))
+  expect_equal(out$legacy, c(FALSE, FALSE, TRUE))
+
   # An unknown type is a different error, and is not `legacy`
   expect_error(util_flatten_sources(list(primary = primary, tertiary = list(key = "X_2000"))), "not a type of reference")
   out <- util_flatten_sources(list(primary = primary, tertiary = list(key = "X_2000")), strict = FALSE)

@@ -1261,8 +1261,10 @@ util_check_collection_date_timezone <- function(timezone) {
 #'
 #' @return A tibble with one row per reference: `slot` (the entry's name in
 #'   `metadata.yml`), `type` (`primary`, `secondary` or `original_source`),
-#'   `key`, `legacy` (`TRUE` for an entry written in the old shape) and `entry`,
-#'   a list-column holding the reference's fields.
+#'   `key`, `legacy` (`TRUE` for an entry not in the expected shape: written in
+#'   the old shape, or a bare value such as `secondary: Smith_2021` where a
+#'   reference's fields belong) and `entry`, a list-column holding the
+#'   reference's fields.
 #' @export
 #' @examples
 #' source <- list(
@@ -1291,17 +1293,21 @@ util_flatten_sources <- function(source, strict = TRUE) {
 
     x <- source[[slot]]
     # `secondary: .na`, or an empty entry: nothing to record
-    if (is.null(x) || !is.list(x) || length(x) == 0) return(NULL)
+    if (length(x) == 0 || (!is.list(x) && all(is.na(x)))) return(NULL)
 
-    is_entry <- !is.null(names(x))   # one reference, as a mapping
-    entries <- if (is_entry) list(x) else x
+    is_entry <- is.list(x) && !is.null(names(x))   # one reference, as a mapping
+    entries <- if (is_entry) list(x) else as.list(x)
+    # A bare value where a reference belongs (`secondary: Smith_2021`, or a
+    # list item that is not a mapping) is not a reference: flag it rather than
+    # let it drop out unseen
+    is_mapping <- vapply(entries, function(e) is.list(e) && !is.null(names(e)), logical(1))
 
     if (slot == "primary") {
       type <- "primary"
       legacy <- !is_entry
     } else if (slot %in% list_types) {
       type <- slot
-      legacy <- is_entry
+      legacy <- is_entry | !is_mapping
     } else {
       # `secondary_01`, `original_01`, `original_source_01`, or an unknown name
       type <- stringr::str_remove(slot, "_[0-9]+$")
@@ -1313,7 +1319,7 @@ util_flatten_sources <- function(source, strict = TRUE) {
       slot = slot,
       type = type,
       key = vapply(entries, function(e) {
-        if (is.null(e[["key"]])) NA_character_ else as.character(e[["key"]])
+        if (!is.list(e) || is.null(e[["key"]])) NA_character_ else as.character(e[["key"]])
       }, character(1)),
       legacy = legacy,
       entry = entries

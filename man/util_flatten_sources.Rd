@@ -16,8 +16,10 @@ default), or flatten it and flag it in the \code{legacy} column}
 \value{
 A tibble with one row per reference: \code{slot} (the entry's name in
 \code{metadata.yml}), \code{type} (\code{primary}, \code{secondary} or \code{original_source}),
-\code{key}, \code{legacy} (\code{TRUE} for an entry written in the old shape) and \code{entry},
-a list-column holding the reference's fields.
+\code{key}, \code{legacy} (\code{TRUE} for an entry not in the expected shape: written in
+the old shape, or a bare value such as \code{secondary: Smith_2021} where a
+reference's fields belong) and \code{entry}, a list-column holding the
+reference's fields.
 }
 \description{
 A dataset's \verb{source:} block holds its \code{primary} reference as a single entry,
