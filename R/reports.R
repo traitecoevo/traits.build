@@ -1,16 +1,45 @@
 
 #' Build reports for listed datasets
 #'
-#' Builds a detailed report for every dataset with a unique `dataset_id`, based on the template Qmd file provided.
+#' Builds a detailed report for every dataset with a unique `dataset_id`, based on a Quarto (.qmd) template.
 #' The reports are rendered as html files and saved in the specified output folder.
+#'
+#' Run this from the root of the database's repository: the report reads each
+#' dataset's `data/<dataset_id>/metadata.yml` from there.
+#'
+#' @section Report template:
+#' traits.build ships a generic template, which introduces the database from
+#' its own metadata (the `metadata` block of `config/metadata.yml`: title,
+#' version, description, DOI, reference, repository and licence) and works for
+#' any database the package builds.
+#'
+#' A database can use its own template instead by saving it as
+#' `config/report_dataset.qmd`, beside its other build inputs. When
+#' `input_file` is `NULL`, `dataset_report()` uses that file if it exists in the
+#' working directory, and otherwise the generic template. To start one, copy
+#' the generic template:
+#'
+#' ```r
+#' file.copy(system.file("support", "report_dataset.qmd", package = "traits.build"),
+#'           "config/report_dataset.qmd")
+#' ```
+#'
+#' A template receives the parameters `dataset_id`, `austraits_path` (the
+#' compiled database, saved as `.rds`) and `show_questions`, and needs a
+#' `title:` line in its YAML header, which `dataset_report()` replaces with the
+#' dataset's id. `keep = TRUE` leaves the copy of the template rendered for
+#' each dataset, `tmp_<dataset_id>_report.qmd`, in the working directory.
 #'
 #' @param dataset_id Name of specific study/dataset
 #' @param austraits Compiled austraits database
 #' @param overwrite Logical value to determine whether to overwrite existing report
 #' @param output_path Location where rendered report will be saved
-#' @param input_file Report script (.qmd) file to build study report
+#' @param input_file Report template (.qmd) to build the study report from. The
+#'   default, `NULL`, uses `config/report_dataset.qmd` if the working directory
+#'   has one, and otherwise the generic template shipped with traits.build (see
+#'   the Report template section). A path given here is always used.
 #' @param quiet An option to suppress printing during rendering from knitr, Quarto and pandoc
-#' @param keep Keep the temporary, per-dataset copy of the template (see Details)?
+#' @param keep Keep the temporary, per-dataset copy of the template (see the Report template section)?
 #' @param show_questions Include the questions to the data contributor? The
 #'   default, `TRUE`, gives the review copy; `FALSE` gives a final copy with all
 #'   questions (and the explanatory text about them) omitted.
@@ -23,8 +52,10 @@
 #' @export
 dataset_report <- function(dataset_id, austraits, overwrite = FALSE,
                            output_path = "export/reports",
-                           input_file = system.file("support", "report_dataset.qmd", package = "traits.build"),
+                           input_file = NULL,
                            quiet = TRUE, keep = FALSE, show_questions = TRUE) {
+
+  input_file <- dataset_report_template(input_file)
 
   built <- vapply(
     dataset_id,
@@ -45,9 +76,26 @@ dataset_report <- function(dataset_id, austraits, overwrite = FALSE,
   invisible(built)
 }
 
+# The template `dataset_report()` renders: `input_file` when given; otherwise
+# the database's own `config/report_dataset.qmd` if the working directory has
+# one; otherwise the generic template shipped with the package.
+dataset_report_template <- function(input_file = NULL,
+                                    local_file = file.path("config", "report_dataset.qmd")) {
+  if (!is.null(input_file)) {
+    return(input_file)
+  }
+
+  if (file.exists(local_file)) {
+    message("Using the database's own report template, ", local_file)
+    return(local_file)
+  }
+
+  system.file("support", "report_dataset.qmd", package = "traits.build")
+}
+
 dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
                                   output_path = "export/reports",
-                                  input_file = system.file("support", "report_dataset.qmd", package = "traits.build"),
+                                  input_file = dataset_report_template(),
                                   quiet = TRUE, keep = FALSE, show_questions = TRUE) {
 
   if (!file.exists(input_file)) {

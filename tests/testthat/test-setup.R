@@ -916,6 +916,11 @@ test_that("reports and plots are produced", {
   expect_match(report, "Review of questions", fixed = TRUE)
   expect_match(report, "Question:", fixed = TRUE)
   expect_match(report, "Please review the report", fixed = TRUE)
+  # The generic template introduces the database from its own metadata, here
+  # `tests/testthat/config/metadata.yml`, rather than from fixed prose (#140)
+  expect_match(report, "a curated plant trait database for the Australian flora", fixed = TRUE)
+  expect_match(report, "10.5281/zenodo.5112001", fixed = TRUE)
+  expect_no_match(report, "Australian Plant Census", fixed = TRUE)
 
   # The final copy leaves out every question and the list of them at the end
   final_path <- withr::local_tempdir()
@@ -980,6 +985,54 @@ test_that("`dataset_report` rejects a missing template clearly", {
     ),
     "Report template not found"
   )
+})
+
+test_that("`dataset_report` picks up a database's own template (#140)", {
+  # The generic template ships with the package; a database can keep its own
+  # beside its other build inputs, as AusTraits does
+  packaged <- system.file("support", "report_dataset.qmd", package = "traits.build")
+  local_template <- file.path("config", "report_dataset.qmd")
+  withr::local_dir(withr::local_tempdir())
+
+  # Without one, the generic template
+  expect_silent(template <- dataset_report_template())
+  expect_equal(template, packaged)
+
+  # With one, that, saying so
+  dir.create("config")
+  writeLines(c("---", "format: html", "---"), local_template)
+  expect_message(template <- dataset_report_template(), "own report template")
+  expect_equal(template, local_template)
+
+  # An explicit `input_file` always wins, including the packaged template
+  expect_equal(dataset_report_template("elsewhere.qmd"), "elsewhere.qmd")
+  expect_silent(template <- dataset_report_template(packaged))
+  expect_equal(template, packaged)
+
+  # ...and `dataset_report()` itself follows those rules. The local template
+  # above has no `title:` line, so the error names whichever template was used
+  # without a render being needed.
+  skip_if_not_installed("quarto")
+  expect_error(
+    suppressMessages(
+      dataset_report("Test_2022", austraits = list(), output_path = "reports", overwrite = TRUE)
+    ),
+    paste("has no `title:` line in its YAML header:", local_template),
+    fixed = TRUE
+  )
+  expect_error(
+    dataset_report(
+      "Test_2022", austraits = list(), output_path = "reports", input_file = "no-such-template.qmd"
+    ),
+    "Report template not found: no-such-template.qmd",
+    fixed = TRUE
+  )
+})
+
+test_that("the packaged report template describes no particular database (#140)", {
+  template <- readLines(system.file("support", "report_dataset.qmd", package = "traits.build"), warn = FALSE)
+  expect_false(any(grepl("AusTraits|austraits\\.org|Australian Plant Census|APNI|APCalign", template)))
+  expect_false(any(grepl("library(austraits)", template, fixed = TRUE)))
 })
 
 testthat::test_that("`dataset_test` is working", {

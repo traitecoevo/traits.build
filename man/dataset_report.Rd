@@ -9,7 +9,7 @@ dataset_report(
   austraits,
   overwrite = FALSE,
   output_path = "export/reports",
-  input_file = system.file("support", "report_dataset.qmd", package = "traits.build"),
+  input_file = NULL,
   quiet = TRUE,
   keep = FALSE,
   show_questions = TRUE
@@ -24,11 +24,14 @@ dataset_report(
 
 \item{output_path}{Location where rendered report will be saved}
 
-\item{input_file}{Report script (.qmd) file to build study report}
+\item{input_file}{Report template (.qmd) to build the study report from. The
+default, \code{NULL}, uses \code{config/report_dataset.qmd} if the working directory
+has one, and otherwise the generic template shipped with traits.build (see
+the Report template section). A path given here is always used.}
 
 \item{quiet}{An option to suppress printing during rendering from knitr, Quarto and pandoc}
 
-\item{keep}{Keep the temporary, per-dataset copy of the template (see Details)?}
+\item{keep}{Keep the temporary, per-dataset copy of the template (see the Report template section)?}
 
 \item{show_questions}{Include the questions to the data contributor? The
 default, \code{TRUE}, gives the review copy; \code{FALSE} gives a final copy with all
@@ -41,6 +44,34 @@ whose report fails to render warns and returns \code{FALSE} rather than aborting
 the batch.
 }
 \description{
-Builds a detailed report for every dataset with a unique \code{dataset_id}, based on the template Qmd file provided.
+Builds a detailed report for every dataset with a unique \code{dataset_id}, based on a Quarto (.qmd) template.
 The reports are rendered as html files and saved in the specified output folder.
 }
+\details{
+Run this from the root of the database's repository: the report reads each
+dataset's \verb{data/<dataset_id>/metadata.yml} from there.
+}
+\section{Report template}{
+
+traits.build ships a generic template, which introduces the database from
+its own metadata (the \code{metadata} block of \code{config/metadata.yml}: title,
+version, description, DOI, reference, repository and licence) and works for
+any database the package builds.
+
+A database can use its own template instead by saving it as
+\code{config/report_dataset.qmd}, beside its other build inputs. When
+\code{input_file} is \code{NULL}, \code{dataset_report()} uses that file if it exists in the
+working directory, and otherwise the generic template. To start one, copy
+the generic template:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{file.copy(system.file("support", "report_dataset.qmd", package = "traits.build"),
+          "config/report_dataset.qmd")
+}\if{html}{\out{</div>}}
+
+A template receives the parameters \code{dataset_id}, \code{austraits_path} (the
+compiled database, saved as \code{.rds}) and \code{show_questions}, and needs a
+\verb{title:} line in its YAML header, which \code{dataset_report()} replaces with the
+dataset's id. \code{keep = TRUE} leaves the copy of the template rendered for
+each dataset, \verb{tmp_<dataset_id>_report.qmd}, in the working directory.
+}
+
