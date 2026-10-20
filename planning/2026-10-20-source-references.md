@@ -29,5 +29,5 @@ Measured on austraits.build `develop` (462 datasets) on 2026-10-20: 42 datasets 
 - [x] Fixtures converted; golden `methods.csv` / `sources.bib` regenerated
 - [x] Schema, NEWS, dataset report
 - [x] Data model 1.2.1 (`source_id`, `source_secondary_*`, `source_original_dataset_*` definitions)
-- [ ] austraits.build migration PR (pinned to the release carrying this change) and the deferred-datasets issue
+- [x] austraits.build migration PR [#878](https://github.com/traitecoevo/austraits.build/pull/878) (draft; its `DESCRIPTION` pins this branch and moves to the release tag before merging) and the curator-decisions issue [#879](https://github.com/traitecoevo/austraits.build/issues/879)
 - [ ] austraits `extract_data()`; ausfizz Tarin_2020; book wording; responses.build port
