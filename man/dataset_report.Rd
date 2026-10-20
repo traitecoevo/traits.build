@@ -11,7 +11,8 @@ dataset_report(
   output_path = "export/reports",
   input_file = system.file("support", "report_dataset.qmd", package = "traits.build"),
   quiet = TRUE,
-  keep = FALSE
+  keep = FALSE,
+  show_questions = TRUE
 )
 }
 \arguments{
@@ -28,6 +29,10 @@ dataset_report(
 \item{quiet}{An option to suppress printing during rendering from knitr, Quarto and pandoc}
 
 \item{keep}{Keep the temporary, per-dataset copy of the template (see Details)?}
+
+\item{show_questions}{Include the questions to the data contributor? The
+default, \code{TRUE}, gives the review copy; \code{FALSE} gives a final copy with all
+questions (and the explanatory text about them) omitted.}
 }
 \value{
 Invisibly, a logical named by \code{dataset_id}, \code{TRUE} where the report

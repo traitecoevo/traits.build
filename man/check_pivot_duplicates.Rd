@@ -18,5 +18,7 @@ check_pivot_duplicates(
 Tibble with duplicates and pivot columns
 }
 \description{
-Identify duplicates preventing pivoting wider
+Run on a compiled database, this cannot see rows that are identical in every
+column, because \code{\link[austraits:bind_databases]{austraits::bind_databases()}} drops them. To find the rows
+behind a \code{\link[=dataset_test]{dataset_test()}} pivot failure, use \code{\link[=dataset_find_pivot_duplicates]{dataset_find_pivot_duplicates()}}.
 }

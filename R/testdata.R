@@ -260,6 +260,21 @@ dataset_test_worker <-
           info = paste0(red(f), "\tdataset"), label = "`data_is_long_format`"
         )
 
+        test_expect_true(
+          length(metadata[["dataset"]][["collection_date_format"]]) <= 1,
+          info = paste0(red(f), "\tdataset - write `collection_date_format` as one space-separated value, such as `dmy my y`")
+        )
+
+        test_expect_no_error(
+          util_check_collection_date_format(metadata[["dataset"]][["collection_date_format"]]),
+          info = paste0(red(f), "\tdataset - `collection_date_format`")
+        )
+
+        test_expect_no_error(
+          util_check_collection_date_timezone(metadata[["dataset"]][["collection_date_timezone"]]),
+          info = paste0(red(f), "\tdataset - `collection_date_timezone`")
+        )
+
         test_expect_type(
           metadata[["dataset"]], "list",
           info = paste0(red(f), "\tdataset"), label = "metadata"
@@ -574,9 +589,13 @@ dataset_test_worker <-
 
             contextsub <- contexts %>% dplyr::filter(var_in == j)
 
-            # Context values align either with a column of data or a column of traits table
+            # Context values align either with a column of data, or a field on the `traits`
+            # entries -- and that field's own declared value can itself name a column of
+            # `data` (resolved per record, scoping the context to just those traits) or be
+            # the literal value itself, the same as `process_parse_data()` and
+            # `process_format_contexts()` both resolve it (#276)
             if (is.null(data[[j]])) {
-              v <- traits[[j]] %>% unique2()
+              v <- traits[[j]] %>% unique2() %>% util_resolve_trait_field_values(data)
             } else {
               v <- data[[j]] %>% unique2()
             }
@@ -906,32 +925,6 @@ dataset_test_worker <-
           }
         }
 
-        ## `collection_date` values must parse -- a year, a year-month, or a
-        # full date, singly or as a `start/end` range (`.na` is fine, garbage
-        # text is not)
-        date_valid <- util_collection_date_is_valid(parsed_data[["collection_date"]])
-        test_expect_true(
-          date_valid,
-          info = sprintf(
-            "%s\tSome date values are not parsing: '%s'",
-            red(f),
-            paste(unique(parsed_data[["collection_date"]][!date_valid]), collapse = "', '")
-          )
-        )
-
-        ## `collection_date` must not be missing -- an unknown date should be
-        # recorded explicitly (e.g. `.na/2009`), not left blank
-        date_missing <- is.na(parsed_data[["collection_date"]])
-        test_expect_true(
-          !any(date_missing),
-          info = sprintf(
-            "%s\tSome date values are NA (%s of %s records)",
-            red(f),
-            sum(date_missing),
-            length(date_missing)
-          )
-        )
-
         ## Excluded observations
 
         if (!is.na(metadata[["exclude_observations"]][1])) {
@@ -1059,6 +1052,46 @@ dataset_test_worker <-
               info = sprintf("%s\tduplicate rows detected; `traits` table cannot pivot wider", red(dataset_id))
             )
           }
+
+          ## `collection_date` values must be standard. Checked on the built
+          ## table, so it sees what the database will hold -- after
+          ## `collection_date_format` is applied, location-level values are
+          ## filled in and rows without a trait value are dropped.
+          dates <- dataset$traits[["collection_date"]]
+          invalid_dates <- unique(dates[util_collection_date_is_valid(dates) %in% FALSE])
+          declared_auto <- tryCatch(
+            identical(util_check_collection_date_format(metadata[["dataset"]][["collection_date_format"]]), "auto"),
+            error = function(e) FALSE
+          )
+          test_expect_true(
+            length(invalid_dates) == 0,
+            info = sprintf(
+              paste0(
+                "%s\t`collection_date` has %d value%s not written as `yyyy-mm-dd`, `yyyy-mm`, `yyyy` or a `/` range of these: '%s'. ",
+                "Declare the format they are written in with `collection_date_format` in the `dataset` block of metadata.yml ",
+                "(and `collection_date_timezone` for timestamps), or convert them in `custom_R_code`. %s"
+              ),
+              red(dataset_id), length(invalid_dates), ifelse(length(invalid_dates) == 1, "", "s"),
+              paste(utils::head(invalid_dates, 10), collapse = "', '"),
+              if (declared_auto && length(invalid_dates) > 0) util_collection_date_auto_message(invalid_dates) else ""
+            )
+          )
+
+          ## `collection_date` must not be missing -- an unknown date should be
+          ## recorded explicitly (e.g. `.na/2009`, which is stored as `2009`),
+          ## not left blank. Checked on the built table too, so a date a
+          ## location fills in counts, and a row dropped for having no trait
+          ## value does not.
+          n_missing_dates <- sum(is.na(dates))
+          test_expect_true(
+            n_missing_dates == 0,
+            info = sprintf(
+              "%s\tSome date values are NA (%s of %s records)",
+              red(dataset_id),
+              n_missing_dates,
+              length(dates)
+            )
+          )
 
           # Test `austraits` functions
           # Testing per study, not on all studies combined (is this ideal?)

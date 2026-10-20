@@ -231,22 +231,24 @@ test_that("`dataset_test` runs on the package's testthat edition (#234)", {
   )
   results <- as.data.frame(reporter$get_results())
 
-  # Test_2023_1's 4 failures include blank and ambiguous (`1/2/2004`)
-  # `collection_date` values, which the date checks report
+  # Test_2023_1's 3 failures include blank `collection_date` values, which the
+  # NA-date check reports (its ambiguous `1/2/2004` is read through the
+  # declared `collection_date_format: dmy`, so is not one of them)
   expect_equal(results$test, "Test_2023_1")
-  expect_equal(results$failed, 4)
+  expect_equal(results$failed, 3)
 })
 
 
 test_that("`dataset_test` rejects a `collection_date` that doesn't parse", {
   # See Test_2023_9/README.md: the `huber_value` trait's `collection_date` was
   # changed to `2002-02-30`, a calendar date that doesn't exist. Also covered
-  # by the snapshot above, pinned individually since it's a new check.
+  # by the snapshot above, pinned individually since it is written as a
+  # standard date and only the calendar rules it out.
   failures <- dataset_test_failures("Test_2023_9")
 
   expect_match(
-    failures, "Some date values are not parsing: '2002-02-30'",
-    all = FALSE
+    failures, "not written as `yyyy-mm-dd`, `yyyy-mm`, `yyyy` or a `/` range of these: '2002-02-30'",
+    fixed = TRUE, all = FALSE
   )
 })
 
@@ -270,6 +272,23 @@ test_that("`dataset_test` rejects missing `collection_date` values", {
     failures, "Some date values are NA \\([0-9]+ of [0-9]+ records\\)",
     all = FALSE
   )
-  # NA is not a parse failure, so it isn't reported twice
-  expect_false(any(grepl("Some date values are not parsing", failures)))
+  # NA is not a non-standard date, so it isn't reported twice
+  expect_false(any(grepl("not written as `yyyy-mm-dd`", failures, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` accepts a context scoped to specific traits by a column (#276)", {
+  # Test_2024_1's `wood_density` trait entry sets `leaf_temp: LfT_Rdark`, naming a
+  # column of `data.csv` rather than a literal -- scoping the `leaf temperature`
+  # context (declared once, at the dataset level) to just that trait. Its values
+  # are never listed in `metadata.yml`, so they can only be read off the column.
+  #
+  # The context-consistency check used to compare the column's per-record values
+  # against the literal string "LfT_Rdark" (the field's own declared value, never
+  # resolved against the data), which could never match and always failed (#276).
+  # One record leaves `LfT_Rdark` blank, as a column scoped to some traits
+  # usually will: a blank is no value for the context, not a value of `NA`.
+  # Nothing beyond the "== Testing dataset_test ==" header
+  failures <- dataset_test_failures("Test_2024_1")
+  expect_equal(grep("^== Testing", failures, invert = TRUE, value = TRUE), character(0))
 })

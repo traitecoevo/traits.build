@@ -9,7 +9,7 @@ type: software
 license: BSD-2-Clause
 title: 'traits.build: A Workflow for Harmonising Trait Data from Diverse Sources into
   a Documented Standard Structure'
-version: 2.1.0.900
+version: 2.2.0
 doi: 10.1016/j.ecoinf.2024.102773
 abstract: The `traits.build` package provides a workflow to harmonise trait data from
   diverse sources. A description of the data model, workflow, and R package are presented

@@ -136,3 +136,26 @@ test_that("`dataset_test` still rejects unknown fields in the dataset block", {
     fixed = TRUE, all = FALSE
   )
 })
+
+
+test_that("a dataset builds when every dataset-level field is read from a column", {
+  # Test_2023_2 fixes `entity_type` and `basis_of_record` as literals and reads
+  # the rest from columns. Reading those two from columns as well leaves nothing
+  # for `process_parse_data()` to add as constants, and binding the resulting
+  # 0-row tibble used to abort the build ("Can't recycle ... (size 0)").
+  all_from_columns <- function(metadata) {
+    metadata$dataset$custom_R_code <-
+      'data %>% mutate(LASA1000_dupe = LASA1000, et = "species", bor = "field")'
+    metadata$dataset$entity_type <- "et"
+    metadata$dataset$basis_of_record <- "bor"
+    metadata
+  }
+  path_data <- example_with_metadata("Test_2023_2", all_from_columns)
+
+  expected <- build_traits("Test_2023_2", "examples")
+  traits <- build_traits("Test_2023_2", path_data)
+
+  expect_equal(nrow(traits), nrow(expected))
+  expect_equal(traits$entity_type, expected$entity_type)
+  expect_equal(traits$basis_of_record, expected$basis_of_record)
+})

@@ -51,6 +51,7 @@ reference:
     desc: Functions that help you create metadata files.
     contents:
     - '`dataset_test`'
+    - '`dataset_find_pivot_duplicates`'
     - '`metadata_create_template`'
     - '`metadata_check_custom_R_code`'
     - '`metadata_add_traits`'
@@ -67,6 +68,7 @@ reference:
     - '`metadata_remove_taxonomic_change`'
     - '`metadata_update_taxonomic_change`'
     - '`metadata_exclude_observations`'
+    - '`metadata_dewrap_fields`'
     - '`metadata_add_identifiers`'
     - '`dataset_find_taxon`'
 
@@ -84,6 +86,8 @@ reference:
     desc: Functions to work with compiled traits.build objects.
     contents:
     - '`check_pivot_duplicates`'
+    - '`dataset_check_duplicate_values`'
+    - '`dataset_new_taxa_trait_combinations`'
     - '`check_pivot_wider`'
 
   - title: Building a compilation (private)

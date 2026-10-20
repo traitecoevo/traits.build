@@ -11,6 +11,9 @@
 #' @param input_file Report script (.qmd) file to build study report
 #' @param quiet An option to suppress printing during rendering from knitr, Quarto and pandoc
 #' @param keep Keep the temporary, per-dataset copy of the template (see Details)?
+#' @param show_questions Include the questions to the data contributor? The
+#'   default, `TRUE`, gives the review copy; `FALSE` gives a final copy with all
+#'   questions (and the explanatory text about them) omitted.
 #'
 #' @rdname dataset_report
 #' @return Invisibly, a logical named by `dataset_id`, `TRUE` where the report
@@ -21,7 +24,7 @@
 dataset_report <- function(dataset_id, austraits, overwrite = FALSE,
                            output_path = "export/reports",
                            input_file = system.file("support", "report_dataset.qmd", package = "traits.build"),
-                           quiet = TRUE, keep = FALSE) {
+                           quiet = TRUE, keep = FALSE, show_questions = TRUE) {
 
   built <- vapply(
     dataset_id,
@@ -33,7 +36,8 @@ dataset_report <- function(dataset_id, austraits, overwrite = FALSE,
         output_path = output_path,
         input_file = input_file,
         quiet = quiet,
-        keep = keep
+        keep = keep,
+        show_questions = show_questions
       ),
     logical(1)
   )
@@ -44,7 +48,7 @@ dataset_report <- function(dataset_id, austraits, overwrite = FALSE,
 dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
                                   output_path = "export/reports",
                                   input_file = system.file("support", "report_dataset.qmd", package = "traits.build"),
-                                  quiet = TRUE, keep = FALSE) {
+                                  quiet = TRUE, keep = FALSE, show_questions = TRUE) {
 
   if (!file.exists(input_file)) {
     stop("Report template not found: ", input_file, call. = FALSE)
@@ -114,7 +118,8 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
         quiet = quiet,
         execute_params = list(
           dataset_id = dataset_id,
-          austraits_path = austraits_rds
+          austraits_path = austraits_rds,
+          show_questions = show_questions
         )
       ),
       silent = TRUE
@@ -179,24 +184,43 @@ util_kable_styling_html <- function(...) {
 #' New taxa added by a dataset
 #'
 #' Function to indicate how many new taxa by trait combinations are added with a dataset.
+#' Only accepted species and infraspecific taxa are counted.
+#'
+#' Which names are accepted is read from `resources$APC` when `resources` is
+#' given, and otherwise from the database's own `taxa` table. The taxa table is
+#' only as current as the database's taxon list, so pass `resources` to check
+#' against the current APC.
 #'
 #' @param database traits.build database
 #' @param dataset dataset_id for dataset of interest
+#' @param resources Taxonomic resources from `APCalign::load_taxonomic_resources()`,
+#'   or `NULL` (the default) to use `database$taxa`
 #'
 #' @returns table with number of new taxa added for each trait
 #'
 #' @examples
 #' \dontrun{
-#' new_taxa_trait_combinations(austraits, "Falster_2003")
+#' dataset_new_taxa_trait_combinations(austraits, "Falster_2003")
+#' resources <- APCalign::load_taxonomic_resources()
+#' dataset_new_taxa_trait_combinations(austraits, "Falster_2003", resources = resources)
 #' }
 #' @export
-new_taxa_trait_combinations <- function(database, dataset) {
+dataset_new_taxa_trait_combinations <- function(database, dataset, resources = NULL) {
 
-  # extract accepted species from APC
-  accepted_species <- database$taxa %>%
-    dplyr::filter(.data$taxonomic_status == "accepted") %>%
-    dplyr::filter(.data$taxon_rank %in% c("species", "subspecies", "varietas", "forma")) %>%
-    dplyr::select("taxon_name")
+  # extract accepted species and infraspecific taxa
+  ranks <- c("species", "subspecies", "variety", "form")
+
+  if (is.null(resources)) {
+    accepted_species <- database$taxa %>%
+      dplyr::filter(.data$taxonomic_status == "accepted") %>%
+      dplyr::filter(.data$taxon_rank %in% ranks) %>%
+      dplyr::select("taxon_name")
+  } else {
+    accepted_species <- resources$APC %>%
+      dplyr::filter(.data$taxonomic_status == "accepted") %>%
+      dplyr::filter(.data$taxon_rank %in% ranks) %>%
+      dplyr::select(taxon_name = "canonical_name")
+  }
 
   # extract new dataset
   new_data <- (database %>% austraits::extract_dataset(dataset))$traits %>%

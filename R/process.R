@@ -88,7 +88,8 @@ dataset_process <- function(filename_data_raw,
   # Load and clean trait data
   traits <-
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
-    process_custom_code(metadata[["dataset"]][["custom_R_code"]])()
+    process_custom_code(metadata[["dataset"]][["custom_R_code"]])() %>%
+    process_format_collection_date(metadata)
 
   # Load and process contextual data
   contexts <-
@@ -199,6 +200,12 @@ dataset_process <- function(filename_data_raw,
 
     # Remove any values included to map into traits table
     locations <- locations %>% dplyr::filter(!(.data$location_property %in% vars))
+  }
+
+  # Now that `collection_date` holds its final values, from metadata, data or
+  # locations, write `unknown/yyyy` and `.na/yyyy` as the year alone
+  if ("collection_date" %in% names(traits)) {
+    traits[["collection_date"]] <- util_drop_unknown_collection_date_start(traits[["collection_date"]])
   }
 
   traits <- traits %>%
@@ -457,6 +464,43 @@ process_custom_code <- function(txt) {
 
   }
 
+}
+
+#' Convert `collection_date` columns from the format declared in metadata
+#'
+#' Applies [util_format_collection_date()] to each `data.csv` column that a
+#' `collection_date` field names, on the `dataset` block or on a trait, using
+#' the dataset's `collection_date_format` and `collection_date_timezone`. It
+#' runs after `custom_R_code`, so custom code can build or tidy a column first.
+#' Values typed into `metadata.yml` itself are not converted: those are
+#' written by the curator, so should already be standard. A dataset declaring
+#' neither field is returned unchanged.
+#'
+#' @param data Tibble of `data.csv`, after `custom_R_code`
+#' @param metadata Metadata for the dataset, as read by `read_metadata()`
+#'
+#' @return `data`, with its `collection_date` columns converted
+#' @noRd
+process_format_collection_date <- function(data, metadata) {
+
+  format <- util_check_collection_date_format(metadata[["dataset"]][["collection_date_format"]])
+  timezone <- util_check_collection_date_timezone(metadata[["dataset"]][["collection_date_timezone"]])
+
+  if (length(format) == 0 && is.null(timezone)) {
+    return(data)
+  }
+
+  columns <- c(
+    metadata[["dataset"]][["collection_date"]],
+    unlist(lapply(metadata[["traits"]], function(trait) trait[["collection_date"]]))
+  )
+  columns <- intersect(unique(columns[!is.na(columns)]), names(data))
+
+  for (column in columns) {
+    data[[column]] <- util_format_collection_date(data[[column]], format, timezone)
+  }
+
+  data
 }
 
 #' Create entity id
@@ -739,13 +783,8 @@ process_format_contexts <- function(my_list, dataset_id, traits, metadata_traits
   # a value naming a column of `data.csv` stands for that column's contents, anything
   # else is the literal itself
   values_from_trait_entries <- function(field) {
-    declared <- unique(stats::na.omit(trait_entries[[field]]))
-
-    declared %>%
-      purrr::map(~if (is.null(traits[[.x]])) .x else unique(traits[[.x]])) %>%
-      unlist(use.names = FALSE) %>%
-      as.character() %>%
-      unique()
+    unique(stats::na.omit(trait_entries[[field]])) %>%
+      util_resolve_trait_field_values(traits)
   }
 
   process_content_worker <- function(x, id, traits) {
@@ -1555,11 +1594,11 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
             "basis_of_record", "life_stage", "repeat_measurements_id",
             "measurement_remarks", "source_id", "methods")
 
-  df <-
-    df %>%
-    dplyr::bind_cols(
-      metadata[["dataset"]][names(metadata[["dataset"]]) %in% vars[!vars %in% names(df)]] %>% tibble::as_tibble()
-    )
+  # Skip when every one of these vars is already a data column (binding a 0-row tibble would fail)
+  constants <- metadata[["dataset"]][names(metadata[["dataset"]]) %in% vars[!vars %in% names(df)]]
+  if (length(constants) > 0) {
+    df <- df %>% dplyr::bind_cols(tibble::as_tibble(constants))
+  }
 
   # MAKE PARSING_ID
 
@@ -2088,6 +2127,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
             c("original_file", "notes", "data_is_long_format", "taxon_name", "trait_name",
               "population_id", "individual_id", "repeat_measurements_id", "value_type",
               "location_name", "source_id", "value", "entity_type", "collection_date",
+              "collection_date_format", "collection_date_timezone",
               "custom_R_code", "replicates", "measurement_remarks", "basis_of_value",
               "basis_of_record", "life_stage", "unit_in")))
       ) %>%
@@ -2450,6 +2490,10 @@ write_plaintext <- function(austraits, path) {
 
 #' Identify duplicates preventing pivoting wider
 #'
+#' Run on a compiled database, this cannot see rows that are identical in every
+#' column, because [austraits::bind_databases()] drops them. To find the rows
+#' behind a [dataset_test()] pivot failure, use [dataset_find_pivot_duplicates()].
+#'
 #' @param database_object Database object
 #' @param dataset_ids `dataset_id`'s to check for duplicates; default is all of them
 #'
@@ -2460,22 +2504,15 @@ check_pivot_duplicates <- function(
   dataset_ids = unique(database_object$traits$dataset_id)
 ) {
 
-  # Check for duplicates
+  # Check for duplicates, as `check_pivot_wider()` does. `taxon_name` and
+  # `original_name` are not needed for pivoting but are included for
+  # informative purposes
   database_object$traits %>%
     dplyr::filter(.data$dataset_id %in% dataset_ids) %>%
-    dplyr::select(
-      # `taxon_name` and `original_name` are not needed for pivoting but are included for informative purposes
-      dplyr::all_of(
-        c("dataset_id", "trait_name", "value", "taxon_name", "original_name", "observation_id",
-        "value_type", "repeat_measurements_id", "method_id", "method_context_id"))
-    ) %>%
-    tidyr::pivot_wider(names_from = "trait_name", values_from = "value", values_fn = length) %>%
-    tidyr::pivot_longer(cols = 9:ncol(.)) %>%
-    dplyr::rename(dplyr::all_of(c("trait_name" = "name", "number_of_duplicates" = "value"))) %>%
+    util_pivot_duplicates(extra_cols = c("taxon_name", "original_name")) %>%
     dplyr::select(
       dplyr::all_of(c("dataset_id", "trait_name", "number_of_duplicates",
-      "taxon_name", "original_name", "observation_id", "value_type")), everything()
-    ) %>%
-    dplyr::filter(.data$number_of_duplicates > 1)
+      "taxon_name", "original_name", "observation_id", "value_type")), dplyr::everything()
+    )
 
 }

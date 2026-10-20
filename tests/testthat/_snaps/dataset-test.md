@@ -26,5 +26,5 @@
       examples/Test_2023_9/metadata.yml	contexts - values of 'method_context' in metadata not detected in context values from traits metadata: 'NA', 'NA'
       examples/Test_2023_9/metadata.yml	substitutions - `match`'s should not contain: 'sometimes'
       examples/Test_2023_9/metadata.yml	substitutions - `plant_growth_form` has chaining `match: word` rules: 'chain_test_a' -> 'fern' contains 'fern'
-      examples/Test_2023_9/metadata.yml	Some date values are not parsing: '2002-02-30'
+      Test_2023_9	`collection_date` has 1 value not written as `yyyy-mm-dd`, `yyyy-mm`, `yyyy` or a `/` range of these: '2002-02-30'. Declare the format they are written in with `collection_date_format` in the `dataset` block of metadata.yml (and `collection_date_timezone` for timestamps), or convert them in `custom_R_code`.
 

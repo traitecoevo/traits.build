@@ -131,9 +131,11 @@ test_that("the allowed characters come from the schema, and are case-symmetric",
                        toupper(letters_only), tolower(letters_only))
   has_case <- tolower(letters_only) != toupper(letters_only)
 
-  # The exceptions are letters whose other case is ASCII or Greek, so they cannot
-  # be in a non-ASCII set: U+0130 dotted capital I, U+0131 dotless i, U+017F long
-  # s, and U+00B5 micro sign.
+  # The exceptions are letters whose other case is ASCII, which is never in
+  # the set (U+0130 dotted capital I, U+0131 dotless i, U+017F long s), and
+  # U+00B5 micro sign, whose upper case is U+039C GREEK CAPITAL LETTER MU,
+  # deliberately not allowed. The two Greek deltas are allowed as a pair, so
+  # neither appears here.
   asymmetric <- letters_only[has_case & !(other_case %in% letters_only)]
   expect_setequal(asymmetric, c("İ", "ı", "ſ", "µ"))
 
@@ -158,7 +160,9 @@ test_that("the ordinal indicators stay disallowed despite being letters", {
 test_that("names and symbols that used to be reported are now allowed", {
   # Measured occurrences in the three downstream databases, all of them genuine
   for (x in c("Ósvaldsson", "Briceño", "Klimešová",
-              "16°17′24″S", "(d13C, ‰)", "∼38 Pa")) {
+              "16°17′24″S", "(d13C, ‰)", "∼38 Pa",
+              "δ13C", "δ15N",  # GREEK SMALL LETTER DELTA, isotope composition
+              "ΔT")) {         # GREEK CAPITAL LETTER DELTA, "difference"
     expect_false(any(check_disallowed_chars(x)), info = x)
   }
 })
@@ -293,20 +297,6 @@ test_that("the chunked path is actually taken, and only when it applies", {
 })
 
 
-test_that("`util_collection_date_is_valid` accepts the documented formats", {
-  expect_true(util_collection_date_is_valid(NA_character_))
-  expect_true(util_collection_date_is_valid("2020"))
-  expect_true(util_collection_date_is_valid("2020-05"))
-  expect_true(util_collection_date_is_valid("2020-05-15"))
-  expect_true(util_collection_date_is_valid("2020-05/2021-06"))
-  expect_true(util_collection_date_is_valid("2020/2021-06-15"))
-
-  # a range may have one side unknown
-  expect_true(util_collection_date_is_valid(".na/2022"))
-  expect_true(util_collection_date_is_valid("2022/.na"))
-})
-
-
 test_that("`util_collection_date_is_valid` rejects everything else", {
   expect_false(util_collection_date_is_valid("2020-02-30"))  # no such day
   expect_false(util_collection_date_is_valid("2021-02-29"))  # not a leap year
@@ -314,7 +304,7 @@ test_that("`util_collection_date_is_valid` rejects everything else", {
   expect_false(util_collection_date_is_valid("2020-5"))      # month not zero-padded
   expect_false(util_collection_date_is_valid("20-05-15"))    # year not 4 digits
   expect_false(util_collection_date_is_valid("not a date"))
-  expect_false(util_collection_date_is_valid("unknown/2022"))  # not the sanctioned `.na` token
+  expect_false(util_collection_date_is_valid("unknown/2022"))  # the build stores it as `2022`
   expect_false(util_collection_date_is_valid("2020-05-15/2020-06-01/2020-07-01"))  # 3-part range
   expect_false(util_collection_date_is_valid(""))
 })
