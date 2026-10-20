@@ -88,6 +88,24 @@ test_that("`process_omit_values()` compares as `na_if()` does", {
 })
 
 
+test_that("each entry's `omit_values` lines up with its rows of the traits table", {
+  # An entry with an empty field gives no row, and one with a field holding
+  # several values gives that many
+  metadata_traits <- list(
+    list(var_in = "a", trait_name = "t_a", omit_values = 0L),
+    list(var_in = "b", trait_name = NULL),
+    list(var_in = "c", trait_name = "t_c", replicates = c(1L, 2L), omit_values = "-"),
+    list(var_in = "d", trait_name = "t_d")
+  )
+  traits_table <- util_traits_to_df(metadata_traits)
+  expect_identical(traits_table$var_in, c("a", "c", "c", "d"))
+  expect_identical(
+    process_omit_values_by_entry(metadata_traits, traits_table, "Test"),
+    list(0L, "-", "-", NULL)
+  )
+})
+
+
 test_that("`omit_values` must be a string or number, or a list of them", {
   for (valid in list(0L, "-", "", NaN, -Inf, c(0L, -9999L), c("-", "NaN"), list(0L, "-"))) {
     expect_true(util_omit_values_valid(valid), info = deparse(valid))
@@ -230,6 +248,30 @@ test_that("`omit_values` builds what `na_if()` builds: long data, numbers", {
       nrow(with_omit$traits) - nrow(with_omit$excluded_data),
     2
   )
+})
+
+
+test_that("`omit_values` builds what `na_if()` builds when another entry has an empty field", {
+  # As in `Kanowski_2000` in `austraits.build`: an unused entry with nothing
+  # after `trait_name:`, which drops out of the traits table. It used to stop
+  # the build with a message about a list that isn't there.
+  empty_trait_name <- function(metadata) {
+    metadata$traits[[1]]["trait_name"] <- list(NULL)
+    metadata
+  }
+
+  with_na_if <- build_example("Test_2023_2", example_edited(
+    "Test_2023_2", function(metadata) {
+      append_custom_code('mutate(across(c("branch mass fraction"), ~ na_if(.x, 0)))')(empty_trait_name(metadata))
+    }
+  ))
+  with_omit <- build_example("Test_2023_2", example_edited(
+    "Test_2023_2", function(metadata) set_omit_values("branch mass fraction", 0L)(empty_trait_name(metadata))
+  ))
+
+  expect_identical(with_omit[tables], with_na_if[tables])
+  expect_false("leaf_mass_per_area" %in% with_omit$traits$trait_name)
+  expect_false(any(trait_values(with_omit, "branch_mass_fraction") == "0"))
 })
 
 

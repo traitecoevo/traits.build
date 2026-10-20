@@ -1995,22 +1995,16 @@ process_omit_values_by_entry <- function(metadata_traits, traits_table, dataset_
     )
   }
 
-  # `util_traits_to_df()` gives one row per entry, unless some other field holds
-  # several values; the two must line up for each entry to keep its own values
-  if (nrow(traits_table) != length(metadata_traits)) {
-    stop(
-      sprintf(
-        paste0(
-          "Dataset %s: cannot apply `omit_values`, because a `traits` entry holds a list ",
-          "in a field other than `omit_values`."
-        ),
-        dataset_id
-      ),
-      call. = FALSE
-    )
-  }
+  # `util_traits_to_df()` gives one row per entry, except that an entry with a
+  # field holding several values spreads over that many rows, and one with an
+  # empty field (`trait_name:` with nothing after it, as an unused entry in
+  # `austraits.build` has) gives none. Repeat each entry's values over its own
+  # rows, so that they line up with `traits_table`.
+  n_rows <- vapply(
+    metadata_traits, function(entry) NROW(util_traits_to_df(list(entry))), integer(1)
+  )
 
-  omit_values
+  rep(omit_values, n_rows)
 }
 
 
