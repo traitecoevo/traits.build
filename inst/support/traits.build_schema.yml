@@ -77,6 +77,15 @@ identifier_type:
      materialSampleID: An identifier for the dwc:MaterialSample (as opposed to a particular digital record of the dwc:MaterialSample). In the absence of a persistent global unique identifier, construct one from a combination of identifiers in the record that will most closely make the dwc:materialSampleID globally unique.
      occurrenceID: Per DarwinCore, an identifier for an Occurrence, as opposed to a particular digital record of the Occurrence.
 
+trait_type:
+  description: &trait_type The type of a trait, declared as `type` in its definition in `config/traits.yml`. The type decides which checks the trait's values must pass to be included in the `traits` table rather than in `excluded_data`.
+  type: categorical
+  values:
+    numeric: Numeric values, converted to the trait's `units` and required to lie between its `allowed_values_min` and `allowed_values_max`.
+    categorical: Values drawn from the terms listed in the trait's `allowed_values_levels`. A value may combine several terms, separated by spaces, which are stored in alphabetical order.
+    month_presence: Twelve characters, one per month starting with January, each `y` if the trait (a phenophase such as flowering) occurs in that month and `n` if it does not, e.g. `nnyyyynnnnnn`. Values are stored in lower case.
+    text: Open-ended text with no fixed list of allowed values, such as a taxon name. Values are kept as written, including their case and word order; only the characters allowed in every value are checked.
+
 #-------------------------------------------------------------
 # A key describing the structure of the compiled `AusTraits` dataset
 

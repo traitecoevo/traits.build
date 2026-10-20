@@ -21,7 +21,8 @@
 #' **Categorical traits.** A set value per species is the norm, so identical
 #' values are only compared when both records have coordinates within
 #' `max_distance_km`, and a pair of datasets is only reported when such matches
-#' span at least `min_categorical_taxa` taxa.
+#' span at least `min_categorical_taxa` taxa. Traits of type `month_presence`
+#' and `text` are compared in the same way.
 #'
 #' **Telling duplicates from coincidences.** Genuinely duplicated data usually
 #' shows up as a high `prop_matched_combos` -- nearly every taxon x trait the two
@@ -108,9 +109,11 @@ dataset_check_duplicate_values <- function(
     )
 
   numeric_records <- records %>% dplyr::filter(.data$trait_name %in% names(trait_types)[trait_types == "numeric"])
+  # `month_presence` and `text` values are compared as categorical ones are, on
+  # identical values
   categorical_records <- records %>%
     dplyr::filter(
-      .data$trait_name %in% names(trait_types)[trait_types == "categorical"],
+      .data$trait_name %in% names(trait_types)[trait_types %in% c("categorical", "month_presence", "text")],
       !is.na(.data$lat), !is.na(.data$lon)
     )
 
