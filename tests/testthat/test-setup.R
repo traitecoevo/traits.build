@@ -202,6 +202,17 @@ test_that("`metadata_add_source_doi` is working", {
     metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary_02"),
     "must be one of"
   )
+
+  # `secondary: .na` holds no reference, so the first one added starts the list
+  before <- read_metadata("data/Test_2022/metadata.yml")
+  withr::defer(write_metadata(before, "data/Test_2022/metadata.yml"))
+  metadata <- before
+  metadata$source$secondary <- NA
+  write_metadata(metadata, "data/Test_2022/metadata.yml")
+  expect_no_error(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary"))
+  secondary <- read_metadata("data/Test_2022/metadata.yml")$source$secondary
+  expect_length(secondary, 1)
+  expect_equal(secondary[[1]]$journal, "Frontiers in Marine Science")
 })
 
 

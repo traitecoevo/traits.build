@@ -796,7 +796,8 @@ metadata_add_source_bibtex <- function(dataset_id, file,
   } else {
     # Append to the list, or replace the entry already carrying this key
     existing <- metadata[["source"]][[type]]
-    if (is.null(existing)) existing <- list()
+    # No entry yet, or `secondary: .na`: start the list
+    if (!is.list(existing)) existing <- list()
     existing_keys <- vapply(existing, function(e) {
       if (is.null(e[["key"]])) NA_character_ else as.character(e[["key"]])
     }, character(1))
