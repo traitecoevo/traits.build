@@ -311,6 +311,12 @@ austraits:
           description: The versions of R, packages, and data used to generate the dataset.
           type: categorical
           value: A structured yaml file, represented as a list in R.
+        post_build:
+          description: The post-build step that processed the database after its datasets were combined, recorded by `build_post_process()`. Present only if the database repository defines `post_build()` in `R/post_build.R`.
+          type: list
+          elements:
+            file: Path of the file defining `post_build()`, as given to `build_post_process()`; `R/post_build.R` in a pipeline written by `build_setup_pipeline()`.
+            md5: md5 checksum of that file's contents when the step ran, identifying the code even when it was not committed.
 
 #-------------------------------------------------------------
 

@@ -2453,6 +2453,121 @@ build_add_version <- function(austraits, version, git_sha) {
   austraits
 }
 
+#' Run a database repository's post-build step
+#'
+#' A database repository may define `post_build <- function(database) { ...;
+#' database }` in `R/post_build.R`, for processing applied to the whole
+#' database once its datasets are combined: adding a column, moving a context
+#' into the traits table, or writing extra exports such as a flattened copy.
+#' Every pipeline [build_setup_pipeline()] writes calls this after
+#' [build_add_version()] and before the database is saved.
+#'
+#' What `post_build()` returns replaces the database; there is no second,
+#' "processed" copy. It must therefore return the database, with every
+#' component it was given, and anything else is an error. Side effects, such as
+#' writing files, are allowed.
+#'
+#' The file is sourced into a fresh environment whose parent is the search path
+#' rather than the global environment. `post_build()` sees attached packages
+#' (`library(traits.build)` attaches traits.build and its `Depends`) and
+#' whatever the file itself defines, but not objects a pipeline happens to leave
+#' in the global environment, which differ between `build.R` and a `targets`
+#' worker. Other files in `R/` are not sourced; source one from
+#' `R/post_build.R` if `post_build()` needs it.
+#'
+#' When the step runs, `database$build_info$post_build` records the file and
+#' the md5 checksum of its contents, so the code that last changed the database
+#' can be identified even when it was not committed.
+#'
+#' @param database Database object, as returned by [build_add_version()]
+#' @param file Path to the file defining `post_build()`. If the file does not
+#'  exist, or `file` is `character(0)` (as the `targets` pipeline passes when
+#'  there is no file), the database is returned unchanged and nothing is
+#'  recorded.
+#'
+#' @return The database `post_build()` returned, with
+#'  `build_info$post_build` added; or `database` unchanged if there is no file
+#' @seealso [build_setup_pipeline()], [build_add_version()]
+#' @export
+#' @examples
+#' \dontrun{
+#' # In R/post_build.R
+#' post_build <- function(database) {
+#'   database$traits <- dplyr::mutate(database$traits, curve_id = NA_character_)
+#'   database
+#' }
+#'
+#' # In the pipeline, after `build_add_version()`
+#' database <- build_post_process(database)
+#' database$build_info$post_build
+#' }
+build_post_process <- function(database, file = "R/post_build.R") {
+
+  if (!is.character(file) || length(file) > 1) {
+    stop("`file` must be a single path, or `character(0)` for no post-build step", call. = FALSE)
+  }
+
+  if (length(file) == 0 || !file.exists(file)) {
+    return(database)
+  }
+
+  md5 <- unname(tools::md5sum(file))
+
+  # The parent is the search path, not the global environment: `build.R` leaves
+  # every dataset and config object there and a `targets` worker leaves none, so
+  # code leaning on them would work under one pipeline and fail under another.
+  # Nor is it this package's namespace, which would expose internal functions.
+  envir <- new.env(parent = parent.env(globalenv()))
+  sys.source(file, envir = envir)
+
+  post_build <- get0("post_build", envir = envir, inherits = FALSE)
+  if (!is.function(post_build)) {
+    stop(sprintf("`%s` must define a function `post_build(database)`", file), call. = FALSE)
+  }
+
+  message(green(sprintf("Running `post_build()` from `%s`", file)))
+  processed <- post_build(database)
+
+  # The usual mistake is ending the function on something other than the
+  # database -- an assignment such as `database$traits <- ...`, or a call that
+  # writes a file -- whose value is then returned in its place
+  fail <- function(problem) {
+    stop(sprintf(
+      paste0(
+        "`post_build()` in `%s` %s.\n",
+        "  It must return the database it was given, e.g. end the function with `database`."
+      ),
+      file, problem
+    ), call. = FALSE)
+  }
+
+  if (!is.list(processed) || is.data.frame(processed)) {
+    fail(sprintf("returned an object of class `%s`, not the database", paste(class(processed), collapse = "/")))
+  }
+
+  missing <- setdiff(names(database), names(processed))
+  if (length(missing) > 0) {
+    fail(sprintf("returned a database without %s", paste0("`", missing, "`", collapse = ", ")))
+  }
+
+  tables <- names(database)[vapply(database, is.data.frame, logical(1))]
+  not_tables <- tables[!vapply(processed[tables], is.data.frame, logical(1))]
+  if (length(not_tables) > 0) {
+    fail(sprintf("returned a database in which %s %s no longer a table",
+                 paste0("`", not_tables, "`", collapse = ", "), if (length(not_tables) > 1) "are" else "is"))
+  }
+
+  # Rebuilding the database with `lapply()`, or subsetting it with `[`, drops
+  # its class, which `austraits`' print method dispatches on
+  if (!inherits(processed, "traits.build")) {
+    class(processed) <- class(database)
+  }
+
+  processed$build_info$post_build <- list(file = file, md5 = md5)
+
+  processed
+}
+
 #' Export AusTraits version as plain text
 #'
 #' @param austraits AusTraits database object

@@ -1066,8 +1066,9 @@ test_that("`build_setup_pipeline(method = 'targets')` builds the same database",
   )
   rebuilt <- targets::tar_progress()
   rebuilt <- rebuilt[rebuilt$progress == "completed", ]
-  # `git_SHA` is deliberately re-read every run; nothing else should move
-  expect_equal(setdiff(rebuilt$name, "git_SHA"), character(0))
+  # `git_SHA` and `file_post_build` are deliberately re-read every run; nothing
+  # else should move
+  expect_equal(setdiff(rebuilt$name, c("git_SHA", "file_post_build")), character(0))
 })
 
 

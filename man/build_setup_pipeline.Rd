@@ -69,6 +69,20 @@ controllable. \code{targets::tar_make(reporter = "silent")} builds quietly, and
 repository.
 }
 
+\section{Post-build step}{
+
+
+Every pipeline calls \code{\link[=build_post_process]{build_post_process()}} after \code{\link[=build_add_version]{build_add_version()}} and
+before the database is saved. It runs \code{post_build()} from \code{R/post_build.R}
+if the repository has that file, and otherwise does nothing, so the call is
+written whether or not the file exists and adding one later needs no change
+to the pipeline. \code{targets} notices the file being added, edited or deleted.
+\code{remake} cannot depend on a file that may not exist, so it tracks
+\code{R/post_build.R} only if the file existed when the pipeline was set up:
+re-run \code{build_setup_pipeline()} after adding or removing it, as after adding
+a dataset.
+}
+
 \seealso{
-\code{\link[=build_export]{build_export()}}
+\code{\link[=build_export]{build_export()}}, \code{\link[=build_post_process]{build_post_process()}}
 }

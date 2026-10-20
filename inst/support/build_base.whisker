@@ -33,6 +33,9 @@ git_SHA <- util_get_SHA()
 # Combine all the source into one resource
 {{database_name}} <- build_add_version({{database_name}}_raw, version_number, git_SHA)
 
+# Post-build step: runs `post_build()` from R/post_build.R, if that file exists
+{{database_name}} <- build_post_process({{database_name}})
+
 # Save to file
 dir.create("export/data/curr", FALSE, TRUE)
 saveRDS({{database_name}}, "export/data/curr/{{database_name}}.rds")
