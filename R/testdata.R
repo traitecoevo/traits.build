@@ -532,12 +532,33 @@ dataset_test_worker <-
           info = paste0(red(f), "\ttrait")
         )
 
-        expect_silent(traits <- austraits::convert_list_to_df2(metadata[["traits"]]))
+        expect_silent(traits <- util_traits_to_df(metadata[["traits"]]))
 
         test_expect_true(
           is.data.frame(traits),
           info = paste0(red(f), "\ttraits - metadata cannot be converted to a dataframe")
         )
+
+        # `omit_values` is optional, so this is checked only where a trait sets it.
+        # One expectation for all of them, rather than one per trait.
+        if (is.list(metadata[["traits"]])) {
+          omit_declared <- purrr::keep(metadata[["traits"]], ~ is.list(.x) && !is.null(.x[["omit_values"]]))
+          if (length(omit_declared) > 0) {
+            omit_invalid <- !vapply(omit_declared, function(x) util_omit_values_valid(x[["omit_values"]]), logical(1))
+            test_expect_true(
+              !any(omit_invalid),
+              info = sprintf(
+                paste0(
+                  "%s\ttraits - `omit_values` must be a single string or number, or a list of them: '%s'. ",
+                  "Quote values YAML would otherwise read as true, false or missing, such as \"no\", \"n\" or \".na\""
+                ),
+                red(f),
+                paste(vapply(omit_declared[omit_invalid], function(x) as.character(x[["var_in"]])[1], character(1)),
+                      collapse = "', '")
+              )
+            )
+          }
+        }
 
         test_expect_is_in(
           traits$trait_name, definitions$elements %>% names(),

@@ -456,6 +456,7 @@ metadata:
         methods: *methods
         life_stage: *life_stage
         repeat_measurements_id: *repeat_measurements_id
+        omit_values: Optional. Values the data contributor used for "no value" in this trait, such as `0`, `-9999`, `"-"` or `"NaN"`, given as a single value or a list. Each is treated as missing, so it is dropped from the `traits` table and does not appear in `excluded_data`, the same as `custom_R_code` applying `na_if()` to the trait's column. Values are compared with the column as `data.csv` is read and `custom_R_code` leaves it, before `substitutions`. In a numeric column they are compared as numbers, so `0` also omits `0.0`; in any other column as exact text, case included, so `0` does not omit `0.0` there. Quote a value YAML would otherwise read as true, false or missing, such as `"no"`, `"n"` or `".na"`. In long-format data the values apply only to the rows of this trait.
     substitutions:
       description: A list of any "find and replace" substitutions needed to get the data into the right format.
       type: array
