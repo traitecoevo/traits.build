@@ -88,6 +88,14 @@ test_that("`process_omit_values()` compares as `na_if()` does", {
 })
 
 
+test_that("an unquoted number is compared with a text column as R writes it", {
+  # YAML reads `0.0` as the number 0, so it omits `0`, not `0.0`; quoting it keeps its spelling
+  y <- c("0", "0.0", "-")
+  expect_identical(process_omit_values(y, yaml::yaml.load("0.0")), c(NA, "0.0", "-"))
+  expect_identical(process_omit_values(y, yaml::yaml.load("'0.0'")), c("0", NA, "-"))
+})
+
+
 test_that("each entry's `omit_values` lines up with its rows of the traits table", {
   # An entry with an empty field gives no row, and one with a field holding
   # several values gives that many

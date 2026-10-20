@@ -1918,7 +1918,13 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
 #'   `-.inf` or `"-Inf"` omits `-Inf`.
 #' - In any other column, values are compared as exact text, case and all,
 #'   before the build lower-cases trait values. `0` does not omit `0.0` in a
-#'   text column, and `"NaN"` does not omit `nan`.
+#'   text column, and `"NaN"` does not omit `nan`. An unquoted number is
+#'   compared as R writes the number YAML read, not as it is spelt in
+#'   `metadata.yml`: `0.0` compares as `0`, `0.0001` as `1e-04` and
+#'   `000000000000` as `0`. Quote it, as in `"0.0"`, to compare its spelling.
+#'
+#' In long-format data the value column is shared by every trait, so it is
+#' numeric only when the values of every trait are numbers.
 #'
 #' Called from `process_parse_data()` after `custom_R_code` has run and before
 #' `substitutions`, so a value can be omitted whether it is in `data.csv` or
