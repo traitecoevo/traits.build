@@ -802,7 +802,7 @@
 <https://w3id.org/traits.build#source_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-sources> .
 <https://w3id.org/traits.build#source_id> <http://www.w3.org/2000/01/rdf-schema#label> "source id"@en .
 <https://w3id.org/traits.build#source_id> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build#observations_from_source> .
-<https://w3id.org/traits.build#source_id> <http://purl.org/dc/terms/description> "For datasets that are compilations, an identifier for the original data source."@en .
+<https://w3id.org/traits.build#source_id> <http://purl.org/dc/terms/description> "For a dataset compiled from several studies, the `key` of the reference in `sources` that the record was taken from, which is the dataset's primary reference or one of its `original_source` references. NA, or the primary key, both mean the record was collected in the primary study."@en .
 <https://w3id.org/traits.build#source_id> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#source_id> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#source_id> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -1309,7 +1309,7 @@
 <https://w3id.org/traits.build#source_secondary_key> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-methods> .
 <https://w3id.org/traits.build#source_secondary_key> <http://www.w3.org/2000/01/rdf-schema#label> "source secondary key"@en .
 <https://w3id.org/traits.build#source_secondary_key> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build#source_secondary_citation> .
-<https://w3id.org/traits.build#source_secondary_key> <http://purl.org/dc/terms/description> "Citation key for the secondary source in `sources`.  The key is typically formatted as `Surname_year`."@en .
+<https://w3id.org/traits.build#source_secondary_key> <http://purl.org/dc/terms/description> "Citation keys, separated by `; `, for the `secondary` references in `sources`, the later publications that re-used the same dataset. Each key is typically formatted as `Surname_year`."@en .
 <https://w3id.org/traits.build#source_secondary_key> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#source_secondary_key> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#source_secondary_key> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -1322,7 +1322,7 @@
 <https://w3id.org/traits.build#source_secondary_citation> <http://www.w3.org/2000/01/rdf-schema#label> "source secondary citation"@en .
 <https://w3id.org/traits.build#source_secondary_citation> <http://vocab.fairdatacollective.org/gdmt/Cites> <https://w3id.org/traits.build#dataset> .
 <https://w3id.org/traits.build#source_secondary_citation> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build#source_secondary_key> .
-<https://w3id.org/traits.build#source_secondary_citation> <http://purl.org/dc/terms/description> "Citations for the secondary source. This detail is generated from the secondary source in the metadata."@en .
+<https://w3id.org/traits.build#source_secondary_citation> <http://purl.org/dc/terms/description> "Citations, separated by `; `, for the `secondary` references. This detail is generated from the `secondary` references in the metadata."@en .
 <https://w3id.org/traits.build#source_secondary_citation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#source_secondary_citation> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#source_secondary_citation> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -1334,7 +1334,7 @@
 <https://w3id.org/traits.build#source_original_dataset_key> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-methods> .
 <https://w3id.org/traits.build#source_original_dataset_key> <http://www.w3.org/2000/01/rdf-schema#label> "source original dataset key"@en .
 <https://w3id.org/traits.build#source_original_dataset_key> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build#source_original_dataset_citation> .
-<https://w3id.org/traits.build#source_original_dataset_key> <http://purl.org/dc/terms/description> "Citation key for the original dataset_id in sources, for compilations.  The key is typically formatted as `Surname_year`."@en .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://purl.org/dc/terms/description> "Citation keys, separated by `; `, for the dataset's `original_source` references in `sources`, which for a compilation are the studies records were taken from. Each record names its own in `source_id` in the `traits` table. Each key is typically formatted as `Surname_year`."@en .
 <https://w3id.org/traits.build#source_original_dataset_key> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#source_original_dataset_key> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#source_original_dataset_key> <http://www.w3.org/2002/07/owl#sameAs> <https://w3id.org/traits.build#source_id> .
@@ -1348,7 +1348,7 @@
 <https://w3id.org/traits.build#source_original_dataset_citation> <http://www.w3.org/2000/01/rdf-schema#label> "source original dataset citation"@en .
 <https://w3id.org/traits.build#source_original_dataset_citation> <http://vocab.fairdatacollective.org/gdmt/Cites> <https://w3id.org/traits.build#observations_from_source> .
 <https://w3id.org/traits.build#source_original_dataset_citation> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build#source_original_dataset_key> .
-<https://w3id.org/traits.build#source_original_dataset_citation> <http://purl.org/dc/terms/description> "Citations for the original dataset_id in sources, for compilationse. This detail is generated from the original source in the metadata."@en .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://purl.org/dc/terms/description> "Citations, separated by `; `, for the `original_source` references. This detail is generated from the `original_source` references in the metadata."@en .
 <https://w3id.org/traits.build#source_original_dataset_citation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#source_original_dataset_citation> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#source_original_dataset_citation> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .

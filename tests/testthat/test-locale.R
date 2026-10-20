@@ -72,8 +72,8 @@ test_that("citations do not depend on `useFancyQuotes`", {
   old_quotes <- getOption("useFancyQuotes")
   withr::defer(options(useFancyQuotes = old_quotes))
 
-  # `Test_2023_5` carries six sources across primary, secondary and original
-  # dataset citations, so all three `source_*_citation` columns are populated
+  # `Test_2023_5` carries seven references across its primary, `original_source`
+  # and `secondary` entries, so all three `source_*_citation` columns are populated
   options(useFancyQuotes = TRUE)
   built_fancy <- suppressMessages(suppressWarnings(build_example("Test_2023_5")))
 

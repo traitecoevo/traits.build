@@ -2176,7 +2176,7 @@ vertical-align: -.125em;
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#release-1.2.0" id="toc-release-1.2.0" class="nav-link active" data-scroll-target="#release-1.2.0">Release 1.2.0</a></li>
+  <li><a href="#release-1.2.1" id="toc-release-1.2.1" class="nav-link active" data-scroll-target="#release-1.2.1">Release 1.2.1</a></li>
   <li><a href="#abstract" id="toc-abstract" class="nav-link" data-scroll-target="#abstract">Abstract</a></li>
   <li><a href="#table-of-contents" id="toc-table-of-contents" class="nav-link" data-scroll-target="#table-of-contents">Table of Contents</a></li>
   <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">1. Introduction</a></li>
@@ -2362,8 +2362,8 @@ vertical-align: -.125em;
 </header>
 
 
-<section id="release-1.2.0" class="level2">
-<h2 class="anchored" data-anchor-id="release-1.2.0">Release 1.2.0</h2>
+<section id="release-1.2.1" class="level2">
+<h2 class="anchored" data-anchor-id="release-1.2.1">Release 1.2.1</h2>
 <dl>
 <dt>
 <strong>Latest version</strong>:
@@ -2375,13 +2375,13 @@ vertical-align: -.125em;
 <strong>This version</strong>:
 </dt>
 <dd>
-<a href="https://w3id.org/traits.build/release/1.2.0/index.html" class="uri">https://w3id.org/traits.build/release/1.2.0/index.html</a>
+<a href="https://w3id.org/traits.build/release/1.2.1/index.html" class="uri">https://w3id.org/traits.build/release/1.2.1/index.html</a>
 </dd>
 <dt>
 <strong>Previous version</strong>:
 </dt>
 <dd>
-<a href="https://w3id.org/traits.build/release/1.1.0/index.html" class="uri">https://w3id.org/traits.build/release/1.1.0/index.html</a>
+<a href="https://w3id.org/traits.build/release/1.2.0/index.html" class="uri">https://w3id.org/traits.build/release/1.2.0/index.html</a>
 </dd>
 <dt>
 <strong>Authors</strong>:
@@ -6015,7 +6015,7 @@ source_id
 <a href="http://purl.org/dc/terms/description">description</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-For datasets that are compilations, an identifier for the original data source.
+For a dataset compiled from several studies, the <code>key</code> of the reference in <code>sources</code> that the record was taken from, which is the dataset’s primary reference or one of its <code>original_source</code> references. NA, or the primary key, both mean the record was collected in the primary study.
 </td>
 </tr>
 <tr>
@@ -9936,7 +9936,7 @@ source_secondary_key
 <a href="http://purl.org/dc/terms/description">description</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-Citation key for the secondary source in <code>sources</code>. The key is typically formatted as <code>Surname_year</code>.
+Citation keys, separated by <code>;</code>, for the <code>secondary</code> references in <code>sources</code>, the later publications that re-used the same dataset. Each key is typically formatted as <code>Surname_year</code>.
 </td>
 </tr>
 <tr>
@@ -10048,7 +10048,7 @@ source_secondary_citation
 <a href="http://purl.org/dc/terms/description">description</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-Citations for the secondary source. This detail is generated from the secondary source in the metadata.
+Citations, separated by <code>;</code>, for the <code>secondary</code> references. This detail is generated from the <code>secondary</code> references in the metadata.
 </td>
 </tr>
 <tr>
@@ -10176,7 +10176,7 @@ source_original_dataset_key
 <a href="http://purl.org/dc/terms/description">description</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-Citation key for the original dataset_id in sources, for compilations. The key is typically formatted as <code>Surname_year</code>.
+Citation keys, separated by <code>;</code>, for the dataset’s <code>original_source</code> references in <code>sources</code>, which for a compilation are the studies records were taken from. Each record names its own in <code>source_id</code> in the <code>traits</code> table. Each key is typically formatted as <code>Surname_year</code>.
 </td>
 </tr>
 <tr>
@@ -10296,7 +10296,7 @@ source_original_dataset_citation
 <a href="http://purl.org/dc/terms/description">description</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-Citations for the original dataset_id in sources, for compilationse. This detail is generated from the original source in the metadata.
+Citations, separated by <code>;</code>, for the <code>original_source</code> references. This detail is generated from the <code>original_source</code> references in the metadata.
 </td>
 </tr>
 <tr>

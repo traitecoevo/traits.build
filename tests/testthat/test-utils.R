@@ -295,3 +295,86 @@ test_that("the chunked path is actually taken, and only when it applies", {
     util_read_yaml_chunked("examples/Test_2023_1/metadata.yml"), "fell back"
   )
 })
+
+
+test_that("`util_flatten_sources` reads the list shape, one row per reference", {
+  source <- list(
+    primary = list(key = "Smith_2020", bibtype = "Article"),
+    secondary = list(list(key = "Smith_2021", bibtype = "Article")),
+    original_source = list(
+      list(key = "Jones_1999", bibtype = "Thesis"),
+      list(key = "Brown_2005", bibtype = "Book")
+    )
+  )
+  out <- util_flatten_sources(source)
+
+  expect_s3_class(out, "tbl_df")
+  expect_named(out, c("slot", "type", "key", "legacy", "entry"))
+  expect_equal(out$type, c("primary", "secondary", "original_source", "original_source"))
+  expect_equal(out$key, c("Smith_2020", "Smith_2021", "Jones_1999", "Brown_2005"))
+  expect_false(any(out$legacy))
+  expect_equal(out$entry[[4]]$bibtype, "Book")
+
+  # A primary alone, and an empty block
+  expect_equal(util_flatten_sources(source["primary"])$type, "primary")
+  expect_equal(nrow(util_flatten_sources(NULL)), 0)
+  expect_equal(nrow(util_flatten_sources(list())), 0)
+  # `secondary: .na` is no reference at all
+  expect_equal(nrow(util_flatten_sources(list(primary = source$primary, secondary = NA))), 1)
+  # A reference without a key is kept, with an NA key, for `dataset_test()` to report
+  expect_equal(util_flatten_sources(list(primary = list(bibtype = "Article")))$key, NA_character_)
+})
+
+
+test_that("`util_flatten_sources` refuses the old shape, naming the entry", {
+  primary <- list(key = "Smith_2020", bibtype = "Article")
+  old_shapes <- list(
+    # `secondary` as a single mapping rather than a list
+    list(primary = primary, secondary = list(key = "Smith_2021", bibtype = "Article")),
+    # numbered entries
+    list(primary = primary, secondary_01 = list(key = "Smith_2021"), secondary_2 = list(key = "Smith_2022")),
+    list(primary = primary, original_01 = list(key = "Jones_1999")),
+    list(primary = primary, original_source_01 = list(key = "Jones_1999"))
+  )
+  for (source in old_shapes) {
+    expect_error(util_flatten_sources(source), "a shape traits.build no longer reads")
+  }
+  expect_error(util_flatten_sources(old_shapes[[2]]), "`secondary_01`, `secondary_2`")
+
+  # Leniently, the same entries are flattened and flagged, and `original` becomes `original_source`
+  out <- util_flatten_sources(old_shapes[[3]], strict = FALSE)
+  expect_equal(out$type, c("primary", "original_source"))
+  expect_equal(out$legacy, c(FALSE, TRUE))
+  expect_equal(out$slot, c("primary", "original_01"))
+
+  out <- util_flatten_sources(old_shapes[[2]], strict = FALSE)
+  expect_equal(out$type, c("primary", "secondary", "secondary"))
+  expect_equal(out$key, c("Smith_2020", "Smith_2021", "Smith_2022"))
+
+  # A bare value where a reference belongs is refused too, rather than dropped
+  # unseen: `secondary: Smith_2021`, a list of bare keys, or one such item
+  bare <- list(
+    list(primary = primary, secondary = "Smith_2021"),
+    list(primary = primary, secondary = c("Smith_2021", "Jones_2000")),
+    list(primary = primary,
+         original_source = list(list(key = "Jones_1999", bibtype = "Thesis"), "Brown_2005")),
+    list(primary = "Smith_2020")
+  )
+  for (source in bare) {
+    expect_error(util_flatten_sources(source), "a shape traits.build no longer reads")
+  }
+  # Leniently, each is flagged, with no key to report
+  out <- util_flatten_sources(bare[[2]], strict = FALSE)
+  expect_equal(out$type, c("primary", "secondary", "secondary"))
+  expect_equal(out$legacy, c(FALSE, TRUE, TRUE))
+  expect_equal(out$key, c("Smith_2020", NA, NA))
+  out <- util_flatten_sources(bare[[3]], strict = FALSE)
+  expect_equal(out$key, c("Smith_2020", "Jones_1999", NA))
+  expect_equal(out$legacy, c(FALSE, FALSE, TRUE))
+
+  # An unknown type is a different error, and is not `legacy`
+  expect_error(util_flatten_sources(list(primary = primary, tertiary = list(key = "X_2000"))), "not a type of reference")
+  out <- util_flatten_sources(list(primary = primary, tertiary = list(key = "X_2000")), strict = FALSE)
+  expect_equal(out$type[2], "tertiary")
+  expect_false(out$legacy[2])
+})
