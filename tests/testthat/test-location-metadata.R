@@ -98,6 +98,8 @@ test_that("`process_add_location_metadata()` decides precedence for each record"
     ~case,                              ~entity_type, ~life_stage, ~.trait_level_life_stage,
     "trait value",                      "population", "adult",     TRUE,
     "trait column, empty cell",         "population", NA,          TRUE,
+    # `custom_R_code` can leave a cell as "" rather than `NA`; it is as empty
+    "trait column, empty string",       "population", "",          TRUE,
     "dataset value",                    "population", "adult",     NA,
     "no value",                         "population", NA,          NA,
     "species-level, dataset value",     "species",    "adult",     NA
@@ -111,13 +113,14 @@ test_that("`process_add_location_metadata()` decides precedence for each record"
     c(
       "trait value" = "adult",
       "trait column, empty cell" = "juvenile",
+      "trait column, empty string" = "juvenile",
       "dataset value" = "juvenile",
       "no value" = "juvenile",
       # A species-level record is not linked to a location, so takes nothing from it
       "species-level, dataset value" = "adult"
     )
   )
-  expect_equal(out$location_id, c(rep("01", 4), NA))
+  expect_equal(out$location_id, c(rep("01", 5), NA))
   expect_false(".trait_level_life_stage" %in% names(out))
 
   # With no locations nothing is filled, but the marks still go

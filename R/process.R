@@ -1124,10 +1124,12 @@ process_add_location_metadata <- function(traits, locations) {
           )
 
         # Keep a value the trait entry set; a trait-level column's empty cell is
-        # not a value, so the location fills it
+        # not a value, so the location fills it. A cell `custom_R_code` left as
+        # "" is as empty as one `read_csv()` read as `NA`
         trait_level <- traits[[process_trait_level_column(v)]]
         if (is.null(trait_level)) trait_level <- FALSE
-        keep_trait_value <- trait_level %in% TRUE & !is.na(traits[[v]])
+        trait_value <- as.character(traits[[v]])
+        keep_trait_value <- trait_level %in% TRUE & !is.na(trait_value) & trait_value != ""
 
         use_location <- !is.na(traits_tmp[["col_tmp"]]) & !keep_trait_value
         traits[[v]] <- ifelse(use_location, traits_tmp[["col_tmp"]], traits[[v]])
