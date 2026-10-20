@@ -2,7 +2,9 @@
 ## `R/post_build.R`, run by `build_post_process()` after `build_add_version()`.
 ##
 ## The unit tests use a small stand-in database and a file in a temporary
-## directory. The pipeline tests write `R/post_build.R` into this directory,
+## directory. A path written into generated code goes through `encodeString()`:
+## pasted in raw, a Windows temp path's backslashes (`C:\Users\...`) parse as
+## escapes. The pipeline tests write `R/post_build.R` into this directory,
 ## which is the database repository every pipeline test builds, so each one
 ## removes it again: left behind, it would run in every later build.
 
@@ -69,7 +71,7 @@ test_that("`post_build` may write files", {
   written <- file.path(withr::local_tempdir(), "traits.csv")
   file <- local_post_build(c(
     "post_build <- function(database) {",
-    sprintf("  readr::write_csv(database$traits, '%s')", written),
+    sprintf("  readr::write_csv(database$traits, %s)", encodeString(written, quote = '"')),
     "  database",
     "}"
   ))
@@ -203,7 +205,7 @@ test_that("the base pipeline runs `post_build()` and saves what it returns", {
   writeLines(c(
     "post_build <- function(database) {",
     "  database$traits <- mutate(database$traits, curve_id = paste(dataset_id, observation_id, sep = '-'))",
-    sprintf("  readr::write_csv(database$traits, '%s')", written),
+    sprintf("  readr::write_csv(database$traits, %s)", encodeString(written, quote = '"')),
     "  database",
     "}"
   ), "R/post_build.R")
@@ -254,7 +256,7 @@ test_that("the `targets` pipeline notices `R/post_build.R` being added, edited a
   post_build <- function(value) {
     writeLines(c(
       "post_build <- function(database) {",
-      sprintf("  database$traits$curve_id <- '%s'", value),
+      sprintf("  database$traits$curve_id <- %s", encodeString(value, quote = '"')),
       "  database",
       "}"
     ), "R/post_build.R")
