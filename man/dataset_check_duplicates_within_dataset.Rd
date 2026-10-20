@@ -28,11 +28,11 @@ A list of two tibbles:
 whose values are all identical. \code{n_taxa_several} is the number of taxa
 with more than one value for the trait, and \code{n_taxa_repeated} the number
 of those whose values are all identical, counting a taxon once for each
-name and location. \code{entity_type} lists the entity types of the trait's
-values. Sorted by dataset, then with the traits repeated for the largest
-share of taxa first.}
-\item{\code{taxa}}{One row per taxon, name and location whose values are all
-identical, with the \code{value} and how many records hold it
+name, location and value type. \code{entity_type} lists the entity types of the
+trait's values. Sorted by dataset, then with the traits repeated for the
+largest share of taxa first.}
+\item{\code{taxa}}{One row per taxon, name, location and value type whose
+values are all identical, with the \code{value} and how many records hold it
 (\code{n_records}).}
 }
 }
@@ -52,6 +52,8 @@ separately but the taxonomy merges into one \code{taxon_name}, as for synonyms i
 a flora, are separate records of the source rather than repeats; and a
 taxon scored once at each of several sites, as in a survey of fire
 responses, has one value per population, as it should. Neither is counted.
+Values of different \code{value_type}s are not compared either, so a minimum and
+a maximum that happen to agree are not a repeat.
 What remains is the same value given more than once for one name at one
 place: copied down to individuals, or repeated across \code{method_context}s,
 \code{temporal_context}s or sources, any of which may be intended.

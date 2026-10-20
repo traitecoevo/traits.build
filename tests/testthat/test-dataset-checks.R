@@ -209,6 +209,22 @@ test_that("`dataset_check_duplicates_within_dataset` finds values repeated for a
   expect_error(dataset_check_duplicates_within_dataset(database, "Not_a_dataset"), "not in the database")
 })
 
+test_that("`dataset_check_duplicates_within_dataset` compares values only within a value type", {
+  database <- check_fixture(dplyr::bind_rows(
+    # A flora's range for each species; Sp one's minimum and maximum agree
+    trait_rows("A", "Sp one", c(5, 5), value_type = c("minimum", "maximum"), location_id = "01"),
+    trait_rows("A", "Sp two", c(2, 7), value_type = c("minimum", "maximum"), location_id = "01"),
+    # Two maxima, repeated
+    trait_rows("A", "Sp three", c(9, 9), value_type = "maximum", location_id = "01")
+  ))
+
+  out <- dataset_check_duplicates_within_dataset(database, "A", trait_types = "numeric")
+  expect_equal(out$taxa$taxon_name, "Sp three")
+  expect_equal(out$taxa$value_type, "maximum")
+  expect_equal(out$summary$n_taxa_several, 1L)
+  expect_equal(out$summary$n_taxa_repeated, 1L)
+})
+
 
 test_that("`dataset_check_categorical_substitutions` lists unsupported values as substitutions", {
   database <- check_fixture(

@@ -295,6 +295,8 @@ util_outlier_check <- function(database, by, dataset_ids, trait_names, min_fold,
 #' a flora, are separate records of the source rather than repeats; and a
 #' taxon scored once at each of several sites, as in a survey of fire
 #' responses, has one value per population, as it should. Neither is counted.
+#' Values of different `value_type`s are not compared either, so a minimum and
+#' a maximum that happen to agree are not a repeat.
 #' What remains is the same value given more than once for one name at one
 #' place: copied down to individuals, or repeated across `method_context`s,
 #' `temporal_context`s or sources, any of which may be intended.
@@ -319,11 +321,11 @@ util_outlier_check <- function(database, by, dataset_ids, trait_names, min_fold,
 #'   whose values are all identical. `n_taxa_several` is the number of taxa
 #'   with more than one value for the trait, and `n_taxa_repeated` the number
 #'   of those whose values are all identical, counting a taxon once for each
-#'   name and location. `entity_type` lists the entity types of the trait's
-#'   values. Sorted by dataset, then with the traits repeated for the largest
-#'   share of taxa first.}
-#'   \item{`taxa`}{One row per taxon, name and location whose values are all
-#'   identical, with the `value` and how many records hold it
+#'   name, location and value type. `entity_type` lists the entity types of the
+#'   trait's values. Sorted by dataset, then with the traits repeated for the
+#'   largest share of taxa first.}
+#'   \item{`taxa`}{One row per taxon, name, location and value type whose
+#'   values are all identical, with the `value` and how many records hold it
 #'   (`n_records`).}
 #' }
 #' @examples
@@ -344,14 +346,15 @@ dataset_check_duplicates_within_dataset <- function(database, dataset_ids = NULL
       is.null(dataset_ids) | .data$dataset_id %in% dataset_ids
     )
 
-  ids <- util_group_ids(records, c("dataset_id", "trait_name", "taxon_name", "original_name", "location_id"))
+  ids <- util_group_ids(
+    records, c("dataset_id", "trait_name", "taxon_name", "original_name", "location_id", "value_type")
+  )
   taxa <- ids$keys
   first <- match(seq_len(nrow(taxa)), ids$id)
   taxa$value <- records$value[first]
   taxa$n_records <- util_group_stat(records$value, ids$id, nrow(taxa), "n")
   taxa$n_values <- util_group_stat(records$value, ids$id, nrow(taxa), "n_distinct")
   taxa$entity_type <- records$entity_type[first]
-  taxa$value_type <- records$value_type[first]
   taxa <- taxa %>% dplyr::filter(.data$n_records > 1)
 
   summary <-
@@ -379,7 +382,10 @@ dataset_check_duplicates_within_dataset <- function(database, dataset_ids = NULL
         "dataset_id", "trait_name", "taxon_name", "original_name", "location_name", "value", "n_records",
         "entity_type", "value_type"
       ))) %>%
-      dplyr::arrange(.data$dataset_id, .data$trait_name, .data$taxon_name, .data$original_name, .data$location_name)
+      dplyr::arrange(
+        .data$dataset_id, .data$trait_name, .data$taxon_name, .data$original_name, .data$location_name,
+        .data$value_type
+      )
   )
 }
 
