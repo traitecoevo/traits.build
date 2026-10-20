@@ -69,9 +69,12 @@ the generic template:
 }\if{html}{\out{</div>}}
 
 A template receives the parameters \code{dataset_id}, \code{austraits_path} (the
-compiled database, saved as \code{.rds}) and \code{show_questions}, and needs a
-\verb{title:} line in its YAML header, which \code{dataset_report()} replaces with the
-dataset's id. \code{keep = TRUE} leaves the copy of the template rendered for
-each dataset, \verb{tmp_<dataset_id>_report.qmd}, in the working directory.
+compiled database, saved as \code{.rds}) and \code{show_questions}, and must declare
+all three under \verb{params:} in its YAML header, or rendering fails. It also
+needs a \verb{title:} line there, which \code{dataset_report()} replaces with the
+dataset's id. The template is copied into the working directory and
+rendered from there, so any path it uses, such as an image or an included
+file, is relative to the working directory, not to \verb{config/}. \code{keep = TRUE}
+leaves that copy, \verb{tmp_<dataset_id>_report.qmd}, in the working directory.
 }
 

@@ -25,10 +25,13 @@
 #' ```
 #'
 #' A template receives the parameters `dataset_id`, `austraits_path` (the
-#' compiled database, saved as `.rds`) and `show_questions`, and needs a
-#' `title:` line in its YAML header, which `dataset_report()` replaces with the
-#' dataset's id. `keep = TRUE` leaves the copy of the template rendered for
-#' each dataset, `tmp_<dataset_id>_report.qmd`, in the working directory.
+#' compiled database, saved as `.rds`) and `show_questions`, and must declare
+#' all three under `params:` in its YAML header, or rendering fails. It also
+#' needs a `title:` line there, which `dataset_report()` replaces with the
+#' dataset's id. The template is copied into the working directory and
+#' rendered from there, so any path it uses, such as an image or an included
+#' file, is relative to the working directory, not to `config/`. `keep = TRUE`
+#' leaves that copy, `tmp_<dataset_id>_report.qmd`, in the working directory.
 #'
 #' @param dataset_id Name of specific study/dataset
 #' @param austraits Compiled austraits database
