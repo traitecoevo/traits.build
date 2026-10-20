@@ -37,7 +37,11 @@ rather than the global environment. \code{post_build()} sees attached packages
 whatever the file itself defines, but not objects a pipeline happens to leave
 in the global environment, which differ between \code{build.R} and a \code{targets}
 worker. Other files in \verb{R/} are not sourced; source one from
-\code{R/post_build.R} if \code{post_build()} needs it.
+\code{R/post_build.R} if \code{post_build()} needs it. Only \code{R/post_build.R} itself is
+tracked, though: the \code{targets} and \code{remake} pipelines do not rebuild the
+database when a file it sources changes, and the md5 recorded below does not
+cover that file. Code that should trigger a rebuild belongs in
+\code{R/post_build.R}.
 
 When the step runs, \code{database$build_info$post_build} records the file and
 the md5 checksum of its contents, so the code that last changed the database
