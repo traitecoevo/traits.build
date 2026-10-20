@@ -62,8 +62,8 @@ move_values_to_new_trait <- function(data, original_trait, new_trait, original_v
     stop("`original_trait` is not a column of `data`: ", original_trait, call. = FALSE)
   }
 
-  values_for_new_trait <- recycle_to_match(values_for_new_trait, original_values, "values_for_new_trait")
-  values_to_keep <- recycle_to_match(values_to_keep, original_values, "values_to_keep")
+  values_for_new_trait <- util_recycle_to_match(values_for_new_trait, original_values, "values_for_new_trait")
+  values_to_keep <- util_recycle_to_match(values_to_keep, original_values, "values_to_keep")
 
   # Creating an absent column changes nothing for callers who already create it: a
   # missing column made the loop below error, unless every row matched the first
@@ -161,7 +161,7 @@ move_values_to_new_trait_long <- function(data, original_trait, new_trait, trait
 #'
 #' @return `x`, repeated to the length of `original_values` if it was a single value
 #' @noRd
-recycle_to_match <- function(x, original_values, arg) {
+util_recycle_to_match <- function(x, original_values, arg) {
   n <- length(original_values)
 
   if (length(x) == 1 && n > 1) {
