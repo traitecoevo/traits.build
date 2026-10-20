@@ -40,7 +40,9 @@ as a value rather than as missing, and reports it among the excluded data.
 Default \code{FALSE}.}
 
 \item{to_lower}{Lower-case \code{original_trait} before matching, and match
-\code{original_values} ignoring case? The build lower-cases trait values after
+\code{original_values} ignoring case? \code{values_to_keep} are lower-cased too, so
+a value one of them writes is matched ignoring case by a later element of
+\code{original_values}. The build lower-cases trait values after
 \code{custom_R_code} runs in any case, so for a trait column this changes which
 values match rather than the values stored. Default \code{FALSE}.}
 }

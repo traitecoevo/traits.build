@@ -147,6 +147,26 @@ test_that("`move_values_to_new_trait` with `to_lower` lower-cases and matches ig
 })
 
 
+test_that("`move_values_to_new_trait` with `to_lower` matches a value `values_to_keep` wrote ignoring case", {
+  # "Herb" is rewritten to "Tree", which the second value then matches; before
+  # `values_to_keep` was lower-cased, "Tree" no longer matched "tree"
+  out <- move_values_to_new_trait(
+    tibble::tibble(x = c("Herb", "tree")), "x", "y", c("herb", "Tree"), c("H", "T"), c("Tree", ""),
+    to_lower = TRUE
+  )
+
+  expect_equal(out$x, c("", ""))
+  expect_equal(out$y, c("T", "T"))
+
+  # And the column is left lower case, `NA` kept as `NA`
+  out <- move_values_to_new_trait(
+    tibble::tibble(x = c("Herb", "Shrub")), "x", "y", c("herb", "shrub"), "z", c("Climber", NA),
+    to_lower = TRUE
+  )
+  expect_identical(out$x, c("climber", NA))
+})
+
+
 test_that("`move_values_to_new_trait` with `to_lower` and `blank_to_na` together", {
   out <- move_values_to_new_trait(
     growth, "growth_form", "substrate", c("epiphyte", "epiphytic herb"), "epiphyte", c("", "herb"),

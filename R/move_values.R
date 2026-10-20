@@ -34,7 +34,9 @@
 #'   as a value rather than as missing, and reports it among the excluded data.
 #'   Default `FALSE`.
 #' @param to_lower Lower-case `original_trait` before matching, and match
-#'   `original_values` ignoring case? The build lower-cases trait values after
+#'   `original_values` ignoring case? `values_to_keep` are lower-cased too, so
+#'   a value one of them writes is matched ignoring case by a later element of
+#'   `original_values`. The build lower-cases trait values after
 #'   `custom_R_code` runs in any case, so for a trait column this changes which
 #'   values match rather than the values stored. Default `FALSE`.
 #'
@@ -75,6 +77,7 @@ move_values_to_new_trait <- function(data, original_trait, new_trait, original_v
   if (to_lower) {
     data[[original_trait]] <- tolower(data[[original_trait]])
     original_values <- tolower(original_values)
+    values_to_keep <- tolower(values_to_keep)
   }
 
   # `ifelse()`, not subassignment, so a column's type changes exactly as it always has
