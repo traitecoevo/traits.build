@@ -2518,7 +2518,9 @@ build_post_process <- function(database, file = "R/post_build.R") {
   # code leaning on them would work under one pipeline and fail under another.
   # Nor is it this package's namespace, which would expose internal functions.
   envir <- new.env(parent = parent.env(globalenv()))
-  sys.source(file, envir = envir)
+  # `keep.source = TRUE` so a syntax error names the file, and a traceback from
+  # `post_build()` gives its line numbers
+  sys.source(file, envir = envir, keep.source = TRUE)
 
   post_build <- get0("post_build", envir = envir, inherits = FALSE)
   if (!is.function(post_build)) {

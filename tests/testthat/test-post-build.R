@@ -108,6 +108,11 @@ test_that("`build_post_process` fails clearly when `post_build` does not return 
 
   file <- local_post_build("postbuild <- function(database) database")
   expect_error(build_post_process(database, file), "must define a function `post_build(database)`", fixed = TRUE)
+
+  # A syntax error names the file: called from `build.R` or a `targets` target,
+  # a bare "3:1: unexpected '}'" reads as an error in the pipeline itself
+  file <- local_post_build(c("post_build <- function(database) {", "  database$traits <- mutate(database$traits", "}"))
+  expect_error(build_post_process(database, file), "post_build.R:3:1: unexpected", fixed = TRUE)
 })
 
 
