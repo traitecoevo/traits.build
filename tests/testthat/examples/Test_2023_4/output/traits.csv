@@ -48,8 +48,8 @@ Test_2023_4,Coprosma nivalis,046,fruit_colour,grey purple,,species,mode,,1,,seed
 Test_2023_4,Correa alba,047,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,Test_2000,,01,,,,Part of Test Dataset 4,01,04,Correa alba
 Test_2023_4,Corymbia citriodora,048,fruit_length,15,mm,,mode,measurement,1,literature,seedling,,,,01,Test_2003,,01,,,,Part of Test Dataset 4,01,04,Corymbia citriodora
 Test_2023_4,Corymbia eximia,049,fruit_length,13,mm,species,mode,,1,,seedling,,,,01,,,01,,,,Part of Test Dataset 4,01,04,Corymbia eximia
-Test_2023_4,Crassula decumbens,050,fruit_dehiscence,dehiscent,,population,mode,,1,,juvenile,01,,,01,Test_2003,01,02,,,2020,Remarks for `fruit_dehiscence`,01,04,Crassula decumbens
-Test_2023_4,Crassula peduncularis,051,fruit_dehiscence,dehiscent,,population,mode,expert_score,1,literature,adult,03,,,01,Test_2003,02,02,,,,From `australia_2` site,01,04,Crassula peduncularis
+Test_2023_4,Crassula decumbens,050,fruit_dehiscence,dehiscent,,population,mode,,1,,adult,01,,,01,Test_2003,01,02,,,2020,Remarks for `fruit_dehiscence`,01,04,Crassula decumbens
+Test_2023_4,Crassula peduncularis,051,fruit_dehiscence,dehiscent,,population,mode,expert_score,1,literature,adult,03,,,01,Test_2003,02,02,,,,Remarks for `fruit_dehiscence`,01,04,Crassula peduncularis
 Test_2023_4,Crotalaria brevis,052,fruit_colour,brown,,species,mode,,1,,seedling,,,,01,,,02,,,,Part of Test Dataset 4,01,04,Crotalaria brevis
 Test_2023_4,Crotalaria brevis,052,fruit_length,6,mm,species,mean,,1,,seedling,,,,01,,,02,,,,Part of Test Dataset 4,01,04,Crotalaria brevis
 Test_2023_4,Crotalaria grahamiana,053,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,,02,,,,,01,02,Crotalaria grahamiana
@@ -63,7 +63,7 @@ Test_2023_4,Cyperus sculptus,060,fruit_length,1,mm,species,mode,,1,,seedling,,,,
 Test_2023_4,Dampiera fusca,061,fruit_colour,brown,,species,mode,,1,,seedling,,,,01,,,02,,,,Part of Test Dataset 4,01,04,Dampiera fusca
 Test_2023_4,Davidsonia johnsonii,062,fruit_length,30,mm,species,mode,,1,,seedling,,,,01,,,01,,,,Part of Test Dataset 4,01,04,Davidsonia johnsonii
 Test_2023_4,Daviesia arenaria,063,fruit_length,7,mm,species,mode,,1,,seedling,,,,01,,,02,,,,Part of Test Dataset 4,01,04,Daviesia arenaria
-Test_2023_4,Solori involuta,064,fruit_dehiscence,indehiscent,,population,mode,measurement,1,literature,adult,03,,,01,Test_2003,02,02,,,,From `australia_2` site,01,02,Derris involuta
+Test_2023_4,Solori involuta,064,fruit_dehiscence,indehiscent,,population,mode,measurement,1,literature,adult,03,,,01,Test_2003,02,02,,,,Remarks for `fruit_dehiscence`,01,02,Derris involuta
 Test_2023_4,Dichromochlamys dentatifolia,065,fruit_length,1.8,mm,,mode,,1,field_experiment,seedling,,,,01,Test_2003,,01,,,,Part of Test Dataset 4,01,04,Dichromochlamys dentatifolia
 Test_2023_4,Dillwynia cinerascens,066,fruit_length,5,mm,species,mode,,1,,seedling,,,,01,,,02,,,,Part of Test Dataset 4,01,04,Dillwynia cinerascens
 Test_2023_4,Dillwynia floribunda,067,fruit_length,4,mm,species,mode,,1,,seedling,,,,01,,,02,,,,Part of Test Dataset 4,01,04,Dillwynia floribunda
@@ -124,7 +124,7 @@ Test_2023_4,Hibbertia crinita,121,fruit_dehiscence,dehiscent,,species,,,1,,adult
 Test_2023_4,Hibiscus brachysiphonius,122,fruit_length,15,mm,species,mode,,1,,seedling,,,,01,,,01,,,,Part of Test Dataset 4,01,04,Hibiscus brachysiphonius
 Test_2023_4,Hibiscus sturtii,123,fruit_dehiscence,dehiscent,,species,mode,,1,,adult,,,,01,,,02,,,,,01,02,Hibiscus sturtii
 Test_2023_4,Hypericum elodes,124,fruit_length,4,mm,species,mean,,1,,seedling,,,,01,,,01,,,,Part of Test Dataset 4,01,04,Hypericum elodes
-Test_2023_4,Pauridia glabella var. glabella,125,fruit_dehiscence,dehiscent,,population,mode,unknown,1,literature,adult,03,,,01,Test_2003,02,02,,,,From `australia_2` site,01,02,Hypoxis glabella var. glabella
+Test_2023_4,Pauridia glabella var. glabella,125,fruit_dehiscence,dehiscent,,population,mode,unknown,1,literature,adult,03,,,01,Test_2003,02,02,,,,Remarks for `fruit_dehiscence`,01,02,Hypoxis glabella var. glabella
 Test_2023_4,Imperata cylindrica,126,fruit_length,1,mm,species,minimum,measurement,1,literature,seedling,,,,01,Test_2000,,02,,,2006-03,Part of Test Dataset 4,01,04,Imperata cylindrica
 Test_2023_4,Imperata cylindrica,127,fruit_length,1,mm,species,minimum,measurement,1,literature,seedling,,,,02,Test_2000,,02,,,2007-03,Part of Test Dataset 4,01,04,Imperata cylindrica
 Test_2023_4,Indigofera triflora,128,fruit_length,30,mm,species,mode,,1,,seedling,,,,01,,,02,,,,Part of Test Dataset 4,01,04,Indigofera triflora
