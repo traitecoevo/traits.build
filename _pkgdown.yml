@@ -87,6 +87,10 @@ reference:
     contents:
     - '`check_pivot_duplicates`'
     - '`dataset_check_duplicate_values`'
+    - '`dataset_check_outlier_by_species`'
+    - '`dataset_check_outlier_by_genus`'
+    - '`dataset_check_duplicates_within_dataset`'
+    - '`dataset_check_categorical_substitutions`'
     - '`dataset_new_taxa_trait_combinations`'
     - '`check_pivot_wider`'
 
