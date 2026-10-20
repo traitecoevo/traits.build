@@ -21,7 +21,10 @@
 #' **Categorical traits.** A set value per species is the norm, so identical
 #' values are only compared when both records have coordinates within
 #' `max_distance_km`, and a pair of datasets is only reported when such matches
-#' span at least `min_categorical_taxa` taxa.
+#' span at least `min_categorical_taxa` taxa. Values holding the same terms in a
+#' different order (`shrub tree`, `tree shrub`) count as identical, as they
+#' always did when every database sorted its terms, so the result does not
+#' depend on the database's `trait_value_term_order`.
 #'
 #' **Telling duplicates from coincidences.** Genuinely duplicated data usually
 #' shows up as a high `prop_matched_combos` -- nearly every taxon x trait the two
@@ -334,6 +337,9 @@ util_numeric_value_matches <- function(records, min_sig_figs, max_sig_figs = 6) 
 # the 3 x 3 block of cells around them, so only nearby records are paired.
 # Longitude cells are sized for 60 degrees of latitude, beyond which they
 # would be too narrow.
+#
+# Values are compared with their terms sorted, so `tree shrub` matches
+# `shrub tree` whether or not the database keeps its sources' term order.
 util_categorical_value_matches <- function(records, max_distance_km) {
 
   cell_lat <- max_distance_km / 111
@@ -341,6 +347,7 @@ util_categorical_value_matches <- function(records, max_distance_km) {
 
   records <- records %>%
     dplyr::mutate(
+      value = util_separate_and_sort(.data$value, order = "alphabetical"),
       cell_y = floor(.data$lat / cell_lat),
       cell_x = floor(.data$lon / cell_lon)
     )

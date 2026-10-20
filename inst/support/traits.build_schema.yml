@@ -298,6 +298,12 @@ austraits:
             award_title: The title of the award (grant).
         creators: Dataset creators.
         contributors: Dataset contributors, reflecting names included in the contributors table.
+        trait_value_term_order:
+          description: Optional. The order in which the terms of a trait value holding several space-separated terms, such as `shrub tree`, are written. Set in the `metadata` block of the database's `config/metadata.yml`; when absent, `alphabetical` is used. A term repeated within a value is dropped in either case.
+          type: categorical
+          values:
+            alphabetical: Terms are sorted alphabetically, so `tree shrub` and `shrub tree` are both written `shrub tree` and the order of terms carries no meaning. The default, and how every database was built before this setting existed.
+            input_order: Terms keep the order they have in the source data, after any substitutions, so `tree shrub` and `shrub tree` stay distinct and the first term may be the one the source considered most likely or most common. Records otherwise identical whose values hold the same terms in different orders, such as one observation entered twice, all take the order of the first.
     build_info:
       description: A description of the computing environment used to create this version of the dataset, including version number, git commit and R session_info.
       type: list

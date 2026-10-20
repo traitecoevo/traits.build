@@ -232,28 +232,133 @@ util_resolve_trait_field_values <- function(declared, data) {
 }
 
 
-#'  Split and sort cells with multiple values
+#'  Split and order cells with multiple values
 #'
 #'  `util_separate_and_sort`: For a vector x in which individual cell may have
-#'  multiple values (separated by 'sep'), sort records within each cell alphabetically.
+#'  multiple values (separated by 'sep'), put the values within each cell in
+#'  order and drop any value repeated within a cell.
+#'
+#'  With `order = "alphabetical"` the values are sorted, so `tree shrub` and
+#'  `shrub tree` both become `shrub tree`. With `order = "input_order"` they keep
+#'  the order they were given in, so the first value can carry meaning, and only
+#'  the repeats are dropped (`tree shrub tree` becomes `tree shrub`). Which one a
+#'  build uses is set by `trait_value_term_order` in the database's
+#'  `config/metadata.yml`; see [util_trait_value_term_order()].
 #'
 #' @param x An individual cell with multiple values
 #' @param sep A separator, a whitespace is the default
+#' @param order `"alphabetical"` (the default) or `"input_order"`
 #'
-#' @return A vector of alphabetically sorted records
+#' @return A vector of records, each with its values in the requested order and
+#'   without repeats
 #'
-#' @examples \dontrun{util_separate_and_sort("z y x")}
-util_separate_and_sort <- function(x, sep = " ") {
+#' @examples \dontrun{
+#' util_separate_and_sort("z y x")
+#' util_separate_and_sort("z y x y", order = "input_order")
+#' }
+util_separate_and_sort <- function(x, sep = " ", order = "alphabetical") {
+
+  order <- match.arg(order, util_trait_value_term_orders())
 
   # Find cells with multiple values, indicated by presence of sep
   i <- grep(sep, x)
-  # For those cells, split, sort then combine
+
+  arrange_terms <-
+    if (order == "alphabetical") {
+      function(xi) xi %>% util_sort_locale_independent() %>% unique()
+    } else {
+      # `unique()` keeps the first occurrence of each value, in place
+      unique
+    }
+
+  # For those cells, split, order, drop repeats, then combine
   x[i] <- x[i] %>%
       stringr::str_split(" ") %>%
-      lapply(function(xi) xi %>% util_sort_locale_independent() %>% unique() %>% paste(collapse = " ")) %>%
+      lapply(function(xi) xi %>% arrange_terms() %>% paste(collapse = " ")) %>%
       unlist()
   x
 
+}
+
+#' Give records that differ only in the order of their terms one order
+#'
+#' Under `trait_value_term_order: input_order`, two records identical in every
+#' column except the order of the terms in `value` -- the same observation of a
+#' species entered twice, once as `prostrate cushion-forming` and once as
+#' `cushion-forming prostrate` -- are one record stated twice. Sorting used to
+#' make them exact duplicates, which [austraits::bind_databases()] collapses to
+#' one row. So that the compiled database keeps the same rows whichever order a
+#' database uses, each such group takes the order of its first record.
+#' Excluded records (`error` set) are left alone, as their values are never
+#' reordered.
+#'
+#' @param traits The traits table being built in [dataset_process()], with an
+#'   `error` column
+#'
+#' @return `traits`, with `value` unified within each such group
+#' @keywords internal
+util_unify_term_order <- function(traits) {
+
+  i <- which(is.na(traits[["error"]]) & grepl(" ", traits[["value"]], fixed = TRUE))
+  if (length(i) < 2) return(traits)
+
+  key <- traits[i, ]
+  key[["value"]] <- util_separate_and_sort(key[["value"]], order = "alphabetical")
+  key <- do.call(
+    paste,
+    c(lapply(key, function(x) ifelse(is.na(x), "\001", as.character(x))), sep = "\002")
+  )
+
+  traits[["value"]][i] <- traits[["value"]][i][match(key, key)]
+  traits
+}
+
+# The settings `trait_value_term_order` accepts, the first being the default.
+# `inst/support/traits.build_schema.yml` documents the same values, and a test
+# keeps the two in step.
+util_trait_value_term_orders <- function() {
+  c("alphabetical", "input_order")
+}
+
+#' Order in which a database writes the terms of a multi-term trait value
+#'
+#' A categorical trait value can hold several space-separated terms, such as
+#' `shrub tree`. `trait_value_term_order`, in the `metadata` block of the
+#' database's `config/metadata.yml`, says how they are written: `alphabetical`
+#' sorts them, so the order carries no meaning, and `input_order` keeps the order
+#' given by the source, so the first term may be the one it considered most
+#' likely. Either way a repeated term is dropped. When the setting is absent the
+#' order is `alphabetical`, which is how every database was built before the
+#' setting existed. The setting is copied into the built database's `metadata`
+#' with the rest of that block, which is how a user of the database can tell
+#' whether term order carries meaning.
+#'
+#' @param resource_metadata The `metadata` block of the database's
+#'   `config/metadata.yml`, as passed to [dataset_process()]
+#'
+#' @return `"alphabetical"` or `"input_order"`
+#' @keywords internal
+util_trait_value_term_order <- function(resource_metadata) {
+
+  allowed <- util_trait_value_term_orders()
+  order <- resource_metadata[["trait_value_term_order"]]
+
+  if (is.null(order) || (length(order) == 1 && is.na(order))) {
+    return(allowed[1])
+  }
+
+  if (!(is.character(order) && length(order) == 1 && order %in% allowed)) {
+    stop(
+      sprintf(
+        "`trait_value_term_order` in the `metadata` block of `config/metadata.yml` must be one of %s, not %s.",
+        paste(sprintf("`%s`", allowed), collapse = " or "),
+        paste(sprintf("`%s`", format(order)), collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+
+  order
 }
 
 #' Convert BibEntry object to a list
