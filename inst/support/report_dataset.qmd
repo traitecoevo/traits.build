@@ -346,7 +346,9 @@ missing <- metadata$dataset %>%
   filter(value == "unknown") %>%
   pull(key)
 
-for (v in missing[show_questions]) {
+# Not `missing[show_questions]`: indexing an empty vector by `TRUE` gives `NA`,
+# which asked about "the variable NA" whenever no field was unknown
+for (v in if (show_questions) missing else character()) {
   sprintf("(section `dataset`) Can you provide missing details for the variable `%s`?\n", v) %>%
     new_question()
   sprintf("The variable `%s` captures *'%s'*\n", v, schema$metadata$elements$dataset$values[[v]]) %>%

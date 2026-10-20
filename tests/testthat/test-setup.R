@@ -916,6 +916,9 @@ test_that("reports and plots are produced", {
   expect_match(report, "Review of questions", fixed = TRUE)
   expect_match(report, "Question:", fixed = TRUE)
   expect_match(report, "Please review the report", fixed = TRUE)
+  # Test_2022 has no `unknown` dataset-level field, so there is nothing to ask
+  # about; this used to ask about "the variable NA"
+  expect_no_match(report, "for the variable <code>NA</code>", fixed = TRUE)
   # The generic template introduces the database from its own metadata, here
   # `tests/testthat/config/metadata.yml`, rather than from fixed prose (#140)
   expect_match(report, "a curated plant trait database for the Australian flora", fixed = TRUE)

@@ -1,6 +1,7 @@
 # traits.build (development version)
 
 - The dataset report template shipped with traits.build is now generic, for any database the package builds, rather than describing AusTraits. It introduces the database from the `metadata` block of its `config/metadata.yml` (title, version, description, DOI, reference, repository and licence) and names the database by the part of its title before any colon, instead of AusTraits prose, links and Australian Plant Census text; it names the taxonomic reference recorded in the taxa table, and links a taxon name only where its `taxon_id` is a web address. The tables, plots and questions are unchanged. `dataset_report()` now uses a database's own template, `config/report_dataset.qmd`, whenever the working directory has one, so AusTraits keeps its richer report in `austraits.build`; `input_file` still overrides both, and now defaults to `NULL` (#140).
+- The review copy of a dataset report no longer asks "Can you provide missing details for the variable NA?" for a dataset with no `unknown` field in the `dataset` block of its `metadata.yml`, which was most datasets. The question came in with `show_questions` in 2.2.0.
 
 # traits.build 2.2.0
 
