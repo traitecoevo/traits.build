@@ -33,10 +33,13 @@ writing files, are allowed.
 
 The file is sourced into a fresh environment whose parent is the search path
 rather than the global environment. \code{post_build()} sees attached packages
-(\code{library(traits.build)} attaches traits.build and its \code{Depends}) and
-whatever the file itself defines, but not objects a pipeline happens to leave
-in the global environment, which differ between \code{build.R} and a \code{targets}
-worker. Other files in \verb{R/} are not sourced; source one from
+(\code{library(traits.build)} attaches traits.build and its \code{Depends}), including
+any the file attaches with \code{library()} outside \code{post_build()}, and whatever
+the file itself defines, but not objects a pipeline happens to leave in the
+global environment, which differ between \code{build.R} and a \code{targets} worker.
+A package attached inside \code{post_build()} is not seen in a fresh session such
+as a \code{targets} worker: attach it at the top of the file, or call it as
+\code{pkg::fun()}. Other files in \verb{R/} are not sourced; source one from
 \code{R/post_build.R} if \code{post_build()} needs it. Only \code{R/post_build.R} itself is
 tracked, though: the \code{targets} and \code{remake} pipelines do not rebuild the
 database when a file it sources changes, and the md5 recorded below does not

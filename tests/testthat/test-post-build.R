@@ -139,6 +139,28 @@ test_that("`post_build` sees attached packages and its own file, not the global 
 })
 
 
+test_that("`post_build` sees a package its file attaches", {
+
+  # `library()` attaches a package next to the global environment, above the
+  # search path as it stood when the file's environment was made. `tools` is
+  # installed with R and not attached by default.
+  skip_if("package:tools" %in% search(), "`tools` is already attached")
+  withr::defer(if ("package:tools" %in% search()) detach("package:tools"))
+
+  file <- local_post_build(c(
+    "library(tools)",
+    "post_build <- function(database) {",
+    "  database$traits$title <- toTitleCase(database$traits$trait_name)",
+    "  database",
+    "}"
+  ))
+
+  processed <- suppressMessages(build_post_process(post_build_test_database(), file))
+
+  expect_equal(processed$traits$title, "Leaf_area")
+})
+
+
 test_that("`build_post_process` keeps the database's class when `post_build` drops it", {
 
   file <- local_post_build("post_build <- function(database) database[names(database)]")

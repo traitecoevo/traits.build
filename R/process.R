@@ -2469,10 +2469,13 @@ build_add_version <- function(austraits, version, git_sha) {
 #'
 #' The file is sourced into a fresh environment whose parent is the search path
 #' rather than the global environment. `post_build()` sees attached packages
-#' (`library(traits.build)` attaches traits.build and its `Depends`) and
-#' whatever the file itself defines, but not objects a pipeline happens to leave
-#' in the global environment, which differ between `build.R` and a `targets`
-#' worker. Other files in `R/` are not sourced; source one from
+#' (`library(traits.build)` attaches traits.build and its `Depends`), including
+#' any the file attaches with `library()` outside `post_build()`, and whatever
+#' the file itself defines, but not objects a pipeline happens to leave in the
+#' global environment, which differ between `build.R` and a `targets` worker.
+#' A package attached inside `post_build()` is not seen in a fresh session such
+#' as a `targets` worker: attach it at the top of the file, or call it as
+#' `pkg::fun()`. Other files in `R/` are not sourced; source one from
 #' `R/post_build.R` if `post_build()` needs it. Only `R/post_build.R` itself is
 #' tracked, though: the `targets` and `remake` pipelines do not rebuild the
 #' database when a file it sources changes, and the md5 recorded below does not
@@ -2525,6 +2528,11 @@ build_post_process <- function(database, file = "R/post_build.R") {
   # `keep.source = TRUE` so a syntax error names the file, and a traceback from
   # `post_build()` gives its line numbers
   sys.source(file, envir = envir, keep.source = TRUE)
+  # `library()` attaches a package next to the global environment, above the
+  # parent taken before the file ran, so a package the file attaches would be
+  # out of sight in a fresh session and in sight on a re-run. Re-take the parent
+  # now that the file has run.
+  parent.env(envir) <- parent.env(globalenv())
 
   post_build <- get0("post_build", envir = envir, inherits = FALSE)
   if (!is.function(post_build)) {
