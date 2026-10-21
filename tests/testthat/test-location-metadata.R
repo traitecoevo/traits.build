@@ -75,10 +75,19 @@ test_that("trait-level metadata takes precedence for long-format data too (#60)"
   expect_gt(nrow(at_australia), 0)
   expect_equal(unique(at_australia$life_stage), "adult")
 
-  # Column with a value
+  # Column: a cell with a value beats the location, and an empty one is filled
+  # from it. Pittosporum erioloma's cell is empty, and so is its `entity_type`,
+  # which does not unlink it from `australia_2`
   at_australia_2 <- fruit_dehiscence %>% dplyr::filter(.data$location_id == australia_2)
-  expect_gt(nrow(at_australia_2), 0)
-  expect_equal(unique(at_australia_2$measurement_remarks), "Remarks for `fruit_dehiscence`")
+  remarks <- stats::setNames(at_australia_2$measurement_remarks, at_australia_2$taxon_name)
+  expect_gt(length(remarks), 1)
+  expect_equal(
+    unique(remarks[names(remarks) != "Pittosporum erioloma"]), "Remarks for `fruit_dehiscence`"
+  )
+  expect_equal(remarks[["Pittosporum erioloma"]], "From `australia_2` site")
+
+  # No record is unlinked from its location for want of an `entity_type`
+  expect_true(all(!is.na(built$traits$location_id[is.na(built$traits$entity_type)])))
 
   # Location over dataset: `fruit_length` reads `life_stage` only from the
   # dataset level
@@ -127,4 +136,46 @@ test_that("`process_add_location_metadata()` decides precedence for each record"
   no_locations <- process_add_location_metadata(traits, locations[0, ])
   expect_equal(no_locations$life_stage, traits$life_stage)
   expect_false(".trait_level_life_stage" %in% names(no_locations))
+})
+
+
+test_that("a record with no `entity_type` stays linked to its location", {
+  # Only a species-level record is unlinked. One whose `entity_type` is empty,
+  # as a blank cell of a trait's `entity_type` column leaves it, was measured
+  # at its location like any other, so keeps the link and takes the location's
+  # values for its empty cells, `entity_type` included
+  locations <- process_format_locations(
+    list(site = list(
+      `latitude (deg)` = -30, `longitude (deg)` = 150,
+      life_stage = "juvenile", entity_type = "population"
+    )),
+    "Test", get_schema()
+  )
+
+  traits <- tibble::tribble(
+    ~case,                        ~entity_type,  ~.trait_level_entity_type, ~life_stage,
+    "dataset, no entity_type",    NA,            NA,                        NA,
+    "trait column, empty cell",   NA,            TRUE,                      NA,
+    "trait value",                "individual",  TRUE,                      NA,
+    "species-level",              "species",     TRUE,                      NA
+  ) %>%
+    dplyr::mutate(location_name = "site", location_id = NA_character_)
+
+  out <- process_add_location_metadata(traits, locations)
+
+  expect_equal(
+    stats::setNames(out$location_id, out$case),
+    c(
+      "dataset, no entity_type" = "01", "trait column, empty cell" = "01",
+      "trait value" = "01", "species-level" = NA
+    )
+  )
+  expect_equal(
+    stats::setNames(out$entity_type, out$case),
+    c(
+      "dataset, no entity_type" = "population", "trait column, empty cell" = "population",
+      "trait value" = "individual", "species-level" = "species"
+    )
+  )
+  expect_equal(out$life_stage, c("juvenile", "juvenile", "juvenile", NA))
 })

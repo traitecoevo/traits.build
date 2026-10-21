@@ -1087,7 +1087,10 @@ process_trait_level_column <- function(field) {
 #' A record whose `entity_type` is `species` gets no `location_id`, so it takes
 #' nothing from a location. That is decided before the merge, from the
 #' `entity_type` the trait and dataset levels gave it, so a location-level
-#' `entity_type` does not change which records are linked to the location.
+#' `entity_type` does not change which records are linked to the location. A
+#' record with no `entity_type` keeps its `location_id`, and like any other
+#' empty cell, its `entity_type` is filled from the location if the location
+#' sets one.
 #'
 #' @param traits Traits table returned by [process_parse_data()], with the
 #'   columns of the schema's traits table added
@@ -1108,7 +1111,9 @@ process_add_location_metadata <- function(traits, locations) {
         locations %>% dplyr::select(dplyr::all_of(c("location_name", "location_id"))) %>% dplyr::distinct()
       ) %>%
       dplyr::mutate(
-        location_id = ifelse(.data$entity_type == "species", NA_character_, .data$location_id)
+        # Only a species-level record is unlinked; one with no `entity_type` is
+        # still measured at its location
+        location_id = ifelse(.data$entity_type %in% "species", NA_character_, .data$location_id)
       )
 
     for (v in location_metadata_fields) {
