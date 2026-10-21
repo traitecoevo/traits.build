@@ -341,9 +341,17 @@ test_that("`dataset_test` accepts `omit_values`, as a value or a list, when each
     set_omit_values("wood density (mg mm-3)", list(NaN, -Inf))(metadata)
   }, edit_data)
 
-  # Test_2023_2 passes every check, so this must too
+  # `omit_values` must add no failures to those of the unedited Test_2023_2,
+  # rather than the dataset passing every check: a check added elsewhere may
+  # fail it (#282's NA-date check does). The edited copy runs two more
+  # expectations, so only the failure counts are compared.
+  n_failures <- function(out) {
+    sub("^\\[ FAIL ([0-9]+) .*$", "\\1", tail(grep("^\\[ FAIL", out, value = TRUE), 1))
+  }
+  baseline <- dataset_test_report("Test_2023_2", "examples")
   out <- dataset_test_report("Test_2023_2", path_data)
-  expect_match(tail(grep("^\\[ FAIL", out, value = TRUE), 1), "[ FAIL 0 |", fixed = TRUE)
+  expect_equal(n_failures(out), n_failures(baseline))
+  expect_false(any(grepl("omit_values", out, fixed = TRUE)))
 })
 
 
