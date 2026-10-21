@@ -539,8 +539,9 @@ dataset_test_worker <-
           info = paste0(red(f), "\ttraits - metadata cannot be converted to a dataframe")
         )
 
-        # `omit_values` is optional, so this is checked only where a trait sets it.
-        # One expectation for all of them, rather than one per trait.
+        # `omit_values` is optional, so it is checked only where a trait sets it: its
+        # shape, then whether each value matches anything. One expectation for each,
+        # covering every trait, rather than one per trait.
         if (is.list(metadata[["traits"]])) {
           omit_declared <- purrr::keep(metadata[["traits"]], ~ is.list(.x) && !is.null(.x[["omit_values"]]))
           if (length(omit_declared) > 0) {
@@ -555,6 +556,56 @@ dataset_test_worker <-
                 red(f),
                 paste(vapply(omit_declared[omit_invalid], function(x) as.character(x[["var_in"]])[1], character(1)),
                       collapse = "', '")
+              )
+            )
+
+            # Each value must match some value of its trait in the data, or it omits
+            # nothing. Compared as the build compares them, with the data after
+            # `custom_R_code`, and in long format on the trait's own rows. Skipped: an
+            # entry of the wrong shape (reported above), one without a trait (never
+            # built) and one whose column is missing (reported below).
+            omit_long <- isTRUE(metadata[["dataset"]][["data_is_long_format"]])
+            omit_long_cols <- c(metadata[["dataset"]][["trait_name"]], metadata[["dataset"]][["value"]])
+            omit_unmatched <- character()
+
+            for (omit_entry in omit_declared[!omit_invalid]) {
+              omit_var_in <- omit_entry[["var_in"]]
+              omit_trait <- omit_entry[["trait_name"]]
+              if (length(omit_var_in) != 1 || length(omit_trait) != 1 || is.na(omit_trait)) next
+
+              if (!omit_long) {
+                omit_trait_values <- data[[omit_var_in]]
+              } else if (length(omit_long_cols) == 2 && all(omit_long_cols %in% names(data))) {
+                omit_trait_values <-
+                  data[[omit_long_cols[2]]][which(data[[omit_long_cols[1]]] == omit_var_in)]
+              } else {
+                omit_trait_values <- NULL
+              }
+              if (is.null(omit_trait_values)) next
+
+              omit_match <- process_omit_values_match(omit_trait_values, omit_entry[["omit_values"]])
+              if (all(omit_match$matched)) next
+
+              omit_no_values <- all(is.na(omit_trait_values))
+              omit_number_in_text <- !omit_no_values && is.character(omit_trait_values) &&
+                any(vapply(as.list(omit_entry[["omit_values"]]), is.numeric, logical(1))[!omit_match$matched])
+
+              omit_unmatched <- c(omit_unmatched, sprintf(
+                "trait '%s', column '%s': '%s'%s%s",
+                omit_trait, omit_var_in,
+                paste(unique(omit_match$compared[!omit_match$matched]), collapse = "', '"),
+                if (omit_no_values) " (the trait has no values in the data)" else "",
+                if (omit_number_in_text) {
+                  " (a number is compared with a text column as R writes it: quote it, as in \"0.0\", to compare its spelling)"
+                } else ""
+              ))
+            }
+
+            test_expect_true(
+              length(omit_unmatched) == 0,
+              info = sprintf(
+                "%s\ttraits - `omit_values` that match no value of their trait in the data: %s",
+                red(f), paste(omit_unmatched, collapse = "; ")
               )
             )
           }

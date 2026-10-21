@@ -1928,7 +1928,9 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
 #'
 #' Called from `process_parse_data()` after `custom_R_code` has run and before
 #' `substitutions`, so a value can be omitted whether it is in `data.csv` or
-#' produced by `custom_R_code`, and is never substituted first.
+#' produced by `custom_R_code`, and is never substituted first. The comparison
+#' itself is `process_omit_values_match()`, which `dataset_test()` also uses to
+#' report a value that matches nothing.
 #'
 #' @param x A trait's values, as a column of `data.csv` after `custom_R_code`
 #' @param omit_values The trait entry's `omit_values`: a single string or
@@ -1942,18 +1944,50 @@ process_omit_values <- function(x, omit_values) {
     return(x)
   }
 
+  x[process_omit_values_match(x, omit_values)$omit] <- NA
+  x
+}
+
+
+#' Compare a trait's values with its `omit_values`
+#'
+#' The comparison `process_omit_values()` makes, described there: as numbers in
+#' a numeric column, and otherwise as text, with a number written as R writes
+#' it. A value that is not a number, such as `"-"`, matches nothing in a
+#' numeric column.
+#'
+#' @inheritParams process_omit_values
+#'
+#' @return A list of
+#'   - `omit`: for each element of `x`, whether it matches one of `omit_values`
+#'   - `compared`: each of `omit_values` as compared, as text, so an unquoted
+#'     `0.0` is `"0"`; a value that is not a number, compared with a numeric
+#'     column, is given as written
+#'   - `matched`: for each of `omit_values`, whether it matches some element of
+#'     `x`
+#' @noRd
+process_omit_values_match <- function(x, omit_values) {
+
   omit_values <- as.list(omit_values)
+  as_written <- vapply(omit_values, as.character, character(1))
 
   if (is.numeric(x)) {
     targets <- suppressWarnings(vapply(omit_values, as.numeric, numeric(1)))
-    omit <- x %in% targets[!is.na(targets) | is.nan(targets)]
+    usable <- !is.na(targets) | is.nan(targets)
+    compared <- ifelse(usable, as.character(targets), as_written)
+    values <- x
   } else {
-    targets <- vapply(omit_values, as.character, character(1))
-    omit <- as.character(x) %in% targets
+    targets <- as_written
+    usable <- rep(TRUE, length(targets))
+    compared <- targets
+    values <- as.character(x)
   }
 
-  x[omit] <- NA
-  x
+  list(
+    omit = values %in% targets[usable],
+    compared = compared,
+    matched = usable & targets %in% values
+  )
 }
 
 

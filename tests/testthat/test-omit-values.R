@@ -96,6 +96,23 @@ test_that("an unquoted number is compared with a text column as R writes it", {
 })
 
 
+test_that("`process_omit_values_match()` says which values matched, as compared", {
+  # Numbers: `NaN` and `-Inf` match, `"-"` can't, and `"0.0"` is compared as 0
+  m <- process_omit_values_match(c(NaN, -Inf, 1, NA), list(NaN, -Inf, "-", "0.0", 1L))
+  expect_identical(m$omit, c(TRUE, TRUE, TRUE, FALSE))
+  expect_identical(m$compared, c("NaN", "-Inf", "-", "0", "1"))
+  expect_identical(m$matched, c(TRUE, TRUE, FALSE, FALSE, TRUE))
+
+  # Text: a number as R writes it, and a repeated value once per mention
+  m <- process_omit_values_match(c("0.0", "-", NA), list(0, 1e-04, "-", "-"))
+  expect_identical(m$compared, c("0", "1e-04", "-", "-"))
+  expect_identical(m$matched, c(FALSE, FALSE, TRUE, TRUE))
+
+  # A column with no values matches nothing, not even through its `NA`s
+  expect_false(any(process_omit_values_match(c(NA, NA), list(0L, "NA"))$matched))
+})
+
+
 test_that("each entry's `omit_values` lines up with its rows of the traits table", {
   # An entry with an empty field gives no row, and one with a field holding
   # several values gives that many
@@ -308,15 +325,62 @@ dataset_test_report <- function(dataset_id, path_data) {
 }
 
 
-test_that("`dataset_test` accepts `omit_values`, as a value or a list", {
+test_that("`dataset_test` accepts `omit_values`, as a value or a list, when each matches", {
+  # Every value matches as the build compares them: `"0.0"` as the number 0 in
+  # the numeric `branch mass fraction`, which also holds `0` twice over; `"0.0"`
+  # as text in `Seed mass (mg)`, which its `-` makes a text column; and `NaN`
+  # and `-Inf` as numbers in `wood density (mg mm-3)`
+  edit_data <- function(data) {
+    data[["Seed mass (mg)"]][c(1, 2, 4, 5)] <- c("-", "-", "0.0", "NaN")
+    data[["wood density (mg mm-3)"]][c(1, 2)] <- c("NaN", "-Inf")
+    data
+  }
   path_data <- example_edited("Test_2023_2", function(metadata) {
-    metadata <- set_omit_values("branch mass fraction", 0L)(metadata)
-    set_omit_values("Seed mass (mg)", list(0L, "-", "NaN"))(metadata)
-  })
+    metadata <- set_omit_values("branch mass fraction", list(0L, "0.0", 0L))(metadata)
+    metadata <- set_omit_values("Seed mass (mg)", list("-", "0.0", "NaN"))(metadata)
+    set_omit_values("wood density (mg mm-3)", list(NaN, -Inf))(metadata)
+  }, edit_data)
 
   # Test_2023_2 passes every check, so this must too
   out <- dataset_test_report("Test_2023_2", path_data)
   expect_match(tail(grep("^\\[ FAIL", out, value = TRUE), 1), "[ FAIL 0 |", fixed = TRUE)
+})
+
+
+test_that("`dataset_test` reports `omit_values` that match nothing, as compared", {
+  # `Seed mass (mg)` is a text column, holding `-` and `0.0` but not `0`, so an
+  # unquoted `0.0`, which YAML reads as the number 0, matches nothing there.
+  # `LASA10` has no values at all, and `LASA1000` names a column that doesn't
+  # exist, which is reported elsewhere and so not here.
+  edit_data <- function(data) {
+    data[["Seed mass (mg)"]][c(1, 2, 4)] <- c("-", "-", "0.0")
+    data[["LASA10"]] <- NA_character_
+    data
+  }
+  edit_metadata <- function(metadata) {
+    metadata <- set_omit_values("branch mass fraction", list(-9999L, "-"))(metadata)
+    metadata <- set_omit_values("Seed mass (mg)", list(0, 1e-04, "-", 0))(metadata)
+    metadata <- set_omit_values(c("LASA10", "LASA1000"), 0L)(metadata)
+    metadata$traits <- lapply(metadata$traits, function(trait) {
+      if (trait$var_in == "LASA1000") trait$var_in <- "LASA1000 missing"
+      trait
+    })
+    metadata
+  }
+
+  out <- dataset_test_report("Test_2023_2", example_edited("Test_2023_2", edit_metadata, edit_data))
+  expect_match(
+    out,
+    paste0(
+      "\ttraits - `omit_values` that match no value of their trait in the data: ",
+      "trait 'branch_mass_fraction', column 'branch mass fraction': '-9999', '-'; ",
+      "trait 'seed_dry_mass', column 'Seed mass (mg)': '0', '1e-04' ",
+      "(a number is compared with a text column as R writes it: quote it, as in \"0.0\", to compare its spelling); ",
+      "trait 'huber_value', column 'LASA10': '0' (the trait has no values in the data)"
+    ),
+    fixed = TRUE, all = FALSE
+  )
+  expect_no_match(out[grepl("`omit_values` that match no value", out)], "LASA1000", fixed = TRUE)
 })
 
 
