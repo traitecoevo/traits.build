@@ -102,22 +102,39 @@ list(
   tar_target(version_number, util_get_version(file_resource_metadata)),
   tar_target(git_SHA, util_get_SHA(), cue = tar_cue(mode = "always")),
 
-  # Combine all the source into one resource. `build_add_version()` is folded in
-  # here rather than given a target of its own: it takes no measurable time, so
-  # splitting it bought no caching while costing a second copy of the whole
-  # database in the store on every rebuild. The price is that a commit with no
-  # data change now re-runs `bind_databases()`.
+  # Post-build step: `post_build()` from R/post_build.R, if that file exists.
+  # A file target must name files that exist, so this one names none when there
+  # is no R/post_build.R, and is re-checked on every run so that adding,
+  # editing or deleting the file is noticed. Checking it is cheap, and nothing
+  # downstream rebuilds unless the file has changed.
+  tar_target(
+    file_post_build,
+    if (file.exists("R/post_build.R")) "R/post_build.R" else character(0),
+    format = "file",
+    cue = tar_cue(mode = "always")
+  ),
+
+  # Combine all the source into one resource. `build_add_version()` and the
+  # post-build step are folded in here rather than given targets of their own:
+  # each extra target would cost a second copy of the whole database in the
+  # store on every rebuild, which `build_add_version()` takes too little time to
+  # be worth. The price is that a commit with no data change, or an edit to
+  # R/post_build.R, re-runs `bind_databases()`. Files `post_build()` writes are
+  # not tracked: they are rewritten whenever this target rebuilds.
   tar_target(
     {{database_name}},
-    build_add_version(
-      austraits::bind_databases(
+    build_post_process(
+      build_add_version(
+        austraits::bind_databases(
 {{#dataset_ids}}
-        {{dataset_id}},
+          {{dataset_id}},
 {{/dataset_ids}}
-        NULL
+          NULL
+        ),
+        version_number,
+        git_SHA
       ),
-      version_number,
-      git_SHA
+      file_post_build
     )
   )
 

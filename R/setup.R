@@ -1414,7 +1414,19 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' `targets::tar_config_set(reporter_make = "silent")` sets that for the
 #' repository.
 #'
-#' @seealso [build_export()]
+#' @section Post-build step:
+#'
+#' Every pipeline calls [build_post_process()] after [build_add_version()] and
+#' before the database is saved. It runs `post_build()` from `R/post_build.R`
+#' if the repository has that file, and otherwise does nothing, so the call is
+#' written whether or not the file exists and adding one later needs no change
+#' to the pipeline. `targets` notices the file being added, edited or deleted.
+#' `remake` cannot depend on a file that may not exist, so it tracks
+#' `R/post_build.R` only if the file existed when the pipeline was set up:
+#' re-run `build_setup_pipeline()` after adding or removing it, as after adding
+#' a dataset.
+#'
+#' @seealso [build_export()], [build_post_process()]
 #' @export
 build_setup_pipeline <- function(dataset_ids = dir("data"),
                                  method = "base",
@@ -1474,7 +1486,10 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
     path = path,
     database_name = database_name,
     workers = workers,
-    parallel = workers > 1
+    parallel = workers > 1,
+    # Only `remake` uses this: it cannot depend on a file that may not exist,
+    # so it tracks `R/post_build.R` only if the file is there now
+    post_build_file = file.exists("R/post_build.R")
     )
 
   # Setup pipeline based on selected method for building
