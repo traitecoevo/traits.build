@@ -316,7 +316,7 @@ austraits:
           type: list
           elements:
             file: Path of the file defining `post_build()`, as given to `build_post_process()`; `R/post_build.R` in a pipeline written by `build_setup_pipeline()`.
-            md5: md5 checksum of that file's contents when the step ran, identifying the code even when it was not committed.
+            md5: md5 checksum of that file's contents when the step ran, identifying the code even when it was not committed. Line endings are normalised to `\n` first, so the checksum is the same on every operating system.
 
 #-------------------------------------------------------------
 

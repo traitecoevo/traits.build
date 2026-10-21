@@ -61,8 +61,30 @@ test_that("`build_post_process` replaces the database with what `post_build` ret
   expect_equal(processed$build_info[names(database$build_info)], database$build_info)
   expect_equal(
     processed$build_info$post_build,
-    list(file = file, md5 = unname(tools::md5sum(file)))
+    list(file = file, md5 = util_md5_text_file(file))
   )
+})
+
+
+test_that("the md5 `build_post_process` records does not depend on line endings", {
+
+  # The same code as a Windows checkout writes it (`\r\n`) and as macOS and
+  # Linux do (`\n`): different bytes, one checksum
+  code <- c("post_build <- function(database) {", "  database", "}")
+  dir <- withr::local_tempdir()
+  lf <- file.path(dir, "lf.R")
+  crlf <- file.path(dir, "crlf.R")
+  writeBin(charToRaw(paste0(paste(code, collapse = "\n"), "\n")), lf)
+  writeBin(charToRaw(paste0(paste(code, collapse = "\r\n"), "\r\n")), crlf)
+  expect_false(identical(tools::md5sum(lf)[[1]], tools::md5sum(crlf)[[1]]))
+
+  database <- post_build_test_database()
+  md5_lf <- suppressMessages(build_post_process(database, lf))$build_info$post_build$md5
+  md5_crlf <- suppressMessages(build_post_process(database, crlf))$build_info$post_build$md5
+
+  expect_equal(md5_crlf, md5_lf)
+  # For a file with `\n` endings, it is the file's own md5
+  expect_equal(md5_lf, tools::md5sum(lf)[[1]])
 })
 
 
@@ -246,7 +268,7 @@ test_that("the base pipeline runs `post_build()` and saves what it returns", {
   expect_equal(nrow(read_csv_char(written)), nrow(database$traits))
   expect_equal(
     database$build_info$post_build,
-    list(file = "R/post_build.R", md5 = unname(tools::md5sum("R/post_build.R")))
+    list(file = "R/post_build.R", md5 = util_md5_text_file("R/post_build.R"))
   )
   expect_equal(database$build_info$version, plain$database$build_info$version)
 

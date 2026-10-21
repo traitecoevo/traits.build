@@ -48,7 +48,10 @@ cover that file. Code that should trigger a rebuild belongs in
 
 When the step runs, \code{database$build_info$post_build} records the file and
 the md5 checksum of its contents, so the code that last changed the database
-can be identified even when it was not committed.
+can be identified even when it was not committed. Line endings are
+normalised to \verb{\\n} before the checksum is taken, so a checkout with Windows
+line endings records the same checksum as one on macOS or Linux; for a file
+with \verb{\\n} endings it is the checksum \code{tools::md5sum()} gives the file.
 }
 \examples{
 \dontrun{

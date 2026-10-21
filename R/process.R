@@ -2484,7 +2484,10 @@ build_add_version <- function(austraits, version, git_sha) {
 #'
 #' When the step runs, `database$build_info$post_build` records the file and
 #' the md5 checksum of its contents, so the code that last changed the database
-#' can be identified even when it was not committed.
+#' can be identified even when it was not committed. Line endings are
+#' normalised to `\n` before the checksum is taken, so a checkout with Windows
+#' line endings records the same checksum as one on macOS or Linux; for a file
+#' with `\n` endings it is the checksum `tools::md5sum()` gives the file.
 #'
 #' @param database Database object, as returned by [build_add_version()]
 #' @param file Path to the file defining `post_build()`. If the file does not
@@ -2518,7 +2521,7 @@ build_post_process <- function(database, file = "R/post_build.R") {
     return(database)
   }
 
-  md5 <- unname(tools::md5sum(file))
+  md5 <- util_md5_text_file(file)
 
   # The parent is the search path, not the global environment: `build.R` leaves
   # every dataset and config object there and a `targets` worker leaves none, so
@@ -2580,6 +2583,26 @@ build_post_process <- function(database, file = "R/post_build.R") {
   processed$build_info$post_build <- list(file = file, md5 = md5)
 
   processed
+}
+
+#' md5 checksum of a text file, whatever its line endings
+#'
+#' `readLines()` accepts `\n`, `\r\n` and `\r` line endings, so the lines are
+#' rejoined with `\n` (and a final `\n`) and the checksum taken of those bytes.
+#' A file checked out with Windows line endings then gives the same checksum as
+#' on macOS or Linux, and a file with `\n` endings gives its own md5.
+#'
+#' @param file Path to a text file
+#'
+#' @return The md5 checksum, as a string
+#' @noRd
+util_md5_text_file <- function(file) {
+  normalised <- tempfile()
+  on.exit(unlink(normalised), add = TRUE)
+  # Binary, so that Windows does not write `\n` back out as `\r\n`
+  lines <- readLines(file, warn = FALSE)
+  writeBin(charToRaw(paste0(paste(lines, collapse = "\n"), "\n")), normalised)
+  unname(tools::md5sum(normalised))
 }
 
 #' Export AusTraits version as plain text
