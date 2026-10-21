@@ -421,6 +421,8 @@ sibling branch.
 
 ## Priority 2 — Maintainability: stop the same logic living in two places
 
+*Status, 2026-10-21:* resolved by #301, which extracts the location merge into `process_add_location_metadata()` and calls it from both paths; see Stage 4 below.
+
 **The single worst maintainability risk in the repo — and it has already drifted.** The
 location→traits merge is duplicated between the build path (`R/process.R:130-173`) and the
 validation path (`R/testdata.R:741-781`). Of 41 lines, 31 are character-identical. The 10 that
@@ -628,6 +630,8 @@ Each step validated against all three downstream repos.
 two call sites; decompose `dataset_test_worker` along its existing `##` seams one section per commit;
 then `dataset_process`; leave `process_parse_data` last (its wide and long branches contain
 near-parallel loops that should be unified *before* extraction). Add the vignette.
+
+*Status, 2026-10-21:* the location step is done in #301. `process_add_location_metadata()` sets `location_id` and fills the location-aligned fields, `dataset_process()` and `dataset_test_worker()` both call it, and the copy in `testdata.R` is gone. It is one function rather than the two proposed in Priority 2, because the fill depends on the `location_id` the remap sets. The rest of Stage 4 is open.
 
 **Stage 5 — finish the genericisation (a 3.0.0 release).** Since long-term design beats
 back-compat, do the rename the 2023 spin-out never completed. The package claims to be generic; its
