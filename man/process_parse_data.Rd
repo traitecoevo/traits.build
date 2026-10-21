@@ -36,7 +36,12 @@ Used to apply database-wide trait value synonyms.}
 }
 \value{
 Tibble in long format with AusTraits formatted trait names, trait
-substitutions and unique observation id added
+substitutions and unique observation id added. For each location-level field
+(such as \code{life_stage}) that a trait's entry in \code{metadata$traits} sets, a
+temporary logical column \verb{.trait_level_<field>} is \code{TRUE} on that trait's
+records, so that the location's value does not replace the trait's. It is
+dropped when location metadata is added, so a caller narrowing the columns
+before then must keep it.
 }
 \description{
 Process a single dataset with \code{dataset_id} using the associated \code{data.csv} and
