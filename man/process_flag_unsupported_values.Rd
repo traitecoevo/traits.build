@@ -13,12 +13,12 @@ process_flag_unsupported_values(data, definitions)
 }
 \value{
 Tibble with flagged values that are unsupported categorical trait values, invalid
-month_presence values, missing values or numeric trait values that cannot be converted to numeric
+monthly_presence values, missing values or numeric trait values that cannot be converted to numeric
 }
 \description{
 Flags trait values that do not suit the trait's \code{type} in the \code{traits.yml} file:
 a \code{categorical} value using a term not on the trait's list of allowed values, a
-\code{month_presence} value that is not twelve \code{y}s and \code{n}s, and a \code{numeric} value that
+\code{monthly_presence} value that is not twelve \code{y}s and \code{n}s, and a \code{numeric} value that
 cannot convert to numeric. A \code{text} value is not checked here.
 NA values are flagged as errors.
 }

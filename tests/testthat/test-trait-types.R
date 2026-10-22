@@ -1,10 +1,10 @@
-## The four trait types, `numeric`, `categorical`, `month_presence` and `text`
-## (#87). The check on a `month_presence` value used to apply by name to two
+## The four trait types, `numeric`, `categorical`, `monthly_presence` and `text`
+## (#87). The check on a `monthly_presence` value used to apply by name to two
 ## AusTraits traits, `flowering_time` and `fruiting_time`; it now follows the
-## type. `text` takes open-ended values, which are kept as written.
+## type. `text` takes free text values, which are kept as written.
 ##
-## The golden examples cover `month_presence` too: `flowering_time` in
-## `config/traits.yml` is declared `month_presence`, and Test_2023_1, _3 and _9
+## The golden examples cover `monthly_presence` too: `flowering_time` in
+## `config/traits.yml` is declared `monthly_presence`, and Test_2023_1, _3 and _9
 ## exclude values with both of its messages.
 
 
@@ -88,11 +88,11 @@ fail_count <- function(out) {
 
 
 test_that("the schema lists the four trait types", {
-  expect_equal(util_trait_types(), c("numeric", "categorical", "month_presence", "text"))
+  expect_equal(util_trait_types(), c("numeric", "categorical", "monthly_presence", "text"))
 })
 
 
-test_that("the `month_presence` check follows the type, not the trait name (#87)", {
+test_that("the `monthly_presence` check follows the type, not the trait name (#87)", {
   data <- tibble::tibble(
     trait_name = c("flowering_time", "leaf_flush_time", "leaf_flush_time", "leaf_flush_time", "leaf_flush_time"),
     value = c("nyyy", "nyyy", "nnnnyyyynnnx", "nnnnyyyynnnn", "NNNNYYYYNNNN"),
@@ -104,7 +104,7 @@ test_that("the `month_presence` check follows the type, not the trait name (#87)
     # The name the rule used to be hard-coded for, now declared a categorical
     # trait without allowed values: no longer checked
     flowering_time = list(type = "categorical"),
-    leaf_flush_time = list(type = "month_presence")
+    leaf_flush_time = list(type = "monthly_presence")
   )
 
   out <- process_flag_unsupported_values(data, definitions)
@@ -116,7 +116,7 @@ test_that("the `month_presence` check follows the type, not the trait name (#87)
 })
 
 
-test_that("a `month_presence` trait is checked and lower-cased like `flowering_time` was (#87)", {
+test_that("a `monthly_presence` trait is checked and lower-cased like `flowering_time` was (#87)", {
   root <- example_with_traits(
     columns = list(flush = c("nnyyynnnnnnn", "YYNNNNNNNNNN", "nnyy", "jan-mar")),
     edit = function(metadata) {
@@ -125,7 +125,7 @@ test_that("a `month_presence` trait is checked and lower-cased like `flowering_t
       metadata
     },
     edit_definitions = function(elements) {
-      elements$leaf_flush_time <- list(label = "Leaf flush time, by month", type = "month_presence")
+      elements$leaf_flush_time <- list(label = "Leaf flush time, by month", type = "monthly_presence")
       elements
     }
   )
@@ -191,7 +191,7 @@ test_that("a trait `type` that is missing or not supported is rejected (#87)", {
   expect_error(
     build_example(root),
     paste0(
-      "whose `type` in `traits.yml` is not one of `numeric`, `categorical`, `month_presence`, `text`: ",
+      "whose `type` in `traits.yml` is not one of `numeric`, `categorical`, `monthly_presence`, `text`: ",
       offending
     ),
     fixed = TRUE
@@ -201,7 +201,7 @@ test_that("a trait `type` that is missing or not supported is rejected (#87)", {
   expect_match(
     out,
     paste0(
-      "trait definitions - `type` must be one of 'numeric', 'categorical', 'month_presence', 'text': ",
+      "trait definitions - `type` must be one of 'numeric', 'categorical', 'monthly_presence', 'text': ",
       offending
     ),
     fixed = TRUE, all = FALSE
@@ -209,7 +209,7 @@ test_that("a trait `type` that is missing or not supported is rejected (#87)", {
 })
 
 
-test_that("`dataset_test` checks a `month_presence` trait's substitutions (#87)", {
+test_that("`dataset_test` checks a `monthly_presence` trait's substitutions (#87)", {
   # Test_2023_3 maps `flowering_time`, with a valid replacement and one to
   # `.na`; add an invalid one
   root <- withr::local_tempdir()

@@ -85,7 +85,7 @@ have none.
 \strong{Categorical traits.} A set value per species is the norm, so identical
 values are only compared when both records have coordinates within
 \code{max_distance_km}, and a pair of datasets is only reported when such matches
-span at least \code{min_categorical_taxa} taxa. Traits of type \code{month_presence}
+span at least \code{min_categorical_taxa} taxa. Traits of type \code{monthly_presence}
 and \code{text} are compared in the same way.
 
 \strong{Telling duplicates from coincidences.} Genuinely duplicated data usually

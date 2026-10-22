@@ -235,7 +235,7 @@ util_resolve_trait_field_values <- function(declared, data) {
 #' Trait types a database may declare
 #'
 #' The values `type` may take in a trait's definition in `config/traits.yml`:
-#' `numeric`, `categorical`, `month_presence` and `text`, as listed under
+#' `numeric`, `categorical`, `monthly_presence` and `text`, as listed under
 #' `trait_type` in the traits.build schema, which describes each. The type
 #' decides which checks the build applies to the trait's values, so a trait
 #' whose type is none of these would have its values pass through unchecked.
@@ -285,16 +285,16 @@ util_unsupported_trait_types <- function(definitions, schema = get_schema()) {
   )
 }
 
-#' Check values have the `month_presence` format
+#' Check values have the `monthly_presence` format
 #'
-#' A `month_presence` value is twelve characters, one per month starting with
+#' A `monthly_presence` value is twelve characters, one per month starting with
 #' January, each `y` or `n` (either case).
 #'
 #' @param x Character vector
 #'
 #' @return Logical vector, `TRUE` where `x` has the format
 #' @keywords internal
-util_is_month_presence <- function(x) {
+util_is_monthly_presence <- function(x) {
   grepl("^[YyNn]{12}$", x)
 }
 

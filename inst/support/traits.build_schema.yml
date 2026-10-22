@@ -83,8 +83,8 @@ trait_type:
   values:
     numeric: Numeric values, converted to the trait's `units` and required to lie between its `allowed_values_min` and `allowed_values_max`.
     categorical: Values drawn from the terms listed in the trait's `allowed_values_levels`. A value may combine several terms, separated by spaces, which are stored in alphabetical order.
-    month_presence: Twelve characters, one per month starting with January, each `y` if the trait (a phenophase such as flowering) occurs in that month and `n` if it does not, e.g. `nnyyyynnnnnn`. Values are stored in lower case.
-    text: Open-ended text with no fixed list of allowed values, such as a taxon name. Values are kept as written, including their case and word order; only the characters allowed in every value are checked.
+    monthly_presence: Twelve characters, one per month starting with January, each `y` if the trait (a phenophase such as flowering) occurs in that month and `n` if it does not, e.g. `nnyyyynnnnnn`. Values are stored in lower case.
+    text: Free text with no fixed list of allowed values, appropriate to use for traits whose values are taxon names. Values are kept as written, including their case and word order.
 
 #-------------------------------------------------------------
 # A key describing the structure of the compiled `AusTraits` dataset

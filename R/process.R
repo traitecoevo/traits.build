@@ -1384,7 +1384,7 @@ util_list_to_bib <- function(ref) {
 #'
 #' Flags trait values that do not suit the trait's `type` in the `traits.yml` file:
 #' a `categorical` value using a term not on the trait's list of allowed values, a
-#' `month_presence` value that is not twelve `y`s and `n`s, and a `numeric` value that
+#' `monthly_presence` value that is not twelve `y`s and `n`s, and a `numeric` value that
 #' cannot convert to numeric. A `text` value is not checked here.
 #' NA values are flagged as errors.
 #'
@@ -1394,7 +1394,7 @@ util_list_to_bib <- function(ref) {
 #'
 #' @importFrom rlang .data
 #' @return Tibble with flagged values that are unsupported categorical trait values, invalid
-#' month_presence values, missing values or numeric trait values that cannot be converted to numeric
+#' monthly_presence values, missing values or numeric trait values that cannot be converted to numeric
 process_flag_unsupported_values <- function(data, definitions) {
 
   # NA values
@@ -1424,7 +1424,7 @@ process_flag_unsupported_values <- function(data, definitions) {
     # Twelve `y`s and `n`s, one per month. Values have been lower-cased by now;
     # the pattern accepts either case. The two messages are those the rule gave
     # when it applied by name to `flowering_time` and `fruiting_time`.
-    if (definitions[[trait]]$type == "month_presence") {
+    if (definitions[[trait]]$type == "monthly_presence") {
 
       ii <- data[["trait_name"]] == trait
 
@@ -1899,7 +1899,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
   }
 
   # Ensure all lower case, except the values of `text` traits, which are
-  # open-ended (a taxon name, say) and kept as written. `trait_name` still holds
+  # free text (a taxon name, say) and kept as written. `trait_name` still holds
   # each trait's `var_in` at this point.
   text_traits <- util_traits_of_type(definitions, "text")
   i <- !out[["trait_name"]] %in% traits_table[["var_in"]][traits_table[["trait_name"]] %in% text_traits]

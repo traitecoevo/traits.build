@@ -14,7 +14,7 @@ Character vector of trait types
 }
 \description{
 The values \code{type} may take in a trait's definition in \code{config/traits.yml}:
-\code{numeric}, \code{categorical}, \code{month_presence} and \code{text}, as listed under
+\code{numeric}, \code{categorical}, \code{monthly_presence} and \code{text}, as listed under
 \code{trait_type} in the traits.build schema, which describes each. The type
 decides which checks the build applies to the trait's values, so a trait
 whose type is none of these would have its values pass through unchecked.

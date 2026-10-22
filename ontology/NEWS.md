@@ -6,7 +6,7 @@ The data model (the ontology published at <https://w3id.org/traits.build>) is ve
 
 Prepared 2026-10-21 (traits.build #87).
 
-- A trait's `type` gains two values, `month_presence` (twelve characters, one `y` or `n` per month starting with January, recording whether a phenophase occurs in that month) and `text` (open-ended values with no fixed list of allowed values), alongside `numeric` and `categorical`. The definition of `type` lists all four and what each means, in place of "categorical, numeric, or ordinal": traits.build has never had an ordinal type. A minor version because the set of values a data-model term takes has grown. Definition only; no mapping changes.
+- A trait's `type` gains two values, `monthly_presence` (twelve characters, one `y` or `n` per month starting with January, recording whether a phenophase occurs in that month) and `text` (free text values with no fixed list of allowed values), alongside `numeric` and `categorical`. The definition of `type` lists all four and what each means, in place of "categorical, numeric, or ordinal": traits.build has never had an ordinal type. A minor version because the set of values a data-model term takes has grown. Definition only; no mapping changes.
 
 ## traits.build data model 1.2.0
 

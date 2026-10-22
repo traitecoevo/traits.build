@@ -704,7 +704,7 @@ if (nrow(subset(data_study$excluded_data, error != "Missing value")) > 0) {
 
 ```{r, message=FALSE, warning=FALSE}
 traits <- data_study$traits$trait_name %>% unique() %>% sort()
-# `month_presence` and `text` traits have no list of allowed values to tabulate
+# `monthly_presence` and `text` traits have no list of allowed values to tabulate
 # or plot against, so are in neither section
 traits_numeric <- traits[util_extract_list_element(traits, definitions, "type") == "numeric"]
 traits_categorical <- traits[util_extract_list_element(traits, definitions, "type") == "categorical"]

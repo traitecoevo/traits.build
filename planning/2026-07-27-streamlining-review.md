@@ -653,7 +653,7 @@ schema and public API still say `austraits`:
   `config/traits.yml` as a per-trait value-format rule, and the botanical rank list
   (`R/process.R:1966`) into the schema — the invertebrate ranks in `ausinvertraits.build` are the
   live evidence that a hardcoded botanical vocabulary is wrong.
-  - **Phenology rule: done in #87, as a trait type rather than a per-trait rule.** Decided 2026-10-21: the rule is the `month_presence` type, beside a new `text` type for open-ended values; the four types are listed under `trait_type` in the schema, and the build and `dataset_test()` reject any other. A database must declare its twelve-month traits `month_presence` in the release that takes this up, or they go unchecked. The botanical rank list is still open.
+  - **Phenology rule: done in #87, as a trait type rather than a per-trait rule.** Decided 2026-10-21: the rule is the `monthly_presence` type, beside a new `text` type for free text values; the four types are listed under `trait_type` in the schema, and the build and `dataset_test()` reject any other. A database must declare its twelve-month traits `monthly_presence` in the release that takes this up, or they go unchecked. The botanical rank list is still open.
 
 **Migration is the deliverable, not an afterthought.** Ship a reader shim that accepts either schema
 key so existing `.rds` databases still load, migrate all three family repos in the same release, and

@@ -827,11 +827,11 @@ dataset_test_worker <-
               )
             }
 
-            # A `month_presence` trait's replacement values must have the format
+            # A `monthly_presence` trait's replacement values must have the format
             # the build requires of its values: twelve `y`s and `n`s
-            if (identical(definitions$elements[[trait]]$type, "month_presence")) {
+            if (identical(definitions$elements[[trait]]$type, "monthly_presence")) {
               to_check <- x[[trait]]$replace %>% unique()
-              failing <- to_check[!(is.na(to_check) | util_is_month_presence(to_check))]
+              failing <- to_check[!(is.na(to_check) | util_is_monthly_presence(to_check))]
               test_expect_length_zero(
                 failing,
                 info = sprintf(
