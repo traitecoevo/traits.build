@@ -170,53 +170,16 @@ dataset_process <- function(filename_data_raw,
     traits$traits %>%
     process_add_all_columns(
       c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
-        "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in", identifiers$var_in)
+        "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in", identifiers$var_in,
+        process_trait_level_column(location_metadata_fields))
     )
 
-  # Replace old `location_id` with a new `location_id`
-  if (nrow(locations) > 0) {
-    traits <-
-      traits %>%
-      dplyr::select(-dplyr::all_of(c("location_id"))) %>%
-      dplyr::left_join(
-        by = c("location_name"),
-        locations %>% dplyr::select(dplyr::all_of(c("location_name", "location_id"))) %>% dplyr::distinct()
-      )
-    traits <-
-      traits %>%
-      dplyr::mutate(
-        location_id = ifelse(.data$entity_type == "species", NA_character_, .data$location_id)
-      )
-  }
+  # Set `location_id`, and fill fields such as `life_stage` from the location's
+  # properties, where the trait's own metadata does not set them
+  traits <- traits %>% process_add_location_metadata(locations)
 
-  # Where missing, fill variables in traits table with values from locations
-  # Trait metadata should probably have precedence -- right now trait metadata
-  # is being read in during `process_parse_data` and getting overwritten here #TODO
-
-  if (nrow(locations) > 0) {
-    vars <- c("basis_of_record", "life_stage", "collection_date",
-              "measurement_remarks", "entity_type")
-
-    for (v in vars) {
-      # Merge into traits from location level
-      if (v %in% unique(locations$location_property)) {
-        traits_tmp <- traits %>%
-          dplyr::left_join(
-            by = "location_id",
-            locations %>%
-              tidyr::pivot_wider(names_from = "location_property", values_from = "value") %>%
-              dplyr::mutate(col_tmp = .data[[v]]) %>%
-              dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
-              stats::na.omit()
-          )
-        # Use location level value if present
-        traits[[v]] <- ifelse(!is.na(traits_tmp[["col_tmp"]]), traits_tmp[["col_tmp"]], traits[[v]])
-      }
-    }
-
-    # Remove any values included to map into traits table
-    locations <- locations %>% dplyr::filter(!(.data$location_property %in% vars))
-  }
+  # Those properties are now in the traits table, so not kept as properties
+  locations <- locations %>% dplyr::filter(!(.data$location_property %in% location_metadata_fields))
 
   # Now that `collection_date` holds its final values, from metadata, data or
   # locations, write `unknown/yyyy` and `.na/yyyy` as the year alone
@@ -1104,6 +1067,104 @@ process_format_locations <- function(my_list, dataset_id, schema) {
   out
 }
 
+# The fields of the traits table a location can set for the records measured
+# there, read from its location properties of the same name
+location_metadata_fields <- c(
+  "basis_of_record", "life_stage", "collection_date", "measurement_remarks", "entity_type"
+)
+
+#' Name of the temporary column marking values set by a trait's own metadata
+#'
+#' [process_parse_data()] sets this column to `TRUE` on the records of a trait
+#' whose entry in `metadata$traits` sets `field`, and
+#' `process_add_location_metadata()` reads and then drops it. A caller that
+#' narrows the parsed table's columns in between, as
+#' [process_add_all_columns()] does, must keep these.
+#'
+#' @param field Character vector of field names, from `location_metadata_fields`
+#' @return Character vector of column names
+#' @noRd
+process_trait_level_column <- function(field) {
+  paste0(".trait_level_", field)
+}
+
+#' Add location-level metadata to the traits table
+#'
+#' Joins each record's `location_id`, then fills the fields named in
+#' `location_metadata_fields` from the properties of the record's location.
+#' Both [dataset_process()] and [dataset_test()] call this, so the two always
+#' agree.
+#'
+#' For each record, a value set on the trait's own entry in the `traits` block
+#' of `metadata.yml` beats the location's value, which in turn beats a value
+#' from the `dataset` block. This holds whether the trait entry gives a fixed
+#' value or names a column of `data.csv`. Where the trait entry names a column
+#' whose cell is empty for a record, the location's value fills it (#60).
+#' [process_parse_data()] marks the records whose value came from the trait
+#' entry, in the temporary columns `process_trait_level_column()` names, and
+#' this function drops them, whether or not the dataset has locations.
+#'
+#' A record whose `entity_type` is `species` gets no `location_id`, so it takes
+#' nothing from a location. That is decided before the merge, from the
+#' `entity_type` the trait and dataset levels gave it, so a location-level
+#' `entity_type` does not change which records are linked to the location. A
+#' record with no `entity_type` keeps its `location_id`, and like any other
+#' empty cell, its `entity_type` is filled from the location if the location
+#' sets one.
+#'
+#' @param traits Traits table returned by [process_parse_data()], with the
+#'   columns of the schema's traits table added
+#' @param locations Locations table returned by [process_format_locations()]
+#'
+#' @return `traits`, with `location_id` set and location-level values filled in
+#' @importFrom rlang .data
+#' @noRd
+process_add_location_metadata <- function(traits, locations) {
+
+  if (nrow(locations) > 0) {
+    # Replace the `location_id` placeholder with the location's id
+    traits <-
+      traits %>%
+      dplyr::select(-dplyr::all_of(c("location_id"))) %>%
+      dplyr::left_join(
+        by = c("location_name"),
+        locations %>% dplyr::select(dplyr::all_of(c("location_name", "location_id"))) %>% dplyr::distinct()
+      ) %>%
+      dplyr::mutate(
+        # Only a species-level record is unlinked; one with no `entity_type` is
+        # still measured at its location
+        location_id = ifelse(.data$entity_type %in% "species", NA_character_, .data$location_id)
+      )
+
+    for (v in location_metadata_fields) {
+      if (v %in% unique(locations$location_property)) {
+        traits_tmp <- traits %>%
+          dplyr::left_join(
+            by = "location_id",
+            locations %>%
+              tidyr::pivot_wider(names_from = "location_property", values_from = "value") %>%
+              dplyr::mutate(col_tmp = .data[[v]]) %>%
+              dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
+              stats::na.omit()
+          )
+
+        # Keep a value the trait entry set; a trait-level column's empty cell is
+        # not a value, so the location fills it. A cell `custom_R_code` left as
+        # "" is as empty as one `read_csv()` read as `NA`
+        trait_level <- traits[[process_trait_level_column(v)]]
+        if (is.null(trait_level)) trait_level <- FALSE
+        trait_value <- as.character(traits[[v]])
+        keep_trait_value <- trait_level %in% TRUE & !is.na(trait_value) & trait_value != ""
+
+        use_location <- !is.na(traits_tmp[["col_tmp"]]) & !keep_trait_value
+        traits[[v]] <- ifelse(use_location, traits_tmp[["col_tmp"]], traits[[v]])
+      }
+    }
+  }
+
+  traits %>% dplyr::select(-dplyr::any_of(process_trait_level_column(location_metadata_fields)))
+}
+
 #' Flag any unrecognised traits
 #'
 #' Flag any unrecognised traits, as defined in the `traits.yml` file.
@@ -1591,7 +1652,12 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' Used to apply database-wide trait value synonyms, and to keep the case of `text`
 #' traits' values, which unlike all others are not lower-cased.
 #' @return Tibble in long format with AusTraits formatted trait names, trait
-#' substitutions and unique observation id added
+#' substitutions and unique observation id added. For each location-level field
+#' (such as `life_stage`) that a trait's entry in `metadata$traits` sets, a
+#' temporary logical column `.trait_level_<field>` is `TRUE` on that trait's
+#' records, so that the location's value does not replace the trait's. It is
+#' dropped when location metadata is added, so a caller narrowing the columns
+#' before then must keep it.
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
 #' @importFrom rlang .data
 process_parse_data <- function(data, dataset_id, metadata, contexts, schema, identifiers, definitions) {
@@ -1781,6 +1847,11 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
           } else {
             out[[i]][[v]] <- value %>% as.character()
           }
+          # Mark the value as the trait's own, so a location's does not
+          # replace it; process_add_location_metadata() drops the mark
+          if (v %in% location_metadata_fields) {
+            out[[i]][[process_trait_level_column(v)]] <- TRUE
+          }
         }
       }
     }
@@ -1816,6 +1887,11 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
               as.character()
           } else {
             out[[v]][out$trait_name == traits_table[["var_in"]][i]] <- value %>% as.character()
+          }
+          # Mark the value as the trait's own, so a location's does not
+          # replace it; process_add_location_metadata() drops the mark
+          if (v %in% location_metadata_fields) {
+            out[[process_trait_level_column(v)]][out$trait_name == traits_table[["var_in"]][i]] <- TRUE
           }
         }
       }
