@@ -152,7 +152,7 @@ austraits:
         methods: &methods A textual description of the methods used to collect the trait data. Whenever available, methods are taken near-verbatim from the referenced source. Methods can include descriptions such as 'measured on botanical collections', 'data from the literature', or a detailed description of the field or lab methods used to collect the data.
         method_id: *method_id
         description: &description A 1-2 sentence description of the purpose of the study.
-        sampling_strategy: &sampling_strategy A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript. For preserved specimens, this field ideally indicates which records were 'sampled' to measure a specific trait.
+        sampling_strategy: &sampling_strategy A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript.
         source_primary_key: Citation key for the primary source in `sources`. The key is typically formatted as `Surname_year`.
         source_primary_type: Citation type for the primary source in `sources`, using standard BibTex citation types (Article, Book, Misc, Online, Report, Techreport, Thesis, Unpublished).
         source_primary_citation: Citation for the primary source. This detail is generated from the primary source in the metadata.
@@ -428,7 +428,7 @@ metadata:
         original_file: The name of the file initially submitted to AusTraits.
         notes: Generic notes about the study and processing of data.
     identifiers:
-      description: A list of columns that include identifiers that cross-references observations to information in other databases and information indicating what identifier_type they are.
+      description: A list of columns that include identifiers that cross-references observations to information in other databases, biodiversity collections and informatics resources. For preserved specimens, this list ideally indicates which records were 'sampled' to measure a specific trait.
       type: array
       elements:        
         var_in: Name of column with contextual data in the original data submitted.
