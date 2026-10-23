@@ -78,7 +78,7 @@ identifier_type:
      occurrenceID: Per DarwinCore, an identifier for an Occurrence, as opposed to a particular digital record of the Occurrence.
 
 trait_type:
-  description: &trait_type The type of a trait, declared as `type` in its definition in `config/traits.yml`. The type decides which checks the trait's values must pass to be included in the `traits` table rather than in `excluded_data`.
+  description: &trait_type The type of a trait, declared as `type` in its definition in `config/traits.yml`. The type decides which checks the trait's values must pass.
   type: categorical
   values:
     numeric: Numeric values, converted to the trait's `units` and required to lie between its `allowed_values_min` and `allowed_values_max`. The datatype is decimal (`xsd:decimal`); a `range` or `bin` value is two decimals written `min--max`.
