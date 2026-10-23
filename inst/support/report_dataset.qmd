@@ -763,10 +763,11 @@ if (nrow(subset(data_study$excluded_data, error != "Missing value")) > 0) {
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-tmp <- data_study$traits %>% filter(!trait_name %in% c("flowering_time", "fruiting_time", "recruitment_time"))
-traits <- tmp$trait_name %>% unique() %>% sort()
+traits <- data_study$traits$trait_name %>% unique() %>% sort()
+# `monthly_presence` and `text` traits have no list of allowed values to tabulate
+# or plot against, so are in neither section
 traits_numeric <- traits[util_extract_list_element(traits, definitions, "type") == "numeric"]
-traits_categorical <- traits[util_extract_list_element(traits, definitions, "type") != "numeric"]
+traits_categorical <- traits[util_extract_list_element(traits, definitions, "type") == "categorical"]
 ```
 
 ## Numerical traits
@@ -1062,6 +1063,56 @@ for (trait in traits_categorical) {
     }
   }
 
+}
+```
+
+
+```{r other_trait_types, results='asis', eval=TRUE, warning=FALSE}
+# `monthly_presence` and `text` traits have no allowed values or units to plot
+# against, so each gets only its definition and the methods recorded for it. A
+# section appears only when the dataset has traits of that type.
+write_trait_details <- function(trait) {
+  transforms <- metadata$traits %>% austraits::convert_list_to_df2() %>% filter(trait_name == trait)
+  elements <- definitions[[trait]]
+
+  c("", "",
+    sprintf("### %s", trait),
+    "",
+    sprintf("We aligned the variable called `%s` in the data you supplied with the trait `%s` in %s.\n\nThe contributed data have the following properties:", transforms$var_in, trait, database_name),
+    "",
+    sprintf("- **standardised name**: %s", trait),
+    sprintf("- **standardised description**: %s", elements$description),
+    sprintf("- **label**: %s", elements$label),
+    sprintf("- **records**: %s in this study (of %s in %s)",
+            sum(data_study$traits$trait_name == trait), sum(austraits$traits$trait_name == trait), database_name),
+    "",
+    "Data for this trait in this study were collected using the following methods:", "",
+    sprintf("- **value_type**: %s", transforms$value_type),
+    sprintf("- **replicates**: %s", transforms$replicates),
+    sprintf("- **methods**: %s", transforms$methods),
+    ""
+  ) %>%
+  writeLines()
+}
+
+trait_types <- util_extract_list_element(traits, definitions, "type")
+other_sections <- list(
+  monthly_presence = c(
+    "Monthly presence traits",
+    "We have recorded the following traits whose values record, for each month starting with January, whether the trait occurs (`y`) or not (`n`)."),
+  text = c(
+    "Text traits",
+    "We have recorded the following traits with free text values, which have no fixed list of allowed values.")
+)
+
+for (type in names(other_sections)) {
+  traits_of_type <- traits[trait_types == type]
+  if (length(traits_of_type) == 0) next
+
+  writeLines(c("", sprintf("## %s", other_sections[[type]][1]), "", other_sections[[type]][2], ""))
+  for (trait in traits_of_type) {
+    write_trait_details(trait)
+  }
 }
 ```
 
