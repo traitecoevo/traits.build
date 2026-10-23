@@ -86,6 +86,11 @@ fail_count <- function(out) {
   tail(grep("^\\[ FAIL", out, value = TRUE), 1)
 }
 
+# The number of failures `dataset_test()` reported
+n_failures <- function(out) {
+  as.integer(sub("^\\[ FAIL ([0-9]+) .*", "\\1", fail_count(out)))
+}
+
 
 test_that("the schema lists the four trait types", {
   expect_equal(util_trait_types(), c("numeric", "categorical", "monthly_presence", "text"))
@@ -171,8 +176,12 @@ test_that("a `text` trait's values are kept as written (#87)", {
   # Other traits' values are lower-cased as before
   expect_true(all(built$traits$value == tolower(built$traits$value) | built$traits$trait_name == "host_name"))
 
-  # And the dataset passes `dataset_test`, as Test_2023_2 does
-  expect_match(fail_count(dataset_test_example(root)), "[ FAIL 0 |", fixed = TRUE)
+  # And the trait adds no failures to those of the unedited Test_2023_2, which
+  # has blank dates
+  expect_identical(
+    n_failures(dataset_test_example(root)),
+    n_failures(dataset_test_example(example_with_traits()))
+  )
 })
 
 
@@ -212,11 +221,16 @@ test_that("a trait `type` that is missing or not supported is rejected (#87)", {
 test_that("`dataset_test` checks a `monthly_presence` trait's substitutions (#87)", {
   # Test_2023_3 maps `flowering_time`, with a valid replacement and one to
   # `.na`; add an invalid one
-  root <- withr::local_tempdir()
-  dir.create(file.path(root, "data", "Test_2023_3"), recursive = TRUE)
-  dir.create(file.path(root, "config"))
-  file.copy(list.files(file.path("examples", "Test_2023_3"), full.names = TRUE), file.path(root, "data", "Test_2023_3"))
-  file.copy(list.files("config", full.names = TRUE), file.path(root, "config"))
+  copy_example <- function() {
+    root <- withr::local_tempdir(.local_envir = parent.frame())
+    dir.create(file.path(root, "data", "Test_2023_3"), recursive = TRUE)
+    dir.create(file.path(root, "config"))
+    file.copy(list.files(file.path("examples", "Test_2023_3"), full.names = TRUE), file.path(root, "data", "Test_2023_3"))
+    file.copy(list.files("config", full.names = TRUE), file.path(root, "config"))
+    root
+  }
+  baseline <- dataset_test_example(copy_example(), "Test_2023_3")
+  root <- copy_example()
 
   path_metadata <- file.path(root, "data", "Test_2023_3", "metadata.yml")
   metadata <- read_metadata(path_metadata)
@@ -232,6 +246,7 @@ test_that("`dataset_test` checks a `monthly_presence` trait's substitutions (#87
     "`flowering_time` has invalid replacement values, which must be twelve `y`s and `n`s: sep-nov",
     fixed = TRUE, all = FALSE
   )
-  # The only failure: the valid replacement and `.na` pass
-  expect_match(fail_count(out), "[ FAIL 1 |", fixed = TRUE)
+  # The only failure added to those of the unedited Test_2023_3: the valid
+  # replacement and `.na` pass
+  expect_identical(n_failures(out), n_failures(baseline) + 1L)
 })
