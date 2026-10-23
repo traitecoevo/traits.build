@@ -54,7 +54,10 @@ dataset_configure <- function(
 #' @param filename_data_raw Raw `data.csv` file for any given study
 #' @param config_for_dataset Config settings generated from `dataset_configure()`
 #' @param schema Schema for traits.build
-#' @param resource_metadata Metadata about the traits compilation read in from the config folder
+#' @param resource_metadata Metadata about the traits compilation read in from the config folder.
+#' Its optional `trait_value_term_order` (`alphabetical`, the default, or `input_order`) sets
+#' whether the terms of a multi-term trait value are sorted or keep the source's order; see
+#' [util_trait_value_term_order()].
 #' @param unit_conversion_functions `unit_conversion.csv` file read in from the config folder
 #' @param filter_missing_values Default filters missing values from the excluded data table;
 #' change to false to see the rows with missing values
@@ -84,6 +87,9 @@ dataset_process <- function(filename_data_raw,
   dataset_id <- config_for_dataset$dataset_id
   metadata <- config_for_dataset$metadata
   definitions <- config_for_dataset$definitions
+
+  # How to write the terms of a multi-term value; checked before any work is done
+  term_order <- util_trait_value_term_order(resource_metadata)
 
   # Each check on a trait's values is chosen by its `type`, so a trait whose
   # type is missing or misspelt would have its values pass through unchecked
@@ -198,11 +204,13 @@ dataset_process <- function(filename_data_raw,
     process_taxonomic_updates(metadata) %>%
     # Sorting of data
     dplyr::mutate(
-      # For cells with multiple values (separated by a space), sort these alphabetically.
-      # Only a categorical value is a set of terms: a `text` value's words are in order
+      # For cells with multiple values (separated by a space), drop repeated
+      # values and, unless the database keeps the source's order, sort them
+      # alphabetically. See `trait_value_term_order` in the schema. Only a
+      # categorical value is a set of terms: a `text` value's words are in order
       value = ifelse(
         is.na(.data$error) & .data$trait_name %in% util_traits_of_type(definitions, "categorical"),
-        util_separate_and_sort(.data$value), .data$value
+        util_separate_and_sort(.data$value, order = term_order), .data$value
       ),
       value_type = factor(.data$value_type, levels = names(schema$value_type$values))
       ) %>%

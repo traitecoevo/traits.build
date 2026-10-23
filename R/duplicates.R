@@ -21,8 +21,12 @@
 #' **Categorical traits.** A set value per species is the norm, so identical
 #' values are only compared when both records have coordinates within
 #' `max_distance_km`, and a pair of datasets is only reported when such matches
-#' span at least `min_categorical_taxa` taxa. Traits of type `monthly_presence`
-#' and `text` are compared in the same way.
+#' span at least `min_categorical_taxa` taxa. Values holding the same terms in a
+#' different order (`shrub tree`, `tree shrub`) count as identical, as they
+#' always did when every database sorted its terms, so the result does not
+#' depend on the database's `trait_value_term_order`. Traits of type
+#' `monthly_presence` and `text` are compared in the same way, but on their
+#' values as written.
 #'
 #' **Telling duplicates from coincidences.** Genuinely duplicated data usually
 #' shows up as a high `prop_matched_combos` -- nearly every taxon x trait the two
@@ -178,7 +182,10 @@ dataset_check_duplicate_values <- function(
 
   ## Categorical traits
   categorical_matches <-
-    util_categorical_value_matches(categorical_records, max_distance_km) %>%
+    util_categorical_value_matches(
+      categorical_records, max_distance_km,
+      sort_terms = names(trait_types)[trait_types %in% "categorical"]
+    ) %>%
     util_add_match_records(categorical_records, dataset_ids)
 
   categorical_totals <- categorical_records %>% dplyr::count(.data$dataset_id)
@@ -337,13 +344,23 @@ util_numeric_value_matches <- function(records, min_sig_figs, max_sig_figs = 6) 
 # the 3 x 3 block of cells around them, so only nearby records are paired.
 # Longitude cells are sized for 60 degrees of latitude, beyond which they
 # would be too narrow.
-util_categorical_value_matches <- function(records, max_distance_km) {
+#
+# Values of the traits in `sort_terms` are compared with their terms sorted, so
+# `tree shrub` matches `shrub tree` whether or not the database keeps its
+# sources' term order. Other values, such as a `text` trait's, are compared as
+# written.
+util_categorical_value_matches <- function(records, max_distance_km,
+                                           sort_terms = unique(records$trait_name)) {
 
   cell_lat <- max_distance_km / 111
   cell_lon <- max_distance_km / (111 * cos(60 * pi / 180))
 
   records <- records %>%
     dplyr::mutate(
+      value = ifelse(
+        .data$trait_name %in% sort_terms,
+        util_separate_and_sort(.data$value, order = "alphabetical"), .data$value
+      ),
       cell_y = floor(.data$lat / cell_lat),
       cell_x = floor(.data$lon / cell_lon)
     )
