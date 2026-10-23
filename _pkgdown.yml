@@ -72,6 +72,12 @@ reference:
     - '`metadata_add_identifiers`'
     - '`dataset_find_taxon`'
 
+  - title: Writing custom R code
+    desc: Functions for a dataset's `custom_R_code`, which reshapes `data.csv` before it is processed.
+    contents:
+    - '`move_values_to_new_trait`'
+    - '`move_values_to_new_trait_long`'
+
   - title: Reading & writing files
     desc: Enable reading and writing of various file types.
     contents:
@@ -87,6 +93,10 @@ reference:
     contents:
     - '`check_pivot_duplicates`'
     - '`dataset_check_duplicate_values`'
+    - '`dataset_check_outlier_by_species`'
+    - '`dataset_check_outlier_by_genus`'
+    - '`dataset_check_duplicates_within_dataset`'
+    - '`dataset_check_categorical_substitutions`'
     - '`dataset_new_taxa_trait_combinations`'
     - '`check_pivot_wider`'
 

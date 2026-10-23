@@ -232,6 +232,120 @@ util_resolve_trait_field_values <- function(declared, data) {
 }
 
 
+#' Convert the `traits` entries of `metadata.yml` to a table
+#'
+#' `austraits::convert_list_to_df2()`, one row per trait entry, without the
+#' optional `omit_values` field. That field may hold several values, and
+#' `convert_list_to_df2()` spreads an entry holding several over that many
+#' rows, which would duplicate the trait wherever the table is used. Read it
+#' from the entries themselves, as `process_parse_data()` does.
+#'
+#' @param metadata_traits The `traits` section of `metadata.yml`, as a list
+#'
+#' @return A tibble with one row per trait entry, or `NA` if there are none
+#' @noRd
+util_traits_to_df <- function(metadata_traits) {
+  if (is.list(metadata_traits)) {
+    metadata_traits <- lapply(metadata_traits, function(entry) {
+      if (is.list(entry)) entry[["omit_values"]] <- NULL
+      entry
+    })
+  }
+  austraits::convert_list_to_df2(metadata_traits)
+}
+
+
+#' Check the shape of a `traits` entry's `omit_values`
+#'
+#' Valid is a single string or number, or a list of them. Anything else is
+#' invalid: a mapping, a nested list, an empty list, `.na`, and the YAML 1.1
+#' booleans `yes`, `no`, `true`, `false`, `on`, `off`, `y` and `n`, which
+#' `yaml::read_yaml()` reads as `TRUE` or `FALSE` unless they are quoted.
+#'
+#' @param x The value of `omit_values`, as read from `metadata.yml`
+#'
+#' @return `TRUE` or `FALSE`
+#' @noRd
+util_omit_values_valid <- function(x) {
+  is_scalar <- function(v) {
+    (is.character(v) || is.numeric(v)) && length(v) == 1 && !(is.na(v) && !is.nan(v))
+  }
+  if (length(x) == 0 || !is.null(names(x))) {
+    return(FALSE)
+  }
+  if (is.list(x)) {
+    return(all(vapply(x, is_scalar, logical(1))))
+  }
+  all(vapply(as.list(x), is_scalar, logical(1)))
+}
+
+#' Trait types a database may declare
+#'
+#' The values `type` may take in a trait's definition in `config/traits.yml`:
+#' `numeric`, `categorical`, `monthly_presence` and `text`, as listed under
+#' `trait_type` in the traits.build schema, which describes each. The type
+#' decides which checks the build applies to the trait's values, so a trait
+#' whose type is none of these would have its values pass through unchecked.
+#'
+#' @param schema The traits.build schema, as returned by [get_schema()]
+#'
+#' @return Character vector of trait types
+#' @keywords internal
+util_trait_types <- function(schema = get_schema()) {
+  names(schema[["trait_type"]][["values"]])
+}
+
+#' Names of the traits of a given type
+#'
+#' @param definitions Trait definitions keyed by `trait_name` -- the `elements`
+#'   of `traits.yml`, or the subset of them returned by [dataset_configure()]
+#' @param types Character vector of trait types
+#'
+#' @return Character vector of the names of traits whose `type` is in `types`
+#' @keywords internal
+util_traits_of_type <- function(definitions, types) {
+  if (length(definitions) == 0) return(character(0))
+  is_type <- purrr::map_lgl(definitions, ~ length(.x[["type"]]) == 1 && .x[["type"]] %in% types)
+  names(definitions)[is_type]
+}
+
+#' Find trait definitions whose `type` is missing or not supported
+#'
+#' @inheritParams util_traits_of_type
+#' @inheritParams util_trait_types
+#'
+#' @return Character vector with one entry per offending trait, naming it and
+#'   its type (e.g. "flowering_time (`categorial`)"); empty if every trait
+#'   declares a supported type
+#' @keywords internal
+util_unsupported_trait_types <- function(definitions, schema = get_schema()) {
+  if (length(definitions) == 0) return(character(0))
+  types <- purrr::map_chr(
+    definitions,
+    ~ if (length(.x[["type"]]) == 1) as.character(.x[["type"]]) else NA_character_
+  )
+  bad <- is.na(types) | !types %in% util_trait_types(schema)
+  sprintf(
+    "%s (%s)",
+    names(types)[bad],
+    ifelse(is.na(types[bad]), "no `type`", sprintf("`%s`", types[bad]))
+  )
+}
+
+#' Check values have the `monthly_presence` format
+#'
+#' A `monthly_presence` value is twelve characters, one per month starting with
+#' January, each `y` or `n` (either case).
+#'
+#' @param x Character vector
+#'
+#' @return Logical vector, `TRUE` where `x` has the format
+#' @keywords internal
+util_is_monthly_presence <- function(x) {
+  grepl("^[YyNn]{12}$", x)
+}
+
+
 #'  Split and order cells with multiple values
 #'
 #'  `util_separate_and_sort`: For a vector x in which individual cell may have
@@ -290,16 +404,20 @@ util_separate_and_sort <- function(x, sep = " ", order = "alphabetical") {
 #' one row. So that the compiled database keeps the same rows whichever order a
 #' database uses, each such group takes the order of its first record.
 #' Excluded records (`error` set) are left alone, as their values are never
-#' reordered.
+#' reordered, and so are the values of traits not in `trait_names`, such as a
+#' `text` trait's, whose words are in order.
 #'
 #' @param traits The traits table being built in [dataset_process()], with an
 #'   `error` column
+#' @param trait_names The traits whose values are sets of terms; `NULL`, the
+#'   default, for all
 #'
 #' @return `traits`, with `value` unified within each such group
 #' @keywords internal
-util_unify_term_order <- function(traits) {
+util_unify_term_order <- function(traits, trait_names = NULL) {
 
-  i <- which(is.na(traits[["error"]]) & grepl(" ", traits[["value"]], fixed = TRUE))
+  of_traits <- if (is.null(trait_names)) TRUE else traits[["trait_name"]] %in% trait_names
+  i <- which(is.na(traits[["error"]]) & of_traits & grepl(" ", traits[["value"]], fixed = TRUE))
   if (length(i) < 2) return(traits)
 
   key <- traits[i, ]
@@ -502,6 +620,537 @@ util_read_locations_file <- function(file, path) {
 
   attr(locations, "locations_file") <- file
   locations
+}
+
+
+#' Standardise a messy `collection_date` (or raw date) column
+#'
+#' Best-effort conversion of raw date values into the format
+#' [dataset_test()]'s `collection_date`-parses check requires: a year
+#' (`yyyy`), a year and month (`yyyy-mm`), or a full date (`yyyy-mm-dd`),
+#' singly or as a `start/end` range. Meant to be called from a dataset's
+#' `custom_R_code`, before `collection_date` is otherwise read in, e.g.:
+#'
+#' ```
+#' custom_R_code: 'data %>% mutate(Date = util_parse_collection_date(Date))'
+#' ```
+#'
+#' **What this deliberately will not touch**: a bare numeric date like
+#' `01/02/2008`, seen *in isolation*, is genuinely ambiguous -- day-first or
+#' month-first? -- and guessing wrong silently corrupts the data worse than
+#' not guessing at all. Two things narrow that down first, though: (1) the
+#' value's own two leading numbers -- `10/23/2021` can only be month-first,
+#' since no month is `23` -- and only when that alone doesn't settle it, (2)
+#' the rest of the column, on the view that a single source normally writes
+#' dates one way (e.g. `9/14/2020` elsewhere rules out month `14`, settling
+#' an otherwise-ambiguous `8/11/2020`). Real data can still mix conventions
+#' *within* one column, though -- e.g. automated timestamps in month-first
+#' order alongside hand-entered dates in day-first order -- so (1) is
+#' checked per value, never overridden by (2), and if the column as a whole
+#' disagrees with itself, (2) is not applied at all rather than picking a
+#' side. Only once neither of those applies does a value come back
+#' unchanged. Run [dataset_test()] again afterwards: whatever it still flags
+#' under "Some date values are not parsing" needs a human decision, not a
+#' better regex.
+#'
+#' **What it does handle**:
+#' - Values already valid are passed through untouched
+#' - A *named* month removes the day/month ambiguity regardless of which
+#'   order it was written in, so `2-Sep-08`, `September 2, 2008`, `2 Sep
+#'   2008` and similar all resolve safely
+#' - A month name with no day (`Sep 2008`) resolves to the `yyyy-mm`
+#'   resolution, not a fabricated day-1 date
+#' - A plain numeric `d/m/y`-shaped date, resolved per-value or from the
+#'   rest of the column as described above
+#' - `mm-yyyy` (month first, the reverse of the schema's `yyyy-mm`) --
+#'   unambiguous on its own, since a 4-digit year can't be mistaken for
+#'   anything else
+#' - A dot-separated `yy.mm.dd`/`yyyy.mm.dd`, confirmed (not assumed) by
+#'   checking the middle component is a plausible month and the last a
+#'   plausible day. A two-digit dotted date written day-first instead
+#'   (`18.3.12`) can't be told apart from that by its values, so it needs
+#'   `order = "dmy"`
+#' - A dot-separated `d.m.yyyy` (`21.11.2019`), resolved like the `/` and `-`
+#'   numeric dates above
+#' - A compact `yyyymmdd` (`20190206`)
+#' - A span of years written with a dash (`2019-2020` becomes `2019/2020`)
+#' - A comma- or semicolon-separated list of dates (`Jan-98, Feb-98,
+#'   Mar-98`), collapsed to the `first/last` range it covers (`1998-01/1998-03`)
+#'   -- tried only once the value has failed to parse whole, so a comma
+#'   *inside* one date (`September 2, 2008`) is never split on
+#' - Excel's numeric serial dates (e.g. `39692`), distinguished from a bare
+#'   4-digit year by digit count. A number that is really R's own day count
+#'   (left behind when `ifelse()` strips a `Date` column's class) looks exactly
+#'   like one and would be read decades too early -- pass the raw column to
+#'   this function instead of converting it with `lubridate` first
+#' - A trailing time-of-day is dropped, both `"yyyy-mm-ddTHH:MM:SSZ"` (ISO
+#'   8601) and `"d/m/y HH:MM"` (e.g. a Google Forms timestamp column) --
+#'   `collection_date` has no way to record a time, only the date
+#' - A `start/end` range is split on `/` and each side parsed independently,
+#'   *unless* the whole value already looks like a plain `d/m/y`-shaped date
+#'   (in which case `/` is a date separator, not a range separator, and the
+#'   rules above apply to the whole thing)
+#' - `Date`/`POSIXct` columns (already parsed by `read_csv()`'s own type
+#'   guessing before `custom_R_code` runs) are formatted directly, dropping
+#'   any time-of-day component
+#'
+#' @param x A character, `Date`, or `POSIXct` vector of raw date values --
+#'  the whole column at once, not one value at a time, since resolving a
+#'  plain numeric date's order depends on seeing the rest of `x`
+#' @param order Optional, `"dmy"` or `"mdy"`: the curator's own statement of
+#'  which way round an all-numeric date is written, for when nothing in the
+#'  column can settle it -- e.g. a single `4/07/2022`, or two-digit dotted
+#'  dates like `18.3.12` (`d.m.yy`). It replaces the column-wide inference,
+#'  but a value that settles its own order (e.g. `10/23/2021`, since no month
+#'  is `23`) is still read that way. Converting a `custom_R_code` that called
+#'  `lubridate::dmy()` or `lubridate::mdy()` is then a like-for-like swap
+#' @param excel_origin Origin date for numeric Excel serial dates. The
+#'  default (`1899-12-30`) is correct for a workbook built on Windows Excel;
+#'  one built on old Mac Excel needs `1904-01-01` instead
+#' @return Character vector the same length as `x`. Values already valid, or
+#'  safely resolved to `yyyy`, `yyyy-mm` or `yyyy-mm-dd` (singly or as a
+#'  `/`-delimited range), are returned in that form; anything left ambiguous
+#'  or unrecognised is returned completely unchanged
+#'
+#' @examples
+#' util_parse_collection_date(c(
+#'   "2-Sep-08", "September 2, 2008", "Sep 2008", "39692",
+#'   "2008-09-02/2008-09-03", "01/02/2008", "2020", NA
+#' ))
+#'
+#' # the whole column is used to resolve a plain numeric date's order:
+#' # `9/14/2020` can only be month-first, so `8/11/2020` is read the same way
+#' util_parse_collection_date(c("8/11/2020 10:09", "9/14/2020 12:06"))
+#'
+#' # nothing in a lone `4/07/2022` says which way round it is, so say so:
+#' util_parse_collection_date("4/07/2022", order = "dmy")
+#' @export
+util_parse_collection_date <- function(x, order = NULL, excel_origin = "1899-12-30") {
+
+  if (!is.null(order)) {
+    order <- match.arg(order, c("dmy", "mdy"))
+  }
+
+  if (inherits(x, "Date") || inherits(x, "POSIXt")) {
+    return(format(x, "%Y-%m-%d"))
+  }
+
+  x <- as.character(x)
+  x <- vapply(x, util_strip_time_of_day, character(1), USE.NAMES = FALSE)
+
+  numeric_order <- if (!is.null(order)) order else util_infer_numeric_date_order(x)
+
+  vapply(
+    x,
+    util_parse_collection_date_one,
+    character(1),
+    excel_origin = excel_origin,
+    numeric_order = numeric_order,
+    order = order,
+    USE.NAMES = FALSE
+  )
+}
+
+
+# Drop a trailing time-of-day from a datetime string, leaving just the date
+# part -- `collection_date` has no way to record a time. Handles ISO 8601
+# (`yyyy-mm-ddTHH:MM:SS[.ffffff]Z`) and a plain numeric date followed by a
+# time (`d/m/y HH:MM[:SS][ AM|PM]`, e.g. a Google Forms timestamp column).
+# Anything else is returned unchanged.
+util_strip_time_of_day <- function(value) {
+  if (is.na(value)) {
+    return(value)
+  }
+  value <- sub(
+    "^([0-9]{4}-[0-9]{2}-[0-9]{2})[T ][0-9]{1,2}:[0-9]{2}(:[0-9]{2})?(\\.[0-9]+)?Z?$",
+    "\\1", value
+  )
+  value <- sub(
+    "^([0-9]{1,2}[/-][0-9]{1,2}[/-][0-9]{2,4})\\s+[0-9]{1,2}:[0-9]{2}(:[0-9]{2})?\\s*([AaPp][Mm])?$",
+    "\\1", value
+  )
+  value
+}
+
+
+# Does any value in `x` unambiguously reveal whether a plain numeric
+# `_/_/_`-, `_-_-_`- or `_._.yyyy`-shaped date is day-first or month-first --
+# i.e. does the first or second number exceed 12 anywhere, ruling out that
+# slot being a month? All separators are pooled into one inference, on the
+# view that this is a property of who/what recorded the dates, not of which
+# punctuation a given row happens to use. A dotted date only counts with a
+# 4-digit year: a two-digit dotted triple is read as `yy.mm.dd` unless the
+# caller says otherwise, so it has no say here. Returns "dmy", "mdy", or
+# `NULL` if nothing in `x` resolves it (or if values disagree, which
+# shouldn't happen in a single column, and isn't trusted if it does).
+util_infer_numeric_date_order <- function(x) {
+  candidates <- x[!is.na(x) & grepl(
+    "^[0-9]{1,2}([/-][0-9]{1,2}[/-][0-9]{2,4}|\\.[0-9]{1,2}\\.[0-9]{4})$", trimws(x)
+  )]
+  if (length(candidates) == 0) {
+    return(NULL)
+  }
+
+  parts <- strsplit(trimws(candidates), "[/.-]")
+  first <- vapply(parts, function(p) as.integer(p[1]), integer(1))
+  second <- vapply(parts, function(p) as.integer(p[2]), integer(1))
+
+  first_over_12 <- any(first > 12, na.rm = TRUE)
+  second_over_12 <- any(second > 12, na.rm = TRUE)
+
+  if (first_over_12 && !second_over_12) {
+    return("dmy")
+  }
+  if (second_over_12 && !first_over_12) {
+    return("mdy")
+  }
+  NULL
+}
+
+
+# Resolve a plain numeric date's two leading components (already parsed as
+# integers, in the order they appear in the original string) plus its year
+# string into `yyyy-mm-dd`. Shared by the `/`- and `-`-separated branches of
+# util_parse_collection_date_one() below -- identical ambiguity, identical
+# resolution, just a different separator. Returns `NA_character_` if the
+# order can't be determined (self-disambiguation failed and `numeric_order`
+# is `NULL`) or the resulting date doesn't exist on the calendar.
+util_resolve_numeric_dmy_date <- function(first, second, year_str, numeric_order) {
+
+  # This *specific* value can be self-disambiguating regardless of what the
+  # rest of the column looks like: if exactly one of its own two leading
+  # numbers exceeds 12, it can't be a month, so the order is settled without
+  # needing column-wide agreement.
+  order <-
+    if (first > 12 && second <= 12) "dmy"
+    else if (second > 12 && first <= 12) "mdy"
+    else numeric_order
+
+  if (is.null(order)) {
+    return(NA_character_)
+  }
+
+  day <- if (order == "dmy") first else second
+  month <- if (order == "dmy") second else first
+  year <- util_expand_two_digit_year(year_str)
+  if (is.na(day) || day < 1 || day > 31 || is.na(month) || month < 1 || month > 12 || is.na(year)) {
+    return(NA_character_)
+  }
+
+  full_date <- sprintf("%d-%02d-%02d", year, month, day)
+  if (!is.na(as.Date(full_date, format = "%Y-%m-%d"))) {
+    return(full_date)
+  }
+  NA_character_
+}
+
+
+# One value's worth of `util_parse_collection_date()`'s logic. `numeric_order`
+# ("dmy", "mdy", or NULL) is decided once, up front, for the *whole* column --
+# the caller's `order` if given, otherwise `util_infer_numeric_date_order()`
+# -- since a single value has no way to resolve its own ambiguity. `order` is
+# passed through separately because one shape (a two-digit dotted triple) is
+# only re-read on the caller's say-so, never on inference alone.
+#
+# A value that doesn't parse whole but holds a comma- or semicolon-separated
+# list of dates (e.g. `Jan-98, Feb-98, Mar-98`, the months a collection
+# spanned) is collapsed to the `first/last` range they cover. That is only
+# tried *after* the whole value has failed, because a comma can also sit
+# inside a single date -- `September 2, 2008` split on its comma would read
+# `September 2` as 2002.
+util_parse_collection_date_one <- function(value, excel_origin, numeric_order = NULL, order = NULL) {
+
+  parsed <- util_parse_collection_date_single(value, excel_origin, numeric_order, order)
+
+  if (is.na(parsed) || util_collection_date_is_valid(parsed) || !grepl("[,;]", parsed)) {
+    return(parsed)
+  }
+
+  items <- trimws(strsplit(parsed, "[,;]")[[1]])
+  items <- items[nzchar(items)]
+  items_parsed <- vapply(
+    items, util_parse_collection_date_single, character(1),
+    excel_origin = excel_origin, numeric_order = numeric_order, order = order,
+    USE.NAMES = FALSE
+  )
+  if (length(items_parsed) == 0 || anyNA(items_parsed) ||
+      !all(util_collection_date_is_valid(items_parsed))) {
+    return(parsed)
+  }
+
+  # Every item is a valid `yyyy[-mm[-dd]]` (or a range of two), and those sort
+  # correctly as plain strings, so the span is just the smallest and largest
+  # endpoint
+  endpoints <- unlist(strsplit(items_parsed, "/", fixed = TRUE))
+  if (".na" %in% endpoints) {
+    return(parsed)
+  }
+  span <- unique(c(min(endpoints), max(endpoints)))
+  paste(span, collapse = "/")
+}
+
+
+util_parse_collection_date_single <- function(value, excel_origin, numeric_order = NULL, order = NULL) {
+
+  if (is.na(value) || !nzchar(trimws(value))) {
+    return(NA_character_)
+  }
+
+  value <- trimws(value)
+
+  if (util_collection_date_is_valid(value)) {
+    return(value)
+  }
+
+  # A span of years written with a dash (`2019-2020`) rather than the schema's
+  # `/`. Two 4-digit years can't be read as anything else.
+  if (grepl("^[0-9]{4}\\s*-\\s*[0-9]{4}$", value)) {
+    years <- as.integer(strsplit(gsub("\\s", "", value), "-", fixed = TRUE)[[1]])
+    if (years[2] >= years[1]) {
+      return(paste(years, collapse = "/"))
+    }
+    return(value)
+  }
+
+  # An unambiguous `mm-yyyy` (month first, dash, 4-digit year) -- the
+  # reverse of the schema's `yyyy-mm`. A 4-digit year in the second slot
+  # rules out any other reading, so this needs no column-wide context.
+  if (grepl("^[0-9]{1,2}-[0-9]{4}$", value)) {
+    date_parts <- strsplit(value, "-", fixed = TRUE)[[1]]
+    month <- suppressWarnings(as.integer(date_parts[1]))
+    if (!is.na(month) && month >= 1 && month <= 12) {
+      return(sprintf("%s-%02d", date_parts[2], month))
+    }
+    return(value)
+  }
+
+  # A dot-separated `d.m.yyyy` (e.g. Lequerica_Tamara_2025's `21.11.2019`) is
+  # the `/`- and `-`-separated numeric date again with different punctuation,
+  # and is resolved the same way. A two-digit dotted triple is less settled:
+  # Doyle_2023 writes `yy.mm.dd` (`19.08.20`), Bloomfield_2018 writes `d.m.yy`
+  # (`18.3.12`), and nothing in the values tells the two apart -- so it is
+  # only read as day/month-first when the caller passed `order`, and as
+  # `yy.mm.dd` (just below) otherwise.
+  if (grepl("^[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{4}$", value) ||
+      (!is.null(order) && grepl("^[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{2}$", value))) {
+    date_parts <- strsplit(value, ".", fixed = TRUE)[[1]]
+    resolved <- util_resolve_numeric_dmy_date(
+      as.integer(date_parts[1]), as.integer(date_parts[2]), date_parts[3], numeric_order
+    )
+    if (!is.na(resolved)) {
+      return(resolved)
+    }
+    return(value)
+  }
+
+  # A dot-separated `yy.mm.dd` or `yyyy.mm.dd`. Confirmed (not just assumed)
+  # by checking the middle component is a plausible month (<=12) and the
+  # last is a plausible day (<=31) -- if the shape doesn't fit that specific
+  # order, this is left alone rather than guessed at.
+  if (grepl("^[0-9]{2,4}\\.[0-9]{1,2}\\.[0-9]{1,2}$", value)) {
+    date_parts <- suppressWarnings(as.integer(strsplit(value, ".", fixed = TRUE)[[1]]))
+    year_part <- date_parts[1]; month <- date_parts[2]; day <- date_parts[3]
+    if (!anyNA(c(year_part, month, day)) && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+      year <- util_expand_two_digit_year(as.character(year_part))
+      if (!is.na(year)) {
+        full_date <- sprintf("%d-%02d-%02d", year, month, day)
+        if (!is.na(as.Date(full_date, format = "%Y-%m-%d"))) {
+          return(full_date)
+        }
+      }
+    }
+    return(value)
+  }
+
+  # A plain `d-m-y`-shaped date (dash, no named month), structurally
+  # identical to the `/`-separated case just below -- just a different
+  # separator. `Coates_2024`'s `date_standardised` column is exclusively this
+  # shape (its raw `date` column is the `/`-separated equivalent below,
+  # zero-padded and re-punctuated upstream of `data.csv`), and mixes
+  # self-disambiguating values (e.g. `28-11-2021`) with ones that need the
+  # rest of the column to resolve (e.g. `05-01-2022`).
+  if (grepl("^[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}$", value)) {
+    date_parts <- as.integer(strsplit(value, "-", fixed = TRUE)[[1]])
+    resolved <- util_resolve_numeric_dmy_date(date_parts[1], date_parts[2], as.character(date_parts[3]), numeric_order)
+    if (!is.na(resolved)) {
+      return(resolved)
+    }
+    return(value)
+  }
+
+  # A plain `d/m/y`-shaped date (no named month) is ambiguous on its own,
+  # and that ambiguity applies to the whole value, not to "is `/` a range
+  # separator here?" -- so this check comes before the range-splitting
+  # attempt below. Real datasets do mix conventions row to row -- Coates_2024's
+  # raw `date` column has automated camera-trap timestamps in month-first
+  # order alongside hand-entered dates in day-first order in the *same*
+  # column -- so column-wide agreement would wrongly hold a self-disambiguating
+  # value hostage to unrelated rows; see util_resolve_numeric_dmy_date().
+  if (grepl("^[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}$", value)) {
+    date_parts <- as.integer(strsplit(value, "/", fixed = TRUE)[[1]])
+    resolved <- util_resolve_numeric_dmy_date(date_parts[1], date_parts[2], as.character(date_parts[3]), numeric_order)
+    if (!is.na(resolved)) {
+      return(resolved)
+    }
+    return(value)
+  }
+
+  if (grepl("/", value, fixed = TRUE)) {
+    parts <- strsplit(value, "/", fixed = TRUE)[[1]]
+    if (length(parts) == 2) {
+      fixed_parts <- vapply(
+        parts, util_parse_collection_date_single, character(1),
+        excel_origin = excel_origin, numeric_order = numeric_order, order = order
+      )
+      if (!anyNA(fixed_parts) && all(vapply(fixed_parts, util_collection_date_is_valid, logical(1)))) {
+        return(paste(fixed_parts, collapse = "/"))
+      }
+    }
+    return(value)
+  }
+
+  # A compact `yyyymmdd` (e.g. Arnold_2021's `20190206`), checked before the
+  # Excel serial rule below would claim it: a serial for any real collection
+  # date has 5 digits, so 8 digits starting with a plausible century can't be
+  # one. Checked against the real calendar, not just its shape.
+  if (grepl("^(18|19|20)[0-9]{6}$", value)) {
+    full_date <- sprintf("%s-%s-%s", substr(value, 1, 4), substr(value, 5, 6), substr(value, 7, 8))
+    if (!is.na(as.Date(full_date, format = "%Y-%m-%d"))) {
+      return(full_date)
+    }
+    return(value)
+  }
+
+  # Excel serial date: a purely numeric string that isn't a plausible bare
+  # year (exactly 4 digits) is almost certainly a spreadsheet serial number,
+  # not a year -- e.g. `39692`, not `2008`
+  if (grepl("^[0-9]+$", value) && nchar(value) != 4) {
+    serial <- suppressWarnings(as.numeric(value))
+    parsed <- if (!is.na(serial)) as.Date(serial, origin = excel_origin) else NA
+    if (!is.na(parsed)) {
+      return(format(parsed, "%Y-%m-%d"))
+    }
+    return(value)
+  }
+
+  # From here on, only attempt a guess when a *named* month makes the
+  # day/month order unambiguous regardless of who wrote it or in what
+  # locale -- a purely numeric date with no name to anchor it is exactly
+  # the ambiguous case this function refuses to guess at.
+  #
+  # This is done with explicit string surgery below rather than handed to
+  # `lubridate::parse_date_time(orders = c("dmy", "mdy", "ymd"))`, because
+  # that genuinely gives wrong answers for exactly this kind of input: it
+  # reuses digits from a *single* token to fill more than one date
+  # component when the string has fewer separate tokens than the order
+  # template expects, e.g. `parse_date_time("Sep 2008", orders = "mdy")`
+  # returns 2008-09-**20** (day fabricated from within "2008"), and
+  # `parse_date_time("2008-Sep-02", orders = "dmy")` returns **2002-08-20**
+  # -- both silently wrong, not `NA`, so there is no failure mode to catch.
+  month_match <- util_extract_month_name(value)
+  if (is.null(month_match)) {
+    return(value)
+  }
+
+  numbers <- regmatches(value, gregexpr("[0-9]+", value))[[1]]
+
+  if (length(numbers) == 0) {
+    return(value)
+  }
+
+  if (length(numbers) == 1) {
+    year <- util_expand_two_digit_year(numbers[1])
+    if (is.na(year)) {
+      return(value)
+    }
+    return(sprintf("%d-%s", year, month_match$month))
+  }
+
+  if (length(numbers) == 2) {
+    is_four_digit <- nchar(numbers) == 4
+
+    if (sum(is_four_digit) == 1) {
+      year_str <- numbers[is_four_digit]
+      day_str <- numbers[!is_four_digit]
+    } else if (sum(is_four_digit) == 0) {
+      # Neither token unambiguously reads as a 4-digit year (both are the
+      # short kind that could be a day or a 2-digit year). The only such
+      # shape actually seen in practice is `d-Mon-yy` (e.g. `2-Sep-08`), so
+      # fall back to position: whichever number is written after the month
+      # name is the year, whichever is before it is the day.
+      number_starts <- as.integer(gregexpr("[0-9]+", value)[[1]])
+      is_after_month <- number_starts > month_match$end
+      if (sum(is_after_month) != 1) {
+        return(value)
+      }
+      year_str <- numbers[is_after_month]
+      day_str <- numbers[!is_after_month]
+    } else {
+      return(value)
+    }
+
+    day <- suppressWarnings(as.integer(day_str))
+    if (is.na(day) || day < 1 || day > 31) {
+      return(value)
+    }
+
+    year <- if (nchar(year_str) == 4) as.integer(year_str) else util_expand_two_digit_year(year_str)
+
+    full_date <- sprintf("%d-%s-%02d", year, month_match$month, day)
+    if (!is.na(as.Date(full_date, format = "%Y-%m-%d"))) {
+      return(full_date)
+    }
+    return(value)
+  }
+
+  # 3+ leftover numbers alongside a month name isn't a shape this function
+  # knows how to interpret safely
+  value
+}
+
+
+# Month names/abbreviations (English only) mapped to "01".."12"
+month_number_by_name <- stats::setNames(
+  sprintf("%02d", rep(1:12, 2)),
+  tolower(c(month.name, month.abb))
+)
+
+
+# Find the first month name/abbreviation in `value` as a whole word
+# (case-insensitive). Returns `NULL` if there isn't one, otherwise the
+# 2-digit month number and the match's start/end character positions (used
+# to tell whether a number token sits before or after the month name).
+util_extract_month_name <- function(value) {
+  pattern <- paste0("(?i)\\b(", paste(names(month_number_by_name), collapse = "|"), ")\\b")
+  m <- regexpr(pattern, value, perl = TRUE)
+  if (m == -1) {
+    return(NULL)
+  }
+  matched_text <- tolower(regmatches(value, m))
+  list(
+    month = month_number_by_name[[matched_text]],
+    start = as.integer(m),
+    end = as.integer(m) + attr(m, "match.length") - 1L
+  )
+}
+
+
+# Expand a 1-2 digit year to 4 digits (the POSIX/glibc convention: 00-68 ->
+# 2000-2068, 69-99 -> 1969-1999), or pass a plausible 4-digit year through
+# unchanged. Anything else (more or fewer digits) returns `NA`.
+util_expand_two_digit_year <- function(year_str) {
+  n <- nchar(year_str)
+  year <- suppressWarnings(as.integer(year_str))
+  if (is.na(year)) {
+    return(NA_integer_)
+  }
+  if (n == 4) {
+    return(year)
+  }
+  if (n %in% c(1, 2)) {
+    return(if (year <= 68) 2000L + year else 1900L + year)
+  }
+  NA_integer_
 }
 
 

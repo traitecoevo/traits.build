@@ -4,11 +4,14 @@
 \alias{util_unify_term_order}
 \title{Give records that differ only in the order of their terms one order}
 \usage{
-util_unify_term_order(traits)
+util_unify_term_order(traits, trait_names = NULL)
 }
 \arguments{
 \item{traits}{The traits table being built in \code{\link[=dataset_process]{dataset_process()}}, with an
 \code{error} column}
+
+\item{trait_names}{The traits whose values are sets of terms; \code{NULL}, the
+default, for all}
 }
 \value{
 \code{traits}, with \code{value} unified within each such group
@@ -22,6 +25,7 @@ make them exact duplicates, which \code{\link[austraits:bind_databases]{austrait
 one row. So that the compiled database keeps the same rows whichever order a
 database uses, each such group takes the order of its first record.
 Excluded records (\code{error} set) are left alone, as their values are never
-reordered.
+reordered, and so are the values of traits not in \code{trait_names}, such as a
+\code{text} trait's, whose words are in order.
 }
 \keyword{internal}

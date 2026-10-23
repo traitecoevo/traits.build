@@ -88,7 +88,9 @@ values are only compared when both records have coordinates within
 span at least \code{min_categorical_taxa} taxa. Values holding the same terms in a
 different order (\verb{shrub tree}, \verb{tree shrub}) count as identical, as they
 always did when every database sorted its terms, so the result does not
-depend on the database's \code{trait_value_term_order}.
+depend on the database's \code{trait_value_term_order}. Traits of type
+\code{monthly_presence} and \code{text} are compared in the same way, but on their
+values as written.
 
 \strong{Telling duplicates from coincidences.} Genuinely duplicated data usually
 shows up as a high \code{prop_matched_combos} -- nearly every taxon x trait the two

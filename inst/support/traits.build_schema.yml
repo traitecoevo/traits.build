@@ -77,6 +77,15 @@ identifier_type:
      materialSampleID: An identifier for the dwc:MaterialSample (as opposed to a particular digital record of the dwc:MaterialSample). In the absence of a persistent global unique identifier, construct one from a combination of identifiers in the record that will most closely make the dwc:materialSampleID globally unique.
      occurrenceID: Per DarwinCore, an identifier for an Occurrence, as opposed to a particular digital record of the Occurrence.
 
+trait_type:
+  description: &trait_type The type of a trait, declared as `type` in its definition in `config/traits.yml`. The type decides which checks the trait's values must pass.
+  type: categorical
+  values:
+    numeric: Numeric values, converted to the trait's `units` and required to lie between its `allowed_values_min` and `allowed_values_max`. The datatype is decimal (`xsd:decimal`); a `range` or `bin` value is two decimals written `min--max`.
+    categorical: Values drawn from the terms listed in the trait's `allowed_values_levels`. A value may combine several terms, separated by spaces, which are stored in alphabetical order. The datatype is string (`xsd:string`).
+    monthly_presence: Twelve characters, one per month starting with January, each `y` if the trait (a phenophase such as flowering) occurs in that month and `n` if it does not, e.g. `nnyyyynnnnnn`. Values are stored in lower case. The datatype is a bit string of length 12, written with `y` for 1 and `n` for 0, and stored as a string (`xsd:string`).
+    text: Free text with no fixed list of allowed values, appropriate to use for traits whose values are taxon names. Values are kept as written, including their case and word order. The datatype is string (`xsd:string`).
+
 #-------------------------------------------------------------
 # A key describing the structure of the compiled `AusTraits` dataset
 
@@ -462,6 +471,7 @@ metadata:
         methods: *methods
         life_stage: *life_stage
         repeat_measurements_id: *repeat_measurements_id
+        omit_values: Optional. Values the data contributor used for "no value" in this trait, such as `0`, `-9999`, `"-"` or `"NaN"`, given as a single value or a list. Each is treated as missing, so it is dropped from the `traits` table and does not appear in `excluded_data`, the same as `custom_R_code` applying `na_if()` to the trait's column. Values are compared with the column as `data.csv` is read and `custom_R_code` leaves it, before `substitutions`. So `omit_values` cannot replace an `na_if()` whose result `custom_R_code` itself goes on to use, to average values or combine columns for example; keep that call in `custom_R_code`. In a numeric column they are compared as numbers, so `0` also omits `0.0`; in any other column as exact text, case included, so `0` does not omit `0.0` there. Quote a value YAML would otherwise read as true, false or missing, such as `"no"`, `"n"` or `".na"`, and quote a number meant to match a text column as spelt, such as `"0.0"`, since unquoted `0.0` is compared there as `0`. In long-format data the values apply only to the rows of this trait, and the value column, shared by every trait, is numeric only when every trait's values are numbers.
     substitutions:
       description: A list of any "find and replace" substitutions needed to get the data into the right format.
       type: array

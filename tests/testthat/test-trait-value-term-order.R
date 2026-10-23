@@ -186,8 +186,32 @@ test_that("`dataset_test` builds with the database's setting", {
     sum(as.data.frame(reporter$get_results())$failed)
   }
 
-  expect_gt(failures_with("as_entered"), 0)
-  expect_equal(failures_with("input_order"), 0)
+  # Test_2023_3 has blank dates, which fail whatever the setting, so compare
+  # with the default
+  expect_gt(failures_with("as_entered"), failures_with("alphabetical"))
+  expect_equal(failures_with("input_order"), failures_with("alphabetical"))
+})
+
+
+test_that("only a categorical value's terms are reordered (#87)", {
+  # A `text` value's words are in order, so two records differing only in word
+  # order are different values
+  traits <- tibble::tibble(
+    error = NA_character_, observation_id = "1",
+    trait_name = c("host_name", "host_name", "plant_growth_form", "plant_growth_form"),
+    value = c("viminalis Eucalyptus", "Eucalyptus viminalis", "tree shrub", "shrub tree")
+  )
+  expect_equal(
+    util_unify_term_order(traits, trait_names = "plant_growth_form")$value,
+    c("viminalis Eucalyptus", "Eucalyptus viminalis", "tree shrub", "tree shrub")
+  )
+
+  records <- tibble::tibble(
+    .row = 1:2, dataset_id = c("A", "B"), taxon_name = "Sp one", trait_name = "host_name",
+    value = c("Eucalyptus viminalis", "viminalis Eucalyptus"), lat = -33, lon = 151
+  )
+  expect_equal(nrow(util_categorical_value_matches(records, 10, sort_terms = "plant_growth_form")), 0)
+  expect_equal(nrow(util_categorical_value_matches(records, 10)), 1)
 })
 
 
