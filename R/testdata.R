@@ -617,6 +617,20 @@ dataset_test_worker <-
           label = "`trait_name`'s"
         )
 
+        # Every trait definition must declare a `type` the build knows, since
+        # each check on a trait's values is chosen by type. One expectation for
+        # the whole of `traits.yml`, not one per trait.
+        unsupported_types <- util_unsupported_trait_types(definitions$elements, schema)
+        test_expect_length_zero(
+          unsupported_types,
+          info = sprintf(
+            "%s\ttrait definitions - `type` must be one of %s",
+            red(file.path(path_config, "traits.yml")),
+            paste(sprintf("'%s'", util_trait_types(schema)), collapse = ", ")
+          ),
+          label = paste(unsupported_types, collapse = ", ")
+        )
+
         # Check units are found in `unit_conversions.csv`
         # This test is being commented out, because fails anytime columns are read in
         # or anytime there are units not in unit_conversions because they are never converted.
@@ -862,8 +876,6 @@ dataset_test_worker <-
 
               # Check replacement values
               to_check <- x[[trait]]$replace %>% unique()
-              # Filter out `flowering_time` values from to-check list
-              to_check <- to_check[!(grepl("^[YyNn]+$", to_check) & stringr::str_length(to_check) == 12)]
               # A `replace` value may be the canonical term or one of its declared
               # synonyms -- `process_replace_synonyms()` resolves synonyms to their
               # canonical value later in the pipeline, so both are legitimate here.
@@ -882,6 +894,20 @@ dataset_test_worker <-
                 failing,
                 info = sprintf(
                   "%s\tsubstitutions - `%s` has invalid replacement values",
+                  red(f), trait),
+                label = failing %>% paste(collapse = "', '")
+              )
+            }
+
+            # A `monthly_presence` trait's replacement values must have the format
+            # the build requires of its values: twelve `y`s and `n`s
+            if (identical(definitions$elements[[trait]]$type, "monthly_presence")) {
+              to_check <- x[[trait]]$replace %>% unique()
+              failing <- to_check[!(is.na(to_check) | util_is_monthly_presence(to_check))]
+              test_expect_length_zero(
+                failing,
+                info = sprintf(
+                  "%s\tsubstitutions - `%s` has invalid replacement values, which must be twelve `y`s and `n`s",
                   red(f), trait),
                 label = failing %>% paste(collapse = "', '")
               )
@@ -952,50 +978,12 @@ dataset_test_worker <-
           parsed_data$traits %>%
           process_add_all_columns(
             c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
-              "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
+              "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in",
+              process_trait_level_column(location_metadata_fields))
           )
 
-        # Replace original `location_id` with a new `location_id`
-        if (nrow(locations) > 0) {
-          parsed_data <-
-            parsed_data %>%
-            dplyr::select(-dplyr::all_of(c("location_id"))) %>%
-            dplyr::left_join(
-              by = c("location_name"),
-              locations %>% dplyr::select(dplyr::all_of(c("location_name", "location_id"))) %>% dplyr::distinct()
-            )
-          parsed_data <-
-            parsed_data %>%
-            mutate(
-              location_id = ifelse(.data$entity_type == "species", NA_character_, .data$location_id)
-            )
-        }
-
-        ## Where missing, fill variables in traits table with values from locations
-        # Trait metadata should probably have precedence -- right now trait metadata
-        # is being read in during `process_parse_data` and getting overwritten here #TODO
-        # If process.R changes, this needs to be updated
-        if (nrow(locations) > 0) {
-          vars <- c("basis_of_record", "life_stage", "collection_date",
-                    "measurement_remarks", "entity_type")
-
-          for (v in vars) {
-            # Merge into traits from location level
-            if (v %in% unique(locations$location_property)) {
-              traits_tmp <- parsed_data %>%
-                dplyr::left_join(
-                  by = "location_id",
-                  locations %>%
-                    tidyr::pivot_wider(names_from = "location_property", values_from = "value") %>%
-                    mutate(col_tmp = .data[[v]]) %>%
-                    dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
-                    stats::na.omit()
-                )
-              # Use location level value if present
-              parsed_data[[v]] <- ifelse(!is.na(traits_tmp[["col_tmp"]]), traits_tmp[["col_tmp"]], parsed_data[[v]])
-            }
-          }
-        }
+        # Set `location_id` and fill location-level fields, as the build does
+        parsed_data <- parsed_data %>% process_add_location_metadata(locations)
 
         ## Excluded observations
 
@@ -1146,6 +1134,22 @@ dataset_test_worker <-
               red(dataset_id), length(invalid_dates), ifelse(length(invalid_dates) == 1, "", "s"),
               paste(utils::head(invalid_dates, 10), collapse = "', '"),
               if (declared_auto && length(invalid_dates) > 0) util_collection_date_auto_message(invalid_dates) else ""
+            )
+          )
+
+          ## `collection_date` must not be missing -- an unknown date should be
+          ## recorded explicitly (e.g. `.na/2009`, which is stored as `2009`),
+          ## not left blank. Checked on the built table too, so a date a
+          ## location fills in counts, and a row dropped for having no trait
+          ## value does not.
+          n_missing_dates <- sum(is.na(dates))
+          test_expect_true(
+            n_missing_dates == 0,
+            info = sprintf(
+              "%s\tSome date values are NA (%s of %s records)",
+              red(dataset_id),
+              n_missing_dates,
+              length(dates)
             )
           )
 
