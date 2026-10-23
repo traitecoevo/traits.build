@@ -322,3 +322,24 @@ test_that("`dataset_test` accepts long-format traits with no `traits` entry (#30
   )
   expect_false("unmapped_trait" %in% c(built$traits$trait_name, built$excluded_data$trait_name))
 })
+
+
+test_that("`dataset_test` rejects a long-format `traits` entry whose trait is not in the data (#308)", {
+  # As a wide dataset's `var_in` must be a column, a long dataset's must be a
+  # value of its trait column: otherwise the entry builds nothing
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_3", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_3", "metadata.yml")
+  metadata <- read_metadata(path_metadata)
+  extra <- metadata$traits[[1]]
+  extra$var_in <- "absent_trait"
+  metadata$traits <- c(metadata$traits, list(extra))
+  write_metadata(metadata, path_metadata)
+
+  expect_match(
+    dataset_test_failures("Test_2023_3", path_data = path_data),
+    "`var_in` (values of the trait column `trait_name`) should not contain: 'absent_trait'",
+    fixed = TRUE, all = FALSE
+  )
+})
