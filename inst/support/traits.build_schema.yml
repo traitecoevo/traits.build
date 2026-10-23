@@ -152,7 +152,7 @@ austraits:
         methods: &methods A textual description of the methods used to collect the trait data. Whenever available, methods are taken near-verbatim from the referenced source. Methods can include descriptions such as 'measured on botanical collections', 'data from the literature', or a detailed description of the field or lab methods used to collect the data.
         method_id: *method_id
         description: &description A 1-2 sentence description of the purpose of the study.
-        sampling_strategy: &sampling_strategy A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript. For preserved specimens, this field ideally indicates which records were 'sampled' to measure a specific trait.
+        sampling_strategy: &sampling_strategy A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript.
         source_primary_key: Citation key for the primary source in `sources`. The key is typically formatted as `Surname_year`.
         source_primary_type: Citation type for the primary source in `sources`, using standard BibTex citation types (Article, Book, Misc, Online, Report, Techreport, Thesis, Unpublished).
         source_primary_citation: Citation for the primary source. This detail is generated from the primary source in the metadata.
@@ -428,7 +428,7 @@ metadata:
         original_file: The name of the file initially submitted to AusTraits.
         notes: Generic notes about the study and processing of data.
     identifiers:
-      description: A list of columns that include identifiers that cross-references observations to information in other databases and information indicating what identifier_type they are.
+      description: A list of columns that include identifiers that cross-references observations to information in other databases, biodiversity collections and informatics resources. For preserved specimens, this list ideally indicates which records were 'sampled' to measure a specific trait.
       type: array
       elements:        
         var_in: Name of column with contextual data in the original data submitted.
@@ -501,15 +501,14 @@ allowed_characters:
   description: &allowed_characters Characters permitted outside plain ASCII, used by `check_disallowed_chars()` and reported by `dataset_test`. ASCII is always allowed whatever this section says. This is the single global definition; it is not configurable per dataset.
   type: character_set
   letter_ranges:
-    description: Letters are allowed by range rather than listed one at a time, so that a letter and its upper-case form can never be treated differently. Enumerating them by hand left 14 letters allowed in lower case but not upper, which is why a name like Osvaldsson was reported while osvaldsson would not have been. The range covers the accented letters of every European language, which is what contributor, author and taxon names need.
+    description: Letters are allowed by range rather than listed one at a time, so that a letter and its upper-case form can never be treated differently. Enumerating them by hand left 14 letters allowed in lower case but not upper, which is why a name like Osvaldsson was reported while osvaldsson would not have been. The Latin range covers the accented letters of every European language, which is what contributor, author and taxon names need; the Greek range covers the letters methods use as symbols.
     values:
       00C0-017F: Latin-1 Supplement letters and Latin Extended-A. Code points in this range that are not letters are excluded automatically, so 00D7 MULTIPLICATION SIGN and 00F7 DIVISION SIGN are not admitted here; 00D7 is listed under symbols below.
+      0386-03CE: The Greek alphabet, upper and lower case, with its accented forms, for letters carrying a technical meaning in methods, such as 03B4 GREEK SMALL LETTER DELTA for isotope composition (delta13C), 0394 GREEK CAPITAL LETTER DELTA for a difference (deltaT), and 03A6/03C6 PHI and 03A8/03C8 PSI for water potential. 0387 GREEK ANO TELEIA is punctuation and so not admitted. 03BC GREEK SMALL LETTER MU is excluded under never_allowed below.
   letters:
     description: Letters allowed from outside the ranges above.
     values:
       00B5: MICRO SIGN, as in micrometre. Note that 03BC GREEK SMALL LETTER MU is a different code point that looks identical; it is not allowed, so that units are written consistently.
-      03B4: GREEK SMALL LETTER DELTA, for stable isotope composition (e.g. delta13C, delta15N, delta18O), the same role 2030 PER MILLE SIGN plays below.
-      0394: GREEK CAPITAL LETTER DELTA, conventionally used for "difference"/"change" (e.g. deltaT for a temperature change), a distinct meaning from its lower-case form above.
   symbols:
     description: Non-letter characters that carry meaning and so are retained rather than rewritten. A symbol absent from this list is reported, and either belongs here or is a mistake to correct.
     values:
@@ -538,3 +537,4 @@ allowed_characters:
     values:
       00AA: FEMININE ORDINAL INDICATOR, a look-alike for a superscript a
       00BA: MASCULINE ORDINAL INDICATOR, used in error for 00B0 DEGREE SIGN. The most common disallowed character in the database.
+      03BC: GREEK SMALL LETTER MU, a look-alike for 00B5 MICRO SIGN, which is the character units are written with. dataset_replace_disallowed_chars() rewrites it as 00B5.

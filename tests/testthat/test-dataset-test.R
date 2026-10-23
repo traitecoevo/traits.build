@@ -292,3 +292,22 @@ test_that("`dataset_test` accepts a context scoped to specific traits by a colum
   failures <- dataset_test_failures("Test_2024_1")
   expect_equal(grep("^== Testing", failures, invert = TRUE, value = TRUE), character(0))
 })
+
+
+test_that("`dataset_test` fails a `metadata.yml` entry with a field that has no value (#307)", {
+  # An empty field drops its whole entry from the build, so the trait vanished
+  # from both `traits` and `excluded_data` while `dataset_test()` passed
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  lines <- readLines(path_metadata)
+  at <- which(lines == "  trait_name: leaf_N_per_dry_mass")
+  writeLines(append(lines, "  replicates:", after = at), path_metadata)
+
+  expect_match(
+    dataset_test_failures("Test_2023_2", path_data = path_data),
+    "traits - field(s) with no value, which drop their entry from the build: entry 2 (var_in: Leaf nitrogen (mg mg-1)) `replicates`",
+    fixed = TRUE, all = FALSE
+  )
+})

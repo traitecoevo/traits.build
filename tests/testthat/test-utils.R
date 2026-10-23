@@ -94,7 +94,7 @@ test_that("`check_disallowed_chars` compares whole characters, not bytes", {
   }
 
   # Characters that were already caught must stay caught
-  for (ch in c("€", "α", "中")) {
+  for (ch in c("€", "ж", "中")) {
     expect_true(any(f(ch)), info = sprintf("U+%04X", utf8ToInt(ch)))
   }
 
@@ -133,11 +133,10 @@ test_that("the allowed characters come from the schema, and are case-symmetric",
 
   # The exceptions are letters whose other case is ASCII, which is never in
   # the set (U+0130 dotted capital I, U+0131 dotless i, U+017F long s), and
-  # U+00B5 micro sign, whose upper case is U+039C GREEK CAPITAL LETTER MU,
-  # deliberately not allowed. The two Greek deltas are allowed as a pair, so
-  # neither appears here.
+  # U+039C GREEK CAPITAL LETTER MU, whose lower case U+03BC is deliberately not
+  # allowed, as a look-alike for U+00B5 micro sign.
   asymmetric <- letters_only[has_case & !(other_case %in% letters_only)]
-  expect_setequal(asymmetric, c("İ", "ı", "ſ", "µ"))
+  expect_setequal(asymmetric, c("İ", "ı", "ſ", "Μ"))
 
   # No duplicates and no ASCII -- both were true of the hand-written list, which
   # listed `í` and `µ` twice and included a stray ASCII `l`
@@ -165,6 +164,24 @@ test_that("names and symbols that used to be reported are now allowed", {
               "ΔT")) {         # GREEK CAPITAL LETTER DELTA, "difference"
     expect_false(any(check_disallowed_chars(x)), info = x)
   }
+})
+
+
+test_that("Greek letters are allowed by range, except mu (#257)", {
+  # Greek letters carry technical meanings in methods, such as Φ and Ψ for water
+  # potential, so the alphabet is allowed by range as Latin letters are
+  for (x in c("Φ", "φ", "Ψ", "ψ", "Ψleaf", "ΦPSII", "α", "Ω", "ά", "Ώ")) {
+    expect_false(any(check_disallowed_chars(x)), info = x)
+  }
+
+  # GREEK SMALL LETTER MU stays disallowed, as a look-alike for the micro sign
+  # units are written with; ANO TELEIA in the range is punctuation, not a letter
+  expect_true(any(check_disallowed_chars("\u03bc")))
+  expect_false(any(check_disallowed_chars("\u00b5")))
+  expect_true(any(check_disallowed_chars("\u0387")))
+
+  # Greek variants outside the alphabet stay disallowed
+  expect_true(any(check_disallowed_chars("\u03d5")))  # GREEK PHI SYMBOL
 })
 
 
@@ -518,4 +535,32 @@ test_that("`util_parse_collection_date` handles dotted d.m.yyyy, yyyymmdd, year 
 
   # a list with any item that doesn't parse is left alone
   expect_equal(util_parse_collection_date("Jan-98, 35 Sep 1998"), "Jan-98, 35 Sep 1998")
+})
+
+
+test_that("util_list_empty_fields names fields with no value, but not `.na` (#307)", {
+  entries <- yaml::yaml.load("
+- var_in: LMA
+  trait_name: leaf_mass_per_area
+  unit_in: .na
+  replicates:
+- var_in: leaf N
+  trait_name: ~
+- context_property: treatment
+  var_in: trt
+  values:
+  - find: a
+    value: control
+    description:
+")
+  expect_equal(
+    util_list_empty_fields(entries),
+    c("entry 1 (var_in: LMA) `replicates`",
+      "entry 2 (var_in: leaf N) `trait_name`",
+      "entry 3 (var_in: trt), values entry 1 (find: a) `description`")
+  )
+
+  # A section left as `.na`, or one with nothing empty, has nothing to report
+  expect_equal(util_list_empty_fields(NA), character(0))
+  expect_equal(util_list_empty_fields(list(list(var_in = "LMA"))), character(0))
 })
