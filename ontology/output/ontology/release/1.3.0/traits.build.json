@@ -9633,7 +9633,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "Type of trait, which decides the checks its values must pass: `numeric`, `categorical` (values drawn from `allowed_values_levels`), `monthly_presence` (twelve characters, one `y` or `n` per month starting with January) or `text` (free text values with no fixed list)."
+        "@value": "Type of trait, which decides the checks its values must pass and their datatype: `numeric` (decimals), `categorical` (strings of terms drawn from `allowed_values_levels`), `monthly_presence` (a bit string of twelve characters, one `y` or `n` per month starting with January) or `text` (free text strings with no fixed values)."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-definitions"

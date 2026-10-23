@@ -2917,7 +2917,7 @@ tern:unit
 
 <https://w3id.org/traits.build#type>
     dcterms:created "2024-02-01"^^xsd:date ;
-    dcterms:description "Type of trait, which decides the checks its values must pass: `numeric`, `categorical` (values drawn from `allowed_values_levels`), `monthly_presence` (twelve characters, one `y` or `n` per month starting with January) or `text` (free text values with no fixed list)."@en ;
+    dcterms:description "Type of trait, which decides the checks its values must pass and their datatype: `numeric` (decimals), `categorical` (strings of terms drawn from `allowed_values_levels`), `monthly_presence` (a bit string of twelve characters, one `y` or `n` per month starting with January) or `text` (free text strings with no fixed values)."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-definitions> ;
     SIO:SIO_000224 <https://w3id.org/traits.build#trait> ;
     SIO:SIO_000602 SIO:SIO_000757 ;

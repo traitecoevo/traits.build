@@ -81,10 +81,10 @@ trait_type:
   description: &trait_type The type of a trait, declared as `type` in its definition in `config/traits.yml`. The type decides which checks the trait's values must pass to be included in the `traits` table rather than in `excluded_data`.
   type: categorical
   values:
-    numeric: Numeric values, converted to the trait's `units` and required to lie between its `allowed_values_min` and `allowed_values_max`.
-    categorical: Values drawn from the terms listed in the trait's `allowed_values_levels`. A value may combine several terms, separated by spaces, which are stored in alphabetical order.
-    monthly_presence: Twelve characters, one per month starting with January, each `y` if the trait (a phenophase such as flowering) occurs in that month and `n` if it does not, e.g. `nnyyyynnnnnn`. Values are stored in lower case.
-    text: Free text with no fixed list of allowed values, appropriate to use for traits whose values are taxon names. Values are kept as written, including their case and word order.
+    numeric: Numeric values, converted to the trait's `units` and required to lie between its `allowed_values_min` and `allowed_values_max`. The datatype is decimal (`xsd:decimal`); a `range` or `bin` value is two decimals written `min--max`.
+    categorical: Values drawn from the terms listed in the trait's `allowed_values_levels`. A value may combine several terms, separated by spaces, which are stored in alphabetical order. The datatype is string (`xsd:string`).
+    monthly_presence: Twelve characters, one per month starting with January, each `y` if the trait (a phenophase such as flowering) occurs in that month and `n` if it does not, e.g. `nnyyyynnnnnn`. Values are stored in lower case. The datatype is a bit string of length 12, written with `y` for 1 and `n` for 0, and stored as a string (`xsd:string`).
+    text: Free text with no fixed list of allowed values, appropriate to use for traits whose values are taxon names. Values are kept as written, including their case and word order. The datatype is string (`xsd:string`).
 
 #-------------------------------------------------------------
 # A key describing the structure of the compiled `AusTraits` dataset
