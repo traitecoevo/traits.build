@@ -156,6 +156,21 @@ dataset_test_worker <-
           )
         }
 
+        ## Check no field of a list entry is left without a value
+        # An empty field drops its whole entry from the build without a message,
+        # and from the checks below, which read the entries the same way (#307)
+        for (section in c("traits", "substitutions", "contexts", "identifiers",
+                          "taxonomic_updates", "exclude_observations")) {
+          empty <- util_list_empty_fields(metadata[[section]])
+          test_expect_true(
+            length(empty) == 0,
+            info = sprintf(
+              "%s\t%s - field(s) with no value, which drop their entry from the build: %s",
+              red(f), section, paste(empty, collapse = "; ")
+            )
+          )
+        }
+
         ## Custom R code
         txt <- metadata[["dataset"]][["custom_R_code"]]
         # Check that `custom_R_code` is immediately followed by `collection_date`

@@ -536,3 +536,31 @@ test_that("`util_parse_collection_date` handles dotted d.m.yyyy, yyyymmdd, year 
   # a list with any item that doesn't parse is left alone
   expect_equal(util_parse_collection_date("Jan-98, 35 Sep 1998"), "Jan-98, 35 Sep 1998")
 })
+
+
+test_that("util_list_empty_fields names fields with no value, but not `.na` (#307)", {
+  entries <- yaml::yaml.load("
+- var_in: LMA
+  trait_name: leaf_mass_per_area
+  unit_in: .na
+  replicates:
+- var_in: leaf N
+  trait_name: ~
+- context_property: treatment
+  var_in: trt
+  values:
+  - find: a
+    value: control
+    description:
+")
+  expect_equal(
+    util_list_empty_fields(entries),
+    c("entry 1 (var_in: LMA) `replicates`",
+      "entry 2 (var_in: leaf N) `trait_name`",
+      "entry 3 (var_in: trt), values entry 1 (find: a) `description`")
+  )
+
+  # A section left as `.na`, or one with nothing empty, has nothing to report
+  expect_equal(util_list_empty_fields(NA), character(0))
+  expect_equal(util_list_empty_fields(list(list(var_in = "LMA"))), character(0))
+})
