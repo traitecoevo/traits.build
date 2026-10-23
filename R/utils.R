@@ -232,6 +232,73 @@ util_resolve_trait_field_values <- function(declared, data) {
 }
 
 
+#' Trait types a database may declare
+#'
+#' The values `type` may take in a trait's definition in `config/traits.yml`:
+#' `numeric`, `categorical`, `monthly_presence` and `text`, as listed under
+#' `trait_type` in the traits.build schema, which describes each. The type
+#' decides which checks the build applies to the trait's values, so a trait
+#' whose type is none of these would have its values pass through unchecked.
+#'
+#' @param schema The traits.build schema, as returned by [get_schema()]
+#'
+#' @return Character vector of trait types
+#' @keywords internal
+util_trait_types <- function(schema = get_schema()) {
+  names(schema[["trait_type"]][["values"]])
+}
+
+#' Names of the traits of a given type
+#'
+#' @param definitions Trait definitions keyed by `trait_name` -- the `elements`
+#'   of `traits.yml`, or the subset of them returned by [dataset_configure()]
+#' @param types Character vector of trait types
+#'
+#' @return Character vector of the names of traits whose `type` is in `types`
+#' @keywords internal
+util_traits_of_type <- function(definitions, types) {
+  if (length(definitions) == 0) return(character(0))
+  is_type <- purrr::map_lgl(definitions, ~ length(.x[["type"]]) == 1 && .x[["type"]] %in% types)
+  names(definitions)[is_type]
+}
+
+#' Find trait definitions whose `type` is missing or not supported
+#'
+#' @inheritParams util_traits_of_type
+#' @inheritParams util_trait_types
+#'
+#' @return Character vector with one entry per offending trait, naming it and
+#'   its type (e.g. "flowering_time (`categorial`)"); empty if every trait
+#'   declares a supported type
+#' @keywords internal
+util_unsupported_trait_types <- function(definitions, schema = get_schema()) {
+  if (length(definitions) == 0) return(character(0))
+  types <- purrr::map_chr(
+    definitions,
+    ~ if (length(.x[["type"]]) == 1) as.character(.x[["type"]]) else NA_character_
+  )
+  bad <- is.na(types) | !types %in% util_trait_types(schema)
+  sprintf(
+    "%s (%s)",
+    names(types)[bad],
+    ifelse(is.na(types[bad]), "no `type`", sprintf("`%s`", types[bad]))
+  )
+}
+
+#' Check values have the `monthly_presence` format
+#'
+#' A `monthly_presence` value is twelve characters, one per month starting with
+#' January, each `y` or `n` (either case).
+#'
+#' @param x Character vector
+#'
+#' @return Logical vector, `TRUE` where `x` has the format
+#' @keywords internal
+util_is_monthly_presence <- function(x) {
+  grepl("^[YyNn]{12}$", x)
+}
+
+
 #'  Split and sort cells with multiple values
 #'
 #'  `util_separate_and_sort`: For a vector x in which individual cell may have
