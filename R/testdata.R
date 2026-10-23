@@ -1065,6 +1065,22 @@ dataset_test_worker <-
             )
           )
 
+          ## `collection_date` must not be missing -- an unknown date should be
+          ## recorded explicitly (e.g. `.na/2009`, which is stored as `2009`),
+          ## not left blank. Checked on the built table too, so a date a
+          ## location fills in counts, and a row dropped for having no trait
+          ## value does not.
+          n_missing_dates <- sum(is.na(dates))
+          test_expect_true(
+            n_missing_dates == 0,
+            info = sprintf(
+              "%s\tSome date values are NA (%s of %s records)",
+              red(dataset_id),
+              n_missing_dates,
+              length(dates)
+            )
+          )
+
           # Test `austraits` functions
           # Testing per study, not on all studies combined (is this ideal?)
           # I'm not testing whether the functions work as intended, just that they throw no error
