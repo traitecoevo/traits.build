@@ -292,3 +292,33 @@ test_that("`dataset_test` accepts a context scoped to specific traits by a colum
   failures <- dataset_test_failures("Test_2024_1")
   expect_equal(grep("^== Testing", failures, invert = TRUE, value = TRUE), character(0))
 })
+
+
+test_that("`dataset_test` accepts long-format traits with no `traits` entry (#308)", {
+  # Test_2023_3 is long format. Add rows for a trait its `metadata.yml` does not
+  # map, in a temporary copy so the shared example stays untouched. The build
+  # leaves them out, as it does a column a wide dataset does not map, so they
+  # should cause no failure.
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_3", path_data, recursive = TRUE)
+
+  data_file <- file.path(path_data, "Test_2023_3", "data.csv")
+  data <- readr::read_csv(data_file, col_types = readr::cols(.default = "c"))
+  extra <- data[1:3, ]
+  extra$trait_name <- "unmapped_trait"
+  readr::write_csv(dplyr::bind_rows(data, extra), data_file, na = "")
+
+  expect_identical(
+    dataset_test_failures("Test_2023_3", path_data = path_data),
+    dataset_test_failures("Test_2023_3")
+  )
+
+  built <- dataset_process(
+    data_file,
+    dataset_configure(file.path(path_data, "Test_2023_3", "metadata.yml"), get_schema("config/traits.yml", "traits")),
+    get_schema(),
+    get_schema("config/metadata.yml", "metadata"),
+    get_unit_conversions("config/unit_conversions.csv")
+  )
+  expect_false("unmapped_trait" %in% c(built$traits$trait_name, built$excluded_data$trait_name))
+})

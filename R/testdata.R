@@ -1047,26 +1047,16 @@ dataset_test_worker <-
         }
 
         ## Check config files contain all relevant columns
-        if (metadata[["dataset"]][["data_is_long_format"]]) {
-
-          # For vertical datasets, expect all values of "trait column" found in traits
-          var_out <- names(metadata[["dataset"]])
-          var_in <- unlist(metadata[["dataset"]])
-          i <- match("trait_name", var_out)
-          values <- unique(data[[var_in[i]]])
-          test_expect_contains(
-            traits[["var_in"]], values,
-            info = paste0(red(files[2]), "\ttraits")
-          )
-
-        } else {
-
-          # For wide datasets, expect variables in traits are headers in the data
+        # For wide datasets, expect variables in traits are headers in the data.
+        # A long dataset is not checked the other way round: a trait in its trait
+        # column with no `traits` entry is left out of the build, as a column a
+        # wide dataset does not map is, so it needs no filtering in
+        # `custom_R_code` (#308)
+        if (!metadata[["dataset"]][["data_is_long_format"]]) {
           test_expect_is_in(
             traits[["var_in"]], names(data),
             info = paste0(red(files[2]), "\ttraits"), label = "`var_in`"
           )
-
         }
 
 
