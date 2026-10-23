@@ -394,43 +394,6 @@ util_separate_and_sort <- function(x, sep = " ", order = "alphabetical") {
 
 }
 
-#' Give records that differ only in the order of their terms one order
-#'
-#' Under `trait_value_term_order: input_order`, two records identical in every
-#' column except the order of the terms in `value` -- the same observation of a
-#' species entered twice, once as `prostrate cushion-forming` and once as
-#' `cushion-forming prostrate` -- are one record stated twice. Sorting used to
-#' make them exact duplicates, which [austraits::bind_databases()] collapses to
-#' one row. So that the compiled database keeps the same rows whichever order a
-#' database uses, each such group takes the order of its first record.
-#' Excluded records (`error` set) are left alone, as their values are never
-#' reordered, and so are the values of traits not in `trait_names`, such as a
-#' `text` trait's, whose words are in order.
-#'
-#' @param traits The traits table being built in [dataset_process()], with an
-#'   `error` column
-#' @param trait_names The traits whose values are sets of terms; `NULL`, the
-#'   default, for all
-#'
-#' @return `traits`, with `value` unified within each such group
-#' @keywords internal
-util_unify_term_order <- function(traits, trait_names = NULL) {
-
-  of_traits <- if (is.null(trait_names)) TRUE else traits[["trait_name"]] %in% trait_names
-  i <- which(is.na(traits[["error"]]) & of_traits & grepl(" ", traits[["value"]], fixed = TRUE))
-  if (length(i) < 2) return(traits)
-
-  key <- traits[i, ]
-  key[["value"]] <- util_separate_and_sort(key[["value"]], order = "alphabetical")
-  key <- do.call(
-    paste,
-    c(lapply(key, function(x) ifelse(is.na(x), "\001", as.character(x))), sep = "\002")
-  )
-
-  traits[["value"]][i] <- traits[["value"]][i][match(key, key)]
-  traits
-}
-
 # The settings `trait_value_term_order` accepts, the first being the default.
 # `inst/support/traits.build_schema.yml` documents the same values, and a test
 # keeps the two in step.

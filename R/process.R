@@ -315,12 +315,6 @@ dataset_process <- function(filename_data_raw,
       "error", "taxonomic_resolution", "unit_in"))
     )
 
-  # Sorting made records that differ only in the order of their terms identical,
-  # so a compiled database kept one of them; keep it that way under `input_order`
-  if (term_order == "input_order") {
-    traits <- util_unify_term_order(traits, util_traits_of_type(definitions, "categorical"))
-  }
-
   # Remove missing values is specified
   if (filter_missing_values == TRUE) {
     traits <-

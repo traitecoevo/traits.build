@@ -122,11 +122,10 @@ test_that("a repeated term is dropped in both modes", {
 })
 
 
-test_that("a record entered twice with its terms in different orders stays one record", {
-  # Wenk_2025 in austraits.build has this: one species-level observation given
-  # as `prostrate cushion-forming` and as `cushion-forming prostrate`. Sorting
-  # made the two rows identical, so `bind_databases()` kept one; under
-  # `input_order` both take the first row's order, so it still keeps one.
+test_that("under `input_order` no record's terms are reordered, even to match another", {
+  # Wenk_2025 in austraits.build has one species-level observation given as
+  # `prostrate cushion-forming` and as `cushion-forming prostrate`. Sorting
+  # makes the two rows identical; under `input_order` each keeps its order.
   dir <- file.path(withr::local_tempdir(), "Test_2023_3")
   dir.create(dir)
   file.copy(file.path("examples/Test_2023_3", c("data.csv", "metadata.yml")), dir)
@@ -145,18 +144,9 @@ test_that("a record entered twice with its terms in different orders stays one r
   input_order <- build(with_term_order("input_order"))
 
   expect_equal(alphabetical$value, rep("black brown red yellow", 2))
-  expect_equal(input_order$value, rep("red yellow brown black", 2))
+  expect_setequal(input_order$value, c("red yellow brown black", "black brown yellow red"))
   expect_equal(nrow(dplyr::distinct(alphabetical)), 1)
-  expect_equal(nrow(dplyr::distinct(input_order)), 1)
-
-  # A record that differs in anything else keeps its own order
-  expect_equal(
-    util_unify_term_order(tibble::tibble(
-      error = NA_character_, observation_id = c("1", "1", "2"),
-      value = c("b a", "a b", "a b")
-    ))$value,
-    c("b a", "b a", "a b")
-  )
+  expect_equal(nrow(dplyr::distinct(input_order)), 2)
 })
 
 
@@ -193,19 +183,9 @@ test_that("`dataset_test` builds with the database's setting", {
 })
 
 
-test_that("only a categorical value's terms are reordered (#87)", {
+test_that("`dataset_check_duplicate_values` compares a `text` value's words as written (#87)", {
   # A `text` value's words are in order, so two records differing only in word
   # order are different values
-  traits <- tibble::tibble(
-    error = NA_character_, observation_id = "1",
-    trait_name = c("host_name", "host_name", "plant_growth_form", "plant_growth_form"),
-    value = c("viminalis Eucalyptus", "Eucalyptus viminalis", "tree shrub", "shrub tree")
-  )
-  expect_equal(
-    util_unify_term_order(traits, trait_names = "plant_growth_form")$value,
-    c("viminalis Eucalyptus", "Eucalyptus viminalis", "tree shrub", "tree shrub")
-  )
-
   records <- tibble::tibble(
     .row = 1:2, dataset_id = c("A", "B"), taxon_name = "Sp one", trait_name = "host_name",
     value = c("Eucalyptus viminalis", "viminalis Eucalyptus"), lat = -33, lon = 151
