@@ -232,6 +232,53 @@ util_resolve_trait_field_values <- function(declared, data) {
 }
 
 
+#' Convert the `traits` entries of `metadata.yml` to a table
+#'
+#' `austraits::convert_list_to_df2()`, one row per trait entry, without the
+#' optional `omit_values` field. That field may hold several values, and
+#' `convert_list_to_df2()` spreads an entry holding several over that many
+#' rows, which would duplicate the trait wherever the table is used. Read it
+#' from the entries themselves, as `process_parse_data()` does.
+#'
+#' @param metadata_traits The `traits` section of `metadata.yml`, as a list
+#'
+#' @return A tibble with one row per trait entry, or `NA` if there are none
+#' @noRd
+util_traits_to_df <- function(metadata_traits) {
+  if (is.list(metadata_traits)) {
+    metadata_traits <- lapply(metadata_traits, function(entry) {
+      if (is.list(entry)) entry[["omit_values"]] <- NULL
+      entry
+    })
+  }
+  austraits::convert_list_to_df2(metadata_traits)
+}
+
+
+#' Check the shape of a `traits` entry's `omit_values`
+#'
+#' Valid is a single string or number, or a list of them. Anything else is
+#' invalid: a mapping, a nested list, an empty list, `.na`, and the YAML 1.1
+#' booleans `yes`, `no`, `true`, `false`, `on`, `off`, `y` and `n`, which
+#' `yaml::read_yaml()` reads as `TRUE` or `FALSE` unless they are quoted.
+#'
+#' @param x The value of `omit_values`, as read from `metadata.yml`
+#'
+#' @return `TRUE` or `FALSE`
+#' @noRd
+util_omit_values_valid <- function(x) {
+  is_scalar <- function(v) {
+    (is.character(v) || is.numeric(v)) && length(v) == 1 && !(is.na(v) && !is.nan(v))
+  }
+  if (length(x) == 0 || !is.null(names(x))) {
+    return(FALSE)
+  }
+  if (is.list(x)) {
+    return(all(vapply(x, is_scalar, logical(1))))
+  }
+  all(vapply(as.list(x), is_scalar, logical(1)))
+}
+
 #' Trait types a database may declare
 #'
 #' The values `type` may take in a trait's definition in `config/traits.yml`:

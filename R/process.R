@@ -33,7 +33,7 @@ dataset_configure <- function(
   # Table of trait_mapping
   trait_mapping <-
     metadata[["traits"]] %>%
-    austraits::convert_list_to_df2() %>%
+    util_traits_to_df() %>%
     dplyr::filter(!is.na(.data$trait_name))
 
   # Subset of definitions
@@ -655,7 +655,7 @@ process_create_observation_id <- function(data, metadata) {
 
   }
 
-  traits_table <- metadata[["traits"]] %>% austraits::convert_list_to_df2()
+  traits_table <- metadata[["traits"]] %>% util_traits_to_df()
 
   if (!is.null(traits_table[["repeat_measurements_id"]])) {
 
@@ -717,7 +717,7 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
 #' @importFrom rlang .data
 process_generate_method_ids <- function(metadata_traits) {
   metadata_traits %>%
-    austraits::convert_list_to_df2() %>%
+    util_traits_to_df() %>%
     dplyr::filter(!is.na(.data$trait_name)) %>%
     dplyr::select(dplyr::all_of(c("trait_name", "methods"))) %>%
     dplyr::distinct() %>%
@@ -752,7 +752,7 @@ process_format_contexts <- function(my_list, dataset_id, traits, metadata_traits
   # field set literally on the `traits` entries of `metadata.yml` -- `process_parse_data()`
   # accepts both. Only the first could supply the values when `values` is omitted, so the
   # second route died in the `left_join` below with an unrelated-looking rlang error (#268).
-  trait_entries <- austraits::convert_list_to_df2(metadata_traits)
+  trait_entries <- util_traits_to_df(metadata_traits)
 
   if (!is.data.frame(trait_entries)) {
     trait_entries <- tibble::tibble()
@@ -1216,7 +1216,7 @@ process_flag_excluded_observations <- function(data, metadata) {
 
   fix <- split(fix, fix$variable)
 
-  traits <- metadata$traits %>% austraits::convert_list_to_df2()
+  traits <- metadata$traits %>% util_traits_to_df()
 
   for (v in names(fix))
 
@@ -1767,8 +1767,15 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
   # Step 2. Add trait information, with correct names
   traits_table <-
     metadata[["traits"]] %>%
-    austraits::convert_list_to_df2() %>%
-    dplyr::filter(!is.na(.data$trait_name))  # Remove any rows without a matching trait record
+    util_traits_to_df()
+
+  # Each entry's `omit_values`, aligned with the rows of `traits_table`
+  omit_values <- process_omit_values_by_entry(metadata[["traits"]], traits_table, dataset_id)
+
+  # Remove any rows without a matching trait record
+  has_trait_name <- !is.na(traits_table[["trait_name"]])
+  traits_table <- traits_table %>% dplyr::filter(.env$has_trait_name)
+  omit_values <- omit_values[has_trait_name]
 
   # Check that the trait names as specified in config actually exist in data
   # If not then we need to stop and fix this problem
@@ -1824,7 +1831,10 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
       out[[i]] <- df
       # To x we append columns of data for trait_name, unit and value (the latter is retrieved from the data)
       out[[i]][["trait_name"]] <- traits_table[["var_in"]][i]
-      out[[i]][["value"]] <- data[[traits_table[["var_in"]][i]]] %>% as.character()
+      out[[i]][["value"]] <-
+        data[[traits_table[["var_in"]][i]]] %>%
+        process_omit_values(omit_values[[i]]) %>%
+        as.character()
 
       # Pull in additional information for each trait as specified in traits part of metadata,
       # here represented as `traits_table`
@@ -1863,6 +1873,14 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
   } else {
 
     out <- df %>% dplyr::filter(.data$trait_name %in% traits_table$var_in)
+
+    # The value column is shared by every trait, so each entry's `omit_values`
+    # applies only to the rows holding its trait
+    for (i in which(!vapply(omit_values, is.null, logical(1)))) {
+      j <- which(out[["trait_name"]] == traits_table[["var_in"]][i])
+      out[["value"]][j] <- process_omit_values(out[["value"]][j], omit_values[[i]])
+    }
+
     out[["value"]] <- out[["value"]] %>% as.character()
 
     # Pull in additional information for each trait as specified in traits part of metadata,
@@ -1985,6 +2003,154 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
     traits = out,
     context_ids = context_ids
   )
+}
+
+
+#' Treat a trait's declared `omit_values` as missing
+#'
+#' A `traits` entry in `metadata.yml` may list values in `omit_values` that the
+#' contributor used to mean "no value", such as `0`, `-9999`, `"-"` or `"NaN"`.
+#' Each is treated as missing for that trait, just as `custom_R_code: ~
+#' na_if(.x, ...)` on the trait's column does: the value is dropped from the
+#' compiled `traits` table and does not appear in `excluded_data`.
+#'
+#' Values are compared with the trait's column as `data.csv` was read (by
+#' `readr::read_csv()`, with column types guessed) and `custom_R_code` left it,
+#' the same comparison `dplyr::na_if()` makes, so replacing `na_if(.x, y)` with
+#' `omit_values: y` builds an identical database:
+#'
+#' - In a numeric column, values are compared as numbers. `0` therefore also
+#'   omits `0.0` and `0.00`, which `read_csv()` reads as the same number, and
+#'   `-.inf` or `"-Inf"` omits `-Inf`.
+#' - In any other column, values are compared as exact text, case and all,
+#'   before the build lower-cases trait values. `0` does not omit `0.0` in a
+#'   text column, and `"NaN"` does not omit `nan`. An unquoted number is
+#'   compared as R writes the number YAML read, not as it is spelt in
+#'   `metadata.yml`: `0.0` compares as `0`, `0.0001` as `1e-04` and
+#'   `000000000000` as `0`. Quote it, as in `"0.0"`, to compare its spelling.
+#'
+#' In long-format data the value column is shared by every trait, so it is
+#' numeric only when the values of every trait are numbers.
+#'
+#' Called from `process_parse_data()` after `custom_R_code` has run and before
+#' `substitutions`, so a value can be omitted whether it is in `data.csv` or
+#' produced by `custom_R_code`, and is never substituted first. The comparison
+#' itself is `process_omit_values_match()`, which `dataset_test()` also uses to
+#' report a value that matches nothing.
+#'
+#' @param x A trait's values, as a column of `data.csv` after `custom_R_code`
+#' @param omit_values The trait entry's `omit_values`: a single string or
+#'   number, or a list of them. `NULL` leaves `x` unchanged.
+#'
+#' @return `x`, of the same type, with matching values set to `NA`
+#' @noRd
+process_omit_values <- function(x, omit_values) {
+
+  if (length(omit_values) == 0) {
+    return(x)
+  }
+
+  x[process_omit_values_match(x, omit_values)$omit] <- NA
+  x
+}
+
+
+#' Compare a trait's values with its `omit_values`
+#'
+#' The comparison `process_omit_values()` makes, described there: as numbers in
+#' a numeric column, and otherwise as text, with a number written as R writes
+#' it. A value that is not a number, such as `"-"`, matches nothing in a
+#' numeric column.
+#'
+#' @inheritParams process_omit_values
+#'
+#' @return A list of
+#'   - `omit`: for each element of `x`, whether it matches one of `omit_values`
+#'   - `compared`: each of `omit_values` as compared, as text, so an unquoted
+#'     `0.0` is `"0"`; a value that is not a number, compared with a numeric
+#'     column, is given as written
+#'   - `matched`: for each of `omit_values`, whether it matches some element of
+#'     `x`
+#' @noRd
+process_omit_values_match <- function(x, omit_values) {
+
+  omit_values <- as.list(omit_values)
+  as_written <- vapply(omit_values, as.character, character(1))
+
+  if (is.numeric(x)) {
+    targets <- suppressWarnings(vapply(omit_values, as.numeric, numeric(1)))
+    usable <- !is.na(targets) | is.nan(targets)
+    compared <- ifelse(usable, as.character(targets), as_written)
+    values <- x
+  } else {
+    targets <- as_written
+    usable <- rep(TRUE, length(targets))
+    compared <- targets
+    values <- as.character(x)
+  }
+
+  list(
+    omit = values %in% targets[usable],
+    compared = compared,
+    matched = usable & targets %in% values
+  )
+}
+
+
+#' Read each `traits` entry's `omit_values`
+#'
+#' @param metadata_traits The `traits` section of `metadata.yml`, as a list
+#' @param traits_table `metadata_traits` as returned by `util_traits_to_df()`
+#' @param dataset_id Identifier of the dataset, for error messages
+#'
+#' @return A list with one element per row of `traits_table`: that entry's
+#'   `omit_values`, or `NULL` where it has none
+#' @noRd
+process_omit_values_by_entry <- function(metadata_traits, traits_table, dataset_id) {
+
+  if (!is.list(metadata_traits)) {
+    return(list())
+  }
+
+  omit_values <- lapply(metadata_traits, function(entry) {
+    if (is.list(entry)) entry[["omit_values"]] else NULL
+  })
+  declared <- !vapply(omit_values, is.null, logical(1))
+
+  if (!any(declared)) {
+    return(vector("list", nrow(traits_table)))
+  }
+
+  var_in <- vapply(metadata_traits, function(entry) {
+    if (is.list(entry) && length(entry[["var_in"]]) == 1) as.character(entry[["var_in"]]) else NA_character_
+  }, character(1))
+
+  invalid <- declared & !vapply(omit_values, util_omit_values_valid, logical(1))
+  if (any(invalid)) {
+    stop(
+      sprintf(
+        paste0(
+          "Dataset %s: `omit_values` must be a single string or number, or a list of them, ",
+          "on the `traits` entr%s for %s. ",
+          "Quote values YAML would otherwise read as true, false or missing, such as `\"no\"`, `\"n\"` or `\".na\"`."
+        ),
+        dataset_id, ifelse(sum(invalid) > 1, "ies", "y"),
+        paste0("`", var_in[invalid], "`", collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+
+  # `util_traits_to_df()` gives one row per entry, except that an entry with a
+  # field holding several values spreads over that many rows, and one with an
+  # empty field (`trait_name:` with nothing after it, as an unused entry in
+  # `austraits.build` has) gives none. Repeat each entry's values over its own
+  # rows, so that they line up with `traits_table`.
+  n_rows <- vapply(
+    metadata_traits, function(entry) NROW(util_traits_to_df(list(entry))), integer(1)
+  )
+
+  rep(omit_values, n_rows)
 }
 
 
