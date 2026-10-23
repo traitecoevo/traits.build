@@ -85,6 +85,22 @@ dataset_process <- function(filename_data_raw,
   metadata <- config_for_dataset$metadata
   definitions <- config_for_dataset$definitions
 
+  # Each check on a trait's values is chosen by its `type`, so a trait whose
+  # type is missing or misspelt would have its values pass through unchecked
+  unsupported_types <- util_unsupported_trait_types(definitions, schema)
+  if (length(unsupported_types) > 0) {
+    stop(
+      sprintf(
+        "Dataset %s uses %s whose `type` in `traits.yml` is not one of %s: %s",
+        dataset_id,
+        ifelse(length(unsupported_types) > 1, "traits", "a trait"),
+        paste(sprintf("`%s`", util_trait_types(schema)), collapse = ", "),
+        paste(unsupported_types, collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+
   # Load and clean trait data
   traits <-
     readr::read_csv(filename_data_raw, col_types = cols(), guess_max = 100000, progress = FALSE) %>%
@@ -182,8 +198,12 @@ dataset_process <- function(filename_data_raw,
     process_taxonomic_updates(metadata) %>%
     # Sorting of data
     dplyr::mutate(
-      # For cells with multiple values (separated by a space), sort these alphabetically
-      value = ifelse(is.na(.data$error), util_separate_and_sort(.data$value), .data$value),
+      # For cells with multiple values (separated by a space), sort these alphabetically.
+      # Only a categorical value is a set of terms: a `text` value's words are in order
+      value = ifelse(
+        is.na(.data$error) & .data$trait_name %in% util_traits_of_type(definitions, "categorical"),
+        util_separate_and_sort(.data$value), .data$value
+      ),
       value_type = factor(.data$value_type, levels = names(schema$value_type$values))
       ) %>%
     dplyr::arrange(.data$observation_id, .data$trait_name, .data$value_type) %>%
@@ -1362,18 +1382,19 @@ util_list_to_bib <- function(ref) {
 
 #' Flag disallowed trait values and disallowed characters
 #'
-#' Flags any categorical traits values that are not on the list of allowed values defined in the
-#' `traits.yml` file.
+#' Flags trait values that do not suit the trait's `type` in the `traits.yml` file:
+#' a `categorical` value using a term not on the trait's list of allowed values, a
+#' `monthly_presence` value that is not twelve `y`s and `n`s, and a `numeric` value that
+#' cannot convert to numeric. A `text` value is not checked here.
 #' NA values are flagged as errors.
-#' Numeric values that cannot convert to numeric are also flagged as errors.
 #'
 #'
 #' @param data Tibble or dataframe containing the study data
 #' @param definitions Definitions read in from the `traits.yml` file in the config folder
 #'
 #' @importFrom rlang .data
-#' @return Tibble with flagged values that are unsupported categorical trait values, missing values
-#' or numeric trait values that cannot be converted to numeric
+#' @return Tibble with flagged values that are unsupported categorical trait values, invalid
+#' monthly_presence values, missing values or numeric trait values that cannot be converted to numeric
 process_flag_unsupported_values <- function(data, definitions) {
 
   # NA values
@@ -1400,8 +1421,10 @@ process_flag_unsupported_values <- function(data, definitions) {
         dplyr::mutate(error = ifelse(i, "Unsupported trait value", .data$error))
     }
 
-    # Specific tests for flowering, fruiting time
-    if (trait %in% c("flowering_time", "fruiting_time")) {
+    # Twelve `y`s and `n`s, one per month. Values have been lower-cased by now;
+    # the pattern accepts either case. The two messages are those the rule gave
+    # when it applied by name to `flowering_time` and `fruiting_time`.
+    if (definitions[[trait]]$type == "monthly_presence") {
 
       ii <- data[["trait_name"]] == trait
 
@@ -1529,7 +1552,8 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
       ucn = process_unit_conversion_name(.data$unit_in, .data$to),
       type = util_extract_list_element(.data$i, definitions, "type"),
       to_convert = ifelse(is.na(.data$error), (.data$type == "numeric" & .data$unit_in != .data$to), FALSE),
-      unit_in = ifelse(.data$type == "categorical", NA, .data$unit_in)
+      # Only a numeric trait has units
+      unit_in = ifelse(.data$type != "numeric", NA, .data$unit_in)
     )
 
   # Identify anything problematic in conversions and drop
@@ -1625,7 +1649,8 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' split into the identifiers table once `observation_id` is set.
 #' @param definitions Trait definitions for this dataset -- the `elements` of the
 #' `traits.yml` schema, keyed by `trait_name`, as returned by [dataset_configure()].
-#' Used to apply database-wide trait value synonyms.
+#' Used to apply database-wide trait value synonyms, and to keep the case of `text`
+#' traits' values, which unlike all others are not lower-cased.
 #' @return Tibble in long format with AusTraits formatted trait names, trait
 #' substitutions and unique observation id added. For each location-level field
 #' (such as `life_stage`) that a trait's entry in `metadata$traits` sets, a
@@ -1873,8 +1898,12 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
     }
   }
 
-  # Ensure all lower case
-  out[["value"]] <- tolower(out[["value"]])
+  # Ensure all lower case, except the values of `text` traits, which are
+  # free text (a taxon name, say) and kept as written. `trait_name` still holds
+  # each trait's `var_in` at this point.
+  text_traits <- util_traits_of_type(definitions, "text")
+  i <- !out[["trait_name"]] %in% traits_table[["var_in"]][traits_table[["trait_name"]] %in% text_traits]
+  out[["value"]][i] <- tolower(out[["value"]][i])
 
   # Now create context ids
   if (nrow(contexts) == 0) {
@@ -1912,10 +1941,11 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
   # Implement any value changes as per substitutions
   if (!is.na(metadata[["substitutions"]][1])) {
 
+    # A `text` trait's values keep their case, so its substitutions match it exactly
     substitutions_table <- austraits::convert_list_to_df2(metadata[["substitutions"]]) %>%
       dplyr::mutate(
-        find = tolower(.data$find),
-        replace = tolower(.data$replace)
+        find = ifelse(.data$trait_name %in% text_traits, .data$find, tolower(.data$find)),
+        replace = ifelse(.data$trait_name %in% text_traits, .data$replace, tolower(.data$replace))
       )
 
     if (!"match" %in% names(substitutions_table)) {

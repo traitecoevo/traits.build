@@ -545,6 +545,20 @@ dataset_test_worker <-
           label = "`trait_name`'s"
         )
 
+        # Every trait definition must declare a `type` the build knows, since
+        # each check on a trait's values is chosen by type. One expectation for
+        # the whole of `traits.yml`, not one per trait.
+        unsupported_types <- util_unsupported_trait_types(definitions$elements, schema)
+        test_expect_length_zero(
+          unsupported_types,
+          info = sprintf(
+            "%s\ttrait definitions - `type` must be one of %s",
+            red(file.path(path_config, "traits.yml")),
+            paste(sprintf("'%s'", util_trait_types(schema)), collapse = ", ")
+          ),
+          label = paste(unsupported_types, collapse = ", ")
+        )
+
         # Check units are found in `unit_conversions.csv`
         # This test is being commented out, because fails anytime columns are read in
         # or anytime there are units not in unit_conversions because they are never converted.
@@ -790,8 +804,6 @@ dataset_test_worker <-
 
               # Check replacement values
               to_check <- x[[trait]]$replace %>% unique()
-              # Filter out `flowering_time` values from to-check list
-              to_check <- to_check[!(grepl("^[YyNn]+$", to_check) & stringr::str_length(to_check) == 12)]
               # A `replace` value may be the canonical term or one of its declared
               # synonyms -- `process_replace_synonyms()` resolves synonyms to their
               # canonical value later in the pipeline, so both are legitimate here.
@@ -810,6 +822,20 @@ dataset_test_worker <-
                 failing,
                 info = sprintf(
                   "%s\tsubstitutions - `%s` has invalid replacement values",
+                  red(f), trait),
+                label = failing %>% paste(collapse = "', '")
+              )
+            }
+
+            # A `monthly_presence` trait's replacement values must have the format
+            # the build requires of its values: twelve `y`s and `n`s
+            if (identical(definitions$elements[[trait]]$type, "monthly_presence")) {
+              to_check <- x[[trait]]$replace %>% unique()
+              failing <- to_check[!(is.na(to_check) | util_is_monthly_presence(to_check))]
+              test_expect_length_zero(
+                failing,
+                info = sprintf(
+                  "%s\tsubstitutions - `%s` has invalid replacement values, which must be twelve `y`s and `n`s",
                   red(f), trait),
                 label = failing %>% paste(collapse = "', '")
               )

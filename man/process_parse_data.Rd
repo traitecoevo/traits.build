@@ -32,7 +32,8 @@ split into the identifiers table once \code{observation_id} is set.}
 
 \item{definitions}{Trait definitions for this dataset -- the \code{elements} of the
 \code{traits.yml} schema, keyed by \code{trait_name}, as returned by \code{\link[=dataset_configure]{dataset_configure()}}.
-Used to apply database-wide trait value synonyms.}
+Used to apply database-wide trait value synonyms, and to keep the case of \code{text}
+traits' values, which unlike all others are not lower-cased.}
 }
 \value{
 Tibble in long format with AusTraits formatted trait names, trait
