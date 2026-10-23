@@ -273,8 +273,9 @@ util_allowed_characters <- function() {
   allowed <- c(from_ranges, from_hex(names(spec$letters$values)),
                from_hex(names(spec$symbols$values)))
 
-  # Unicode calls the ordinal indicators letters, so the ranges would otherwise
-  # admit them; they occur only as look-alikes for a symbol.
+  # Unicode calls the ordinal indicators and GREEK SMALL LETTER MU letters, so
+  # the ranges would otherwise admit them; they occur only as look-alikes for a
+  # symbol.
   allowed <- setdiff(unique(allowed), from_hex(names(spec$never_allowed$values)))
 
   character_cache$allowed <- paste(allowed, collapse = "")

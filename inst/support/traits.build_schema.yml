@@ -501,15 +501,14 @@ allowed_characters:
   description: &allowed_characters Characters permitted outside plain ASCII, used by `check_disallowed_chars()` and reported by `dataset_test`. ASCII is always allowed whatever this section says. This is the single global definition; it is not configurable per dataset.
   type: character_set
   letter_ranges:
-    description: Letters are allowed by range rather than listed one at a time, so that a letter and its upper-case form can never be treated differently. Enumerating them by hand left 14 letters allowed in lower case but not upper, which is why a name like Osvaldsson was reported while osvaldsson would not have been. The range covers the accented letters of every European language, which is what contributor, author and taxon names need.
+    description: Letters are allowed by range rather than listed one at a time, so that a letter and its upper-case form can never be treated differently. Enumerating them by hand left 14 letters allowed in lower case but not upper, which is why a name like Osvaldsson was reported while osvaldsson would not have been. The Latin range covers the accented letters of every European language, which is what contributor, author and taxon names need; the Greek range covers the letters methods use as symbols.
     values:
       00C0-017F: Latin-1 Supplement letters and Latin Extended-A. Code points in this range that are not letters are excluded automatically, so 00D7 MULTIPLICATION SIGN and 00F7 DIVISION SIGN are not admitted here; 00D7 is listed under symbols below.
+      0386-03CE: The Greek alphabet, upper and lower case, with its accented forms, for letters carrying a technical meaning in methods, such as 03B4 GREEK SMALL LETTER DELTA for isotope composition (delta13C), 0394 GREEK CAPITAL LETTER DELTA for a difference (deltaT), and 03A6/03C6 PHI and 03A8/03C8 PSI for water potential. 0387 GREEK ANO TELEIA is punctuation and so not admitted. 03BC GREEK SMALL LETTER MU is excluded under never_allowed below.
   letters:
     description: Letters allowed from outside the ranges above.
     values:
       00B5: MICRO SIGN, as in micrometre. Note that 03BC GREEK SMALL LETTER MU is a different code point that looks identical; it is not allowed, so that units are written consistently.
-      03B4: GREEK SMALL LETTER DELTA, for stable isotope composition (e.g. delta13C, delta15N, delta18O), the same role 2030 PER MILLE SIGN plays below.
-      0394: GREEK CAPITAL LETTER DELTA, conventionally used for "difference"/"change" (e.g. deltaT for a temperature change), a distinct meaning from its lower-case form above.
   symbols:
     description: Non-letter characters that carry meaning and so are retained rather than rewritten. A symbol absent from this list is reported, and either belongs here or is a mistake to correct.
     values:
@@ -538,3 +537,4 @@ allowed_characters:
     values:
       00AA: FEMININE ORDINAL INDICATOR, a look-alike for a superscript a
       00BA: MASCULINE ORDINAL INDICATOR, used in error for 00B0 DEGREE SIGN. The most common disallowed character in the database.
+      03BC: GREEK SMALL LETTER MU, a look-alike for 00B5 MICRO SIGN, which is the character units are written with. dataset_replace_disallowed_chars() rewrites it as 00B5.
