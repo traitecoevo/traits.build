@@ -60,6 +60,19 @@ util_disallowed_char_replacements <- function() {
     # INCREMENT is what Option-J types on a Mac, and is indistinguishable from it.
     "\u2206" = "\u0394",         # INCREMENT -> GREEK CAPITAL LETTER DELTA
 
+    # Symbol forms of Greek letters, which math typesetting and PDF text
+    # extraction produce for the letter a person meant. Unicode itself maps each
+    # to that letter (NFKC), and only the letters are allowed, so `phi` is not
+    # written two ways.
+    "\u03d0" = "\u03b2",         # GREEK BETA SYMBOL -> SMALL LETTER BETA
+    "\u03d1" = "\u03b8",         # GREEK THETA SYMBOL -> SMALL LETTER THETA
+    "\u03d5" = "\u03c6",         # GREEK PHI SYMBOL -> SMALL LETTER PHI
+    "\u03d6" = "\u03c0",         # GREEK PI SYMBOL -> SMALL LETTER PI
+    "\u03f0" = "\u03ba",         # GREEK KAPPA SYMBOL -> SMALL LETTER KAPPA
+    "\u03f1" = "\u03c1",         # GREEK RHO SYMBOL -> SMALL LETTER RHO
+    "\u03f4" = "\u0398",         # GREEK CAPITAL THETA SYMBOL -> CAPITAL LETTER THETA
+    "\u03f5" = "\u03b5",         # GREEK LUNATE EPSILON SYMBOL -> SMALL LETTER EPSILON
+
     # The "proper" Unicode hyphen, indistinguishable from the plain ASCII
     # hyphen-minus it's meant to be -- typically introduced when a word
     # processor or PDF export auto-substitutes the "-" a person actually
