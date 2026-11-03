@@ -235,7 +235,7 @@ austraits:
         affiliation: Last known institution or affiliation.
         additional_role: Additional roles of data collector, mostly contact person.  
     identifiers:
-      description: A table containing details on identifiers that cross-references observations between the two dataframes using combinations of the variables `dataset_id` and `observation_id`.
+      description: A table containing details on identifiers that cross-reference observations between the two dataframes using combinations of the variables `dataset_id` and `observation_id`. For preserved specimens, it ideally indicates which records were 'sampled' to measure a specific trait.
       type: table
       elements:
         dataset_id: *dataset_id
@@ -428,7 +428,7 @@ metadata:
         original_file: The name of the file initially submitted to AusTraits.
         notes: Generic notes about the study and processing of data.
     identifiers:
-      description: A list of columns that include identifiers that cross-references observations to information in other databases, biodiversity collections and informatics resources. For preserved specimens, this list ideally indicates which records were 'sampled' to measure a specific trait.
+      description: A list of columns that include identifiers that cross-reference observations to information in other databases, biodiversity collections and informatics resources. For preserved specimens, this list ideally indicates which records were 'sampled' to measure a specific trait.
       type: array
       elements:        
         var_in: Name of column with contextual data in the original data submitted.
