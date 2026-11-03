@@ -311,3 +311,24 @@ test_that("`dataset_test` fails a `metadata.yml` entry with a field that has no 
     fixed = TRUE, all = FALSE
   )
 })
+
+
+test_that("`dataset_test` fails an empty field in a data collector or a source (#307)", {
+  # The same conversion drops a data collector from `contributors`, and a
+  # reference from the table of source keys, which then pairs the remaining
+  # keys with the wrong source types
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  lines <- readLines(path_metadata)
+  lines <- append(lines, "    number:", after = grep("^  primary:", lines)[1])
+  lines <- append(lines, "    additional_role: []", after = grep("^  - last_name: Westoby", lines))
+  writeLines(lines, path_metadata)
+
+  failures <- dataset_test_failures("Test_2023_2", path_data = path_data)
+  expect_match(failures, "contributors data_collectors - field(s) with no value, which drop their entry from the build: entry 2 (last_name: Westoby) `additional_role`",
+               fixed = TRUE, all = FALSE)
+  expect_match(failures, "source - field(s) with no value, which drop their entry from the build: entry 1 (key: Test_2023_2) `number`",
+               fixed = TRUE, all = FALSE)
+})

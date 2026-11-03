@@ -347,11 +347,12 @@ test_expect_list_elements_exact_names <- function(object, expected, info) {
 
 #' Fields of a `metadata.yml` list section that have no value
 #'
-#' An empty field (`replicates:` with nothing after it, or `~`) reads as `NULL`.
-#' `austraits::convert_list_to_df2()` turns that into a zero-length column, which
-#' recycles the entry's other columns down to zero rows, so the whole entry is
-#' dropped from the build without a message (#307). An explicit `.na` is a value,
-#' checked like any other, so it is not reported.
+#' An empty field (`replicates:` with nothing after it, or `~`) reads as `NULL`,
+#' and an empty collection (`[]` or `{}`) as a zero-length list.
+#' `austraits::convert_list_to_df2()` turns either into a zero-length column,
+#' which recycles the entry's other columns down to zero rows, so the whole entry
+#' is dropped from the build without a message (#307). An explicit `.na` is a
+#' value, checked like any other, so it is not reported.
 #'
 #' @param entries A list section of `metadata.yml`, such as `traits`
 #' @return A character vector naming each empty field and its entry; empty if
@@ -365,7 +366,7 @@ util_list_empty_fields <- function(entries) {
 
   # Name an entry by the field a curator would search the file for
   describe <- function(entry, i) {
-    for (field in c("var_in", "context_property", "find", "trait_name")) {
+    for (field in c("var_in", "context_property", "find", "trait_name", "key", "last_name")) {
       x <- entry[[field]]
       if (length(x) == 1 && !is.na(x)) {
         return(sprintf("entry %d (%s: %s)", i, field, x))
@@ -379,7 +380,7 @@ util_list_empty_fields <- function(entries) {
     entry <- entries[[i]]
     if (!is.list(entry)) next
     label <- describe(entry, i)
-    empty <- names(entry)[vapply(entry, is.null, logical(1))]
+    empty <- names(entry)[lengths(entry) == 0]
     out <- c(out, sprintf("%s `%s`", label, empty))
     # A context's `values` are entries of their own, converted the same way
     if (is.list(entry[["values"]])) {

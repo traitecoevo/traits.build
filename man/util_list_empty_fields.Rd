@@ -14,10 +14,11 @@ A character vector naming each empty field and its entry; empty if
 there are none
 }
 \description{
-An empty field (\verb{replicates:} with nothing after it, or \code{~}) reads as \code{NULL}.
-\code{austraits::convert_list_to_df2()} turns that into a zero-length column, which
-recycles the entry's other columns down to zero rows, so the whole entry is
-dropped from the build without a message (#307). An explicit \code{.na} is a value,
-checked like any other, so it is not reported.
+An empty field (\verb{replicates:} with nothing after it, or \code{~}) reads as \code{NULL},
+and an empty collection (\verb{[]} or \code{{}}) as a zero-length list.
+\code{austraits::convert_list_to_df2()} turns either into a zero-length column,
+which recycles the entry's other columns down to zero rows, so the whole entry
+is dropped from the build without a message (#307). An explicit \code{.na} is a
+value, checked like any other, so it is not reported.
 }
 \keyword{internal}

@@ -560,6 +560,18 @@ test_that("util_list_empty_fields names fields with no value, but not `.na` (#30
       "entry 3 (var_in: trt), values entry 1 (find: a) `description`")
   )
 
+  # An empty collection drops its entry just as an empty field does
+  entries <- yaml::yaml.load("
+- var_in: LMA
+  replicates: []
+- last_name: Smith
+  ORCID: {}
+")
+  expect_equal(
+    util_list_empty_fields(entries),
+    c("entry 1 (var_in: LMA) `replicates`", "entry 2 (last_name: Smith) `ORCID`")
+  )
+
   # A section left as `.na`, or one with nothing empty, has nothing to report
   expect_equal(util_list_empty_fields(NA), character(0))
   expect_equal(util_list_empty_fields(list(list(var_in = "LMA"))), character(0))
