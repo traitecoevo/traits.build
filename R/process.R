@@ -2457,10 +2457,17 @@ build_add_version <- function(austraits, version, git_sha) {
 #'
 #' A database repository may define `post_build <- function(database) { ...;
 #' database }` in `R/post_build.R`, for processing applied to the whole
-#' database once its datasets are combined: adding a column, moving a context
-#' into the traits table, or writing extra exports such as a flattened copy.
-#' Every pipeline [build_setup_pipeline()] writes calls this after
-#' [build_add_version()] and before the database is saved.
+#' database once its datasets are combined, such as adding a column or moving
+#' a context into the traits table. Every pipeline [build_setup_pipeline()]
+#' writes calls this after [build_add_version()] and before the database is
+#' saved.
+#'
+#' `post_build()` runs on every rebuild of the combined database, including a
+#' `targets` or `remake` rebuild after one dataset changes, so it should be
+#' quick. Outputs derived from the finished database that are wanted only when
+#' publishing it, such as a flattened copy or parquet files, belong in
+#' `post_export()` in `R/post_export.R` instead, which [build_post_export()]
+#' runs when asked and no build runs.
 #'
 #' What `post_build()` returns replaces the database; there is no second,
 #' "processed" copy. It must therefore return the database, with every
@@ -2497,7 +2504,7 @@ build_add_version <- function(austraits, version, git_sha) {
 #'
 #' @return The database `post_build()` returned, with
 #'  `build_info$post_build` added; or `database` unchanged if there is no file
-#' @seealso [build_setup_pipeline()], [build_add_version()]
+#' @seealso [build_setup_pipeline()], [build_add_version()], [build_post_export()]
 #' @export
 #' @examples
 #' \dontrun{
@@ -2523,24 +2530,7 @@ build_post_process <- function(database, file = "R/post_build.R") {
 
   md5 <- util_md5_text_file(file)
 
-  # The parent is the search path, not the global environment: `build.R` leaves
-  # every dataset and config object there and a `targets` worker leaves none, so
-  # code leaning on them would work under one pipeline and fail under another.
-  # Nor is it this package's namespace, which would expose internal functions.
-  envir <- new.env(parent = parent.env(globalenv()))
-  # `keep.source = TRUE` so a syntax error names the file, and a traceback from
-  # `post_build()` gives its line numbers
-  sys.source(file, envir = envir, keep.source = TRUE)
-  # `library()` attaches a package next to the global environment, above the
-  # parent taken before the file ran, so a package the file attaches would be
-  # out of sight in a fresh session and in sight on a re-run. Re-take the parent
-  # now that the file has run.
-  parent.env(envir) <- parent.env(globalenv())
-
-  post_build <- get0("post_build", envir = envir, inherits = FALSE)
-  if (!is.function(post_build)) {
-    stop(sprintf("`%s` must define a function `post_build(database)`", file), call. = FALSE)
-  }
+  post_build <- util_source_hook(file, "post_build", "post_build(database)")
 
   message(green(sprintf("Running `post_build()` from `%s`", file)))
   processed <- post_build(database)
@@ -2583,6 +2573,99 @@ build_post_process <- function(database, file = "R/post_build.R") {
   processed$build_info$post_build <- list(file = file, md5 = md5)
 
   processed
+}
+
+#' Run a database repository's export step
+#'
+#' A database repository may define `post_export <- function(database, path)`
+#' in `R/post_export.R`, for outputs derived from the finished database that are
+#' wanted only when it is published: a flattened copy, parquet files, other
+#' formats. No build runs it, so it adds nothing to a rebuild; it runs when this
+#' is called, from a repository's release script, or by [build_export()] after
+#' a `targets` build.
+#'
+#' Processing that belongs in the database itself, applied on every build,
+#' goes in `post_build()` in `R/post_build.R` instead; see
+#' [build_post_process()]. `post_export()` cannot change the database: its
+#' return value is ignored, and what it writes is derived from the database as
+#' built.
+#'
+#' The file is sourced as for [build_post_process()], into a fresh environment
+#' whose parent is the search path. The file is separate from `R/post_build.R`
+#' because `targets` rebuilds the database whenever `R/post_build.R` changes,
+#' and an edit to export code should not.
+#'
+#' @param database Database object, as built by the pipeline
+#' @param path Directory `post_export()` should write into; created if missing
+#' @param file Path to the file defining `post_export()`. If the file does not
+#'  exist, nothing is run.
+#'
+#' @return `path`, invisibly
+#' @seealso [build_post_process()], [build_export()]
+#' @export
+#' @examples
+#' \dontrun{
+#' # In R/post_export.R
+#' post_export <- function(database, path) {
+#'   flattened <- austraits::flatten_database(database)
+#'   saveRDS(flattened, file.path(path, "database-flattened.rds"))
+#' }
+#'
+#' # In a release script
+#' database <- readRDS("export/data/curr/database.rds")
+#' build_post_export(database, "export/data/release")
+#' }
+build_post_export <- function(database,
+                              path = file.path("export", "data", "curr"),
+                              file = "R/post_export.R") {
+
+  if (!is.character(file) || length(file) != 1) {
+    stop("`file` must be a single path", call. = FALSE)
+  }
+
+  if (!file.exists(file)) {
+    return(invisible(path))
+  }
+
+  post_export <- util_source_hook(file, "post_export", "post_export(database, path)")
+
+  dir.create(path, showWarnings = FALSE, recursive = TRUE)
+  message(green(sprintf("Running `post_export()` from `%s` into `%s`", file, path)))
+  post_export(database, path)
+
+  invisible(path)
+}
+
+#' Source a repository's hook file and return the function it defines
+#'
+#' @param file Path to the file
+#' @param name Name of the function the file must define
+#' @param usage How the function is called, for the error if it is missing
+#'
+#' @return The function
+#' @noRd
+util_source_hook <- function(file, name, usage) {
+
+  # The parent is the search path, not the global environment: `build.R` leaves
+  # every dataset and config object there and a `targets` worker leaves none, so
+  # code leaning on them would work under one pipeline and fail under another.
+  # Nor is it this package's namespace, which would expose internal functions.
+  envir <- new.env(parent = parent.env(globalenv()))
+  # `keep.source = TRUE` so a syntax error names the file, and a traceback from
+  # the hook gives its line numbers
+  sys.source(file, envir = envir, keep.source = TRUE)
+  # `library()` attaches a package next to the global environment, above the
+  # parent taken before the file ran, so a package the file attaches would be
+  # out of sight in a fresh session and in sight on a re-run. Re-take the parent
+  # now that the file has run.
+  parent.env(envir) <- parent.env(globalenv())
+
+  hook <- get0(name, envir = envir, inherits = FALSE)
+  if (!is.function(hook)) {
+    stop(sprintf("`%s` must define a function `%s`", file, usage), call. = FALSE)
+  }
+
+  hook
 }
 
 #' md5 checksum of a text file, whatever its line endings

@@ -1,12 +1,15 @@
 ## The post-build step (#197): a database repository's `post_build()` in
-## `R/post_build.R`, run by `build_post_process()` after `build_add_version()`.
+## `R/post_build.R`, run by `build_post_process()` after `build_add_version()`;
+## and the export step, its `post_export()` in `R/post_export.R`, run by
+## `build_post_export()` and `build_export()` but by no pipeline.
 ##
 ## The unit tests use a small stand-in database and a file in a temporary
 ## directory. A path written into generated code goes through `encodeString()`:
 ## pasted in raw, a Windows temp path's backslashes (`C:\Users\...`) parse as
-## escapes. The pipeline tests write `R/post_build.R` into this directory,
-## which is the database repository every pipeline test builds, so each one
-## removes it again: left behind, it would run in every later build.
+## escapes. The pipeline tests write `R/post_build.R` and `R/post_export.R`
+## into this directory, which is the database repository every pipeline test
+## builds, so each one removes them again: left behind, `R/post_build.R` would
+## run in every later build.
 
 # A stand-in with the shape `build_post_process()` checks: tables, lists and a
 # `build_info` as `build_add_version()` leaves it
@@ -193,6 +196,50 @@ test_that("`build_post_process` keeps the database's class when `post_build` dro
 })
 
 
+test_that("`build_post_export` does nothing without a file", {
+
+  path <- file.path(withr::local_tempdir(), "export")
+
+  expect_identical(
+    build_post_export(post_build_test_database(), path, file.path(withr::local_tempdir(), "post_export.R")),
+    path
+  )
+  expect_false(dir.exists(path))
+
+  expect_error(build_post_export(post_build_test_database(), path, character(0)), "single path")
+})
+
+
+test_that("`build_post_export` runs `post_export` into `path`, ignoring what it returns", {
+
+  dir <- withr::local_tempdir()
+  file <- file.path(dir, "post_export.R")
+  writeLines(c(
+    "post_export <- function(database, path) {",
+    "  readr::write_csv(database$traits, file.path(path, 'traits.csv'))",
+    "  database$traits <- NULL",
+    "  'not the database'",
+    "}"
+  ), file)
+  # A directory that does not exist yet
+  path <- file.path(dir, "export", "release")
+  database <- post_build_test_database()
+
+  expect_message(
+    returned <- build_post_export(database, path, file),
+    "Running `post_export()`", fixed = TRUE
+  )
+
+  expect_identical(returned, path)
+  expect_equal(read_csv_char(file.path(path, "traits.csv"))$trait_name, "leaf_area")
+  # The caller's database is untouched
+  expect_identical(database, post_build_test_database())
+
+  writeLines("post_build <- function(database) database", file)
+  expect_error(build_post_export(database, path, file), "must define a function `post_export(database, path)`", fixed = TRUE)
+})
+
+
 test_that("every pipeline calls the post-build step, whether or not the file exists", {
 
   withr::defer({
@@ -365,4 +412,74 @@ test_that("the `remake` pipeline runs `post_build()`", {
   expect_silent(suppressMessages(database <- remake::make("database")))
   expect_equal(unique(database$traits$curve_id), "remade")
   expect_equal(database$build_info$post_build$file, "R/post_build.R")
+})
+
+
+test_that("the base pipeline does not run `post_export()`", {
+
+  file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml", overwrite = TRUE)
+
+  withr::defer({
+    unlink("R/post_export.R")
+    suppressMessages(build_setup_pipeline(method = "base"))
+  })
+
+  written <- file.path(withr::local_tempdir(), "exported.csv")
+  writeLines(c(
+    "post_export <- function(database, path) {",
+    sprintf("  readr::write_csv(database$traits, %s)", encodeString(written, quote = '"')),
+    "}"
+  ), "R/post_export.R")
+
+  suppressMessages(build_setup_pipeline(method = "base"))
+  built <- new.env()
+  suppressMessages(source("build.R", local = built))
+
+  expect_false(file.exists(written))
+  expect_null(built$database$build_info$post_build)
+
+  # A release script runs it on the saved database
+  suppressMessages(build_post_export(readRDS("export/data/curr/database.rds")))
+  expect_equal(nrow(read_csv_char(written)), nrow(built$database$traits))
+})
+
+
+test_that("`build_export` runs `post_export()`, which `tar_make()` neither runs nor tracks", {
+
+  skip_if_not_installed("targets")
+
+  file.copy("data/Test_2022/test-metadata.yml", "data/Test_2022/metadata.yml", overwrite = TRUE)
+
+  withr::defer({
+    unlink("_targets", recursive = TRUE)
+    unlink(c("_targets.R", "R/post_build.R", "R/post_export.R"))
+    unlink("export/data/curr/exported.csv")
+  })
+  unlink(c("R/post_build.R", "R/post_export.R"))
+
+  suppressMessages(build_setup_pipeline(method = "targets"))
+  make <- function() suppressMessages(targets::tar_make(reporter = "silent", callr_function = NULL))
+  rebuilt <- function() {
+    progress <- targets::tar_progress()
+    progress$name[progress$progress == "completed"]
+  }
+
+  make()
+
+  # Adding the export step rebuilds nothing, and `tar_make()` does not run it
+  writeLines(c(
+    "post_export <- function(database, path) {",
+    "  readr::write_csv(database$traits, file.path(path, 'exported.csv'))",
+    "}"
+  ), "R/post_export.R")
+  make()
+  expect_false("database" %in% rebuilt())
+  expect_false(file.exists("export/data/curr/exported.csv"))
+
+  suppressMessages(build_export("database"))
+  expect_true(file.exists("export/data/curr/database.rds"))
+  expect_equal(
+    nrow(read_csv_char("export/data/curr/exported.csv")),
+    nrow(targets::tar_read(database)$traits)
+  )
 })

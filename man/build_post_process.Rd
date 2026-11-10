@@ -20,12 +20,19 @@ The database \code{post_build()} returned, with
 }
 \description{
 A database repository may define \code{post_build <- function(database) { ...; database }} in \code{R/post_build.R}, for processing applied to the whole
-database once its datasets are combined: adding a column, moving a context
-into the traits table, or writing extra exports such as a flattened copy.
-Every pipeline \code{\link[=build_setup_pipeline]{build_setup_pipeline()}} writes calls this after
-\code{\link[=build_add_version]{build_add_version()}} and before the database is saved.
+database once its datasets are combined, such as adding a column or moving
+a context into the traits table. Every pipeline \code{\link[=build_setup_pipeline]{build_setup_pipeline()}}
+writes calls this after \code{\link[=build_add_version]{build_add_version()}} and before the database is
+saved.
 }
 \details{
+\code{post_build()} runs on every rebuild of the combined database, including a
+\code{targets} or \code{remake} rebuild after one dataset changes, so it should be
+quick. Outputs derived from the finished database that are wanted only when
+publishing it, such as a flattened copy or parquet files, belong in
+\code{post_export()} in \code{R/post_export.R} instead, which \code{\link[=build_post_export]{build_post_export()}}
+runs when asked and no build runs.
+
 What \code{post_build()} returns replaces the database; there is no second,
 "processed" copy. It must therefore return the database, with every
 component it was given, and anything else is an error. Side effects, such as
@@ -67,5 +74,5 @@ database$build_info$post_build
 }
 }
 \seealso{
-\code{\link[=build_setup_pipeline]{build_setup_pipeline()}}, \code{\link[=build_add_version]{build_add_version()}}
+\code{\link[=build_setup_pipeline]{build_setup_pipeline()}}, \code{\link[=build_add_version]{build_add_version()}}, \code{\link[=build_post_export]{build_post_export()}}
 }

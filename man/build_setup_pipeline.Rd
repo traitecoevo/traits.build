@@ -81,8 +81,15 @@ to the pipeline. \code{targets} notices the file being added, edited or deleted.
 \code{R/post_build.R} only if the file existed when the pipeline was set up:
 re-run \code{build_setup_pipeline()} after adding or removing it, as after adding
 a dataset.
+
+Because it runs on every rebuild of the combined database, \code{post_build()}
+should be quick. Outputs wanted only when the database is published, such as
+a flattened copy or parquet files, go in \code{post_export()} in
+\code{R/post_export.R}, which no pipeline runs: \code{\link[=build_post_export]{build_post_export()}} runs it,
+from a repository's release script, and so does \code{\link[=build_export]{build_export()}} after a
+\code{targets} build.
 }
 
 \seealso{
-\code{\link[=build_export]{build_export()}}, \code{\link[=build_post_process]{build_post_process()}}
+\code{\link[=build_export]{build_export()}}, \code{\link[=build_post_process]{build_post_process()}}, \code{\link[=build_post_export]{build_post_export()}}
 }

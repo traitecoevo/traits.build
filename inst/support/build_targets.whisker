@@ -11,7 +11,8 @@
 #   # 2. load the result into your session
 #   {{database_name}} <- targets::tar_read({{database_name}})
 #
-#   # 3. write export/data/curr, when you want to publish
+#   # 3. write export/data/curr, when you want to publish; this also runs
+#   #    `post_export()` from R/post_export.R, if the repository has one
 #   build_export("{{database_name}}")
 #
 # Step 2 is separate because `tar_make()` returns nothing: it builds into the

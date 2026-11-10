@@ -1426,7 +1426,14 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' re-run `build_setup_pipeline()` after adding or removing it, as after adding
 #' a dataset.
 #'
-#' @seealso [build_export()], [build_post_process()]
+#' Because it runs on every rebuild of the combined database, `post_build()`
+#' should be quick. Outputs wanted only when the database is published, such as
+#' a flattened copy or parquet files, go in `post_export()` in
+#' `R/post_export.R`, which no pipeline runs: [build_post_export()] runs it,
+#' from a repository's release script, and so does [build_export()] after a
+#' `targets` build.
+#'
+#' @seealso [build_export()], [build_post_process()], [build_post_export()]
 #' @export
 build_setup_pipeline <- function(dataset_ids = dir("data"),
                                  method = "base",
@@ -1525,7 +1532,7 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
       "\t-> then `targets::tar_read(%s)` to load it; `tar_make()` itself returns nothing",
       database_name)))
     message(green(sprintf(
-      "\t-> then `build_export(\"%s\")` to write export/data/curr, which `tar_make()` leaves alone",
+      "\t-> then `build_export(\"%s\")` to write export/data/curr, and run any `post_export()`, which `tar_make()` leaves alone",
       database_name)))
   }
 
@@ -1566,15 +1573,17 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 #' The `targets` pipeline rebuilds the compilation but does not write the
 #' exported `.rds`: that write is around a third of a one-dataset rebuild, and
 #' it is a publishing step rather than part of checking a dataset. This writes
-#' it, reading the compilation `targets::tar_make()` has already built.
+#' it, reading the compilation `targets::tar_make()` has already built, then
+#' runs the repository's `post_export()` from `R/post_export.R`, if it has one,
+#' into the same directory (see [build_post_export()]).
 #'
 #' @param database_name Name of the database, matching the one given to
 #'  [build_setup_pipeline()]. A pipeline set up with a `database_name` other
 #'  than the default must be exported with that same name.
 #' @param path Directory to write into
 #'
-#' @return The path written, invisibly
-#' @seealso [build_setup_pipeline()]
+#' @return The path of the `.rds` written, invisibly
+#' @seealso [build_setup_pipeline()], [build_post_export()]
 #' @export
 #' @examples
 #' \dontrun{
@@ -1615,6 +1624,8 @@ build_export <- function(database_name = "database",
   saveRDS(database, file)
 
   message(green(sprintf("\t-> written to `%s`", file)))
+
+  build_post_export(database, path)
 
   invisible(file)
 }
