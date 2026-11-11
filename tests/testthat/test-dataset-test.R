@@ -255,14 +255,14 @@ test_that("`dataset_test` accepts a context scoped to specific traits by a colum
 
 # `source_id` links each record to the reference it was taken from (#296).
 # Test_2023_2 maps a `source_id` column holding `Test_2022` and `Test_2002`, and
-# lists both as `original_source` references, so it passes; each edit below
+# lists both as `source` references, so it passes; each edit below
 # breaks one thing and must be reported for that thing.
 
 test_that("`dataset_test` reports a `source` block in the old shape, and the build refuses it (#296)", {
   out <- dataset_test_edited(function(metadata) {
     # One named entry per reference, as traits.build wrote before 2.3.0
-    originals <- metadata$source$original_source
-    metadata$source$original_source <- NULL
+    originals <- metadata$source$source
+    metadata$source$source <- NULL
     metadata$source$original_01 <- originals[[1]]
     metadata$source$original_02 <- originals[[2]]
     metadata
@@ -301,11 +301,11 @@ test_that("`dataset_test` reports a bare value where a reference belongs, and th
 
 test_that("`dataset_test` reports `source_id` values that match no reference (#296)", {
   out <- dataset_test_edited(function(metadata) {
-    metadata$source$original_source <- NULL
+    metadata$source$source <- NULL
     metadata
   })
 
-  hits <- grep("`source_id` (each value must be the `key` of the primary or an `original_source` reference)", out, fixed = TRUE)
+  hits <- grep("`source_id` (each value must be the dataset_id or the `key` of a `source` reference)", out, fixed = TRUE)
   expect_length(hits, 1)
   expect_match(out[hits], "should not contain: 'Test_2022', 'Test_2002'|should not contain: 'Test_2002', 'Test_2022'")
   # Not an old-shape problem, and the dataset still builds
@@ -316,15 +316,15 @@ test_that("`dataset_test` reports `source_id` values that match no reference (#2
 
 test_that("`dataset_test` says to move a `secondary` reference that records are taken from (#296)", {
   out <- dataset_test_edited(function(metadata) {
-    moved <- metadata$source$original_source[[2]]
-    metadata$source$original_source <- metadata$source$original_source[1]
+    moved <- metadata$source$source[[2]]
+    metadata$source$source <- metadata$source$source[1]
     metadata$source$secondary <- list(moved)
     metadata
   })
 
   expect_match(
     paste(out, collapse = "\n"),
-    "move these entries to `original_source`: 'Test_2002'",
+    "move these entries to `source`: 'Test_2002'",
     fixed = TRUE
   )
   # The moved key is reported once, as misplaced, not again as unmatched
@@ -332,17 +332,17 @@ test_that("`dataset_test` says to move a `secondary` reference that records are 
 })
 
 
-test_that("`dataset_test` reports an `original_source` reference no record names (#296)", {
+test_that("`dataset_test` reports a `source` reference no record names (#296)", {
   out <- dataset_test_edited(function(metadata) {
-    unused <- metadata$source$original_source[[1]]
+    unused <- metadata$source$source[[1]]
     unused$key <- "Test_1999"
-    metadata$source$original_source <- c(metadata$source$original_source, list(unused))
+    metadata$source$source <- c(metadata$source$source, list(unused))
     metadata
   })
 
   expect_match(
     paste(out, collapse = "\n"),
-    "no record's `source_id` names these `original_source` references (a typo in the data, or the reference is really `secondary`): 'Test_1999'",
+    "no record's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): 'Test_1999'",
     fixed = TRUE
   )
 })
@@ -351,13 +351,42 @@ test_that("`dataset_test` reports an `original_source` reference no record names
 test_that("`dataset_test` hints when `source_id` holds an entry's name rather than its key (#296)", {
   out <- dataset_test_edited(function(metadata) {
     # A constant, as `process_parse_data()` would read it: no such column
-    metadata$dataset$source_id <- "original_source"
+    metadata$dataset$source_id <- "source"
     metadata
   })
 
   hits <- grep("a value such as `secondary_01` is the name of an entry, not its `key`", out, fixed = TRUE)
   expect_length(hits, 1)
-  expect_match(out[hits], "should not contain: 'original_source'", fixed = TRUE)
-  # Nothing links to the two originals now, so they are reported as unused
-  expect_true(any(grepl("no record's `source_id` names these `original_source` references", out, fixed = TRUE)))
+  expect_match(out[hits], "should not contain: 'source'", fixed = TRUE)
+  # Nothing links to the two sources now, so they are reported as unused
+  expect_true(any(grepl("no record's `source_id` names these `source` references", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` requires the dataset reference to be keyed by the dataset_id (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    metadata$source$dataset$key <- "Falster_2005"
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "the `dataset` reference's key `Falster_2005` must be the dataset_id, `Test_2023_2`",
+    fixed = TRUE
+  )
+})
+
+
+test_that("`dataset_test` reports the old `primary` name, and the build refuses it (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    names(metadata$source)[names(metadata$source) == "dataset"] <- "primary"
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "`primary`: not in the expected shape, so the dataset will not build",
+    fixed = TRUE
+  )
+  expect_true(any(grepl("metadata_convert_sources()", out, fixed = TRUE)))
 })

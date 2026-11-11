@@ -1,5 +1,5 @@
 source:
-  primary:
+  dataset:
     key: Test_2023_4
     bibtype: Online
     year: 2023
@@ -8,7 +8,7 @@ source:
       Trust Version 2.0.
     url: https://plantnet.rbgsyd.nsw.gov.au/
     note: accessed on 6 May, 2022.
-  original_source:
+  source:
   - key: Test_2003
     bibtype: Unpublished
     year: '2003'

@@ -1,5 +1,5 @@
 source:
-  primary:
+  dataset:
     key: Test_2023_2
     bibtype: Article
     author: Daniel S. Falster, Mark Westoby
@@ -11,7 +11,7 @@ source:
     pages: 521--535
     publisher: Wiley-Blackwell
     doi: 10.1111/j.0022-0477.2005.00992.x
-  original_source:
+  source:
   - key: Test_2022
     bibtype: Unpublished
     year: '2022'

@@ -299,73 +299,83 @@ test_that("the chunked path is actually taken, and only when it applies", {
 
 test_that("`util_flatten_sources` reads the list shape, one row per reference", {
   source <- list(
-    primary = list(key = "Smith_2020", bibtype = "Article"),
-    secondary = list(list(key = "Smith_2021", bibtype = "Article")),
-    original_source = list(
+    dataset = list(key = "Smith_2020", bibtype = "Article"),
+    source = list(
       list(key = "Jones_1999", bibtype = "Thesis"),
       list(key = "Brown_2005", bibtype = "Book")
-    )
+    ),
+    secondary = list(list(key = "Smith_2021", bibtype = "Article"))
   )
   out <- util_flatten_sources(source)
 
   expect_s3_class(out, "tbl_df")
   expect_named(out, c("slot", "type", "key", "legacy", "entry"))
-  expect_equal(out$type, c("primary", "secondary", "original_source", "original_source"))
-  expect_equal(out$key, c("Smith_2020", "Smith_2021", "Jones_1999", "Brown_2005"))
+  expect_equal(out$type, c("dataset", "source", "source", "secondary"))
+  expect_equal(out$key, c("Smith_2020", "Jones_1999", "Brown_2005", "Smith_2021"))
   expect_false(any(out$legacy))
-  expect_equal(out$entry[[4]]$bibtype, "Book")
+  expect_equal(out$entry[[3]]$bibtype, "Book")
 
-  # A primary alone, and an empty block
-  expect_equal(util_flatten_sources(source["primary"])$type, "primary")
+  # A dataset reference alone, and an empty block
+  expect_equal(util_flatten_sources(source["dataset"])$type, "dataset")
   expect_equal(nrow(util_flatten_sources(NULL)), 0)
   expect_equal(nrow(util_flatten_sources(list())), 0)
   # `secondary: .na` is no reference at all
-  expect_equal(nrow(util_flatten_sources(list(primary = source$primary, secondary = NA))), 1)
+  expect_equal(nrow(util_flatten_sources(list(dataset = source$dataset, secondary = NA))), 1)
   # A reference without a key is kept, with an NA key, for `dataset_test()` to report
-  expect_equal(util_flatten_sources(list(primary = list(bibtype = "Article")))$key, NA_character_)
+  expect_equal(util_flatten_sources(list(dataset = list(bibtype = "Article")))$key, NA_character_)
 })
 
 
-test_that("`util_flatten_sources` refuses the old shape, naming the entry", {
-  primary <- list(key = "Smith_2020", bibtype = "Article")
+test_that("`util_flatten_sources` refuses the old shapes, naming the entry", {
+  dataset <- list(key = "Smith_2020", bibtype = "Article")
   old_shapes <- list(
+    # the old names
+    list(primary = dataset),
+    list(dataset = dataset, original_source = list(list(key = "Jones_1999"))),
     # `secondary` as a single mapping rather than a list
-    list(primary = primary, secondary = list(key = "Smith_2021", bibtype = "Article")),
+    list(dataset = dataset, secondary = list(key = "Smith_2021", bibtype = "Article")),
     # numbered entries
-    list(primary = primary, secondary_01 = list(key = "Smith_2021"), secondary_2 = list(key = "Smith_2022")),
-    list(primary = primary, original_01 = list(key = "Jones_1999")),
-    list(primary = primary, original_source_01 = list(key = "Jones_1999"))
+    list(dataset = dataset, secondary_01 = list(key = "Smith_2021"), secondary_2 = list(key = "Smith_2022")),
+    list(dataset = dataset, original_01 = list(key = "Jones_1999")),
+    list(dataset = dataset, original_source_01 = list(key = "Jones_1999"))
   )
   for (source in old_shapes) {
     expect_error(util_flatten_sources(source), "a shape traits.build no longer reads")
   }
-  expect_error(util_flatten_sources(old_shapes[[2]]), "`secondary_01`, `secondary_2`")
+  expect_error(util_flatten_sources(old_shapes[[4]]), "`secondary_01`, `secondary_2`")
+  expect_error(util_flatten_sources(old_shapes[[1]]), "metadata_convert_sources()", fixed = TRUE)
 
-  # Leniently, the same entries are flattened and flagged, and `original` becomes `original_source`
-  out <- util_flatten_sources(old_shapes[[3]], strict = FALSE)
-  expect_equal(out$type, c("primary", "original_source"))
-  expect_equal(out$legacy, c(FALSE, TRUE))
-  expect_equal(out$slot, c("primary", "original_01"))
-
+  # Leniently, the same entries are flattened and flagged, with their current type
+  out <- util_flatten_sources(old_shapes[[1]], strict = FALSE)
+  expect_equal(out$type, "dataset")
+  expect_equal(out$legacy, TRUE)
   out <- util_flatten_sources(old_shapes[[2]], strict = FALSE)
-  expect_equal(out$type, c("primary", "secondary", "secondary"))
+  expect_equal(out$type, c("dataset", "source"))
+  expect_equal(out$legacy, c(FALSE, TRUE))
+  out <- util_flatten_sources(old_shapes[[5]], strict = FALSE)
+  expect_equal(out$type, c("dataset", "source"))
+  expect_equal(out$legacy, c(FALSE, TRUE))
+  expect_equal(out$slot, c("dataset", "original_01"))
+
+  out <- util_flatten_sources(old_shapes[[4]], strict = FALSE)
+  expect_equal(out$type, c("dataset", "secondary", "secondary"))
   expect_equal(out$key, c("Smith_2020", "Smith_2021", "Smith_2022"))
 
   # A bare value where a reference belongs is refused too, rather than dropped
   # unseen: `secondary: Smith_2021`, a list of bare keys, or one such item
   bare <- list(
-    list(primary = primary, secondary = "Smith_2021"),
-    list(primary = primary, secondary = c("Smith_2021", "Jones_2000")),
-    list(primary = primary,
-         original_source = list(list(key = "Jones_1999", bibtype = "Thesis"), "Brown_2005")),
-    list(primary = "Smith_2020")
+    list(dataset = dataset, secondary = "Smith_2021"),
+    list(dataset = dataset, secondary = c("Smith_2021", "Jones_2000")),
+    list(dataset = dataset,
+         source = list(list(key = "Jones_1999", bibtype = "Thesis"), "Brown_2005")),
+    list(dataset = "Smith_2020")
   )
   for (source in bare) {
     expect_error(util_flatten_sources(source), "a shape traits.build no longer reads")
   }
   # Leniently, each is flagged, with no key to report
   out <- util_flatten_sources(bare[[2]], strict = FALSE)
-  expect_equal(out$type, c("primary", "secondary", "secondary"))
+  expect_equal(out$type, c("dataset", "secondary", "secondary"))
   expect_equal(out$legacy, c(FALSE, TRUE, TRUE))
   expect_equal(out$key, c("Smith_2020", NA, NA))
   out <- util_flatten_sources(bare[[3]], strict = FALSE)
@@ -373,8 +383,127 @@ test_that("`util_flatten_sources` refuses the old shape, naming the entry", {
   expect_equal(out$legacy, c(FALSE, FALSE, TRUE))
 
   # An unknown type is a different error, and is not `legacy`
-  expect_error(util_flatten_sources(list(primary = primary, tertiary = list(key = "X_2000"))), "not a type of reference")
-  out <- util_flatten_sources(list(primary = primary, tertiary = list(key = "X_2000")), strict = FALSE)
+  expect_error(util_flatten_sources(list(dataset = dataset, tertiary = list(key = "X_2000"))), "not a type of reference")
+  out <- util_flatten_sources(list(dataset = dataset, tertiary = list(key = "X_2000")), strict = FALSE)
   expect_equal(out$type[2], "tertiary")
   expect_false(out$legacy[2])
+})
+
+
+test_that("a reference list can be kept in a .yml or .bib file beside `metadata.yml`", {
+  dir <- withr::local_tempdir()
+  path <- file.path(dir, "metadata.yml")
+  metadata <- read_metadata(file.path("examples", "Test_2023_2", "metadata.yml"))
+  metadata$source$dataset$key <- "Smith_2020"
+  metadata$source$source <- "sources.yml"
+  metadata$source$secondary <- "secondary.bib"
+  write_metadata(metadata, path)
+  writeLines(c(
+    "- key: Jones_1999",
+    "  bibtype: Thesis",
+    "  year: '1999'",
+    "  author: Bob Jones",
+    "  title: A thesis",
+    "- key: Brown_2005",
+    "  bibtype: Book",
+    "  year: '2005'",
+    "  author: Cat Brown",
+    "  title: A book"
+  ), file.path(dir, "sources.yml"))
+  writeLines(c(
+    "@Article{Smith_2021,",
+    "  author = {Ann Smith},",
+    "  title = {A re-use},",
+    "  journal = {A Journal},",
+    "  year = {2021},",
+    "}"
+  ), file.path(dir, "secondary.bib"))
+
+  metadata <- read_metadata(path)
+  out <- util_flatten_sources(metadata$source)
+  expect_equal(out$type, c("dataset", "source", "source", "secondary"))
+  expect_equal(out$key, c("Smith_2020", "Jones_1999", "Brown_2005", "Smith_2021"))
+  expect_equal(out$entry[[4]]$journal, "A Journal")
+  expect_equal(attr(metadata$source$source, "sources_file"), "sources.yml")
+
+  # Written back to their files, and named from `metadata.yml`
+  metadata$source$source[[2]]$title <- "A revised book"
+  write_metadata(metadata, path)
+  expect_true(any(readLines(path) == "  source: sources.yml"))
+  expect_true(any(readLines(path) == "  secondary: secondary.bib"))
+  again <- read_metadata(path)
+  expect_equal(again$source$source[[2]]$title, "A revised book")
+  expect_equal(util_flatten_sources(again$source)$key, out$key)
+  expect_equal(again$source$secondary[[1]]$title, "A re-use")
+
+  # A missing file is an error naming it
+  writeLines(sub("sources.yml", "missing.yml", readLines(path)), path)
+  expect_error(read_metadata(path), "missing.yml")
+})
+
+
+test_that("`metadata_convert_sources` converts every old shape, keeping each line", {
+  dir <- withr::local_tempdir()
+  dir.create(file.path(dir, "Smith_2020"))
+  path <- file.path(dir, "Smith_2020", "metadata.yml")
+  old <- c(
+    "source:",
+    "  primary:",
+    "    key: Smith_2020",
+    "    bibtype: Article",
+    "    title: A study",
+    "  secondary:",
+    "    key: Smith_2021",
+    "    bibtype: Article",
+    "  original_01:",
+    "    key: Jones_1999",
+    "    bibtype: Thesis",
+    "  secondary_02:",
+    "    key: Smith_2022",
+    "    bibtype: Article",
+    "  original_02:",
+    "    key: Brown_2005",
+    "    bibtype: Book",
+    "contributors:",
+    "  data_collectors: .na",
+    "dataset:",
+    "  source_id: ref",
+    "  custom_R_code: .na",
+    "  collection_date: 2020"
+  )
+  writeLines(old, path)
+  writeLines(c("ref,x", "Jones_1999,1", "Brown_2005,2", "Other_2000,3"), file.path(dir, "Smith_2020", "data.csv"))
+
+  expect_message(out <- metadata_convert_sources(path_data = dir), "1 of 1 datasets converted")
+  expect_true(out$converted)
+  # A value naming no reference is reported, not changed
+  expect_match(out$issues, "1 `source_id` value(s) name no `source` reference: `Other_2000`", fixed = TRUE)
+
+  expect_equal(readLines(path), c(
+    "source:",
+    "  dataset:",
+    "    key: Smith_2020",
+    "    bibtype: Article",
+    "    title: A study",
+    "  source:",
+    "  - key: Jones_1999",
+    "    bibtype: Thesis",
+    "  - key: Brown_2005",
+    "    bibtype: Book",
+    "  secondary:",
+    "  - key: Smith_2021",
+    "    bibtype: Article",
+    "  - key: Smith_2022",
+    "    bibtype: Article",
+    old[18:23]
+  ))
+
+  # Converting again changes nothing
+  expect_message(out <- metadata_convert_sources(path_data = dir), "0 of 1 datasets converted")
+  expect_false(out$converted)
+
+  # A dataset key that is not the dataset_id is reported
+  writeLines(sub("key: Smith_2020", "key: Smith_2019", readLines(path)), path)
+  out <- suppressMessages(metadata_convert_sources(path_data = dir))
+  expect_match(out$issues, "dataset reference key `Smith_2019` is not the dataset_id", fixed = TRUE)
 })
