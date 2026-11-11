@@ -34,7 +34,7 @@ The first version of #298 (lists for `secondary` and `original_source`, `source_
 - [x] `util_flatten_sources()`, `metadata_convert_sources()`, build and `dataset_test()` changes, `metadata_add_source_*()`, external reference files
 - [x] Fixtures converted with `metadata_convert_sources()`; golden outputs regenerated
 - [x] Schema, NEWS, dataset report
-- [x] Data model 1.3.0 (replaces the unshipped 1.2.1)
+- [x] Data model 1.4.0 (replaces the unshipped 1.2.1; develop had meanwhile released 1.3.0)
 - [x] austraits: `join_sources()`, `extract_data()`, `flatten_database()`, `as_wide_table()`, `bind_databases()` key check (branch `source-references-296`, not yet a PR)
 - [ ] austraits.build #878 reworked (conversion, rekeys, curator list #879); issue to combine Gallagher_2011_1/_3
 - [ ] ausinvertraits.build, AusFizz conversions; book wording; responses.build port

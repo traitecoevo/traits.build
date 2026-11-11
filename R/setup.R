@@ -290,7 +290,7 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
   # Check if existing content, if so append
   if (!all(is.na(metadata$traits))) {
 
-    existing_var_in <- metadata$traits %>% austraits::convert_list_to_df2() %>% dplyr::pull("var_in")
+    existing_var_in <- metadata$traits %>% util_traits_to_df() %>% dplyr::pull("var_in")
     if (any(var_in %in% existing_var_in)) {
       message(
         sprintf(red("Following traits already exist in the metadata and will be skipped: ") %+%
@@ -300,7 +300,7 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
     }
 
     # Append new traits if not already in metadata
-    traits <- dplyr::bind_rows(metadata$traits %>% austraits::convert_list_to_df2(), traits) %>%
+    traits <- dplyr::bind_rows(metadata$traits %>% util_traits_to_df(), traits) %>%
       dplyr::filter(!duplicated(var_in))
 
     if (length(var_in[!var_in %in% existing_var_in]) > 0) {
@@ -322,7 +322,24 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
       ))
   }
 
-  metadata$traits <- traits %>% austraits::convert_df_to_list()
+  new_traits <- traits %>% austraits::convert_df_to_list()
+
+  # `omit_values` does not survive the round trip through a table above, so
+  # carry it across from the existing entry each row was made from: the first
+  # with its `var_in`, as the table keeps only that one
+  if (is.list(metadata$traits)) {
+    entry_var_in <- vapply(
+      metadata$traits, function(x) as.character(x[["var_in"]])[1], character(1)
+    )
+    for (j in seq_along(new_traits)) {
+      i <- match(new_traits[[j]][["var_in"]], entry_var_in)
+      if (!is.na(i) && !is.null(metadata$traits[[i]][["omit_values"]])) {
+        new_traits[[j]][["omit_values"]] <- metadata$traits[[i]][["omit_values"]]
+      }
+    }
+  }
+
+  metadata$traits <- new_traits
   write_metadata_dataset(metadata, dataset_id)
   return(invisible(metadata))
 
@@ -1684,7 +1701,26 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' `targets::tar_config_set(reporter_make = "silent")` sets that for the
 #' repository.
 #'
-#' @seealso [build_export()]
+#' @section Post-build step:
+#'
+#' Every pipeline calls [build_post_process()] after [build_add_version()] and
+#' before the database is saved. It runs `post_build()` from `R/post_build.R`
+#' if the repository has that file, and otherwise does nothing, so the call is
+#' written whether or not the file exists and adding one later needs no change
+#' to the pipeline. `targets` notices the file being added, edited or deleted.
+#' `remake` cannot depend on a file that may not exist, so it tracks
+#' `R/post_build.R` only if the file existed when the pipeline was set up:
+#' re-run `build_setup_pipeline()` after adding or removing it, as after adding
+#' a dataset.
+#'
+#' Because it runs on every rebuild of the combined database, `post_build()`
+#' should be quick. Outputs wanted only when the database is published, such as
+#' a flattened copy or parquet files, go in `post_export()` in
+#' `R/post_export.R`, which no pipeline runs: [build_post_export()] runs it,
+#' from a repository's release script, and so does [build_export()] after a
+#' `targets` build.
+#'
+#' @seealso [build_export()], [build_post_process()], [build_post_export()]
 #' @export
 build_setup_pipeline <- function(dataset_ids = dir("data"),
                                  method = "base",
@@ -1744,7 +1780,10 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
     path = path,
     database_name = database_name,
     workers = workers,
-    parallel = workers > 1
+    parallel = workers > 1,
+    # Only `remake` uses this: it cannot depend on a file that may not exist,
+    # so it tracks `R/post_build.R` only if the file is there now
+    post_build_file = file.exists("R/post_build.R")
     )
 
   # Setup pipeline based on selected method for building
@@ -1780,7 +1819,7 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
       "\t-> then `targets::tar_read(%s)` to load it; `tar_make()` itself returns nothing",
       database_name)))
     message(green(sprintf(
-      "\t-> then `build_export(\"%s\")` to write export/data/curr, which `tar_make()` leaves alone",
+      "\t-> then `build_export(\"%s\")` to write export/data/curr, and run any `post_export()`, which `tar_make()` leaves alone",
       database_name)))
   }
 
@@ -1821,15 +1860,17 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 #' The `targets` pipeline rebuilds the compilation but does not write the
 #' exported `.rds`: that write is around a third of a one-dataset rebuild, and
 #' it is a publishing step rather than part of checking a dataset. This writes
-#' it, reading the compilation `targets::tar_make()` has already built.
+#' it, reading the compilation `targets::tar_make()` has already built, then
+#' runs the repository's `post_export()` from `R/post_export.R`, if it has one,
+#' into the same directory (see [build_post_export()]).
 #'
 #' @param database_name Name of the database, matching the one given to
 #'  [build_setup_pipeline()]. A pipeline set up with a `database_name` other
 #'  than the default must be exported with that same name.
 #' @param path Directory to write into
 #'
-#' @return The path written, invisibly
-#' @seealso [build_setup_pipeline()]
+#' @return The path of the `.rds` written, invisibly
+#' @seealso [build_setup_pipeline()], [build_post_export()]
 #' @export
 #' @examples
 #' \dontrun{
@@ -1870,6 +1911,8 @@ build_export <- function(database_name = "database",
   saveRDS(database, file)
 
   message(green(sprintf("\t-> written to `%s`", file)))
+
+  build_post_export(database, path)
 
   invisible(file)
 }

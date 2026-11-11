@@ -146,7 +146,7 @@ traits:
   basis_of_value: measurement
   methods: LMA was calculated as the leaf dry mass (oven-dried for 48 hours at 65
     deg C) divided by leaf size. It was measured on the first five fully expanded
-    leaves at the tip of each individual. Testing of disallowed characters - Ψ◦℃.
+    leaves at the tip of each individual. Testing of disallowed characters - ϕ◦℃.
 - var_in: Leaf nitrogen (mg mg-1)
   unit_in: mg/mg
   trait_name: leaf_N_per_dry_mass
@@ -334,7 +334,7 @@ traits:
   value_type: raw
   basis_of_value: model_derived
   measurement_remarks: made-up measurement remarks
-  collection_date: 2002/2002
+  collection_date: 2002-02-30
   replicates: '5'
   methods: 'Leaf area was determined for a 1000 mm branch segment and sapwood cross-sectional
     area was determined where the branch was cut. In detail from Wright_2006, which

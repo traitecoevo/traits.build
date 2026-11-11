@@ -4396,7 +4396,7 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#comment": {
         "@language": "en",
-        "@value": "Replaces `source_primary_citation` (data model 1.3.0)."
+        "@value": "Replaces `source_primary_citation` (data model 1.4.0)."
       },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
@@ -7644,7 +7644,7 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#comment": {
         "@language": "en",
-        "@value": "Replaces `source_secondary_citation` (data model 1.3.0)."
+        "@value": "Replaces `source_secondary_citation` (data model 1.4.0)."
       },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
@@ -7692,7 +7692,7 @@
       },
       "http://www.w3.org/2000/01/rdf-schema#comment": {
         "@language": "en",
-        "@value": "Replaces `source_secondary_key` (data model 1.3.0)."
+        "@value": "Replaces `source_secondary_key` (data model 1.4.0)."
       },
       "http://www.w3.org/2000/01/rdf-schema#label": {
         "@language": "en",
@@ -9501,7 +9501,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "Type of trait, specifying if traits are categorical, numeric, or ordinal."
+        "@value": "Type of trait, which decides the checks its values must pass and their datatype: `numeric` (decimals), `categorical` (strings of terms drawn from `allowed_values_levels`), `monthly_presence` (a bit string of twelve characters, one `y` or `n` per month starting with January) or `text` (free text strings with no fixed values)."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-definitions"

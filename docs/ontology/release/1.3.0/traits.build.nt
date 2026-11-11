@@ -210,6 +210,7 @@
 <https://w3id.org/traits.build#observations_from_source> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000754> .
 <https://w3id.org/traits.build#observations_from_source> <http://www.w3.org/2000/01/rdf-schema#label> "observations from source"@en .
 <https://w3id.org/traits.build#observations_from_source> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build#source_id> .
+<https://w3id.org/traits.build#observations_from_source> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#ofEntity> <https://w3id.org/traits.build#source_primary_citation> .
 <https://w3id.org/traits.build#observations_from_source> <http://purl.org/dc/terms/description> "Observation collection encompassing all observations for a single published or unpublished source."@en .
 <https://w3id.org/traits.build#observations_from_source> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#observations_from_source> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -801,7 +802,7 @@
 <https://w3id.org/traits.build#source_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-sources> .
 <https://w3id.org/traits.build#source_id> <http://www.w3.org/2000/01/rdf-schema#label> "source id"@en .
 <https://w3id.org/traits.build#source_id> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build#observations_from_source> .
-<https://w3id.org/traits.build#source_id> <http://purl.org/dc/terms/description> "The `key` of the reference in `sources` that the record was taken from. By default this is the `dataset_id`, which is also the key of the dataset's own reference. For a dataset compiled from several studies, a record taken from one of them holds the key of that `source` reference instead, so `sources[[source_id]]` is the record's citation."@en .
+<https://w3id.org/traits.build#source_id> <http://purl.org/dc/terms/description> "For datasets that are compilations, an identifier for the original data source."@en .
 <https://w3id.org/traits.build#source_id> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#source_id> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#source_id> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -1274,47 +1275,83 @@
 <https://w3id.org/traits.build#sampling_strategy> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#sampling_strategy> <http://www.w3.org/2002/07/owl#sameAs> <http://rs.tdwg.org/dwc/terms/samplingProtocol> .
 <https://w3id.org/traits.build#sampling_strategy> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
-<https://w3id.org/traits.build#dataset_id_citation> <http://www.w3.org/2004/02/skos/core#prefLabel> "dataset id citation"@en .
-<https://w3id.org/traits.build#dataset_id_citation> <http://www.w3.org/2004/02/skos/core#altLabel> "dataset_id_citation"@en .
-<https://w3id.org/traits.build#dataset_id_citation> <http://www.w3.org/2004/02/skos/core#broader> <http://purl.org/dc/terms/bibliographicCitation> .
-<https://w3id.org/traits.build#dataset_id_citation> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
-<https://w3id.org/traits.build#dataset_id_citation> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://rs.tdwg.org/dwc/terms/assertionReferences> .
-<https://w3id.org/traits.build#dataset_id_citation> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://terminologies.gfbio.org/terms/ETS/bibliographicCitation> .
-<https://w3id.org/traits.build#dataset_id_citation> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-methods> .
-<https://w3id.org/traits.build#dataset_id_citation> <http://www.w3.org/2000/01/rdf-schema#label> "dataset id citation"@en .
-<https://w3id.org/traits.build#dataset_id_citation> <http://vocab.fairdatacollective.org/gdmt/Cites> <https://w3id.org/traits.build#dataset> .
-<https://w3id.org/traits.build#dataset_id_citation> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build#dataset_id> .
-<https://w3id.org/traits.build#dataset_id_citation> <http://purl.org/dc/terms/description> "Citation for the dataset's own reference, `sources[[dataset_id]]`. This detail is generated from the `dataset` reference in the metadata."@en .
-<https://w3id.org/traits.build#dataset_id_citation> <http://www.w3.org/2000/01/rdf-schema#comment> "Replaces `source_primary_citation` (data model 1.3.0)."@en .
-<https://w3id.org/traits.build#dataset_id_citation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
-<https://w3id.org/traits.build#dataset_id_citation> <http://purl.org/dc/terms/created> "2026-11-10"^^<http://www.w3.org/2001/XMLSchema#date> .
-<https://w3id.org/traits.build#dataset_id_citation> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
-<https://w3id.org/traits.build#secondary_id> <http://www.w3.org/2004/02/skos/core#prefLabel> "secondary id"@en .
-<https://w3id.org/traits.build#secondary_id> <http://www.w3.org/2004/02/skos/core#altLabel> "secondary_id"@en .
-<https://w3id.org/traits.build#secondary_id> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> .
-<https://w3id.org/traits.build#secondary_id> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
-<https://w3id.org/traits.build#secondary_id> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-methods> .
-<https://w3id.org/traits.build#secondary_id> <http://www.w3.org/2000/01/rdf-schema#label> "secondary id"@en .
-<https://w3id.org/traits.build#secondary_id> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build#secondary_citation> .
-<https://w3id.org/traits.build#secondary_id> <http://purl.org/dc/terms/description> "Citation keys, separated by `; `, for the dataset's `secondary` references in `sources`, the later publications that re-used the same data. Each key is typically formatted as `Surname_year`."@en .
-<https://w3id.org/traits.build#secondary_id> <http://www.w3.org/2000/01/rdf-schema#comment> "Replaces `source_secondary_key` (data model 1.3.0)."@en .
-<https://w3id.org/traits.build#secondary_id> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
-<https://w3id.org/traits.build#secondary_id> <http://purl.org/dc/terms/created> "2026-11-10"^^<http://www.w3.org/2001/XMLSchema#date> .
-<https://w3id.org/traits.build#secondary_id> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
-<https://w3id.org/traits.build#secondary_citation> <http://www.w3.org/2004/02/skos/core#prefLabel> "secondary citation"@en .
-<https://w3id.org/traits.build#secondary_citation> <http://www.w3.org/2004/02/skos/core#altLabel> "secondary_citation"@en .
-<https://w3id.org/traits.build#secondary_citation> <http://www.w3.org/2004/02/skos/core#broader> <http://purl.org/dc/terms/bibliographicCitation> .
-<https://w3id.org/traits.build#secondary_citation> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
-<https://w3id.org/traits.build#secondary_citation> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://terminologies.gfbio.org/terms/ETS/bibliographicCitation> .
-<https://w3id.org/traits.build#secondary_citation> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-methods> .
-<https://w3id.org/traits.build#secondary_citation> <http://www.w3.org/2000/01/rdf-schema#label> "secondary citation"@en .
-<https://w3id.org/traits.build#secondary_citation> <http://vocab.fairdatacollective.org/gdmt/Cites> <https://w3id.org/traits.build#dataset> .
-<https://w3id.org/traits.build#secondary_citation> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build#secondary_id> .
-<https://w3id.org/traits.build#secondary_citation> <http://purl.org/dc/terms/description> "Citations, separated by `; `, for the `secondary` references. This detail is generated from the `secondary` references in the metadata."@en .
-<https://w3id.org/traits.build#secondary_citation> <http://www.w3.org/2000/01/rdf-schema#comment> "Replaces `source_secondary_citation` (data model 1.3.0)."@en .
-<https://w3id.org/traits.build#secondary_citation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
-<https://w3id.org/traits.build#secondary_citation> <http://purl.org/dc/terms/created> "2026-11-10"^^<http://www.w3.org/2001/XMLSchema#date> .
-<https://w3id.org/traits.build#secondary_citation> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
+<https://w3id.org/traits.build#source_primary_key> <http://www.w3.org/2004/02/skos/core#prefLabel> "source primary key"@en .
+<https://w3id.org/traits.build#source_primary_key> <http://www.w3.org/2004/02/skos/core#altLabel> "source_primary_key"@en .
+<https://w3id.org/traits.build#source_primary_key> <http://www.w3.org/2004/02/skos/core#exactMatch> <https://w3id.org/traits.build#dataset_id> .
+<https://w3id.org/traits.build#source_primary_key> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> .
+<https://w3id.org/traits.build#source_primary_key> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
+<https://w3id.org/traits.build#source_primary_key> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-methods> .
+<https://w3id.org/traits.build#source_primary_key> <http://www.w3.org/2000/01/rdf-schema#label> "source primary key"@en .
+<https://w3id.org/traits.build#source_primary_key> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build#source_primary_citation> .
+<https://w3id.org/traits.build#source_primary_key> <http://purl.org/dc/terms/description> "Citation key for the primary source in `sources`. The key is typically formatted as `Surname_year`."@en .
+<https://w3id.org/traits.build#source_primary_key> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/traits.build#source_primary_key> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<https://w3id.org/traits.build#source_primary_key> <http://www.w3.org/2002/07/owl#sameAs> <https://w3id.org/traits.build#dataset_id> .
+<https://w3id.org/traits.build#source_primary_key> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
+<https://w3id.org/traits.build#source_primary_citation> <http://www.w3.org/2004/02/skos/core#prefLabel> "source primary citation"@en .
+<https://w3id.org/traits.build#source_primary_citation> <http://www.w3.org/2004/02/skos/core#altLabel> "source_primary_citation"@en .
+<https://w3id.org/traits.build#source_primary_citation> <http://www.w3.org/2004/02/skos/core#broader> <http://purl.org/dc/terms/bibliographicCitation> .
+<https://w3id.org/traits.build#source_primary_citation> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
+<https://w3id.org/traits.build#source_primary_citation> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://rs.tdwg.org/dwc/terms/assertionReferences> .
+<https://w3id.org/traits.build#source_primary_citation> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://terminologies.gfbio.org/terms/ETS/bibliographicCitation> .
+<https://w3id.org/traits.build#source_primary_citation> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-methods> .
+<https://w3id.org/traits.build#source_primary_citation> <http://www.w3.org/2000/01/rdf-schema#label> "source primary citation"@en .
+<https://w3id.org/traits.build#source_primary_citation> <http://vocab.fairdatacollective.org/gdmt/Cites> <https://w3id.org/traits.build#dataset> .
+<https://w3id.org/traits.build#source_primary_citation> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build#source_primary_key> .
+<https://w3id.org/traits.build#source_primary_citation> <http://purl.org/dc/terms/description> "Citation for the primary source. This detail is generated from the primary source in the metadata."@en .
+<https://w3id.org/traits.build#source_primary_citation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/traits.build#source_primary_citation> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<https://w3id.org/traits.build#source_primary_citation> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
+<https://w3id.org/traits.build#source_secondary_key> <http://www.w3.org/2004/02/skos/core#prefLabel> "source secondary key"@en .
+<https://w3id.org/traits.build#source_secondary_key> <http://www.w3.org/2004/02/skos/core#altLabel> "source_secondary_key"@en .
+<https://w3id.org/traits.build#source_secondary_key> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> .
+<https://w3id.org/traits.build#source_secondary_key> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
+<https://w3id.org/traits.build#source_secondary_key> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-methods> .
+<https://w3id.org/traits.build#source_secondary_key> <http://www.w3.org/2000/01/rdf-schema#label> "source secondary key"@en .
+<https://w3id.org/traits.build#source_secondary_key> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build#source_secondary_citation> .
+<https://w3id.org/traits.build#source_secondary_key> <http://purl.org/dc/terms/description> "Citation key for the secondary source in `sources`.  The key is typically formatted as `Surname_year`."@en .
+<https://w3id.org/traits.build#source_secondary_key> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/traits.build#source_secondary_key> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<https://w3id.org/traits.build#source_secondary_key> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
+<https://w3id.org/traits.build#source_secondary_citation> <http://www.w3.org/2004/02/skos/core#prefLabel> "source secondary citation"@en .
+<https://w3id.org/traits.build#source_secondary_citation> <http://www.w3.org/2004/02/skos/core#altLabel> "source_secondary_citation"@en .
+<https://w3id.org/traits.build#source_secondary_citation> <http://www.w3.org/2004/02/skos/core#broader> <http://purl.org/dc/terms/bibliographicCitation> .
+<https://w3id.org/traits.build#source_secondary_citation> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
+<https://w3id.org/traits.build#source_secondary_citation> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://terminologies.gfbio.org/terms/ETS/bibliographicCitation> .
+<https://w3id.org/traits.build#source_secondary_citation> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-methods> .
+<https://w3id.org/traits.build#source_secondary_citation> <http://www.w3.org/2000/01/rdf-schema#label> "source secondary citation"@en .
+<https://w3id.org/traits.build#source_secondary_citation> <http://vocab.fairdatacollective.org/gdmt/Cites> <https://w3id.org/traits.build#dataset> .
+<https://w3id.org/traits.build#source_secondary_citation> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build#source_secondary_key> .
+<https://w3id.org/traits.build#source_secondary_citation> <http://purl.org/dc/terms/description> "Citations for the secondary source. This detail is generated from the secondary source in the metadata."@en .
+<https://w3id.org/traits.build#source_secondary_citation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/traits.build#source_secondary_citation> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<https://w3id.org/traits.build#source_secondary_citation> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://www.w3.org/2004/02/skos/core#prefLabel> "source original dataset key"@en .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://www.w3.org/2004/02/skos/core#altLabel> "source_original_dataset_key"@en .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://www.w3.org/2004/02/skos/core#exactMatch> <https://w3id.org/traits.build#source_id> .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://www.w3.org/2004/02/skos/core#broader> <http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier> .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-methods> .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://www.w3.org/2000/01/rdf-schema#label> "source original dataset key"@en .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build#source_original_dataset_citation> .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://purl.org/dc/terms/description> "Citation key for the original dataset_id in sources, for compilations.  The key is typically formatted as `Surname_year`."@en .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://www.w3.org/2002/07/owl#sameAs> <https://w3id.org/traits.build#source_id> .
+<https://w3id.org/traits.build#source_original_dataset_key> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://www.w3.org/2004/02/skos/core#prefLabel> "source original dataset citation"@en .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://www.w3.org/2004/02/skos/core#altLabel> "source_original_dataset_citation"@en .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://www.w3.org/2004/02/skos/core#broader> <http://purl.org/dc/terms/bibliographicCitation> .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://semanticscience.org/resource/SIO_000602> <http://semanticscience.org/resource/SIO_000757> .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://www.w3.org/2004/02/skos/core#closeMatch> <http://terminologies.gfbio.org/terms/ETS/bibliographicCitation> .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-methods> .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://www.w3.org/2000/01/rdf-schema#label> "source original dataset citation"@en .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://vocab.fairdatacollective.org/gdmt/Cites> <https://w3id.org/traits.build#observations_from_source> .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build#source_original_dataset_key> .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://purl.org/dc/terms/description> "Citations for the original dataset_id in sources, for compilationse. This detail is generated from the original source in the metadata."@en .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
+<https://w3id.org/traits.build#source_original_dataset_citation> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
 <https://w3id.org/traits.build#contributor> <http://www.w3.org/2004/02/skos/core#prefLabel> "contributor"@en .
 <https://w3id.org/traits.build#contributor> <http://www.w3.org/2004/02/skos/core#altLabel> "contributor"@en .
 <https://w3id.org/traits.build#contributor> <http://www.w3.org/2004/02/skos/core#exactMatch> <http://purl.org/dc/terms/contributor> .
@@ -1757,7 +1794,7 @@
 <https://w3id.org/traits.build#type> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-definitions> .
 <https://w3id.org/traits.build#type> <http://www.w3.org/2000/01/rdf-schema#label> "type"@en .
 <https://w3id.org/traits.build#type> <http://semanticscience.org/resource/SIO_000224> <https://w3id.org/traits.build#trait> .
-<https://w3id.org/traits.build#type> <http://purl.org/dc/terms/description> "Type of trait, specifying if traits are categorical, numeric, or ordinal."@en .
+<https://w3id.org/traits.build#type> <http://purl.org/dc/terms/description> "Type of trait, which decides the checks its values must pass and their datatype: `numeric` (decimals), `categorical` (strings of terms drawn from `allowed_values_levels`), `monthly_presence` (a bit string of twelve characters, one `y` or `n` per month starting with January) or `text` (free text strings with no fixed values)."@en .
 <https://w3id.org/traits.build#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#type> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#type> <http://www.w3.org/2002/07/owl#sameAs> <http://terminologies.gfbio.org/terms/ETS/valueType> .

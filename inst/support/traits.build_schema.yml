@@ -77,6 +77,15 @@ identifier_type:
      materialSampleID: An identifier for the dwc:MaterialSample (as opposed to a particular digital record of the dwc:MaterialSample). In the absence of a persistent global unique identifier, construct one from a combination of identifiers in the record that will most closely make the dwc:materialSampleID globally unique.
      occurrenceID: Per DarwinCore, an identifier for an Occurrence, as opposed to a particular digital record of the Occurrence.
 
+trait_type:
+  description: &trait_type The type of a trait, declared as `type` in its definition in `config/traits.yml`. The type decides which checks the trait's values must pass.
+  type: categorical
+  values:
+    numeric: Numeric values, converted to the trait's `units` and required to lie between its `allowed_values_min` and `allowed_values_max`. The datatype is decimal (`xsd:decimal`); a `range` or `bin` value is two decimals written `min--max`.
+    categorical: Values drawn from the terms listed in the trait's `allowed_values_levels`. A value may combine several terms, separated by spaces, which are stored in alphabetical order. The datatype is string (`xsd:string`).
+    monthly_presence: Twelve characters, one per month starting with January, each `y` if the trait (a phenophase such as flowering) occurs in that month and `n` if it does not, e.g. `nnyyyynnnnnn`. Values are stored in lower case. The datatype is a bit string of length 12, written with `y` for 1 and `n` for 0, and stored as a string (`xsd:string`).
+    text: Free text with no fixed list of allowed values, appropriate to use for traits whose values are taxon names. Values are kept as written, including their case and word order. The datatype is string (`xsd:string`).
+
 #-------------------------------------------------------------
 # A key describing the structure of the compiled `AusTraits` dataset
 
@@ -143,7 +152,7 @@ austraits:
         methods: &methods A textual description of the methods used to collect the trait data. Whenever available, methods are taken near-verbatim from the referenced source. Methods can include descriptions such as 'measured on botanical collections', 'data from the literature', or a detailed description of the field or lab methods used to collect the data.
         method_id: *method_id
         description: &description A 1-2 sentence description of the purpose of the study.
-        sampling_strategy: &sampling_strategy A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript. For preserved specimens, this field ideally indicates which records were 'sampled' to measure a specific trait.
+        sampling_strategy: &sampling_strategy A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript.
         dataset_id_type: Citation type for the dataset's own reference, `sources[[dataset_id]]`, using standard BibTex citation types (Article, Book, Misc, Online, Report, Techreport, Thesis, Unpublished).
         dataset_id_citation: Citation for the dataset's own reference, `sources[[dataset_id]]`. This detail is generated from the `dataset` reference in the metadata.
         secondary_id: Citation keys, separated by `; `, for the dataset's `secondary` references in `sources`, the later publications that re-used the same data. Each key is typically formatted as `Surname_year`.
@@ -223,7 +232,7 @@ austraits:
         affiliation: Last known institution or affiliation.
         additional_role: Additional roles of data collector, mostly contact person.  
     identifiers:
-      description: A table containing details on identifiers that cross-references observations between the two dataframes using combinations of the variables `dataset_id` and `observation_id`.
+      description: A table containing details on identifiers that cross-reference observations between the two dataframes using combinations of the variables `dataset_id` and `observation_id`. For preserved specimens, it ideally indicates which records were 'sampled' to measure a specific trait.
       type: table
       elements:
         dataset_id: *dataset_id
@@ -295,6 +304,12 @@ austraits:
             award_title: The title of the award (grant).
         creators: Dataset creators.
         contributors: Dataset contributors, reflecting names included in the contributors table.
+        trait_value_term_order:
+          description: Optional. The order in which the terms of a trait value holding several space-separated terms, such as `shrub tree`, are mapped into the database. Set in the `metadata` block of the database's `config/metadata.yml`; when absent, `alphabetical` is the default.
+          type: categorical
+          values:
+            alphabetical: Trait values are sorted alphabetically, so `tree shrub` and `shrub tree` are both mapped as `shrub tree` within the built database and the order of terms carries no meaning. The default.
+            input_order: Trait values are kept in the order they have in the source data, after any substitutions, so `tree shrub` and `shrub tree` are distinct values.
     build_info:
       description: A description of the computing environment used to create this version of the dataset, including version number, git commit and R session_info.
       type: list
@@ -308,6 +323,12 @@ austraits:
           description: The versions of R, packages, and data used to generate the dataset.
           type: categorical
           value: A structured yaml file, represented as a list in R.
+        post_build:
+          description: The post-build step that processed the database after its datasets were combined, recorded by `build_post_process()`. Present only if the database repository defines `post_build()` in `R/post_build.R`.
+          type: list
+          elements:
+            file: Path of the file defining `post_build()`, as given to `build_post_process()`; `R/post_build.R` in a pipeline written by `build_setup_pipeline()`.
+            md5: md5 checksum of that file's contents when the step ran, identifying the code even when it was not committed. Line endings are normalised to `\n` first, so the checksum is the same on every operating system.
 
 #-------------------------------------------------------------
 
@@ -431,7 +452,7 @@ metadata:
         original_file: The name of the file initially submitted to AusTraits.
         notes: Generic notes about the study and processing of data.
     identifiers:
-      description: A list of columns that include identifiers that cross-references observations to information in other databases and information indicating what identifier_type they are.
+      description: A list of columns that include identifiers that cross-reference observations to information in other databases, biodiversity collections and informatics resources. For preserved specimens, this list ideally indicates which records were 'sampled' to measure a specific trait.
       type: array
       elements:        
         var_in: Name of column with contextual data in the original data submitted.
@@ -474,6 +495,7 @@ metadata:
         methods: *methods
         life_stage: *life_stage
         repeat_measurements_id: *repeat_measurements_id
+        omit_values: Optional. Values the data contributor used for "no value" in this trait, such as `0`, `-9999`, `"-"` or `"NaN"`, given as a single value or a list. Each is treated as missing, so it is dropped from the `traits` table and does not appear in `excluded_data`, the same as `custom_R_code` applying `na_if()` to the trait's column. Values are compared with the column as `data.csv` is read and `custom_R_code` leaves it, before `substitutions`. So `omit_values` cannot replace an `na_if()` whose result `custom_R_code` itself goes on to use, to average values or combine columns for example; keep that call in `custom_R_code`. In a numeric column they are compared as numbers, so `0` also omits `0.0`; in any other column as exact text, case included, so `0` does not omit `0.0` there. Quote a value YAML would otherwise read as true, false or missing, such as `"no"`, `"n"` or `".na"`, and quote a number meant to match a text column as spelt, such as `"0.0"`, since unquoted `0.0` is compared there as `0`. In long-format data the values apply only to the rows of this trait, and the value column, shared by every trait, is numeric only when every trait's values are numbers.
     substitutions:
       description: A list of any "find and replace" substitutions needed to get the data into the right format.
       type: array
@@ -503,15 +525,14 @@ allowed_characters:
   description: &allowed_characters Characters permitted outside plain ASCII, used by `check_disallowed_chars()` and reported by `dataset_test`. ASCII is always allowed whatever this section says. This is the single global definition; it is not configurable per dataset.
   type: character_set
   letter_ranges:
-    description: Letters are allowed by range rather than listed one at a time, so that a letter and its upper-case form can never be treated differently. Enumerating them by hand left 14 letters allowed in lower case but not upper, which is why a name like Osvaldsson was reported while osvaldsson would not have been. The range covers the accented letters of every European language, which is what contributor, author and taxon names need.
+    description: Letters are allowed by range rather than listed one at a time, so that a letter and its upper-case form can never be treated differently. Enumerating them by hand left 14 letters allowed in lower case but not upper, which is why a name like Osvaldsson was reported while osvaldsson would not have been. The Latin range covers the accented letters of every European language, which is what contributor, author and taxon names need; the Greek range covers the letters methods use as symbols. The exceptions are the Greek letters listed under never_allowed below, which look identical to another character, so that, for example, the Greek small letter alpha is allowed but its capital, identical to A, is not.
     values:
       00C0-017F: Latin-1 Supplement letters and Latin Extended-A. Code points in this range that are not letters are excluded automatically, so 00D7 MULTIPLICATION SIGN and 00F7 DIVISION SIGN are not admitted here; 00D7 is listed under symbols below.
+      0386-03CE: The Greek alphabet, upper and lower case, with its accented forms, for letters carrying a technical meaning in methods, such as 03B4 GREEK SMALL LETTER DELTA for isotope composition (delta13C), 0394 GREEK CAPITAL LETTER DELTA for a difference (deltaT), and 03A6/03C6 PHI and 03A8/03C8 PSI for water potential. 0387 GREEK ANO TELEIA is punctuation and so not admitted. 03BC GREEK SMALL LETTER MU, 03BF GREEK SMALL LETTER OMICRON and the 14 capitals identical to an ASCII letter are excluded under never_allowed below.
   letters:
     description: Letters allowed from outside the ranges above.
     values:
       00B5: MICRO SIGN, as in micrometre. Note that 03BC GREEK SMALL LETTER MU is a different code point that looks identical; it is not allowed, so that units are written consistently.
-      03B4: GREEK SMALL LETTER DELTA, for stable isotope composition (e.g. delta13C, delta15N, delta18O), the same role 2030 PER MILLE SIGN plays below.
-      0394: GREEK CAPITAL LETTER DELTA, conventionally used for "difference"/"change" (e.g. deltaT for a temperature change), a distinct meaning from its lower-case form above.
   symbols:
     description: Non-letter characters that carry meaning and so are retained rather than rewritten. A symbol absent from this list is reported, and either belongs here or is a mistake to correct.
     values:
@@ -536,7 +557,23 @@ allowed_characters:
       2264: LESS-THAN OR EQUAL TO
       2265: GREATER-THAN OR EQUAL TO
   never_allowed:
-    description: Characters that Unicode classifies as letters, and which the ranges above would otherwise admit, but which occur in practice only as look-alikes for a symbol. They stay disallowed so that the look-alike is corrected rather than retained.
+    description: Characters that Unicode classifies as letters, and which the ranges above would otherwise admit, but which look identical to a symbol or an ASCII letter. They stay disallowed so that the look-alike is corrected rather than retained, since text holding one would not match the same text typed with the character it imitates.
     values:
       00AA: FEMININE ORDINAL INDICATOR, a look-alike for a superscript a
       00BA: MASCULINE ORDINAL INDICATOR, used in error for 00B0 DEGREE SIGN. The most common disallowed character in the database.
+      03BC: GREEK SMALL LETTER MU, a look-alike for 00B5 MICRO SIGN, which is the character units are written with. dataset_replace_disallowed_chars() rewrites it as 00B5.
+      0391: GREEK CAPITAL LETTER ALPHA, a look-alike for A. dataset_replace_disallowed_chars() rewrites it as A.
+      0392: GREEK CAPITAL LETTER BETA, a look-alike for B. dataset_replace_disallowed_chars() rewrites it as B.
+      0395: GREEK CAPITAL LETTER EPSILON, a look-alike for E. dataset_replace_disallowed_chars() rewrites it as E.
+      0396: GREEK CAPITAL LETTER ZETA, a look-alike for Z. dataset_replace_disallowed_chars() rewrites it as Z.
+      0397: GREEK CAPITAL LETTER ETA, a look-alike for H. dataset_replace_disallowed_chars() rewrites it as H.
+      0399: GREEK CAPITAL LETTER IOTA, a look-alike for I. dataset_replace_disallowed_chars() rewrites it as I.
+      039A: GREEK CAPITAL LETTER KAPPA, a look-alike for K. dataset_replace_disallowed_chars() rewrites it as K.
+      039C: GREEK CAPITAL LETTER MU, a look-alike for M. dataset_replace_disallowed_chars() rewrites it as M.
+      039D: GREEK CAPITAL LETTER NU, a look-alike for N. dataset_replace_disallowed_chars() rewrites it as N.
+      039F: GREEK CAPITAL LETTER OMICRON, a look-alike for O. dataset_replace_disallowed_chars() rewrites it as O.
+      03A1: GREEK CAPITAL LETTER RHO, a look-alike for P. dataset_replace_disallowed_chars() rewrites it as P.
+      03A4: GREEK CAPITAL LETTER TAU, a look-alike for T. dataset_replace_disallowed_chars() rewrites it as T.
+      03A5: GREEK CAPITAL LETTER UPSILON, a look-alike for Y. dataset_replace_disallowed_chars() rewrites it as Y.
+      03A7: GREEK CAPITAL LETTER CHI, a look-alike for X. dataset_replace_disallowed_chars() rewrites it as X.
+      03BF: GREEK SMALL LETTER OMICRON, a look-alike for o. dataset_replace_disallowed_chars() rewrites it as o.

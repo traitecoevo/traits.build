@@ -1480,7 +1480,7 @@ tern:unit
     SIO:SIO_000673 <https://w3id.org/traits.build#dataset_id> ;
     gdmt:Cites <https://w3id.org/traits.build#dataset> ;
     rdf:datatype xsd:string ;
-    rdfs:comment "Replaces `source_primary_citation` (data model 1.3.0)."@en ;
+    rdfs:comment "Replaces `source_primary_citation` (data model 1.4.0)."@en ;
     rdfs:label "dataset id citation"@en ;
     skos:altLabel "dataset_id_citation"@en ;
     skos:broader dcterms:bibliographicCitation ;
@@ -2374,7 +2374,7 @@ tern:unit
     SIO:SIO_000673 <https://w3id.org/traits.build#secondary_id> ;
     gdmt:Cites <https://w3id.org/traits.build#dataset> ;
     rdf:datatype xsd:string ;
-    rdfs:comment "Replaces `source_secondary_citation` (data model 1.3.0)."@en ;
+    rdfs:comment "Replaces `source_secondary_citation` (data model 1.4.0)."@en ;
     rdfs:label "secondary citation"@en ;
     skos:altLabel "secondary_citation"@en ;
     skos:broader dcterms:bibliographicCitation ;
@@ -2389,7 +2389,7 @@ tern:unit
     SIO:SIO_000602 SIO:SIO_000757 ;
     SIO:SIO_000674 <https://w3id.org/traits.build#secondary_citation> ;
     rdf:datatype xsd:string ;
-    rdfs:comment "Replaces `source_secondary_key` (data model 1.3.0)."@en ;
+    rdfs:comment "Replaces `source_secondary_key` (data model 1.4.0)."@en ;
     rdfs:label "secondary id"@en ;
     skos:altLabel "secondary_id"@en ;
     skos:broader oboe-characteristics:Identifier ;
@@ -2874,7 +2874,7 @@ tern:unit
 
 <https://w3id.org/traits.build#type>
     dcterms:created "2024-02-01"^^xsd:date ;
-    dcterms:description "Type of trait, specifying if traits are categorical, numeric, or ordinal."@en ;
+    dcterms:description "Type of trait, which decides the checks its values must pass and their datatype: `numeric` (decimals), `categorical` (strings of terms drawn from `allowed_values_levels`), `monthly_presence` (a bit string of twelve characters, one `y` or `n` per month starting with January) or `text` (free text strings with no fixed values)."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-definitions> ;
     SIO:SIO_000224 <https://w3id.org/traits.build#trait> ;
     SIO:SIO_000602 SIO:SIO_000757 ;

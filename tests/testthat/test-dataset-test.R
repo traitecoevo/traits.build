@@ -15,7 +15,7 @@
 # the console), and the backtraces (whose line numbers move whenever anything
 # in `R/` is edited, which would make these snapshots churn on unrelated
 # changes).
-dataset_test_failures <- function(dataset_id) {
+dataset_test_failures <- function(dataset_id, path_data = "examples") {
 
   withr::local_options(
     useFancyQuotes = FALSE, cli.unicode = FALSE, crayon.enabled = FALSE,
@@ -24,7 +24,7 @@ dataset_test_failures <- function(dataset_id) {
 
   out <- capture.output(
     suppressMessages(
-      dataset_test(dataset_ids = dataset_id, path_data = "examples")
+      dataset_test(dataset_ids = dataset_id, path_data = path_data)
     )
   )
 
@@ -135,8 +135,8 @@ test_that("`dataset_test` reads every config file from `path_config` (#129)", {
   # The build step read `config/traits.yml`, `config/metadata.yml`,
   # `config/unit_conversions.csv` and `config/taxon_list.csv` regardless of
   # `path_config`, so a run from anywhere else failed "building dataset".
-  # Test_2023_2 passes every check, so any failure here is the config.
-  out <- dataset_test_elsewhere("Test_2023_2", "config")
+  # Test_2023_5 passes every check, so any failure here is the config.
+  out <- dataset_test_elsewhere("Test_2023_5", "config")
 
   expect_false(any(grepl("building dataset", out, fixed = TRUE)))
   # The last progress line is the final tally
@@ -231,8 +231,49 @@ test_that("`dataset_test` runs on the package's testthat edition (#234)", {
   )
   results <- as.data.frame(reporter$get_results())
 
+  # Test_2023_1's 3 failures include blank `collection_date` values, which the
+  # NA-date check reports (its ambiguous `1/2/2004` is read through the
+  # declared `collection_date_format: dmy`, so is not one of them)
   expect_equal(results$test, "Test_2023_1")
-  expect_equal(results$failed, 2)
+  expect_equal(results$failed, 3)
+})
+
+
+test_that("`dataset_test` rejects a `collection_date` that doesn't parse", {
+  # See Test_2023_9/README.md: the `huber_value` trait's `collection_date` was
+  # changed to `2002-02-30`, a calendar date that doesn't exist. Also covered
+  # by the snapshot above, pinned individually since it is written as a
+  # standard date and only the calendar rules it out.
+  failures <- dataset_test_failures("Test_2023_9")
+
+  expect_match(
+    failures, "not written as `yyyy-mm-dd`, `yyyy-mm`, `yyyy` or a `/` range of these: '2002-02-30'",
+    fixed = TRUE, all = FALSE
+  )
+})
+
+
+test_that("`dataset_test` rejects missing `collection_date` values", {
+  # Test_2023_7 reads `collection_date` from its `Date` column. Blank a few of
+  # those cells in a temporary copy, so the shared example (and its `output/`)
+  # stay untouched. An unknown date should be recorded explicitly (e.g.
+  # `.na/2009`), not left as NA.
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_7", path_data, recursive = TRUE)
+
+  data_file <- file.path(path_data, "Test_2023_7", "data.csv")
+  data <- readr::read_csv(data_file, col_types = readr::cols(.default = "c"))
+  data$Date[1:3] <- NA
+  readr::write_csv(data, data_file, na = "")
+
+  failures <- dataset_test_failures("Test_2023_7", path_data = path_data)
+
+  expect_match(
+    failures, "Some date values are NA \\([0-9]+ of [0-9]+ records\\)",
+    all = FALSE
+  )
+  # NA is not a non-standard date, so it isn't reported twice
+  expect_false(any(grepl("not written as `yyyy-mm-dd`", failures, fixed = TRUE)))
 })
 
 
@@ -348,6 +389,25 @@ test_that("`dataset_test` reports a `source` reference no record names (#296)", 
 })
 
 
+test_that("`dataset_test` fails a `metadata.yml` entry with a field that has no value (#307)", {
+  # An empty field drops its whole entry from the build, so the trait vanished
+  # from both `traits` and `excluded_data` while `dataset_test()` passed
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  lines <- readLines(path_metadata)
+  at <- which(lines == "  trait_name: leaf_N_per_dry_mass")
+  writeLines(append(lines, "  replicates:", after = at), path_metadata)
+
+  expect_match(
+    dataset_test_failures("Test_2023_2", path_data = path_data),
+    "traits - field(s) with no value, which drop their entry from the build: entry 2 (var_in: Leaf nitrogen (mg mg-1)) `replicates`",
+    fixed = TRUE, all = FALSE
+  )
+})
+
+
 test_that("`dataset_test` hints when `source_id` holds an entry's name rather than its key (#296)", {
   out <- dataset_test_edited(function(metadata) {
     # A constant, as `process_parse_data()` would read it: no such column
@@ -389,4 +449,76 @@ test_that("`dataset_test` reports the old `primary` name, and the build refuses 
     fixed = TRUE
   )
   expect_true(any(grepl("metadata_convert_sources()", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` fails an empty field in a data collector or a source (#307)", {
+  # The same conversion drops a data collector from `contributors`, and a
+  # reference from the table of source keys, which then pairs the remaining
+  # keys with the wrong source types
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  lines <- readLines(path_metadata)
+  lines <- append(lines, "    number:", after = grep("^  dataset:", lines)[1])
+  lines <- append(lines, "    additional_role: []", after = grep("^  - last_name: Westoby", lines))
+  writeLines(lines, path_metadata)
+
+  failures <- dataset_test_failures("Test_2023_2", path_data = path_data)
+  expect_match(failures, "contributors data_collectors - field(s) with no value, which drop their entry from the build: entry 2 (last_name: Westoby) `additional_role`",
+               fixed = TRUE, all = FALSE)
+  expect_match(failures, "source - field(s) with no value, which drop their entry from the build: entry 1 (key: Test_2023_2) `number`",
+               fixed = TRUE, all = FALSE)
+})
+
+
+test_that("`dataset_test` accepts long-format traits with no `traits` entry (#308)", {
+  # Test_2023_3 is long format. Add rows for a trait its `metadata.yml` does not
+  # map, in a temporary copy so the shared example stays untouched. The build
+  # leaves them out, as it does a column a wide dataset does not map, so they
+  # should cause no failure.
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_3", path_data, recursive = TRUE)
+
+  data_file <- file.path(path_data, "Test_2023_3", "data.csv")
+  data <- readr::read_csv(data_file, col_types = readr::cols(.default = "c"))
+  extra <- data[1:3, ]
+  extra$trait_name <- "unmapped_trait"
+  readr::write_csv(dplyr::bind_rows(data, extra), data_file, na = "")
+
+  expect_identical(
+    dataset_test_failures("Test_2023_3", path_data = path_data),
+    dataset_test_failures("Test_2023_3")
+  )
+
+  built <- dataset_process(
+    data_file,
+    dataset_configure(file.path(path_data, "Test_2023_3", "metadata.yml"), get_schema("config/traits.yml", "traits")),
+    get_schema(),
+    get_schema("config/metadata.yml", "metadata"),
+    get_unit_conversions("config/unit_conversions.csv")
+  )
+  expect_false("unmapped_trait" %in% c(built$traits$trait_name, built$excluded_data$trait_name))
+})
+
+
+test_that("`dataset_test` rejects a long-format `traits` entry whose trait is not in the data (#308)", {
+  # As a wide dataset's `var_in` must be a column, a long dataset's must be a
+  # value of its trait column: otherwise the entry builds nothing
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_3", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_3", "metadata.yml")
+  metadata <- read_metadata(path_metadata)
+  extra <- metadata$traits[[1]]
+  extra$var_in <- "absent_trait"
+  metadata$traits <- c(metadata$traits, list(extra))
+  write_metadata(metadata, path_metadata)
+
+  expect_match(
+    dataset_test_failures("Test_2023_3", path_data = path_data),
+    "`var_in` (values of the trait column `trait_name`) should not contain: 'absent_trait'",
+    fixed = TRUE, all = FALSE
+  )
 })

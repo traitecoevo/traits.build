@@ -1285,7 +1285,7 @@
 <https://w3id.org/traits.build#dataset_id_citation> <http://vocab.fairdatacollective.org/gdmt/Cites> <https://w3id.org/traits.build#dataset> .
 <https://w3id.org/traits.build#dataset_id_citation> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build#dataset_id> .
 <https://w3id.org/traits.build#dataset_id_citation> <http://purl.org/dc/terms/description> "Citation for the dataset's own reference, `sources[[dataset_id]]`. This detail is generated from the `dataset` reference in the metadata."@en .
-<https://w3id.org/traits.build#dataset_id_citation> <http://www.w3.org/2000/01/rdf-schema#comment> "Replaces `source_primary_citation` (data model 1.3.0)."@en .
+<https://w3id.org/traits.build#dataset_id_citation> <http://www.w3.org/2000/01/rdf-schema#comment> "Replaces `source_primary_citation` (data model 1.4.0)."@en .
 <https://w3id.org/traits.build#dataset_id_citation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#dataset_id_citation> <http://purl.org/dc/terms/created> "2026-11-10"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#dataset_id_citation> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -1297,7 +1297,7 @@
 <https://w3id.org/traits.build#secondary_id> <http://www.w3.org/2000/01/rdf-schema#label> "secondary id"@en .
 <https://w3id.org/traits.build#secondary_id> <http://semanticscience.org/resource/SIO_000674> <https://w3id.org/traits.build#secondary_citation> .
 <https://w3id.org/traits.build#secondary_id> <http://purl.org/dc/terms/description> "Citation keys, separated by `; `, for the dataset's `secondary` references in `sources`, the later publications that re-used the same data. Each key is typically formatted as `Surname_year`."@en .
-<https://w3id.org/traits.build#secondary_id> <http://www.w3.org/2000/01/rdf-schema#comment> "Replaces `source_secondary_key` (data model 1.3.0)."@en .
+<https://w3id.org/traits.build#secondary_id> <http://www.w3.org/2000/01/rdf-schema#comment> "Replaces `source_secondary_key` (data model 1.4.0)."@en .
 <https://w3id.org/traits.build#secondary_id> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#secondary_id> <http://purl.org/dc/terms/created> "2026-11-10"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#secondary_id> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -1311,7 +1311,7 @@
 <https://w3id.org/traits.build#secondary_citation> <http://vocab.fairdatacollective.org/gdmt/Cites> <https://w3id.org/traits.build#dataset> .
 <https://w3id.org/traits.build#secondary_citation> <http://semanticscience.org/resource/SIO_000673> <https://w3id.org/traits.build#secondary_id> .
 <https://w3id.org/traits.build#secondary_citation> <http://purl.org/dc/terms/description> "Citations, separated by `; `, for the `secondary` references. This detail is generated from the `secondary` references in the metadata."@en .
-<https://w3id.org/traits.build#secondary_citation> <http://www.w3.org/2000/01/rdf-schema#comment> "Replaces `source_secondary_citation` (data model 1.3.0)."@en .
+<https://w3id.org/traits.build#secondary_citation> <http://www.w3.org/2000/01/rdf-schema#comment> "Replaces `source_secondary_citation` (data model 1.4.0)."@en .
 <https://w3id.org/traits.build#secondary_citation> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#secondary_citation> <http://purl.org/dc/terms/created> "2026-11-10"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#secondary_citation> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
@@ -1757,7 +1757,7 @@
 <https://w3id.org/traits.build#type> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-definitions> .
 <https://w3id.org/traits.build#type> <http://www.w3.org/2000/01/rdf-schema#label> "type"@en .
 <https://w3id.org/traits.build#type> <http://semanticscience.org/resource/SIO_000224> <https://w3id.org/traits.build#trait> .
-<https://w3id.org/traits.build#type> <http://purl.org/dc/terms/description> "Type of trait, specifying if traits are categorical, numeric, or ordinal."@en .
+<https://w3id.org/traits.build#type> <http://purl.org/dc/terms/description> "Type of trait, which decides the checks its values must pass and their datatype: `numeric` (decimals), `categorical` (strings of terms drawn from `allowed_values_levels`), `monthly_presence` (a bit string of twelve characters, one `y` or `n` per month starting with January) or `text` (free text strings with no fixed values)."@en .
 <https://w3id.org/traits.build#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#type> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#type> <http://www.w3.org/2002/07/owl#sameAs> <http://terminologies.gfbio.org/terms/ETS/valueType> .

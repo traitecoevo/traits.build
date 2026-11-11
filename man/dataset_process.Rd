@@ -20,7 +20,10 @@ dataset_process(
 
 \item{schema}{Schema for traits.build}
 
-\item{resource_metadata}{Metadata about the traits compilation read in from the config folder}
+\item{resource_metadata}{Metadata about the traits compilation read in from the config folder.
+Its optional \code{trait_value_term_order} (\code{alphabetical}, the default, or \code{input_order}) sets
+whether the terms of a multi-term trait value are sorted or keep the source's order; see
+\code{\link[=util_trait_value_term_order]{util_trait_value_term_order()}}.}
 
 \item{unit_conversion_functions}{\code{unit_conversion.csv} file read in from the config folder}
 
