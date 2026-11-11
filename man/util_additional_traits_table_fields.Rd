@@ -33,8 +33,11 @@ own, in the order given, so a database without the setting is built exactly
 as before.
 
 A name must start with a letter and hold only letters, digits and
-underscores, and may not be one the schema already uses for a column of the
-traits table or a field of a dataset's \code{metadata.yml}. Names are checked
+underscores. It may not be one the schema already uses for a column of any
+of the database's tables, which functions such as \code{austraits::join_taxa()}
+add to the traits table, or for a field of a dataset's \code{metadata.yml}; nor
+one of \link{traits_working_columns}, which the build adds to the traits table
+while processing it and would overwrite or drop. Names are checked
 against the schema shipped with traits.build rather than the one being
 built with, so a schema the columns have already been added to (see
 \code{\link[=util_schema_add_traits_table_fields]{util_schema_add_traits_table_fields()}}) can be passed again.

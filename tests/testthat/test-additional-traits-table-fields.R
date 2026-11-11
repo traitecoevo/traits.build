@@ -56,12 +56,31 @@ test_that("`util_additional_traits_table_fields` reads the setting and rejects i
     util_additional_traits_table_fields(with_fields(list(`specimen type` = "a", `1st_check` = "b"))),
     "only letters, digits and underscores: `specimen type`, `1st_check`"
   )
-  for (v in c("life_stage", "original_name", "error", "var_in", "omit_values", "location_name", "custom_R_code", "parsing_id")) {
+  # Columns of the traits table, fields of a dataset's `metadata.yml`, columns
+  # of other tables that joins bring into the traits table, and the build's
+  # working columns, which it would overwrite or drop
+  reserved <- c(
+    "life_stage", "original_name", "error", "var_in", "omit_values", "location_name", "custom_R_code",
+    "family", "genus", "taxon_rank", "link_id", "identifier_value", "sampling_strategy",
+    traits_working_columns
+  )
+  for (v in reserved) {
     expect_error(
       util_additional_traits_table_fields(with_fields(list(specimen_type = "a", x = "b") |> setNames(c("specimen_type", v)))),
-      sprintf("has names the schema already uses: `%s`", v),
+      sprintf("has names the schema or the build already uses: `%s`", v),
       info = v
     )
+  }
+})
+
+
+test_that("every working column is reserved, since the build would overwrite or drop it", {
+  # Each of these was taken by a column the build creates while processing:
+  # `pop_id_segment` is overwritten with generated ids, `check_for_ind` dropped,
+  # `type` and `to` overwritten in unit conversion, `col_tmp` stops locations
+  # filling fields, and `aligned_name` breaks the taxonomic update
+  for (v in c("pop_id_segment", "ind_id_segment", "check_for_ind", "type", "to", "ucn", "to_convert", "col_tmp", "aligned_name")) {
+    expect_true(v %in% traits_working_columns, info = v)
   }
 })
 

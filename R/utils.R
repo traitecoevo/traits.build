@@ -442,6 +442,24 @@ util_trait_value_term_order <- function(resource_metadata) {
   order
 }
 
+#' Working columns of the traits table
+#'
+#' Columns the build adds to the traits table while processing it, and later
+#' overwrites or drops: in [process_parse_data()], `process_add_location_metadata()`,
+#' [process_convert_units()], [process_create_observation_id()] and
+#' [dataset_update_taxonomy()]. A database's own column of the same name would
+#' be lost, so [util_additional_traits_table_fields()] does not allow these
+#' names. A new working column belongs here too.
+#'
+#' @keywords internal
+traits_working_columns <- c(
+  "parsing_id", "parsing_id_tmp", "row_numbers", "taxonomic_resolution",
+  "col_tmp",
+  "i", "to", "ucn", "type", "to_convert",
+  "pop_id_segment", "ind_id_segment", "check_for_ind",
+  "aligned_name"
+)
+
 #' Columns a database adds to its traits table
 #'
 #' A database can add columns of its own to the `traits` table, for fields
@@ -462,8 +480,11 @@ util_trait_value_term_order <- function(resource_metadata) {
 #' as before.
 #'
 #' A name must start with a letter and hold only letters, digits and
-#' underscores, and may not be one the schema already uses for a column of the
-#' traits table or a field of a dataset's `metadata.yml`. Names are checked
+#' underscores. It may not be one the schema already uses for a column of any
+#' of the database's tables, which functions such as `austraits::join_taxa()`
+#' add to the traits table, or for a field of a dataset's `metadata.yml`; nor
+#' one of [traits_working_columns], which the build adds to the traits table
+#' while processing it and would overwrite or drop. Names are checked
 #' against the schema shipped with traits.build rather than the one being
 #' built with, so a schema the columns have already been added to (see
 #' [util_schema_add_traits_table_fields()]) can be passed again.
@@ -518,19 +539,20 @@ util_additional_traits_table_fields <- function(resource_metadata) {
     )
   }
 
-  # Names the build already gives a meaning to, as a column of the traits
-  # table, a field of a dataset's `metadata.yml`, or a working column
+  # Names the build already gives a meaning to: a column of any table, since
+  # joins such as `austraits::join_taxa()` bring them into the traits table, a
+  # field of a dataset's `metadata.yml`, or a working column of the build
   packaged <- get_schema()
+  tables <- purrr::keep(packaged[["austraits"]][["elements"]], ~ identical(.x[["type"]], "table"))
   reserved <- c(
-    names(packaged[["austraits"]][["elements"]][["traits"]][["elements"]]),
-    names(packaged[["austraits"]][["elements"]][["excluded_data"]][["elements"]]),
+    unlist(lapply(tables, function(x) names(x[["elements"]])), use.names = FALSE),
     names(packaged[["metadata"]][["elements"]][["dataset"]][["values"]]),
     names(packaged[["metadata"]][["elements"]][["traits"]][["elements"]]),
-    "parsing_id", "taxonomic_resolution", "row_numbers"
+    traits_working_columns
   )
   clashing <- names(fields)[names(fields) %in% reserved]
   if (length(clashing) > 0) {
-    stop_with_names("has names the schema already uses", clashing)
+    stop_with_names("has names the schema or the build already uses", clashing)
   }
 
   fields
