@@ -35,6 +35,7 @@ Imports:
     styler,
     testthat,
     tibble,
+    tools,
     whisker,
     yaml,
     lifecycle
