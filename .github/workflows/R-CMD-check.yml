@@ -31,7 +31,12 @@ jobs:
           # `DESCRIPTION` declares R (>= 4.3.0); without this nothing exercises it.
           - {os: ubuntu-latest,  r: 'oldrel-1'}
           # Catches upstream R changes here rather than on r-universe (see #217).
-          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
+          # terra 1.9-50, the CRAN version, fails to install on R-devel (its
+          # `median` method adds arguments the generic no longer has), and
+          # leaflet -> raster -> terra needs it. The fix (rspatial/terra#2229) is
+          # in terra's r-universe build, so take terra from there until a fixed
+          # terra is on CRAN, then remove `extra-repositories`.
+          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release', extra-repositories: 'https://rspatial.r-universe.dev'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -51,6 +56,7 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
+          extra-repositories: ${{ matrix.config.extra-repositories }}
           use-public-rspm: true
 
       - uses: r-lib/actions/setup-r-dependencies@v2
