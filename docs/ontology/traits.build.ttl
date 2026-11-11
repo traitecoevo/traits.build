@@ -1472,6 +1472,22 @@ tern:unit
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "dataset id"@en .
 
+<https://w3id.org/traits.build#dataset_id_citation>
+    dcterms:created "2026-11-10"^^xsd:date ;
+    dcterms:description "Citation for the dataset's own reference, `sources[[dataset_id]]`. This detail is generated from the `dataset` reference in the metadata."@en ;
+    dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-methods> ;
+    SIO:SIO_000602 SIO:SIO_000757 ;
+    SIO:SIO_000673 <https://w3id.org/traits.build#dataset_id> ;
+    gdmt:Cites <https://w3id.org/traits.build#dataset> ;
+    rdf:datatype xsd:string ;
+    rdfs:comment "Replaces `source_primary_citation` (data model 1.3.0)."@en ;
+    rdfs:label "dataset id citation"@en ;
+    skos:altLabel "dataset_id_citation"@en ;
+    skos:broader dcterms:bibliographicCitation ;
+    skos:closeMatch dwc:assertionReferences, ets:bibliographicCitation ;
+    skos:inScheme <https://w3id.org/traits.build> ;
+    skos:prefLabel "dataset id citation"@en .
+
 <https://w3id.org/traits.build#description>
     dcterms:created "2024-02-01"^^xsd:date ;
     dcterms:description "A short description, generally ranging from 1-3 sentences that clearly indicates the trait’s scope."@en ;
@@ -2141,7 +2157,6 @@ tern:unit
 
 <https://w3id.org/traits.build#observations_from_source>
     oboe:hasMeasurement <https://w3id.org/traits.build#measurement_of_entity_context_property>, <https://w3id.org/traits.build#measurement_of_location_property>, <https://w3id.org/traits.build#measurement_of_plot_context_property>, <https://w3id.org/traits.build#measurement_of_temporal_context_property>, <https://w3id.org/traits.build#measurement_of_treatment_context_property>, <https://w3id.org/traits.build#trait_measurement> ;
-    oboe:ofEntity <https://w3id.org/traits.build#source_primary_citation> ;
     dcterms:created "2024-02-01"^^xsd:date ;
     dcterms:description "Observation collection encompassing all observations for a single published or unpublished source."@en ;
     SIO:SIO_000602 SIO:SIO_000754 ;
@@ -2351,9 +2366,39 @@ tern:unit
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "scientific name id"@en .
 
+<https://w3id.org/traits.build#secondary_citation>
+    dcterms:created "2026-11-10"^^xsd:date ;
+    dcterms:description "Citations, separated by `; `, for the `secondary` references. This detail is generated from the `secondary` references in the metadata."@en ;
+    dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-methods> ;
+    SIO:SIO_000602 SIO:SIO_000757 ;
+    SIO:SIO_000673 <https://w3id.org/traits.build#secondary_id> ;
+    gdmt:Cites <https://w3id.org/traits.build#dataset> ;
+    rdf:datatype xsd:string ;
+    rdfs:comment "Replaces `source_secondary_citation` (data model 1.3.0)."@en ;
+    rdfs:label "secondary citation"@en ;
+    skos:altLabel "secondary_citation"@en ;
+    skos:broader dcterms:bibliographicCitation ;
+    skos:closeMatch ets:bibliographicCitation ;
+    skos:inScheme <https://w3id.org/traits.build> ;
+    skos:prefLabel "secondary citation"@en .
+
+<https://w3id.org/traits.build#secondary_id>
+    dcterms:created "2026-11-10"^^xsd:date ;
+    dcterms:description "Citation keys, separated by `; `, for the dataset's `secondary` references in `sources`, the later publications that re-used the same data. Each key is typically formatted as `Surname_year`."@en ;
+    dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-methods> ;
+    SIO:SIO_000602 SIO:SIO_000757 ;
+    SIO:SIO_000674 <https://w3id.org/traits.build#secondary_citation> ;
+    rdf:datatype xsd:string ;
+    rdfs:comment "Replaces `source_secondary_key` (data model 1.3.0)."@en ;
+    rdfs:label "secondary id"@en ;
+    skos:altLabel "secondary_id"@en ;
+    skos:broader oboe-characteristics:Identifier ;
+    skos:inScheme <https://w3id.org/traits.build> ;
+    skos:prefLabel "secondary id"@en .
+
 <https://w3id.org/traits.build#source_id>
     dcterms:created "2024-02-01"^^xsd:date ;
-    dcterms:description "For a dataset compiled from several studies, the `key` of the reference in `sources` that the record was taken from, which is the dataset's primary reference or one of its `original_source` references. NA, or the primary key, both mean the record was collected in the primary study."@en ;
+    dcterms:description "The `key` of the reference in `sources` that the record was taken from. By default this is the `dataset_id`, which is also the key of the dataset's own reference. For a dataset compiled from several studies, a record taken from one of them holds the key of that `source` reference instead, so `sources[[source_id]]` is the record's citation."@en ;
     dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-sources>, <https://w3id.org/traits.build#traits.build-traits> ;
     SIO:SIO_000602 SIO:SIO_000757 ;
     SIO:SIO_000674 <https://w3id.org/traits.build#observations_from_source> ;
@@ -2364,94 +2409,6 @@ tern:unit
     skos:inScheme <https://w3id.org/traits.build> ;
     skos:prefLabel "source id"@en ;
     skos:relatedMatch dwc:datasetID, ets:references .
-
-<https://w3id.org/traits.build#source_original_dataset_citation>
-    dcterms:created "2024-02-01"^^xsd:date ;
-    dcterms:description "Citations, separated by `; `, for the `original_source` references. This detail is generated from the `original_source` references in the metadata."@en ;
-    dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-methods> ;
-    SIO:SIO_000602 SIO:SIO_000757 ;
-    SIO:SIO_000673 <https://w3id.org/traits.build#source_original_dataset_key> ;
-    gdmt:Cites <https://w3id.org/traits.build#observations_from_source> ;
-    rdf:datatype xsd:string ;
-    rdfs:label "source original dataset citation"@en ;
-    skos:altLabel "source_original_dataset_citation"@en ;
-    skos:broader dcterms:bibliographicCitation ;
-    skos:closeMatch ets:bibliographicCitation ;
-    skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "source original dataset citation"@en .
-
-<https://w3id.org/traits.build#source_original_dataset_key>
-    dcterms:created "2024-02-01"^^xsd:date ;
-    dcterms:description "Citation keys, separated by `; `, for the dataset's `original_source` references in `sources`, which for a compilation are the studies records were taken from. Each record names its own in `source_id` in the `traits` table. Each key is typically formatted as `Surname_year`."@en ;
-    dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-methods> ;
-    SIO:SIO_000602 SIO:SIO_000757 ;
-    SIO:SIO_000674 <https://w3id.org/traits.build#source_original_dataset_citation> ;
-    rdf:datatype xsd:string ;
-    rdfs:label "source original dataset key"@en ;
-    owl:sameAs <https://w3id.org/traits.build#source_id> ;
-    skos:altLabel "source_original_dataset_key"@en ;
-    skos:broader oboe-characteristics:Identifier ;
-    skos:exactMatch <https://w3id.org/traits.build#source_id> ;
-    skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "source original dataset key"@en .
-
-<https://w3id.org/traits.build#source_primary_citation>
-    dcterms:created "2024-02-01"^^xsd:date ;
-    dcterms:description "Citation for the primary source. This detail is generated from the primary source in the metadata."@en ;
-    dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-methods> ;
-    SIO:SIO_000602 SIO:SIO_000757 ;
-    SIO:SIO_000673 <https://w3id.org/traits.build#source_primary_key> ;
-    gdmt:Cites <https://w3id.org/traits.build#dataset> ;
-    rdf:datatype xsd:string ;
-    rdfs:label "source primary citation"@en ;
-    skos:altLabel "source_primary_citation"@en ;
-    skos:broader dcterms:bibliographicCitation ;
-    skos:closeMatch dwc:assertionReferences, ets:bibliographicCitation ;
-    skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "source primary citation"@en .
-
-<https://w3id.org/traits.build#source_primary_key>
-    dcterms:created "2024-02-01"^^xsd:date ;
-    dcterms:description "Citation key for the primary source in `sources`. The key is typically formatted as `Surname_year`."@en ;
-    dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-methods> ;
-    SIO:SIO_000602 SIO:SIO_000757 ;
-    SIO:SIO_000674 <https://w3id.org/traits.build#source_primary_citation> ;
-    rdf:datatype xsd:string ;
-    rdfs:label "source primary key"@en ;
-    owl:sameAs <https://w3id.org/traits.build#dataset_id> ;
-    skos:altLabel "source_primary_key"@en ;
-    skos:broader oboe-characteristics:Identifier ;
-    skos:exactMatch <https://w3id.org/traits.build#dataset_id> ;
-    skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "source primary key"@en .
-
-<https://w3id.org/traits.build#source_secondary_citation>
-    dcterms:created "2024-02-01"^^xsd:date ;
-    dcterms:description "Citations, separated by `; `, for the `secondary` references. This detail is generated from the `secondary` references in the metadata."@en ;
-    dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-methods> ;
-    SIO:SIO_000602 SIO:SIO_000757 ;
-    SIO:SIO_000673 <https://w3id.org/traits.build#source_secondary_key> ;
-    gdmt:Cites <https://w3id.org/traits.build#dataset> ;
-    rdf:datatype xsd:string ;
-    rdfs:label "source secondary citation"@en ;
-    skos:altLabel "source_secondary_citation"@en ;
-    skos:broader dcterms:bibliographicCitation ;
-    skos:closeMatch ets:bibliographicCitation ;
-    skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "source secondary citation"@en .
-
-<https://w3id.org/traits.build#source_secondary_key>
-    dcterms:created "2024-02-01"^^xsd:date ;
-    dcterms:description "Citation keys, separated by `; `, for the `secondary` references in `sources`, the later publications that re-used the same dataset. Each key is typically formatted as `Surname_year`."@en ;
-    dwcattributes:organizedInClass <https://w3id.org/traits.build#traits.build-methods> ;
-    SIO:SIO_000602 SIO:SIO_000757 ;
-    SIO:SIO_000674 <https://w3id.org/traits.build#source_secondary_citation> ;
-    rdf:datatype xsd:string ;
-    rdfs:label "source secondary key"@en ;
-    skos:altLabel "source_secondary_key"@en ;
-    skos:broader oboe-characteristics:Identifier ;
-    skos:inScheme <https://w3id.org/traits.build> ;
-    skos:prefLabel "source secondary key"@en .
 
 <https://w3id.org/traits.build#taxon>
     dcterms:created "2024-02-01"^^xsd:date ;
