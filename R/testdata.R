@@ -172,6 +172,37 @@ dataset_test_worker <-
           )
         }
 
+        ## Check no field of a list entry is left without a value
+        # An empty field drops its whole entry from the build without a message,
+        # and from the checks below, which read the entries the same way (#307).
+        # `source` is keyed by type, each holding one reference or a list of them
+        sources <- metadata[["source"]]
+        if (is.list(sources)) {
+          sources <- unname(unlist(
+            lapply(sources, function(x) if (is.null(names(x))) x else list(x)),
+            recursive = FALSE
+          ))
+        }
+        sections <- c(
+          sapply(c("traits", "substitutions", "contexts", "identifiers",
+                   "taxonomic_updates", "exclude_observations"),
+                 function(section) metadata[[section]], simplify = FALSE),
+          list(
+            "contributors data_collectors" = metadata[["contributors"]][["data_collectors"]],
+            source = sources
+          )
+        )
+        for (section in names(sections)) {
+          empty <- util_list_empty_fields(sections[[section]])
+          test_expect_true(
+            length(empty) == 0,
+            info = sprintf(
+              "%s\t%s - field(s) with no value, which drop their entry from the build: %s",
+              red(f), section, paste(empty, collapse = "; ")
+            )
+          )
+        }
+
         ## Custom R code
         txt <- metadata[["dataset"]][["custom_R_code"]]
         # Check that `custom_R_code` is immediately followed by `collection_date`
@@ -1063,26 +1094,23 @@ dataset_test_worker <-
         }
 
         ## Check config files contain all relevant columns
+        # Every `var_in` in `traits` must be in the data: a column of a wide
+        # dataset, or a value of a long dataset's trait column. The reverse is not
+        # required: a column a wide dataset does not map, or a trait in a long
+        # dataset's trait column with no `traits` entry, is left out of the build,
+        # so it needs no filtering in `custom_R_code` (#308)
         if (metadata[["dataset"]][["data_is_long_format"]]) {
-
-          # For vertical datasets, expect all values of "trait column" found in traits
-          var_out <- names(metadata[["dataset"]])
-          var_in <- unlist(metadata[["dataset"]])
-          i <- match("trait_name", var_out)
-          values <- unique(data[[var_in[i]]])
-          test_expect_contains(
-            traits[["var_in"]], values,
-            info = paste0(red(files[2]), "\ttraits")
+          trait_column <- metadata[["dataset"]][["trait_name"]]
+          test_expect_is_in(
+            traits[["var_in"]], unique(data[[trait_column]]),
+            info = paste0(red(files[2]), "\ttraits"),
+            label = sprintf("`var_in` (values of the trait column `%s`)", trait_column)
           )
-
         } else {
-
-          # For wide datasets, expect variables in traits are headers in the data
           test_expect_is_in(
             traits[["var_in"]], names(data),
             info = paste0(red(files[2]), "\ttraits"), label = "`var_in`"
           )
-
         }
 
 

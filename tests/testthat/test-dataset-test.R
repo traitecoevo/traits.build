@@ -292,3 +292,94 @@ test_that("`dataset_test` accepts a context scoped to specific traits by a colum
   failures <- dataset_test_failures("Test_2024_1")
   expect_equal(grep("^== Testing", failures, invert = TRUE, value = TRUE), character(0))
 })
+
+
+test_that("`dataset_test` fails a `metadata.yml` entry with a field that has no value (#307)", {
+  # An empty field drops its whole entry from the build, so the trait vanished
+  # from both `traits` and `excluded_data` while `dataset_test()` passed
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  lines <- readLines(path_metadata)
+  at <- which(lines == "  trait_name: leaf_N_per_dry_mass")
+  writeLines(append(lines, "  replicates:", after = at), path_metadata)
+
+  expect_match(
+    dataset_test_failures("Test_2023_2", path_data = path_data),
+    "traits - field(s) with no value, which drop their entry from the build: entry 2 (var_in: Leaf nitrogen (mg mg-1)) `replicates`",
+    fixed = TRUE, all = FALSE
+  )
+})
+
+
+test_that("`dataset_test` fails an empty field in a data collector or a source (#307)", {
+  # The same conversion drops a data collector from `contributors`, and a
+  # reference from the table of source keys, which then pairs the remaining
+  # keys with the wrong source types
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  lines <- readLines(path_metadata)
+  lines <- append(lines, "    number:", after = grep("^  primary:", lines)[1])
+  lines <- append(lines, "    additional_role: []", after = grep("^  - last_name: Westoby", lines))
+  writeLines(lines, path_metadata)
+
+  failures <- dataset_test_failures("Test_2023_2", path_data = path_data)
+  expect_match(failures, "contributors data_collectors - field(s) with no value, which drop their entry from the build: entry 2 (last_name: Westoby) `additional_role`",
+               fixed = TRUE, all = FALSE)
+  expect_match(failures, "source - field(s) with no value, which drop their entry from the build: entry 1 (key: Test_2023_2) `number`",
+               fixed = TRUE, all = FALSE)
+})
+
+
+test_that("`dataset_test` accepts long-format traits with no `traits` entry (#308)", {
+  # Test_2023_3 is long format. Add rows for a trait its `metadata.yml` does not
+  # map, in a temporary copy so the shared example stays untouched. The build
+  # leaves them out, as it does a column a wide dataset does not map, so they
+  # should cause no failure.
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_3", path_data, recursive = TRUE)
+
+  data_file <- file.path(path_data, "Test_2023_3", "data.csv")
+  data <- readr::read_csv(data_file, col_types = readr::cols(.default = "c"))
+  extra <- data[1:3, ]
+  extra$trait_name <- "unmapped_trait"
+  readr::write_csv(dplyr::bind_rows(data, extra), data_file, na = "")
+
+  expect_identical(
+    dataset_test_failures("Test_2023_3", path_data = path_data),
+    dataset_test_failures("Test_2023_3")
+  )
+
+  built <- dataset_process(
+    data_file,
+    dataset_configure(file.path(path_data, "Test_2023_3", "metadata.yml"), get_schema("config/traits.yml", "traits")),
+    get_schema(),
+    get_schema("config/metadata.yml", "metadata"),
+    get_unit_conversions("config/unit_conversions.csv")
+  )
+  expect_false("unmapped_trait" %in% c(built$traits$trait_name, built$excluded_data$trait_name))
+})
+
+
+test_that("`dataset_test` rejects a long-format `traits` entry whose trait is not in the data (#308)", {
+  # As a wide dataset's `var_in` must be a column, a long dataset's must be a
+  # value of its trait column: otherwise the entry builds nothing
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_3", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_3", "metadata.yml")
+  metadata <- read_metadata(path_metadata)
+  extra <- metadata$traits[[1]]
+  extra$var_in <- "absent_trait"
+  metadata$traits <- c(metadata$traits, list(extra))
+  write_metadata(metadata, path_metadata)
+
+  expect_match(
+    dataset_test_failures("Test_2023_3", path_data = path_data),
+    "`var_in` (values of the trait column `trait_name`) should not contain: 'absent_trait'",
+    fixed = TRUE, all = FALSE
+  )
+})
