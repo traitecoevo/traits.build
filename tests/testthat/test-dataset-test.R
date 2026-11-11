@@ -389,6 +389,67 @@ test_that("`dataset_test` reports a `source` reference no record names (#296)", 
 })
 
 
+# `source_id` is checked on the records the built dataset holds, in `traits`
+# and `excluded_data`, not on every row of the data
+source_id_edited <- function(new_rows, extra_source_key = NULL) {
+  path_data <- withr::local_tempdir(.local_envir = parent.frame())
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  if (!is.null(extra_source_key)) {
+    metadata <- read_metadata(path_metadata)
+    extra <- metadata$source$source[[1]]
+    extra$key <- extra_source_key
+    metadata$source$source <- c(metadata$source$source, list(extra))
+    write_metadata(metadata, path_metadata)
+  }
+
+  path_csv <- file.path(path_data, "Test_2023_2", "data.csv")
+  data <- readr::read_csv(path_csv, col_types = readr::cols(.default = "c"))
+  traits_columns <- c(
+    "LMA (mg mm-2)", "Leaf nitrogen (mg mg-1)", "leaf size (mm2)", "wood density (mg mm-3)",
+    "branch mass fraction", "Seed mass (mg)", "LASA10", "LASA250", "LASA50", "LASA1000"
+  )
+  rows <- purrr::map_dfr(new_rows, function(row) {
+    x <- data[1, ]
+    x[traits_columns] <- NA_character_
+    x[names(row)] <- row
+    x
+  })
+  readr::write_csv(dplyr::bind_rows(data, rows), path_csv, na = "")
+
+  dataset_test_failures("Test_2023_2", path_data = path_data)
+}
+
+
+test_that("`dataset_test` ignores the `source_id` of a row the build drops without excluding it (#296)", {
+  # Every trait value blank: the build drops the row, and its `source_id` is
+  # in neither `traits` nor `excluded_data`
+  failures <- source_id_edited(
+    list(list(source_id = "Nobody_1900"), list(source_id = "Test_1999")),
+    extra_source_key = "Test_1999"
+  )
+  expect_false(any(grepl("Nobody_1900", failures, fixed = TRUE)))
+  # ...so a `source` reference only such a row names is unused
+  expect_match(
+    failures,
+    "no record's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): 'Test_1999'",
+    fixed = TRUE, all = FALSE
+  )
+})
+
+
+test_that("`dataset_test` counts the `source_id` of a record in `excluded_data` (#296)", {
+  # A value that is not a number: the record is excluded, not dropped, and still
+  # cites its reference
+  failures <- source_id_edited(
+    list(list(`LMA (mg mm-2)` = "not a number", source_id = "Test_1999")),
+    extra_source_key = "Test_1999"
+  )
+  expect_false(any(grepl("Test_1999", failures, fixed = TRUE)))
+})
+
+
 test_that("`dataset_test` fails a `metadata.yml` entry with a field that has no value (#307)", {
   # An empty field drops its whole entry from the build, so the trait vanished
   # from both `traits` and `excluded_data` while `dataset_test()` passed

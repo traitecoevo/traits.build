@@ -857,37 +857,45 @@ dataset_test_worker <-
         # Each record's `source_id` is the `key` of the reference it was taken
         # from -- the dataset's own (keyed by, and defaulting to, the
         # `dataset_id`) or one of its `source` references -- so that
-        # `sources[[source_id]]` returns that reference (#296)
+        # `sources[[source_id]]` returns that reference (#296). Checked after the
+        # build below, on the records the database will hold, in `traits` and
+        # `excluded_data`: a record excluded there still cites its reference,
+        # while rows `custom_R_code` filters out, or the build drops without
+        # excluding them, cite nothing. If the build fails, the values read
+        # from the data stand in.
         source_ids <- dataset_test_source_id_values(metadata, traits, data)
-        keys_by_type <- split(sources_flat$key, sources_flat$type)
-        source_keys <- keys_by_type[["source"]]
-        linkable_keys <- c(dataset_id, source_keys)
+        f_metadata <- f
+        check_source_ids <- function(source_ids) {
+          keys_by_type <- split(sources_flat$key, sources_flat$type)
+          source_keys <- keys_by_type[["source"]]
+          linkable_keys <- c(dataset_id, source_keys)
 
-        i <- source_ids %in% keys_by_type[["secondary"]]
-        test_expect_true(
-          !any(i),
-          info = sprintf(
-            "%s\tsource - `source_id` values name `secondary` references; a reference that records are taken from is a source, so move these entries to `source`: '%s'",
-            red(f), paste(source_ids[i], collapse = "', '"))
-        )
+          i <- source_ids %in% keys_by_type[["secondary"]]
+          test_expect_true(
+            !any(i),
+            info = sprintf(
+              "%s\tsource - `source_id` values name `secondary` references; a reference that records are taken from is a source, so move these entries to `source`: '%s'",
+              red(f_metadata), paste(source_ids[i], collapse = "', '"))
+          )
 
-        unmatched <- source_ids[!i & !source_ids %in% linkable_keys]
-        hint <- ifelse(
-          any(unmatched %in% sources_flat$slot),
-          "; a value such as `secondary_01` is the name of an entry, not its `key`", "")
-        test_expect_is_in(
-          source_ids[!i], linkable_keys,
-          info = paste0(red(f), "\tsource"),
-          label = paste0("`source_id` (each value must be the dataset_id or the `key` of a `source` reference", hint, ")")
-        )
+          unmatched <- source_ids[!i & !source_ids %in% linkable_keys]
+          hint <- ifelse(
+            any(unmatched %in% sources_flat$slot),
+            "; a value such as `secondary_01` is the name of an entry, not its `key`", "")
+          test_expect_is_in(
+            source_ids[!i], linkable_keys,
+            info = paste0(red(f_metadata), "\tsource"),
+            label = paste0("`source_id` (each value must be the dataset_id or the `key` of a `source` reference", hint, ")")
+          )
 
-        j <- !source_keys %in% source_ids
-        test_expect_true(
-          !any(j),
-          info = sprintf(
-            "%s\tsource - no record's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): '%s'",
-            red(f), paste(source_keys[j], collapse = "', '"))
-        )
+          j <- !source_keys %in% source_ids
+          test_expect_true(
+            !any(j),
+            info = sprintf(
+              "%s\tsource - no record's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): '%s'",
+              red(f_metadata), paste(source_keys[j], collapse = "', '"))
+          )
+        }
 
         ## Substitutions
 
@@ -1282,6 +1290,14 @@ dataset_test_worker <-
           #  )
           #}
         }
+
+        ## Source id, on the records the built dataset holds (see above)
+        if (exists("dataset", inherits = FALSE) && is.data.frame(dataset[["traits"]])) {
+          source_ids <- unique(stats::na.omit(c(
+            dataset[["traits"]][["source_id"]], dataset[["excluded_data"]][["source_id"]]
+          )))
+        }
+        check_source_ids(source_ids)
       })
     }
   }
