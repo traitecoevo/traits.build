@@ -144,6 +144,22 @@ dataset_test_worker <-
           )
         }
 
+        # The database's own columns of the traits table, which a dataset may
+        # set in its `dataset` block and `traits` entries. Added to this
+        # dataset's copy of the schema, as `dataset_process()` adds them. An
+        # invalid setting fails here, and the checks go on without the columns
+        additional_fields <- tryCatch(
+          util_additional_traits_table_fields(resource_metadata),
+          error = function(e) {
+            testthat::expect(
+              FALSE,
+              sprintf("%s\t%s", red(file.path(path_config, "metadata.yml")), conditionMessage(e))
+            )
+            character()
+          }
+        )
+        schema <- util_schema_add_traits_table_fields(schema, additional_fields)
+
         if (!is.null(metadata[["identifiers"]])) {
           test_expect_list_names_exact(
             metadata, schema$metadata$elements %>% names(),
@@ -965,7 +981,7 @@ dataset_test_worker <-
         test_expect_no_error(
           parsed_data <- data %>%
             process_parse_data(dataset_id, metadata, contexts, schema, identifiers,
-                               definitions[["elements"]]),
+                               definitions[["elements"]], additional_fields = names(additional_fields)),
           info = sprintf("%s\t`process_parse_data`", red(dataset_id)))
 
         test_expect_allowed_text(
