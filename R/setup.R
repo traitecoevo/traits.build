@@ -290,7 +290,7 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
   # Check if existing content, if so append
   if (!all(is.na(metadata$traits))) {
 
-    existing_var_in <- metadata$traits %>% austraits::convert_list_to_df2() %>% dplyr::pull("var_in")
+    existing_var_in <- metadata$traits %>% util_traits_to_df() %>% dplyr::pull("var_in")
     if (any(var_in %in% existing_var_in)) {
       message(
         sprintf(red("Following traits already exist in the metadata and will be skipped: ") %+%
@@ -300,7 +300,7 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
     }
 
     # Append new traits if not already in metadata
-    traits <- dplyr::bind_rows(metadata$traits %>% austraits::convert_list_to_df2(), traits) %>%
+    traits <- dplyr::bind_rows(metadata$traits %>% util_traits_to_df(), traits) %>%
       dplyr::filter(!duplicated(var_in))
 
     if (length(var_in[!var_in %in% existing_var_in]) > 0) {
@@ -322,7 +322,24 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
       ))
   }
 
-  metadata$traits <- traits %>% austraits::convert_df_to_list()
+  new_traits <- traits %>% austraits::convert_df_to_list()
+
+  # `omit_values` does not survive the round trip through a table above, so
+  # carry it across from the existing entry each row was made from: the first
+  # with its `var_in`, as the table keeps only that one
+  if (is.list(metadata$traits)) {
+    entry_var_in <- vapply(
+      metadata$traits, function(x) as.character(x[["var_in"]])[1], character(1)
+    )
+    for (j in seq_along(new_traits)) {
+      i <- match(new_traits[[j]][["var_in"]], entry_var_in)
+      if (!is.na(i) && !is.null(metadata$traits[[i]][["omit_values"]])) {
+        new_traits[[j]][["omit_values"]] <- metadata$traits[[i]][["omit_values"]]
+      }
+    }
+  }
+
+  metadata$traits <- new_traits
   write_metadata_dataset(metadata, dataset_id)
   return(invisible(metadata))
 

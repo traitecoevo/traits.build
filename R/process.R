@@ -33,7 +33,7 @@ dataset_configure <- function(
   # Table of trait_mapping
   trait_mapping <-
     metadata[["traits"]] %>%
-    austraits::convert_list_to_df2() %>%
+    util_traits_to_df() %>%
     dplyr::filter(!is.na(.data$trait_name))
 
   # Subset of definitions
@@ -54,7 +54,10 @@ dataset_configure <- function(
 #' @param filename_data_raw Raw `data.csv` file for any given study
 #' @param config_for_dataset Config settings generated from `dataset_configure()`
 #' @param schema Schema for traits.build
-#' @param resource_metadata Metadata about the traits compilation read in from the config folder
+#' @param resource_metadata Metadata about the traits compilation read in from the config folder.
+#' Its optional `trait_value_term_order` (`alphabetical`, the default, or `input_order`) sets
+#' whether the terms of a multi-term trait value are sorted or keep the source's order; see
+#' [util_trait_value_term_order()].
 #' @param unit_conversion_functions `unit_conversion.csv` file read in from the config folder
 #' @param filter_missing_values Default filters missing values from the excluded data table;
 #' change to false to see the rows with missing values
@@ -84,6 +87,25 @@ dataset_process <- function(filename_data_raw,
   dataset_id <- config_for_dataset$dataset_id
   metadata <- config_for_dataset$metadata
   definitions <- config_for_dataset$definitions
+
+  # How to write the terms of a multi-term value; checked before any work is done
+  term_order <- util_trait_value_term_order(resource_metadata)
+
+  # Each check on a trait's values is chosen by its `type`, so a trait whose
+  # type is missing or misspelt would have its values pass through unchecked
+  unsupported_types <- util_unsupported_trait_types(definitions, schema)
+  if (length(unsupported_types) > 0) {
+    stop(
+      sprintf(
+        "Dataset %s uses %s whose `type` in `traits.yml` is not one of %s: %s",
+        dataset_id,
+        ifelse(length(unsupported_types) > 1, "traits", "a trait"),
+        paste(sprintf("`%s`", util_trait_types(schema)), collapse = ", "),
+        paste(unsupported_types, collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
 
   # Load and clean trait data
   traits <-
@@ -154,53 +176,16 @@ dataset_process <- function(filename_data_raw,
     traits$traits %>%
     process_add_all_columns(
       c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
-        "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in", identifiers$var_in)
+        "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in", identifiers$var_in,
+        process_trait_level_column(location_metadata_fields))
     )
 
-  # Replace old `location_id` with a new `location_id`
-  if (nrow(locations) > 0) {
-    traits <-
-      traits %>%
-      dplyr::select(-dplyr::all_of(c("location_id"))) %>%
-      dplyr::left_join(
-        by = c("location_name"),
-        locations %>% dplyr::select(dplyr::all_of(c("location_name", "location_id"))) %>% dplyr::distinct()
-      )
-    traits <-
-      traits %>%
-      dplyr::mutate(
-        location_id = ifelse(.data$entity_type == "species", NA_character_, .data$location_id)
-      )
-  }
+  # Set `location_id`, and fill fields such as `life_stage` from the location's
+  # properties, where the trait's own metadata does not set them
+  traits <- traits %>% process_add_location_metadata(locations)
 
-  # Where missing, fill variables in traits table with values from locations
-  # Trait metadata should probably have precedence -- right now trait metadata
-  # is being read in during `process_parse_data` and getting overwritten here #TODO
-
-  if (nrow(locations) > 0) {
-    vars <- c("basis_of_record", "life_stage", "collection_date",
-              "measurement_remarks", "entity_type")
-
-    for (v in vars) {
-      # Merge into traits from location level
-      if (v %in% unique(locations$location_property)) {
-        traits_tmp <- traits %>%
-          dplyr::left_join(
-            by = "location_id",
-            locations %>%
-              tidyr::pivot_wider(names_from = "location_property", values_from = "value") %>%
-              dplyr::mutate(col_tmp = .data[[v]]) %>%
-              dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
-              stats::na.omit()
-          )
-        # Use location level value if present
-        traits[[v]] <- ifelse(!is.na(traits_tmp[["col_tmp"]]), traits_tmp[["col_tmp"]], traits[[v]])
-      }
-    }
-
-    # Remove any values included to map into traits table
-    locations <- locations %>% dplyr::filter(!(.data$location_property %in% vars))
-  }
+  # Those properties are now in the traits table, so not kept as properties
+  locations <- locations %>% dplyr::filter(!(.data$location_property %in% location_metadata_fields))
 
   # Now that `collection_date` holds its final values, from metadata, data or
   # locations, write `unknown/yyyy` and `.na/yyyy` as the year alone
@@ -219,8 +204,14 @@ dataset_process <- function(filename_data_raw,
     process_taxonomic_updates(metadata) %>%
     # Sorting of data
     dplyr::mutate(
-      # For cells with multiple values (separated by a space), sort these alphabetically
-      value = ifelse(is.na(.data$error), util_separate_and_sort(.data$value), .data$value),
+      # For cells with multiple values (separated by a space), drop repeated
+      # values and, unless the database keeps the source's order, sort them
+      # alphabetically. See `trait_value_term_order` in the schema. Only a
+      # categorical value is a set of terms: a `text` value's words are in order
+      value = ifelse(
+        is.na(.data$error) & .data$trait_name %in% util_traits_of_type(definitions, "categorical"),
+        util_separate_and_sort(.data$value, order = term_order), .data$value
+      ),
       value_type = factor(.data$value_type, levels = names(schema$value_type$values))
       ) %>%
     dplyr::arrange(.data$observation_id, .data$trait_name, .data$value_type) %>%
@@ -672,7 +663,7 @@ process_create_observation_id <- function(data, metadata) {
 
   }
 
-  traits_table <- metadata[["traits"]] %>% austraits::convert_list_to_df2()
+  traits_table <- metadata[["traits"]] %>% util_traits_to_df()
 
   if (!is.null(traits_table[["repeat_measurements_id"]])) {
 
@@ -734,7 +725,7 @@ process_generate_id <- function(x, prefix, sort = FALSE) {
 #' @importFrom rlang .data
 process_generate_method_ids <- function(metadata_traits) {
   metadata_traits %>%
-    austraits::convert_list_to_df2() %>%
+    util_traits_to_df() %>%
     dplyr::filter(!is.na(.data$trait_name)) %>%
     dplyr::select(dplyr::all_of(c("trait_name", "methods"))) %>%
     dplyr::distinct() %>%
@@ -769,7 +760,7 @@ process_format_contexts <- function(my_list, dataset_id, traits, metadata_traits
   # field set literally on the `traits` entries of `metadata.yml` -- `process_parse_data()`
   # accepts both. Only the first could supply the values when `values` is omitted, so the
   # second route died in the `left_join` below with an unrelated-looking rlang error (#268).
-  trait_entries <- austraits::convert_list_to_df2(metadata_traits)
+  trait_entries <- util_traits_to_df(metadata_traits)
 
   if (!is.data.frame(trait_entries)) {
     trait_entries <- tibble::tibble()
@@ -1084,6 +1075,104 @@ process_format_locations <- function(my_list, dataset_id, schema) {
   out
 }
 
+# The fields of the traits table a location can set for the records measured
+# there, read from its location properties of the same name
+location_metadata_fields <- c(
+  "basis_of_record", "life_stage", "collection_date", "measurement_remarks", "entity_type"
+)
+
+#' Name of the temporary column marking values set by a trait's own metadata
+#'
+#' [process_parse_data()] sets this column to `TRUE` on the records of a trait
+#' whose entry in `metadata$traits` sets `field`, and
+#' `process_add_location_metadata()` reads and then drops it. A caller that
+#' narrows the parsed table's columns in between, as
+#' [process_add_all_columns()] does, must keep these.
+#'
+#' @param field Character vector of field names, from `location_metadata_fields`
+#' @return Character vector of column names
+#' @noRd
+process_trait_level_column <- function(field) {
+  paste0(".trait_level_", field)
+}
+
+#' Add location-level metadata to the traits table
+#'
+#' Joins each record's `location_id`, then fills the fields named in
+#' `location_metadata_fields` from the properties of the record's location.
+#' Both [dataset_process()] and [dataset_test()] call this, so the two always
+#' agree.
+#'
+#' For each record, a value set on the trait's own entry in the `traits` block
+#' of `metadata.yml` beats the location's value, which in turn beats a value
+#' from the `dataset` block. This holds whether the trait entry gives a fixed
+#' value or names a column of `data.csv`. Where the trait entry names a column
+#' whose cell is empty for a record, the location's value fills it (#60).
+#' [process_parse_data()] marks the records whose value came from the trait
+#' entry, in the temporary columns `process_trait_level_column()` names, and
+#' this function drops them, whether or not the dataset has locations.
+#'
+#' A record whose `entity_type` is `species` gets no `location_id`, so it takes
+#' nothing from a location. That is decided before the merge, from the
+#' `entity_type` the trait and dataset levels gave it, so a location-level
+#' `entity_type` does not change which records are linked to the location. A
+#' record with no `entity_type` keeps its `location_id`, and like any other
+#' empty cell, its `entity_type` is filled from the location if the location
+#' sets one.
+#'
+#' @param traits Traits table returned by [process_parse_data()], with the
+#'   columns of the schema's traits table added
+#' @param locations Locations table returned by [process_format_locations()]
+#'
+#' @return `traits`, with `location_id` set and location-level values filled in
+#' @importFrom rlang .data
+#' @noRd
+process_add_location_metadata <- function(traits, locations) {
+
+  if (nrow(locations) > 0) {
+    # Replace the `location_id` placeholder with the location's id
+    traits <-
+      traits %>%
+      dplyr::select(-dplyr::all_of(c("location_id"))) %>%
+      dplyr::left_join(
+        by = c("location_name"),
+        locations %>% dplyr::select(dplyr::all_of(c("location_name", "location_id"))) %>% dplyr::distinct()
+      ) %>%
+      dplyr::mutate(
+        # Only a species-level record is unlinked; one with no `entity_type` is
+        # still measured at its location
+        location_id = ifelse(.data$entity_type %in% "species", NA_character_, .data$location_id)
+      )
+
+    for (v in location_metadata_fields) {
+      if (v %in% unique(locations$location_property)) {
+        traits_tmp <- traits %>%
+          dplyr::left_join(
+            by = "location_id",
+            locations %>%
+              tidyr::pivot_wider(names_from = "location_property", values_from = "value") %>%
+              dplyr::mutate(col_tmp = .data[[v]]) %>%
+              dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
+              stats::na.omit()
+          )
+
+        # Keep a value the trait entry set; a trait-level column's empty cell is
+        # not a value, so the location fills it. A cell `custom_R_code` left as
+        # "" is as empty as one `read_csv()` read as `NA`
+        trait_level <- traits[[process_trait_level_column(v)]]
+        if (is.null(trait_level)) trait_level <- FALSE
+        trait_value <- as.character(traits[[v]])
+        keep_trait_value <- trait_level %in% TRUE & !is.na(trait_value) & trait_value != ""
+
+        use_location <- !is.na(traits_tmp[["col_tmp"]]) & !keep_trait_value
+        traits[[v]] <- ifelse(use_location, traits_tmp[["col_tmp"]], traits[[v]])
+      }
+    }
+  }
+
+  traits %>% dplyr::select(-dplyr::any_of(process_trait_level_column(location_metadata_fields)))
+}
+
 #' Flag any unrecognised traits
 #'
 #' Flag any unrecognised traits, as defined in the `traits.yml` file.
@@ -1135,7 +1224,7 @@ process_flag_excluded_observations <- function(data, metadata) {
 
   fix <- split(fix, fix$variable)
 
-  traits <- metadata$traits %>% austraits::convert_list_to_df2()
+  traits <- metadata$traits %>% util_traits_to_df()
 
   for (v in names(fix))
 
@@ -1301,18 +1390,19 @@ util_list_to_bib <- function(ref) {
 
 #' Flag disallowed trait values and disallowed characters
 #'
-#' Flags any categorical traits values that are not on the list of allowed values defined in the
-#' `traits.yml` file.
+#' Flags trait values that do not suit the trait's `type` in the `traits.yml` file:
+#' a `categorical` value using a term not on the trait's list of allowed values, a
+#' `monthly_presence` value that is not twelve `y`s and `n`s, and a `numeric` value that
+#' cannot convert to numeric. A `text` value is not checked here.
 #' NA values are flagged as errors.
-#' Numeric values that cannot convert to numeric are also flagged as errors.
 #'
 #'
 #' @param data Tibble or dataframe containing the study data
 #' @param definitions Definitions read in from the `traits.yml` file in the config folder
 #'
 #' @importFrom rlang .data
-#' @return Tibble with flagged values that are unsupported categorical trait values, missing values
-#' or numeric trait values that cannot be converted to numeric
+#' @return Tibble with flagged values that are unsupported categorical trait values, invalid
+#' monthly_presence values, missing values or numeric trait values that cannot be converted to numeric
 process_flag_unsupported_values <- function(data, definitions) {
 
   # NA values
@@ -1339,8 +1429,10 @@ process_flag_unsupported_values <- function(data, definitions) {
         dplyr::mutate(error = ifelse(i, "Unsupported trait value", .data$error))
     }
 
-    # Specific tests for flowering, fruiting time
-    if (trait %in% c("flowering_time", "fruiting_time")) {
+    # Twelve `y`s and `n`s, one per month. Values have been lower-cased by now;
+    # the pattern accepts either case. The two messages are those the rule gave
+    # when it applied by name to `flowering_time` and `fruiting_time`.
+    if (definitions[[trait]]$type == "monthly_presence") {
 
       ii <- data[["trait_name"]] == trait
 
@@ -1468,7 +1560,8 @@ process_convert_units <- function(data, definitions, unit_conversion_functions) 
       ucn = process_unit_conversion_name(.data$unit_in, .data$to),
       type = util_extract_list_element(.data$i, definitions, "type"),
       to_convert = ifelse(is.na(.data$error), (.data$type == "numeric" & .data$unit_in != .data$to), FALSE),
-      unit_in = ifelse(.data$type == "categorical", NA, .data$unit_in)
+      # Only a numeric trait has units
+      unit_in = ifelse(.data$type != "numeric", NA, .data$unit_in)
     )
 
   # Identify anything problematic in conversions and drop
@@ -1564,9 +1657,15 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' split into the identifiers table once `observation_id` is set.
 #' @param definitions Trait definitions for this dataset -- the `elements` of the
 #' `traits.yml` schema, keyed by `trait_name`, as returned by [dataset_configure()].
-#' Used to apply database-wide trait value synonyms.
+#' Used to apply database-wide trait value synonyms, and to keep the case of `text`
+#' traits' values, which unlike all others are not lower-cased.
 #' @return Tibble in long format with AusTraits formatted trait names, trait
-#' substitutions and unique observation id added
+#' substitutions and unique observation id added. For each location-level field
+#' (such as `life_stage`) that a trait's entry in `metadata$traits` sets, a
+#' temporary logical column `.trait_level_<field>` is `TRUE` on that trait's
+#' records, so that the location's value does not replace the trait's. It is
+#' dropped when location metadata is added, so a caller narrowing the columns
+#' before then must keep it.
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
 #' @importFrom rlang .data
 process_parse_data <- function(data, dataset_id, metadata, contexts, schema, identifiers, definitions) {
@@ -1676,8 +1775,15 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
   # Step 2. Add trait information, with correct names
   traits_table <-
     metadata[["traits"]] %>%
-    austraits::convert_list_to_df2() %>%
-    dplyr::filter(!is.na(.data$trait_name))  # Remove any rows without a matching trait record
+    util_traits_to_df()
+
+  # Each entry's `omit_values`, aligned with the rows of `traits_table`
+  omit_values <- process_omit_values_by_entry(metadata[["traits"]], traits_table, dataset_id)
+
+  # Remove any rows without a matching trait record
+  has_trait_name <- !is.na(traits_table[["trait_name"]])
+  traits_table <- traits_table %>% dplyr::filter(.env$has_trait_name)
+  omit_values <- omit_values[has_trait_name]
 
   # Check that the trait names as specified in config actually exist in data
   # If not then we need to stop and fix this problem
@@ -1733,7 +1839,10 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
       out[[i]] <- df
       # To x we append columns of data for trait_name, unit and value (the latter is retrieved from the data)
       out[[i]][["trait_name"]] <- traits_table[["var_in"]][i]
-      out[[i]][["value"]] <- data[[traits_table[["var_in"]][i]]] %>% as.character()
+      out[[i]][["value"]] <-
+        data[[traits_table[["var_in"]][i]]] %>%
+        process_omit_values(omit_values[[i]]) %>%
+        as.character()
 
       # Pull in additional information for each trait as specified in traits part of metadata,
       # here represented as `traits_table`
@@ -1756,6 +1865,11 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
           } else {
             out[[i]][[v]] <- value %>% as.character()
           }
+          # Mark the value as the trait's own, so a location's does not
+          # replace it; process_add_location_metadata() drops the mark
+          if (v %in% location_metadata_fields) {
+            out[[i]][[process_trait_level_column(v)]] <- TRUE
+          }
         }
       }
     }
@@ -1767,6 +1881,14 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
   } else {
 
     out <- df %>% dplyr::filter(.data$trait_name %in% traits_table$var_in)
+
+    # The value column is shared by every trait, so each entry's `omit_values`
+    # applies only to the rows holding its trait
+    for (i in which(!vapply(omit_values, is.null, logical(1)))) {
+      j <- which(out[["trait_name"]] == traits_table[["var_in"]][i])
+      out[["value"]][j] <- process_omit_values(out[["value"]][j], omit_values[[i]])
+    }
+
     out[["value"]] <- out[["value"]] %>% as.character()
 
     # Pull in additional information for each trait as specified in traits part of metadata,
@@ -1792,13 +1914,22 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
           } else {
             out[[v]][out$trait_name == traits_table[["var_in"]][i]] <- value %>% as.character()
           }
+          # Mark the value as the trait's own, so a location's does not
+          # replace it; process_add_location_metadata() drops the mark
+          if (v %in% location_metadata_fields) {
+            out[[process_trait_level_column(v)]][out$trait_name == traits_table[["var_in"]][i]] <- TRUE
+          }
         }
       }
     }
   }
 
-  # Ensure all lower case
-  out[["value"]] <- tolower(out[["value"]])
+  # Ensure all lower case, except the values of `text` traits, which are
+  # free text (a taxon name, say) and kept as written. `trait_name` still holds
+  # each trait's `var_in` at this point.
+  text_traits <- util_traits_of_type(definitions, "text")
+  i <- !out[["trait_name"]] %in% traits_table[["var_in"]][traits_table[["trait_name"]] %in% text_traits]
+  out[["value"]][i] <- tolower(out[["value"]][i])
 
   # Now create context ids
   if (nrow(contexts) == 0) {
@@ -1836,10 +1967,11 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
   # Implement any value changes as per substitutions
   if (!is.na(metadata[["substitutions"]][1])) {
 
+    # A `text` trait's values keep their case, so its substitutions match it exactly
     substitutions_table <- austraits::convert_list_to_df2(metadata[["substitutions"]]) %>%
       dplyr::mutate(
-        find = tolower(.data$find),
-        replace = tolower(.data$replace)
+        find = ifelse(.data$trait_name %in% text_traits, .data$find, tolower(.data$find)),
+        replace = ifelse(.data$trait_name %in% text_traits, .data$replace, tolower(.data$replace))
       )
 
     if (!"match" %in% names(substitutions_table)) {
@@ -1879,6 +2011,154 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
     traits = out,
     context_ids = context_ids
   )
+}
+
+
+#' Treat a trait's declared `omit_values` as missing
+#'
+#' A `traits` entry in `metadata.yml` may list values in `omit_values` that the
+#' contributor used to mean "no value", such as `0`, `-9999`, `"-"` or `"NaN"`.
+#' Each is treated as missing for that trait, just as `custom_R_code: ~
+#' na_if(.x, ...)` on the trait's column does: the value is dropped from the
+#' compiled `traits` table and does not appear in `excluded_data`.
+#'
+#' Values are compared with the trait's column as `data.csv` was read (by
+#' `readr::read_csv()`, with column types guessed) and `custom_R_code` left it,
+#' the same comparison `dplyr::na_if()` makes, so replacing `na_if(.x, y)` with
+#' `omit_values: y` builds an identical database:
+#'
+#' - In a numeric column, values are compared as numbers. `0` therefore also
+#'   omits `0.0` and `0.00`, which `read_csv()` reads as the same number, and
+#'   `-.inf` or `"-Inf"` omits `-Inf`.
+#' - In any other column, values are compared as exact text, case and all,
+#'   before the build lower-cases trait values. `0` does not omit `0.0` in a
+#'   text column, and `"NaN"` does not omit `nan`. An unquoted number is
+#'   compared as R writes the number YAML read, not as it is spelt in
+#'   `metadata.yml`: `0.0` compares as `0`, `0.0001` as `1e-04` and
+#'   `000000000000` as `0`. Quote it, as in `"0.0"`, to compare its spelling.
+#'
+#' In long-format data the value column is shared by every trait, so it is
+#' numeric only when the values of every trait are numbers.
+#'
+#' Called from `process_parse_data()` after `custom_R_code` has run and before
+#' `substitutions`, so a value can be omitted whether it is in `data.csv` or
+#' produced by `custom_R_code`, and is never substituted first. The comparison
+#' itself is `process_omit_values_match()`, which `dataset_test()` also uses to
+#' report a value that matches nothing.
+#'
+#' @param x A trait's values, as a column of `data.csv` after `custom_R_code`
+#' @param omit_values The trait entry's `omit_values`: a single string or
+#'   number, or a list of them. `NULL` leaves `x` unchanged.
+#'
+#' @return `x`, of the same type, with matching values set to `NA`
+#' @noRd
+process_omit_values <- function(x, omit_values) {
+
+  if (length(omit_values) == 0) {
+    return(x)
+  }
+
+  x[process_omit_values_match(x, omit_values)$omit] <- NA
+  x
+}
+
+
+#' Compare a trait's values with its `omit_values`
+#'
+#' The comparison `process_omit_values()` makes, described there: as numbers in
+#' a numeric column, and otherwise as text, with a number written as R writes
+#' it. A value that is not a number, such as `"-"`, matches nothing in a
+#' numeric column.
+#'
+#' @inheritParams process_omit_values
+#'
+#' @return A list of
+#'   - `omit`: for each element of `x`, whether it matches one of `omit_values`
+#'   - `compared`: each of `omit_values` as compared, as text, so an unquoted
+#'     `0.0` is `"0"`; a value that is not a number, compared with a numeric
+#'     column, is given as written
+#'   - `matched`: for each of `omit_values`, whether it matches some element of
+#'     `x`
+#' @noRd
+process_omit_values_match <- function(x, omit_values) {
+
+  omit_values <- as.list(omit_values)
+  as_written <- vapply(omit_values, as.character, character(1))
+
+  if (is.numeric(x)) {
+    targets <- suppressWarnings(vapply(omit_values, as.numeric, numeric(1)))
+    usable <- !is.na(targets) | is.nan(targets)
+    compared <- ifelse(usable, as.character(targets), as_written)
+    values <- x
+  } else {
+    targets <- as_written
+    usable <- rep(TRUE, length(targets))
+    compared <- targets
+    values <- as.character(x)
+  }
+
+  list(
+    omit = values %in% targets[usable],
+    compared = compared,
+    matched = usable & targets %in% values
+  )
+}
+
+
+#' Read each `traits` entry's `omit_values`
+#'
+#' @param metadata_traits The `traits` section of `metadata.yml`, as a list
+#' @param traits_table `metadata_traits` as returned by `util_traits_to_df()`
+#' @param dataset_id Identifier of the dataset, for error messages
+#'
+#' @return A list with one element per row of `traits_table`: that entry's
+#'   `omit_values`, or `NULL` where it has none
+#' @noRd
+process_omit_values_by_entry <- function(metadata_traits, traits_table, dataset_id) {
+
+  if (!is.list(metadata_traits)) {
+    return(list())
+  }
+
+  omit_values <- lapply(metadata_traits, function(entry) {
+    if (is.list(entry)) entry[["omit_values"]] else NULL
+  })
+  declared <- !vapply(omit_values, is.null, logical(1))
+
+  if (!any(declared)) {
+    return(vector("list", nrow(traits_table)))
+  }
+
+  var_in <- vapply(metadata_traits, function(entry) {
+    if (is.list(entry) && length(entry[["var_in"]]) == 1) as.character(entry[["var_in"]]) else NA_character_
+  }, character(1))
+
+  invalid <- declared & !vapply(omit_values, util_omit_values_valid, logical(1))
+  if (any(invalid)) {
+    stop(
+      sprintf(
+        paste0(
+          "Dataset %s: `omit_values` must be a single string or number, or a list of them, ",
+          "on the `traits` entr%s for %s. ",
+          "Quote values YAML would otherwise read as true, false or missing, such as `\"no\"`, `\"n\"` or `\".na\"`."
+        ),
+        dataset_id, ifelse(sum(invalid) > 1, "ies", "y"),
+        paste0("`", var_in[invalid], "`", collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+
+  # `util_traits_to_df()` gives one row per entry, except that an entry with a
+  # field holding several values spreads over that many rows, and one with an
+  # empty field (`trait_name:` with nothing after it, as an unused entry in
+  # `austraits.build` has) gives none. Repeat each entry's values over its own
+  # rows, so that they line up with `traits_table`.
+  n_rows <- vapply(
+    metadata_traits, function(entry) NROW(util_traits_to_df(list(entry))), integer(1)
+  )
+
+  rep(omit_values, n_rows)
 }
 
 
