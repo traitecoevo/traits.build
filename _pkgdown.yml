@@ -37,6 +37,8 @@ reference:
     contents:
     - '`build_setup_pipeline`'
     - '`build_add_version`'
+    - '`build_post_process`'
+    - '`build_post_export`'
     - '`dataset_update_taxonomy`'
     - '`dataset_build`'
     - '`dataset_configure`'
