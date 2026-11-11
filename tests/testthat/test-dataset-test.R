@@ -294,6 +294,46 @@ test_that("`dataset_test` accepts a context scoped to specific traits by a colum
 })
 
 
+test_that("`dataset_test` fails a `metadata.yml` entry with a field that has no value (#307)", {
+  # An empty field drops its whole entry from the build, so the trait vanished
+  # from both `traits` and `excluded_data` while `dataset_test()` passed
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  lines <- readLines(path_metadata)
+  at <- which(lines == "  trait_name: leaf_N_per_dry_mass")
+  writeLines(append(lines, "  replicates:", after = at), path_metadata)
+
+  expect_match(
+    dataset_test_failures("Test_2023_2", path_data = path_data),
+    "traits - field(s) with no value, which drop their entry from the build: entry 2 (var_in: Leaf nitrogen (mg mg-1)) `replicates`",
+    fixed = TRUE, all = FALSE
+  )
+})
+
+
+test_that("`dataset_test` fails an empty field in a data collector or a source (#307)", {
+  # The same conversion drops a data collector from `contributors`, and a
+  # reference from the table of source keys, which then pairs the remaining
+  # keys with the wrong source types
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  lines <- readLines(path_metadata)
+  lines <- append(lines, "    number:", after = grep("^  primary:", lines)[1])
+  lines <- append(lines, "    additional_role: []", after = grep("^  - last_name: Westoby", lines))
+  writeLines(lines, path_metadata)
+
+  failures <- dataset_test_failures("Test_2023_2", path_data = path_data)
+  expect_match(failures, "contributors data_collectors - field(s) with no value, which drop their entry from the build: entry 2 (last_name: Westoby) `additional_role`",
+               fixed = TRUE, all = FALSE)
+  expect_match(failures, "source - field(s) with no value, which drop their entry from the build: entry 1 (key: Test_2023_2) `number`",
+               fixed = TRUE, all = FALSE)
+})
+
+
 test_that("`dataset_test` accepts long-format traits with no `traits` entry (#308)", {
   # Test_2023_3 is long format. Add rows for a trait its `metadata.yml` does not
   # map, in a temporary copy so the shared example stays untouched. The build

@@ -22,10 +22,13 @@ Correct typography is deliberately absent. U+2033 DOUBLE PRIME is the right
 character for arcseconds, and U+2030 PER MILLE has a technical meaning, so
 rewriting them to ASCII would lose information rather than fix a mistake.
 
-Letters are never in this map. An unexpected letter is either a genuine name
-(\code{Briceno}, \code{Klimesova}, \code{Osvaldsson} with their accents), which belongs in
-the \code{exceptions} argument of \code{check_disallowed_chars()}, or a mangling of a
-symbol (\code{OPSII} for \code{Phi_PSII}), which only the curator can resolve.
+Letters are in this map only as look-alikes: a Greek letter identical to an
+ASCII letter or the micro sign, or a symbol form of a Greek letter, each
+rewritten as the character it imitates. Any other unexpected letter is either
+a genuine name (\code{Briceno}, \code{Klimesova}, \code{Osvaldsson} with their accents),
+which belongs in the \code{exceptions} argument of \code{check_disallowed_chars()}, or a
+mangling of a symbol (\code{OPSII} for \code{Phi_PSII}), which only the curator can
+resolve.
 
 Written as \verb{\\uXXXX} escapes because several of these characters are invisible
 or indistinguishable from their replacement in a source file.
