@@ -131,6 +131,29 @@ test_that("GREEK SMALL LETTER MU is normalised to MICRO SIGN", {
 })
 
 
+test_that("Greek letters identical to an ASCII letter are rewritten as it (#257)", {
+  # The 14 capitals and the small omicron that look identical to an ASCII letter
+  greek <- intToUtf8(
+    c(0x0391, 0x0392, 0x0395, 0x0396, 0x0397, 0x0399, 0x039a, 0x039c,
+      0x039d, 0x039f, 0x03a1, 0x03a4, 0x03a5, 0x03a7, 0x03bf),
+    multiple = TRUE
+  )
+  ascii <- strsplit("ABEZHIKMNOPTYXo", "")[[1]]
+
+  expect_equal(util_replace_disallowed_chars(greek), ascii)
+  expect_true(all(check_disallowed_chars(paste(greek, collapse = ""))))
+  expect_false(any(check_disallowed_chars(util_replace_disallowed_chars(paste(greek, collapse = "")))))
+
+  # Only the look-alikes are rewritten: the other Greek letters, including the
+  # small letters of these capitals, are allowed and left alone
+  x <- intToUtf8(c(0x03a6, 0x03b1, 0x03b2, 0x0394, 0x03b4, 0x0386))
+  expect_equal(util_replace_disallowed_chars(x), x)
+
+  # A word mixing scripts, as pasted text can, comes out as plain ASCII
+  expect_equal(util_replace_disallowed_chars(paste0("Mt ", intToUtf8(0x039a), "osciuszko")), "Mt Kosciuszko")
+})
+
+
 test_that("correct typography is reported, never flattened to ASCII", {
   # U+2033 is the right character for arcseconds and U+2030 has a technical
   # meaning, so rewriting either to ASCII would lose information rather than fix

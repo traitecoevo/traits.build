@@ -132,11 +132,19 @@ test_that("the allowed characters come from the schema, and are case-symmetric",
   has_case <- tolower(letters_only) != toupper(letters_only)
 
   # The exceptions are letters whose other case is ASCII, which is never in
-  # the set (U+0130 dotted capital I, U+0131 dotless i, U+017F long s), and
-  # U+039C GREEK CAPITAL LETTER MU, whose lower case U+03BC is deliberately not
-  # allowed, as a look-alike for U+00B5 micro sign.
+  # the set (U+0130 dotted capital I, U+0131 dotless i, U+017F long s), and the
+  # Greek small letters whose capital is deliberately not allowed, as a
+  # look-alike for an ASCII letter (alpha, whose capital looks like A, and so
+  # on). Mu and omicron are not among them: both of their cases are look-alikes.
+  # The micro sign is, since Unicode gives it GREEK CAPITAL LETTER MU as its
+  # capital, which is a look-alike for M; a unit prefix has no capital anyway.
   asymmetric <- letters_only[has_case & !(other_case %in% letters_only)]
-  expect_setequal(asymmetric, c("İ", "ı", "ſ", "Μ"))
+  expect_setequal(
+    asymmetric,
+    c("İ", "ı", "ſ", "µ",
+      "α", "β", "ε", "ζ", "η", "ι",
+      "κ", "ν", "ρ", "τ", "υ", "χ")
+  )
 
   # No duplicates and no ASCII -- both were true of the hand-written list, which
   # listed `í` and `µ` twice and included a stray ASCII `l`
@@ -167,10 +175,10 @@ test_that("names and symbols that used to be reported are now allowed", {
 })
 
 
-test_that("Greek letters are allowed by range, except mu (#257)", {
+test_that("Greek letters are allowed by range, except look-alikes (#257)", {
   # Greek letters carry technical meanings in methods, such as Φ and Ψ for water
   # potential, so the alphabet is allowed by range as Latin letters are
-  for (x in c("Φ", "φ", "Ψ", "ψ", "Ψleaf", "ΦPSII", "α", "Ω", "ά", "Ώ")) {
+  for (x in c("Φ", "φ", "Ψ", "ψ", "Ψleaf", "ΦPSII", "α", "Ω", "ά", "Ώ", "Ά", "Ό")) {
     expect_false(any(check_disallowed_chars(x)), info = x)
   }
 
@@ -182,6 +190,24 @@ test_that("Greek letters are allowed by range, except mu (#257)", {
 
   # Greek variants outside the alphabet stay disallowed
   expect_true(any(check_disallowed_chars("\u03d5")))  # GREEK PHI SYMBOL
+
+  # So do the 14 capitals and the small omicron that look identical to an ASCII
+  # letter, since text holding one would not match the same text typed in ASCII.
+  # Their accented forms, such as U+0386 and U+038C, do not look like ASCII and
+  # stay allowed (above)
+  look_alikes <- intToUtf8(
+    c(0x0391, 0x0392, 0x0395, 0x0396, 0x0397, 0x0399, 0x039a, 0x039c,
+      0x039d, 0x039f, 0x03a1, 0x03a4, 0x03a5, 0x03a7, 0x03bf),
+    multiple = TRUE
+  )
+  for (x in look_alikes) {
+    expect_true(all(check_disallowed_chars(x)), info = sprintf("U+%04X", utf8ToInt(x)))
+  }
+
+  # The schema lists exactly these, with mu, as Greek letters never allowed
+  never_allowed <- get_schema()$allowed_characters$never_allowed$values
+  greek <- names(never_allowed)[strtoi(names(never_allowed), 16L) %in% 0x0370:0x03ff]
+  expect_setequal(strtoi(greek, 16L), c(utf8ToInt(paste(look_alikes, collapse = "")), 0x03bc))
 })
 
 

@@ -10,10 +10,13 @@
 #' character for arcseconds, and U+2030 PER MILLE has a technical meaning, so
 #' rewriting them to ASCII would lose information rather than fix a mistake.
 #'
-#' Letters are never in this map. An unexpected letter is either a genuine name
-#' (`Briceno`, `Klimesova`, `Osvaldsson` with their accents), which belongs in
-#' the `exceptions` argument of `check_disallowed_chars()`, or a mangling of a
-#' symbol (`OPSII` for `Phi_PSII`), which only the curator can resolve.
+#' Letters are in this map only as look-alikes: a Greek letter identical to an
+#' ASCII letter or the micro sign, or a symbol form of a Greek letter, each
+#' rewritten as the character it imitates. Any other unexpected letter is either
+#' a genuine name (`Briceno`, `Klimesova`, `Osvaldsson` with their accents),
+#' which belongs in the `exceptions` argument of `check_disallowed_chars()`, or a
+#' mangling of a symbol (`OPSII` for `Phi_PSII`), which only the curator can
+#' resolve.
 #'
 #' Written as `\uXXXX` escapes because several of these characters are invisible
 #' or indistinguishable from their replacement in a source file.
@@ -55,6 +58,26 @@ util_disallowed_char_replacements <- function() {
     # the MICRO SIGN is allowed, so permitting both would let the same unit be
     # written two ways.
     "\u03bc" = "\u00b5",         # GREEK SMALL LETTER MU -> MICRO SIGN
+
+    # Greek letters identical to an ASCII letter. Text holding one does not match
+    # the same text typed in ASCII, so a pasted capital kappa in a location name
+    # or a `replace` silently differs from `K`. Only the ASCII letter is allowed, so
+    # the Greek one converges on it, as GREEK SMALL LETTER MU does on MICRO SIGN.
+    "\u0391" = "A",              # GREEK CAPITAL LETTER ALPHA
+    "\u0392" = "B",              # GREEK CAPITAL LETTER BETA
+    "\u0395" = "E",              # GREEK CAPITAL LETTER EPSILON
+    "\u0396" = "Z",              # GREEK CAPITAL LETTER ZETA
+    "\u0397" = "H",              # GREEK CAPITAL LETTER ETA
+    "\u0399" = "I",              # GREEK CAPITAL LETTER IOTA
+    "\u039a" = "K",              # GREEK CAPITAL LETTER KAPPA
+    "\u039c" = "M",              # GREEK CAPITAL LETTER MU
+    "\u039d" = "N",              # GREEK CAPITAL LETTER NU
+    "\u039f" = "O",              # GREEK CAPITAL LETTER OMICRON
+    "\u03a1" = "P",              # GREEK CAPITAL LETTER RHO
+    "\u03a4" = "T",              # GREEK CAPITAL LETTER TAU
+    "\u03a5" = "Y",              # GREEK CAPITAL LETTER UPSILON
+    "\u03a7" = "X",              # GREEK CAPITAL LETTER CHI
+    "\u03bf" = "o",              # GREEK SMALL LETTER OMICRON
 
     # The same look-alike problem for the allowed GREEK CAPITAL LETTER DELTA:
     # INCREMENT is what Option-J types on a Mac, and is indistinguishable from it.

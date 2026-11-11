@@ -501,10 +501,10 @@ allowed_characters:
   description: &allowed_characters Characters permitted outside plain ASCII, used by `check_disallowed_chars()` and reported by `dataset_test`. ASCII is always allowed whatever this section says. This is the single global definition; it is not configurable per dataset.
   type: character_set
   letter_ranges:
-    description: Letters are allowed by range rather than listed one at a time, so that a letter and its upper-case form can never be treated differently. Enumerating them by hand left 14 letters allowed in lower case but not upper, which is why a name like Osvaldsson was reported while osvaldsson would not have been. The Latin range covers the accented letters of every European language, which is what contributor, author and taxon names need; the Greek range covers the letters methods use as symbols.
+    description: Letters are allowed by range rather than listed one at a time, so that a letter and its upper-case form can never be treated differently. Enumerating them by hand left 14 letters allowed in lower case but not upper, which is why a name like Osvaldsson was reported while osvaldsson would not have been. The Latin range covers the accented letters of every European language, which is what contributor, author and taxon names need; the Greek range covers the letters methods use as symbols. The exceptions are the Greek letters listed under never_allowed below, which look identical to another character, so that, for example, the Greek small letter alpha is allowed but its capital, identical to A, is not.
     values:
       00C0-017F: Latin-1 Supplement letters and Latin Extended-A. Code points in this range that are not letters are excluded automatically, so 00D7 MULTIPLICATION SIGN and 00F7 DIVISION SIGN are not admitted here; 00D7 is listed under symbols below.
-      0386-03CE: The Greek alphabet, upper and lower case, with its accented forms, for letters carrying a technical meaning in methods, such as 03B4 GREEK SMALL LETTER DELTA for isotope composition (delta13C), 0394 GREEK CAPITAL LETTER DELTA for a difference (deltaT), and 03A6/03C6 PHI and 03A8/03C8 PSI for water potential. 0387 GREEK ANO TELEIA is punctuation and so not admitted. 03BC GREEK SMALL LETTER MU is excluded under never_allowed below.
+      0386-03CE: The Greek alphabet, upper and lower case, with its accented forms, for letters carrying a technical meaning in methods, such as 03B4 GREEK SMALL LETTER DELTA for isotope composition (delta13C), 0394 GREEK CAPITAL LETTER DELTA for a difference (deltaT), and 03A6/03C6 PHI and 03A8/03C8 PSI for water potential. 0387 GREEK ANO TELEIA is punctuation and so not admitted. 03BC GREEK SMALL LETTER MU, 03BF GREEK SMALL LETTER OMICRON and the 14 capitals identical to an ASCII letter are excluded under never_allowed below.
   letters:
     description: Letters allowed from outside the ranges above.
     values:
@@ -533,8 +533,23 @@ allowed_characters:
       2264: LESS-THAN OR EQUAL TO
       2265: GREATER-THAN OR EQUAL TO
   never_allowed:
-    description: Characters that Unicode classifies as letters, and which the ranges above would otherwise admit, but which occur in practice only as look-alikes for a symbol. They stay disallowed so that the look-alike is corrected rather than retained.
+    description: Characters that Unicode classifies as letters, and which the ranges above would otherwise admit, but which look identical to a symbol or an ASCII letter. They stay disallowed so that the look-alike is corrected rather than retained, since text holding one would not match the same text typed with the character it imitates.
     values:
       00AA: FEMININE ORDINAL INDICATOR, a look-alike for a superscript a
       00BA: MASCULINE ORDINAL INDICATOR, used in error for 00B0 DEGREE SIGN. The most common disallowed character in the database.
       03BC: GREEK SMALL LETTER MU, a look-alike for 00B5 MICRO SIGN, which is the character units are written with. dataset_replace_disallowed_chars() rewrites it as 00B5.
+      0391: GREEK CAPITAL LETTER ALPHA, a look-alike for A. dataset_replace_disallowed_chars() rewrites it as A.
+      0392: GREEK CAPITAL LETTER BETA, a look-alike for B. dataset_replace_disallowed_chars() rewrites it as B.
+      0395: GREEK CAPITAL LETTER EPSILON, a look-alike for E. dataset_replace_disallowed_chars() rewrites it as E.
+      0396: GREEK CAPITAL LETTER ZETA, a look-alike for Z. dataset_replace_disallowed_chars() rewrites it as Z.
+      0397: GREEK CAPITAL LETTER ETA, a look-alike for H. dataset_replace_disallowed_chars() rewrites it as H.
+      0399: GREEK CAPITAL LETTER IOTA, a look-alike for I. dataset_replace_disallowed_chars() rewrites it as I.
+      039A: GREEK CAPITAL LETTER KAPPA, a look-alike for K. dataset_replace_disallowed_chars() rewrites it as K.
+      039C: GREEK CAPITAL LETTER MU, a look-alike for M. dataset_replace_disallowed_chars() rewrites it as M.
+      039D: GREEK CAPITAL LETTER NU, a look-alike for N. dataset_replace_disallowed_chars() rewrites it as N.
+      039F: GREEK CAPITAL LETTER OMICRON, a look-alike for O. dataset_replace_disallowed_chars() rewrites it as O.
+      03A1: GREEK CAPITAL LETTER RHO, a look-alike for P. dataset_replace_disallowed_chars() rewrites it as P.
+      03A4: GREEK CAPITAL LETTER TAU, a look-alike for T. dataset_replace_disallowed_chars() rewrites it as T.
+      03A5: GREEK CAPITAL LETTER UPSILON, a look-alike for Y. dataset_replace_disallowed_chars() rewrites it as Y.
+      03A7: GREEK CAPITAL LETTER CHI, a look-alike for X. dataset_replace_disallowed_chars() rewrites it as X.
+      03BF: GREEK SMALL LETTER OMICRON, a look-alike for o. dataset_replace_disallowed_chars() rewrites it as o.
