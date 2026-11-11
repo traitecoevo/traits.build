@@ -331,6 +331,9 @@ test_that("`dataset_test` fails an empty field in a data collector or a source (
                fixed = TRUE, all = FALSE)
   expect_match(failures, "source - field(s) with no value, which drop their entry from the build: entry 1 (key: Test_2023_2) `number`",
                fixed = TRUE, all = FALSE)
+})
+
+
 test_that("`dataset_test` accepts long-format traits with no `traits` entry (#308)", {
   # Test_2023_3 is long format. Add rows for a trait its `metadata.yml` does not
   # map, in a temporary copy so the shared example stays untouched. The build
