@@ -7,7 +7,7 @@
 metadata_add_source_bibtex(
   dataset_id,
   file,
-  type = "primary",
+  type = "dataset",
   drop = c("dateobj", "month")
 )
 }
@@ -16,7 +16,7 @@ metadata_add_source_bibtex(
 
 \item{file}{Name of file where reference is saved}
 
-\item{type}{Type of reference: \code{primary}, \code{secondary} or \code{original_source}}
+\item{type}{Type of reference: \code{dataset}, \code{source} or \code{secondary}}
 
 \item{drop}{Variables in bibtex to ignore}
 }
@@ -24,10 +24,11 @@ metadata_add_source_bibtex(
 \code{metadata.yml} file with citation details added
 }
 \description{
-A dataset's \code{primary} reference is a single entry, which this overwrites.
-Its \code{secondary} references (later publications re-using the same data) and
-\code{original_source} references (for a compilation, the studies records were
-taken from, each named in the data's \code{source_id}) are lists: the reference is
-appended, or replaces the listed entry that already has its \code{key}. See
-\code{util_flatten_sources()} for the shape of the block.
+A dataset's \code{dataset} reference (the dataset itself) is a single entry,
+which this overwrites, keyed by the \code{dataset_id}. Its \code{source} references
+(for a compilation, the studies records were taken from, each named in the
+data's \code{source_id}) and \code{secondary} references (later publications re-using
+the same data) are lists: the reference is appended, or replaces the listed
+entry that already has its \code{key}, in \code{metadata.yml} or in the file the list
+is kept in. See \code{util_flatten_sources()} for the shape of the block.
 }

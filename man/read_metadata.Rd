@@ -12,5 +12,7 @@ read_metadata(path)
 \description{
 A dataset's \verb{locations:} may either list the locations inline, or name a csv
 file beside \code{metadata.yml} -- \code{locations: locations.csv} -- which is read in
-its place and returned as a tibble.
+its place and returned as a tibble. Likewise either reference list in
+\verb{source:} -- \code{source} or \code{secondary} -- may name a \code{.yml} or \code{.bib} file,
+which is read in its place (see \code{\link[=util_flatten_sources]{util_flatten_sources()}}).
 }

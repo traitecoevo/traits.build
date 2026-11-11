@@ -512,7 +512,9 @@ util_read_yaml_chunked <- function(path, chunk = 500L, threshold = 1000L) {
 #'
 #' A dataset's `locations:` may either list the locations inline, or name a csv
 #' file beside `metadata.yml` -- `locations: locations.csv` -- which is read in
-#' its place and returned as a tibble.
+#' its place and returned as a tibble. Likewise either reference list in
+#' `source:` -- `source` or `secondary` -- may name a `.yml` or `.bib` file,
+#' which is read in its place (see [util_flatten_sources()]).
 #'
 #' @param path Location of the metadata file
 #' @importFrom rlang .data
@@ -524,6 +526,10 @@ read_metadata <- function(path) {
 
   if (util_locations_is_file(data[["locations"]])) {
     data[["locations"]] <- util_read_locations_file(data[["locations"]], path)
+  }
+
+  if (is.list(data[["source"]])) {
+    data[["source"]] <- util_read_sources_files(data[["source"]], path)
   }
 
   # We want to preserve formatting in custom R code
@@ -599,6 +605,14 @@ write_metadata <- function(data, path, style_code = FALSE) {
       y[["locations"]], file.path(dirname(path), file), na = ""
     )
     y[["locations"]] <- file
+  }
+
+  # Reference lists read from a separate file are written back to it, and
+  # referred to by name
+  for (type in intersect(c("source", "secondary"), names(y[["source"]]))) {
+    if (!is.null(attr(y[["source"]][[type]], "sources_file"))) {
+      y[["source"]][[type]] <- util_write_sources_file(y[["source"]][[type]], path)
+    }
   }
 
   y <- y[metadata_blocks]
@@ -1228,31 +1242,38 @@ util_check_collection_date_timezone <- function(timezone) {
 
 #' Flatten the `source` block of a `metadata.yml` into one row per reference
 #'
-#' A dataset's `source:` block holds its `primary` reference as a single entry,
-#' and its `secondary` references (later publications re-using the same data)
-#' and `original_source` references (for a compilation, the studies records were
-#' taken from, each named in the data's `source_id`) as lists:
+#' A dataset's `source:` block holds its `dataset` reference (the dataset
+#' itself, keyed by its `dataset_id`) as a single entry, and its `source`
+#' references (for a compilation, the studies records were taken from, each
+#' named in the data's `source_id`) and `secondary` references (later
+#' publications re-using the same data) as lists:
 #'
 #' ```yaml
 #' source:
-#'   primary:
+#'   dataset:
 #'     key: Smith_2020
 #'     ...
-#'   secondary:
-#'   - key: Smith_2021
-#'     ...
-#'   original_source:
+#'   source:
 #'   - key: Jones_1999
 #'     ...
 #'   - key: Brown_2005
 #'     ...
+#'   secondary:
+#'   - key: Smith_2021
+#'     ...
 #' ```
 #'
-#' Earlier versions of traits.build wrote every reference as its own named
-#' entry (`secondary`, `secondary_01`, `original_01`, ...). That shape is no
-#' longer read: with `strict = TRUE` it is an error naming the entry to
-#' convert. `dataset_test()` reads with `strict = FALSE`, so that it can report
-#' the old shape as a failure and still check everything else about the file.
+#' Either list may instead name a `.yml` file (holding the list) or a `.bib`
+#' file kept beside `metadata.yml`, `source: sources.yml`; [read_metadata()]
+#' reads it in place.
+#'
+#' Earlier versions of traits.build wrote the dataset's reference as `primary`,
+#' original sources as `original_source` or `original`, and every reference as
+#' its own named entry (`secondary_01`, `original_01`, ...). Those shapes are no
+#' longer read: with `strict = TRUE` they are an error naming the entry, and
+#' [metadata_convert_sources()] converts them. `dataset_test()` reads with
+#' `strict = FALSE`, so that it can report the old shape as a failure and still
+#' check everything else about the file.
 #'
 #' @param source The `source` element of a metadata list, as read by
 #'   `read_metadata()`
@@ -1260,16 +1281,16 @@ util_check_collection_date_timezone <- function(timezone) {
 #'   default), or flatten it and flag it in the `legacy` column
 #'
 #' @return A tibble with one row per reference: `slot` (the entry's name in
-#'   `metadata.yml`), `type` (`primary`, `secondary` or `original_source`),
-#'   `key`, `legacy` (`TRUE` for an entry not in the expected shape: written in
-#'   the old shape, or a bare value such as `secondary: Smith_2021` where a
-#'   reference's fields belong) and `entry`, a list-column holding the
-#'   reference's fields.
+#'   `metadata.yml`), `type` (`dataset`, `source` or `secondary`; an old name
+#'   is given its current type), `key`, `legacy` (`TRUE` for an entry not in
+#'   the expected shape: written in an old shape, or a bare value such as
+#'   `secondary: Smith_2021` where a reference's fields belong) and `entry`, a
+#'   list-column holding the reference's fields.
 #' @export
 #' @examples
 #' source <- list(
-#'   primary = list(key = "Smith_2020", bibtype = "Article"),
-#'   original_source = list(
+#'   dataset = list(key = "Smith_2020", bibtype = "Article"),
+#'   source = list(
 #'     list(key = "Jones_1999", bibtype = "Thesis"),
 #'     list(key = "Brown_2005", bibtype = "Book")
 #'   )
@@ -1286,8 +1307,8 @@ util_flatten_sources <- function(source, strict = TRUE) {
     return(empty)
   }
 
-  list_types <- c("secondary", "original_source")
-  known_types <- c("primary", list_types)
+  list_types <- c("source", "secondary")
+  known_types <- c("dataset", list_types)
 
   rows <- lapply(names(source), function(slot) {
 
@@ -1302,16 +1323,16 @@ util_flatten_sources <- function(source, strict = TRUE) {
     # let it drop out unseen
     is_mapping <- vapply(entries, function(e) is.list(e) && !is.null(names(e)), logical(1))
 
-    if (slot == "primary") {
-      type <- "primary"
+    if (slot == "dataset") {
+      type <- "dataset"
       legacy <- !is_entry
     } else if (slot %in% list_types) {
       type <- slot
       legacy <- is_entry | !is_mapping
     } else {
-      # `secondary_01`, `original_01`, `original_source_01`, or an unknown name
-      type <- stringr::str_remove(slot, "_[0-9]+$")
-      if (type == "original") type <- "original_source"
+      # An old name: `primary`, `original_source`, `original`, a numbered entry
+      # (`secondary_01`, `original_01`, ...), or an unknown name
+      type <- util_source_type_current(slot)
       legacy <- type %in% known_types
     }
 
@@ -1334,19 +1355,168 @@ util_flatten_sources <- function(source, strict = TRUE) {
       stop(sprintf(
         paste0(
           "`source` in metadata.yml has entries in a shape traits.build no ",
-          "longer reads: `%s`. `primary` is a single reference; `secondary` ",
-          "and `original_source` each hold a list of references, one `- key:` ",
-          "item per reference. Entries named `secondary_NN` or `original_NN` ",
-          "belong in those lists."),
+          "longer reads: `%s`. `dataset` is a single reference; `source` and ",
+          "`secondary` each hold a list of references, one `- key:` item per ",
+          "reference (`primary` is now `dataset`, and `original_source` is now ",
+          "`source`). `metadata_convert_sources()` converts the old shapes."),
         paste(bad, collapse = "`, `")), call. = FALSE)
     }
     unknown <- unique(out$slot[!out$type %in% known_types])
     if (length(unknown) > 0) {
       stop(sprintf(
-        "`source` in metadata.yml: `%s` is not a type of reference; use `primary`, `secondary` or `original_source`.",
+        "`source` in metadata.yml: `%s` is not a type of reference; use `dataset`, `source` or `secondary`.",
         paste(unknown, collapse = "`, `")), call. = FALSE)
     }
   }
 
   out
+}
+
+
+#' The current name of a type of reference
+#'
+#' Maps the names `source:` entries were written under by earlier versions of
+#' traits.build onto the current types: `primary` is `dataset`; `original`,
+#' `original_source` and their numbered forms are `source`; `secondary_01` and
+#' the like are `secondary`. Any other name is returned unchanged.
+#'
+#' @param slot Name of an entry in a `source:` block
+#'
+#' @return Character string
+#' @noRd
+util_source_type_current <- function(slot) {
+  type <- stringr::str_remove(slot, "_[0-9]+$")
+  dplyr::case_when(
+    type == "primary" ~ "dataset",
+    type %in% c("original", "original_source") ~ "source",
+    TRUE ~ type
+  )
+}
+
+
+#' Is this reference list a reference to a separate file?
+#'
+#' @param x A `source` or `secondary` element of a `source:` block
+#'
+#' @return `TRUE` for a single string naming a `.yml`, `.yaml` or `.bib` file
+#' @noRd
+util_sources_is_file <- function(x) {
+  is.character(x) &&
+    length(x) == 1 &&
+    !is.na(x) &&
+    grepl("\\.(ya?ml|bib)$", x, ignore.case = TRUE)
+}
+
+
+#' Read a list of references from a separate file
+#'
+#' A compilation can name dozens of studies its records were taken from, and
+#' holding them inline makes the `source:` block the bulk of `metadata.yml`.
+#' Either list -- `source:` or `secondary:` -- can instead name a file kept
+#' beside `metadata.yml`, `source: sources.yml`, as `locations:` can name a csv.
+#'
+#' A `.yml` file holds the list exactly as it would be written inline, one
+#' `- key:` item per reference. A `.bib` file holds one BibTeX entry per
+#' reference, its citation key becoming the reference's `key`.
+#'
+#' @param file Name of the file, relative to the metadata file
+#' @param path Location of the metadata file
+#'
+#' @return A list of references, carrying the file it was read from as an
+#'   attribute
+#' @noRd
+util_read_sources_file <- function(file, path) {
+
+  full <- file.path(dirname(path), file)
+
+  if (!file.exists(full)) {
+    stop(
+      sprintf(
+        paste0(
+          "%s names `%s` as a list of references, but %s does not exist.\n",
+          "  A reference list naming a .yml or .bib file is read from that ",
+          "file, which must sit beside `metadata.yml`."
+        ),
+        path, file, full
+      ),
+      call. = FALSE
+    )
+  }
+
+  if (grepl("\\.bib$", file, ignore.case = TRUE)) {
+    bib <- RefManageR::ReadBib(full, check = FALSE)
+    refs <- lapply(seq_along(bib), function(i) {
+      ref <- util_bib_to_list(bib[[i]])
+      # `dateobj` is RefManageR's parse of the date, not a field of the entry
+      ref[["dateobj"]] <- NULL
+      # A title braced to keep its capitalisation, `{{A Title}}`, is read with
+      # one pair left; the build adds that pair back itself
+      if (!is.null(ref[["title"]])) {
+        ref[["title"]] <- sub("^\\{(.*)\\}$", "\\1", ref[["title"]])
+      }
+      # Key and type first, as they are written inline
+      ref[c("key", "bibtype", setdiff(names(ref), c("key", "bibtype")))]
+    })
+  } else {
+    refs <- yaml::read_yaml(full)
+    is_mapping <- vapply(refs, function(e) is.list(e) && !is.null(names(e)), logical(1))
+    if (!is.list(refs) || !is.null(names(refs)) || !all(is_mapping)) {
+      stop(
+        sprintf(
+          "%s must hold a list of references, one `- key:` item per reference.",
+          full
+        ),
+        call. = FALSE
+      )
+    }
+  }
+
+  attr(refs, "sources_file") <- file
+  refs
+}
+
+
+#' Read any reference lists a `source:` block names as separate files
+#'
+#' @param source The `source` element of a metadata list
+#' @param path Location of the metadata file
+#'
+#' @return The `source` element, with each file named in place of a list read
+#'   in
+#' @noRd
+util_read_sources_files <- function(source, path) {
+  for (type in intersect(c("source", "secondary"), names(source))) {
+    if (util_sources_is_file(source[[type]])) {
+      source[[type]] <- util_read_sources_file(source[[type]], path)
+    }
+  }
+  source
+}
+
+
+#' Write a reference list back to the file it was read from
+#'
+#' @param refs A list of references read by `util_read_sources_file()`
+#' @param path Location of the metadata file
+#'
+#' @return The name of the file, to stand in for the list in `metadata.yml`
+#' @noRd
+util_write_sources_file <- function(refs, path) {
+
+  file <- attr(refs, "sources_file")
+  full <- file.path(dirname(path), file)
+  refs <- unname(lapply(refs, function(e) e))
+
+  if (grepl("\\.bib$", file, ignore.case = TRUE)) {
+    bib <- refs %>% lapply(RefManageR::as.BibEntry) %>% purrr::reduce(c)
+    RefManageR::WriteBib(bib, full, verbose = FALSE)
+  } else {
+    txt <- yaml::as.yaml(refs, column.major = FALSE, indent = 2) %>%
+      gsub(": ~", ":", ., fixed = TRUE)
+    con <- file(full, "w", encoding = "UTF-8")
+    on.exit(close(con))
+    cat(txt, file = con)
+  }
+
+  file
 }

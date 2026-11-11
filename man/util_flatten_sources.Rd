@@ -15,43 +15,50 @@ default), or flatten it and flag it in the \code{legacy} column}
 }
 \value{
 A tibble with one row per reference: \code{slot} (the entry's name in
-\code{metadata.yml}), \code{type} (\code{primary}, \code{secondary} or \code{original_source}),
-\code{key}, \code{legacy} (\code{TRUE} for an entry not in the expected shape: written in
-the old shape, or a bare value such as \code{secondary: Smith_2021} where a
-reference's fields belong) and \code{entry}, a list-column holding the
-reference's fields.
+\code{metadata.yml}), \code{type} (\code{dataset}, \code{source} or \code{secondary}; an old name
+is given its current type), \code{key}, \code{legacy} (\code{TRUE} for an entry not in
+the expected shape: written in an old shape, or a bare value such as
+\code{secondary: Smith_2021} where a reference's fields belong) and \code{entry}, a
+list-column holding the reference's fields.
 }
 \description{
-A dataset's \verb{source:} block holds its \code{primary} reference as a single entry,
-and its \code{secondary} references (later publications re-using the same data)
-and \code{original_source} references (for a compilation, the studies records were
-taken from, each named in the data's \code{source_id}) as lists:
+A dataset's \verb{source:} block holds its \code{dataset} reference (the dataset
+itself, keyed by its \code{dataset_id}) as a single entry, and its \code{source}
+references (for a compilation, the studies records were taken from, each
+named in the data's \code{source_id}) and \code{secondary} references (later
+publications re-using the same data) as lists:
 }
 \details{
 \if{html}{\out{<div class="sourceCode yaml">}}\preformatted{source:
-  primary:
+  dataset:
     key: Smith_2020
     ...
-  secondary:
-  - key: Smith_2021
-    ...
-  original_source:
+  source:
   - key: Jones_1999
     ...
   - key: Brown_2005
     ...
+  secondary:
+  - key: Smith_2021
+    ...
 }\if{html}{\out{</div>}}
 
-Earlier versions of traits.build wrote every reference as its own named
-entry (\code{secondary}, \code{secondary_01}, \code{original_01}, ...). That shape is no
-longer read: with \code{strict = TRUE} it is an error naming the entry to
-convert. \code{dataset_test()} reads with \code{strict = FALSE}, so that it can report
-the old shape as a failure and still check everything else about the file.
+Either list may instead name a \code{.yml} file (holding the list) or a \code{.bib}
+file kept beside \code{metadata.yml}, \code{source: sources.yml}; \code{\link[=read_metadata]{read_metadata()}}
+reads it in place.
+
+Earlier versions of traits.build wrote the dataset's reference as \code{primary},
+original sources as \code{original_source} or \code{original}, and every reference as
+its own named entry (\code{secondary_01}, \code{original_01}, ...). Those shapes are no
+longer read: with \code{strict = TRUE} they are an error naming the entry, and
+\code{\link[=metadata_convert_sources]{metadata_convert_sources()}} converts them. \code{dataset_test()} reads with
+\code{strict = FALSE}, so that it can report the old shape as a failure and still
+check everything else about the file.
 }
 \examples{
 source <- list(
-  primary = list(key = "Smith_2020", bibtype = "Article"),
-  original_source = list(
+  dataset = list(key = "Smith_2020", bibtype = "Article"),
+  source = list(
     list(key = "Jones_1999", bibtype = "Thesis"),
     list(key = "Brown_2005", bibtype = "Book")
   )

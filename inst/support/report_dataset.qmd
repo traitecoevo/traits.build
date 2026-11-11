@@ -236,16 +236,8 @@ new_question("(section `people`) Are all appropriate people listed, with appropr
 
 Data from this study are recorded as coming from the following sources:
 
-Primary citation:
-
 ```{r, results='asis'}
-metadata$source$primary %>%
-  austraits::convert_list_to_df1() %>%
-  my_kable_styling()
-```
-
-```{r, results='asis'}
-# `strict = FALSE`: a file still in the old shape is reported by `dataset_test()`;
+# `strict = FALSE`: a file still in an old shape is reported by `dataset_test()`;
 # the report shows what it holds either way
 sources_flat <- util_flatten_sources(metadata$source, strict = FALSE)
 
@@ -260,6 +252,10 @@ show_references <- function(type, heading, with_counts = FALSE) {
   if (nrow(rows) == 0) return(invisible())
 
   writeLines(c(heading, ""))
+  file <- attr(metadata$source[[type]], "sources_file")
+  if (!is.null(file)) {
+    writeLines(c(sprintf("(listed in `%s`)", file), ""))
+  }
   for (i in seq_len(nrow(rows))) {
     if (with_counts) {
       n <- source_id_counts[rows$key[i]]
@@ -274,8 +270,13 @@ show_references <- function(type, heading, with_counts = FALSE) {
 }
 
 show_references(
-  "original_source",
-  "Original sources (for a compilation, the studies records were taken from; each record names its own in `source_id`):",
+  "dataset",
+  "Dataset citation (records without a `source_id` of their own name this reference, by the `dataset_id`):",
+  with_counts = TRUE
+)
+show_references(
+  "source",
+  "Sources (for a compilation, the studies records were taken from; each record names its own in `source_id`):",
   with_counts = TRUE
 )
 show_references(
