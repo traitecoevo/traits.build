@@ -4377,7 +4377,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "Citation for the dataset's own reference, `sources[[dataset_id]]`. This detail is generated from the `dataset` reference in the metadata."
+        "@value": "Citation for the dataset's own reference, `sources[[dataset_id]]`. The compiled reference is generated from the `dataset` reference in the metadata."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-methods"
@@ -7625,7 +7625,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "Citations, separated by `; `, for the `secondary` references. This detail is generated from the `secondary` references in the metadata."
+        "@value": "Citations, separated by `; `, for the `secondary` references. The compiled references are generated from the `secondary` references in the metadata."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-methods"
@@ -7676,7 +7676,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "Citation keys, separated by `; `, for the dataset's `secondary` references in `sources`, the later publications that re-used the same data. Each key is typically formatted as `Surname_year`."
+        "@value": "Citation keys, separated by `; `, for the dataset's `secondary` references in `sources`, later publications by the same research group that used the same data for additional analyses. Each key is typically formatted as `Surname_year`."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-methods"
@@ -7721,7 +7721,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "The `key` of the reference in `sources` that the record was taken from. By default this is the `dataset_id`, which is also the key of the dataset's own reference. For a dataset compiled from several studies, a record taken from one of them holds the key of that `source` reference instead, so `sources[[source_id]]` is the record's citation."
+        "@value": "An identifier for the data source, which is the `dataset_id` for data presented for the first time in this study, or, for a compilation, the original data source."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": [
         {

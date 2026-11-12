@@ -4244,7 +4244,7 @@ source_id
 <a href="http://purl.org/dc/terms/description">description</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-The <code>key</code> of the reference in <code>sources</code> that the record was taken from. By default this is the <code>dataset_id</code>, which is also the key of the dataset’s own reference. For a dataset compiled from several studies, a record taken from one of them holds the key of that <code>source</code> reference instead, so <code>sources[[source_id]]</code> is the record’s citation.
+An identifier for the data source, which is the <code>dataset_id</code> for data presented for the first time in this study, or, for a compilation, the original data source.
 </td>
 </tr>
 <tr>
@@ -9685,7 +9685,7 @@ dataset_id_citation
 <a href="http://purl.org/dc/terms/description">description</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-Citation for the dataset’s own reference, <code>sources[[dataset_id]]</code>. This detail is generated from the <code>dataset</code> reference in the metadata.
+Citation for the dataset’s own reference, <code>sources[[dataset_id]]</code>. The compiled reference is generated from the <code>dataset</code> reference in the metadata.
 </td>
 </tr>
 <tr>
@@ -9821,7 +9821,7 @@ secondary_id
 <a href="http://purl.org/dc/terms/description">description</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-Citation keys, separated by <code>;</code>, for the dataset’s <code>secondary</code> references in <code>sources</code>, the later publications that re-used the same data. Each key is typically formatted as <code>Surname_year</code>.
+Citation keys, separated by <code>;</code>, for the dataset’s <code>secondary</code> references in <code>sources</code>, later publications by the same research group that used the same data for additional analyses. Each key is typically formatted as <code>Surname_year</code>.
 </td>
 </tr>
 <tr>
@@ -9941,7 +9941,7 @@ secondary_citation
 <a href="http://purl.org/dc/terms/description">description</a>
 </td>
 <td headers="description" class="gt_row gt_left">
-Citations, separated by <code>;</code>, for the <code>secondary</code> references. This detail is generated from the <code>secondary</code> references in the metadata.
+Citations, separated by <code>;</code>, for the <code>secondary</code> references. The compiled references are generated from the <code>secondary</code> references in the metadata.
 </td>
 </tr>
 <tr>
