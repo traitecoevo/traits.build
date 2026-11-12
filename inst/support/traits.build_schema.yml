@@ -98,6 +98,7 @@ austraits:
       type: table
       elements:
         dataset_id: &dataset_id Primary identifier for each study contributed to AusTraits; most often these are scientific papers, books, or online resources. By default this should be the name of the first author and year of publication, e.g. `Falster_2005`.
+        source_id: &source_id An identifier for the data source, which is the `dataset_id` for data presented for the first time in this study, or, for a compilation, the original data source.
         taxon_name: &taxon_name Scientific name of the taxon on which traits were sampled, without authorship. When possible, this is the currently accepted (botanical) or valid (zoological) scientific name, but might also be a higher taxonomic level.
         observation_id: &observation_id A unique integral identifier for the observation, where an observation is all measurements made on an individual at a single point in time. It is important for joining traits coming from the same `observation_id`. Within each dataset, observation_id's are unique combinations of `taxon_name`, `population_id`, `individual_id`, and `temporal_context_id`.
         trait_name: &trait_name Name of the trait sampled. Allowable values specified in the table `definitions`.
@@ -113,7 +114,6 @@ austraits:
         individual_id: &individual_id A unique integer identifier for an individual, with individuals numbered sequentially within each dataset by taxon by population grouping. Most often each row of data represents an individual, but in some datasets trait data collected on a single individual is presented across multiple rows of data, such as if the same trait is measured using different methods or the same individual is measured repeatedly across time.
         repeat_measurements_id: &repeat_measurements_id A unique integer identifier for repeat measurements of a trait that comprise a single observation, such as a response curve.
         temporal_context_id: &temporal_context_id A unique integer identifier assigned where repeat observations are made on the same individual (or population, or taxon) across time. The identifier links to specific information in the context table.
-        source_id: &source_id For datasets that are compilations, an identifier for the original data source.
         location_id: &location_id A unique integer identifier for a location, with locations numbered sequentially within a dataset. The identifier links to specific information in the location table.
         entity_context_id: &entity_context_id A unique integer identifier indicating specific contextual properties of an individual, possibly including the individual's sex or caste (for social insects).
         plot_context_id: &plot_context_id A unique integer identifier for a plot, where a plot is a distinct collection of organisms within a single geographic location, such as plants growing on different aspects or blocks in an experiment. The identifier links to specific information in the context table.
@@ -153,13 +153,10 @@ austraits:
         method_id: *method_id
         description: &description A 1-2 sentence description of the purpose of the study.
         sampling_strategy: &sampling_strategy A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript.
-        source_primary_key: Citation key for the primary source in `sources`. The key is typically formatted as `Surname_year`.
-        source_primary_type: Citation type for the primary source in `sources`, using standard BibTex citation types (Article, Book, Misc, Online, Report, Techreport, Thesis, Unpublished).
-        source_primary_citation: Citation for the primary source. This detail is generated from the primary source in the metadata.
-        source_secondary_key: Citation key for the secondary source in `sources`.  The key is typically formatted as `Surname_year`.
-        source_secondary_citation: Citations for the secondary source. This detail is generated from the secondary source in the metadata.
-        source_original_dataset_key: Citation key for the original dataset_id in sources; for compilations.  The key is typically formatted as `Surname_year`.
-        source_original_dataset_citation: Citations for the original dataset_id in sources; for compilations. This detail is generated from the original source in the metadata.
+        dataset_id_type: Citation type for the dataset's own reference, `sources[[dataset_id]]`, using standard BibTex citation types (Article, Book, Misc, Online, Report, Techreport, Thesis, Unpublished).
+        dataset_id_citation: Citation for the dataset's own reference, `sources[[dataset_id]]`. The compiled reference is generated from the `dataset` reference in the metadata.
+        secondary_id: Citation keys, separated by `; `, for the dataset's `secondary` references in `sources`, later publications by the same research group that used the same data for additional analyses. Each key is typically formatted as `Surname_year`.
+        secondary_citation: Citations, separated by `; `, for the `secondary` references. The compiled references are generated from the `secondary` references in the metadata.
         data_collectors: &data_collectors The person (people) leading data collection for this study.
         assistants: &assistants Names of people who played a more minor role in data collection for the study.
         dataset_curators: &dataset_curators Names of database team member(s) who contacted the data collectors and added the study to the database repository.
@@ -169,6 +166,7 @@ austraits:
       elements:
         error: Indicating why the record was excluded. Common reasons are missing_unit_conversions, missing_value, and unsupported_trait_value.
         dataset_id: *dataset_id
+        source_id: *source_id
         taxon_name: *taxon_name
         observation_id: *observation_id
         trait_name: *trait_name
@@ -184,7 +182,6 @@ austraits:
         individual_id: *individual_id
         repeat_measurements_id: *repeat_measurements_id
         temporal_context_id: *temporal_context_id
-        source_id: *source_id
         location_id: *location_id
         entity_context_id: *entity_context_id
         plot_context_id: *plot_context_id
@@ -244,7 +241,7 @@ austraits:
         institution_code: &institution_code The name (or acronym) in use by the institution having custody of the object(s) or information referred to by the identifier value.
         identifier_value: A sequence of characters that links an observation within a traits.build database to additional information about observed entity in another database.
     sources:
-      description: Bibtex entries for all primary and secondary sources in the compilation.
+      description: Bibtex entries for every reference a dataset cites, named by key, including its own reference (keyed by its `dataset_id`), any `source` references data observations were taken from, and any `secondary` references, later publications by the same research group that used the same data for additional analyses. An observation's citation is `sources[[source_id]]`.
       type: list
     definitions:
       description: A copy of the definitions for all tables and terms. Information included here was used to process data and generate any documentation for the study.
@@ -341,11 +338,11 @@ metadata:
   type: list
   elements:
     source:
-      description: Citation details for the original source(s) for the data, whether it is a published journal article, book, website, or thesis.
+      description: Citation details for the sources of the data, whether published journal articles, books, websites or theses. The `dataset` reference is for the entire dataset, keyed by its `dataset_id`; `source` references are, the references for data values included in the dataset that are sourced from previous publications or collections and link to a specific `source_id`; `secondary` references are later publications from the same research group that re-used or re-analysed data from the dataset. Either list, `source` or `secondary`, may instead name a `.yml` file holding the list, or a `.bib` file, kept beside `metadata.yml`.
       type: categorical
       values:
-        primary:
-          description: &source_primary The original study in which data were collected.
+        dataset:
+          description: &source_dataset The study the data were collected for, or, for a compilation, a publication or database for which the data were assembled. A single reference, whose `key` is the `dataset_id`.
           type: catergorical
           values:
             key: &key The key is used to identify the exact reference using authors last name and year of publication.
@@ -365,10 +362,31 @@ metadata:
             isbn: &isbn The International Standard Book Number of a book or report.
             place: &place The location where the reference was written or published.
             note: &note Additional notes for the reference which are not contained in the other fields.
+        source:
+          description: &source_source For a compilation, a study from which observations were taken. Each observation's `source_id` holds the `key` of the entry it came from. A list of references, one `- key:` item per reference, or the name of a `.yml` or `.bib` file holding them.
+          type: array
+          elements:
+            key: *key
+            bibtype: *bibtype
+            year: *year
+            author: *author
+            journal: *journal
+            title: *title
+            volume: *volume
+            number: *number
+            pages: *pages
+            doi: *doi
+            url: *url
+            type: *type
+            institution: *institution
+            publisher: *publisher
+            isbn: *isbn
+            place: *place
+            note: *note
         secondary:
-          description: &source_secondary A subsequent study where data were compiled or re-analysed.
-          type: categorical
-          values:
+          description: &source_secondary An additional publication from the same research group that re-used or re-analysed data from the dataset. Attached to the whole dataset. A list of references, one `- key:` item per reference, or the name of a `.yml` or `.bib` file holding them.
+          type: array
+          elements:
             key: *key
             bibtype: *bibtype
             year: *year

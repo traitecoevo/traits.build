@@ -294,6 +294,162 @@ test_that("`dataset_test` accepts a context scoped to specific traits by a colum
 })
 
 
+# `source_id` links each observation to the reference it was taken from (#296).
+# Test_2023_2 maps a `source_id` column holding `Test_2022` and `Test_2002`, and
+# lists both as `source` references, so it passes; each edit below
+# breaks one thing and must be reported for that thing.
+
+test_that("`dataset_test` reports a `source` block in the old shape, and the build refuses it (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    # One named entry per reference, as traits.build wrote before 2.3.0
+    originals <- metadata$source$source
+    metadata$source$source <- NULL
+    metadata$source$original_01 <- originals[[1]]
+    metadata$source$original_02 <- originals[[2]]
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "`original_01`, `original_02`: not in the expected shape, so the dataset will not build",
+    fixed = TRUE
+  )
+  # The lenient read lets the other source checks run: both keys still link
+  expect_false(any(grepl("should not contain", out, fixed = TRUE)))
+  # ...and the build itself stops, naming the entries
+  expect_true(any(grepl("building dataset", out, fixed = TRUE)))
+  expect_true(any(grepl("entries in a shape traits.build no longer reads: `original_01`, `original_02`", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` reports a bare value where a reference belongs, and the build refuses it (#296)", {
+  # `secondary: Smith_2021` names a reference without giving its fields; it
+  # must not pass and then drop out of the build unseen
+  out <- dataset_test_edited(function(metadata) {
+    metadata$source$secondary <- "Smith_2021"
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "`secondary`: not in the expected shape, so the dataset will not build",
+    fixed = TRUE
+  )
+  expect_true(any(grepl("source 'secondary' - does not contain: 'key'", out, fixed = TRUE)))
+  expect_true(any(grepl("entries in a shape traits.build no longer reads: `secondary`", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` reports `source_id` values that match no reference (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    metadata$source$source <- NULL
+    metadata
+  })
+
+  hits <- grep("`source_id` (each value must be the dataset_id or the `key` of a `source` reference)", out, fixed = TRUE)
+  expect_length(hits, 1)
+  expect_match(out[hits], "should not contain: 'Test_2022', 'Test_2002'|should not contain: 'Test_2002', 'Test_2022'")
+  # Not an old-shape problem, and the dataset still builds
+  expect_false(any(grepl("not in the expected shape", out, fixed = TRUE)))
+  expect_false(any(grepl("building dataset", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` says to move a `secondary` reference that observations are taken from (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    moved <- metadata$source$source[[2]]
+    metadata$source$source <- metadata$source$source[1]
+    metadata$source$secondary <- list(moved)
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "move these entries to `source`: 'Test_2002'",
+    fixed = TRUE
+  )
+  # The moved key is reported once, as misplaced, not again as unmatched
+  expect_false(any(grepl("should not contain: 'Test_2002'", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` reports a `source` reference no observation names (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    unused <- metadata$source$source[[1]]
+    unused$key <- "Test_1999"
+    metadata$source$source <- c(metadata$source$source, list(unused))
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "no observation's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): 'Test_1999'",
+    fixed = TRUE
+  )
+})
+
+
+# `source_id` is checked on the observations the built dataset holds, in `traits`
+# and `excluded_data`, not on every row of the data
+source_id_edited <- function(new_rows, extra_source_key = NULL) {
+  path_data <- withr::local_tempdir(.local_envir = parent.frame())
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  if (!is.null(extra_source_key)) {
+    metadata <- read_metadata(path_metadata)
+    extra <- metadata$source$source[[1]]
+    extra$key <- extra_source_key
+    metadata$source$source <- c(metadata$source$source, list(extra))
+    write_metadata(metadata, path_metadata)
+  }
+
+  path_csv <- file.path(path_data, "Test_2023_2", "data.csv")
+  data <- readr::read_csv(path_csv, col_types = readr::cols(.default = "c"))
+  traits_columns <- c(
+    "LMA (mg mm-2)", "Leaf nitrogen (mg mg-1)", "leaf size (mm2)", "wood density (mg mm-3)",
+    "branch mass fraction", "Seed mass (mg)", "LASA10", "LASA250", "LASA50", "LASA1000"
+  )
+  rows <- purrr::map_dfr(new_rows, function(row) {
+    x <- data[1, ]
+    x[traits_columns] <- NA_character_
+    x[names(row)] <- row
+    x
+  })
+  readr::write_csv(dplyr::bind_rows(data, rows), path_csv, na = "")
+
+  dataset_test_failures("Test_2023_2", path_data = path_data)
+}
+
+
+test_that("`dataset_test` ignores the `source_id` of a row the build drops without excluding it (#296)", {
+  # Every trait value blank: the build drops the row, and its `source_id` is
+  # in neither `traits` nor `excluded_data`
+  failures <- source_id_edited(
+    list(list(source_id = "Nobody_1900"), list(source_id = "Test_1999")),
+    extra_source_key = "Test_1999"
+  )
+  expect_false(any(grepl("Nobody_1900", failures, fixed = TRUE)))
+  # ...so a `source` reference only such a row names is unused
+  expect_match(
+    failures,
+    "no observation's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): 'Test_1999'",
+    fixed = TRUE, all = FALSE
+  )
+})
+
+
+test_that("`dataset_test` counts the `source_id` of an observation in `excluded_data` (#296)", {
+  # A value that is not a number: the observation is excluded, not dropped, and still
+  # cites its reference
+  failures <- source_id_edited(
+    list(list(`LMA (mg mm-2)` = "not a number", source_id = "Test_1999")),
+    extra_source_key = "Test_1999"
+  )
+  expect_false(any(grepl("Test_1999", failures, fixed = TRUE)))
+})
+
+
 test_that("`dataset_test` fails a `metadata.yml` entry with a field that has no value (#307)", {
   # An empty field drops its whole entry from the build, so the trait vanished
   # from both `traits` and `excluded_data` while `dataset_test()` passed
@@ -313,6 +469,50 @@ test_that("`dataset_test` fails a `metadata.yml` entry with a field that has no 
 })
 
 
+test_that("`dataset_test` hints when `source_id` holds an entry's name rather than its key (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    # A constant, as `process_parse_data()` would read it: no such column
+    metadata$dataset$source_id <- "source"
+    metadata
+  })
+
+  hits <- grep("a value such as `secondary_01` is the name of an entry, not its `key`", out, fixed = TRUE)
+  expect_length(hits, 1)
+  expect_match(out[hits], "should not contain: 'source'", fixed = TRUE)
+  # Nothing links to the two sources now, so they are reported as unused
+  expect_true(any(grepl("no observation's `source_id` names these `source` references", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` requires the dataset reference to be keyed by the dataset_id (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    metadata$source$dataset$key <- "Falster_2005"
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "the `dataset` reference's key `Falster_2005` must be the dataset_id, `Test_2023_2`",
+    fixed = TRUE
+  )
+})
+
+
+test_that("`dataset_test` reports the old `primary` name, and the build refuses it (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    names(metadata$source)[names(metadata$source) == "dataset"] <- "primary"
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "`primary`: not in the expected shape, so the dataset will not build",
+    fixed = TRUE
+  )
+  expect_true(any(grepl("metadata_convert_sources()", out, fixed = TRUE)))
+})
+
+
 test_that("`dataset_test` fails an empty field in a data collector or a source (#307)", {
   # The same conversion drops a data collector from `contributors`, and a
   # reference from the table of source keys, which then pairs the remaining
@@ -322,7 +522,7 @@ test_that("`dataset_test` fails an empty field in a data collector or a source (
 
   path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
   lines <- readLines(path_metadata)
-  lines <- append(lines, "    number:", after = grep("^  primary:", lines)[1])
+  lines <- append(lines, "    number:", after = grep("^  dataset:", lines)[1])
   lines <- append(lines, "    additional_role: []", after = grep("^  - last_name: Westoby", lines))
   writeLines(lines, path_metadata)
 

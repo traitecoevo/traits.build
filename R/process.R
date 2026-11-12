@@ -226,6 +226,13 @@ dataset_process <- function(filename_data_raw,
     # Ensure everything converted to character type
     util_df_convert_character()
 
+  # An observation with no `source_id` was collected in the dataset's own study, so
+  # takes the `dataset_id`, the key of the dataset's own reference. Filled only
+  # now because `source_id` is part of the `observation_id` hash: filling it
+  # earlier would renumber the observations of a compilation that leaves some
+  # observations blank
+  traits[["source_id"]] <- dplyr::coalesce(traits[["source_id"]], traits[["dataset_id"]])
+
   # Separate identifiers into a standalone table that is in long format.
   # Needs to happen now after `observation_id` is set.
 
@@ -264,7 +271,12 @@ dataset_process <- function(filename_data_raw,
     process_format_contributors(dataset_id, schema)
 
   # Record sources
-  sources <- metadata$source %>% lapply(util_list_to_bib) %>% purrr::reduce(c)
+  # A file still written in an old shape (`primary`, `original_source`,
+  # `secondary_01`, ...) stops here, naming the entry to convert
+  sources <-
+    util_flatten_sources(metadata$source)$entry %>%
+    lapply(util_list_to_bib) %>%
+    purrr::reduce(c)
 
   # Record methods
   methods <- process_format_methods(metadata, dataset_id, sources, contributors, names(additional_fields))
@@ -2372,27 +2384,15 @@ process_format_identifiers <- function(my_list, dataset_id, schema) {
 process_format_methods <- function(metadata, dataset_id, sources, contributors,
                                    additional_fields = character()) {
 
-  # Identify sources as being `primary`, `secondary` or `original`
-  # Secondary datasets are additional publications associated with the primary citation
-  # Original dataset keys are used for compilations indicating the original data sources
-  citation_types <-
-    tibble::tibble(
-      source_key = names(metadata$source),
-      type = str_replace_all(.data$source_key, "_[:digit:]+", ""),
-      source_id = metadata$source %>%
-        austraits::convert_list_to_df2() %>%
-        purrr::pluck("key")
-    )
+  # References are `dataset` (the dataset itself), `source` (for a compilation,
+  # the studies observations were taken from) or `secondary` (later publications
+  # re-using the same data). Only the dataset-level ones are written here: each
+  # observation names its `source` in `traits$source_id`, which is looked up in
+  # `sources` directly, so repeating them per method would only multiply rows
+  sources_flat <- util_flatten_sources(metadata$source)
 
-  source_primary_key <- metadata$source$primary$key
-  source_primary_type <- metadata$source$primary$bibtype
-  source_secondary_keys <- citation_types %>%
-    dplyr::filter(.data$type == "secondary") %>%
-    purrr::pluck("source_id")
-
-  source_original_dataset_keys <- citation_types %>%
-    dplyr::filter(.data$type == "original") %>%
-    purrr::pluck("source_id")
+  dataset_key <- metadata$source$dataset$key
+  secondary_keys <- sources_flat$key[sources_flat$type == "secondary"]
 
   # Combine collectors to add into the methods table
   collectors_tmp <-
@@ -2431,28 +2431,16 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors,
       # References
         tibble::tibble(
           dataset_id = dataset_id,
-          source_primary_key = source_primary_key,
-          source_primary_type = source_primary_type,
-          source_primary_citation = bib_print(sources[[source_primary_key]]),
-          source_secondary_key = ifelse(
-            length(source_secondary_keys) > 0,
-            source_secondary_keys %>% paste(collapse = "; "),
+          dataset_id_type = metadata$source$dataset$bibtype,
+          dataset_id_citation = bib_print(sources[[dataset_key]]),
+          secondary_id = ifelse(
+            length(secondary_keys) > 0,
+            secondary_keys %>% paste(collapse = "; "),
             NA_character_
           ),
-          source_secondary_citation = ifelse(
-            length(source_secondary_keys) == 0, NA_character_,
-            purrr::map_chr(source_secondary_keys, ~sources[[.x]] %>% bib_print) %>%
-              paste(collapse = "; ") %>%
-              stringr::str_replace_all("\\.;", ";")
-          ),
-          source_original_dataset_key = ifelse(
-            length(source_original_dataset_keys) > 0,
-            source_original_dataset_keys %>% paste(collapse = "; "),
-            NA_character_
-          ),
-          source_original_dataset_citation = ifelse(
-            length(source_original_dataset_keys) == 0, NA_character_,
-            purrr::map_chr(source_original_dataset_keys, ~sources[[.x]] %>% bib_print) %>%
+          secondary_citation = ifelse(
+            length(secondary_keys) == 0, NA_character_,
+            purrr::map_chr(secondary_keys, ~sources[[.x]] %>% bib_print) %>%
               paste(collapse = "; ") %>%
               stringr::str_replace_all("\\.;", ";")
           )
@@ -2646,7 +2634,7 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::left_join(by = "aligned_name",
               taxa %>% dplyr::select(dplyr::all_of(c("aligned_name", "taxon_name")))
               ) %>%
-    dplyr::select(dplyr::all_of(c("dataset_id", "taxon_name")), dplyr::everything()) %>%
+    dplyr::select(dplyr::all_of(c("dataset_id", "source_id", "taxon_name")), dplyr::everything()) %>%
     # For taxa where there is no `taxon_name` to matched to a `aligned_name`,
     # maintain the `aligned_name` as the `taxon_name`
     dplyr::mutate(

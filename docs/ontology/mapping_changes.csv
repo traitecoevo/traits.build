@@ -1,1 +1,17 @@
 term,relation,change,previous_relation,class,class_label,class_iri
+dataset_id_citation,closeMatch,added,,dwc:assertionReferences,Assertion References,http://rs.tdwg.org/dwc/terms/assertionReferences
+dataset_id_citation,closeMatch,added,,ets:bibliographicCitation,bibliographic citation,http://terminologies.gfbio.org/terms/ETS/bibliographicCitation
+dataset_id_citation,broader,added,,dcterms:bibliographicCitation,bibliographic citation,http://purl.org/dc/terms/bibliographicCitation
+secondary_id,broader,added,,oboe-characteristics:Identifier,Identifier,http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier
+secondary_citation,closeMatch,added,,ets:bibliographicCitation,bibliographic citation,http://terminologies.gfbio.org/terms/ETS/bibliographicCitation
+secondary_citation,broader,added,,dcterms:bibliographicCitation,bibliographic citation,http://purl.org/dc/terms/bibliographicCitation
+source_primary_citation,closeMatch,removed,,dwc:assertionReferences,Assertion References,http://rs.tdwg.org/dwc/terms/assertionReferences
+source_primary_citation,closeMatch,removed,,ets:bibliographicCitation,bibliographic citation,http://terminologies.gfbio.org/terms/ETS/bibliographicCitation
+source_secondary_citation,closeMatch,removed,,ets:bibliographicCitation,bibliographic citation,http://terminologies.gfbio.org/terms/ETS/bibliographicCitation
+source_original_dataset_citation,closeMatch,removed,,ets:bibliographicCitation,bibliographic citation,http://terminologies.gfbio.org/terms/ETS/bibliographicCitation
+source_primary_citation,broader,removed,,dcterms:bibliographicCitation,bibliographic citation,http://purl.org/dc/terms/bibliographicCitation
+source_secondary_citation,broader,removed,,dcterms:bibliographicCitation,bibliographic citation,http://purl.org/dc/terms/bibliographicCitation
+source_original_dataset_citation,broader,removed,,dcterms:bibliographicCitation,bibliographic citation,http://purl.org/dc/terms/bibliographicCitation
+source_primary_key,broader,removed,,oboe-characteristics:Identifier,Identifier,http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier
+source_secondary_key,broader,removed,,oboe-characteristics:Identifier,Identifier,http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier
+source_original_dataset_key,broader,removed,,oboe-characteristics:Identifier,Identifier,http://ecoinformatics.org/oboe/oboe.1.2/oboe-characteristics.owl#Identifier

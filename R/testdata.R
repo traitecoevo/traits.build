@@ -93,10 +93,16 @@ dataset_test_worker <-
         ## Check for other files
         vals <- c("data.csv", "metadata.yml", "raw", "output", "README.md")
 
-        # A dataset whose `locations:` names a csv file is allowed to hold it
-        declared_locations_file <- yaml::read_yaml(files[2])[["locations"]]
-        if (util_locations_is_file(declared_locations_file)) {
-          vals <- c(vals, declared_locations_file)
+        # A dataset whose `locations:` names a csv file is allowed to hold it,
+        # as is one whose reference lists name a .yml or .bib file
+        declared <- yaml::read_yaml(files[2])
+        if (util_locations_is_file(declared[["locations"]])) {
+          vals <- c(vals, declared[["locations"]])
+        }
+        for (type in c("source", "secondary")) {
+          if (util_sources_is_file(declared[["source"]][[type]])) {
+            vals <- c(vals, declared[["source"]][[type]])
+          }
         }
 
         test_expect_is_in(
@@ -159,6 +165,24 @@ dataset_test_worker <-
           }
         )
         schema <- util_schema_add_traits_table_fields(schema, additional_fields)
+        # Reference lists kept in their own file are read in the same way
+        for (type in c("source", "secondary")) {
+          if (util_sources_is_file(metadata[["source"]][[type]])) {
+
+            sources_file <- file.path(s, metadata[["source"]][[type]])
+
+            test_expect_allowed_text(
+              readLines(sources_file, encoding = "UTF-8", warn = FALSE),
+              info = paste0(red(sources_file), "\tsource"), label = "source"
+            )
+
+            test_expect_no_error(
+              metadata[["source"]][[type]] <-
+                util_read_sources_file(metadata[["source"]][[type]], f),
+              info = paste0(red(sources_file), "\tsource")
+            )
+          }
+        }
 
         if (!is.null(metadata[["identifiers"]])) {
           test_expect_list_names_exact(
@@ -217,34 +241,54 @@ dataset_test_worker <-
         ## Source
         test_expect_list_names_valid(metadata[["source"]], info = sprintf("%s\tsource", red(f)), label = "field names")
 
-        v <- names(metadata[["source"]])
-        i <- grepl("primary", v) | grepl("secondary", v) | grepl("original", v)
+        # Read leniently, so an entry in the old shape is reported here (and
+        # again when the build refuses it) rather than stopping the checks
+        sources_flat <- util_flatten_sources(metadata[["source"]], strict = FALSE)
+        source_types <- names(schema$metadata$elements$source$values)
 
-        test_expect_contains(v, "primary", info = paste0(red(f), "\tsource"))
+        test_expect_contains(sources_flat$type, "dataset", info = paste0(red(f), "\tsource"))
 
         test_expect_true(
-          sum(grepl("primary", v)) <= 1,
-          info = paste0(red(f), "\tsources can have max 1 type labelled 'primary': ", paste(v, collapse = ", "))
+          sum(sources_flat$type == "dataset") <= 1,
+          info = paste0(red(f), "\tsources can have max 1 reference of type 'dataset': ", paste(sources_flat$slot, collapse = ", "))
+        )
+
+        # Each observation's `source_id` defaults to the `dataset_id`, so the
+        # dataset's own reference must carry it as its key for
+        # `sources[[source_id]]` to find it
+        dataset_key <- sources_flat$key[sources_flat$type == "dataset"]
+        test_expect_true(
+          length(dataset_key) != 1 || identical(dataset_key, dataset_id),
+          info = sprintf(
+            "%s\tsource - the `dataset` reference's key `%s` must be the dataset_id, `%s`",
+            red(f), paste(dataset_key, collapse = ""), dataset_id)
+        )
+
+        test_expect_is_in(
+          unique(sources_flat$type), source_types,
+          info = paste0(red(f), "\tsource"),
+          label = sprintf("reference types (%s)", paste(sprintf("`%s`", source_types), collapse = ", "))
         )
 
         test_expect_true(
-          all(i),
-          info = paste0(red(f), "\tsources must be primary, secondary or original: ", paste(v[!i], collapse = ", "))
+          !any(sources_flat$legacy),
+          info = sprintf(
+            "%s\tsource - `%s`: not in the expected shape, so the dataset will not build. `dataset` is a single reference; `source` and `secondary` each hold a list of references, one `- key:` item per reference (`primary` is now `dataset`, `original_source` is now `source`; `metadata_convert_sources()` converts the old shapes)",
+            red(f), paste(unique(sources_flat$slot[sources_flat$legacy]), collapse = "`, `"))
         )
 
         vals <- c("key", "bibtype", "author", "title", "year")
 
-        for (bib in names(metadata[["source"]])) {
+        for (k in seq_len(nrow(sources_flat))) {
           test_expect_contains(
-            names(metadata[["source"]][[bib]]), vals,
-            info = sprintf("%s\tsource '%s'", red(f), bib)
+            names(sources_flat$entry[[k]]), vals,
+            info = sprintf("%s\tsource '%s'", red(f),
+                           ifelse(is.na(sources_flat$key[k]), sources_flat$slot[k], sources_flat$key[k]))
           )
         }
 
-        keys <- unlist(lapply(metadata[["source"]], "[[", "key"))
-
         test_expect_unique(
-          keys,
+          sources_flat$key,
           info = paste0(red(f), "\tsources"),
           label = "keys"
         )
@@ -824,6 +868,50 @@ dataset_test_worker <-
           }
         }
 
+        ## Source id
+        # Each observation's `source_id` is the `key` of the reference it was taken
+        # from -- the dataset's own (keyed by, and defaulting to, the
+        # `dataset_id`) or one of its `source` references -- so that
+        # `sources[[source_id]]` returns that reference (#296). Checked after the
+        # build below, on the observations the database will hold, in `traits` and
+        # `excluded_data`: an observation excluded there still cites its reference,
+        # while rows `custom_R_code` filters out, or the build drops without
+        # excluding them, cite nothing. If the build fails, the values read
+        # from the data stand in.
+        source_ids <- dataset_test_source_id_values(metadata, traits, data)
+        f_metadata <- f
+        check_source_ids <- function(source_ids) {
+          keys_by_type <- split(sources_flat$key, sources_flat$type)
+          source_keys <- keys_by_type[["source"]]
+          linkable_keys <- c(dataset_id, source_keys)
+
+          i <- source_ids %in% keys_by_type[["secondary"]]
+          test_expect_true(
+            !any(i),
+            info = sprintf(
+              "%s\tsource - `source_id` values name `secondary` references; a reference that observations are taken from is a source, so move these entries to `source`: '%s'",
+              red(f_metadata), paste(source_ids[i], collapse = "', '"))
+          )
+
+          unmatched <- source_ids[!i & !source_ids %in% linkable_keys]
+          hint <- ifelse(
+            any(unmatched %in% sources_flat$slot),
+            "; a value such as `secondary_01` is the name of an entry, not its `key`", "")
+          test_expect_is_in(
+            source_ids[!i], linkable_keys,
+            info = paste0(red(f_metadata), "\tsource"),
+            label = paste0("`source_id` (each value must be the dataset_id or the `key` of a `source` reference", hint, ")")
+          )
+
+          j <- !source_keys %in% source_ids
+          test_expect_true(
+            !any(j),
+            info = sprintf(
+              "%s\tsource - no observation's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): '%s'",
+              red(f_metadata), paste(source_keys[j], collapse = "', '"))
+          )
+        }
+
         ## Substitutions
 
         if (!is.na(metadata[["substitutions"]][1])) {
@@ -1217,6 +1305,48 @@ dataset_test_worker <-
           #  )
           #}
         }
+
+        ## Source id, on the observations the built dataset holds (see above)
+        if (exists("dataset", inherits = FALSE) && is.data.frame(dataset[["traits"]])) {
+          source_ids <- unique(stats::na.omit(c(
+            dataset[["traits"]][["source_id"]], dataset[["excluded_data"]][["source_id"]]
+          )))
+        }
+        check_source_ids(source_ids)
       })
     }
   }
+
+
+#' Values that `traits$source_id` will hold once a dataset is built
+#'
+#' Resolves the dataset-level `source_id` in `metadata.yml`, and any trait-level
+#' `source_id`, the way `process_parse_data()` does: a value naming a column of
+#' the data reads that column; any other value is a constant. An observation left
+#' without a value takes the `dataset_id` when built, which always names the
+#' dataset's own reference, so is not returned here.
+#'
+#' @param metadata Metadata list, as read by `yaml::read_yaml()` in `dataset_test()`
+#' @param traits The `traits` block of the metadata as a data frame
+#' @param data The data, with `custom_R_code` applied
+#'
+#' @return Character vector of the distinct non-NA values
+#' @noRd
+dataset_test_source_id_values <- function(metadata, traits, data) {
+
+  resolve <- function(v) {
+    v <- as.character(v)
+    v <- v[!is.na(v)]
+    unlist(lapply(v, function(x) {
+      if (!is.null(data[[x]])) as.character(data[[x]]) else x
+    }))
+  }
+
+  values <- resolve(metadata[["dataset"]][["source_id"]])
+
+  if (is.data.frame(traits) && "source_id" %in% names(traits)) {
+    values <- c(values, resolve(traits[["source_id"]]))
+  }
+
+  unique(values[!is.na(values)])
+}

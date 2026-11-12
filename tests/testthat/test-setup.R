@@ -19,7 +19,7 @@ test_that("`metadata_create_template` is working", {
   expect_named(test_metadata)
   # Test metadata exists with correct names
   expect_named(test_metadata, metadata_names)
-  expect_length(test_metadata$source$primary, 10)
+  expect_length(test_metadata$source$dataset, 10)
   expect_in(names(test_metadata$dataset), names(schema$metadata$elements$dataset$values))
   expect_type(test_metadata$contributors$data_collectors, "list")
   expect_length(test_metadata$contributors$data_collectors, 1L)
@@ -126,7 +126,9 @@ test_that("`write_metadata_dataset` is working", {
 
 test_that("`metadata_add_source_bibtex` is working", {
   expect_silent(metadata_add_source_bibtex(dataset_id = "Test_2022", file = "data/test2.bib"))
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$primary$journal, "Journal of Ecology")
+  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$dataset$journal, "Journal of Ecology")
+  # The dataset's own reference is keyed by its dataset_id, exactly
+  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$dataset$key, "Test_2022")
 })
 
 
@@ -158,33 +160,67 @@ test_that("`metadata_add_source_doi` is working", {
   expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi2, bib = bib2, type = "secondary"))
 
   test_metadata <- read_metadata("data/Test_2022/metadata.yml")
-  expect_equal(test_metadata$source$primary$journal, "Frontiers in Marine Science")
-  expect_equal(test_metadata$source$primary$year, "2021")
-  expect_equal(test_metadata$source$primary$doi, doi)
+  expect_equal(test_metadata$source$dataset$journal, "Frontiers in Marine Science")
+  expect_equal(test_metadata$source$dataset$year, "2021")
+  expect_equal(test_metadata$source$dataset$doi, doi)
   # Test standardised capitalisation of authors
-  expect_equal(test_metadata$source$primary$author, "Gary Truong and Tracey L. Rogers")
-  expect_equal(test_metadata$source$secondary$journal, "Journal of Ecology")
-  expect_equal(test_metadata$source$secondary$year, "2005")
-  expect_equal(test_metadata$source$secondary$doi, doi2)
+  expect_equal(test_metadata$source$dataset$author, "Gary Truong and Tracey L. Rogers")
+  # `secondary` holds a list of references
+  expect_length(test_metadata$source$secondary, 1)
+  secondary <- test_metadata$source$secondary[[1]]
+  expect_equal(secondary$journal, "Journal of Ecology")
+  expect_equal(secondary$year, "2005")
+  expect_equal(secondary$doi, doi2)
   # Test standardised capitalisation of authors and key
-  expect_equal(test_metadata$source$secondary$author, "Daniel S. Falster and Mark Westoby")
-  expect_equal(test_metadata$source$secondary$key, "Falster_2005")
+  expect_equal(secondary$author, "Daniel S. Falster and Mark Westoby")
+  expect_equal(secondary$key, "Falster_2005")
 
-  # Test that adding a primary source overwrites the existing source and sends a message
+  # Test that adding a dataset source overwrites the existing source and sends a message
   expect_message(
     metadata_add_source_doi(dataset_id = "Test_2022", doi = doi2, bib = bib2),
     ".*(?=already exists and is being overwritten)", perl = TRUE
   )
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$primary$journal, "Journal of Ecology")
-  # Test if adding a secondary source overwrites existing source and sends a message
+  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$dataset$journal, "Journal of Ecology")
+
+  # A secondary reference with a key not yet listed is appended, without comment
+  expect_no_message(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary"))
+  secondary <- read_metadata("data/Test_2022/metadata.yml")$source$secondary
+  expect_length(secondary, 2)
+  expect_equal(secondary[[1]]$key, "Falster_2005")
+  expect_equal(secondary[[2]]$journal, "Frontiers in Marine Science")
+  # Re-adding a reference whose key is already listed replaces that entry, with a message
   expect_message(
     metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary"),
     ".*(?=already exists and is being overwritten)", perl = TRUE
   )
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$secondary$journal, "Frontiers in Marine Science")
-  # Test if adding secondary_02 works
-  expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary_02"))
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$secondary_02$journal, "Frontiers in Marine Science")
+  expect_length(read_metadata("data/Test_2022/metadata.yml")$source$secondary, 2)
+
+  # `source` references are listed the same way
+  expect_no_message(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi2, bib = bib2, type = "source"))
+  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$source[[1]]$key, "Falster_2005")
+
+  # The old names are refused, saying what they are now
+  expect_error(
+    metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "primary"),
+    "`primary` is now `dataset`", fixed = TRUE
+  )
+
+  # Numbered types belong to the old shape and are refused
+  expect_error(
+    metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary_02"),
+    "must be one of"
+  )
+
+  # `secondary: .na` holds no reference, so the first one added starts the list
+  before <- read_metadata("data/Test_2022/metadata.yml")
+  withr::defer(write_metadata(before, "data/Test_2022/metadata.yml"))
+  metadata <- before
+  metadata$source$secondary <- NA
+  write_metadata(metadata, "data/Test_2022/metadata.yml")
+  expect_no_error(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary"))
+  secondary <- read_metadata("data/Test_2022/metadata.yml")$source$secondary
+  expect_length(secondary, 1)
+  expect_equal(secondary[[1]]$journal, "Frontiers in Marine Science")
 })
 
 
