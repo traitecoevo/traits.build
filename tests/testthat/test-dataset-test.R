@@ -294,7 +294,7 @@ test_that("`dataset_test` accepts a context scoped to specific traits by a colum
 })
 
 
-# `source_id` links each record to the reference it was taken from (#296).
+# `source_id` links each observation to the reference it was taken from (#296).
 # Test_2023_2 maps a `source_id` column holding `Test_2022` and `Test_2002`, and
 # lists both as `source` references, so it passes; each edit below
 # breaks one thing and must be reported for that thing.
@@ -355,7 +355,7 @@ test_that("`dataset_test` reports `source_id` values that match no reference (#2
 })
 
 
-test_that("`dataset_test` says to move a `secondary` reference that records are taken from (#296)", {
+test_that("`dataset_test` says to move a `secondary` reference that observations are taken from (#296)", {
   out <- dataset_test_edited(function(metadata) {
     moved <- metadata$source$source[[2]]
     metadata$source$source <- metadata$source$source[1]
@@ -373,7 +373,7 @@ test_that("`dataset_test` says to move a `secondary` reference that records are 
 })
 
 
-test_that("`dataset_test` reports a `source` reference no record names (#296)", {
+test_that("`dataset_test` reports a `source` reference no observation names (#296)", {
   out <- dataset_test_edited(function(metadata) {
     unused <- metadata$source$source[[1]]
     unused$key <- "Test_1999"
@@ -383,13 +383,13 @@ test_that("`dataset_test` reports a `source` reference no record names (#296)", 
 
   expect_match(
     paste(out, collapse = "\n"),
-    "no record's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): 'Test_1999'",
+    "no observation's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): 'Test_1999'",
     fixed = TRUE
   )
 })
 
 
-# `source_id` is checked on the records the built dataset holds, in `traits`
+# `source_id` is checked on the observations the built dataset holds, in `traits`
 # and `excluded_data`, not on every row of the data
 source_id_edited <- function(new_rows, extra_source_key = NULL) {
   path_data <- withr::local_tempdir(.local_envir = parent.frame())
@@ -433,14 +433,14 @@ test_that("`dataset_test` ignores the `source_id` of a row the build drops witho
   # ...so a `source` reference only such a row names is unused
   expect_match(
     failures,
-    "no record's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): 'Test_1999'",
+    "no observation's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): 'Test_1999'",
     fixed = TRUE, all = FALSE
   )
 })
 
 
-test_that("`dataset_test` counts the `source_id` of a record in `excluded_data` (#296)", {
-  # A value that is not a number: the record is excluded, not dropped, and still
+test_that("`dataset_test` counts the `source_id` of an observation in `excluded_data` (#296)", {
+  # A value that is not a number: the observation is excluded, not dropped, and still
   # cites its reference
   failures <- source_id_edited(
     list(list(`LMA (mg mm-2)` = "not a number", source_id = "Test_1999")),
@@ -480,7 +480,7 @@ test_that("`dataset_test` hints when `source_id` holds an entry's name rather th
   expect_length(hits, 1)
   expect_match(out[hits], "should not contain: 'source'", fixed = TRUE)
   # Nothing links to the two sources now, so they are reported as unused
-  expect_true(any(grepl("no record's `source_id` names these `source` references", out, fixed = TRUE)))
+  expect_true(any(grepl("no observation's `source_id` names these `source` references", out, fixed = TRUE)))
 })
 
 

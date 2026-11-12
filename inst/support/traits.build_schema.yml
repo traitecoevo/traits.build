@@ -241,7 +241,7 @@ austraits:
         institution_code: &institution_code The name (or acronym) in use by the institution having custody of the object(s) or information referred to by the identifier value.
         identifier_value: A sequence of characters that links an observation within a traits.build database to additional information about observed entity in another database.
     sources:
-      description: Bibtex entries for every reference a dataset cites, named by key, including its own reference (keyed by its `dataset_id`), any `source` references data observations were taken from, and any `secondary` references, later publications by the same research group that used the same data for additional analyses. A record's citation is `sources[[source_id]]`.
+      description: Bibtex entries for every reference a dataset cites, named by key, including its own reference (keyed by its `dataset_id`), any `source` references data observations were taken from, and any `secondary` references, later publications by the same research group that used the same data for additional analyses. An observation's citation is `sources[[source_id]]`.
       type: list
     definitions:
       description: A copy of the definitions for all tables and terms. Information included here was used to process data and generate any documentation for the study.
@@ -362,7 +362,7 @@ metadata:
             place: &place The location where the reference was written or published.
             note: &note Additional notes for the reference which are not contained in the other fields.
         source:
-          description: &source_source For a compilation, a study from which records were taken. Each record's `source_id` holds the `key` of the entry it came from. A list of references, one `- key:` item per reference, or the name of a `.yml` or `.bib` file holding them.
+          description: &source_source For a compilation, a study from which observations were taken. Each observation's `source_id` holds the `key` of the entry it came from. A list of references, one `- key:` item per reference, or the name of a `.yml` or `.bib` file holding them.
           type: array
           elements:
             key: *key

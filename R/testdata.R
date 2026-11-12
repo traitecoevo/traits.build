@@ -238,7 +238,7 @@ dataset_test_worker <-
           info = paste0(red(f), "\tsources can have max 1 reference of type 'dataset': ", paste(sources_flat$slot, collapse = ", "))
         )
 
-        # Each record's `source_id` defaults to the `dataset_id`, so the
+        # Each observation's `source_id` defaults to the `dataset_id`, so the
         # dataset's own reference must carry it as its key for
         # `sources[[source_id]]` to find it
         dataset_key <- sources_flat$key[sources_flat$type == "dataset"]
@@ -854,12 +854,12 @@ dataset_test_worker <-
         }
 
         ## Source id
-        # Each record's `source_id` is the `key` of the reference it was taken
+        # Each observation's `source_id` is the `key` of the reference it was taken
         # from -- the dataset's own (keyed by, and defaulting to, the
         # `dataset_id`) or one of its `source` references -- so that
         # `sources[[source_id]]` returns that reference (#296). Checked after the
-        # build below, on the records the database will hold, in `traits` and
-        # `excluded_data`: a record excluded there still cites its reference,
+        # build below, on the observations the database will hold, in `traits` and
+        # `excluded_data`: an observation excluded there still cites its reference,
         # while rows `custom_R_code` filters out, or the build drops without
         # excluding them, cite nothing. If the build fails, the values read
         # from the data stand in.
@@ -874,7 +874,7 @@ dataset_test_worker <-
           test_expect_true(
             !any(i),
             info = sprintf(
-              "%s\tsource - `source_id` values name `secondary` references; a reference that records are taken from is a source, so move these entries to `source`: '%s'",
+              "%s\tsource - `source_id` values name `secondary` references; a reference that observations are taken from is a source, so move these entries to `source`: '%s'",
               red(f_metadata), paste(source_ids[i], collapse = "', '"))
           )
 
@@ -892,7 +892,7 @@ dataset_test_worker <-
           test_expect_true(
             !any(j),
             info = sprintf(
-              "%s\tsource - no record's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): '%s'",
+              "%s\tsource - no observation's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): '%s'",
               red(f_metadata), paste(source_keys[j], collapse = "', '"))
           )
         }
@@ -1291,7 +1291,7 @@ dataset_test_worker <-
           #}
         }
 
-        ## Source id, on the records the built dataset holds (see above)
+        ## Source id, on the observations the built dataset holds (see above)
         if (exists("dataset", inherits = FALSE) && is.data.frame(dataset[["traits"]])) {
           source_ids <- unique(stats::na.omit(c(
             dataset[["traits"]][["source_id"]], dataset[["excluded_data"]][["source_id"]]
@@ -1307,7 +1307,7 @@ dataset_test_worker <-
 #'
 #' Resolves the dataset-level `source_id` in `metadata.yml`, and any trait-level
 #' `source_id`, the way `process_parse_data()` does: a value naming a column of
-#' the data reads that column; any other value is a constant. A record left
+#' the data reads that column; any other value is a constant. An observation left
 #' without a value takes the `dataset_id` when built, which always names the
 #' dataset's own reference, so is not returned here.
 #'

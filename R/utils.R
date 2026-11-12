@@ -1961,7 +1961,7 @@ util_check_collection_date_timezone <- function(timezone) {
 #'
 #' A dataset's `source:` block holds its `dataset` reference (the dataset
 #' itself, keyed by its `dataset_id`) as a single entry, and its `source`
-#' references (for a compilation, the studies records were taken from, each
+#' references (for a compilation, the studies observations were taken from, each
 #' named in the data's `source_id`) and `secondary` references (later
 #' publications re-using the same data) as lists:
 #'
@@ -2127,7 +2127,7 @@ util_sources_is_file <- function(x) {
 
 #' Read a list of references from a separate file
 #'
-#' A compilation can name dozens of studies its records were taken from, and
+#' A compilation can name dozens of studies its observations were taken from, and
 #' holding them inline makes the `source:` block the bulk of `metadata.yml`.
 #' Either list -- `source:` or `secondary:` -- can instead name a file kept
 #' beside `metadata.yml`, `source: sources.yml`, as `locations:` can name a csv.

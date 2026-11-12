@@ -739,7 +739,7 @@ metadata_add_identifiers <- function(dataset_id, overwrite = FALSE,
 #'
 #' A dataset's `dataset` reference (the dataset itself) is a single entry,
 #' which this overwrites, keyed by the `dataset_id`. Its `source` references
-#' (for a compilation, the studies records were taken from, each named in the
+#' (for a compilation, the studies observations were taken from, each named in the
 #' data's `source_id`) and `secondary` references (later publications re-using
 #' the same data) are lists: the reference is appended, or replaces the listed
 #' entry that already has its `key`, in `metadata.yml` or in the file the list
@@ -788,7 +788,7 @@ metadata_add_source_bibtex <- function(dataset_id, file,
     )) %>% unlist %>% paste(collapse = " ")
 
   # The dataset's own reference is keyed by its `dataset_id`, exactly: each
-  # record's `source_id` defaults to it. (Standardising it as below once turned
+  # observation's `source_id` defaults to it. (Standardising it as below once turned
   # `Smith_2020_2` into `Smith_2020` and `McQuillan_2020` into `Mcquillan_2020`.)
   # Other keys get standard capitalisation
   if (type == "dataset") {
@@ -900,7 +900,7 @@ metadata_add_source_doi <- function(..., doi, bib = NULL) {
 #' Convert the `source:` blocks of `metadata.yml` files to the current shape
 #'
 #' Earlier versions of traits.build wrote a dataset's own reference as
-#' `primary`, the studies a compilation's records were taken from as
+#' `primary`, the studies a compilation's observations were taken from as
 #' `original_source` or `original`, and each further reference as its own
 #' numbered entry (`secondary_01`, `original_01`, ...). traits.build now reads
 #' a single `dataset` reference and two lists, `source` and `secondary`, one

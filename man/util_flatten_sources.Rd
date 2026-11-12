@@ -24,7 +24,7 @@ list-column holding the reference's fields.
 \description{
 A dataset's \verb{source:} block holds its \code{dataset} reference (the dataset
 itself, keyed by its \code{dataset_id}) as a single entry, and its \code{source}
-references (for a compilation, the studies records were taken from, each
+references (for a compilation, the studies observations were taken from, each
 named in the data's \code{source_id}) and \code{secondary} references (later
 publications re-using the same data) as lists:
 }

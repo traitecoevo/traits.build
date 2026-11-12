@@ -218,11 +218,11 @@ dataset_process <- function(filename_data_raw,
     # Ensure everything converted to character type
     util_df_convert_character()
 
-  # A record with no `source_id` was collected in the dataset's own study, so
+  # An observation with no `source_id` was collected in the dataset's own study, so
   # takes the `dataset_id`, the key of the dataset's own reference. Filled only
   # now because `source_id` is part of the `observation_id` hash: filling it
   # earlier would renumber the observations of a compilation that leaves some
-  # records blank
+  # observations blank
   traits[["source_id"]] <- dplyr::coalesce(traits[["source_id"]], traits[["dataset_id"]])
 
   # Separate identifiers into a standalone table that is in long format.
@@ -2371,9 +2371,9 @@ process_format_identifiers <- function(my_list, dataset_id, schema) {
 process_format_methods <- function(metadata, dataset_id, sources, contributors) {
 
   # References are `dataset` (the dataset itself), `source` (for a compilation,
-  # the studies records were taken from) or `secondary` (later publications
+  # the studies observations were taken from) or `secondary` (later publications
   # re-using the same data). Only the dataset-level ones are written here: each
-  # record names its `source` in `traits$source_id`, which is looked up in
+  # observation names its `source` in `traits$source_id`, which is looked up in
   # `sources` directly, so repeating them per method would only multiply rows
   sources_flat <- util_flatten_sources(metadata$source)
 

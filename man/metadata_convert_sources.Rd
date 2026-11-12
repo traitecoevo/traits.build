@@ -19,7 +19,7 @@ needs a person, or \code{NA})
 }
 \description{
 Earlier versions of traits.build wrote a dataset's own reference as
-\code{primary}, the studies a compilation's records were taken from as
+\code{primary}, the studies a compilation's observations were taken from as
 \code{original_source} or \code{original}, and each further reference as its own
 numbered entry (\code{secondary_01}, \code{original_01}, ...). traits.build now reads
 a single \code{dataset} reference and two lists, \code{source} and \code{secondary}, one

@@ -26,7 +26,7 @@ metadata_add_source_bibtex(
 \description{
 A dataset's \code{dataset} reference (the dataset itself) is a single entry,
 which this overwrites, keyed by the \code{dataset_id}. Its \code{source} references
-(for a compilation, the studies records were taken from, each named in the
+(for a compilation, the studies observations were taken from, each named in the
 data's \code{source_id}) and \code{secondary} references (later publications re-using
 the same data) are lists: the reference is appended, or replaces the listed
 entry that already has its \code{key}, in \code{metadata.yml} or in the file the list
