@@ -165,6 +165,7 @@ dataset_test_worker <-
           }
         )
         schema <- util_schema_add_traits_table_fields(schema, additional_fields)
+
         # Reference lists kept in their own file are read in the same way
         for (type in c("source", "secondary")) {
           if (util_sources_is_file(metadata[["source"]][[type]])) {
