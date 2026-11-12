@@ -17,6 +17,14 @@ on:
 permissions:
   contents: read
 
+# A new push to a PR supersedes the run already in flight for it. Pushes to
+# master/develop each get their own group (run_id): GitHub cancels any older
+# *pending* run in a shared group even without cancel-in-progress, which
+# would skip checks on intermediate commits.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ${{ matrix.config.os }}
@@ -24,14 +32,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # Release R only. R-devel was dropped: no binary packages exist for it,
+        # so every dependency compiled from source (~50 min, vs ~5 min for the
+        # rest of the matrix), and r-universe already checks on R-devel (#217).
+        # `build (macOS-latest, release)` is a required check on `develop`;
+        # renaming it blocks merges until branch protection is updated.
         config:
           - {os: macOS-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest,  r: 'release'}
-          # `DESCRIPTION` declares R (>= 4.3.0); without this nothing exercises it.
-          - {os: ubuntu-latest,  r: 'oldrel-1'}
-          # Catches upstream R changes here rather than on r-universe (see #217).
-          - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
