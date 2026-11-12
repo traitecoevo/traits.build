@@ -442,6 +442,150 @@ util_trait_value_term_order <- function(resource_metadata) {
   order
 }
 
+#' Working columns of the traits table
+#'
+#' Columns the build adds to the traits table while processing it, and later
+#' overwrites or drops: in [process_parse_data()], `process_add_location_metadata()`,
+#' [process_convert_units()], [process_create_observation_id()] and
+#' [dataset_update_taxonomy()]. A database's own column of the same name would
+#' be lost, so [util_additional_traits_table_fields()] does not allow these
+#' names. A new working column belongs here too.
+#'
+#' @keywords internal
+traits_working_columns <- c(
+  "parsing_id", "parsing_id_tmp", "row_numbers", "taxonomic_resolution",
+  "col_tmp",
+  "i", "to", "ucn", "type", "to_convert",
+  "pop_id_segment", "ind_id_segment", "check_for_ind",
+  "aligned_name"
+)
+
+#' Columns a database adds to its traits table
+#'
+#' A database can add columns of its own to the `traits` table, for fields
+#' recorded for all or most of its records, such as the kind of specimen
+#' measured. `additional_traits_table_fields`, in the `metadata` block of the
+#' database's `config/metadata.yml`, names each column and describes it:
+#'
+#' ```
+#' additional_traits_table_fields:
+#'   specimen_type: The kind of specimen the value was measured on.
+#' ```
+#'
+#' A dataset sets each column the way it sets `measurement_remarks`: in the
+#' `dataset` block of its `metadata.yml`, or on a trait's entry in `traits`,
+#' as either a fixed value or the name of a column of `data.csv`. A dataset
+#' that sets neither leaves the column empty. The columns follow the schema's
+#' own, in the order given, so a database without the setting is built exactly
+#' as before.
+#'
+#' A name must start with a letter and hold only letters, digits and
+#' underscores. It may not be one the schema already uses for a column of any
+#' of the database's tables, which functions such as `austraits::join_taxa()`
+#' add to the traits table, or for a field of a dataset's `metadata.yml`; nor
+#' one of [traits_working_columns], which the build adds to the traits table
+#' while processing it and would overwrite or drop. Names are checked
+#' against the schema shipped with traits.build rather than the one being
+#' built with, so a schema the columns have already been added to (see
+#' [util_schema_add_traits_table_fields()]) can be passed again.
+#'
+#' @inheritParams util_trait_value_term_order
+#'
+#' @return Named character vector of descriptions, named by column, or an
+#'   empty character vector when the setting is absent
+#' @keywords internal
+util_additional_traits_table_fields <- function(resource_metadata) {
+
+  fields <- resource_metadata[["additional_traits_table_fields"]]
+
+  if (is.null(fields) || (length(fields) == 1 && is.atomic(fields) && is.na(fields))) {
+    return(character())
+  }
+
+  setting <- "`additional_traits_table_fields` in the `metadata` block of `config/metadata.yml`"
+
+  is_description <- function(x) is.character(x) && length(x) == 1 && !is.na(x) && nzchar(trimws(x))
+
+  if (!is.list(fields) || length(fields) == 0 || is.null(names(fields)) ||
+      any(is.na(names(fields)) | names(fields) == "") ||
+      !all(vapply(fields, is_description, logical(1)))) {
+    stop(
+      sprintf(
+        "%s must map each column name to a description, such as `specimen_type: The kind of specimen measured.`",
+        setting
+      ),
+      call. = FALSE
+    )
+  }
+
+  fields <- unlist(fields)
+
+  stop_with_names <- function(problem, names) {
+    stop(
+      sprintf("%s %s: %s", setting, problem, paste(sprintf("`%s`", unique(names)), collapse = ", ")),
+      call. = FALSE
+    )
+  }
+
+  if (anyDuplicated(names(fields))) {
+    stop_with_names("names a column more than once", names(fields)[duplicated(names(fields))])
+  }
+
+  malformed <- names(fields)[!grepl("^[A-Za-z][A-Za-z0-9_]*$", names(fields))]
+  if (length(malformed) > 0) {
+    stop_with_names(
+      "has names that do not start with a letter and hold only letters, digits and underscores",
+      malformed
+    )
+  }
+
+  # Names the build already gives a meaning to: a column of any table, since
+  # joins such as `austraits::join_taxa()` bring them into the traits table, a
+  # field of a dataset's `metadata.yml`, or a working column of the build
+  packaged <- get_schema()
+  tables <- purrr::keep(packaged[["austraits"]][["elements"]], ~ identical(.x[["type"]], "table"))
+  reserved <- c(
+    unlist(lapply(tables, function(x) names(x[["elements"]])), use.names = FALSE),
+    names(packaged[["metadata"]][["elements"]][["dataset"]][["values"]]),
+    names(packaged[["metadata"]][["elements"]][["traits"]][["elements"]]),
+    traits_working_columns
+  )
+  clashing <- names(fields)[names(fields) %in% reserved]
+  if (length(clashing) > 0) {
+    stop_with_names("has names the schema or the build already uses", clashing)
+  }
+
+  fields
+}
+
+#' Add a database's own traits table columns to the schema
+#'
+#' Adds the columns returned by [util_additional_traits_table_fields()] after
+#' the schema's own columns of the `traits` and `excluded_data` tables, and as
+#' fields allowed in the `dataset` block and on the `traits` entries of a
+#' dataset's `metadata.yml`, each with its description. Everything that reads
+#' these lists from the schema -- the columns the build keeps, the fields
+#' [dataset_test()] allows, and the schema exported with the database -- then
+#' includes them. Adding the same columns again changes nothing.
+#'
+#' @param schema Schema for traits.build, as returned by [get_schema()]
+#' @param fields Named character vector of descriptions, named by column, as
+#'   returned by [util_additional_traits_table_fields()]
+#'
+#' @return `schema`, with the columns added
+#' @keywords internal
+util_schema_add_traits_table_fields <- function(schema, fields) {
+
+  for (v in names(fields)) {
+    schema[["austraits"]][["elements"]][["traits"]][["elements"]][[v]] <- fields[[v]]
+    schema[["austraits"]][["elements"]][["excluded_data"]][["elements"]][[v]] <- fields[[v]]
+    schema[["metadata"]][["elements"]][["dataset"]][["values"]][[v]] <- fields[[v]]
+    schema[["metadata"]][["elements"]][["traits"]][["elements"]][[v]] <- fields[[v]]
+  }
+
+  schema
+}
+
 #' Convert BibEntry object to a list
 #'
 #' @param bib BibEntry object

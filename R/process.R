@@ -57,7 +57,9 @@ dataset_configure <- function(
 #' @param resource_metadata Metadata about the traits compilation read in from the config folder.
 #' Its optional `trait_value_term_order` (`alphabetical`, the default, or `input_order`) sets
 #' whether the terms of a multi-term trait value are sorted or keep the source's order; see
-#' [util_trait_value_term_order()].
+#' [util_trait_value_term_order()]. Its optional `additional_traits_table_fields` adds the
+#' database's own columns to the `traits` table, each set by a dataset like `measurement_remarks`;
+#' see [util_additional_traits_table_fields()].
 #' @param unit_conversion_functions `unit_conversion.csv` file read in from the config folder
 #' @param filter_missing_values Default filters missing values from the excluded data table;
 #' change to false to see the rows with missing values
@@ -90,6 +92,11 @@ dataset_process <- function(filename_data_raw,
 
   # How to write the terms of a multi-term value; checked before any work is done
   term_order <- util_trait_value_term_order(resource_metadata)
+
+  # The database's own columns of the traits table, if any. Added to the
+  # schema, which fixes the table's columns and is exported with the database
+  additional_fields <- util_additional_traits_table_fields(resource_metadata)
+  schema <- util_schema_add_traits_table_fields(schema, additional_fields)
 
   # Each check on a trait's values is chosen by its `type`, so a trait whose
   # type is missing or misspelt would have its values pass through unchecked
@@ -162,7 +169,8 @@ dataset_process <- function(filename_data_raw,
   # Load and clean trait data
   traits <-
     traits %>%
-    process_parse_data(dataset_id, metadata, contexts, schema, identifiers, definitions)
+    process_parse_data(dataset_id, metadata, contexts, schema, identifiers, definitions,
+                       additional_fields = names(additional_fields))
 
   # Context ids needed to continue processing
   context_ids <- traits$context_ids
@@ -271,7 +279,7 @@ dataset_process <- function(filename_data_raw,
     purrr::reduce(c)
 
   # Record methods
-  methods <- process_format_methods(metadata, dataset_id, sources, contributors)
+  methods <- process_format_methods(metadata, dataset_id, sources, contributors, names(additional_fields))
 
   # Retrieve taxonomic details for known species
   taxonomic_updates <-
@@ -1671,6 +1679,10 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' `traits.yml` schema, keyed by `trait_name`, as returned by [dataset_configure()].
 #' Used to apply database-wide trait value synonyms, and to keep the case of `text`
 #' traits' values, which unlike all others are not lower-cased.
+#' @param additional_fields Names of the database's own columns of the traits
+#' table, from [util_additional_traits_table_fields()]. Each is read from the
+#' `dataset` block or a trait's entry in `metadata$traits`, as a fixed value or
+#' a column of `data`, as `measurement_remarks` is.
 #' @return Tibble in long format with AusTraits formatted trait names, trait
 #' substitutions and unique observation id added. For each location-level field
 #' (such as `life_stage`) that a trait's entry in `metadata$traits` sets, a
@@ -1680,7 +1692,8 @@ process_add_all_columns <- function(data, vars, add_error_column = TRUE) {
 #' before then must keep it.
 #' @importFrom dplyr select mutate filter arrange distinct case_when full_join everything any_of bind_cols
 #' @importFrom rlang .data
-process_parse_data <- function(data, dataset_id, metadata, contexts, schema, identifiers, definitions) {
+process_parse_data <- function(data, dataset_id, metadata, contexts, schema, identifiers, definitions,
+                               additional_fields = character()) {
 
   # Get config data for dataset
   data_is_long_format <- metadata[["dataset"]][["data_is_long_format"]]
@@ -1703,7 +1716,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
   vars <- c("entity_type", "value_type", "basis_of_value",
             "replicates", "collection_date", "unit_in",
             "basis_of_record", "life_stage", "repeat_measurements_id",
-            "measurement_remarks", "source_id", "methods")
+            "measurement_remarks", "source_id", "methods", additional_fields)
 
   # Skip when every one of these vars is already a data column (binding a 0-row tibble would fail)
   constants <- metadata[["dataset"]][names(metadata[["dataset"]]) %in% vars[!vars %in% names(df)]]
@@ -2368,7 +2381,8 @@ process_format_identifiers <- function(my_list, dataset_id, schema) {
   identifiers
 }
 
-process_format_methods <- function(metadata, dataset_id, sources, contributors) {
+process_format_methods <- function(metadata, dataset_id, sources, contributors,
+                                   additional_fields = character()) {
 
   # References are `dataset` (the dataset itself), `source` (for a compilation,
   # the studies observations were taken from) or `secondary` (later publications
@@ -2409,7 +2423,9 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors) 
               "location_name", "source_id", "value", "entity_type", "collection_date",
               "collection_date_format", "collection_date_timezone",
               "custom_R_code", "replicates", "measurement_remarks", "basis_of_value",
-              "basis_of_record", "life_stage", "unit_in")))
+              "basis_of_record", "life_stage", "unit_in",
+              # The database's own traits table columns, set like `measurement_remarks`
+              additional_fields)))
       ) %>%
       full_join(by = "dataset_id",
       # References

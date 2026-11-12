@@ -11,7 +11,8 @@ process_parse_data(
   contexts,
   schema,
   identifiers,
-  definitions
+  definitions,
+  additional_fields = character()
 )
 }
 \arguments{
@@ -34,6 +35,11 @@ split into the identifiers table once \code{observation_id} is set.}
 \code{traits.yml} schema, keyed by \code{trait_name}, as returned by \code{\link[=dataset_configure]{dataset_configure()}}.
 Used to apply database-wide trait value synonyms, and to keep the case of \code{text}
 traits' values, which unlike all others are not lower-cased.}
+
+\item{additional_fields}{Names of the database's own columns of the traits
+table, from \code{\link[=util_additional_traits_table_fields]{util_additional_traits_table_fields()}}. Each is read from the
+\code{dataset} block or a trait's entry in \code{metadata$traits}, as a fixed value or
+a column of \code{data}, as \code{measurement_remarks} is.}
 }
 \value{
 Tibble in long format with AusTraits formatted trait names, trait
