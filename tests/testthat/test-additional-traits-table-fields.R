@@ -227,6 +227,10 @@ test_that("`dataset_test` accepts the fields only when the database declares the
   dir.create(dir)
   file.copy(file.path("examples/Test_2023_1", c("data.csv", "metadata.yml")), dir)
   lines <- readLines(file.path(dir, "metadata.yml"))
+  # The `dataset` reference's key must match the copy's dataset_id
+  k <- which(lines == "    key: Test_2023_1")
+  expect_length(k, 1)
+  lines[k] <- "    key: Test_2023_1_fields"
   i <- which(lines == "  notes: none")[1]
   j <- which(lines == "- var_in: LMA (mg mm-2)")
   expect_length(j, 1)
