@@ -17,10 +17,13 @@ on:
 permissions:
   contents: read
 
-# A new push to a PR supersedes the run already in flight for it.
+# A new push to a PR supersedes the run already in flight for it. Pushes to
+# master/develop each get their own group (run_id): GitHub cancels any older
+# *pending* run in a shared group even without cancel-in-progress, which
+# would skip checks on intermediate commits.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
   build:
