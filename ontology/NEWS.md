@@ -6,9 +6,10 @@ The data model (the ontology published at <https://w3id.org/traits.build>) is ve
 
 Prepared 2026-11-11 (traits.build #296).
 
-- `source_id` is redefined as an identifier for the data source: the `dataset_id` for data presented for the first time in the study, or, for a compilation, the original data source. Every record now has one, and `sources[[source_id]]` is its citation. The definitions of `dataset_id_citation`, `secondary_id` and `secondary_citation` follow the schema's revised wording.
+- `source_id` is redefined as an identifier for the data source: the `dataset_id` for data presented for the first time in the study, or, for a compilation, the original data source. Every observation now has one, and `sources[[source_id]]` is its citation. The definitions of `dataset_id_citation`, `secondary_id` and `secondary_citation` follow the schema's revised wording.
+- The definitions of `sampling_strategy` and of the `sources` table now match the schema's, which they had drifted from.
 - The `methods` table's reference terms are renamed to match the `traits` table: `source_primary_citation` is `dataset_id_citation`, `source_secondary_key` is `secondary_id`, and `source_secondary_citation` is `secondary_citation`. Their matches are unchanged; each says in `rdfs:comment` which term it replaces.
-- `source_primary_key` (always the `dataset_id`), `source_original_dataset_key` and `source_original_dataset_citation` are removed. A record names the study it was taken from in `source_id`.
+- `source_primary_key` (always the `dataset_id`), `source_original_dataset_key` and `source_original_dataset_citation` are removed. An observation names the study it was taken from in `source_id`.
 - `observations_from_source` no longer names `source_primary_citation` as its entity. A source's citation is `sources[[source_id]]`, which no single column holds.
 
 ## traits.build data model 1.3.0

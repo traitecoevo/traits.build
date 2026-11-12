@@ -7484,7 +7484,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "When available, this information is lifted verbatim from a published manuscript. For preserved specimens, this field ideally indicates which records were 'sampled' to measure a specific trait."
+        "@value": "A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-methods"
@@ -9136,7 +9136,7 @@
       },
       "http://purl.org/dc/terms/description": {
         "@language": "en",
-        "@value": "A list containing citation details for all database sources."
+        "@value": "Bibtex entries for every reference a dataset cites, named by key, including its own reference (keyed by its `dataset_id`), any `source` references data observations were taken from, and any `secondary` references, later publications by the same research group that used the same data for additional analyses. An observation's citation is `sources[[source_id]]`."
       },
       "http://rs.tdwg.org/dwc/terms/attributes/organizedInClass": {
         "@id": "https://w3id.org/traits.build#traits.build-database"

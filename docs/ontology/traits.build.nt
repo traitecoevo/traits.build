@@ -112,7 +112,7 @@
 <https://w3id.org/traits.build#traits.build-sources> <http://www.w3.org/2004/02/skos/core#relatedMatch> <http://purl.org/dc/terms/bibliographicCitation> .
 <https://w3id.org/traits.build#traits.build-sources> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-database> .
 <https://w3id.org/traits.build#traits.build-sources> <http://www.w3.org/2000/01/rdf-schema#label> "sources table"@en .
-<https://w3id.org/traits.build#traits.build-sources> <http://purl.org/dc/terms/description> "A list containing citation details for all database sources."@en .
+<https://w3id.org/traits.build#traits.build-sources> <http://purl.org/dc/terms/description> "Bibtex entries for every reference a dataset cites, named by key, including its own reference (keyed by its `dataset_id`), any `source` references data observations were taken from, and any `secondary` references, later publications by the same research group that used the same data for additional analyses. An observation's citation is `sources[[source_id]]`."@en .
 <https://w3id.org/traits.build#traits.build-sources> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#traits.build-sources> <http://www.w3.org/2004/02/skos/core#inScheme> <https://w3id.org/traits.build> .
 <https://w3id.org/traits.build#traits.build-definitions> <http://www.w3.org/2004/02/skos/core#prefLabel> "definitions table"@en .
@@ -1269,7 +1269,7 @@
 <https://w3id.org/traits.build#sampling_strategy> <http://rs.tdwg.org/dwc/terms/attributes/organizedInClass> <https://w3id.org/traits.build#traits.build-methods> .
 <https://w3id.org/traits.build#sampling_strategy> <http://www.w3.org/2000/01/rdf-schema#label> "dataset sampling strategy"@en .
 <https://w3id.org/traits.build#sampling_strategy> <http://semanticscience.org/resource/SIO_000628> <https://w3id.org/traits.build#observations_from_dataset> .
-<https://w3id.org/traits.build#sampling_strategy> <http://purl.org/dc/terms/description> "When available, this information is lifted verbatim from a published manuscript. For preserved specimens, this field ideally indicates which records were 'sampled' to measure a specific trait."@en .
+<https://w3id.org/traits.build#sampling_strategy> <http://purl.org/dc/terms/description> "A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript."@en .
 <https://w3id.org/traits.build#sampling_strategy> <http://www.w3.org/1999/02/22-rdf-syntax-ns#datatype> <http://www.w3.org/2001/XMLSchema#string> .
 <https://w3id.org/traits.build#sampling_strategy> <http://purl.org/dc/terms/created> "2024-02-01"^^<http://www.w3.org/2001/XMLSchema#date> .
 <https://w3id.org/traits.build#sampling_strategy> <http://www.w3.org/2002/07/owl#sameAs> <http://rs.tdwg.org/dwc/terms/samplingProtocol> .
