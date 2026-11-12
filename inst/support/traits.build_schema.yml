@@ -98,7 +98,7 @@ austraits:
       type: table
       elements:
         dataset_id: &dataset_id Primary identifier for each study contributed to AusTraits; most often these are scientific papers, books, or online resources. By default this should be the name of the first author and year of publication, e.g. `Falster_2005`.
-        source_id: &source_id The `key` of the reference in `sources` that the record was taken from. By default this is the `dataset_id`, which is also the key of the dataset's own reference. For a dataset compiled from several studies, a record taken from one of them holds the key of that `source` reference instead.
+        source_id: &source_id An identifier for the data source, which is the `dataset_id` for data presented for the first time in this study, or, for a compilation, the original data source.
         taxon_name: &taxon_name Scientific name of the taxon on which traits were sampled, without authorship. When possible, this is the currently accepted (botanical) or valid (zoological) scientific name, but might also be a higher taxonomic level.
         observation_id: &observation_id A unique integral identifier for the observation, where an observation is all measurements made on an individual at a single point in time. It is important for joining traits coming from the same `observation_id`. Within each dataset, observation_id's are unique combinations of `taxon_name`, `population_id`, `individual_id`, and `temporal_context_id`.
         trait_name: &trait_name Name of the trait sampled. Allowable values specified in the table `definitions`.
@@ -154,9 +154,9 @@ austraits:
         description: &description A 1-2 sentence description of the purpose of the study.
         sampling_strategy: &sampling_strategy A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript.
         dataset_id_type: Citation type for the dataset's own reference, `sources[[dataset_id]]`, using standard BibTex citation types (Article, Book, Misc, Online, Report, Techreport, Thesis, Unpublished).
-        dataset_id_citation: Citation for the dataset's own reference, `sources[[dataset_id]]`. This detail is generated from the `dataset` reference in the metadata.
-        secondary_id: Citation keys, separated by `; `, for the dataset's `secondary` references in `sources`, the later publications that re-used the same data. Each key is typically formatted as `Surname_year`.
-        secondary_citation: Citations, separated by `; `, for the `secondary` references. This detail is generated from the `secondary` references in the metadata.
+        dataset_id_citation: Citation for the dataset's own reference, `sources[[dataset_id]]`. The compiled reference is generated from the `dataset` reference in the metadata.
+        secondary_id: Citation keys, separated by `; `, for the dataset's `secondary` references in `sources`, later publications by the same research group that used the same data for additional analyses. Each key is typically formatted as `Surname_year`.
+        secondary_citation: Citations, separated by `; `, for the `secondary` references. The compiled references are generated from the `secondary` references in the metadata.
         data_collectors: &data_collectors The person (people) leading data collection for this study.
         assistants: &assistants Names of people who played a more minor role in data collection for the study.
         dataset_curators: &dataset_curators Names of database team member(s) who contacted the data collectors and added the study to the database repository.
@@ -241,7 +241,7 @@ austraits:
         institution_code: &institution_code The name (or acronym) in use by the institution having custody of the object(s) or information referred to by the identifier value.
         identifier_value: A sequence of characters that links an observation within a traits.build database to additional information about observed entity in another database.
     sources:
-      description: Bibtex entries for every reference a dataset cites, named by key, that is its own reference (keyed by its `dataset_id`), any `source` references records were taken from, and any `secondary` references that re-used the data. A record's citation is `sources[[source_id]]`.
+      description: Bibtex entries for every reference a dataset cites, named by key, including its own reference (keyed by its `dataset_id`), any `source` references data observations were taken from, and any `secondary` references, later publications by the same research group that used the same data for additional analyses. A record's citation is `sources[[source_id]]`.
       type: list
     definitions:
       description: A copy of the definitions for all tables and terms. Information included here was used to process data and generate any documentation for the study.
@@ -337,11 +337,11 @@ metadata:
   type: list
   elements:
     source:
-      description: Citation details for the sources of the data, whether published journal articles, books, websites or theses. The `dataset` reference is the dataset itself, keyed by its `dataset_id`; `source` references are, for a compilation, the studies records were taken from, each named in the data's `source_id`; `secondary` references are later publications that re-used the same data. Either list, `source` or `secondary`, may instead name a `.yml` file holding the list, or a `.bib` file, kept beside `metadata.yml`.
+      description: Citation details for the sources of the data, whether published journal articles, books, websites or theses. The `dataset` reference is for the entire dataset, keyed by its `dataset_id`; `source` references are, the references for data values included in the dataset that are sourced from previous publications or collections and link to a specific `source_id`; `secondary` references are later publications from the same research group that re-used or re-analysed data from the dataset. Either list, `source` or `secondary`, may instead name a `.yml` file holding the list, or a `.bib` file, kept beside `metadata.yml`.
       type: categorical
       values:
         dataset:
-          description: &source_dataset The study the dataset is taken from and cited by, where the data were collected or, for a compilation, where they were assembled. A single reference, whose `key` is the `dataset_id`.
+          description: &source_dataset The study the data were collected for, or, for a compilation, a publication or database for which the data were assembled. A single reference, whose `key` is the `dataset_id`.
           type: catergorical
           values:
             key: &key The key is used to identify the exact reference using authors last name and year of publication.
@@ -383,7 +383,7 @@ metadata:
             place: *place
             note: *note
         secondary:
-          description: &source_secondary A later study that re-used or re-analysed data from the dataset. Attached to the whole dataset; no record is taken from a secondary reference. A list of references, one `- key:` item per reference, or the name of a `.yml` or `.bib` file holding them.
+          description: &source_secondary An additional publication from the same research group that re-used or re-analysed data from the dataset. Attached to the whole dataset. A list of references, one `- key:` item per reference, or the name of a `.yml` or `.bib` file holding them.
           type: array
           elements:
             key: *key
