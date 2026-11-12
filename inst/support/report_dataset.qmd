@@ -329,17 +329,17 @@ show_references <- function(type, heading, with_counts = FALSE) {
 
 show_references(
   "dataset",
-  "Dataset citation (records without a `source_id` of their own name this reference, by the `dataset_id`):",
+  "Dataset citation (defaults to `dataset_id` for observations without a `source_id`):",
   with_counts = TRUE
 )
 show_references(
   "source",
-  "Sources (for a compilation, the studies records were taken from; each record names its own in `source_id`):",
+  "Sources (for a compilation, the studies observations were taken from; each observation is linked to its own `source_id`):",
   with_counts = TRUE
 )
 show_references(
   "secondary",
-  "Secondary citations (later publications that re-used this dataset):"
+  "Secondary citations (later publications from the primary research group that re-analysed this dataset):"
 )
 ```
 
