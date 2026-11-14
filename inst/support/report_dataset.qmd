@@ -829,7 +829,7 @@ define_variable <- function(var, schema) {
 writeLines(ifelse(length(traits_numeric) == 0,
         "No numerical traits data are currently available in this dataset",
         paste0(
-          sprintf("We have recorded the following traits with continuous numerical values in this dataset. Plots are shown comparing the distribution of values in your study (highlighted in red-orange) to those in other datasets within %s (alternating blue/orange, by dataset).", database_name),
+          sprintf("We have recorded the following traits with continuous numerical values in this dataset. Plots are shown comparing the distribution of values in your study (highlighted in pink and named in the corner of each plot) to those in other datasets within %s (alternating blue/orange, by dataset).", database_name),
           if (show_questions) " For each trait, please eyeball the information provided and let us know of any issues or updates where appropriate." else "")))
 
 if (length(traits_numeric) > 0) {

@@ -924,9 +924,10 @@ test_that("reports and plots are produced", {
 
   # Rendering shells out to the `quarto` CLI, which starts a fresh R session
   # and does its own `library(traits.build)`. This test therefore exercises the
-  # *installed* package, not `devtools::load_all()`: after editing the plotting
-  # functions or the template, run `devtools::install()` or this checks stale
-  # code. `R CMD check` installs first, so CI is unaffected.
+  # *installed* package, not `devtools::load_all()`: after editing the
+  # template, run `devtools::install()` or this checks stale code. The plotting
+  # functions are traits.use's, so reinstall traits.use after changing those.
+  # `R CMD check` installs first, so CI is unaffected.
   skip_if_not_installed("quarto")
   skip_if(is.null(quarto::quarto_path()), "Quarto CLI not found")
 
