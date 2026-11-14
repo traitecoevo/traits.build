@@ -50,7 +50,6 @@ Suggests:
     bibtex,
     knitr,
     bench,
-    cli,
     devtools,
     markdown,
     pkgdown,

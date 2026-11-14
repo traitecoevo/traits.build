@@ -917,9 +917,10 @@ test_that("reports and plots are produced", {
   # nothing about the report existing or containing anything (#244).
   expect_silent(suppressMessages(austraits <- remake::make("test_name")))
 
-  # `plot_trait_distribution_jitter()` uses `forcats` unguarded, so without it
-  # the render fails and no file is written at all.
+  # The report's plots, from traits.use, need `forcats` and `scales` (Suggests
+  # there and here); without them the render fails and no file is written.
   skip_if_not_installed("forcats")
+  skip_if_not_installed("scales")
 
   # Rendering shells out to the `quarto` CLI, which starts a fresh R session
   # and does its own `library(traits.build)`. This test therefore exercises the
