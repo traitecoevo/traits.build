@@ -9,7 +9,7 @@ database_create_combined_table(database, ...)
 \arguments{
 \item{database}{A built database object}
 
-\item{...}{Further arguments passed to \code{\link[austraits:flatten_database]{austraits::flatten_database()}},
+\item{...}{Further arguments passed to \code{\link[traits.use:flatten_database]{traits.use::flatten_database()}},
 such as \code{format}, \code{vars} and \code{include_description}}
 }
 \value{
@@ -17,7 +17,7 @@ A single wide table combining the database's relational tables
 }
 \description{
 Joins the relational tables of a built database into one wide table, by
-calling \code{\link[austraits:flatten_database]{austraits::flatten_database()}}.
+calling \code{\link[traits.use:flatten_database]{traits.use::flatten_database()}}.
 }
 \details{
 Wenk et al. 2024 (\emph{Ecological Informatics} 83:102773) presents
@@ -27,12 +27,12 @@ could not be followed. The paper is the public specification of this
 workflow, so the name it documents resolves.
 
 This is a thin pass-through rather than a reimplementation on purpose. The
-joins it relies on are eight functions totalling ~264 lines in \code{austraits},
+joins it relies on are eight functions totalling ~264 lines in \code{traits.use},
 and querying a built compilation is that package's job -- this one builds
 the database. Arguments are passed straight through so the defaults have a
 single definition.
 
-Note that \code{austraits} is currently in \code{Depends}. When it moves to \code{Suggests}
-this needs a \code{util_require_package("austraits", ...)} guard, as does
+Note that \code{traits.use} is currently in \code{Depends}. When it moves to \code{Suggests}
+this needs a \code{util_require_package("traits.use", ...)} guard, as does
 \code{\link[=build_combine]{build_combine()}} -- see #225.
 }

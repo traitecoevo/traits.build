@@ -163,7 +163,7 @@ reference:
     - '`notes_random_string`'
 
   - title: Deprecated function names
-    desc: Functions that have been moved from traits.build to austraits and renamed. Deprecated names still work.
+    desc: Functions that have been moved from traits.build to traits.use (formerly austraits) and renamed. Deprecated names still work.
     contents:
     - '`build_combine`'
     - '`util_df_to_list`'

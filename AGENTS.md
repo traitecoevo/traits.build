@@ -63,11 +63,13 @@ and `targets` workers — which it does not today. #225 sketches the fix; it is 
 Any change here wants the downstream gate: build all three repos before and after, and diff the
 output. Nothing in this repo's own suite will catch it.
 
-> Separately: `austraits` is also in `Depends`, for a few re-exported conversion helpers, so the
-> package graph runs `traits.build → austraits` even though in the *data* pipeline traits.build is
-> upstream of austraits. That edge is a known wart with a plan attached (#225 Option A); it is not
-> the contract above, and moving `austraits` to `Suggests` does not endanger `custom_R_code`, since
-> no downstream snippet calls it unqualified. Run this package's tests after touching those helpers.
+> Separately: `traits.use` (the generic reader split out of `austraits`, traitecoevo/austraits#188) is
+> also in `Depends`, for a few re-exported conversion helpers, so the package graph runs
+> `traits.build → traits.use` even though in the *data* pipeline traits.build is upstream of it. That
+> edge is a known wart with a plan attached (#225 Option A); it is not the contract above, and moving
+> `traits.use` to `Suggests` does not endanger `custom_R_code`, since no downstream snippet calls it
+> unqualified. traits.use is CRAN-bound and must never depend on traits.build. Run this package's
+> tests after touching those helpers.
 
 ---
 
@@ -80,7 +82,7 @@ data model/schema. Family-wide concerns are documented centrally in
 them there:
 
 - **Start with [`AGENTS.md`](https://github.com/traitecoevo/austraits-meta/blob/master/AGENTS.md)** —
-  pipeline order, who owns what, dependency direction (incl. the reversed `traits.build → austraits`
+  pipeline order, who owns what, dependency direction (incl. the reversed `traits.build → traits.use`
   edge), source-of-truth rules, cross-boundary artifacts, gotchas.
 - **[`dependencies.yml`](https://github.com/traitecoevo/austraits-meta/blob/master/dependencies.yml)** —
   machine-readable package graph + cross-boundary artifacts.

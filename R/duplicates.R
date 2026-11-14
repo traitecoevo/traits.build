@@ -102,7 +102,7 @@ dataset_check_duplicate_values <- function(
   database$traits$.row <- seq_len(nrow(database$traits))
 
   records <-
-    austraits::join_location_coordinates(database)$traits %>%
+    traits.use::join_location_coordinates(database)$traits %>%
     dplyr::select(dplyr::all_of(c(
       ".row", "dataset_id", "taxon_name", "trait_name", "value", "value_type", "observation_id",
       lat = "latitude (deg)", lon = "longitude (deg)"
@@ -457,8 +457,8 @@ util_duplicate_records <- function(database, matches, match_cols) {
 
   details <-
     database %>%
-    austraits::join_location_coordinates() %>%
-    austraits::join_context_properties(format = "many_columns", include_description = FALSE) %>%
+    traits.use::join_location_coordinates() %>%
+    traits.use::join_context_properties(format = "many_columns", include_description = FALSE) %>%
     purrr::pluck("traits") %>%
     dplyr::select(
       dplyr::all_of(c(

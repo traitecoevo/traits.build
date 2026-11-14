@@ -274,7 +274,7 @@ dataset_new_taxa_trait_combinations <- function(database, dataset, resources = N
   }
 
   # extract new dataset
-  new_data <- (database %>% austraits::extract_dataset(dataset))$traits %>%
+  new_data <- (database %>% traits.use::extract_dataset(dataset))$traits %>%
     dplyr::distinct(.data$dataset_id, .data$taxon_name, .data$trait_name) %>%
     dplyr::mutate(combined = paste0(.data$taxon_name, "_", .data$trait_name)) %>%
     dplyr::filter(.data$taxon_name %in% accepted_species$taxon_name)
@@ -295,7 +295,7 @@ dataset_new_taxa_trait_combinations <- function(database, dataset, resources = N
   traits_to_check <- new_data %>% dplyr::distinct(.data$trait_name)
 
   # data in database prior to new dataset
-  preexisting_data <- (database %>% austraits::extract_trait(traits_to_check$trait_name))$traits %>%
+  preexisting_data <- (database %>% traits.use::extract_trait(traits_to_check$trait_name))$traits %>%
     dplyr::filter(.data$dataset_id != dataset) %>%
     dplyr::distinct(.data$taxon_name, .data$trait_name) %>%
     dplyr::mutate(combined = paste0(.data$taxon_name, "_", .data$trait_name)) %>%

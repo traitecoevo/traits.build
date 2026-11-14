@@ -126,7 +126,7 @@ list(
     {{database_name}},
     build_post_process(
       build_add_version(
-        austraits::bind_databases(
+        traits.use::bind_databases(
 {{#dataset_ids}}
           {{dataset_id}},
 {{/dataset_ids}}
