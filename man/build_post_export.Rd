@@ -45,7 +45,7 @@ and an edit to export code should not.
 \dontrun{
 # In R/post_export.R
 post_export <- function(database, path) {
-  flattened <- austraits::flatten_database(database)
+  flattened <- traits.use::flatten_database(database)
   saveRDS(flattened, file.path(path, "database-flattened.rds"))
 }
 

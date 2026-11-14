@@ -34,7 +34,7 @@ as before.
 
 A name must start with a letter and hold only letters, digits and
 underscores. It may not be one the schema already uses for a column of any
-of the database's tables, which functions such as \code{austraits::join_taxa()}
+of the database's tables, which functions such as \code{traits.use::join_taxa()}
 add to the traits table, or for a field of a dataset's \code{metadata.yml}; nor
 one of \link{traits_working_columns}, which the build adds to the traits table
 while processing it and would overwrite or drop. Names are checked

@@ -425,7 +425,7 @@ test_that("the pipeline published in Wenk et al. 2024 Fig. 1 runs as written", {
       dataset_update_taxonomy(taxon_list)
   )
 
-  database <- austraits::bind_databases(databases = list(Test_2023_1 = built))
+  database <- traits.use::bind_databases(databases = list(Test_2023_1 = built))
 
   combined <- database_create_combined_table(database)
   expect_s3_class(combined, "data.frame")

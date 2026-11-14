@@ -51,7 +51,7 @@ plot_trait_distribution <- function(data, trait, ...) {
 plot_categorical_trait_distribution <- function(data, trait, family_count) {
   # if relational database, retain traits layer only
   if (is.null(dim(data))) {
-    data <- (data |> austraits::join_taxa(vars = "family"))$traits
+    data <- (data |> traits.use::join_taxa(vars = "family"))$traits
   }
 
   # filter to relevant trait

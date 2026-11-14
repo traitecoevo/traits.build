@@ -349,7 +349,7 @@ test_expect_list_elements_exact_names <- function(object, expected, info) {
 #'
 #' An empty field (`replicates:` with nothing after it, or `~`) reads as `NULL`,
 #' and an empty collection (`[]` or `{}`) as a zero-length list.
-#' `austraits::convert_list_to_df2()` turns either into a zero-length column,
+#' `traits.use::convert_list_to_df2()` turns either into a zero-length column,
 #' which recycles the entry's other columns down to zero rows, so the whole entry
 #' is dropped from the build without a message (#307). An explicit `.na` is a
 #' value, checked like any other, so it is not reported.
