@@ -66,7 +66,7 @@ Suggests:
     covr
 Remotes:
     richfitz/remake,
-    traitecoevo/austraits@source-references-296
+    traitecoevo/austraits
 Encoding: UTF-8
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
