@@ -234,7 +234,7 @@ util_resolve_trait_field_values <- function(declared, data) {
 
 #' Convert the `traits` entries of `metadata.yml` to a table
 #'
-#' `austraits::convert_list_to_df2()`, one row per trait entry, without the
+#' `traits.use::convert_list_to_df2()`, one row per trait entry, without the
 #' optional `omit_values` field. That field may hold several values, and
 #' `convert_list_to_df2()` spreads an entry holding several over that many
 #' rows, which would duplicate the trait wherever the table is used. Read it
@@ -251,7 +251,7 @@ util_traits_to_df <- function(metadata_traits) {
       entry
     })
   }
-  austraits::convert_list_to_df2(metadata_traits)
+  traits.use::convert_list_to_df2(metadata_traits)
 }
 
 
@@ -481,7 +481,7 @@ traits_working_columns <- c(
 #'
 #' A name must start with a letter and hold only letters, digits and
 #' underscores. It may not be one the schema already uses for a column of any
-#' of the database's tables, which functions such as `austraits::join_taxa()`
+#' of the database's tables, which functions such as `traits.use::join_taxa()`
 #' add to the traits table, or for a field of a dataset's `metadata.yml`; nor
 #' one of [traits_working_columns], which the build adds to the traits table
 #' while processing it and would overwrite or drop. Names are checked
@@ -540,7 +540,7 @@ util_additional_traits_table_fields <- function(resource_metadata) {
   }
 
   # Names the build already gives a meaning to: a column of any table, since
-  # joins such as `austraits::join_taxa()` bring them into the traits table, a
+  # joins such as `traits.use::join_taxa()` bring them into the traits table, a
   # field of a dataset's `metadata.yml`, or a working column of the build
   packaged <- get_schema()
   tables <- purrr::keep(packaged[["austraits"]][["elements"]], ~ identical(.x[["type"]], "table"))
@@ -1554,13 +1554,13 @@ create_tree_branch <- function(x, title, prefix = "") {
 #' util_list_to_df1(as.list(dplyr::starwars)[2])
 #' }
 util_list_to_df1 <- function(my_list) {
-  lifecycle::deprecate_warn("1.0.0", "util_list_to_df1()", "austraits::convert_list_to_df1()")
-  austraits::convert_list_to_df1(my_list)
+  lifecycle::deprecate_warn("1.0.0", "util_list_to_df1()", "traits.use::convert_list_to_df1()")
+  traits.use::convert_list_to_df1(my_list)
 }
 
-#' @importFrom austraits convert_list_to_df1
+#' @importFrom traits.use convert_list_to_df1
 #' @export
-austraits::convert_list_to_df1
+traits.use::convert_list_to_df1
 
 #' Convert a list of lists to dataframe
 #'
@@ -1576,13 +1576,13 @@ austraits::convert_list_to_df1
 #' @export
 #' @examples util_list_to_df2(util_df_to_list(dplyr::starwars))
 util_list_to_df2 <- function(my_list, as_character = TRUE, on_empty = NA) {
-  lifecycle::deprecate_warn("1.0.0", "util_list_to_df2()", "austraits::convert_list_to_df2()")
-  austraits::convert_list_to_df2(my_list, as_character, on_empty)
+  lifecycle::deprecate_warn("1.0.0", "util_list_to_df2()", "traits.use::convert_list_to_df2()")
+  traits.use::convert_list_to_df2(my_list, as_character, on_empty)
 }
 
-#' @importFrom austraits convert_list_to_df2
+#' @importFrom traits.use convert_list_to_df2
 #' @export
-austraits::convert_list_to_df2
+traits.use::convert_list_to_df2
 
 #' Convert dataframe to list
 #'
@@ -1596,13 +1596,13 @@ austraits::convert_list_to_df2
 #' @export
 #' @examples util_df_to_list(dplyr::starwars)
 util_df_to_list <- function(df) {
-  lifecycle::deprecate_warn("1.0.0", "util_df_to_list()", "austraits::convert_df_to_list()")
-  austraits::convert_df_to_list(df)
+  lifecycle::deprecate_warn("1.0.0", "util_df_to_list()", "traits.use::convert_df_to_list()")
+  traits.use::convert_df_to_list(df)
 }
 
-#' @importFrom austraits convert_df_to_list
+#' @importFrom traits.use convert_df_to_list
 #' @export
-austraits::convert_df_to_list
+traits.use::convert_df_to_list
 
 #' Combine all the AusTraits studies into the compiled AusTraits database
 #'
@@ -1619,26 +1619,26 @@ austraits::convert_df_to_list
 #' @importFrom rlang .data
 #' @export
 build_combine <- function(..., d = list(...)) {
-  lifecycle::deprecate_warn("1.0.0", "build_combine()", "austraits::bind_databases()")
+  lifecycle::deprecate_warn("1.0.0", "build_combine()", "traits.use::bind_databases()")
   # The shim pointed users at `bind_databases()` but called
   # `convert_df_to_list()`, and passed the studies twice -- once through `...`
   # and again as `d`, which `d = list(...)` had already collected. So it
   # returned nonsense for anyone who followed the deprecation notice.
-  austraits::bind_databases(databases = d)
+  traits.use::bind_databases(databases = d)
 }
 
-#' @importFrom austraits bind_databases
+#' @importFrom traits.use bind_databases
 #' @export
-austraits::bind_databases
+traits.use::bind_databases
 
-#' @importFrom austraits flatten_database
+#' @importFrom traits.use flatten_database
 #' @export
-austraits::flatten_database
+traits.use::flatten_database
 
 #' Create a single combined table from a database
 #'
 #' Joins the relational tables of a built database into one wide table, by
-#' calling [austraits::flatten_database()].
+#' calling [traits.use::flatten_database()].
 #'
 #' Wenk et al. 2024 (*Ecological Informatics* 83:102773) presents
 #' `database_create_combined_table` as the route to the combined table, but it
@@ -1647,23 +1647,23 @@ austraits::flatten_database
 #' workflow, so the name it documents resolves.
 #'
 #' This is a thin pass-through rather than a reimplementation on purpose. The
-#' joins it relies on are eight functions totalling ~264 lines in `austraits`,
+#' joins it relies on are eight functions totalling ~264 lines in `traits.use`,
 #' and querying a built compilation is that package's job -- this one builds
 #' the database. Arguments are passed straight through so the defaults have a
 #' single definition.
 #'
-#' Note that `austraits` is currently in `Depends`. When it moves to `Suggests`
-#' this needs a `util_require_package("austraits", ...)` guard, as does
+#' Note that `traits.use` is currently in `Depends`. When it moves to `Suggests`
+#' this needs a `util_require_package("traits.use", ...)` guard, as does
 #' [build_combine()] -- see #225.
 #'
 #' @param database A built database object
-#' @param ... Further arguments passed to [austraits::flatten_database()],
+#' @param ... Further arguments passed to [traits.use::flatten_database()],
 #' such as `format`, `vars` and `include_description`
 #'
 #' @return A single wide table combining the database's relational tables
 #' @export
 database_create_combined_table <- function(database, ...) {
-  austraits::flatten_database(database, ...)
+  traits.use::flatten_database(database, ...)
 }
 
 #' Check `collection_date` values against the standard formats

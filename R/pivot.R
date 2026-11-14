@@ -46,7 +46,7 @@ util_pivot_duplicates <- function(traits, extra_cols = character()) {
 #' rows that make its "`traits` table cannot pivot wider" check fail.
 #'
 #' Use this rather than [check_pivot_duplicates()] on a compiled database to
-#' chase that failure. [austraits::bind_databases()] drops rows that are
+#' chase that failure. [traits.use::bind_databases()] drops rows that are
 #' identical in every column, so a dataset whose duplicates are exact copies
 #' fails [dataset_test()] but shows no duplicates once compiled.
 #'

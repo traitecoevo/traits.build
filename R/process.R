@@ -128,7 +128,7 @@ dataset_process <- function(filename_data_raw,
   # Load identifiers
   if ("identifiers" %in% names(metadata) && !all(is.na(metadata[["identifiers"]]))) {
     identifiers <-
-      metadata[["identifiers"]] %>% austraits::convert_list_to_df2()
+      metadata[["identifiers"]] %>% traits.use::convert_list_to_df2()
 
     # A `var_in` naming a column that does not exist used to pass silently:
     # `process_add_all_columns()` creates the missing column as all-NA, and the
@@ -296,7 +296,7 @@ dataset_process <- function(filename_data_raw,
   if (!is.na(metadata[["exclude_observations"]][1])) {
     taxa_to_exclude <-
       metadata[["exclude_observations"]] %>%
-      austraits::convert_list_to_df2() %>%
+      traits.use::convert_list_to_df2() %>%
       dplyr::mutate(
         find = stringr::str_split(.data$find, ", ")
         ) %>%
@@ -810,7 +810,7 @@ process_format_contexts <- function(my_list, dataset_id, traits, metadata_traits
         context_property = x$context_property,
         category = x$category,
         var_in = x$var_in,
-        austraits::convert_list_to_df2(x$values)
+        traits.use::convert_list_to_df2(x$values)
       ) %>%
       dplyr::mutate(dataset_id = dataset_id) %>%
       dplyr::select(dplyr::any_of(vars))
@@ -1066,7 +1066,7 @@ process_format_locations <- function(my_list, dataset_id, schema) {
     long <-
       my_list %>%
       lapply(lapply, as.character) %>%
-      purrr::map_df(austraits::convert_list_to_df1, .id = "name") %>%
+      purrr::map_df(traits.use::convert_list_to_df1, .id = "name") %>%
       dplyr::rename(
         dplyr::all_of(c("location_property" = "key", "location_name" = "name"))
       )
@@ -1236,7 +1236,7 @@ process_flag_excluded_observations <- function(data, metadata) {
 
   fix <-
     metadata$exclude_observations %>%
-    austraits::convert_list_to_df2() %>%
+    traits.use::convert_list_to_df2() %>%
     tidyr::separate_longer_delim("find", delim = ", ") %>%
     dplyr::mutate(find = str_squish(.data$find))
 
@@ -1993,7 +1993,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
   if (!is.na(metadata[["substitutions"]][1])) {
 
     # A `text` trait's values keep their case, so its substitutions match it exactly
-    substitutions_table <- austraits::convert_list_to_df2(metadata[["substitutions"]]) %>%
+    substitutions_table <- traits.use::convert_list_to_df2(metadata[["substitutions"]]) %>%
       dplyr::mutate(
         find = ifelse(.data$trait_name %in% text_traits, .data$find, tolower(.data$find)),
         replace = ifelse(.data$trait_name %in% text_traits, .data$replace, tolower(.data$replace))
@@ -2329,7 +2329,7 @@ process_format_contributors <- function(my_list, dataset_id, schema) {
     if (length(unlist(my_list$data_collectors)) > 1) {
       contributors <-
         my_list$data_collectors %>%
-        austraits::convert_list_to_df2() %>%
+        traits.use::convert_list_to_df2() %>%
         dplyr::mutate(dataset_id = dataset_id) %>%
         dplyr::filter(!is.na(.data$last_name))
     } else {
@@ -2366,7 +2366,7 @@ process_format_identifiers <- function(my_list, dataset_id, schema) {
     if (length(unlist(my_list)) > 0) {
       identifiers <-
         my_list %>%
-        austraits::convert_list_to_df2() %>%
+        traits.use::convert_list_to_df2() %>%
         dplyr::mutate(dataset_id = dataset_id)
     } else {
       identifiers <- tibble::tibble(dataset_id = character())
@@ -2413,7 +2413,7 @@ process_format_methods <- function(metadata, dataset_id, sources, contributors,
       ,
       # Methods for entire study
       metadata$dataset %>%
-        austraits::convert_list_to_df1() %>%
+        traits.use::convert_list_to_df1() %>%
         tidyr::spread(.data$key, .data$value) %>%
         dplyr::mutate(dataset_id = dataset_id) %>%
         dplyr::select(
@@ -2531,7 +2531,7 @@ process_taxonomic_updates <- function(data, metadata) {
 
   # Now make any replacements specified in metadata yaml
   ## Read metadata table, quit if empty
-  substitutions_table <-  austraits::convert_list_to_df2(metadata[["taxonomic_updates"]])
+  substitutions_table <-  traits.use::convert_list_to_df2(metadata[["taxonomic_updates"]])
 
   if (any(is.na(substitutions_table[1])) || nrow(substitutions_table) == 0) {
     return(out)
@@ -2891,7 +2891,7 @@ build_post_process <- function(database, file = "R/post_build.R") {
 #' \dontrun{
 #' # In R/post_export.R
 #' post_export <- function(database, path) {
-#'   flattened <- austraits::flatten_database(database)
+#'   flattened <- traits.use::flatten_database(database)
 #'   saveRDS(flattened, file.path(path, "database-flattened.rds"))
 #' }
 #'
@@ -3010,7 +3010,7 @@ write_plaintext <- function(austraits, path) {
 #' Identify duplicates preventing pivoting wider
 #'
 #' Run on a compiled database, this cannot see rows that are identical in every
-#' column, because [austraits::bind_databases()] drops them. To find the rows
+#' column, because [traits.use::bind_databases()] drops them. To find the rows
 #' behind a [dataset_test()] pivot failure, use [dataset_find_pivot_duplicates()].
 #'
 #' @param database_object Database object

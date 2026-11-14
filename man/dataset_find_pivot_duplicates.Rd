@@ -31,7 +31,7 @@ rows that make its "\code{traits} table cannot pivot wider" check fail.
 }
 \details{
 Use this rather than \code{\link[=check_pivot_duplicates]{check_pivot_duplicates()}} on a compiled database to
-chase that failure. \code{\link[austraits:bind_databases]{austraits::bind_databases()}} drops rows that are
+chase that failure. \code{\link[traits.use:bind_databases]{traits.use::bind_databases()}} drops rows that are
 identical in every column, so a dataset whose duplicates are exact copies
 fails \code{\link[=dataset_test]{dataset_test()}} but shows no duplicates once compiled.
 }

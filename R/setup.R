@@ -322,7 +322,7 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
       ))
   }
 
-  new_traits <- traits %>% austraits::convert_df_to_list()
+  new_traits <- traits %>% traits.use::convert_df_to_list()
 
   # `omit_values` does not survive the round trip through a table above, so
   # carry it across from the existing entry each row was made from: the first
@@ -1110,7 +1110,7 @@ util_check_converted_sources <- function(dataset_id, path_data) {
       col_types = readr::cols(), guess_max = 1e5, progress = FALSE
     )
     data <- process_custom_code(metadata[["dataset"]][["custom_R_code"]])(data)
-    traits <- metadata[["traits"]] %>% austraits::convert_list_to_df2()
+    traits <- metadata[["traits"]] %>% traits.use::convert_list_to_df2()
     source_ids <- dataset_test_source_id_values(metadata, traits, data)
     unmatched <- setdiff(source_ids, c(dataset_id, flat$key[flat$type == "source"]))
     if (length(unmatched) > 0) {
@@ -1159,7 +1159,7 @@ metadata_add_substitution <- function(dataset_id, trait_name, find, replace, mat
     metadata[[set_name]] <- list()
   } else {
     # Check if find record already exists for that trait
-    data <- austraits::convert_list_to_df2(metadata[[set_name]])
+    data <- traits.use::convert_list_to_df2(metadata[[set_name]])
     # Has to be rowwise (both conditions have to be true for a given row)
     if (nrow(data[data$trait_name == trait_name & data$find == find, ]) > 0) {
       message(
@@ -1204,7 +1204,7 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
 
   if (!all(is.na(metadata[["substitutions"]]))) {
 
-    existing <- metadata[["substitutions"]] %>% austraits::convert_list_to_df2()
+    existing <- metadata[["substitutions"]] %>% traits.use::convert_list_to_df2()
     already_exist <- c()
 
     for (i in seq_len(nrow(substitutions))) {
@@ -1317,7 +1317,7 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
 
     } else {
 
-      data <- austraits::convert_list_to_df2(metadata[[set_name]])
+      data <- traits.use::convert_list_to_df2(metadata[[set_name]])
       # Check whether the same `find` value for a given `trait_name` already exists
       if (nrow(data[data$trait_name == to_add$trait_name & data$find == to_add$find, ]) > 0) {
         message(
@@ -1382,7 +1382,7 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
   if (all(is.na(metadata[[set_name]]))) {
     data <- to_add
   } else {
-    data <- austraits::convert_list_to_df2(metadata[[set_name]])
+    data <- traits.use::convert_list_to_df2(metadata[[set_name]])
     # Check if find record already exists for that trait
     if (find %in% data$find) {
       # If overwrite set to false, don't add a new substitution
@@ -1437,7 +1437,7 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
 
   if (!all(is.na(metadata[["taxonomic_updates"]]))) {
 
-    existing_updates <- metadata[["taxonomic_updates"]] %>% austraits::convert_list_to_df2()
+    existing_updates <- metadata[["taxonomic_updates"]] %>% traits.use::convert_list_to_df2()
     already_exist <- c()
 
     for (i in seq_len(nrow(taxonomic_updates))) {
@@ -1494,7 +1494,7 @@ metadata_exclude_observations <- function(dataset_id, variable, find, reason) {
     metadata[[set_name]] <- list()
   } else {
     # Check if find record already exists for that trait
-    data <- austraits::convert_list_to_df2(metadata[[set_name]])
+    data <- traits.use::convert_list_to_df2(metadata[[set_name]])
 
     if (nrow(data[data$find == find & data$variable == variable, ]) > 0) {
       message(sprintf(red("Exclusion already exists for ") %+% green("'%s'"), find))
@@ -1530,7 +1530,7 @@ metadata_update_taxonomic_change <- function(dataset_id, find, replace, reason, 
   metadata <- read_metadata_dataset(dataset_id)
 
   if (!all(is.na(metadata[[set_name]]))) {
-    data <- austraits::convert_list_to_df2(metadata[[set_name]])
+    data <- traits.use::convert_list_to_df2(metadata[[set_name]])
   }
 
   # Check if `taxonomic_updates` doesn't exist or if substitution does not exist
@@ -1575,7 +1575,7 @@ metadata_remove_taxonomic_change <- function(dataset_id, find) {
     return(invisible())
   } else {
     # Check if taxonomic change does not exist
-    data <- austraits::convert_list_to_df2(metadata[[set_name]])
+    data <- traits.use::convert_list_to_df2(metadata[[set_name]])
     if (!find %in% data$find) {
       message(
         sprintf(
