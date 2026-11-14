@@ -1631,6 +1631,22 @@ build_combine <- function(..., d = list(...)) {
 #' @export
 traits.use::bind_databases
 
+# The dataset report's plots. traits.build kept its own copies until
+# traits.use#21; re-exported so `traits.build::plot_trait_distribution_jitter()`
+# and friends, as austraits.build's report calls them, keep working.
+
+#' @importFrom traits.use plot_trait_distribution
+#' @export
+traits.use::plot_trait_distribution
+
+#' @importFrom traits.use plot_trait_distribution_jitter
+#' @export
+traits.use::plot_trait_distribution_jitter
+
+#' @importFrom traits.use plot_categorical_trait_distribution
+#' @export
+traits.use::plot_categorical_trait_distribution
+
 #' @importFrom traits.use flatten_database
 #' @export
 traits.use::flatten_database

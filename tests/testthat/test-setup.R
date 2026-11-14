@@ -917,15 +917,17 @@ test_that("reports and plots are produced", {
   # nothing about the report existing or containing anything (#244).
   expect_silent(suppressMessages(austraits <- remake::make("test_name")))
 
-  # `plot_trait_distribution_jitter()` uses `forcats` unguarded, so without it
-  # the render fails and no file is written at all.
+  # The report's plots, from traits.use, need `forcats` and `scales` (Suggests
+  # there and here); without them the render fails and no file is written.
   skip_if_not_installed("forcats")
+  skip_if_not_installed("scales")
 
   # Rendering shells out to the `quarto` CLI, which starts a fresh R session
   # and does its own `library(traits.build)`. This test therefore exercises the
-  # *installed* package, not `devtools::load_all()`: after editing the plotting
-  # functions or the template, run `devtools::install()` or this checks stale
-  # code. `R CMD check` installs first, so CI is unaffected.
+  # *installed* package, not `devtools::load_all()`: after editing the
+  # template, run `devtools::install()` or this checks stale code. The plotting
+  # functions are traits.use's, so reinstall traits.use after changing those.
+  # `R CMD check` installs first, so CI is unaffected.
   skip_if_not_installed("quarto")
   skip_if(is.null(quarto::quarto_path()), "Quarto CLI not found")
 

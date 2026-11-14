@@ -22,7 +22,7 @@ Depends:
     readr,
     stringr (>= 1.5.0),
     tidyr,
-    traits.use
+    traits.use (>= 0.1.1)
 Imports:
     crayon,
     git2r,
@@ -50,7 +50,6 @@ Suggests:
     bibtex,
     knitr,
     bench,
-    cli,
     devtools,
     markdown,
     pkgdown,
@@ -58,8 +57,6 @@ Suggests:
     rcrossref,
     rmarkdown,
     ggplot2,
-    ggbeeswarm,
-    gridExtra,
     scales,
     withr,
     zip,

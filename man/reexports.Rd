@@ -7,6 +7,9 @@
 \alias{convert_list_to_df2}
 \alias{convert_df_to_list}
 \alias{bind_databases}
+\alias{plot_trait_distribution}
+\alias{plot_trait_distribution_jitter}
+\alias{plot_categorical_trait_distribution}
 \alias{flatten_database}
 \title{Objects exported from other packages}
 \keyword{internal}
@@ -15,6 +18,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{traits.use}{\code{\link[traits.use:bind_databases]{bind_databases()}}, \code{\link[traits.use:convert_df_to_list]{convert_df_to_list()}}, \code{\link[traits.use:convert_list_to_df1]{convert_list_to_df1()}}, \code{\link[traits.use:convert_list_to_df2]{convert_list_to_df2()}}, \code{\link[traits.use:flatten_database]{flatten_database()}}}
+  \item{traits.use}{\code{\link[traits.use:bind_databases]{bind_databases()}}, \code{\link[traits.use:convert_df_to_list]{convert_df_to_list()}}, \code{\link[traits.use:convert_list_to_df1]{convert_list_to_df1()}}, \code{\link[traits.use:convert_list_to_df2]{convert_list_to_df2()}}, \code{\link[traits.use:flatten_database]{flatten_database()}}, \code{\link[traits.use:plot_categorical_trait_distribution]{plot_categorical_trait_distribution()}}, \code{\link[traits.use:plot_trait_distribution]{plot_trait_distribution()}}, \code{\link[traits.use:plot_trait_distribution_jitter]{plot_trait_distribution_jitter()}}}
 }}
 
