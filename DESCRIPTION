@@ -22,7 +22,7 @@ Depends:
     readr,
     stringr (>= 1.5.0),
     tidyr,
-    traits.use
+    traits.use (>= 0.1.1)
 Imports:
     crayon,
     git2r,
