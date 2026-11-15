@@ -35,16 +35,24 @@ units, changing taxon names.
 1. Familiarity with the [R programming language](https://www.r-project.org/), covered in [R for Data Science](https://r4ds.had.co.nz/).
 2. [Data science workflow management techniques](https://rstats.wtf/index.html).
 3. [How to write functions](https://r4ds.had.co.nz/functions.html) to prepare data, analyse data, and summarise results in a data analysis project.
-4. [Appreciation of `traits.build`` workflow](https://traitecoevo.github.io/traits.build-book/), including the required file structure.
+4. [Appreciation of the `traits.build` workflow](https://traitecoevo.github.io/traits.build-book/), including the required file structure.
 
 ## Installation 
 
-There are multiple ways to install the `traits.build` package itself, and both the latest release and the development version are available.
+`traits.build` is not yet on CRAN. Install it from GitHub:
 
-| Type        | Source   | Command                                                           |
-|-------------|----------|-------------------------------------------------------------------|
-| Release     | CRAN     | *not yet on CRAN — install the development version from GitHub* |
-| Development | GitHub   | `remotes::install_github("traitecoevo/traits.build")`                     |
+| Type        | Command                                                        |
+|-------------|----------------------------------------------------------------|
+| Release     | `remotes::install_github("traitecoevo/traits.build@v2.2.0")`   |
+| Development | `remotes::install_github("traitecoevo/traits.build")`          |
+
+The development version comes from the `develop` branch, the repository's default. It reads each dataset's references from a `source:` block holding a `dataset:` entry (the dataset's own reference) and optional `source:` and `secondary:` lists; it no longer reads the older `primary:` / `secondary_01:` / `original_01:` shape that 2.2.0 uses. `traits.build::metadata_convert_sources()` converts a database's `metadata.yml` files.
+
+The development version also installs [`traits.use`](https://github.com/traitecoevo/traits.use), which it depends on.
+
+## Using a built database
+
+`traits.build` compiles a database; to load, filter, join and plot a compiled one, use [`traits.use`](https://traitecoevo.github.io/traits.use/), the reader for any `traits.build` database. For AusTraits, the [`austraits`](https://traitecoevo.github.io/austraits/) package adds `load_austraits()` (load a release by version number) and a map of Australia on top of `traits.use`. `traits.build` re-exports `traits.use`'s trait-distribution plots, which its dataset reports use.
 
 ## Documentation
 
@@ -76,7 +84,7 @@ A publication describing the biggest database using the `traits.build` workflow:
 
 > Falster D, Gallagher R, Wenk, E et al. (2021) AusTraits, a curated plant trait 
 database for the Australian flora. Scientific Data 8: 254. 
-DOI: [10.1038/s41597-021-01006-6](http://doi.org/10.1038/s41597-021-01006-6)
+DOI: [10.1038/s41597-021-01006-6](https://doi.org/10.1038/s41597-021-01006-6)
 
 ## AusTraits family
 
