@@ -877,11 +877,8 @@ test_that("`build_setup_pipeline` is working", {
   ## Data model version, which readers check rather than the URL above
   ## (traits.use#40). bind_databases() keeps the first dataset's metadata, so
   ## the combined database carries the version each dataset was stamped with.
+  ## Whether traits.use reads it is tested in its own block below.
   expect_identical(austraits$metadata$data_model_version, data_model_version())
-  ## The installed traits.use must read what this traits.build writes: a new
-  ## major version needs a traits.use release first (ontology/NEWS.md)
-  expect_true(traits.use:::data_model_supported(data_model_version()))
-  expect_true(traits.use:::check_compatibility(austraits))
 
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
 
@@ -1083,6 +1080,29 @@ test_that("the packaged report template describes no particular database (#140)"
   template <- readLines(system.file("support", "report_dataset.qmd", package = "traits.build"), warn = FALSE)
   expect_false(any(grepl("AusTraits|austraits\\.org|Australian Plant Census|APNI|APCalign", template)))
   expect_false(any(grepl("library(austraits)", template, fixed = TRUE)))
+})
+
+# In its own block, so that a traits.use without the check fails here alone,
+# not the rest of the pipeline test above
+test_that("the installed traits.use reads the data model version this traits.build writes", {
+  ## A new major version needs a traits.use release first (ontology/NEWS.md)
+  expect_true(
+    exists("data_model_supported", envir = asNamespace("traits.use"), inherits = FALSE),
+    info = "traits.use predates its data model check (traits.use#40); install it from GitHub"
+  )
+  skip_if_not(exists("data_model_supported", envir = asNamespace("traits.use"), inherits = FALSE))
+  expect_true(traits.use:::data_model_supported(data_model_version()))
+
+  ## Recognised by the version alone: no traits.build URL in
+  ## related_identifiers, which older traits.use would have required
+  database <- structure(
+    list(
+      traits = tibble::tibble(trait_name = character()),
+      metadata = list(related_identifiers = list(), data_model_version = data_model_version())
+    ),
+    class = c("list", "traits.build")
+  )
+  expect_true(traits.use:::check_compatibility(database))
 })
 
 testthat::test_that("`dataset_test` is working", {
