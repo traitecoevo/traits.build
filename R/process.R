@@ -360,6 +360,10 @@ dataset_process <- function(filename_data_raw,
       )
     )
 
+  # The version of the data model the tables follow, which readers check
+  # (traits.use#40), rather than the URL above
+  metadata[["data_model_version"]] <- data_model_version()
+
 
   # Combine for final output
   ret <-

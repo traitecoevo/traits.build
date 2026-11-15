@@ -12,11 +12,13 @@ on:
     branches: [master, develop]
     paths:
       - "ontology/**"
+      - "R/data_model_version.R"
       - "Makefile"
       - ".github/workflows/ontology.yml"
   pull_request:
     paths:
       - "ontology/**"
+      - "R/data_model_version.R"
       - "Makefile"
       - ".github/workflows/ontology.yml"
   workflow_dispatch:

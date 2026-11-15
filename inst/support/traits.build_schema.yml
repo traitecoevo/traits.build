@@ -275,6 +275,7 @@ austraits:
             identifier: The related identifier.
             relation: Description of the relationship of the related resource to the primary resource.
             resource_type: The general type of a resource (database), using controlled values from DataCite, https://support.datacite.org/docs/schema-40.
+        data_model_version: The version of the traits.build data model (https://w3id.org/traits.build) the database's tables follow, written by traits.build when it builds the database. Software that reads the database checks it to decide whether it can read the tables; a new major version is a change an existing reader cannot read.
         references: Resource that this resource references.
         publisher: The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource.
         publication_date: The data when this resource was or will be made publicly available.
