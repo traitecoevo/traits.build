@@ -2,6 +2,8 @@
 
 The data model (the ontology published at <https://w3id.org/traits.build>) is versioned separately from the traits.build R package. The newest heading below is the version `make ontology` builds and `make ontology-release` snapshots into `ontology/output/ontology/release/<version>/`; the heading under it is what the site shows as the previous version. To cut a new version, add a heading. The package's own `NEWS.md` records the same changes from the package's side.
 
+Every database the package builds records the version in `metadata$data_model_version`, and readers such as traits.use check its major version to decide whether they can read the tables (traits.use#40). So cutting a version also means updating `R/data_model_version.R` to match the newest heading, which the ontology tests check. A change to the tables that an existing reader cannot read, such as renaming or removing a column or table, is a new **major** version, and a released traits.use must read it before the package writes it.
+
 ## traits.build data model 1.4.0
 
 Prepared 2026-11-11 (traits.build #296).

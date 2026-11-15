@@ -874,6 +874,15 @@ test_that("`build_setup_pipeline` is working", {
   )
   expect_equal(traits.build_tag, expected_output)
 
+  ## Data model version, which readers check rather than the URL above
+  ## (traits.use#40). bind_databases() keeps the first dataset's metadata, so
+  ## the combined database carries the version each dataset was stamped with.
+  expect_identical(austraits$metadata$data_model_version, data_model_version())
+  ## The installed traits.use must read what this traits.build writes: a new
+  ## major version needs a traits.use release first (ontology/NEWS.md)
+  expect_true(traits.use:::data_model_supported(data_model_version()))
+  expect_true(traits.use:::check_compatibility(austraits))
+
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
 
   # Compare products from three methods, except `build_info`
