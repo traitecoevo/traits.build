@@ -246,15 +246,21 @@ test_that("`dataset_test` accepts the fields only when the database declares the
       reporter,
       dataset_test_worker(id, path_config = path_config, path_data = path_data)
     )
-    sum(as.data.frame(reporter$get_results())$failed)
+    dataset_test_failure_messages(reporter)
   }
 
   file.copy("examples/Test_2023_1", path_data, recursive = TRUE)
   baseline <- failures("Test_2023_1", NULL)
 
   # Example datasets have known failures (blank dates), so compare with a copy setting nothing
-  expect_equal(failures("Test_2023_1_fields", fields), baseline)
-  expect_equal(failures("Test_2023_1", fields), baseline)
-  expect_gt(failures("Test_2023_1_fields", NULL), baseline)
-  expect_gt(failures("Test_2023_1", list(life_stage = "Clashes with the schema.")), baseline)
+  expect_equal(length(failures("Test_2023_1_fields", fields)), length(baseline))
+  expect_equal(length(failures("Test_2023_1", fields)), length(baseline))
+  expect_gt(length(failures("Test_2023_1_fields", NULL)), length(baseline))
+  # A failed build ends the dataset's checks, so the count of failures does not
+  # show the clash (#213): look for its message
+  expect_match(
+    failures("Test_2023_1", list(life_stage = "Clashes with the schema.")),
+    "`additional_traits_table_fields` in the `metadata` block of `config/metadata.yml` has names the schema or the build already uses",
+    fixed = TRUE, all = FALSE
+  )
 })

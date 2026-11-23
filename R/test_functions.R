@@ -1,16 +1,96 @@
 
-test_expect_no_error <- function(object, info) {
+# Check that `object` runs without an error, reporting the error as a failure.
+#
+# The value is kept from the one evaluation. Returning `object` after an error
+# forced the promise a second time, which raised the error again outside the
+# check: each failure was reported twice, the second time with a backtrace and a
+# "restarting interrupted promise evaluation" warning (#213).
+#
+# `stop_on_failure`: the later checks of a dataset use what this step makes
+# (the data, the metadata, the parsed traits), so after a failure they would
+# only report follow-on errors. Stop the dataset's checks instead.
+# `warnings_fail`: report a warning as a failure, as `expect_silent()` did at the
+# steps that used it, rather than letting it through.
+test_expect_no_error <- function(object, info, stop_on_failure = TRUE,
+                                 warnings_fail = FALSE) {
 
-  error <- tryCatch({
-    object
-    NULL
-  }, error = function(e) {
-    e
-  })
+  warnings <- character()
+
+  error <- tryCatch(
+    withCallingHandlers({
+      force(object)
+      NULL
+    }, warning = function(w) {
+      if (warnings_fail) {
+        warnings <<- c(warnings, conditionMessage(w))
+        invokeRestart("muffleWarning")
+      }
+    }),
+    error = function(e) e
+  )
+
   testthat::expect(
     is.null(error),
-    sprintf("%s threw an error:\n\n" %+% red("%s"), info, paste(error, collapse = ",")))
+    if (is.null(error)) {
+      ""
+    } else {
+      sprintf("%s threw an error:\n\n" %+% red("%s"), info, conditionMessage(error))
+    }
+  )
+
+  if (warnings_fail) {
+    testthat::expect(
+      length(warnings) == 0,
+      sprintf("%s gave a warning:\n\n" %+% red("%s"), info,
+              paste(unique(warnings), collapse = "\n"))
+    )
+  }
+
+  if (!is.null(error)) {
+    if (stop_on_failure) test_stop_dataset()
+    return(invisible(NULL))
+  }
+
   invisible(object)
+}
+
+
+# End the checks of the dataset being tested, after a failure that the
+# remaining checks depend on. Recorded as a skip, which `test_that()` reports
+# without a backtrace, and the next dataset is checked as usual. The skips are
+# listed together at the end of the run, so each names its dataset: the
+# `dataset_id` of the loop in `dataset_test_worker()`, found up the call stack.
+test_stop_dataset <- function() {
+  dataset_id <- dynGet("dataset_id", ifnotfound = "this dataset")
+  testthat::skip(sprintf(
+    "%s: the remaining checks were not run. Fix the failure above, then run `dataset_test()` again",
+    dataset_id
+  ))
+}
+
+
+# Describe the rows `readr::read_csv()` could not parse, from `readr::problems()`,
+# naming the line of each (readr counts the header as line 1). At most `n` are
+# listed, so one broken quote that spoils the rest of a file stays readable.
+util_format_read_problems <- function(problems, n = 10) {
+
+  if (nrow(problems) == 0) {
+    return("no problems reading the file")
+  }
+
+  shown <- utils::head(problems, n)
+  lines <- sprintf(
+    "line %s, column %s: expected %s, found %s",
+    shown$row, shown$col, shown$expected, shown$actual
+  )
+  if (nrow(problems) > n) {
+    lines <- c(lines, sprintf("... and %d more", nrow(problems) - n))
+  }
+
+  sprintf(
+    "%d problem(s) reading the file:\n\t%s",
+    nrow(problems), paste(lines, collapse = "\n\t")
+  )
 }
 
 
