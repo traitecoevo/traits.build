@@ -63,7 +63,7 @@ Suggests:
     covr
 Remotes:
     richfitz/remake,
-    traitecoevo/traits.use@v0.1.1
+    traitecoevo/traits.use
 Encoding: UTF-8
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
