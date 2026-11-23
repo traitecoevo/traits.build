@@ -299,7 +299,7 @@ Data from this study are recorded as coming from the following sources:
 # the report shows what it holds either way
 sources_flat <- util_flatten_sources(metadata$source, strict = FALSE)
 
-# Records linking to each reference through `source_id`
+# Observations linking to each reference through `source_id`
 source_id_counts <- data_study$traits %>%
   dplyr::filter(!is.na(source_id)) %>%
   dplyr::count(source_id)
@@ -317,7 +317,7 @@ show_references <- function(type, heading, with_counts = FALSE) {
   for (i in seq_len(nrow(rows))) {
     if (with_counts) {
       n <- source_id_counts[rows$key[i]]
-      writeLines(sprintf("`%s`: %s records name this reference in `source_id`\n", rows$key[i], ifelse(is.na(n), 0, n)))
+      writeLines(sprintf("`%s`: %s observations name this reference in `source_id`\n", rows$key[i], ifelse(is.na(n), 0, n)))
     }
     rows$entry[[i]] %>%
       traits.use::convert_list_to_df1() %>%
@@ -385,7 +385,7 @@ for (v in if (show_questions) missing else character()) {
 ## Locations
 
 ```{r, results='asis'}
-# When every record is species-level (or a higher taxonomic rank), 
+# When every observation is species-level (or a higher taxonomic rank), 
 # jump straight to a single confirmatory question instead.
 is_species_only_dataset <- nrow(data_study$traits) > 0 && isTRUE(all(data_study$traits$entity_type == "species"))
 
@@ -420,7 +420,7 @@ if (!is_species_only_dataset) {
 
   locations <-
     full_join(by = "location_id",
-              # count of records by location
+              # count of observations by location
               data_study$traits %>%
                 filter(entity_type %in% location_entity_types) %>%
                 # `ifelse()` degrades a character column to logical when the
@@ -429,7 +429,7 @@ if (!is_species_only_dataset) {
                 # (character) below -- `coalesce()` doesn't have that problem.
                 mutate(location_id = dplyr::coalesce(location_id, "unknown")) %>%
                 group_by(location_id) %>%
-                summarise(records = n()),
+                summarise(observations = n()),
               # details on locations from metadata
               data_study$locations %>%
                 filter(location_property %in% location_main) %>%
@@ -445,7 +445,7 @@ if (!is_species_only_dataset) {
                   `longitude (deg)` = as.numeric(`longitude (deg)`)
                   )
     ) %>%
-   select(location_id, location_name, records, `latitude (deg)`, `longitude (deg)`, description)
+   select(location_id, location_name, observations, `latitude (deg)`, `longitude (deg)`, description)
 
   if (nrow(locations) > 0) {
     locations %>%
@@ -462,7 +462,7 @@ if (!is_species_only_dataset) {
   # keep `locations` defined (0 rows) so the `maps` chunk below has
   # something safe to filter/check, without rendering anything itself
   locations <- tibble::tibble(
-    location_id = character(), location_name = character(), records = integer(),
+    location_id = character(), location_name = character(), observations = integer(),
     `latitude (deg)` = numeric(), `longitude (deg)` = numeric(), description = character()
   )
 }
@@ -686,14 +686,14 @@ if (nrow(data_study$identifiers) > 0) {
   }
 
   # One row per identifier declared in metadata. The identifiers table has no
-  # `var_in`, so records are counted per identifier_type x institution_code
+  # `var_in`, so observations are counted per identifier_type x institution_code
   identifier_counts <- data_study$identifiers %>%
-    dplyr::count(.data$identifier_type, .data$institution_code, name = "records")
+    dplyr::count(.data$identifier_type, .data$institution_code, name = "observations")
 
   identifiers_meta %>%
     dplyr::select(dplyr::any_of(c("var_in", "identifier_type", "institution_code"))) %>%
     dplyr::left_join(identifier_counts, by = c("identifier_type", "institution_code")) %>%
-    dplyr::mutate(records = tidyr::replace_na(.data$records, 0L)) %>%
+    dplyr::mutate(observations = tidyr::replace_na(.data$observations, 0L)) %>%
     my_kable_styling() %>%
     writeLines()
 
@@ -705,7 +705,7 @@ if (nrow(data_study$identifiers) > 0) {
 
 ## Taxa sampled
 
-We have records on `r data_study$traits$taxon_name %>% unique() %>% length()` taxa from your study. The full list of names for taxa recorded in your study is listed at the end of the report.
+We have observations of `r data_study$traits$taxon_name %>% unique() %>% length()` taxa from your study. The full list of names for taxa recorded in your study is listed at the end of the report.
 
 # Trait measurements
 
@@ -714,18 +714,18 @@ We have records on `r data_study$traits$taxon_name %>% unique() %>% length()` ta
 The dataset includes `r data_study$traits %>% nrow()` individual data points from `r data_study$traits$taxon_name %>% unique() %>% length()` taxa, with data included for the following `r data_study$traits$trait_name %>% unique() %>% length()` traits:
 
 ```{r summary_table, results='asis'}
-n_records <- data_study$traits %>%
+n_observations <- data_study$traits %>%
   group_by(trait_name) %>%
     summarise(
         taxa = length(unique(taxon_name)),
-        records = length(value)) %>%
-   mutate(records_per_taxa = round(records / taxa, digits = 2))
+        observations = length(value)) %>%
+   mutate(observations_per_taxa = round(observations / taxa, digits = 2))
 
-n_records %>%
+n_observations %>%
   my_kable_styling()
 ```
 
-For each trait, the table below counts the accepted taxa this dataset adds to `r database_name`, that is, taxa with no record of the trait in any other dataset (`new_taxa`), alongside the number of accepted taxa with a record of the trait in other datasets (`existing_taxa`).
+For each trait, the table below counts the accepted taxa this dataset adds to `r database_name`, that is, taxa with no observation of the trait in any other dataset (`new_taxa`), alongside the number of accepted taxa with an observation of the trait in other datasets (`existing_taxa`).
 
 ```{r, results='asis'}
 dataset_new_taxa_trait_combinations(database = austraits, dataset = dataset_id) |>
@@ -737,7 +737,7 @@ dataset_new_taxa_trait_combinations(database = austraits, dataset = dataset_id) 
 ```{r, results='asis'}
 new_question("(section `traits`) Does this study include other trait data we may have missed?")
 
-new_question("(section `traits`) Were any of your data sourced from other studies? If so, can you tell us which records and the source (so that we can avoid duplicates, where possible)?")
+new_question("(section `traits`) Were any of your data sourced from other studies? If so, can you tell us which observations and the source (so that we can avoid duplicates, where possible)?")
 
 ```
 
@@ -745,7 +745,7 @@ new_question("(section `traits`) Were any of your data sourced from other studie
 
 writeLines(ifelse(nrow(subset(data_study$excluded_data, error != "Missing value")) == 0,
         "All data passed quality control so nothing was excluded in this study. (Yay!)",
-        "We excluded some records in your dataset as they did not pass the quality control. A summary of the number of points and reasons for exclusion is as follows:"))
+        "We excluded some observations in your dataset as they did not pass the quality control. A summary of the number of points and reasons for exclusion is as follows:"))
 
 if (nrow(subset(data_study$excluded_data, error != "Missing value")) > 0) {
   data_study$excluded_data %>%
@@ -880,7 +880,7 @@ for (trait in traits_numeric) {
     sprintf("- **standardised description**: %s", elements$description),
     sprintf("- **label**: %s", elements$label),
     sprintf("- **units**: %s", units),
-    sprintf("- **records**: %s in this study (of %s in %s)",
+    sprintf("- **observations**: %s in this study (of %s in %s)",
             data_trait_study %>% nrow(), data_trait_all %>% nrow(), database_name),
     sprintf("- **allowable range**: %s - %s %s", elements$allowed_values_min,
             elements$allowed_values_max, units),
@@ -1027,7 +1027,7 @@ for (trait in traits_categorical) {
     sprintf("- **standardised name**: %s", trait),
     sprintf("- **standardised description**: %s", elements$description),
     sprintf("- **label**: %s", elements$label),
-    sprintf("- **records**: %s in this study (of %s in %s)", data_trait_study %>% nrow(), data_trait_all %>% nrow(), database_name),
+    sprintf("- **observations**: %s in this study (of %s in %s)", data_trait_study %>% nrow(), data_trait_all %>% nrow(), database_name),
     "",
     "Data for this trait in this study were collected using the following methods:", "",
     sprintf("- **value_type**: %s", transforms$value_type),
@@ -1050,7 +1050,7 @@ for (trait in traits_categorical) {
         my_kable_styling(),
       ""
     ),
-    sprintf("The following plots show the distribution of recorded values for this trait, broken down by family, first for your study and then for %s as a whole. Bubble colour indicates the proportion of a family's records that fall into a given value, and bubble size indicates the number of taxa in the family with a record of that value. Note that space-delimited strings of values indicate when multiple trait values were recorded for a single `observation` (taxon or individual-level) within a single study.", database_name),
+    sprintf("The following plots show the distribution of recorded values for this trait, broken down by family, first for your study and then for %s as a whole. Bubble colour indicates the proportion of a family's observations that fall into a given value, and bubble size indicates the number of taxa in the family with an observation of that value. Note that space-delimited strings of values indicate when multiple trait values were recorded for a single `observation` (taxon or individual-level) within a single study.", database_name),
     ""
   ) %>%
   writeLines()
@@ -1119,7 +1119,7 @@ write_trait_details <- function(trait) {
     sprintf("- **standardised name**: %s", trait),
     sprintf("- **standardised description**: %s", elements$description),
     sprintf("- **label**: %s", elements$label),
-    sprintf("- **records**: %s in this study (of %s in %s)",
+    sprintf("- **observations**: %s in this study (of %s in %s)",
             sum(data_study$traits$trait_name == trait), sum(austraits$traits$trait_name == trait), database_name),
     "",
     "Data for this trait in this study were collected using the following methods:", "",
@@ -1161,7 +1161,7 @@ taxonomic_datasets <- data_study$taxa$taxonomic_dataset %>%
   stringr::str_split(";\\s*") %>% unlist() %>% stats::na.omit() %>% unique() %>% sort()
 
 writeLines(paste0(
-  "We have records on the following taxa from your study. We have attempted to align taxon names with the taxonomic reference used by ",
+  "We have observations of the following taxa from your study. We have attempted to align taxon names with the taxonomic reference used by ",
   database_name,
   if (length(taxonomic_datasets) > 0) sprintf(" (taxonomic dataset: %s)", paste0("`", taxonomic_datasets, "`", collapse = ", ")) else "",
   "."
@@ -1186,7 +1186,7 @@ if (any(str_detect(data_study$taxa$taxon_name, fixed(paste0("[", dataset_id, "]"
     "**Note:** For some taxon names in this dataset that could only be resolved to genus or family, ",
     "we have appended the dataset id to the end of the taxon name as `[dataset_id]` (e.g. `Genus sp. [dataset_id]`). ",
     "This indicates that the name refers to a specific taxon identified only to genus (or family), rather than the entire genus, ",
-    "so that records of, say, `Genus sp.` from different datasets are not incorrectly grouped together as a single \"species\" simply because they share the same taxon name."
+    "so that observations of, say, `Genus sp.` from different datasets are not incorrectly grouped together as a single \"species\" simply because they share the same taxon name."
   ))
 }
 ```
