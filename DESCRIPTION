@@ -1,7 +1,7 @@
 Type: Package
 Package: traits.build
 Title: A Workflow for Harmonising Trait Data from Diverse Sources into a Documented Standard Structure
-Version: 2.2.0.9000
+Version: 3.0.0
 Maintainer: Daniel Falster <daniel.falster@unsw.edu.au>
 Authors@R: c(
     person(given = "Daniel", family = "Falster", role = c("cre", "aut"), email = "daniel.falster@unsw.edu.au", comment = c(ORCID = "0000-0002-9814-092X")),
@@ -63,7 +63,7 @@ Suggests:
     covr
 Remotes:
     richfitz/remake,
-    traitecoevo/traits.use
+    traitecoevo/traits.use@v0.1.1
 Encoding: UTF-8
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
