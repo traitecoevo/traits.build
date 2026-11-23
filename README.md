@@ -48,7 +48,7 @@ units, changing taxon names.
 
 The development version comes from the `develop` branch, the repository's default. Both also install [`traits.use`](https://github.com/traitecoevo/traits.use), which `traits.build` depends on.
 
-Version 3.0.0 reads each dataset's references from a `source:` block holding a `dataset:` entry (the dataset's own reference) and optional `source:` and `secondary:` lists. It no longer reads the `primary:` / `secondary_01:` / `original_01:` shape of 2.2.0 and earlier: `traits.build::metadata_convert_sources()` converts a database's `metadata.yml` files.
+Version 3.0.0 reads each dataset's references from a `source:` block holding a `dataset:` entry (the dataset's own reference) and optional `source:` and `secondary:` lists. It no longer reads the `primary:` / `secondary_01:` / `original_01:` shape of 2.2.0 and earlier: `traits.build::metadata_convert_sources()` converts a database's `metadata.yml` files. To upgrade a database from 2.2.0, follow the steps in [NEWS.md](NEWS.md#upgrading-a-database-to-300).
 
 ## Using a built database
 

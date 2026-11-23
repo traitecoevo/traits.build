@@ -1,15 +1,29 @@
 # traits.build 3.0.0
 
-This release changes how a dataset records its references, and the columns that hold them. Existing databases need their `metadata.yml` files converted, and their twelve-month traits retyped, before they build (see below). Built databases follow data model 1.4.0 (<https://w3id.org/traits.build>), and are read with [`traits.use`](https://github.com/traitecoevo/traits.use).
+This release changes how a dataset records its references, and the columns that hold them. Existing databases need their `metadata.yml` files converted, and their twelve-month traits retyped, before they build: follow the steps under "Upgrading a database to 3.0.0" below. Built databases follow data model 1.4.0 (<https://w3id.org/traits.build>), and are read with [`traits.use`](https://github.com/traitecoevo/traits.use).
+
+## Upgrading a database to 3.0.0
+
+Work through these in a database repository, in order, then rebuild and compare the output with the last build.
+
+1. Install traits.build 3.0.0, which installs traits.use 0.1.1: `remotes::install_github("traitecoevo/traits.build@v3.0.0")`.
+2. From the repository root, run `traits.build::metadata_convert_sources()`. It converts the `source:` block of every `data/*/metadata.yml` and lists what needs a person: a `dataset` reference whose key is not the `dataset_id`, and `source_id` values that name no reference. Fix those by hand.
+3. In `config/traits.yml`, set `type: monthly_presence` on every trait whose values are twelve `y`/`n` characters, one per month (in AusTraits, `flowering_time`, `fruiting_time`, `foliage_time` and `recruitment_time`). Every trait needs a `type` of `numeric`, `categorical`, `monthly_presence` or `text`.
+4. Regenerate the pipeline with `build_setup_pipeline()`, or change `austraits::bind_databases()` to `traits.use::bind_databases()` in `build.R`, `remake.yml` or `_targets.R`.
+5. Run `dataset_test()` on every dataset. Version 3.0.0 checks more, so datasets that passed before can fail: see "`dataset_test()`" below. The usual fixes are `.na` for a field left empty, an explicit `collection_date` such as `.na/2009`, and removing a `traits` entry whose `var_in` names a trait the long-format data does not hold.
+6. Look for `traits` entries that set `basis_of_record`, `life_stage`, `collection_date`, `measurement_remarks` or `entity_type` to the same value as the `dataset` block, in datasets whose locations set a different value. These entries now override the location: delete them to keep the location's value.
+7. Update code that reads the built database: read it with `traits.use`, which knows the new columns, and use the renamed `methods` columns below.
 
 ## Breaking changes
 
-- **References in `metadata.yml` are typed.** The `source:` block holds the dataset's own reference under `dataset:` (was `primary:`), keyed by the `dataset_id`, then optional lists `source:` (for a compilation, the studies its observations were taken from; was `original_NN:`) and `secondary:` (later publications that re-used the data; was `secondary_NN:`). The old shape is no longer read. Run `metadata_convert_sources()` from a database's root to convert every `metadata.yml`; it reports what needs a person to decide. `metadata_add_source_bibtex()` and `metadata_add_source_doi()` take `type = "dataset"`, `"source"` or `"secondary"` (#296).
+- **References in `metadata.yml` now have a type.** The `source:` block holds the dataset's own reference under `dataset:` (was `primary:`), keyed by the `dataset_id`, then optional lists `source:` (for a compilation, the studies its observations were taken from; was `original_source:`, `original:` or `original_NN:`) and `secondary:` (later publications that re-used the data; was `secondary:` or `secondary_NN:`). The old shape is no longer read. Run `metadata_convert_sources()` from a database's root to convert every `metadata.yml`; it reports what needs a person to decide. `metadata_add_source_bibtex()` and `metadata_add_source_doi()` take `type = "dataset"`, `"source"` or `"secondary"` (#296).
 - **Every observation has a `source_id`**, the key of the reference it was taken from, so `sources[[source_id]]` is its citation. It is the `dataset_id` unless a compilation maps `source_id` to a column of `data.csv`. It is the second column of `traits` and `excluded_data`, and observation ids are unchanged by it (#296).
-- **The `methods` table's reference columns are renamed** to match: `dataset_id_type`, `dataset_id_citation`, `secondary_id` and `secondary_citation`. `source_primary_key` and `source_original_dataset_key`/`_citation` are dropped; `traits.use::join_sources()` joins each observation's citation instead. The `austraits` package 3.1.1 and earlier cannot read these databases.
-- **traits.build depends on `traits.use` instead of `austraits`.** `traits.use` is the generic reader for any traits.build database, split out of `austraits` (traitecoevo/austraits#188). Pipelines written by `build_setup_pipeline()` call `traits.use::bind_databases()`; an older `build.R`, `remake.yml` or `_targets.R` calling `austraits::bind_databases()` needs `austraits` installed or the pipeline regenerated. `load_austraits()` now needs `library(austraits)`.
+- **The `methods` table's reference columns are renamed** to match: `source_primary_type` becomes `dataset_id_type` (the BibTeX entry type, such as `Article` or `Thesis`, of the dataset's own reference), `source_primary_citation` becomes `dataset_id_citation`, `source_secondary_key` becomes `secondary_id` and `source_secondary_citation` becomes `secondary_citation`. `source_primary_key`, which always equalled the `dataset_id`, and `source_original_dataset_key`/`_citation` are dropped; `traits.use::join_sources()` joins each observation's citation instead.
+- **Read these databases with `traits.use`, not `austraits` 3.1.1 or earlier.** The old `austraits` accepts them, then fails on the renamed columns: `extract_trait()`, `extract_dataset()` and `extract_taxa()` stop with "non-character argument", and `as_wide_table()` with "Column `source_primary_citation` doesn't exist". `austraits` 4.0.0, on GitHub and not yet released, reads them through `traits.use`.
+- **traits.build depends on `traits.use` instead of `austraits`.** `traits.use` is the generic reader for any traits.build database, split out of `austraits` (traitecoevo/austraits#188). Pipelines written by `build_setup_pipeline()` call `traits.use::bind_databases()`; an older `build.R`, `remake.yml` or `_targets.R` calling `austraits::bind_databases()` needs `austraits` installed or the pipeline regenerated. `load_austraits()`, `get_versions()` and `get_version_latest()` now need `library(austraits)`, and `plot_locations()` draws no map of Australia unless given one.
 - **Two new trait types, `monthly_presence` and `text`**, join `numeric` and `categorical` (#87). The check that a value is twelve `y`/`n` characters, one per month, now applies to every `monthly_presence` trait, rather than to traits named `flowering_time` and `fruiting_time`: **declare twelve-month traits as `monthly_presence` in `traits.yml`**, or their values go unchecked. A `text` trait holds free text, kept as written. Every trait must have one of the four types.
 - **A value set on a trait's entry in `metadata.yml` now takes precedence over a location's** for `basis_of_record`, `life_stage`, `collection_date`, `measurement_remarks` and `entity_type`: trait, then location, then the `dataset` block (#60). As these fields are part of `observation_id`, records can group into observations differently. A trait entry that only repeats the dataset's default can now hide a location's value.
+- **`dataset_test()` checks more**, so a dataset that passed under 2.2.0 can fail: see "`dataset_test()`" below.
 
 ## New features
 
@@ -17,7 +31,7 @@ This release changes how a dataset records its references, and the columns that 
 - A database can add columns of its own to the `traits` table, such as `specimen_type`, listed with descriptions under `additional_traits_table_fields` in `config/metadata.yml` and set by each dataset like `measurement_remarks` (#314).
 - `omit_values` on a trait's entry lists values a contributor used for "no value", such as `0` or `"-"`, in place of `na_if()` in `custom_R_code` (#12).
 - `trait_value_term_order: input_order` in `config/metadata.yml` keeps the terms of a multi-term value, such as `tree shrub`, in the order the source gave them; the default, `alphabetical`, sorts them as before (#297).
-- A `source` or `secondary` list can be kept in a `.yml` or `.bib` file beside `metadata.yml`, for a compilation citing many studies.
+- A `source` or `secondary` list can be kept in a `.yml` or `.bib` file beside `metadata.yml`, for a compilation citing many studies. `util_flatten_sources()` reads a `source:` block into one row per reference.
 - A database repository can define `post_build(database)` in `R/post_build.R`, run on every build after the datasets are combined, and `post_export(database, path)` in `R/post_export.R`, for outputs wanted only at release; see `build_post_process()` and `build_post_export()` (#197).
 - Review tools for curators, which list values to look at rather than failing a test: `dataset_check_outlier_by_species()` and `dataset_check_outlier_by_genus()` for numeric values far from other datasets' (unit slips, misplaced decimal points), `dataset_check_duplicates_within_dataset()` for a species-level value repeated on every row, and `dataset_check_categorical_substitutions()` for a table of the substitutions a dataset still needs.
 - For `custom_R_code`: `util_parse_collection_date()` converts a column of raw dates to the `collection_date` format, and `move_values_to_new_trait()` and `move_values_to_new_trait_long()`, moved from `austraits.build`, move values recorded under the wrong trait (#162).
@@ -29,13 +43,15 @@ This release changes how a dataset records its references, and the columns that 
 - Fails an entry in `metadata.yml` with a field left empty, which the build would drop without warning; write `.na` for a value that is deliberately missing (#307).
 - Fails missing `collection_date` values; record an unknown date explicitly, such as `.na/2009`.
 - A long-format dataset may hold traits it does not map, as a wide one may hold columns it does not map, but a `traits` entry whose `var_in` is not in the data fails (#308).
-- Allows the Greek alphabet, except GREEK SMALL LETTER MU and the capitals that look identical to ASCII letters, which `dataset_replace_disallowed_chars()` rewrites as the micro sign and those letters (#257).
+- Allows the Greek alphabet, except GREEK SMALL LETTER MU, small omicron, and the capitals that look identical to ASCII letters, which `dataset_replace_disallowed_chars()` rewrites as the micro sign and those letters (#257).
 - Reports each failure once, without a backtrace, and stops checking a dataset after a failure the remaining checks depend on, such as a `metadata.yml` that is not valid YAML. A `data.csv` that cannot be read lists its problems by line (#213).
 
 ## Bug fixes
 
 - A record whose `entity_type` is empty keeps its link to its location; only a `species` record is unlinked.
 - `metadata_add_source_bibtex()` and `metadata_add_source_doi()` key a `dataset` reference by the `dataset_id` exactly, rather than title-casing and truncating it (`Smith_2020_2` became `Smith_2020`).
+- The review copy of the dataset report no longer asks "Can you provide missing details for the variable NA?" of a dataset with no `unknown` field in its `dataset` block, which was most datasets (a bug from 2.2.0's `show_questions`).
+- The dataset report no longer fails on a dataset with a `foliage_time` trait. It left twelve-month traits out of its categorical section by a list of names that missed `foliage_time`; it now leaves out every `monthly_presence` and `text` trait.
 
 # traits.build 2.2.0
 
