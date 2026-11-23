@@ -425,7 +425,11 @@ test_that("the pipeline published in Wenk et al. 2024 Fig. 1 runs as written", {
       dataset_update_taxonomy(taxon_list)
   )
 
-  database <- traits.use::bind_databases(databases = list(Test_2023_1 = built))
+  # Test_2023_1 repeats a species-level value on purpose, so its excluded_data
+  # holds exact copies, which traits.use 0.1.1 and later warn about
+  database <- suppressWarnings(
+    traits.use::bind_databases(databases = list(Test_2023_1 = built))
+  )
 
   combined <- database_create_combined_table(database)
   expect_s3_class(combined, "data.frame")

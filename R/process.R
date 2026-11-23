@@ -3014,7 +3014,8 @@ write_plaintext <- function(austraits, path) {
 #' Identify duplicates preventing pivoting wider
 #'
 #' Run on a compiled database, this cannot see rows that are identical in every
-#' column, because [traits.use::bind_databases()] drops them. To find the rows
+#' column, because [traits.use::bind_databases()] drops them (with a warning
+#' naming the dataset, from traits.use 0.1.1). To find the rows
 #' behind a [dataset_test()] pivot failure, use [dataset_find_pivot_duplicates()].
 #'
 #' @param database_object Database object
