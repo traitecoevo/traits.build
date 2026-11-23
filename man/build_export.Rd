@@ -17,13 +17,15 @@ than the default must be exported with that same name.}
 \item{path}{Directory to write into}
 }
 \value{
-The path written, invisibly
+The path of the \code{.rds} written, invisibly
 }
 \description{
 The \code{targets} pipeline rebuilds the compilation but does not write the
 exported \code{.rds}: that write is around a third of a one-dataset rebuild, and
 it is a publishing step rather than part of checking a dataset. This writes
-it, reading the compilation \code{targets::tar_make()} has already built.
+it, reading the compilation \code{targets::tar_make()} has already built, then
+runs the repository's \code{post_export()} from \code{R/post_export.R}, if it has one,
+into the same directory (see \code{\link[=build_post_export]{build_post_export()}}).
 }
 \examples{
 \dontrun{
@@ -33,5 +35,5 @@ build_export("austraits")
 }
 }
 \seealso{
-\code{\link[=build_setup_pipeline]{build_setup_pipeline()}}
+\code{\link[=build_setup_pipeline]{build_setup_pipeline()}}, \code{\link[=build_post_export]{build_post_export()}}
 }

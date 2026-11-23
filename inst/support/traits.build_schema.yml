@@ -77,6 +77,15 @@ identifier_type:
      materialSampleID: An identifier for the dwc:MaterialSample (as opposed to a particular digital record of the dwc:MaterialSample). In the absence of a persistent global unique identifier, construct one from a combination of identifiers in the record that will most closely make the dwc:materialSampleID globally unique.
      occurrenceID: Per DarwinCore, an identifier for an Occurrence, as opposed to a particular digital record of the Occurrence.
 
+trait_type:
+  description: &trait_type The type of a trait, declared as `type` in its definition in `config/traits.yml`. The type decides which checks the trait's values must pass.
+  type: categorical
+  values:
+    numeric: Numeric values, converted to the trait's `units` and required to lie between its `allowed_values_min` and `allowed_values_max`. The datatype is decimal (`xsd:decimal`); a `range` or `bin` value is two decimals written `min--max`.
+    categorical: Values drawn from the terms listed in the trait's `allowed_values_levels`. A value may combine several terms, separated by spaces, which are stored in alphabetical order. The datatype is string (`xsd:string`).
+    monthly_presence: Twelve characters, one per month starting with January, each `y` if the trait (a phenophase such as flowering) occurs in that month and `n` if it does not, e.g. `nnyyyynnnnnn`. Values are stored in lower case. The datatype is a bit string of length 12, written with `y` for 1 and `n` for 0, and stored as a string (`xsd:string`).
+    text: Free text with no fixed list of allowed values, appropriate to use for traits whose values are taxon names. Values are kept as written, including their case and word order. The datatype is string (`xsd:string`).
+
 #-------------------------------------------------------------
 # A key describing the structure of the compiled `AusTraits` dataset
 
@@ -89,6 +98,7 @@ austraits:
       type: table
       elements:
         dataset_id: &dataset_id Primary identifier for each study contributed to AusTraits; most often these are scientific papers, books, or online resources. By default this should be the name of the first author and year of publication, e.g. `Falster_2005`.
+        source_id: &source_id An identifier for the data source, which is the `dataset_id` for data presented for the first time in this study, or, for a compilation, the original data source.
         taxon_name: &taxon_name Scientific name of the taxon on which traits were sampled, without authorship. When possible, this is the currently accepted (botanical) or valid (zoological) scientific name, but might also be a higher taxonomic level.
         observation_id: &observation_id A unique integral identifier for the observation, where an observation is all measurements made on an individual at a single point in time. It is important for joining traits coming from the same `observation_id`. Within each dataset, observation_id's are unique combinations of `taxon_name`, `population_id`, `individual_id`, and `temporal_context_id`.
         trait_name: &trait_name Name of the trait sampled. Allowable values specified in the table `definitions`.
@@ -104,7 +114,6 @@ austraits:
         individual_id: &individual_id A unique integer identifier for an individual, with individuals numbered sequentially within each dataset by taxon by population grouping. Most often each row of data represents an individual, but in some datasets trait data collected on a single individual is presented across multiple rows of data, such as if the same trait is measured using different methods or the same individual is measured repeatedly across time.
         repeat_measurements_id: &repeat_measurements_id A unique integer identifier for repeat measurements of a trait that comprise a single observation, such as a response curve.
         temporal_context_id: &temporal_context_id A unique integer identifier assigned where repeat observations are made on the same individual (or population, or taxon) across time. The identifier links to specific information in the context table.
-        source_id: &source_id For datasets that are compilations, an identifier for the original data source.
         location_id: &location_id A unique integer identifier for a location, with locations numbered sequentially within a dataset. The identifier links to specific information in the location table.
         entity_context_id: &entity_context_id A unique integer identifier indicating specific contextual properties of an individual, possibly including the individual's sex or caste (for social insects).
         plot_context_id: &plot_context_id A unique integer identifier for a plot, where a plot is a distinct collection of organisms within a single geographic location, such as plants growing on different aspects or blocks in an experiment. The identifier links to specific information in the context table.
@@ -143,14 +152,11 @@ austraits:
         methods: &methods A textual description of the methods used to collect the trait data. Whenever available, methods are taken near-verbatim from the referenced source. Methods can include descriptions such as 'measured on botanical collections', 'data from the literature', or a detailed description of the field or lab methods used to collect the data.
         method_id: *method_id
         description: &description A 1-2 sentence description of the purpose of the study.
-        sampling_strategy: &sampling_strategy A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript. For preserved specimens, this field ideally indicates which records were 'sampled' to measure a specific trait.
-        source_primary_key: Citation key for the primary source in `sources`. The key is typically formatted as `Surname_year`.
-        source_primary_type: Citation type for the primary source in `sources`, using standard BibTex citation types (Article, Book, Misc, Online, Report, Techreport, Thesis, Unpublished).
-        source_primary_citation: Citation for the primary source. This detail is generated from the primary source in the metadata.
-        source_secondary_key: Citation key for the secondary source in `sources`.  The key is typically formatted as `Surname_year`.
-        source_secondary_citation: Citations for the secondary source. This detail is generated from the secondary source in the metadata.
-        source_original_dataset_key: Citation key for the original dataset_id in sources; for compilations.  The key is typically formatted as `Surname_year`.
-        source_original_dataset_citation: Citations for the original dataset_id in sources; for compilations. This detail is generated from the original source in the metadata.
+        sampling_strategy: &sampling_strategy A written description of how study locations were selected and how study individuals were selected. When available, this information is lifted verbatim from a published manuscript.
+        dataset_id_type: Citation type for the dataset's own reference, `sources[[dataset_id]]`, using standard BibTex citation types (Article, Book, Misc, Online, Report, Techreport, Thesis, Unpublished).
+        dataset_id_citation: Citation for the dataset's own reference, `sources[[dataset_id]]`. The compiled reference is generated from the `dataset` reference in the metadata.
+        secondary_id: Citation keys, separated by `; `, for the dataset's `secondary` references in `sources`, later publications by the same research group that used the same data for additional analyses. Each key is typically formatted as `Surname_year`.
+        secondary_citation: Citations, separated by `; `, for the `secondary` references. The compiled references are generated from the `secondary` references in the metadata.
         data_collectors: &data_collectors The person (people) leading data collection for this study.
         assistants: &assistants Names of people who played a more minor role in data collection for the study.
         dataset_curators: &dataset_curators Names of database team member(s) who contacted the data collectors and added the study to the database repository.
@@ -160,6 +166,7 @@ austraits:
       elements:
         error: Indicating why the record was excluded. Common reasons are missing_unit_conversions, missing_value, and unsupported_trait_value.
         dataset_id: *dataset_id
+        source_id: *source_id
         taxon_name: *taxon_name
         observation_id: *observation_id
         trait_name: *trait_name
@@ -175,7 +182,6 @@ austraits:
         individual_id: *individual_id
         repeat_measurements_id: *repeat_measurements_id
         temporal_context_id: *temporal_context_id
-        source_id: *source_id
         location_id: *location_id
         entity_context_id: *entity_context_id
         plot_context_id: *plot_context_id
@@ -226,7 +232,7 @@ austraits:
         affiliation: Last known institution or affiliation.
         additional_role: Additional roles of data collector, mostly contact person.  
     identifiers:
-      description: A table containing details on identifiers that cross-references observations between the two dataframes using combinations of the variables `dataset_id` and `observation_id`.
+      description: A table containing details on identifiers that cross-reference observations between the two dataframes using combinations of the variables `dataset_id` and `observation_id`. For preserved specimens, it ideally indicates which records were 'sampled' to measure a specific trait.
       type: table
       elements:
         dataset_id: *dataset_id
@@ -235,7 +241,7 @@ austraits:
         institution_code: &institution_code The name (or acronym) in use by the institution having custody of the object(s) or information referred to by the identifier value.
         identifier_value: A sequence of characters that links an observation within a traits.build database to additional information about observed entity in another database.
     sources:
-      description: Bibtex entries for all primary and secondary sources in the compilation.
+      description: Bibtex entries for every reference a dataset cites, named by key, including its own reference (keyed by its `dataset_id`), any `source` references data observations were taken from, and any `secondary` references, later publications by the same research group that used the same data for additional analyses. An observation's citation is `sources[[source_id]]`.
       type: list
     definitions:
       description: A copy of the definitions for all tables and terms. Information included here was used to process data and generate any documentation for the study.
@@ -269,6 +275,7 @@ austraits:
             identifier: The related identifier.
             relation: Description of the relationship of the related resource to the primary resource.
             resource_type: The general type of a resource (database), using controlled values from DataCite, https://support.datacite.org/docs/schema-40.
+        data_model_version: The version of the traits.build data model (https://w3id.org/traits.build) the database's tables follow, written by traits.build when it builds the database. Software that reads the database checks it to decide whether it can read the tables; a new major version is a change an existing reader cannot read.
         references: Resource that this resource references.
         publisher: The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource.
         publication_date: The data when this resource was or will be made publicly available.
@@ -298,6 +305,13 @@ austraits:
             award_title: The title of the award (grant).
         creators: Dataset creators.
         contributors: Dataset contributors, reflecting names included in the contributors table.
+        trait_value_term_order:
+          description: Optional. The order in which the terms of a trait value holding several space-separated terms, such as `shrub tree`, are mapped into the database. Set in the `metadata` block of the database's `config/metadata.yml`; when absent, `alphabetical` is the default.
+          type: categorical
+          values:
+            alphabetical: Trait values are sorted alphabetically, so `tree shrub` and `shrub tree` are both mapped as `shrub tree` within the built database and the order of terms carries no meaning. The default.
+            input_order: Trait values are kept in the order they have in the source data, after any substitutions, so `tree shrub` and `shrub tree` are distinct values.
+        additional_traits_table_fields: Optional. Columns a database adds to its `traits` and `excluded_data` tables, for fields recorded for all or most of its records, such as the kind of specimen measured. Set in the `metadata` block of the database's `config/metadata.yml`, as a map from each column's name to its description, such as `specimen_type` described as `The kind of specimen the value was measured on.` A name starts with a letter, holds only letters, digits and underscores, and is not already in use, as a column of any table here, a field of a dataset's `metadata.yml`, or a working column the build adds to the traits table while processing it. The columns follow the schema's own, in the order given, and their descriptions are added to the exported schema. A dataset sets each one as it sets `measurement_remarks`, in the `dataset` block of its `metadata.yml` or on a trait's entry in `traits`, as a fixed value or the name of a column of `data.csv`; a value set on a trait takes precedence. Where a dataset sets neither, the column is empty. Values are free text. When absent, the tables have only the schema's columns.
     build_info:
       description: A description of the computing environment used to create this version of the dataset, including version number, git commit and R session_info.
       type: list
@@ -311,6 +325,12 @@ austraits:
           description: The versions of R, packages, and data used to generate the dataset.
           type: categorical
           value: A structured yaml file, represented as a list in R.
+        post_build:
+          description: The post-build step that processed the database after its datasets were combined, recorded by `build_post_process()`. Present only if the database repository defines `post_build()` in `R/post_build.R`.
+          type: list
+          elements:
+            file: Path of the file defining `post_build()`, as given to `build_post_process()`; `R/post_build.R` in a pipeline written by `build_setup_pipeline()`.
+            md5: md5 checksum of that file's contents when the step ran, identifying the code even when it was not committed. Line endings are normalised to `\n` first, so the checksum is the same on every operating system.
 
 #-------------------------------------------------------------
 
@@ -319,11 +339,11 @@ metadata:
   type: list
   elements:
     source:
-      description: Citation details for the original source(s) for the data, whether it is a published journal article, book, website, or thesis.
+      description: Citation details for the sources of the data, whether published journal articles, books, websites or theses. The `dataset` reference is for the entire dataset, keyed by its `dataset_id`; `source` references are, the references for data values included in the dataset that are sourced from previous publications or collections and link to a specific `source_id`; `secondary` references are later publications from the same research group that re-used or re-analysed data from the dataset. Either list, `source` or `secondary`, may instead name a `.yml` file holding the list, or a `.bib` file, kept beside `metadata.yml`.
       type: categorical
       values:
-        primary:
-          description: &source_primary The original study in which data were collected.
+        dataset:
+          description: &source_dataset The study the data were collected for, or, for a compilation, a publication or database for which the data were assembled. A single reference, whose `key` is the `dataset_id`.
           type: catergorical
           values:
             key: &key The key is used to identify the exact reference using authors last name and year of publication.
@@ -343,10 +363,31 @@ metadata:
             isbn: &isbn The International Standard Book Number of a book or report.
             place: &place The location where the reference was written or published.
             note: &note Additional notes for the reference which are not contained in the other fields.
+        source:
+          description: &source_source For a compilation, a study from which observations were taken. Each observation's `source_id` holds the `key` of the entry it came from. A list of references, one `- key:` item per reference, or the name of a `.yml` or `.bib` file holding them.
+          type: array
+          elements:
+            key: *key
+            bibtype: *bibtype
+            year: *year
+            author: *author
+            journal: *journal
+            title: *title
+            volume: *volume
+            number: *number
+            pages: *pages
+            doi: *doi
+            url: *url
+            type: *type
+            institution: *institution
+            publisher: *publisher
+            isbn: *isbn
+            place: *place
+            note: *note
         secondary:
-          description: &source_secondary A subsequent study where data were compiled or re-analysed.
-          type: categorical
-          values:
+          description: &source_secondary An additional publication from the same research group that re-used or re-analysed data from the dataset. Attached to the whole dataset. A list of references, one `- key:` item per reference, or the name of a `.yml` or `.bib` file holding them.
+          type: array
+          elements:
             key: *key
             bibtype: *bibtype
             year: *year
@@ -383,7 +424,7 @@ metadata:
         dataset_curators:
           description: *dataset_curators
     dataset:
-      description: Study details, including format of the data, custom R code applied to data, and various descriptors. The value entered for each element can be either a header for a column within the data.csv file or the actual value to be used.
+      description: Study details, including format of the data, custom R code applied to data, and various descriptors. The value entered for each element can be either a header for a column within the data.csv file or the actual value to be used. A database's own columns of the `traits` table, named by `additional_traits_table_fields` in its `config/metadata.yml`, can also be set here.
       type: categorical
       values:
         data_is_long_format: Indicates if the data spreadsheet has a vertical (long) or  horizontal (wide) configuration with `yes` or `no` terminology.
@@ -413,7 +454,7 @@ metadata:
         original_file: The name of the file initially submitted to AusTraits.
         notes: Generic notes about the study and processing of data.
     identifiers:
-      description: A list of columns that include identifiers that cross-references observations to information in other databases and information indicating what identifier_type they are.
+      description: A list of columns that include identifiers that cross-reference observations to information in other databases, biodiversity collections and informatics resources. For preserved specimens, this list ideally indicates which records were 'sampled' to measure a specific trait.
       type: array
       elements:        
         var_in: Name of column with contextual data in the original data submitted.
@@ -439,7 +480,7 @@ metadata:
         value: The standardised contextual values, aligning syntax and wording with other studies.
         description: A description of the contextual values.
     traits:
-      description: A translation table, mapping traits and units from a contributed study onto corresponding variables in AusTraits. The methods used to collect the data are also specified here.
+      description: A translation table, mapping traits and units from a contributed study onto corresponding variables in AusTraits. The methods used to collect the data are also specified here. A database's own columns of the `traits` table, named by `additional_traits_table_fields` in its `config/metadata.yml`, can also be set on a trait's entry.
       type: array
       elements:
         var_in: Name of trait in the original data submitted.
@@ -456,6 +497,7 @@ metadata:
         methods: *methods
         life_stage: *life_stage
         repeat_measurements_id: *repeat_measurements_id
+        omit_values: Optional. Values the data contributor used for "no value" in this trait, such as `0`, `-9999`, `"-"` or `"NaN"`, given as a single value or a list. Each is treated as missing, so it is dropped from the `traits` table and does not appear in `excluded_data`, the same as `custom_R_code` applying `na_if()` to the trait's column. Values are compared with the column as `data.csv` is read and `custom_R_code` leaves it, before `substitutions`. So `omit_values` cannot replace an `na_if()` whose result `custom_R_code` itself goes on to use, to average values or combine columns for example; keep that call in `custom_R_code`. In a numeric column they are compared as numbers, so `0` also omits `0.0`; in any other column as exact text, case included, so `0` does not omit `0.0` there. Quote a value YAML would otherwise read as true, false or missing, such as `"no"`, `"n"` or `".na"`, and quote a number meant to match a text column as spelt, such as `"0.0"`, since unquoted `0.0` is compared there as `0`. In long-format data the values apply only to the rows of this trait, and the value column, shared by every trait, is numeric only when every trait's values are numbers.
     substitutions:
       description: A list of any "find and replace" substitutions needed to get the data into the right format.
       type: array
@@ -485,15 +527,14 @@ allowed_characters:
   description: &allowed_characters Characters permitted outside plain ASCII, used by `check_disallowed_chars()` and reported by `dataset_test`. ASCII is always allowed whatever this section says. This is the single global definition; it is not configurable per dataset.
   type: character_set
   letter_ranges:
-    description: Letters are allowed by range rather than listed one at a time, so that a letter and its upper-case form can never be treated differently. Enumerating them by hand left 14 letters allowed in lower case but not upper, which is why a name like Osvaldsson was reported while osvaldsson would not have been. The range covers the accented letters of every European language, which is what contributor, author and taxon names need.
+    description: Letters are allowed by range rather than listed one at a time, so that a letter and its upper-case form can never be treated differently. Enumerating them by hand left 14 letters allowed in lower case but not upper, which is why a name like Osvaldsson was reported while osvaldsson would not have been. The Latin range covers the accented letters of every European language, which is what contributor, author and taxon names need; the Greek range covers the letters methods use as symbols. The exceptions are the Greek letters listed under never_allowed below, which look identical to another character, so that, for example, the Greek small letter alpha is allowed but its capital, identical to A, is not.
     values:
       00C0-017F: Latin-1 Supplement letters and Latin Extended-A. Code points in this range that are not letters are excluded automatically, so 00D7 MULTIPLICATION SIGN and 00F7 DIVISION SIGN are not admitted here; 00D7 is listed under symbols below.
+      0386-03CE: The Greek alphabet, upper and lower case, with its accented forms, for letters carrying a technical meaning in methods, such as 03B4 GREEK SMALL LETTER DELTA for isotope composition (delta13C), 0394 GREEK CAPITAL LETTER DELTA for a difference (deltaT), and 03A6/03C6 PHI and 03A8/03C8 PSI for water potential. 0387 GREEK ANO TELEIA is punctuation and so not admitted. 03BC GREEK SMALL LETTER MU, 03BF GREEK SMALL LETTER OMICRON and the 14 capitals identical to an ASCII letter are excluded under never_allowed below.
   letters:
     description: Letters allowed from outside the ranges above.
     values:
       00B5: MICRO SIGN, as in micrometre. Note that 03BC GREEK SMALL LETTER MU is a different code point that looks identical; it is not allowed, so that units are written consistently.
-      03B4: GREEK SMALL LETTER DELTA, for stable isotope composition (e.g. delta13C, delta15N, delta18O), the same role 2030 PER MILLE SIGN plays below.
-      0394: GREEK CAPITAL LETTER DELTA, conventionally used for "difference"/"change" (e.g. deltaT for a temperature change), a distinct meaning from its lower-case form above.
   symbols:
     description: Non-letter characters that carry meaning and so are retained rather than rewritten. A symbol absent from this list is reported, and either belongs here or is a mistake to correct.
     values:
@@ -518,7 +559,23 @@ allowed_characters:
       2264: LESS-THAN OR EQUAL TO
       2265: GREATER-THAN OR EQUAL TO
   never_allowed:
-    description: Characters that Unicode classifies as letters, and which the ranges above would otherwise admit, but which occur in practice only as look-alikes for a symbol. They stay disallowed so that the look-alike is corrected rather than retained.
+    description: Characters that Unicode classifies as letters, and which the ranges above would otherwise admit, but which look identical to a symbol or an ASCII letter. They stay disallowed so that the look-alike is corrected rather than retained, since text holding one would not match the same text typed with the character it imitates.
     values:
       00AA: FEMININE ORDINAL INDICATOR, a look-alike for a superscript a
       00BA: MASCULINE ORDINAL INDICATOR, used in error for 00B0 DEGREE SIGN. The most common disallowed character in the database.
+      03BC: GREEK SMALL LETTER MU, a look-alike for 00B5 MICRO SIGN, which is the character units are written with. dataset_replace_disallowed_chars() rewrites it as 00B5.
+      0391: GREEK CAPITAL LETTER ALPHA, a look-alike for A. dataset_replace_disallowed_chars() rewrites it as A.
+      0392: GREEK CAPITAL LETTER BETA, a look-alike for B. dataset_replace_disallowed_chars() rewrites it as B.
+      0395: GREEK CAPITAL LETTER EPSILON, a look-alike for E. dataset_replace_disallowed_chars() rewrites it as E.
+      0396: GREEK CAPITAL LETTER ZETA, a look-alike for Z. dataset_replace_disallowed_chars() rewrites it as Z.
+      0397: GREEK CAPITAL LETTER ETA, a look-alike for H. dataset_replace_disallowed_chars() rewrites it as H.
+      0399: GREEK CAPITAL LETTER IOTA, a look-alike for I. dataset_replace_disallowed_chars() rewrites it as I.
+      039A: GREEK CAPITAL LETTER KAPPA, a look-alike for K. dataset_replace_disallowed_chars() rewrites it as K.
+      039C: GREEK CAPITAL LETTER MU, a look-alike for M. dataset_replace_disallowed_chars() rewrites it as M.
+      039D: GREEK CAPITAL LETTER NU, a look-alike for N. dataset_replace_disallowed_chars() rewrites it as N.
+      039F: GREEK CAPITAL LETTER OMICRON, a look-alike for O. dataset_replace_disallowed_chars() rewrites it as O.
+      03A1: GREEK CAPITAL LETTER RHO, a look-alike for P. dataset_replace_disallowed_chars() rewrites it as P.
+      03A4: GREEK CAPITAL LETTER TAU, a look-alike for T. dataset_replace_disallowed_chars() rewrites it as T.
+      03A5: GREEK CAPITAL LETTER UPSILON, a look-alike for Y. dataset_replace_disallowed_chars() rewrites it as Y.
+      03A7: GREEK CAPITAL LETTER CHI, a look-alike for X. dataset_replace_disallowed_chars() rewrites it as X.
+      03BF: GREEK SMALL LETTER OMICRON, a look-alike for o. dataset_replace_disallowed_chars() rewrites it as o.

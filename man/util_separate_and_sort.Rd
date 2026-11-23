@@ -2,22 +2,37 @@
 % Please edit documentation in R/utils.R
 \name{util_separate_and_sort}
 \alias{util_separate_and_sort}
-\title{Split and sort cells with multiple values}
+\title{Split and order cells with multiple values}
 \usage{
-util_separate_and_sort(x, sep = " ")
+util_separate_and_sort(x, sep = " ", order = "alphabetical")
 }
 \arguments{
 \item{x}{An individual cell with multiple values}
 
 \item{sep}{A separator, a whitespace is the default}
+
+\item{order}{\code{"alphabetical"} (the default) or \code{"input_order"}}
 }
 \value{
-A vector of alphabetically sorted records
+A vector of records, each with its values in the requested order and
+without repeats
 }
 \description{
 \code{util_separate_and_sort}: For a vector x in which individual cell may have
-multiple values (separated by 'sep'), sort records within each cell alphabetically.
+multiple values (separated by 'sep'), put the values within each cell in
+order and drop any value repeated within a cell.
+}
+\details{
+With \code{order = "alphabetical"} the values are sorted, so \verb{tree shrub} and
+\verb{shrub tree} both become \verb{shrub tree}. With \code{order = "input_order"} they keep
+the order they were given in, so the first value can carry meaning, and only
+the repeats are dropped (\verb{tree shrub tree} becomes \verb{tree shrub}). Which one a
+build uses is set by \code{trait_value_term_order} in the database's
+\code{config/metadata.yml}; see \code{\link[=util_trait_value_term_order]{util_trait_value_term_order()}}.
 }
 \examples{
-\dontrun{util_separate_and_sort("z y x")}
+\dontrun{
+util_separate_and_sort("z y x")
+util_separate_and_sort("z y x y", order = "input_order")
+}
 }

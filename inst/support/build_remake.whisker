@@ -74,8 +74,19 @@ targets:
       - .git/index
 
 # Combine all the source into one resource
-  {{database_name}}:
+  {{database_name}}_versioned:
     command: build_add_version({{database_name}}_raw, version_number, git_SHA)
+
+# Post-build step: runs `post_build()` from R/post_build.R, if that file exists.
+# remake cannot depend on a file that may not exist, so the file is declared
+# only if it existed when this file was generated: re-run
+# `build_setup_pipeline()` after adding or removing R/post_build.R.
+  {{database_name}}:
+    command: build_post_process({{database_name}}_versioned, I("R/post_build.R"))
+{{#post_build_file}}
+    depends:
+      - R/post_build.R
+{{/post_build_file}}
 
 # Save to file
   export/data/curr/{{database_name}}.rds:

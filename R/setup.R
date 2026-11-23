@@ -45,11 +45,11 @@ metadata_create_template <- function(dataset_id,
   out <- get_schema()$metadata$elements
 
   out[names(out) %notin% fields] <- NA
-  out$source <- out$source$values["primary"]
-  out$source$primary <- out$source$primary$values[articles]
-  out$source$primary[] <- "unknown"
-  out$source$primary["key"] <- dataset_id
-  out$source$primary["bibtype"] <- "Article"
+  out$source <- out$source$values["dataset"]
+  out$source$dataset <- out$source$dataset$values[articles]
+  out$source$dataset[] <- "unknown"
+  out$source$dataset["key"] <- dataset_id
+  out$source$dataset["bibtype"] <- "Article"
 
   collectors <- c("last_name", "given_name", "ORCID", "affiliation")
 
@@ -290,7 +290,7 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
   # Check if existing content, if so append
   if (!all(is.na(metadata$traits))) {
 
-    existing_var_in <- metadata$traits %>% austraits::convert_list_to_df2() %>% dplyr::pull("var_in")
+    existing_var_in <- metadata$traits %>% util_traits_to_df() %>% dplyr::pull("var_in")
     if (any(var_in %in% existing_var_in)) {
       message(
         sprintf(red("Following traits already exist in the metadata and will be skipped: ") %+%
@@ -300,7 +300,7 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
     }
 
     # Append new traits if not already in metadata
-    traits <- dplyr::bind_rows(metadata$traits %>% austraits::convert_list_to_df2(), traits) %>%
+    traits <- dplyr::bind_rows(metadata$traits %>% util_traits_to_df(), traits) %>%
       dplyr::filter(!duplicated(var_in))
 
     if (length(var_in[!var_in %in% existing_var_in]) > 0) {
@@ -322,7 +322,24 @@ metadata_add_traits <- function(dataset_id, user_responses = NULL) {
       ))
   }
 
-  metadata$traits <- traits %>% austraits::convert_df_to_list()
+  new_traits <- traits %>% traits.use::convert_df_to_list()
+
+  # `omit_values` does not survive the round trip through a table above, so
+  # carry it across from the existing entry each row was made from: the first
+  # with its `var_in`, as the table keeps only that one
+  if (is.list(metadata$traits)) {
+    entry_var_in <- vapply(
+      metadata$traits, function(x) as.character(x[["var_in"]])[1], character(1)
+    )
+    for (j in seq_along(new_traits)) {
+      i <- match(new_traits[[j]][["var_in"]], entry_var_in)
+      if (!is.na(i) && !is.null(metadata$traits[[i]][["omit_values"]])) {
+        new_traits[[j]][["omit_values"]] <- metadata$traits[[i]][["omit_values"]]
+      }
+    }
+  }
+
+  metadata$traits <- new_traits
   write_metadata_dataset(metadata, dataset_id)
   return(invisible(metadata))
 
@@ -720,24 +737,35 @@ metadata_add_identifiers <- function(dataset_id, overwrite = FALSE,
 
 #' Adds citation details to a metadata file for given study
 #'
+#' A dataset's `dataset` reference (the dataset itself) is a single entry,
+#' which this overwrites, keyed by the `dataset_id`. Its `source` references
+#' (for a compilation, the studies observations were taken from, each named in the
+#' data's `source_id`) and `secondary` references (later publications re-using
+#' the same data) are lists: the reference is appended, or replaces the listed
+#' entry that already has its `key`, in `metadata.yml` or in the file the list
+#' is kept in. See `util_flatten_sources()` for the shape of the block.
+#'
 #' @inheritParams metadata_path_dataset_id
 #' @param file Name of file where reference is saved
-#' @param type Type of reference: `primary`, `secondary` or `original`
-#' (or `original_01`, `original_02`, etc., for multiple sources)
+#' @param type Type of reference: `dataset`, `source` or `secondary`
 #' @param drop Variables in bibtex to ignore
 #'
 #' @return `metadata.yml` file with citation details added
 #' @export
 #'
 metadata_add_source_bibtex <- function(dataset_id, file,
-                                       type = "primary",
+                                       type = "dataset",
                                        drop = c("dateobj", "month")) {
 
-  # Read in file, convert to list, set key
-  bib <- RefManageR::ReadBib(file) %>% util_bib_to_list()
-  if (type == "primary") {
-    bib$key <- dataset_id
+  types <- c("dataset", "source", "secondary")
+  if (length(type) != 1 || !type %in% types) {
+    stop(sprintf(
+      "`type` must be one of %s (`primary` is now `dataset`, and `original_source` is now `source`). References of one type are listed together under that key, so numbered types such as `secondary_02` are no longer used.",
+      paste(sprintf("'%s'", types), collapse = ", ")), call. = FALSE)
   }
+
+  # Read in file, convert to list
+  bib <- RefManageR::ReadBib(file) %>% util_bib_to_list()
 
   for (v in drop)
     bib[[v]] <- NULL
@@ -759,10 +787,17 @@ metadata_add_source_bibtex <- function(dataset_id, file,
         stringr::str_to_lower(.x)
     )) %>% unlist %>% paste(collapse = " ")
 
-  # Standardise key capitalisation
-  bib[["key"]] <- stringr::word(bib[["key"]], 1L, sep = "_") %>%
-    stringr::str_to_title() %>%
-    paste(stringr::word(bib[["key"]], 2, sep = "_"), sep = "_")
+  # The dataset's own reference is keyed by its `dataset_id`, exactly: each
+  # observation's `source_id` defaults to it. (Standardising it as below once turned
+  # `Smith_2020_2` into `Smith_2020` and `McQuillan_2020` into `Mcquillan_2020`.)
+  # Other keys get standard capitalisation
+  if (type == "dataset") {
+    bib[["key"]] <- dataset_id
+  } else {
+    bib[["key"]] <- stringr::word(bib[["key"]], 1L, sep = "_") %>%
+      stringr::str_to_title() %>%
+      paste(stringr::word(bib[["key"]], 2, sep = "_"), sep = "_")
+  }
 
   # Somewhat sensible ordering of elements
   order <- c("key", "bibtype", "year", "author", "journal", "title", "volume", "number",
@@ -770,16 +805,37 @@ metadata_add_source_bibtex <- function(dataset_id, file,
   v <-  c(order, names(bib)) %>% unique()
   v <- v[v %in% names(bib)]
 
-  # Output message if source metadata already exists
   metadata <- read_metadata_dataset(dataset_id)
-  if (type == "primary" && any(metadata[["source"]][["primary"]][c("year", "author", "journal", "title", "volume", "doi")] != "unknown")) {
-    message(sprintf(red("Primary source metadata for %s ") %+% red("already exists and is being overwritten"), blue(dataset_id)))
-  }
-  if (type != "primary" && length(metadata[["source"]][[type]]) > 0)
-    message(sprintf(red("Source metadata of type ") %+% green("'%s'") %+% red(" for %s") %+% red(" already exists and is being overwritten"), type, blue(bib$key)))
+  # Stops, naming the entry to convert, if the file is still in the old shape
+  util_flatten_sources(metadata[["source"]])
 
-  # Save to metadata
-  metadata$source[[type]] <- bib[v]
+  if (type == "dataset") {
+    # Output message if source metadata already exists
+    if (any(metadata[["source"]][["dataset"]][c("year", "author", "journal", "title", "volume", "doi")] != "unknown")) {
+      message(sprintf(red("Dataset source metadata for %s ") %+% red("already exists and is being overwritten"), blue(dataset_id)))
+    }
+    metadata$source$dataset <- bib[v]
+  } else {
+    # Append to the list, or replace the entry already carrying this key
+    existing <- metadata[["source"]][[type]]
+    # A list kept in its own file is written back there
+    sources_file <- attr(existing, "sources_file")
+    # No entry yet, or `secondary: .na`: start the list
+    if (!is.list(existing)) existing <- list()
+    existing_keys <- vapply(existing, function(e) {
+      if (is.null(e[["key"]])) NA_character_ else as.character(e[["key"]])
+    }, character(1))
+    i <- which(existing_keys == bib$key)
+    if (length(i) > 0) {
+      message(sprintf(red("Source metadata of type ") %+% green("'%s'") %+% red(" for %s") %+% red(" already exists and is being overwritten"), type, blue(bib$key)))
+      existing[[i[1]]] <- bib[v]
+    } else {
+      existing <- c(existing, list(bib[v]))
+    }
+    attr(existing, "sources_file") <- sources_file
+    metadata$source[[type]] <- existing
+  }
+
   write_metadata_dataset(metadata, dataset_id)
 
 }
@@ -841,6 +897,237 @@ metadata_add_source_doi <- function(..., doi, bib = NULL) {
 }
 
 
+#' Convert the `source:` blocks of `metadata.yml` files to the current shape
+#'
+#' Earlier versions of traits.build wrote a dataset's own reference as
+#' `primary`, the studies a compilation's observations were taken from as
+#' `original_source` or `original`, and each further reference as its own
+#' numbered entry (`secondary_01`, `original_01`, ...). traits.build now reads
+#' a single `dataset` reference and two lists, `source` and `secondary`, one
+#' `- key:` item per reference (see [util_flatten_sources()]), and stops on a
+#' file in an older shape. This converts every shape earlier versions wrote.
+#'
+#' The files are edited as text, so nothing outside the `source:` block
+#' changes and every line of every reference is kept byte for byte: only the
+#' entry headings are renamed and moved. Each converted file is checked: it
+#' must hold exactly the references it did, of the same types in the same
+#' order, and read without error.
+#'
+#' Some things need a person rather than a script, and are reported but not
+#' changed: a `dataset` reference whose `key` is not the `dataset_id`, and
+#' `source_id` values that name neither the `dataset_id` nor a `source`
+#' reference. Run [dataset_test()] after converting to see these in full.
+#'
+#' @param dataset_ids Datasets to convert; by default every dataset in
+#'   `path_data`
+#' @param path_data Folder holding the datasets
+#'
+#' @return Invisibly, a tibble with one row per dataset: `dataset_id`,
+#'   `converted` (whether its `metadata.yml` was rewritten) and `issues` (what
+#'   needs a person, or `NA`)
+#' @export
+#' @examples
+#' \dontrun{
+#' # From the root of a database repository
+#' result <- metadata_convert_sources()
+#' result[!is.na(result$issues), ]
+#' }
+metadata_convert_sources <- function(dataset_ids = NULL, path_data = "data") {
+
+  if (is.null(dataset_ids)) {
+    dataset_ids <- sort(basename(dirname(
+      Sys.glob(file.path(path_data, "*", "metadata.yml"))
+    )))
+  }
+
+  result <- purrr::map_dfr(dataset_ids, function(dataset_id) {
+    path <- file.path(path_data, dataset_id, "metadata.yml")
+    converted <- util_convert_sources_file(path)
+    issues <- util_check_converted_sources(dataset_id, path_data)
+    tibble::tibble(
+      dataset_id = dataset_id,
+      converted = converted,
+      issues = if (length(issues) > 0) paste(issues, collapse = "; ") else NA_character_
+    )
+  })
+
+  message(sprintf(
+    "%s of %s datasets converted; %s with issues to resolve by hand",
+    sum(result$converted), nrow(result), sum(!is.na(result$issues))
+  ))
+
+  invisible(result)
+}
+
+
+#' Convert the `source:` block of one `metadata.yml` file
+#'
+#' @param path Location of the metadata file
+#'
+#' @return `TRUE` if the file was rewritten
+#' @noRd
+util_convert_sources_file <- function(path) {
+
+  lines <- readLines(path, encoding = "UTF-8", warn = FALSE)
+  new <- util_convert_source_block(lines, path)
+
+  if (identical(new, lines)) return(FALSE)
+
+  # The references, by type, before and after: identical, or nothing is written
+  references <- function(lines) {
+    source <- yaml::read_yaml(text = paste(lines, collapse = "\n"))[["source"]]
+    flat <- util_flatten_sources(util_read_sources_files(source, path), strict = FALSE)
+    split(flat$entry, flat$type)
+  }
+  before <- references(lines)
+  after <- references(new)
+  for (type in union(names(before), names(after))) {
+    if (!identical(before[[type]], after[[type]])) {
+      stop(sprintf("%s: `%s` references differ after conversion; file left unchanged", path, type),
+           call. = FALSE)
+    }
+  }
+  # Strict read: the result is what the build accepts
+  util_flatten_sources(
+    util_read_sources_files(yaml::read_yaml(text = paste(new, collapse = "\n"))[["source"]], path)
+  )
+
+  writeLines(new, path, useBytes = TRUE)
+  TRUE
+}
+
+
+#' Rewrite the lines of a `source:` block in the current shape
+#'
+#' @param lines Lines of a `metadata.yml` file
+#' @param path Location of the file, for messages
+#'
+#' @return The lines, with the `source:` block converted
+#' @noRd
+util_convert_source_block <- function(lines, path) {
+
+  start <- grep("^source:\\s*$", lines)
+  if (length(start) != 1) {
+    stop(sprintf("%s: expected one `source:` line, found %d", path, length(start)), call. = FALSE)
+  }
+  later <- which(grepl("^[^[:space:]#]", lines) & seq_along(lines) > start)
+  end <- if (length(later)) min(later) - 1 else length(lines)
+  if (end <= start) return(lines)
+  block <- lines[(start + 1):end]
+
+  # Each entry is a heading at two spaces (`  primary:`, `  secondary_01:`, or
+  # `  secondary: .na` with its value inline) and the lines below it
+  heading_i <- grep("^  [A-Za-z_0-9]+:", block)
+  if (length(heading_i) == 0) return(lines)
+  prefix <- block[seq_len(heading_i[1] - 1)]
+  slots <- sub("^  ([A-Za-z_0-9]+):.*$", "\\1", block[heading_i])
+  inline <- trimws(sub("^  [A-Za-z_0-9]+:", "", block[heading_i]))
+  entry_end <- c(heading_i[-1] - 1, length(block))
+  entries <- Map(function(s, e) block[s:e], heading_i, entry_end)
+  types <- util_source_type_current(slots)
+  is_list <- vapply(entries, function(e) length(e) > 1 && grepl("^  - ", e[2]), logical(1))
+
+  out <- prefix
+  for (type in c("dataset", "source", "secondary", setdiff(unique(types), c("dataset", "source", "secondary")))) {
+
+    idx <- which(types == type)
+    if (length(idx) == 0) next
+
+    if (!type %in% c("dataset", "source", "secondary")) {
+      # Not a type of reference: left as it is, for `dataset_test()` to report
+      for (k in idx) out <- c(out, entries[[k]])
+      next
+    }
+
+    if (type == "dataset") {
+      if (length(idx) > 1) {
+        stop(sprintf("%s: more than one dataset reference (`%s`)", path, paste(slots[idx], collapse = "`, `")),
+             call. = FALSE)
+      }
+      out <- c(out, sub("^  [A-Za-z_0-9]+:", "  dataset:", entries[[idx]][1]), entries[[idx]][-1])
+      next
+    }
+
+    # A list: gather every entry of this type under one heading, in order
+    has_body <- idx[lengths(entries[idx]) > 1]
+    files <- inline[idx][vapply(inline[idx], util_sources_is_file, logical(1), USE.NAMES = FALSE)]
+    if (length(files) > 0) {
+      if (length(has_body) > 0 || length(files) > 1) {
+        stop(sprintf("%s: `%s` names a file and also lists references", path, type), call. = FALSE)
+      }
+      out <- c(out, sprintf("  %s: %s", type, files))
+      next
+    }
+    if (length(has_body) == 0) {
+      # Only `secondary: .na` or the like: keep it as it was written
+      out <- c(out, sprintf("  %s: %s", type, inline[idx[1]]))
+      next
+    }
+    out <- c(out, sprintf("  %s:", type))
+    for (k in has_body) {
+      body <- entries[[k]][-1]
+      if (!is_list[k]) {
+        # One reference as a mapping: its first field becomes the list item
+        if (!grepl("^    key:", body[1])) {
+          stop(sprintf("%s: entry `%s`: first field is not `key`", path, slots[k]), call. = FALSE)
+        }
+        body[1] <- sub("^    ", "  - ", body[1])
+      }
+      out <- c(out, body)
+    }
+  }
+
+  c(lines[seq_len(start)], out, if (end < length(lines)) lines[(end + 1):length(lines)])
+}
+
+
+#' What a converted `source:` block still needs from a person
+#'
+#' @param dataset_id Identifier for a particular study in the database
+#' @param path_data Folder holding the datasets
+#'
+#' @return Character vector of issues, empty if none
+#' @noRd
+util_check_converted_sources <- function(dataset_id, path_data) {
+
+  issues <- character()
+  path <- file.path(path_data, dataset_id, "metadata.yml")
+
+  tryCatch({
+    metadata <- yaml::read_yaml(path)
+    flat <- util_flatten_sources(
+      util_read_sources_files(metadata[["source"]], path), strict = FALSE)
+
+    dataset_key <- flat$key[flat$type == "dataset"]
+    if (length(dataset_key) == 1 && !identical(dataset_key, dataset_id)) {
+      issues <- c(issues, sprintf(
+        "dataset reference key `%s` is not the dataset_id", dataset_key))
+    }
+
+    # Read as `dataset_test()` reads it, typed, since `custom_R_code` expects that
+    data <- readr::read_csv(
+      file.path(path_data, dataset_id, "data.csv"),
+      col_types = readr::cols(), guess_max = 1e5, progress = FALSE
+    )
+    data <- process_custom_code(metadata[["dataset"]][["custom_R_code"]])(data)
+    traits <- metadata[["traits"]] %>% traits.use::convert_list_to_df2()
+    source_ids <- dataset_test_source_id_values(metadata, traits, data)
+    unmatched <- setdiff(source_ids, c(dataset_id, flat$key[flat$type == "source"]))
+    if (length(unmatched) > 0) {
+      issues <- c(issues, sprintf(
+        "%d `source_id` value(s) name no `source` reference: %s%s",
+        length(unmatched),
+        paste(sprintf("`%s`", utils::head(unmatched, 3)), collapse = ", "),
+        ifelse(length(unmatched) > 3, ", ...", "")))
+    }
+  }, error = function(e) {
+    issues <<- c(issues, sprintf("could not be checked: %s", conditionMessage(e)))
+  })
+
+  issues
+}
+
+
 #' Add a categorical trait value substitution into a metadata file for a `dataset_id`
 #'
 #' `metadata_add_substitution` is used to align the categorical trait values used
@@ -872,7 +1159,7 @@ metadata_add_substitution <- function(dataset_id, trait_name, find, replace, mat
     metadata[[set_name]] <- list()
   } else {
     # Check if find record already exists for that trait
-    data <- austraits::convert_list_to_df2(metadata[[set_name]])
+    data <- traits.use::convert_list_to_df2(metadata[[set_name]])
     # Has to be rowwise (both conditions have to be true for a given row)
     if (nrow(data[data$trait_name == trait_name & data$find == find, ]) > 0) {
       message(
@@ -917,7 +1204,7 @@ metadata_add_substitutions_list <- function(dataset_id, substitutions) {
 
   if (!all(is.na(metadata[["substitutions"]]))) {
 
-    existing <- metadata[["substitutions"]] %>% austraits::convert_list_to_df2()
+    existing <- metadata[["substitutions"]] %>% traits.use::convert_list_to_df2()
     already_exist <- c()
 
     for (i in seq_len(nrow(substitutions))) {
@@ -1030,7 +1317,7 @@ metadata_add_substitutions_table <- function(dataframe_of_substitutions, dataset
 
     } else {
 
-      data <- austraits::convert_list_to_df2(metadata[[set_name]])
+      data <- traits.use::convert_list_to_df2(metadata[[set_name]])
       # Check whether the same `find` value for a given `trait_name` already exists
       if (nrow(data[data$trait_name == to_add$trait_name & data$find == to_add$find, ]) > 0) {
         message(
@@ -1095,7 +1382,7 @@ metadata_add_taxonomic_change <- function(dataset_id, find, replace, reason, tax
   if (all(is.na(metadata[[set_name]]))) {
     data <- to_add
   } else {
-    data <- austraits::convert_list_to_df2(metadata[[set_name]])
+    data <- traits.use::convert_list_to_df2(metadata[[set_name]])
     # Check if find record already exists for that trait
     if (find %in% data$find) {
       # If overwrite set to false, don't add a new substitution
@@ -1150,7 +1437,7 @@ metadata_add_taxonomic_changes_list <- function(dataset_id, taxonomic_updates) {
 
   if (!all(is.na(metadata[["taxonomic_updates"]]))) {
 
-    existing_updates <- metadata[["taxonomic_updates"]] %>% austraits::convert_list_to_df2()
+    existing_updates <- metadata[["taxonomic_updates"]] %>% traits.use::convert_list_to_df2()
     already_exist <- c()
 
     for (i in seq_len(nrow(taxonomic_updates))) {
@@ -1207,7 +1494,7 @@ metadata_exclude_observations <- function(dataset_id, variable, find, reason) {
     metadata[[set_name]] <- list()
   } else {
     # Check if find record already exists for that trait
-    data <- austraits::convert_list_to_df2(metadata[[set_name]])
+    data <- traits.use::convert_list_to_df2(metadata[[set_name]])
 
     if (nrow(data[data$find == find & data$variable == variable, ]) > 0) {
       message(sprintf(red("Exclusion already exists for ") %+% green("'%s'"), find))
@@ -1243,7 +1530,7 @@ metadata_update_taxonomic_change <- function(dataset_id, find, replace, reason, 
   metadata <- read_metadata_dataset(dataset_id)
 
   if (!all(is.na(metadata[[set_name]]))) {
-    data <- austraits::convert_list_to_df2(metadata[[set_name]])
+    data <- traits.use::convert_list_to_df2(metadata[[set_name]])
   }
 
   # Check if `taxonomic_updates` doesn't exist or if substitution does not exist
@@ -1288,7 +1575,7 @@ metadata_remove_taxonomic_change <- function(dataset_id, find) {
     return(invisible())
   } else {
     # Check if taxonomic change does not exist
-    data <- austraits::convert_list_to_df2(metadata[[set_name]])
+    data <- traits.use::convert_list_to_df2(metadata[[set_name]])
     if (!find %in% data$find) {
       message(
         sprintf(
@@ -1414,7 +1701,26 @@ metadata_find_taxonomic_change <- function(find, replace = NULL, studies = NULL)
 #' `targets::tar_config_set(reporter_make = "silent")` sets that for the
 #' repository.
 #'
-#' @seealso [build_export()]
+#' @section Post-build step:
+#'
+#' Every pipeline calls [build_post_process()] after [build_add_version()] and
+#' before the database is saved. It runs `post_build()` from `R/post_build.R`
+#' if the repository has that file, and otherwise does nothing, so the call is
+#' written whether or not the file exists and adding one later needs no change
+#' to the pipeline. `targets` notices the file being added, edited or deleted.
+#' `remake` cannot depend on a file that may not exist, so it tracks
+#' `R/post_build.R` only if the file existed when the pipeline was set up:
+#' re-run `build_setup_pipeline()` after adding or removing it, as after adding
+#' a dataset.
+#'
+#' Because it runs on every rebuild of the combined database, `post_build()`
+#' should be quick. Outputs wanted only when the database is published, such as
+#' a flattened copy or parquet files, go in `post_export()` in
+#' `R/post_export.R`, which no pipeline runs: [build_post_export()] runs it,
+#' from a repository's release script, and so does [build_export()] after a
+#' `targets` build.
+#'
+#' @seealso [build_export()], [build_post_process()], [build_post_export()]
 #' @export
 build_setup_pipeline <- function(dataset_ids = dir("data"),
                                  method = "base",
@@ -1474,7 +1780,10 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
     path = path,
     database_name = database_name,
     workers = workers,
-    parallel = workers > 1
+    parallel = workers > 1,
+    # Only `remake` uses this: it cannot depend on a file that may not exist,
+    # so it tracks `R/post_build.R` only if the file is there now
+    post_build_file = file.exists("R/post_build.R")
     )
 
   # Setup pipeline based on selected method for building
@@ -1510,7 +1819,7 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
       "\t-> then `targets::tar_read(%s)` to load it; `tar_make()` itself returns nothing",
       database_name)))
     message(green(sprintf(
-      "\t-> then `build_export(\"%s\")` to write export/data/curr, which `tar_make()` leaves alone",
+      "\t-> then `build_export(\"%s\")` to write export/data/curr, and run any `post_export()`, which `tar_make()` leaves alone",
       database_name)))
   }
 
@@ -1551,15 +1860,17 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 #' The `targets` pipeline rebuilds the compilation but does not write the
 #' exported `.rds`: that write is around a third of a one-dataset rebuild, and
 #' it is a publishing step rather than part of checking a dataset. This writes
-#' it, reading the compilation `targets::tar_make()` has already built.
+#' it, reading the compilation `targets::tar_make()` has already built, then
+#' runs the repository's `post_export()` from `R/post_export.R`, if it has one,
+#' into the same directory (see [build_post_export()]).
 #'
 #' @param database_name Name of the database, matching the one given to
 #'  [build_setup_pipeline()]. A pipeline set up with a `database_name` other
 #'  than the default must be exported with that same name.
 #' @param path Directory to write into
 #'
-#' @return The path written, invisibly
-#' @seealso [build_setup_pipeline()]
+#' @return The path of the `.rds` written, invisibly
+#' @seealso [build_setup_pipeline()], [build_post_export()]
 #' @export
 #' @examples
 #' \dontrun{
@@ -1600,6 +1911,8 @@ build_export <- function(database_name = "database",
   saveRDS(database, file)
 
   message(green(sprintf("\t-> written to `%s`", file)))
+
+  build_post_export(database, path)
 
   invisible(file)
 }

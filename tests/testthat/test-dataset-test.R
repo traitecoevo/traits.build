@@ -15,7 +15,7 @@
 # the console), and the backtraces (whose line numbers move whenever anything
 # in `R/` is edited, which would make these snapshots churn on unrelated
 # changes).
-dataset_test_failures <- function(dataset_id) {
+dataset_test_failures <- function(dataset_id, path_data = "examples") {
 
   withr::local_options(
     useFancyQuotes = FALSE, cli.unicode = FALSE, crayon.enabled = FALSE,
@@ -24,7 +24,7 @@ dataset_test_failures <- function(dataset_id) {
 
   out <- capture.output(
     suppressMessages(
-      dataset_test(dataset_ids = dataset_id, path_data = "examples")
+      dataset_test(dataset_ids = dataset_id, path_data = path_data)
     )
   )
 
@@ -135,8 +135,8 @@ test_that("`dataset_test` reads every config file from `path_config` (#129)", {
   # The build step read `config/traits.yml`, `config/metadata.yml`,
   # `config/unit_conversions.csv` and `config/taxon_list.csv` regardless of
   # `path_config`, so a run from anywhere else failed "building dataset".
-  # Test_2023_2 passes every check, so any failure here is the config.
-  out <- dataset_test_elsewhere("Test_2023_2", "config")
+  # Test_2023_5 passes every check, so any failure here is the config.
+  out <- dataset_test_elsewhere("Test_2023_5", "config")
 
   expect_false(any(grepl("building dataset", out, fixed = TRUE)))
   # The last progress line is the final tally
@@ -231,8 +231,49 @@ test_that("`dataset_test` runs on the package's testthat edition (#234)", {
   )
   results <- as.data.frame(reporter$get_results())
 
+  # Test_2023_1's 3 failures include blank `collection_date` values, which the
+  # NA-date check reports (its ambiguous `1/2/2004` is read through the
+  # declared `collection_date_format: dmy`, so is not one of them)
   expect_equal(results$test, "Test_2023_1")
-  expect_equal(results$failed, 2)
+  expect_equal(results$failed, 3)
+})
+
+
+test_that("`dataset_test` rejects a `collection_date` that doesn't parse", {
+  # See Test_2023_9/README.md: the `huber_value` trait's `collection_date` was
+  # changed to `2002-02-30`, a calendar date that doesn't exist. Also covered
+  # by the snapshot above, pinned individually since it is written as a
+  # standard date and only the calendar rules it out.
+  failures <- dataset_test_failures("Test_2023_9")
+
+  expect_match(
+    failures, "not written as `yyyy-mm-dd`, `yyyy-mm`, `yyyy` or a `/` range of these: '2002-02-30'",
+    fixed = TRUE, all = FALSE
+  )
+})
+
+
+test_that("`dataset_test` rejects missing `collection_date` values", {
+  # Test_2023_7 reads `collection_date` from its `Date` column. Blank a few of
+  # those cells in a temporary copy, so the shared example (and its `output/`)
+  # stay untouched. An unknown date should be recorded explicitly (e.g.
+  # `.na/2009`), not left as NA.
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_7", path_data, recursive = TRUE)
+
+  data_file <- file.path(path_data, "Test_2023_7", "data.csv")
+  data <- readr::read_csv(data_file, col_types = readr::cols(.default = "c"))
+  data$Date[1:3] <- NA
+  readr::write_csv(data, data_file, na = "")
+
+  failures <- dataset_test_failures("Test_2023_7", path_data = path_data)
+
+  expect_match(
+    failures, "Some date values are NA \\([0-9]+ of [0-9]+ records\\)",
+    all = FALSE
+  )
+  # NA is not a non-standard date, so it isn't reported twice
+  expect_false(any(grepl("not written as `yyyy-mm-dd`", failures, fixed = TRUE)))
 })
 
 
@@ -250,4 +291,377 @@ test_that("`dataset_test` accepts a context scoped to specific traits by a colum
   # Nothing beyond the "== Testing dataset_test ==" header
   failures <- dataset_test_failures("Test_2024_1")
   expect_equal(grep("^== Testing", failures, invert = TRUE, value = TRUE), character(0))
+})
+
+
+# `source_id` links each observation to the reference it was taken from (#296).
+# Test_2023_2 maps a `source_id` column holding `Test_2022` and `Test_2002`, and
+# lists both as `source` references, so it passes; each edit below
+# breaks one thing and must be reported for that thing.
+
+test_that("`dataset_test` reports a `source` block in the old shape, and the build refuses it (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    # One named entry per reference, as traits.build wrote before 2.3.0
+    originals <- metadata$source$source
+    metadata$source$source <- NULL
+    metadata$source$original_01 <- originals[[1]]
+    metadata$source$original_02 <- originals[[2]]
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "`original_01`, `original_02`: not in the expected shape, so the dataset will not build",
+    fixed = TRUE
+  )
+  # The lenient read lets the other source checks run: both keys still link
+  expect_false(any(grepl("should not contain", out, fixed = TRUE)))
+  # ...and the build itself stops, naming the entries
+  expect_true(any(grepl("building dataset", out, fixed = TRUE)))
+  expect_true(any(grepl("entries in a shape traits.build no longer reads: `original_01`, `original_02`", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` reports a bare value where a reference belongs, and the build refuses it (#296)", {
+  # `secondary: Smith_2021` names a reference without giving its fields; it
+  # must not pass and then drop out of the build unseen
+  out <- dataset_test_edited(function(metadata) {
+    metadata$source$secondary <- "Smith_2021"
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "`secondary`: not in the expected shape, so the dataset will not build",
+    fixed = TRUE
+  )
+  expect_true(any(grepl("source 'secondary' - does not contain: 'key'", out, fixed = TRUE)))
+  expect_true(any(grepl("entries in a shape traits.build no longer reads: `secondary`", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` reports `source_id` values that match no reference (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    metadata$source$source <- NULL
+    metadata
+  })
+
+  hits <- grep("`source_id` (each value must be the dataset_id or the `key` of a `source` reference)", out, fixed = TRUE)
+  expect_length(hits, 1)
+  expect_match(out[hits], "should not contain: 'Test_2022', 'Test_2002'|should not contain: 'Test_2002', 'Test_2022'")
+  # Not an old-shape problem, and the dataset still builds
+  expect_false(any(grepl("not in the expected shape", out, fixed = TRUE)))
+  expect_false(any(grepl("building dataset", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` says to move a `secondary` reference that observations are taken from (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    moved <- metadata$source$source[[2]]
+    metadata$source$source <- metadata$source$source[1]
+    metadata$source$secondary <- list(moved)
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "move these entries to `source`: 'Test_2002'",
+    fixed = TRUE
+  )
+  # The moved key is reported once, as misplaced, not again as unmatched
+  expect_false(any(grepl("should not contain: 'Test_2002'", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` reports a `source` reference no observation names (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    unused <- metadata$source$source[[1]]
+    unused$key <- "Test_1999"
+    metadata$source$source <- c(metadata$source$source, list(unused))
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "no observation's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): 'Test_1999'",
+    fixed = TRUE
+  )
+})
+
+
+# `source_id` is checked on the observations the built dataset holds, in `traits`
+# and `excluded_data`, not on every row of the data
+source_id_edited <- function(new_rows, extra_source_key = NULL) {
+  path_data <- withr::local_tempdir(.local_envir = parent.frame())
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  if (!is.null(extra_source_key)) {
+    metadata <- read_metadata(path_metadata)
+    extra <- metadata$source$source[[1]]
+    extra$key <- extra_source_key
+    metadata$source$source <- c(metadata$source$source, list(extra))
+    write_metadata(metadata, path_metadata)
+  }
+
+  path_csv <- file.path(path_data, "Test_2023_2", "data.csv")
+  data <- readr::read_csv(path_csv, col_types = readr::cols(.default = "c"))
+  traits_columns <- c(
+    "LMA (mg mm-2)", "Leaf nitrogen (mg mg-1)", "leaf size (mm2)", "wood density (mg mm-3)",
+    "branch mass fraction", "Seed mass (mg)", "LASA10", "LASA250", "LASA50", "LASA1000"
+  )
+  rows <- purrr::map_dfr(new_rows, function(row) {
+    x <- data[1, ]
+    x[traits_columns] <- NA_character_
+    x[names(row)] <- row
+    x
+  })
+  readr::write_csv(dplyr::bind_rows(data, rows), path_csv, na = "")
+
+  dataset_test_failures("Test_2023_2", path_data = path_data)
+}
+
+
+test_that("`dataset_test` ignores the `source_id` of a row the build drops without excluding it (#296)", {
+  # Every trait value blank: the build drops the row, and its `source_id` is
+  # in neither `traits` nor `excluded_data`
+  failures <- source_id_edited(
+    list(list(source_id = "Nobody_1900"), list(source_id = "Test_1999")),
+    extra_source_key = "Test_1999"
+  )
+  expect_false(any(grepl("Nobody_1900", failures, fixed = TRUE)))
+  # ...so a `source` reference only such a row names is unused
+  expect_match(
+    failures,
+    "no observation's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): 'Test_1999'",
+    fixed = TRUE, all = FALSE
+  )
+})
+
+
+test_that("`dataset_test` counts the `source_id` of an observation in `excluded_data` (#296)", {
+  # A value that is not a number: the observation is excluded, not dropped, and still
+  # cites its reference
+  failures <- source_id_edited(
+    list(list(`LMA (mg mm-2)` = "not a number", source_id = "Test_1999")),
+    extra_source_key = "Test_1999"
+  )
+  expect_false(any(grepl("Test_1999", failures, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` fails a `metadata.yml` entry with a field that has no value (#307)", {
+  # An empty field drops its whole entry from the build, so the trait vanished
+  # from both `traits` and `excluded_data` while `dataset_test()` passed
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  lines <- readLines(path_metadata)
+  at <- which(lines == "  trait_name: leaf_N_per_dry_mass")
+  writeLines(append(lines, "  replicates:", after = at), path_metadata)
+
+  expect_match(
+    dataset_test_failures("Test_2023_2", path_data = path_data),
+    "traits - field(s) with no value, which drop their entry from the build: entry 2 (var_in: Leaf nitrogen (mg mg-1)) `replicates`",
+    fixed = TRUE, all = FALSE
+  )
+})
+
+
+test_that("`dataset_test` hints when `source_id` holds an entry's name rather than its key (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    # A constant, as `process_parse_data()` would read it: no such column
+    metadata$dataset$source_id <- "source"
+    metadata
+  })
+
+  hits <- grep("a value such as `secondary_01` is the name of an entry, not its `key`", out, fixed = TRUE)
+  expect_length(hits, 1)
+  expect_match(out[hits], "should not contain: 'source'", fixed = TRUE)
+  # Nothing links to the two sources now, so they are reported as unused
+  expect_true(any(grepl("no observation's `source_id` names these `source` references", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` requires the dataset reference to be keyed by the dataset_id (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    metadata$source$dataset$key <- "Falster_2005"
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "the `dataset` reference's key `Falster_2005` must be the dataset_id, `Test_2023_2`",
+    fixed = TRUE
+  )
+})
+
+
+test_that("`dataset_test` reports the old `primary` name, and the build refuses it (#296)", {
+  out <- dataset_test_edited(function(metadata) {
+    names(metadata$source)[names(metadata$source) == "dataset"] <- "primary"
+    metadata
+  })
+
+  expect_match(
+    paste(out, collapse = "\n"),
+    "`primary`: not in the expected shape, so the dataset will not build",
+    fixed = TRUE
+  )
+  expect_true(any(grepl("metadata_convert_sources()", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` fails an empty field in a data collector or a source (#307)", {
+  # The same conversion drops a data collector from `contributors`, and a
+  # reference from the table of source keys, which then pairs the remaining
+  # keys with the wrong source types
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_2", "metadata.yml")
+  lines <- readLines(path_metadata)
+  lines <- append(lines, "    number:", after = grep("^  dataset:", lines)[1])
+  lines <- append(lines, "    additional_role: []", after = grep("^  - last_name: Westoby", lines))
+  writeLines(lines, path_metadata)
+
+  failures <- dataset_test_failures("Test_2023_2", path_data = path_data)
+  expect_match(failures, "contributors data_collectors - field(s) with no value, which drop their entry from the build: entry 2 (last_name: Westoby) `additional_role`",
+               fixed = TRUE, all = FALSE)
+  expect_match(failures, "source - field(s) with no value, which drop their entry from the build: entry 1 (key: Test_2023_2) `number`",
+               fixed = TRUE, all = FALSE)
+})
+
+
+test_that("`dataset_test` accepts long-format traits with no `traits` entry (#308)", {
+  # Test_2023_3 is long format. Add rows for a trait its `metadata.yml` does not
+  # map, in a temporary copy so the shared example stays untouched. The build
+  # leaves them out, as it does a column a wide dataset does not map, so they
+  # should cause no failure.
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_3", path_data, recursive = TRUE)
+
+  data_file <- file.path(path_data, "Test_2023_3", "data.csv")
+  data <- readr::read_csv(data_file, col_types = readr::cols(.default = "c"))
+  extra <- data[1:3, ]
+  extra$trait_name <- "unmapped_trait"
+  readr::write_csv(dplyr::bind_rows(data, extra), data_file, na = "")
+
+  expect_identical(
+    dataset_test_failures("Test_2023_3", path_data = path_data),
+    dataset_test_failures("Test_2023_3")
+  )
+
+  built <- dataset_process(
+    data_file,
+    dataset_configure(file.path(path_data, "Test_2023_3", "metadata.yml"), get_schema("config/traits.yml", "traits")),
+    get_schema(),
+    get_schema("config/metadata.yml", "metadata"),
+    get_unit_conversions("config/unit_conversions.csv")
+  )
+  expect_false("unmapped_trait" %in% c(built$traits$trait_name, built$excluded_data$trait_name))
+})
+
+
+test_that("`dataset_test` rejects a long-format `traits` entry whose trait is not in the data (#308)", {
+  # As a wide dataset's `var_in` must be a column, a long dataset's must be a
+  # value of its trait column: otherwise the entry builds nothing
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_3", path_data, recursive = TRUE)
+
+  path_metadata <- file.path(path_data, "Test_2023_3", "metadata.yml")
+  metadata <- read_metadata(path_metadata)
+  extra <- metadata$traits[[1]]
+  extra$var_in <- "absent_trait"
+  metadata$traits <- c(metadata$traits, list(extra))
+  write_metadata(metadata, path_metadata)
+
+  expect_match(
+    dataset_test_failures("Test_2023_3", path_data = path_data),
+    "`var_in` (values of the trait column `trait_name`) should not contain: 'absent_trait'",
+    fixed = TRUE, all = FALSE
+  )
+})
+
+
+# Everything `dataset_test` prints for Test_2023_2 once `edit` has been applied
+# to a copy of its folder, colours removed, backtraces kept
+dataset_test_broken <- function(edit) {
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+  unlink(file.path(path_data, "Test_2023_2", c("output", "README.md")), recursive = TRUE)
+  edit(file.path(path_data, "Test_2023_2"))
+
+  withr::local_options(
+    useFancyQuotes = FALSE, cli.unicode = FALSE, crayon.enabled = FALSE,
+    width = 120
+  )
+  out <- capture.output(
+    suppressMessages(dataset_test("Test_2023_2", path_data = path_data))
+  )
+  gsub("\033\\[[0-9]+m", "", out)
+}
+
+# A check that fails reports once, without a backtrace, and the dataset's other
+# checks stop, naming the dataset (#213)
+expect_reported_once <- function(out, failure) {
+  expect_equal(sum(grepl(failure, out, fixed = TRUE)), 1)
+  expect_false(any(grepl("^Backtrace:", out)))
+  expect_false(any(grepl("^-- Error", out)))
+  expect_false(any(grepl("restarting interrupted promise evaluation", out, fixed = TRUE)))
+  expect_true(any(grepl("Test_2023_2: the remaining checks were not run", out, fixed = TRUE)))
+}
+
+
+test_that("`dataset_test` reports a `metadata.yml` that won't read once, with its line (#213)", {
+  out <- dataset_test_broken(function(path) {
+    cat("dataset:\n  bad: [unclosed\n", file = file.path(path, "metadata.yml"), append = TRUE)
+  })
+  expect_reported_once(out, "metadata.yml\treading the file threw an error:")
+  expect_true(any(grepl("Parser error: while parsing a flow sequence at line", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` names the lines of `data.csv` it cannot parse (#213)", {
+  # readr counts the header as line 1, so a row added to the end is line n + 1
+  n <- length(readLines("examples/Test_2023_2/data.csv"))
+  out <- dataset_test_broken(function(path) {
+    cat("a,\"b\n", file = file.path(path, "data.csv"), append = TRUE)
+  })
+  expect_reported_once(out, "data.csv\t2 problem(s) reading the file:")
+  expect_true(any(grepl(
+    sprintf("line %d, column 2: expected closing quote, found end of file", n + 1),
+    out, fixed = TRUE
+  )))
+})
+
+
+test_that("`dataset_test` reports an error in `custom_R_code` once, without a backtrace (#213)", {
+  out <- dataset_test_broken(function(path) {
+    path_metadata <- file.path(path, "metadata.yml")
+    metadata <- read_metadata(path_metadata)
+    metadata$dataset$custom_R_code <- "data %>% mutate(x = no_such_function(y))"
+    write_metadata(metadata, path_metadata)
+  })
+  expect_reported_once(out, "`custom_R_code` threw an error:")
+  expect_true(any(grepl("could not find function \"no_such_function\"", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` stops checking a dataset with a missing file (#213)", {
+  out <- dataset_test_broken(function(path) unlink(file.path(path, "data.csv")))
+  expect_reported_once(out, "data.csv\tfile does not exist")
+})
+
+
+test_that("`util_format_read_problems` lists at most `n` problems", {
+  problems <- tibble::tibble(
+    row = 2:13, col = 1L, expected = "3 columns", actual = "2 columns", file = "x.csv"
+  )
+  msg <- util_format_read_problems(problems, n = 10)
+  expect_match(msg, "^12 problem\\(s\\) reading the file:")
+  expect_match(msg, "line 11, column 1: expected 3 columns, found 2 columns", fixed = TRUE)
+  expect_no_match(msg, "line 12,", fixed = TRUE)
+  expect_match(msg, "... and 2 more", fixed = TRUE)
 })

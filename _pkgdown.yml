@@ -1,4 +1,4 @@
-url: http://traitecoevo.github.io/traits.build/
+url: https://traitecoevo.github.io/traits.build/
 
 template:
   bootswatch: cosmo
@@ -37,7 +37,11 @@ reference:
     contents:
     - '`build_setup_pipeline`'
     - '`build_add_version`'
+    - '`build_post_process`'
+    - '`build_post_export`'
+    - '`build_export`'
     - '`dataset_update_taxonomy`'
+    - '`data_update_taxonomy`'
     - '`dataset_build`'
     - '`dataset_configure`'
     - '`dataset_process`'
@@ -59,6 +63,7 @@ reference:
     - '`metadata_add_locations`'
     - '`metadata_add_source_bibtex`'
     - '`metadata_add_source_doi`'
+    - '`metadata_convert_sources`'
     - '`metadata_add_substitution`'
     - '`metadata_add_substitutions_list`'
     - '`metadata_add_substitutions_table`'
@@ -69,8 +74,17 @@ reference:
     - '`metadata_update_taxonomic_change`'
     - '`metadata_exclude_observations`'
     - '`metadata_dewrap_fields`'
+    - '`dataset_replace_disallowed_chars`'
     - '`metadata_add_identifiers`'
     - '`dataset_find_taxon`'
+
+  - title: Writing custom R code
+    desc: Functions for a dataset's `custom_R_code`, which reshapes `data.csv` before it is processed.
+    contents:
+    - '`move_values_to_new_trait`'
+    - '`move_values_to_new_trait_long`'
+    - '`util_parse_collection_date`'
+    - '`util_format_collection_date`'
 
   - title: Reading & writing files
     desc: Enable reading and writing of various file types.
@@ -87,8 +101,13 @@ reference:
     contents:
     - '`check_pivot_duplicates`'
     - '`dataset_check_duplicate_values`'
+    - '`dataset_check_outlier_by_species`'
+    - '`dataset_check_outlier_by_genus`'
+    - '`dataset_check_duplicates_within_dataset`'
+    - '`dataset_check_categorical_substitutions`'
     - '`dataset_new_taxa_trait_combinations`'
     - '`check_pivot_wider`'
+    - '`database_create_combined_table`'
 
   - title: Building a compilation (private)
     desc: Private functions that are called in the background when building individual datasets and entire compilation. These are only of interest to developers.
@@ -131,6 +150,8 @@ reference:
     - '`util_check_disallowed_chars`'
     - '`util_df_convert_character`'
     - '`util_extract_list_element`'
+    - '`util_extract_synonyms`'
+    - '`util_flatten_sources`'
     - '`util_kable_styling_html`'
     - '`util_list_to_bib`'
     - '`util_replace_null`'
@@ -151,7 +172,7 @@ reference:
     - '`notes_random_string`'
 
   - title: Deprecated function names
-    desc: Functions that have been moved from traits.build to austraits and renamed. Deprecated names still work.
+    desc: Functions that have been moved from traits.build to traits.use (formerly austraits) and renamed. Deprecated names still work.
     contents:
     - '`build_combine`'
     - '`util_df_to_list`'

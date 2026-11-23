@@ -62,5 +62,5 @@ flowering_time:
     stage [PO:0007016].;Months during which taxon has open (anthetic) flowers.
   comments: Trait keyed as a sequences of 12 Ns (not flowering) and Ys (flowering),
     representing the 12 months, starting with January.
-  type: categorical
+  type: monthly_presence
   entity_URI: https://w3id.org/APD/traits/trait_0030214

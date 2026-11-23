@@ -1,16 +1,96 @@
 
-test_expect_no_error <- function(object, info) {
+# Check that `object` runs without an error, reporting the error as a failure.
+#
+# The value is kept from the one evaluation. Returning `object` after an error
+# forced the promise a second time, which raised the error again outside the
+# check: each failure was reported twice, the second time with a backtrace and a
+# "restarting interrupted promise evaluation" warning (#213).
+#
+# `stop_on_failure`: the later checks of a dataset use what this step makes
+# (the data, the metadata, the parsed traits), so after a failure they would
+# only report follow-on errors. Stop the dataset's checks instead.
+# `warnings_fail`: report a warning as a failure, as `expect_silent()` did at the
+# steps that used it, rather than letting it through.
+test_expect_no_error <- function(object, info, stop_on_failure = TRUE,
+                                 warnings_fail = FALSE) {
 
-  error <- tryCatch({
-    object
-    NULL
-  }, error = function(e) {
-    e
-  })
+  warnings <- character()
+
+  error <- tryCatch(
+    withCallingHandlers({
+      force(object)
+      NULL
+    }, warning = function(w) {
+      if (warnings_fail) {
+        warnings <<- c(warnings, conditionMessage(w))
+        invokeRestart("muffleWarning")
+      }
+    }),
+    error = function(e) e
+  )
+
   testthat::expect(
     is.null(error),
-    sprintf("%s threw an error:\n\n" %+% red("%s"), info, paste(error, collapse = ",")))
+    if (is.null(error)) {
+      ""
+    } else {
+      sprintf("%s threw an error:\n\n" %+% red("%s"), info, conditionMessage(error))
+    }
+  )
+
+  if (warnings_fail) {
+    testthat::expect(
+      length(warnings) == 0,
+      sprintf("%s gave a warning:\n\n" %+% red("%s"), info,
+              paste(unique(warnings), collapse = "\n"))
+    )
+  }
+
+  if (!is.null(error)) {
+    if (stop_on_failure) test_stop_dataset()
+    return(invisible(NULL))
+  }
+
   invisible(object)
+}
+
+
+# End the checks of the dataset being tested, after a failure that the
+# remaining checks depend on. Recorded as a skip, which `test_that()` reports
+# without a backtrace, and the next dataset is checked as usual. The skips are
+# listed together at the end of the run, so each names its dataset: the
+# `dataset_id` of the loop in `dataset_test_worker()`, found up the call stack.
+test_stop_dataset <- function() {
+  dataset_id <- dynGet("dataset_id", ifnotfound = "this dataset")
+  testthat::skip(sprintf(
+    "%s: the remaining checks were not run. Fix the failure above, then run `dataset_test()` again",
+    dataset_id
+  ))
+}
+
+
+# Describe the rows `readr::read_csv()` could not parse, from `readr::problems()`,
+# naming the line of each (readr counts the header as line 1). At most `n` are
+# listed, so one broken quote that spoils the rest of a file stays readable.
+util_format_read_problems <- function(problems, n = 10) {
+
+  if (nrow(problems) == 0) {
+    return("no problems reading the file")
+  }
+
+  shown <- utils::head(problems, n)
+  lines <- sprintf(
+    "line %s, column %s: expected %s, found %s",
+    shown$row, shown$col, shown$expected, shown$actual
+  )
+  if (nrow(problems) > n) {
+    lines <- c(lines, sprintf("... and %d more", nrow(problems) - n))
+  }
+
+  sprintf(
+    "%d problem(s) reading the file:\n\t%s",
+    nrow(problems), paste(lines, collapse = "\n\t")
+  )
 }
 
 
@@ -273,8 +353,9 @@ util_allowed_characters <- function() {
   allowed <- c(from_ranges, from_hex(names(spec$letters$values)),
                from_hex(names(spec$symbols$values)))
 
-  # Unicode calls the ordinal indicators letters, so the ranges would otherwise
-  # admit them; they occur only as look-alikes for a symbol.
+  # Unicode calls the ordinal indicators and GREEK SMALL LETTER MU letters, so
+  # the ranges would otherwise admit them; they occur only as look-alikes for a
+  # symbol.
   allowed <- setdiff(unique(allowed), from_hex(names(spec$never_allowed$values)))
 
   character_cache$allowed <- paste(allowed, collapse = "")
@@ -341,6 +422,52 @@ test_expect_list_elements_exact_names <- function(object, expected, info) {
     test_expect_allowed(names(object[[i]]), expected, info = paste(info, i), label = "field names")
   }
   invisible(object)
+}
+
+
+#' Fields of a `metadata.yml` list section that have no value
+#'
+#' An empty field (`replicates:` with nothing after it, or `~`) reads as `NULL`,
+#' and an empty collection (`[]` or `{}`) as a zero-length list.
+#' `traits.use::convert_list_to_df2()` turns either into a zero-length column,
+#' which recycles the entry's other columns down to zero rows, so the whole entry
+#' is dropped from the build without a message (#307). An explicit `.na` is a
+#' value, checked like any other, so it is not reported.
+#'
+#' @param entries A list section of `metadata.yml`, such as `traits`
+#' @return A character vector naming each empty field and its entry; empty if
+#'   there are none
+#' @keywords internal
+util_list_empty_fields <- function(entries) {
+
+  if (!is.list(entries)) {
+    return(character(0))
+  }
+
+  # Name an entry by the field a curator would search the file for
+  describe <- function(entry, i) {
+    for (field in c("var_in", "context_property", "find", "trait_name", "key", "last_name")) {
+      x <- entry[[field]]
+      if (length(x) == 1 && !is.na(x)) {
+        return(sprintf("entry %d (%s: %s)", i, field, x))
+      }
+    }
+    sprintf("entry %d", i)
+  }
+
+  out <- character(0)
+  for (i in seq_along(entries)) {
+    entry <- entries[[i]]
+    if (!is.list(entry)) next
+    label <- describe(entry, i)
+    empty <- names(entry)[lengths(entry) == 0]
+    out <- c(out, sprintf("%s `%s`", label, empty))
+    # A context's `values` are entries of their own, converted the same way
+    if (is.list(entry[["values"]])) {
+      out <- c(out, sprintf("%s, values %s", label, util_list_empty_fields(entry[["values"]])))
+    }
+  }
+  out
 }
 
 

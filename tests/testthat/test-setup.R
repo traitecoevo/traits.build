@@ -19,7 +19,7 @@ test_that("`metadata_create_template` is working", {
   expect_named(test_metadata)
   # Test metadata exists with correct names
   expect_named(test_metadata, metadata_names)
-  expect_length(test_metadata$source$primary, 10)
+  expect_length(test_metadata$source$dataset, 10)
   expect_in(names(test_metadata$dataset), names(schema$metadata$elements$dataset$values))
   expect_type(test_metadata$contributors$data_collectors, "list")
   expect_length(test_metadata$contributors$data_collectors, 1L)
@@ -126,7 +126,9 @@ test_that("`write_metadata_dataset` is working", {
 
 test_that("`metadata_add_source_bibtex` is working", {
   expect_silent(metadata_add_source_bibtex(dataset_id = "Test_2022", file = "data/test2.bib"))
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$primary$journal, "Journal of Ecology")
+  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$dataset$journal, "Journal of Ecology")
+  # The dataset's own reference is keyed by its dataset_id, exactly
+  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$dataset$key, "Test_2022")
 })
 
 
@@ -158,33 +160,67 @@ test_that("`metadata_add_source_doi` is working", {
   expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi2, bib = bib2, type = "secondary"))
 
   test_metadata <- read_metadata("data/Test_2022/metadata.yml")
-  expect_equal(test_metadata$source$primary$journal, "Frontiers in Marine Science")
-  expect_equal(test_metadata$source$primary$year, "2021")
-  expect_equal(test_metadata$source$primary$doi, doi)
+  expect_equal(test_metadata$source$dataset$journal, "Frontiers in Marine Science")
+  expect_equal(test_metadata$source$dataset$year, "2021")
+  expect_equal(test_metadata$source$dataset$doi, doi)
   # Test standardised capitalisation of authors
-  expect_equal(test_metadata$source$primary$author, "Gary Truong and Tracey L. Rogers")
-  expect_equal(test_metadata$source$secondary$journal, "Journal of Ecology")
-  expect_equal(test_metadata$source$secondary$year, "2005")
-  expect_equal(test_metadata$source$secondary$doi, doi2)
+  expect_equal(test_metadata$source$dataset$author, "Gary Truong and Tracey L. Rogers")
+  # `secondary` holds a list of references
+  expect_length(test_metadata$source$secondary, 1)
+  secondary <- test_metadata$source$secondary[[1]]
+  expect_equal(secondary$journal, "Journal of Ecology")
+  expect_equal(secondary$year, "2005")
+  expect_equal(secondary$doi, doi2)
   # Test standardised capitalisation of authors and key
-  expect_equal(test_metadata$source$secondary$author, "Daniel S. Falster and Mark Westoby")
-  expect_equal(test_metadata$source$secondary$key, "Falster_2005")
+  expect_equal(secondary$author, "Daniel S. Falster and Mark Westoby")
+  expect_equal(secondary$key, "Falster_2005")
 
-  # Test that adding a primary source overwrites the existing source and sends a message
+  # Test that adding a dataset source overwrites the existing source and sends a message
   expect_message(
     metadata_add_source_doi(dataset_id = "Test_2022", doi = doi2, bib = bib2),
     ".*(?=already exists and is being overwritten)", perl = TRUE
   )
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$primary$journal, "Journal of Ecology")
-  # Test if adding a secondary source overwrites existing source and sends a message
+  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$dataset$journal, "Journal of Ecology")
+
+  # A secondary reference with a key not yet listed is appended, without comment
+  expect_no_message(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary"))
+  secondary <- read_metadata("data/Test_2022/metadata.yml")$source$secondary
+  expect_length(secondary, 2)
+  expect_equal(secondary[[1]]$key, "Falster_2005")
+  expect_equal(secondary[[2]]$journal, "Frontiers in Marine Science")
+  # Re-adding a reference whose key is already listed replaces that entry, with a message
   expect_message(
     metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary"),
     ".*(?=already exists and is being overwritten)", perl = TRUE
   )
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$secondary$journal, "Frontiers in Marine Science")
-  # Test if adding secondary_02 works
-  expect_invisible(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary_02"))
-  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$secondary_02$journal, "Frontiers in Marine Science")
+  expect_length(read_metadata("data/Test_2022/metadata.yml")$source$secondary, 2)
+
+  # `source` references are listed the same way
+  expect_no_message(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi2, bib = bib2, type = "source"))
+  expect_equal(read_metadata("data/Test_2022/metadata.yml")$source$source[[1]]$key, "Falster_2005")
+
+  # The old names are refused, saying what they are now
+  expect_error(
+    metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "primary"),
+    "`primary` is now `dataset`", fixed = TRUE
+  )
+
+  # Numbered types belong to the old shape and are refused
+  expect_error(
+    metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary_02"),
+    "must be one of"
+  )
+
+  # `secondary: .na` holds no reference, so the first one added starts the list
+  before <- read_metadata("data/Test_2022/metadata.yml")
+  withr::defer(write_metadata(before, "data/Test_2022/metadata.yml"))
+  metadata <- before
+  metadata$source$secondary <- NA
+  write_metadata(metadata, "data/Test_2022/metadata.yml")
+  expect_no_error(metadata_add_source_doi(dataset_id = "Test_2022", doi = doi, bib = bib, type = "secondary"))
+  secondary <- read_metadata("data/Test_2022/metadata.yml")$source$secondary
+  expect_length(secondary, 1)
+  expect_equal(secondary[[1]]$journal, "Frontiers in Marine Science")
 })
 
 
@@ -838,6 +874,12 @@ test_that("`build_setup_pipeline` is working", {
   )
   expect_equal(traits.build_tag, expected_output)
 
+  ## Data model version, which readers check rather than the URL above
+  ## (traits.use#40). bind_databases() keeps the first dataset's metadata, so
+  ## the combined database carries the version each dataset was stamped with.
+  ## Whether traits.use reads it is tested in its own block below.
+  expect_identical(austraits$metadata$data_model_version, data_model_version())
+
   expect_equal(nrow(austraits$taxa), nrow(austraits_raw$taxa))
 
   # Compare products from three methods, except `build_info`
@@ -881,15 +923,17 @@ test_that("reports and plots are produced", {
   # nothing about the report existing or containing anything (#244).
   expect_silent(suppressMessages(austraits <- remake::make("test_name")))
 
-  # `plot_trait_distribution_jitter()` uses `forcats` unguarded, so without it
-  # the render fails and no file is written at all.
+  # The report's plots, from traits.use, need `forcats` and `scales` (Suggests
+  # there and here); without them the render fails and no file is written.
   skip_if_not_installed("forcats")
+  skip_if_not_installed("scales")
 
   # Rendering shells out to the `quarto` CLI, which starts a fresh R session
   # and does its own `library(traits.build)`. This test therefore exercises the
-  # *installed* package, not `devtools::load_all()`: after editing the plotting
-  # functions or the template, run `devtools::install()` or this checks stale
-  # code. `R CMD check` installs first, so CI is unaffected.
+  # *installed* package, not `devtools::load_all()`: after editing the
+  # template, run `devtools::install()` or this checks stale code. The plotting
+  # functions are traits.use's, so reinstall traits.use after changing those.
+  # `R CMD check` installs first, so CI is unaffected.
   skip_if_not_installed("quarto")
   skip_if(is.null(quarto::quarto_path()), "Quarto CLI not found")
 
@@ -916,6 +960,14 @@ test_that("reports and plots are produced", {
   expect_match(report, "Review of questions", fixed = TRUE)
   expect_match(report, "Question:", fixed = TRUE)
   expect_match(report, "Please review the report", fixed = TRUE)
+  # Test_2022 has no `unknown` dataset-level field, so there is nothing to ask
+  # about; this used to ask about "the variable NA"
+  expect_no_match(report, "for the variable <code>NA</code>", fixed = TRUE)
+  # The generic template introduces the database from its own metadata, here
+  # `tests/testthat/config/metadata.yml`, rather than from fixed prose (#140)
+  expect_match(report, "a curated plant trait database for the Australian flora", fixed = TRUE)
+  expect_match(report, "10.5281/zenodo.5112001", fixed = TRUE)
+  expect_no_match(report, "Australian Plant Census", fixed = TRUE)
 
   # The final copy leaves out every question and the list of them at the end
   final_path <- withr::local_tempdir()
@@ -980,6 +1032,77 @@ test_that("`dataset_report` rejects a missing template clearly", {
     ),
     "Report template not found"
   )
+})
+
+test_that("`dataset_report` picks up a database's own template (#140)", {
+  # The generic template ships with the package; a database can keep its own
+  # beside its other build inputs, as AusTraits does
+  packaged <- system.file("support", "report_dataset.qmd", package = "traits.build")
+  local_template <- file.path("config", "report_dataset.qmd")
+  withr::local_dir(withr::local_tempdir())
+
+  # Without one, the generic template
+  expect_silent(template <- dataset_report_template())
+  expect_equal(template, packaged)
+
+  # With one, that, saying so
+  dir.create("config")
+  writeLines(c("---", "format: html", "---"), local_template)
+  expect_message(template <- dataset_report_template(), "own report template")
+  expect_equal(template, local_template)
+
+  # An explicit `input_file` always wins, including the packaged template
+  expect_equal(dataset_report_template("elsewhere.qmd"), "elsewhere.qmd")
+  expect_silent(template <- dataset_report_template(packaged))
+  expect_equal(template, packaged)
+
+  # ...and `dataset_report()` itself follows those rules. The local template
+  # above has no `title:` line, so the error names whichever template was used
+  # without a render being needed.
+  skip_if_not_installed("quarto")
+  expect_error(
+    suppressMessages(
+      dataset_report("Test_2022", austraits = list(), output_path = "reports", overwrite = TRUE)
+    ),
+    paste("has no `title:` line in its YAML header:", local_template),
+    fixed = TRUE
+  )
+  expect_error(
+    dataset_report(
+      "Test_2022", austraits = list(), output_path = "reports", input_file = "no-such-template.qmd"
+    ),
+    "Report template not found: no-such-template.qmd",
+    fixed = TRUE
+  )
+})
+
+test_that("the packaged report template describes no particular database (#140)", {
+  template <- readLines(system.file("support", "report_dataset.qmd", package = "traits.build"), warn = FALSE)
+  expect_false(any(grepl("AusTraits|austraits\\.org|Australian Plant Census|APNI|APCalign", template)))
+  expect_false(any(grepl("library(austraits)", template, fixed = TRUE)))
+})
+
+# In its own block, so that a traits.use without the check fails here alone,
+# not the rest of the pipeline test above
+test_that("the installed traits.use reads the data model version this traits.build writes", {
+  ## A new major version needs a traits.use release first (ontology/NEWS.md)
+  expect_true(
+    exists("data_model_supported", envir = asNamespace("traits.use"), inherits = FALSE),
+    info = "traits.use predates its data model check (traits.use#40); install it from GitHub"
+  )
+  skip_if_not(exists("data_model_supported", envir = asNamespace("traits.use"), inherits = FALSE))
+  expect_true(traits.use:::data_model_supported(data_model_version()))
+
+  ## Recognised by the version alone: no traits.build URL in
+  ## related_identifiers, which older traits.use would have required
+  database <- structure(
+    list(
+      traits = tibble::tibble(trait_name = character()),
+      metadata = list(related_identifiers = list(), data_model_version = data_model_version())
+    ),
+    class = c("list", "traits.build")
+  )
+  expect_true(traits.use:::check_compatibility(database))
 })
 
 testthat::test_that("`dataset_test` is working", {
@@ -1066,8 +1189,9 @@ test_that("`build_setup_pipeline(method = 'targets')` builds the same database",
   )
   rebuilt <- targets::tar_progress()
   rebuilt <- rebuilt[rebuilt$progress == "completed", ]
-  # `git_SHA` is deliberately re-read every run; nothing else should move
-  expect_equal(setdiff(rebuilt$name, "git_SHA"), character(0))
+  # `git_SHA` and `file_post_build` are deliberately re-read every run; nothing
+  # else should move
+  expect_equal(setdiff(rebuilt$name, c("git_SHA", "file_post_build")), character(0))
 })
 
 

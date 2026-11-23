@@ -44,7 +44,7 @@ dataset_test <-
 #' @param unit_conversions Unit conversions, as returned by `get_unit_conversions()`
 #' @param resource_metadata Database metadata (`metadata.yml` in the config folder)
 #' @param taxon_list Taxon list (`taxon_list.csv` in the config folder)
-#' @importFrom testthat test_that expect_silent
+#' @importFrom testthat test_that
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
 dataset_test_worker <-
@@ -89,14 +89,29 @@ dataset_test_worker <-
         for (f in files) {
           test_expect_true(file.exists(f), info = sprintf("%s\tfile does not exist", red(f)))
         }
+        if (!all(file.exists(files))) test_stop_dataset()
+
+        ## Metadata, read first: the check of the folder's files below needs it.
+        ## A YAML syntax error is reported here, with its line, and ends the
+        ## dataset's checks, since all the others need the metadata
+        test_expect_no_error(
+          metadata <- yaml::read_yaml(files[2]),
+          info = paste0(red(files[2]), "\treading the file")
+        )
 
         ## Check for other files
         vals <- c("data.csv", "metadata.yml", "raw", "output", "README.md")
 
-        # A dataset whose `locations:` names a csv file is allowed to hold it
-        declared_locations_file <- yaml::read_yaml(files[2])[["locations"]]
-        if (util_locations_is_file(declared_locations_file)) {
-          vals <- c(vals, declared_locations_file)
+        # A dataset whose `locations:` names a csv file is allowed to hold it,
+        # as is one whose reference lists name a .yml or .bib file
+        declared <- metadata
+        if (util_locations_is_file(declared[["locations"]])) {
+          vals <- c(vals, declared[["locations"]])
+        }
+        for (type in c("source", "secondary")) {
+          if (util_sources_is_file(declared[["source"]][[type]])) {
+            vals <- c(vals, declared[["source"]][[type]])
+          }
         }
 
         test_expect_is_in(
@@ -107,22 +122,28 @@ dataset_test_worker <-
 
         ## `data.csv`
         f <- files[1]
-        testthat::expect_silent(
-          data <- read_csv(f, col_types = cols(), guess_max = 1e5, progress = FALSE) # Time columns get reformatted
+        # A row readr cannot parse gives a warning; the check below reports the
+        # problems themselves, naming each line
+        test_expect_no_error(
+          data <- suppressWarnings(
+            read_csv(f, col_types = cols(), guess_max = 1e5, progress = FALSE) # Time columns get reformatted
+          ),
+          info = paste0(red(f), "\treading the file")
         )
 
-        ## Check no issues flagged when parsing file
-        test_expect_no_error(
-          readr::stop_for_problems(data),
-          info = sprintf(red("`read_csv(%s)`"), f)
+        ## Check no issues flagged when parsing file. Every later check would
+        ## run on the misread rows, so stop here, as for a file that won't read
+        test_expect_true(
+          nrow(readr::problems(data)) == 0,
+          info = paste0(red(f), "\t", util_format_read_problems(readr::problems(data)))
         )
+        if (nrow(readr::problems(data)) > 0) test_stop_dataset()
 
         test_expect_dataframe_valid(data, info = paste0(red(f), "\tdata"), label = "column names")
 
         ## Metadata
         f <- files[2]
         test_expect_allowed_text(readLines(f, encoding = "UTF-8"), info = paste0(red(f), "\tmetadata"), label = "metadata")
-        testthat::expect_silent(metadata <- yaml::read_yaml(f))
 
         # Read here rather than via `read_metadata()`, because the checks below
         # need the yaml exactly as written. A `locations:` entry naming a csv
@@ -144,6 +165,41 @@ dataset_test_worker <-
           )
         }
 
+        # The database's own columns of the traits table, which a dataset may
+        # set in its `dataset` block and `traits` entries. Added to this
+        # dataset's copy of the schema, as `dataset_process()` adds them. An
+        # invalid setting fails here, and the checks go on without the columns
+        additional_fields <- tryCatch(
+          util_additional_traits_table_fields(resource_metadata),
+          error = function(e) {
+            testthat::expect(
+              FALSE,
+              sprintf("%s\t%s", red(file.path(path_config, "metadata.yml")), conditionMessage(e))
+            )
+            character()
+          }
+        )
+        schema <- util_schema_add_traits_table_fields(schema, additional_fields)
+
+        # Reference lists kept in their own file are read in the same way
+        for (type in c("source", "secondary")) {
+          if (util_sources_is_file(metadata[["source"]][[type]])) {
+
+            sources_file <- file.path(s, metadata[["source"]][[type]])
+
+            test_expect_allowed_text(
+              readLines(sources_file, encoding = "UTF-8", warn = FALSE),
+              info = paste0(red(sources_file), "\tsource"), label = "source"
+            )
+
+            test_expect_no_error(
+              metadata[["source"]][[type]] <-
+                util_read_sources_file(metadata[["source"]][[type]], f),
+              info = paste0(red(sources_file), "\tsource")
+            )
+          }
+        }
+
         if (!is.null(metadata[["identifiers"]])) {
           test_expect_list_names_exact(
             metadata, schema$metadata$elements %>% names(),
@@ -153,6 +209,37 @@ dataset_test_worker <-
           test_expect_list_names_allowed(
             metadata, schema$metadata$elements %>% names(),
             info = red(f), label = "metadata sections"
+          )
+        }
+
+        ## Check no field of a list entry is left without a value
+        # An empty field drops its whole entry from the build without a message,
+        # and from the checks below, which read the entries the same way (#307).
+        # `source` is keyed by type, each holding one reference or a list of them
+        sources <- metadata[["source"]]
+        if (is.list(sources)) {
+          sources <- unname(unlist(
+            lapply(sources, function(x) if (is.null(names(x))) x else list(x)),
+            recursive = FALSE
+          ))
+        }
+        sections <- c(
+          sapply(c("traits", "substitutions", "contexts", "identifiers",
+                   "taxonomic_updates", "exclude_observations"),
+                 function(section) metadata[[section]], simplify = FALSE),
+          list(
+            "contributors data_collectors" = metadata[["contributors"]][["data_collectors"]],
+            source = sources
+          )
+        )
+        for (section in names(sections)) {
+          empty <- util_list_empty_fields(sections[[section]])
+          test_expect_true(
+            length(empty) == 0,
+            info = sprintf(
+              "%s\t%s - field(s) with no value, which drop their entry from the build: %s",
+              red(f), section, paste(empty, collapse = "; ")
+            )
           )
         }
 
@@ -170,34 +257,54 @@ dataset_test_worker <-
         ## Source
         test_expect_list_names_valid(metadata[["source"]], info = sprintf("%s\tsource", red(f)), label = "field names")
 
-        v <- names(metadata[["source"]])
-        i <- grepl("primary", v) | grepl("secondary", v) | grepl("original", v)
+        # Read leniently, so an entry in the old shape is reported here (and
+        # again when the build refuses it) rather than stopping the checks
+        sources_flat <- util_flatten_sources(metadata[["source"]], strict = FALSE)
+        source_types <- names(schema$metadata$elements$source$values)
 
-        test_expect_contains(v, "primary", info = paste0(red(f), "\tsource"))
+        test_expect_contains(sources_flat$type, "dataset", info = paste0(red(f), "\tsource"))
 
         test_expect_true(
-          sum(grepl("primary", v)) <= 1,
-          info = paste0(red(f), "\tsources can have max 1 type labelled 'primary': ", paste(v, collapse = ", "))
+          sum(sources_flat$type == "dataset") <= 1,
+          info = paste0(red(f), "\tsources can have max 1 reference of type 'dataset': ", paste(sources_flat$slot, collapse = ", "))
+        )
+
+        # Each observation's `source_id` defaults to the `dataset_id`, so the
+        # dataset's own reference must carry it as its key for
+        # `sources[[source_id]]` to find it
+        dataset_key <- sources_flat$key[sources_flat$type == "dataset"]
+        test_expect_true(
+          length(dataset_key) != 1 || identical(dataset_key, dataset_id),
+          info = sprintf(
+            "%s\tsource - the `dataset` reference's key `%s` must be the dataset_id, `%s`",
+            red(f), paste(dataset_key, collapse = ""), dataset_id)
+        )
+
+        test_expect_is_in(
+          unique(sources_flat$type), source_types,
+          info = paste0(red(f), "\tsource"),
+          label = sprintf("reference types (%s)", paste(sprintf("`%s`", source_types), collapse = ", "))
         )
 
         test_expect_true(
-          all(i),
-          info = paste0(red(f), "\tsources must be primary, secondary or original: ", paste(v[!i], collapse = ", "))
+          !any(sources_flat$legacy),
+          info = sprintf(
+            "%s\tsource - `%s`: not in the expected shape, so the dataset will not build. `dataset` is a single reference; `source` and `secondary` each hold a list of references, one `- key:` item per reference (`primary` is now `dataset`, `original_source` is now `source`; `metadata_convert_sources()` converts the old shapes)",
+            red(f), paste(unique(sources_flat$slot[sources_flat$legacy]), collapse = "`, `"))
         )
 
         vals <- c("key", "bibtype", "author", "title", "year")
 
-        for (bib in names(metadata[["source"]])) {
+        for (k in seq_len(nrow(sources_flat))) {
           test_expect_contains(
-            names(metadata[["source"]][[bib]]), vals,
-            info = sprintf("%s\tsource '%s'", red(f), bib)
+            names(sources_flat$entry[[k]]), vals,
+            info = sprintf("%s\tsource '%s'", red(f),
+                           ifelse(is.na(sources_flat$key[k]), sources_flat$slot[k], sources_flat$key[k]))
           )
         }
 
-        keys <- unlist(lapply(metadata[["source"]], "[[", "key"))
-
         test_expect_unique(
-          keys,
+          sources_flat$key,
           info = paste0(red(f), "\tsources"),
           label = "keys"
         )
@@ -285,10 +392,11 @@ dataset_test_worker <-
         # is a list and `is.na()` on it returns one value per element
         if ("identifiers" %in% names(metadata) & !all(is.na(metadata[["identifiers"]]))) {
 
-          testthat::expect_silent(
+          test_expect_no_error(
             identifiers <-
               metadata$identifiers %>%
-              process_format_identifiers(dataset_id, schema)
+              process_format_identifiers(dataset_id, schema),
+            info = paste0(red(f), "\tidentifiers"), warnings_fail = TRUE
           )
 
           test_expect_list_elements_exact_names(
@@ -300,11 +408,12 @@ dataset_test_worker <-
 
         ## Locations
 
-        testthat::expect_silent(
+        test_expect_no_error(
           locations <-
             metadata$locations %>%
             process_format_locations(dataset_id, schema) %>%
-            process_add_all_columns(names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]))
+            process_add_all_columns(names(schema[["austraits"]][["elements"]][["locations"]][["elements"]])),
+          info = paste0(red(f), "\tlocations"), warnings_fail = TRUE
           )
 
         if (nrow(locations) > 0) {
@@ -389,10 +498,11 @@ dataset_test_worker <-
         }
 
         ## Contexts
-        testthat::expect_silent(
+        test_expect_no_error(
           contexts <-
             metadata$contexts %>%
-            process_format_contexts(dataset_id, data, metadata$traits)
+            process_format_contexts(dataset_id, data, metadata$traits),
+          info = paste0(red(f), "\tcontexts"), warnings_fail = TRUE
         )
 
         # Check that there are no duplicate `var_in` or `context_property` fields
@@ -532,17 +642,106 @@ dataset_test_worker <-
           info = paste0(red(f), "\ttrait")
         )
 
-        expect_silent(traits <- austraits::convert_list_to_df2(metadata[["traits"]]))
+        test_expect_no_error(
+          traits <- util_traits_to_df(metadata[["traits"]]),
+          info = paste0(red(f), "\ttraits"), warnings_fail = TRUE
+        )
 
         test_expect_true(
           is.data.frame(traits),
           info = paste0(red(f), "\ttraits - metadata cannot be converted to a dataframe")
         )
 
+        # `omit_values` is optional, so it is checked only where a trait sets it: its
+        # shape, then whether each value matches anything. One expectation for each,
+        # covering every trait, rather than one per trait.
+        if (is.list(metadata[["traits"]])) {
+          omit_declared <- purrr::keep(metadata[["traits"]], ~ is.list(.x) && !is.null(.x[["omit_values"]]))
+          if (length(omit_declared) > 0) {
+            omit_invalid <- !vapply(omit_declared, function(x) util_omit_values_valid(x[["omit_values"]]), logical(1))
+            test_expect_true(
+              !any(omit_invalid),
+              info = sprintf(
+                paste0(
+                  "%s\ttraits - `omit_values` must be a single string or number, or a list of them: '%s'. ",
+                  "Quote values YAML would otherwise read as true, false or missing, such as \"no\", \"n\" or \".na\""
+                ),
+                red(f),
+                paste(vapply(omit_declared[omit_invalid], function(x) as.character(x[["var_in"]])[1], character(1)),
+                      collapse = "', '")
+              )
+            )
+
+            # Each value must match some value of its trait in the data, or it omits
+            # nothing. Compared as the build compares them, with the data after
+            # `custom_R_code`, and in long format on the trait's own rows. Skipped: an
+            # entry of the wrong shape (reported above), one without a trait (never
+            # built) and one whose column is missing (reported below).
+            omit_long <- isTRUE(metadata[["dataset"]][["data_is_long_format"]])
+            omit_long_cols <- c(metadata[["dataset"]][["trait_name"]], metadata[["dataset"]][["value"]])
+            omit_unmatched <- character()
+
+            for (omit_entry in omit_declared[!omit_invalid]) {
+              omit_var_in <- omit_entry[["var_in"]]
+              omit_trait <- omit_entry[["trait_name"]]
+              if (length(omit_var_in) != 1 || length(omit_trait) != 1 || is.na(omit_trait)) next
+
+              if (!omit_long) {
+                omit_trait_values <- data[[omit_var_in]]
+              } else if (length(omit_long_cols) == 2 && all(omit_long_cols %in% names(data))) {
+                omit_trait_values <-
+                  data[[omit_long_cols[2]]][which(data[[omit_long_cols[1]]] == omit_var_in)]
+              } else {
+                omit_trait_values <- NULL
+              }
+              if (is.null(omit_trait_values)) next
+
+              omit_match <- process_omit_values_match(omit_trait_values, omit_entry[["omit_values"]])
+              if (all(omit_match$matched)) next
+
+              omit_no_values <- all(is.na(omit_trait_values))
+              omit_number_in_text <- !omit_no_values && is.character(omit_trait_values) &&
+                any(vapply(as.list(omit_entry[["omit_values"]]), is.numeric, logical(1))[!omit_match$matched])
+
+              omit_unmatched <- c(omit_unmatched, sprintf(
+                "trait '%s', column '%s': '%s'%s%s",
+                omit_trait, omit_var_in,
+                paste(unique(omit_match$compared[!omit_match$matched]), collapse = "', '"),
+                if (omit_no_values) " (the trait has no values in the data)" else "",
+                if (omit_number_in_text) {
+                  " (a number is compared with a text column as R writes it: quote it, as in \"0.0\", to compare its spelling)"
+                } else ""
+              ))
+            }
+
+            test_expect_true(
+              length(omit_unmatched) == 0,
+              info = sprintf(
+                "%s\ttraits - `omit_values` that match no value of their trait in the data: %s",
+                red(f), paste(omit_unmatched, collapse = "; ")
+              )
+            )
+          }
+        }
+
         test_expect_is_in(
           traits$trait_name, definitions$elements %>% names(),
           info = paste0(red(f), "\ttraits"),
           label = "`trait_name`'s"
+        )
+
+        # Every trait definition must declare a `type` the build knows, since
+        # each check on a trait's values is chosen by type. One expectation for
+        # the whole of `traits.yml`, not one per trait.
+        unsupported_types <- util_unsupported_trait_types(definitions$elements, schema)
+        test_expect_length_zero(
+          unsupported_types,
+          info = sprintf(
+            "%s\ttrait definitions - `type` must be one of %s",
+            red(file.path(path_config, "traits.yml")),
+            paste(sprintf("'%s'", util_trait_types(schema)), collapse = ", ")
+          ),
+          label = paste(unsupported_types, collapse = ", ")
         )
 
         # Check units are found in `unit_conversions.csv`
@@ -587,7 +786,7 @@ dataset_test_worker <-
 
           for (j in unique(contexts[["var_in"]])) {
 
-            contextsub <- contexts %>% dplyr::filter(var_in == j)
+            contextsub <- contexts %>% dplyr::filter(.data$var_in == j)
 
             # Context values align either with a column of data, or a field on the `traits`
             # entries -- and that field's own declared value can itself name a column of
@@ -691,6 +890,50 @@ dataset_test_worker <-
           }
         }
 
+        ## Source id
+        # Each observation's `source_id` is the `key` of the reference it was taken
+        # from -- the dataset's own (keyed by, and defaulting to, the
+        # `dataset_id`) or one of its `source` references -- so that
+        # `sources[[source_id]]` returns that reference (#296). Checked after the
+        # build below, on the observations the database will hold, in `traits` and
+        # `excluded_data`: an observation excluded there still cites its reference,
+        # while rows `custom_R_code` filters out, or the build drops without
+        # excluding them, cite nothing. If the build fails, the values read
+        # from the data stand in.
+        source_ids <- dataset_test_source_id_values(metadata, traits, data)
+        f_metadata <- f
+        check_source_ids <- function(source_ids) {
+          keys_by_type <- split(sources_flat$key, sources_flat$type)
+          source_keys <- keys_by_type[["source"]]
+          linkable_keys <- c(dataset_id, source_keys)
+
+          i <- source_ids %in% keys_by_type[["secondary"]]
+          test_expect_true(
+            !any(i),
+            info = sprintf(
+              "%s\tsource - `source_id` values name `secondary` references; a reference that observations are taken from is a source, so move these entries to `source`: '%s'",
+              red(f_metadata), paste(source_ids[i], collapse = "', '"))
+          )
+
+          unmatched <- source_ids[!i & !source_ids %in% linkable_keys]
+          hint <- ifelse(
+            any(unmatched %in% sources_flat$slot),
+            "; a value such as `secondary_01` is the name of an entry, not its `key`", "")
+          test_expect_is_in(
+            source_ids[!i], linkable_keys,
+            info = paste0(red(f_metadata), "\tsource"),
+            label = paste0("`source_id` (each value must be the dataset_id or the `key` of a `source` reference", hint, ")")
+          )
+
+          j <- !source_keys %in% source_ids
+          test_expect_true(
+            !any(j),
+            info = sprintf(
+              "%s\tsource - no observation's `source_id` names these `source` references (a typo in the data, or the reference is really `secondary`): '%s'",
+              red(f_metadata), paste(source_keys[j], collapse = "', '"))
+          )
+        }
+
         ## Substitutions
 
         if (!is.na(metadata[["substitutions"]][1])) {
@@ -730,7 +973,7 @@ dataset_test_worker <-
           )
 
           test_expect_no_error(
-            x <- metadata[["substitutions"]] %>% austraits::convert_list_to_df2() %>% split(.$trait_name),
+            x <- metadata[["substitutions"]] %>% traits.use::convert_list_to_df2() %>% split(.$trait_name),
             info = paste0(red(f), "\tconverting substitutions to a dataframe and splitting by `trait_name`")
           )
 
@@ -790,8 +1033,6 @@ dataset_test_worker <-
 
               # Check replacement values
               to_check <- x[[trait]]$replace %>% unique()
-              # Filter out `flowering_time` values from to-check list
-              to_check <- to_check[!(grepl("^[YyNn]+$", to_check) & stringr::str_length(to_check) == 12)]
               # A `replace` value may be the canonical term or one of its declared
               # synonyms -- `process_replace_synonyms()` resolves synonyms to their
               # canonical value later in the pipeline, so both are legitimate here.
@@ -814,6 +1055,20 @@ dataset_test_worker <-
                 label = failing %>% paste(collapse = "', '")
               )
             }
+
+            # A `monthly_presence` trait's replacement values must have the format
+            # the build requires of its values: twelve `y`s and `n`s
+            if (identical(definitions$elements[[trait]]$type, "monthly_presence")) {
+              to_check <- x[[trait]]$replace %>% unique()
+              failing <- to_check[!(is.na(to_check) | util_is_monthly_presence(to_check))]
+              test_expect_length_zero(
+                failing,
+                info = sprintf(
+                  "%s\tsubstitutions - `%s` has invalid replacement values, which must be twelve `y`s and `n`s",
+                  red(f), trait),
+                label = failing %>% paste(collapse = "', '")
+              )
+            }
           }
         }
 
@@ -822,7 +1077,7 @@ dataset_test_worker <-
         if (!is.na(metadata[["taxonomic_updates"]][1])) {
 
           test_expect_no_error(
-            x <- metadata[["taxonomic_updates"]] %>% austraits::convert_list_to_df2(),
+            x <- metadata[["taxonomic_updates"]] %>% traits.use::convert_list_to_df2(),
             info = paste0(red(f), "\tconverting `taxonomic_updates` to a dataframe")
           )
 
@@ -856,7 +1111,7 @@ dataset_test_worker <-
         # Load identifiers
         if ("identifiers" %in% names(metadata) & !all(is.na(metadata[["identifiers"]]))) {
           identifiers <-
-            metadata[["identifiers"]] %>% austraits::convert_list_to_df2()
+            metadata[["identifiers"]] %>% traits.use::convert_list_to_df2()
         } else {
           identifiers <- list(
             "var_in",
@@ -867,7 +1122,7 @@ dataset_test_worker <-
         test_expect_no_error(
           parsed_data <- data %>%
             process_parse_data(dataset_id, metadata, contexts, schema, identifiers,
-                               definitions[["elements"]]),
+                               definitions[["elements"]], additional_fields = names(additional_fields)),
           info = sprintf("%s\t`process_parse_data`", red(dataset_id)))
 
         test_expect_allowed_text(
@@ -880,50 +1135,12 @@ dataset_test_worker <-
           parsed_data$traits %>%
           process_add_all_columns(
             c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
-              "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in")
+              "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in",
+              process_trait_level_column(location_metadata_fields))
           )
 
-        # Replace original `location_id` with a new `location_id`
-        if (nrow(locations) > 0) {
-          parsed_data <-
-            parsed_data %>%
-            dplyr::select(-dplyr::all_of(c("location_id"))) %>%
-            dplyr::left_join(
-              by = c("location_name"),
-              locations %>% dplyr::select(dplyr::all_of(c("location_name", "location_id"))) %>% dplyr::distinct()
-            )
-          parsed_data <-
-            parsed_data %>%
-            mutate(
-              location_id = ifelse(.data$entity_type == "species", NA_character_, .data$location_id)
-            )
-        }
-
-        ## Where missing, fill variables in traits table with values from locations
-        # Trait metadata should probably have precedence -- right now trait metadata
-        # is being read in during `process_parse_data` and getting overwritten here #TODO
-        # If process.R changes, this needs to be updated
-        if (nrow(locations) > 0) {
-          vars <- c("basis_of_record", "life_stage", "collection_date",
-                    "measurement_remarks", "entity_type")
-
-          for (v in vars) {
-            # Merge into traits from location level
-            if (v %in% unique(locations$location_property)) {
-              traits_tmp <- parsed_data %>%
-                dplyr::left_join(
-                  by = "location_id",
-                  locations %>%
-                    tidyr::pivot_wider(names_from = "location_property", values_from = "value") %>%
-                    mutate(col_tmp = .data[[v]]) %>%
-                    dplyr::select(dplyr::any_of(c("location_id", "col_tmp"))) %>%
-                    stats::na.omit()
-                )
-              # Use location level value if present
-              parsed_data[[v]] <- ifelse(!is.na(traits_tmp[["col_tmp"]]), traits_tmp[["col_tmp"]], parsed_data[[v]])
-            }
-          }
-        }
+        # Set `location_id` and fill location-level fields, as the build does
+        parsed_data <- parsed_data %>% process_add_location_metadata(locations)
 
         ## Excluded observations
 
@@ -937,7 +1154,7 @@ dataset_test_worker <-
 
           test_expect_no_error(
             x <- metadata[["exclude_observations"]] %>%
-              austraits::convert_list_to_df2() %>%
+              traits.use::convert_list_to_df2() %>%
               tidyr::separate_longer_delim("find", delim = ", ") %>%
               dplyr::mutate(find = str_squish(.data$find)),
             info = paste0(red(f), "\tconverting `exclude_observations` to a dataframe")
@@ -987,26 +1204,23 @@ dataset_test_worker <-
         }
 
         ## Check config files contain all relevant columns
+        # Every `var_in` in `traits` must be in the data: a column of a wide
+        # dataset, or a value of a long dataset's trait column. The reverse is not
+        # required: a column a wide dataset does not map, or a trait in a long
+        # dataset's trait column with no `traits` entry, is left out of the build,
+        # so it needs no filtering in `custom_R_code` (#308)
         if (metadata[["dataset"]][["data_is_long_format"]]) {
-
-          # For vertical datasets, expect all values of "trait column" found in traits
-          var_out <- names(metadata[["dataset"]])
-          var_in <- unlist(metadata[["dataset"]])
-          i <- match("trait_name", var_out)
-          values <- unique(data[[var_in[i]]])
-          test_expect_contains(
-            traits[["var_in"]], values,
-            info = paste0(red(files[2]), "\ttraits")
+          trait_column <- metadata[["dataset"]][["trait_name"]]
+          test_expect_is_in(
+            traits[["var_in"]], unique(data[[trait_column]]),
+            info = paste0(red(files[2]), "\ttraits"),
+            label = sprintf("`var_in` (values of the trait column `%s`)", trait_column)
           )
-
         } else {
-
-          # For wide datasets, expect variables in traits are headers in the data
           test_expect_is_in(
             traits[["var_in"]], names(data),
             info = paste0(red(files[2]), "\ttraits"), label = "`var_in`"
           )
-
         }
 
 
@@ -1077,6 +1291,22 @@ dataset_test_worker <-
             )
           )
 
+          ## `collection_date` must not be missing -- an unknown date should be
+          ## recorded explicitly (e.g. `.na/2009`, which is stored as `2009`),
+          ## not left blank. Checked on the built table too, so a date a
+          ## location fills in counts, and a row dropped for having no trait
+          ## value does not.
+          n_missing_dates <- sum(is.na(dates))
+          test_expect_true(
+            n_missing_dates == 0,
+            info = sprintf(
+              "%s\tSome date values are NA (%s of %s records)",
+              red(dataset_id),
+              n_missing_dates,
+              length(dates)
+            )
+          )
+
           # Test `austraits` functions
           # Testing per study, not on all studies combined (is this ideal?)
           # I'm not testing whether the functions work as intended, just that they throw no error
@@ -1097,6 +1327,48 @@ dataset_test_worker <-
           #  )
           #}
         }
+
+        ## Source id, on the observations the built dataset holds (see above)
+        if (exists("dataset", inherits = FALSE) && is.data.frame(dataset[["traits"]])) {
+          source_ids <- unique(stats::na.omit(c(
+            dataset[["traits"]][["source_id"]], dataset[["excluded_data"]][["source_id"]]
+          )))
+        }
+        check_source_ids(source_ids)
       })
     }
   }
+
+
+#' Values that `traits$source_id` will hold once a dataset is built
+#'
+#' Resolves the dataset-level `source_id` in `metadata.yml`, and any trait-level
+#' `source_id`, the way `process_parse_data()` does: a value naming a column of
+#' the data reads that column; any other value is a constant. An observation left
+#' without a value takes the `dataset_id` when built, which always names the
+#' dataset's own reference, so is not returned here.
+#'
+#' @param metadata Metadata list, as read by `yaml::read_yaml()` in `dataset_test()`
+#' @param traits The `traits` block of the metadata as a data frame
+#' @param data The data, with `custom_R_code` applied
+#'
+#' @return Character vector of the distinct non-NA values
+#' @noRd
+dataset_test_source_id_values <- function(metadata, traits, data) {
+
+  resolve <- function(v) {
+    v <- as.character(v)
+    v <- v[!is.na(v)]
+    unlist(lapply(v, function(x) {
+      if (!is.null(data[[x]])) as.character(data[[x]]) else x
+    }))
+  }
+
+  values <- resolve(metadata[["dataset"]][["source_id"]])
+
+  if (is.data.frame(traits) && "source_id" %in% names(traits)) {
+    values <- c(values, resolve(traits[["source_id"]]))
+  }
+
+  unique(values[!is.na(values)])
+}

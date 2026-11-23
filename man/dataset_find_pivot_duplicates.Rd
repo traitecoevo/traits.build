@@ -22,7 +22,7 @@ Tibble of the offending rows from each dataset's \code{traits} table, with
 every column, grouped so that rows sharing a pivot cell are adjacent.
 \code{number_of_duplicates} is the number of rows sharing that cell, and
 \code{exact_duplicate} is \code{TRUE} for a row identical to another in every column --
-the rows a compiled database silently drops. Zero rows means every dataset
+the rows a compiled database drops. Zero rows means every dataset
 passes the check.
 }
 \description{
@@ -31,7 +31,9 @@ rows that make its "\code{traits} table cannot pivot wider" check fail.
 }
 \details{
 Use this rather than \code{\link[=check_pivot_duplicates]{check_pivot_duplicates()}} on a compiled database to
-chase that failure. \code{\link[austraits:bind_databases]{austraits::bind_databases()}} drops rows that are
+chase that failure. \code{\link[traits.use:bind_databases]{traits.use::bind_databases()}} drops rows that are
 identical in every column, so a dataset whose duplicates are exact copies
-fails \code{\link[=dataset_test]{dataset_test()}} but shows no duplicates once compiled.
+fails \code{\link[=dataset_test]{dataset_test()}} but shows no duplicates once compiled. From
+traits.use 0.1.1 it warns when it drops them, naming each dataset and its
+count; this function finds the rows themselves.
 }

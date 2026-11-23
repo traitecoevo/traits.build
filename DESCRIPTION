@@ -1,7 +1,7 @@
 Type: Package
 Package: traits.build
 Title: A Workflow for Harmonising Trait Data from Diverse Sources into a Documented Standard Structure
-Version: 2.2.0
+Version: 3.0.0
 Maintainer: Daniel Falster <daniel.falster@unsw.edu.au>
 Authors@R: c(
     person(given = "Daniel", family = "Falster", role = c("cre", "aut"), email = "daniel.falster@unsw.edu.au", comment = c(ORCID = "0000-0002-9814-092X")),
@@ -22,7 +22,7 @@ Depends:
     readr,
     stringr (>= 1.5.0),
     tidyr,
-    austraits
+    traits.use (>= 0.1.1)
 Imports:
     crayon,
     git2r,
@@ -35,6 +35,7 @@ Imports:
     styler,
     testthat,
     tibble,
+    tools,
     whisker,
     yaml,
     lifecycle
@@ -49,7 +50,6 @@ Suggests:
     bibtex,
     knitr,
     bench,
-    cli,
     devtools,
     markdown,
     pkgdown,
@@ -57,15 +57,13 @@ Suggests:
     rcrossref,
     rmarkdown,
     ggplot2,
-    ggbeeswarm,
-    gridExtra,
     scales,
     withr,
     zip,
     covr
 Remotes:
     richfitz/remake,
-    traitecoevo/austraits
+    traitecoevo/traits.use@v0.1.1
 Encoding: UTF-8
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)

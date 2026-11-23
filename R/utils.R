@@ -232,28 +232,358 @@ util_resolve_trait_field_values <- function(declared, data) {
 }
 
 
-#'  Split and sort cells with multiple values
+#' Convert the `traits` entries of `metadata.yml` to a table
+#'
+#' `traits.use::convert_list_to_df2()`, one row per trait entry, without the
+#' optional `omit_values` field. That field may hold several values, and
+#' `convert_list_to_df2()` spreads an entry holding several over that many
+#' rows, which would duplicate the trait wherever the table is used. Read it
+#' from the entries themselves, as `process_parse_data()` does.
+#'
+#' @param metadata_traits The `traits` section of `metadata.yml`, as a list
+#'
+#' @return A tibble with one row per trait entry, or `NA` if there are none
+#' @noRd
+util_traits_to_df <- function(metadata_traits) {
+  if (is.list(metadata_traits)) {
+    metadata_traits <- lapply(metadata_traits, function(entry) {
+      if (is.list(entry)) entry[["omit_values"]] <- NULL
+      entry
+    })
+  }
+  traits.use::convert_list_to_df2(metadata_traits)
+}
+
+
+#' Check the shape of a `traits` entry's `omit_values`
+#'
+#' Valid is a single string or number, or a list of them. Anything else is
+#' invalid: a mapping, a nested list, an empty list, `.na`, and the YAML 1.1
+#' booleans `yes`, `no`, `true`, `false`, `on`, `off`, `y` and `n`, which
+#' `yaml::read_yaml()` reads as `TRUE` or `FALSE` unless they are quoted.
+#'
+#' @param x The value of `omit_values`, as read from `metadata.yml`
+#'
+#' @return `TRUE` or `FALSE`
+#' @noRd
+util_omit_values_valid <- function(x) {
+  is_scalar <- function(v) {
+    (is.character(v) || is.numeric(v)) && length(v) == 1 && !(is.na(v) && !is.nan(v))
+  }
+  if (length(x) == 0 || !is.null(names(x))) {
+    return(FALSE)
+  }
+  if (is.list(x)) {
+    return(all(vapply(x, is_scalar, logical(1))))
+  }
+  all(vapply(as.list(x), is_scalar, logical(1)))
+}
+
+#' Trait types a database may declare
+#'
+#' The values `type` may take in a trait's definition in `config/traits.yml`:
+#' `numeric`, `categorical`, `monthly_presence` and `text`, as listed under
+#' `trait_type` in the traits.build schema, which describes each. The type
+#' decides which checks the build applies to the trait's values, so a trait
+#' whose type is none of these would have its values pass through unchecked.
+#'
+#' @param schema The traits.build schema, as returned by [get_schema()]
+#'
+#' @return Character vector of trait types
+#' @keywords internal
+util_trait_types <- function(schema = get_schema()) {
+  names(schema[["trait_type"]][["values"]])
+}
+
+#' Names of the traits of a given type
+#'
+#' @param definitions Trait definitions keyed by `trait_name` -- the `elements`
+#'   of `traits.yml`, or the subset of them returned by [dataset_configure()]
+#' @param types Character vector of trait types
+#'
+#' @return Character vector of the names of traits whose `type` is in `types`
+#' @keywords internal
+util_traits_of_type <- function(definitions, types) {
+  if (length(definitions) == 0) return(character(0))
+  is_type <- purrr::map_lgl(definitions, ~ length(.x[["type"]]) == 1 && .x[["type"]] %in% types)
+  names(definitions)[is_type]
+}
+
+#' Find trait definitions whose `type` is missing or not supported
+#'
+#' @inheritParams util_traits_of_type
+#' @inheritParams util_trait_types
+#'
+#' @return Character vector with one entry per offending trait, naming it and
+#'   its type (e.g. "flowering_time (`categorial`)"); empty if every trait
+#'   declares a supported type
+#' @keywords internal
+util_unsupported_trait_types <- function(definitions, schema = get_schema()) {
+  if (length(definitions) == 0) return(character(0))
+  types <- purrr::map_chr(
+    definitions,
+    ~ if (length(.x[["type"]]) == 1) as.character(.x[["type"]]) else NA_character_
+  )
+  bad <- is.na(types) | !types %in% util_trait_types(schema)
+  sprintf(
+    "%s (%s)",
+    names(types)[bad],
+    ifelse(is.na(types[bad]), "no `type`", sprintf("`%s`", types[bad]))
+  )
+}
+
+#' Check values have the `monthly_presence` format
+#'
+#' A `monthly_presence` value is twelve characters, one per month starting with
+#' January, each `y` or `n` (either case).
+#'
+#' @param x Character vector
+#'
+#' @return Logical vector, `TRUE` where `x` has the format
+#' @keywords internal
+util_is_monthly_presence <- function(x) {
+  grepl("^[YyNn]{12}$", x)
+}
+
+
+#'  Split and order cells with multiple values
 #'
 #'  `util_separate_and_sort`: For a vector x in which individual cell may have
-#'  multiple values (separated by 'sep'), sort records within each cell alphabetically.
+#'  multiple values (separated by 'sep'), put the values within each cell in
+#'  order and drop any value repeated within a cell.
+#'
+#'  With `order = "alphabetical"` the values are sorted, so `tree shrub` and
+#'  `shrub tree` both become `shrub tree`. With `order = "input_order"` they keep
+#'  the order they were given in, so the first value can carry meaning, and only
+#'  the repeats are dropped (`tree shrub tree` becomes `tree shrub`). Which one a
+#'  build uses is set by `trait_value_term_order` in the database's
+#'  `config/metadata.yml`; see [util_trait_value_term_order()].
 #'
 #' @param x An individual cell with multiple values
 #' @param sep A separator, a whitespace is the default
+#' @param order `"alphabetical"` (the default) or `"input_order"`
 #'
-#' @return A vector of alphabetically sorted records
+#' @return A vector of records, each with its values in the requested order and
+#'   without repeats
 #'
-#' @examples \dontrun{util_separate_and_sort("z y x")}
-util_separate_and_sort <- function(x, sep = " ") {
+#' @examples \dontrun{
+#' util_separate_and_sort("z y x")
+#' util_separate_and_sort("z y x y", order = "input_order")
+#' }
+util_separate_and_sort <- function(x, sep = " ", order = "alphabetical") {
+
+  order <- match.arg(order, util_trait_value_term_orders())
 
   # Find cells with multiple values, indicated by presence of sep
   i <- grep(sep, x)
-  # For those cells, split, sort then combine
+
+  arrange_terms <-
+    if (order == "alphabetical") {
+      function(xi) xi %>% util_sort_locale_independent() %>% unique()
+    } else {
+      # `unique()` keeps the first occurrence of each value, in place
+      unique
+    }
+
+  # For those cells, split, order, drop repeats, then combine
   x[i] <- x[i] %>%
       stringr::str_split(" ") %>%
-      lapply(function(xi) xi %>% util_sort_locale_independent() %>% unique() %>% paste(collapse = " ")) %>%
+      lapply(function(xi) xi %>% arrange_terms() %>% paste(collapse = " ")) %>%
       unlist()
   x
 
+}
+
+# The settings `trait_value_term_order` accepts, the first being the default.
+# `inst/support/traits.build_schema.yml` documents the same values, and a test
+# keeps the two in step.
+util_trait_value_term_orders <- function() {
+  c("alphabetical", "input_order")
+}
+
+#' Order in which a database writes the terms of a multi-term trait value
+#'
+#' A categorical trait value can hold several space-separated terms, such as
+#' `shrub tree`. `trait_value_term_order`, in the `metadata` block of the
+#' database's `config/metadata.yml`, says how they are written: `alphabetical`
+#' sorts them, so the order carries no meaning, and `input_order` keeps the order
+#' given by the source, so the first term may be the one it considered most
+#' likely. Either way a repeated term is dropped. When the setting is absent the
+#' order is `alphabetical`, which is how every database was built before the
+#' setting existed. The setting is copied into the built database's `metadata`
+#' with the rest of that block, which is how a user of the database can tell
+#' whether term order carries meaning.
+#'
+#' @param resource_metadata The `metadata` block of the database's
+#'   `config/metadata.yml`, as passed to [dataset_process()]
+#'
+#' @return `"alphabetical"` or `"input_order"`
+#' @keywords internal
+util_trait_value_term_order <- function(resource_metadata) {
+
+  allowed <- util_trait_value_term_orders()
+  order <- resource_metadata[["trait_value_term_order"]]
+
+  if (is.null(order) || (length(order) == 1 && is.na(order))) {
+    return(allowed[1])
+  }
+
+  if (!(is.character(order) && length(order) == 1 && order %in% allowed)) {
+    stop(
+      sprintf(
+        "`trait_value_term_order` in the `metadata` block of `config/metadata.yml` must be one of %s, not %s.",
+        paste(sprintf("`%s`", allowed), collapse = " or "),
+        paste(sprintf("`%s`", format(order)), collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+
+  order
+}
+
+#' Working columns of the traits table
+#'
+#' Columns the build adds to the traits table while processing it, and later
+#' overwrites or drops: in [process_parse_data()], `process_add_location_metadata()`,
+#' [process_convert_units()], [process_create_observation_id()] and
+#' [dataset_update_taxonomy()]. A database's own column of the same name would
+#' be lost, so [util_additional_traits_table_fields()] does not allow these
+#' names. A new working column belongs here too.
+#'
+#' @keywords internal
+traits_working_columns <- c(
+  "parsing_id", "parsing_id_tmp", "row_numbers", "taxonomic_resolution",
+  "col_tmp",
+  "i", "to", "ucn", "type", "to_convert",
+  "pop_id_segment", "ind_id_segment", "check_for_ind",
+  "aligned_name"
+)
+
+#' Columns a database adds to its traits table
+#'
+#' A database can add columns of its own to the `traits` table, for fields
+#' recorded for all or most of its records, such as the kind of specimen
+#' measured. `additional_traits_table_fields`, in the `metadata` block of the
+#' database's `config/metadata.yml`, names each column and describes it:
+#'
+#' ```
+#' additional_traits_table_fields:
+#'   specimen_type: The kind of specimen the value was measured on.
+#' ```
+#'
+#' A dataset sets each column the way it sets `measurement_remarks`: in the
+#' `dataset` block of its `metadata.yml`, or on a trait's entry in `traits`,
+#' as either a fixed value or the name of a column of `data.csv`. A dataset
+#' that sets neither leaves the column empty. The columns follow the schema's
+#' own, in the order given, so a database without the setting is built exactly
+#' as before.
+#'
+#' A name must start with a letter and hold only letters, digits and
+#' underscores. It may not be one the schema already uses for a column of any
+#' of the database's tables, which functions such as `traits.use::join_taxa()`
+#' add to the traits table, or for a field of a dataset's `metadata.yml`; nor
+#' one of [traits_working_columns], which the build adds to the traits table
+#' while processing it and would overwrite or drop. Names are checked
+#' against the schema shipped with traits.build rather than the one being
+#' built with, so a schema the columns have already been added to (see
+#' [util_schema_add_traits_table_fields()]) can be passed again.
+#'
+#' @inheritParams util_trait_value_term_order
+#'
+#' @return Named character vector of descriptions, named by column, or an
+#'   empty character vector when the setting is absent
+#' @keywords internal
+util_additional_traits_table_fields <- function(resource_metadata) {
+
+  fields <- resource_metadata[["additional_traits_table_fields"]]
+
+  if (is.null(fields) || (length(fields) == 1 && is.atomic(fields) && is.na(fields))) {
+    return(character())
+  }
+
+  setting <- "`additional_traits_table_fields` in the `metadata` block of `config/metadata.yml`"
+
+  is_description <- function(x) is.character(x) && length(x) == 1 && !is.na(x) && nzchar(trimws(x))
+
+  if (!is.list(fields) || length(fields) == 0 || is.null(names(fields)) ||
+      any(is.na(names(fields)) | names(fields) == "") ||
+      !all(vapply(fields, is_description, logical(1)))) {
+    stop(
+      sprintf(
+        "%s must map each column name to a description, such as `specimen_type: The kind of specimen measured.`",
+        setting
+      ),
+      call. = FALSE
+    )
+  }
+
+  fields <- unlist(fields)
+
+  stop_with_names <- function(problem, names) {
+    stop(
+      sprintf("%s %s: %s", setting, problem, paste(sprintf("`%s`", unique(names)), collapse = ", ")),
+      call. = FALSE
+    )
+  }
+
+  if (anyDuplicated(names(fields))) {
+    stop_with_names("names a column more than once", names(fields)[duplicated(names(fields))])
+  }
+
+  malformed <- names(fields)[!grepl("^[A-Za-z][A-Za-z0-9_]*$", names(fields))]
+  if (length(malformed) > 0) {
+    stop_with_names(
+      "has names that do not start with a letter and hold only letters, digits and underscores",
+      malformed
+    )
+  }
+
+  # Names the build already gives a meaning to: a column of any table, since
+  # joins such as `traits.use::join_taxa()` bring them into the traits table, a
+  # field of a dataset's `metadata.yml`, or a working column of the build
+  packaged <- get_schema()
+  tables <- purrr::keep(packaged[["austraits"]][["elements"]], ~ identical(.x[["type"]], "table"))
+  reserved <- c(
+    unlist(lapply(tables, function(x) names(x[["elements"]])), use.names = FALSE),
+    names(packaged[["metadata"]][["elements"]][["dataset"]][["values"]]),
+    names(packaged[["metadata"]][["elements"]][["traits"]][["elements"]]),
+    traits_working_columns
+  )
+  clashing <- names(fields)[names(fields) %in% reserved]
+  if (length(clashing) > 0) {
+    stop_with_names("has names the schema or the build already uses", clashing)
+  }
+
+  fields
+}
+
+#' Add a database's own traits table columns to the schema
+#'
+#' Adds the columns returned by [util_additional_traits_table_fields()] after
+#' the schema's own columns of the `traits` and `excluded_data` tables, and as
+#' fields allowed in the `dataset` block and on the `traits` entries of a
+#' dataset's `metadata.yml`, each with its description. Everything that reads
+#' these lists from the schema -- the columns the build keeps, the fields
+#' [dataset_test()] allows, and the schema exported with the database -- then
+#' includes them. Adding the same columns again changes nothing.
+#'
+#' @param schema Schema for traits.build, as returned by [get_schema()]
+#' @param fields Named character vector of descriptions, named by column, as
+#'   returned by [util_additional_traits_table_fields()]
+#'
+#' @return `schema`, with the columns added
+#' @keywords internal
+util_schema_add_traits_table_fields <- function(schema, fields) {
+
+  for (v in names(fields)) {
+    schema[["austraits"]][["elements"]][["traits"]][["elements"]][[v]] <- fields[[v]]
+    schema[["austraits"]][["elements"]][["excluded_data"]][["elements"]][[v]] <- fields[[v]]
+    schema[["metadata"]][["elements"]][["dataset"]][["values"]][[v]] <- fields[[v]]
+    schema[["metadata"]][["elements"]][["traits"]][["elements"]][[v]] <- fields[[v]]
+  }
+
+  schema
 }
 
 #' Convert BibEntry object to a list
@@ -400,6 +730,537 @@ util_read_locations_file <- function(file, path) {
 }
 
 
+#' Standardise a messy `collection_date` (or raw date) column
+#'
+#' Best-effort conversion of raw date values into the format
+#' [dataset_test()]'s `collection_date`-parses check requires: a year
+#' (`yyyy`), a year and month (`yyyy-mm`), or a full date (`yyyy-mm-dd`),
+#' singly or as a `start/end` range. Meant to be called from a dataset's
+#' `custom_R_code`, before `collection_date` is otherwise read in, e.g.:
+#'
+#' ```
+#' custom_R_code: 'data %>% mutate(Date = util_parse_collection_date(Date))'
+#' ```
+#'
+#' **What this deliberately will not touch**: a bare numeric date like
+#' `01/02/2008`, seen *in isolation*, is genuinely ambiguous -- day-first or
+#' month-first? -- and guessing wrong silently corrupts the data worse than
+#' not guessing at all. Two things narrow that down first, though: (1) the
+#' value's own two leading numbers -- `10/23/2021` can only be month-first,
+#' since no month is `23` -- and only when that alone doesn't settle it, (2)
+#' the rest of the column, on the view that a single source normally writes
+#' dates one way (e.g. `9/14/2020` elsewhere rules out month `14`, settling
+#' an otherwise-ambiguous `8/11/2020`). Real data can still mix conventions
+#' *within* one column, though -- e.g. automated timestamps in month-first
+#' order alongside hand-entered dates in day-first order -- so (1) is
+#' checked per value, never overridden by (2), and if the column as a whole
+#' disagrees with itself, (2) is not applied at all rather than picking a
+#' side. Only once neither of those applies does a value come back
+#' unchanged. Run [dataset_test()] again afterwards: whatever it still flags
+#' under "Some date values are not parsing" needs a human decision, not a
+#' better regex.
+#'
+#' **What it does handle**:
+#' - Values already valid are passed through untouched
+#' - A *named* month removes the day/month ambiguity regardless of which
+#'   order it was written in, so `2-Sep-08`, `September 2, 2008`, `2 Sep
+#'   2008` and similar all resolve safely
+#' - A month name with no day (`Sep 2008`) resolves to the `yyyy-mm`
+#'   resolution, not a fabricated day-1 date
+#' - A plain numeric `d/m/y`-shaped date, resolved per-value or from the
+#'   rest of the column as described above
+#' - `mm-yyyy` (month first, the reverse of the schema's `yyyy-mm`) --
+#'   unambiguous on its own, since a 4-digit year can't be mistaken for
+#'   anything else
+#' - A dot-separated `yy.mm.dd`/`yyyy.mm.dd`, confirmed (not assumed) by
+#'   checking the middle component is a plausible month and the last a
+#'   plausible day. A two-digit dotted date written day-first instead
+#'   (`18.3.12`) can't be told apart from that by its values, so it needs
+#'   `order = "dmy"`
+#' - A dot-separated `d.m.yyyy` (`21.11.2019`), resolved like the `/` and `-`
+#'   numeric dates above
+#' - A compact `yyyymmdd` (`20190206`)
+#' - A span of years written with a dash (`2019-2020` becomes `2019/2020`)
+#' - A comma- or semicolon-separated list of dates (`Jan-98, Feb-98,
+#'   Mar-98`), collapsed to the `first/last` range it covers (`1998-01/1998-03`)
+#'   -- tried only once the value has failed to parse whole, so a comma
+#'   *inside* one date (`September 2, 2008`) is never split on
+#' - Excel's numeric serial dates (e.g. `39692`), distinguished from a bare
+#'   4-digit year by digit count. A number that is really R's own day count
+#'   (left behind when `ifelse()` strips a `Date` column's class) looks exactly
+#'   like one and would be read decades too early -- pass the raw column to
+#'   this function instead of converting it with `lubridate` first
+#' - A trailing time-of-day is dropped, both `"yyyy-mm-ddTHH:MM:SSZ"` (ISO
+#'   8601) and `"d/m/y HH:MM"` (e.g. a Google Forms timestamp column) --
+#'   `collection_date` has no way to record a time, only the date
+#' - A `start/end` range is split on `/` and each side parsed independently,
+#'   *unless* the whole value already looks like a plain `d/m/y`-shaped date
+#'   (in which case `/` is a date separator, not a range separator, and the
+#'   rules above apply to the whole thing)
+#' - `Date`/`POSIXct` columns (already parsed by `read_csv()`'s own type
+#'   guessing before `custom_R_code` runs) are formatted directly, dropping
+#'   any time-of-day component
+#'
+#' @param x A character, `Date`, or `POSIXct` vector of raw date values --
+#'  the whole column at once, not one value at a time, since resolving a
+#'  plain numeric date's order depends on seeing the rest of `x`
+#' @param order Optional, `"dmy"` or `"mdy"`: the curator's own statement of
+#'  which way round an all-numeric date is written, for when nothing in the
+#'  column can settle it -- e.g. a single `4/07/2022`, or two-digit dotted
+#'  dates like `18.3.12` (`d.m.yy`). It replaces the column-wide inference,
+#'  but a value that settles its own order (e.g. `10/23/2021`, since no month
+#'  is `23`) is still read that way. Converting a `custom_R_code` that called
+#'  `lubridate::dmy()` or `lubridate::mdy()` is then a like-for-like swap
+#' @param excel_origin Origin date for numeric Excel serial dates. The
+#'  default (`1899-12-30`) is correct for a workbook built on Windows Excel;
+#'  one built on old Mac Excel needs `1904-01-01` instead
+#' @return Character vector the same length as `x`. Values already valid, or
+#'  safely resolved to `yyyy`, `yyyy-mm` or `yyyy-mm-dd` (singly or as a
+#'  `/`-delimited range), are returned in that form; anything left ambiguous
+#'  or unrecognised is returned completely unchanged
+#'
+#' @examples
+#' util_parse_collection_date(c(
+#'   "2-Sep-08", "September 2, 2008", "Sep 2008", "39692",
+#'   "2008-09-02/2008-09-03", "01/02/2008", "2020", NA
+#' ))
+#'
+#' # the whole column is used to resolve a plain numeric date's order:
+#' # `9/14/2020` can only be month-first, so `8/11/2020` is read the same way
+#' util_parse_collection_date(c("8/11/2020 10:09", "9/14/2020 12:06"))
+#'
+#' # nothing in a lone `4/07/2022` says which way round it is, so say so:
+#' util_parse_collection_date("4/07/2022", order = "dmy")
+#' @export
+util_parse_collection_date <- function(x, order = NULL, excel_origin = "1899-12-30") {
+
+  if (!is.null(order)) {
+    order <- match.arg(order, c("dmy", "mdy"))
+  }
+
+  if (inherits(x, "Date") || inherits(x, "POSIXt")) {
+    return(format(x, "%Y-%m-%d"))
+  }
+
+  x <- as.character(x)
+  x <- vapply(x, util_strip_time_of_day, character(1), USE.NAMES = FALSE)
+
+  numeric_order <- if (!is.null(order)) order else util_infer_numeric_date_order(x)
+
+  vapply(
+    x,
+    util_parse_collection_date_one,
+    character(1),
+    excel_origin = excel_origin,
+    numeric_order = numeric_order,
+    order = order,
+    USE.NAMES = FALSE
+  )
+}
+
+
+# Drop a trailing time-of-day from a datetime string, leaving just the date
+# part -- `collection_date` has no way to record a time. Handles ISO 8601
+# (`yyyy-mm-ddTHH:MM:SS[.ffffff]Z`) and a plain numeric date followed by a
+# time (`d/m/y HH:MM[:SS][ AM|PM]`, e.g. a Google Forms timestamp column).
+# Anything else is returned unchanged.
+util_strip_time_of_day <- function(value) {
+  if (is.na(value)) {
+    return(value)
+  }
+  value <- sub(
+    "^([0-9]{4}-[0-9]{2}-[0-9]{2})[T ][0-9]{1,2}:[0-9]{2}(:[0-9]{2})?(\\.[0-9]+)?Z?$",
+    "\\1", value
+  )
+  value <- sub(
+    "^([0-9]{1,2}[/-][0-9]{1,2}[/-][0-9]{2,4})\\s+[0-9]{1,2}:[0-9]{2}(:[0-9]{2})?\\s*([AaPp][Mm])?$",
+    "\\1", value
+  )
+  value
+}
+
+
+# Does any value in `x` unambiguously reveal whether a plain numeric
+# `_/_/_`-, `_-_-_`- or `_._.yyyy`-shaped date is day-first or month-first --
+# i.e. does the first or second number exceed 12 anywhere, ruling out that
+# slot being a month? All separators are pooled into one inference, on the
+# view that this is a property of who/what recorded the dates, not of which
+# punctuation a given row happens to use. A dotted date only counts with a
+# 4-digit year: a two-digit dotted triple is read as `yy.mm.dd` unless the
+# caller says otherwise, so it has no say here. Returns "dmy", "mdy", or
+# `NULL` if nothing in `x` resolves it (or if values disagree, which
+# shouldn't happen in a single column, and isn't trusted if it does).
+util_infer_numeric_date_order <- function(x) {
+  candidates <- x[!is.na(x) & grepl(
+    "^[0-9]{1,2}([/-][0-9]{1,2}[/-][0-9]{2,4}|\\.[0-9]{1,2}\\.[0-9]{4})$", trimws(x)
+  )]
+  if (length(candidates) == 0) {
+    return(NULL)
+  }
+
+  parts <- strsplit(trimws(candidates), "[/.-]")
+  first <- vapply(parts, function(p) as.integer(p[1]), integer(1))
+  second <- vapply(parts, function(p) as.integer(p[2]), integer(1))
+
+  first_over_12 <- any(first > 12, na.rm = TRUE)
+  second_over_12 <- any(second > 12, na.rm = TRUE)
+
+  if (first_over_12 && !second_over_12) {
+    return("dmy")
+  }
+  if (second_over_12 && !first_over_12) {
+    return("mdy")
+  }
+  NULL
+}
+
+
+# Resolve a plain numeric date's two leading components (already parsed as
+# integers, in the order they appear in the original string) plus its year
+# string into `yyyy-mm-dd`. Shared by the `/`- and `-`-separated branches of
+# util_parse_collection_date_one() below -- identical ambiguity, identical
+# resolution, just a different separator. Returns `NA_character_` if the
+# order can't be determined (self-disambiguation failed and `numeric_order`
+# is `NULL`) or the resulting date doesn't exist on the calendar.
+util_resolve_numeric_dmy_date <- function(first, second, year_str, numeric_order) {
+
+  # This *specific* value can be self-disambiguating regardless of what the
+  # rest of the column looks like: if exactly one of its own two leading
+  # numbers exceeds 12, it can't be a month, so the order is settled without
+  # needing column-wide agreement.
+  order <-
+    if (first > 12 && second <= 12) "dmy"
+    else if (second > 12 && first <= 12) "mdy"
+    else numeric_order
+
+  if (is.null(order)) {
+    return(NA_character_)
+  }
+
+  day <- if (order == "dmy") first else second
+  month <- if (order == "dmy") second else first
+  year <- util_expand_two_digit_year(year_str)
+  if (is.na(day) || day < 1 || day > 31 || is.na(month) || month < 1 || month > 12 || is.na(year)) {
+    return(NA_character_)
+  }
+
+  full_date <- sprintf("%d-%02d-%02d", year, month, day)
+  if (!is.na(as.Date(full_date, format = "%Y-%m-%d"))) {
+    return(full_date)
+  }
+  NA_character_
+}
+
+
+# One value's worth of `util_parse_collection_date()`'s logic. `numeric_order`
+# ("dmy", "mdy", or NULL) is decided once, up front, for the *whole* column --
+# the caller's `order` if given, otherwise `util_infer_numeric_date_order()`
+# -- since a single value has no way to resolve its own ambiguity. `order` is
+# passed through separately because one shape (a two-digit dotted triple) is
+# only re-read on the caller's say-so, never on inference alone.
+#
+# A value that doesn't parse whole but holds a comma- or semicolon-separated
+# list of dates (e.g. `Jan-98, Feb-98, Mar-98`, the months a collection
+# spanned) is collapsed to the `first/last` range they cover. That is only
+# tried *after* the whole value has failed, because a comma can also sit
+# inside a single date -- `September 2, 2008` split on its comma would read
+# `September 2` as 2002.
+util_parse_collection_date_one <- function(value, excel_origin, numeric_order = NULL, order = NULL) {
+
+  parsed <- util_parse_collection_date_single(value, excel_origin, numeric_order, order)
+
+  if (is.na(parsed) || util_collection_date_is_valid(parsed) || !grepl("[,;]", parsed)) {
+    return(parsed)
+  }
+
+  items <- trimws(strsplit(parsed, "[,;]")[[1]])
+  items <- items[nzchar(items)]
+  items_parsed <- vapply(
+    items, util_parse_collection_date_single, character(1),
+    excel_origin = excel_origin, numeric_order = numeric_order, order = order,
+    USE.NAMES = FALSE
+  )
+  if (length(items_parsed) == 0 || anyNA(items_parsed) ||
+      !all(util_collection_date_is_valid(items_parsed))) {
+    return(parsed)
+  }
+
+  # Every item is a valid `yyyy[-mm[-dd]]` (or a range of two), and those sort
+  # correctly as plain strings, so the span is just the smallest and largest
+  # endpoint
+  endpoints <- unlist(strsplit(items_parsed, "/", fixed = TRUE))
+  if (".na" %in% endpoints) {
+    return(parsed)
+  }
+  span <- unique(c(min(endpoints), max(endpoints)))
+  paste(span, collapse = "/")
+}
+
+
+util_parse_collection_date_single <- function(value, excel_origin, numeric_order = NULL, order = NULL) {
+
+  if (is.na(value) || !nzchar(trimws(value))) {
+    return(NA_character_)
+  }
+
+  value <- trimws(value)
+
+  if (util_collection_date_is_valid(value)) {
+    return(value)
+  }
+
+  # A span of years written with a dash (`2019-2020`) rather than the schema's
+  # `/`. Two 4-digit years can't be read as anything else.
+  if (grepl("^[0-9]{4}\\s*-\\s*[0-9]{4}$", value)) {
+    years <- as.integer(strsplit(gsub("\\s", "", value), "-", fixed = TRUE)[[1]])
+    if (years[2] >= years[1]) {
+      return(paste(years, collapse = "/"))
+    }
+    return(value)
+  }
+
+  # An unambiguous `mm-yyyy` (month first, dash, 4-digit year) -- the
+  # reverse of the schema's `yyyy-mm`. A 4-digit year in the second slot
+  # rules out any other reading, so this needs no column-wide context.
+  if (grepl("^[0-9]{1,2}-[0-9]{4}$", value)) {
+    date_parts <- strsplit(value, "-", fixed = TRUE)[[1]]
+    month <- suppressWarnings(as.integer(date_parts[1]))
+    if (!is.na(month) && month >= 1 && month <= 12) {
+      return(sprintf("%s-%02d", date_parts[2], month))
+    }
+    return(value)
+  }
+
+  # A dot-separated `d.m.yyyy` (e.g. Lequerica_Tamara_2025's `21.11.2019`) is
+  # the `/`- and `-`-separated numeric date again with different punctuation,
+  # and is resolved the same way. A two-digit dotted triple is less settled:
+  # Doyle_2023 writes `yy.mm.dd` (`19.08.20`), Bloomfield_2018 writes `d.m.yy`
+  # (`18.3.12`), and nothing in the values tells the two apart -- so it is
+  # only read as day/month-first when the caller passed `order`, and as
+  # `yy.mm.dd` (just below) otherwise.
+  if (grepl("^[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{4}$", value) ||
+      (!is.null(order) && grepl("^[0-9]{1,2}\\.[0-9]{1,2}\\.[0-9]{2}$", value))) {
+    date_parts <- strsplit(value, ".", fixed = TRUE)[[1]]
+    resolved <- util_resolve_numeric_dmy_date(
+      as.integer(date_parts[1]), as.integer(date_parts[2]), date_parts[3], numeric_order
+    )
+    if (!is.na(resolved)) {
+      return(resolved)
+    }
+    return(value)
+  }
+
+  # A dot-separated `yy.mm.dd` or `yyyy.mm.dd`. Confirmed (not just assumed)
+  # by checking the middle component is a plausible month (<=12) and the
+  # last is a plausible day (<=31) -- if the shape doesn't fit that specific
+  # order, this is left alone rather than guessed at.
+  if (grepl("^[0-9]{2,4}\\.[0-9]{1,2}\\.[0-9]{1,2}$", value)) {
+    date_parts <- suppressWarnings(as.integer(strsplit(value, ".", fixed = TRUE)[[1]]))
+    year_part <- date_parts[1]; month <- date_parts[2]; day <- date_parts[3]
+    if (!anyNA(c(year_part, month, day)) && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+      year <- util_expand_two_digit_year(as.character(year_part))
+      if (!is.na(year)) {
+        full_date <- sprintf("%d-%02d-%02d", year, month, day)
+        if (!is.na(as.Date(full_date, format = "%Y-%m-%d"))) {
+          return(full_date)
+        }
+      }
+    }
+    return(value)
+  }
+
+  # A plain `d-m-y`-shaped date (dash, no named month), structurally
+  # identical to the `/`-separated case just below -- just a different
+  # separator. `Coates_2024`'s `date_standardised` column is exclusively this
+  # shape (its raw `date` column is the `/`-separated equivalent below,
+  # zero-padded and re-punctuated upstream of `data.csv`), and mixes
+  # self-disambiguating values (e.g. `28-11-2021`) with ones that need the
+  # rest of the column to resolve (e.g. `05-01-2022`).
+  if (grepl("^[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}$", value)) {
+    date_parts <- as.integer(strsplit(value, "-", fixed = TRUE)[[1]])
+    resolved <- util_resolve_numeric_dmy_date(date_parts[1], date_parts[2], as.character(date_parts[3]), numeric_order)
+    if (!is.na(resolved)) {
+      return(resolved)
+    }
+    return(value)
+  }
+
+  # A plain `d/m/y`-shaped date (no named month) is ambiguous on its own,
+  # and that ambiguity applies to the whole value, not to "is `/` a range
+  # separator here?" -- so this check comes before the range-splitting
+  # attempt below. Real datasets do mix conventions row to row -- Coates_2024's
+  # raw `date` column has automated camera-trap timestamps in month-first
+  # order alongside hand-entered dates in day-first order in the *same*
+  # column -- so column-wide agreement would wrongly hold a self-disambiguating
+  # value hostage to unrelated rows; see util_resolve_numeric_dmy_date().
+  if (grepl("^[0-9]{1,2}/[0-9]{1,2}/[0-9]{2,4}$", value)) {
+    date_parts <- as.integer(strsplit(value, "/", fixed = TRUE)[[1]])
+    resolved <- util_resolve_numeric_dmy_date(date_parts[1], date_parts[2], as.character(date_parts[3]), numeric_order)
+    if (!is.na(resolved)) {
+      return(resolved)
+    }
+    return(value)
+  }
+
+  if (grepl("/", value, fixed = TRUE)) {
+    parts <- strsplit(value, "/", fixed = TRUE)[[1]]
+    if (length(parts) == 2) {
+      fixed_parts <- vapply(
+        parts, util_parse_collection_date_single, character(1),
+        excel_origin = excel_origin, numeric_order = numeric_order, order = order
+      )
+      if (!anyNA(fixed_parts) && all(vapply(fixed_parts, util_collection_date_is_valid, logical(1)))) {
+        return(paste(fixed_parts, collapse = "/"))
+      }
+    }
+    return(value)
+  }
+
+  # A compact `yyyymmdd` (e.g. Arnold_2021's `20190206`), checked before the
+  # Excel serial rule below would claim it: a serial for any real collection
+  # date has 5 digits, so 8 digits starting with a plausible century can't be
+  # one. Checked against the real calendar, not just its shape.
+  if (grepl("^(18|19|20)[0-9]{6}$", value)) {
+    full_date <- sprintf("%s-%s-%s", substr(value, 1, 4), substr(value, 5, 6), substr(value, 7, 8))
+    if (!is.na(as.Date(full_date, format = "%Y-%m-%d"))) {
+      return(full_date)
+    }
+    return(value)
+  }
+
+  # Excel serial date: a purely numeric string that isn't a plausible bare
+  # year (exactly 4 digits) is almost certainly a spreadsheet serial number,
+  # not a year -- e.g. `39692`, not `2008`
+  if (grepl("^[0-9]+$", value) && nchar(value) != 4) {
+    serial <- suppressWarnings(as.numeric(value))
+    parsed <- if (!is.na(serial)) as.Date(serial, origin = excel_origin) else NA
+    if (!is.na(parsed)) {
+      return(format(parsed, "%Y-%m-%d"))
+    }
+    return(value)
+  }
+
+  # From here on, only attempt a guess when a *named* month makes the
+  # day/month order unambiguous regardless of who wrote it or in what
+  # locale -- a purely numeric date with no name to anchor it is exactly
+  # the ambiguous case this function refuses to guess at.
+  #
+  # This is done with explicit string surgery below rather than handed to
+  # `lubridate::parse_date_time(orders = c("dmy", "mdy", "ymd"))`, because
+  # that genuinely gives wrong answers for exactly this kind of input: it
+  # reuses digits from a *single* token to fill more than one date
+  # component when the string has fewer separate tokens than the order
+  # template expects, e.g. `parse_date_time("Sep 2008", orders = "mdy")`
+  # returns 2008-09-**20** (day fabricated from within "2008"), and
+  # `parse_date_time("2008-Sep-02", orders = "dmy")` returns **2002-08-20**
+  # -- both silently wrong, not `NA`, so there is no failure mode to catch.
+  month_match <- util_extract_month_name(value)
+  if (is.null(month_match)) {
+    return(value)
+  }
+
+  numbers <- regmatches(value, gregexpr("[0-9]+", value))[[1]]
+
+  if (length(numbers) == 0) {
+    return(value)
+  }
+
+  if (length(numbers) == 1) {
+    year <- util_expand_two_digit_year(numbers[1])
+    if (is.na(year)) {
+      return(value)
+    }
+    return(sprintf("%d-%s", year, month_match$month))
+  }
+
+  if (length(numbers) == 2) {
+    is_four_digit <- nchar(numbers) == 4
+
+    if (sum(is_four_digit) == 1) {
+      year_str <- numbers[is_four_digit]
+      day_str <- numbers[!is_four_digit]
+    } else if (sum(is_four_digit) == 0) {
+      # Neither token unambiguously reads as a 4-digit year (both are the
+      # short kind that could be a day or a 2-digit year). The only such
+      # shape actually seen in practice is `d-Mon-yy` (e.g. `2-Sep-08`), so
+      # fall back to position: whichever number is written after the month
+      # name is the year, whichever is before it is the day.
+      number_starts <- as.integer(gregexpr("[0-9]+", value)[[1]])
+      is_after_month <- number_starts > month_match$end
+      if (sum(is_after_month) != 1) {
+        return(value)
+      }
+      year_str <- numbers[is_after_month]
+      day_str <- numbers[!is_after_month]
+    } else {
+      return(value)
+    }
+
+    day <- suppressWarnings(as.integer(day_str))
+    if (is.na(day) || day < 1 || day > 31) {
+      return(value)
+    }
+
+    year <- if (nchar(year_str) == 4) as.integer(year_str) else util_expand_two_digit_year(year_str)
+
+    full_date <- sprintf("%d-%s-%02d", year, month_match$month, day)
+    if (!is.na(as.Date(full_date, format = "%Y-%m-%d"))) {
+      return(full_date)
+    }
+    return(value)
+  }
+
+  # 3+ leftover numbers alongside a month name isn't a shape this function
+  # knows how to interpret safely
+  value
+}
+
+
+# Month names/abbreviations (English only) mapped to "01".."12"
+month_number_by_name <- stats::setNames(
+  sprintf("%02d", rep(1:12, 2)),
+  tolower(c(month.name, month.abb))
+)
+
+
+# Find the first month name/abbreviation in `value` as a whole word
+# (case-insensitive). Returns `NULL` if there isn't one, otherwise the
+# 2-digit month number and the match's start/end character positions (used
+# to tell whether a number token sits before or after the month name).
+util_extract_month_name <- function(value) {
+  pattern <- paste0("(?i)\\b(", paste(names(month_number_by_name), collapse = "|"), ")\\b")
+  m <- regexpr(pattern, value, perl = TRUE)
+  if (m == -1) {
+    return(NULL)
+  }
+  matched_text <- tolower(regmatches(value, m))
+  list(
+    month = month_number_by_name[[matched_text]],
+    start = as.integer(m),
+    end = as.integer(m) + attr(m, "match.length") - 1L
+  )
+}
+
+
+# Expand a 1-2 digit year to 4 digits (the POSIX/glibc convention: 00-68 ->
+# 2000-2068, 69-99 -> 1969-1999), or pass a plausible 4-digit year through
+# unchanged. Anything else (more or fewer digits) returns `NA`.
+util_expand_two_digit_year <- function(year_str) {
+  n <- nchar(year_str)
+  year <- suppressWarnings(as.integer(year_str))
+  if (is.na(year)) {
+    return(NA_integer_)
+  }
+  if (n == 4) {
+    return(year)
+  }
+  if (n %in% c(1, 2)) {
+    return(if (year <= 68) 2000L + year else 1900L + year)
+  }
+  NA_integer_
+}
+
+
 # Top-level blocks of a `metadata.yml`, in the order `write_metadata()` writes
 # them. Also used by `util_read_yaml_chunked()` to find where a block ends.
 metadata_blocks <- c(
@@ -512,7 +1373,9 @@ util_read_yaml_chunked <- function(path, chunk = 500L, threshold = 1000L) {
 #'
 #' A dataset's `locations:` may either list the locations inline, or name a csv
 #' file beside `metadata.yml` -- `locations: locations.csv` -- which is read in
-#' its place and returned as a tibble.
+#' its place and returned as a tibble. Likewise either reference list in
+#' `source:` -- `source` or `secondary` -- may name a `.yml` or `.bib` file,
+#' which is read in its place (see [util_flatten_sources()]).
 #'
 #' @param path Location of the metadata file
 #' @importFrom rlang .data
@@ -524,6 +1387,10 @@ read_metadata <- function(path) {
 
   if (util_locations_is_file(data[["locations"]])) {
     data[["locations"]] <- util_read_locations_file(data[["locations"]], path)
+  }
+
+  if (is.list(data[["source"]])) {
+    data[["source"]] <- util_read_sources_files(data[["source"]], path)
   }
 
   # We want to preserve formatting in custom R code
@@ -599,6 +1466,14 @@ write_metadata <- function(data, path, style_code = FALSE) {
       y[["locations"]], file.path(dirname(path), file), na = ""
     )
     y[["locations"]] <- file
+  }
+
+  # Reference lists read from a separate file are written back to it, and
+  # referred to by name
+  for (type in intersect(c("source", "secondary"), names(y[["source"]]))) {
+    if (!is.null(attr(y[["source"]][[type]], "sources_file"))) {
+      y[["source"]][[type]] <- util_write_sources_file(y[["source"]][[type]], path)
+    }
   }
 
   y <- y[metadata_blocks]
@@ -679,13 +1554,13 @@ create_tree_branch <- function(x, title, prefix = "") {
 #' util_list_to_df1(as.list(dplyr::starwars)[2])
 #' }
 util_list_to_df1 <- function(my_list) {
-  lifecycle::deprecate_warn("1.0.0", "util_list_to_df1()", "austraits::convert_list_to_df1()")
-  austraits::convert_list_to_df1(my_list)
+  lifecycle::deprecate_warn("1.0.0", "util_list_to_df1()", "traits.use::convert_list_to_df1()")
+  traits.use::convert_list_to_df1(my_list)
 }
 
-#' @importFrom austraits convert_list_to_df1
+#' @importFrom traits.use convert_list_to_df1
 #' @export
-austraits::convert_list_to_df1
+traits.use::convert_list_to_df1
 
 #' Convert a list of lists to dataframe
 #'
@@ -701,13 +1576,13 @@ austraits::convert_list_to_df1
 #' @export
 #' @examples util_list_to_df2(util_df_to_list(dplyr::starwars))
 util_list_to_df2 <- function(my_list, as_character = TRUE, on_empty = NA) {
-  lifecycle::deprecate_warn("1.0.0", "util_list_to_df2()", "austraits::convert_list_to_df2()")
-  austraits::convert_list_to_df2(my_list, as_character, on_empty)
+  lifecycle::deprecate_warn("1.0.0", "util_list_to_df2()", "traits.use::convert_list_to_df2()")
+  traits.use::convert_list_to_df2(my_list, as_character, on_empty)
 }
 
-#' @importFrom austraits convert_list_to_df2
+#' @importFrom traits.use convert_list_to_df2
 #' @export
-austraits::convert_list_to_df2
+traits.use::convert_list_to_df2
 
 #' Convert dataframe to list
 #'
@@ -721,13 +1596,13 @@ austraits::convert_list_to_df2
 #' @export
 #' @examples util_df_to_list(dplyr::starwars)
 util_df_to_list <- function(df) {
-  lifecycle::deprecate_warn("1.0.0", "util_df_to_list()", "austraits::convert_df_to_list()")
-  austraits::convert_df_to_list(df)
+  lifecycle::deprecate_warn("1.0.0", "util_df_to_list()", "traits.use::convert_df_to_list()")
+  traits.use::convert_df_to_list(df)
 }
 
-#' @importFrom austraits convert_df_to_list
+#' @importFrom traits.use convert_df_to_list
 #' @export
-austraits::convert_df_to_list
+traits.use::convert_df_to_list
 
 #' Combine all the AusTraits studies into the compiled AusTraits database
 #'
@@ -744,26 +1619,42 @@ austraits::convert_df_to_list
 #' @importFrom rlang .data
 #' @export
 build_combine <- function(..., d = list(...)) {
-  lifecycle::deprecate_warn("1.0.0", "build_combine()", "austraits::bind_databases()")
+  lifecycle::deprecate_warn("1.0.0", "build_combine()", "traits.use::bind_databases()")
   # The shim pointed users at `bind_databases()` but called
   # `convert_df_to_list()`, and passed the studies twice -- once through `...`
   # and again as `d`, which `d = list(...)` had already collected. So it
   # returned nonsense for anyone who followed the deprecation notice.
-  austraits::bind_databases(databases = d)
+  traits.use::bind_databases(databases = d)
 }
 
-#' @importFrom austraits bind_databases
+#' @importFrom traits.use bind_databases
 #' @export
-austraits::bind_databases
+traits.use::bind_databases
 
-#' @importFrom austraits flatten_database
+# The dataset report's plots. traits.build kept its own copies until
+# traits.use#21; re-exported so `traits.build::plot_trait_distribution_jitter()`
+# and friends, as austraits.build's report calls them, keep working.
+
+#' @importFrom traits.use plot_trait_distribution
 #' @export
-austraits::flatten_database
+traits.use::plot_trait_distribution
+
+#' @importFrom traits.use plot_trait_distribution_jitter
+#' @export
+traits.use::plot_trait_distribution_jitter
+
+#' @importFrom traits.use plot_categorical_trait_distribution
+#' @export
+traits.use::plot_categorical_trait_distribution
+
+#' @importFrom traits.use flatten_database
+#' @export
+traits.use::flatten_database
 
 #' Create a single combined table from a database
 #'
 #' Joins the relational tables of a built database into one wide table, by
-#' calling [austraits::flatten_database()].
+#' calling [traits.use::flatten_database()].
 #'
 #' Wenk et al. 2024 (*Ecological Informatics* 83:102773) presents
 #' `database_create_combined_table` as the route to the combined table, but it
@@ -772,23 +1663,23 @@ austraits::flatten_database
 #' workflow, so the name it documents resolves.
 #'
 #' This is a thin pass-through rather than a reimplementation on purpose. The
-#' joins it relies on are eight functions totalling ~264 lines in `austraits`,
+#' joins it relies on are eight functions totalling ~264 lines in `traits.use`,
 #' and querying a built compilation is that package's job -- this one builds
 #' the database. Arguments are passed straight through so the defaults have a
 #' single definition.
 #'
-#' Note that `austraits` is currently in `Depends`. When it moves to `Suggests`
-#' this needs a `util_require_package("austraits", ...)` guard, as does
+#' Note that `traits.use` is currently in `Depends`. When it moves to `Suggests`
+#' this needs a `util_require_package("traits.use", ...)` guard, as does
 #' [build_combine()] -- see #225.
 #'
 #' @param database A built database object
-#' @param ... Further arguments passed to [austraits::flatten_database()],
+#' @param ... Further arguments passed to [traits.use::flatten_database()],
 #' such as `format`, `vars` and `include_description`
 #'
 #' @return A single wide table combining the database's relational tables
 #' @export
 database_create_combined_table <- function(database, ...) {
-  austraits::flatten_database(database, ...)
+  traits.use::flatten_database(database, ...)
 }
 
 #' Check `collection_date` values against the standard formats
@@ -1223,4 +2114,286 @@ util_check_collection_date_timezone <- function(timezone) {
     )
   }
   timezone
+}
+
+
+#' Flatten the `source` block of a `metadata.yml` into one row per reference
+#'
+#' A dataset's `source:` block holds its `dataset` reference (the dataset
+#' itself, keyed by its `dataset_id`) as a single entry, and its `source`
+#' references (for a compilation, the studies observations were taken from, each
+#' named in the data's `source_id`) and `secondary` references (later
+#' publications re-using the same data) as lists:
+#'
+#' ```yaml
+#' source:
+#'   dataset:
+#'     key: Smith_2020
+#'     ...
+#'   source:
+#'   - key: Jones_1999
+#'     ...
+#'   - key: Brown_2005
+#'     ...
+#'   secondary:
+#'   - key: Smith_2021
+#'     ...
+#' ```
+#'
+#' Either list may instead name a `.yml` file (holding the list) or a `.bib`
+#' file kept beside `metadata.yml`, `source: sources.yml`; [read_metadata()]
+#' reads it in place.
+#'
+#' Earlier versions of traits.build wrote the dataset's reference as `primary`,
+#' original sources as `original_source` or `original`, and every reference as
+#' its own named entry (`secondary_01`, `original_01`, ...). Those shapes are no
+#' longer read: with `strict = TRUE` they are an error naming the entry, and
+#' [metadata_convert_sources()] converts them. `dataset_test()` reads with
+#' `strict = FALSE`, so that it can report the old shape as a failure and still
+#' check everything else about the file.
+#'
+#' @param source The `source` element of a metadata list, as read by
+#'   `read_metadata()`
+#' @param strict Stop on an entry that is not in the expected shape (the
+#'   default), or flatten it and flag it in the `legacy` column
+#'
+#' @return A tibble with one row per reference: `slot` (the entry's name in
+#'   `metadata.yml`), `type` (`dataset`, `source` or `secondary`; an old name
+#'   is given its current type), `key`, `legacy` (`TRUE` for an entry not in
+#'   the expected shape: written in an old shape, or a bare value such as
+#'   `secondary: Smith_2021` where a reference's fields belong) and `entry`, a
+#'   list-column holding the reference's fields.
+#' @export
+#' @examples
+#' source <- list(
+#'   dataset = list(key = "Smith_2020", bibtype = "Article"),
+#'   source = list(
+#'     list(key = "Jones_1999", bibtype = "Thesis"),
+#'     list(key = "Brown_2005", bibtype = "Book")
+#'   )
+#' )
+#' util_flatten_sources(source)
+util_flatten_sources <- function(source, strict = TRUE) {
+
+  empty <- tibble::tibble(
+    slot = character(), type = character(), key = character(),
+    legacy = logical(), entry = list()
+  )
+
+  if (is.null(source) || !is.list(source) || length(source) == 0 || is.null(names(source))) {
+    return(empty)
+  }
+
+  list_types <- c("source", "secondary")
+  known_types <- c("dataset", list_types)
+
+  rows <- lapply(names(source), function(slot) {
+
+    x <- source[[slot]]
+    # `secondary: .na`, or an empty entry: nothing to record
+    if (length(x) == 0 || (!is.list(x) && all(is.na(x)))) return(NULL)
+
+    is_entry <- is.list(x) && !is.null(names(x))   # one reference, as a mapping
+    entries <- if (is_entry) list(x) else as.list(x)
+    # A bare value where a reference belongs (`secondary: Smith_2021`, or a
+    # list item that is not a mapping) is not a reference: flag it rather than
+    # let it drop out unseen
+    is_mapping <- vapply(entries, function(e) is.list(e) && !is.null(names(e)), logical(1))
+
+    if (slot == "dataset") {
+      type <- "dataset"
+      legacy <- !is_entry
+    } else if (slot %in% list_types) {
+      type <- slot
+      legacy <- is_entry | !is_mapping
+    } else {
+      # An old name: `primary`, `original_source`, `original`, a numbered entry
+      # (`secondary_01`, `original_01`, ...), or an unknown name
+      type <- util_source_type_current(slot)
+      legacy <- type %in% known_types
+    }
+
+    tibble::tibble(
+      slot = slot,
+      type = type,
+      key = vapply(entries, function(e) {
+        if (!is.list(e) || is.null(e[["key"]])) NA_character_ else as.character(e[["key"]])
+      }, character(1)),
+      legacy = legacy,
+      entry = entries
+    )
+  })
+
+  out <- dplyr::bind_rows(c(list(empty), rows))
+
+  if (strict) {
+    bad <- unique(out$slot[out$legacy])
+    if (length(bad) > 0) {
+      stop(sprintf(
+        paste0(
+          "`source` in metadata.yml has entries in a shape traits.build no ",
+          "longer reads: `%s`. `dataset` is a single reference; `source` and ",
+          "`secondary` each hold a list of references, one `- key:` item per ",
+          "reference (`primary` is now `dataset`, and `original_source` is now ",
+          "`source`). `metadata_convert_sources()` converts the old shapes."),
+        paste(bad, collapse = "`, `")), call. = FALSE)
+    }
+    unknown <- unique(out$slot[!out$type %in% known_types])
+    if (length(unknown) > 0) {
+      stop(sprintf(
+        "`source` in metadata.yml: `%s` is not a type of reference; use `dataset`, `source` or `secondary`.",
+        paste(unknown, collapse = "`, `")), call. = FALSE)
+    }
+  }
+
+  out
+}
+
+
+#' The current name of a type of reference
+#'
+#' Maps the names `source:` entries were written under by earlier versions of
+#' traits.build onto the current types: `primary` is `dataset`; `original`,
+#' `original_source` and their numbered forms are `source`; `secondary_01` and
+#' the like are `secondary`. Any other name is returned unchanged.
+#'
+#' @param slot Name of an entry in a `source:` block
+#'
+#' @return Character string
+#' @noRd
+util_source_type_current <- function(slot) {
+  type <- stringr::str_remove(slot, "_[0-9]+$")
+  dplyr::case_when(
+    type == "primary" ~ "dataset",
+    type %in% c("original", "original_source") ~ "source",
+    TRUE ~ type
+  )
+}
+
+
+#' Is this reference list a reference to a separate file?
+#'
+#' @param x A `source` or `secondary` element of a `source:` block
+#'
+#' @return `TRUE` for a single string naming a `.yml`, `.yaml` or `.bib` file
+#' @noRd
+util_sources_is_file <- function(x) {
+  is.character(x) &&
+    length(x) == 1 &&
+    !is.na(x) &&
+    grepl("\\.(ya?ml|bib)$", x, ignore.case = TRUE)
+}
+
+
+#' Read a list of references from a separate file
+#'
+#' A compilation can name dozens of studies its observations were taken from, and
+#' holding them inline makes the `source:` block the bulk of `metadata.yml`.
+#' Either list -- `source:` or `secondary:` -- can instead name a file kept
+#' beside `metadata.yml`, `source: sources.yml`, as `locations:` can name a csv.
+#'
+#' A `.yml` file holds the list exactly as it would be written inline, one
+#' `- key:` item per reference. A `.bib` file holds one BibTeX entry per
+#' reference, its citation key becoming the reference's `key`.
+#'
+#' @param file Name of the file, relative to the metadata file
+#' @param path Location of the metadata file
+#'
+#' @return A list of references, carrying the file it was read from as an
+#'   attribute
+#' @noRd
+util_read_sources_file <- function(file, path) {
+
+  full <- file.path(dirname(path), file)
+
+  if (!file.exists(full)) {
+    stop(
+      sprintf(
+        paste0(
+          "%s names `%s` as a list of references, but %s does not exist.\n",
+          "  A reference list naming a .yml or .bib file is read from that ",
+          "file, which must sit beside `metadata.yml`."
+        ),
+        path, file, full
+      ),
+      call. = FALSE
+    )
+  }
+
+  if (grepl("\\.bib$", file, ignore.case = TRUE)) {
+    bib <- RefManageR::ReadBib(full, check = FALSE)
+    refs <- lapply(seq_along(bib), function(i) {
+      ref <- util_bib_to_list(bib[[i]])
+      # `dateobj` is RefManageR's parse of the date, not a field of the entry
+      ref[["dateobj"]] <- NULL
+      # A title braced to keep its capitalisation, `{{A Title}}`, is read with
+      # one pair left; the build adds that pair back itself
+      if (!is.null(ref[["title"]])) {
+        ref[["title"]] <- sub("^\\{(.*)\\}$", "\\1", ref[["title"]])
+      }
+      # Key and type first, as they are written inline
+      ref[c("key", "bibtype", setdiff(names(ref), c("key", "bibtype")))]
+    })
+  } else {
+    refs <- yaml::read_yaml(full)
+    is_mapping <- vapply(refs, function(e) is.list(e) && !is.null(names(e)), logical(1))
+    if (!is.list(refs) || !is.null(names(refs)) || !all(is_mapping)) {
+      stop(
+        sprintf(
+          "%s must hold a list of references, one `- key:` item per reference.",
+          full
+        ),
+        call. = FALSE
+      )
+    }
+  }
+
+  attr(refs, "sources_file") <- file
+  refs
+}
+
+
+#' Read any reference lists a `source:` block names as separate files
+#'
+#' @param source The `source` element of a metadata list
+#' @param path Location of the metadata file
+#'
+#' @return The `source` element, with each file named in place of a list read
+#'   in
+#' @noRd
+util_read_sources_files <- function(source, path) {
+  for (type in intersect(c("source", "secondary"), names(source))) {
+    if (util_sources_is_file(source[[type]])) {
+      source[[type]] <- util_read_sources_file(source[[type]], path)
+    }
+  }
+  source
+}
+
+
+#' Write a reference list back to the file it was read from
+#'
+#' @param refs A list of references read by `util_read_sources_file()`
+#' @param path Location of the metadata file
+#'
+#' @return The name of the file, to stand in for the list in `metadata.yml`
+#' @noRd
+util_write_sources_file <- function(refs, path) {
+
+  file <- attr(refs, "sources_file")
+  full <- file.path(dirname(path), file)
+  refs <- unname(lapply(refs, function(e) e))
+
+  if (grepl("\\.bib$", file, ignore.case = TRUE)) {
+    bib <- refs %>% lapply(RefManageR::as.BibEntry) %>% purrr::reduce(c)
+    RefManageR::WriteBib(bib, full, verbose = FALSE)
+  } else {
+    txt <- yaml::as.yaml(refs, column.major = FALSE, indent = 2) %>%
+      gsub(": ~", ":", ., fixed = TRUE)
+    con <- file(full, "w", encoding = "UTF-8")
+    on.exit(close(con))
+    cat(txt, file = con)
+  }
+
+  file
 }

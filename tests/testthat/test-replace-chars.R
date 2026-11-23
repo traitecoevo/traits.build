@@ -96,6 +96,22 @@ test_that("INCREMENT is normalised to GREEK CAPITAL LETTER DELTA", {
 })
 
 
+test_that("symbol forms of Greek letters are normalised to the letters (#257)", {
+  # PHI SYMBOL is what `\phi` can copy out of a typeset PDF as; with the Greek
+  # alphabet allowed, it should become the allowed letter rather than be
+  # corrected by hand
+  expect_equal(util_replace_disallowed_chars("ϕPSII and ϑ"), "φPSII and θ")
+  expect_true(all(check_disallowed_chars("ϕ")))
+
+  # Each replacement is the letter Unicode's own compatibility mapping gives
+  map <- util_disallowed_char_replacements()
+  code_points <- vapply(names(map), function(x) utf8ToInt(x)[1], integer(1))
+  greek <- map[code_points %in% c(0x03d0:0x03d6, 0x03f0:0x03f5)]
+  expect_length(greek, 8)
+  expect_equal(unname(greek), stringi::stri_trans_nfkc(names(greek)))
+})
+
+
 test_that("GREEK SMALL LETTER MU is normalised to MICRO SIGN", {
   # The two are visually identical, so a unit written with the Greek letter
   # cannot be told from one written with the micro sign by eye. Only the micro
@@ -112,6 +128,29 @@ test_that("GREEK SMALL LETTER MU is normalised to MICRO SIGN", {
   expect_false(
     any(check_disallowed_chars(util_replace_disallowed_chars("\u03bcg g-1")))
   )
+})
+
+
+test_that("Greek letters identical to an ASCII letter are rewritten as it (#257)", {
+  # The 14 capitals and the small omicron that look identical to an ASCII letter
+  greek <- intToUtf8(
+    c(0x0391, 0x0392, 0x0395, 0x0396, 0x0397, 0x0399, 0x039a, 0x039c,
+      0x039d, 0x039f, 0x03a1, 0x03a4, 0x03a5, 0x03a7, 0x03bf),
+    multiple = TRUE
+  )
+  ascii <- strsplit("ABEZHIKMNOPTYXo", "")[[1]]
+
+  expect_equal(util_replace_disallowed_chars(greek), ascii)
+  expect_true(all(check_disallowed_chars(paste(greek, collapse = ""))))
+  expect_false(any(check_disallowed_chars(util_replace_disallowed_chars(paste(greek, collapse = "")))))
+
+  # Only the look-alikes are rewritten: the other Greek letters, including the
+  # small letters of these capitals, are allowed and left alone
+  x <- intToUtf8(c(0x03a6, 0x03b1, 0x03b2, 0x0394, 0x03b4, 0x0386))
+  expect_equal(util_replace_disallowed_chars(x), x)
+
+  # A word mixing scripts, as pasted text can, comes out as plain ASCII
+  expect_equal(util_replace_disallowed_chars(paste0("Mt ", intToUtf8(0x039a), "osciuszko")), "Mt Kosciuszko")
 })
 
 

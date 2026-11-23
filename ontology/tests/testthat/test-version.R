@@ -25,3 +25,14 @@ test_that("the previous version has a release snapshot", {
   skip_if(is.na(previous), "first release")
   expect_true(dir.exists(file.path(ontology_output_dir(), "release", previous)))
 })
+
+test_that("the package writes the data model version this change log builds", {
+  # R CMD check ignores ontology/, so the package cannot read the version from
+  # ontology/NEWS.md at run time; R/data_model_version.R repeats it, and every
+  # database the package builds records it in `metadata$data_model_version`
+  # for readers to check (traits.use#40). Adding a heading here without
+  # updating that file would stamp databases with the old version.
+  env <- new.env()
+  sys.source(repo_path("R", "data_model_version.R"), envir = env)
+  expect_identical(env$data_model_version(), ontology_version())
+})
