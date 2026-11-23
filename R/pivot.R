@@ -48,7 +48,9 @@ util_pivot_duplicates <- function(traits, extra_cols = character()) {
 #' Use this rather than [check_pivot_duplicates()] on a compiled database to
 #' chase that failure. [traits.use::bind_databases()] drops rows that are
 #' identical in every column, so a dataset whose duplicates are exact copies
-#' fails [dataset_test()] but shows no duplicates once compiled.
+#' fails [dataset_test()] but shows no duplicates once compiled. From
+#' traits.use 0.1.1 it warns when it drops them, naming each dataset and its
+#' count; this function finds the rows themselves.
 #'
 #' @inheritParams dataset_test
 #'
@@ -56,7 +58,7 @@ util_pivot_duplicates <- function(traits, extra_cols = character()) {
 #' every column, grouped so that rows sharing a pivot cell are adjacent.
 #' `number_of_duplicates` is the number of rows sharing that cell, and
 #' `exact_duplicate` is `TRUE` for a row identical to another in every column --
-#' the rows a compiled database silently drops. Zero rows means every dataset
+#' the rows a compiled database drops. Zero rows means every dataset
 #' passes the check.
 #' @export
 dataset_find_pivot_duplicates <- function(
