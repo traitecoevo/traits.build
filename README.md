@@ -43,12 +43,12 @@ units, changing taxon names.
 
 | Type        | Command                                                        |
 |-------------|----------------------------------------------------------------|
-| Release     | `remotes::install_github("traitecoevo/traits.build@v2.2.0")`   |
+| Release     | `remotes::install_github("traitecoevo/traits.build@v3.0.0")`   |
 | Development | `remotes::install_github("traitecoevo/traits.build")`          |
 
-The development version comes from the `develop` branch, the repository's default. It reads each dataset's references from a `source:` block holding a `dataset:` entry (the dataset's own reference) and optional `source:` and `secondary:` lists; it no longer reads the older `primary:` / `secondary_01:` / `original_01:` shape that 2.2.0 uses. `traits.build::metadata_convert_sources()` converts a database's `metadata.yml` files.
+The development version comes from the `develop` branch, the repository's default. Both also install [`traits.use`](https://github.com/traitecoevo/traits.use), which `traits.build` depends on.
 
-The development version also installs [`traits.use`](https://github.com/traitecoevo/traits.use), which it depends on.
+Version 3.0.0 reads each dataset's references from a `source:` block holding a `dataset:` entry (the dataset's own reference) and optional `source:` and `secondary:` lists. It no longer reads the `primary:` / `secondary_01:` / `original_01:` shape of 2.2.0 and earlier: `traits.build::metadata_convert_sources()` converts a database's `metadata.yml` files.
 
 ## Using a built database
 
