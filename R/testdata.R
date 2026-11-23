@@ -786,7 +786,7 @@ dataset_test_worker <-
 
           for (j in unique(contexts[["var_in"]])) {
 
-            contextsub <- contexts %>% dplyr::filter(var_in == j)
+            contextsub <- contexts %>% dplyr::filter(.data$var_in == j)
 
             # Context values align either with a column of data, or a field on the `traits`
             # entries -- and that field's own declared value can itself name a column of
