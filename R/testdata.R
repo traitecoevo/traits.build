@@ -44,7 +44,7 @@ dataset_test <-
 #' @param unit_conversions Unit conversions, as returned by `get_unit_conversions()`
 #' @param resource_metadata Database metadata (`metadata.yml` in the config folder)
 #' @param taxon_list Taxon list (`taxon_list.csv` in the config folder)
-#' @importFrom testthat test_that expect_silent
+#' @importFrom testthat test_that
 #' @importFrom rlang .data
 #' @importFrom stats na.omit
 dataset_test_worker <-
@@ -89,13 +89,22 @@ dataset_test_worker <-
         for (f in files) {
           test_expect_true(file.exists(f), info = sprintf("%s\tfile does not exist", red(f)))
         }
+        if (!all(file.exists(files))) test_stop_dataset()
+
+        ## Metadata, read first: the check of the folder's files below needs it.
+        ## A YAML syntax error is reported here, with its line, and ends the
+        ## dataset's checks, since all the others need the metadata
+        test_expect_no_error(
+          metadata <- yaml::read_yaml(files[2]),
+          info = paste0(red(files[2]), "\treading the file")
+        )
 
         ## Check for other files
         vals <- c("data.csv", "metadata.yml", "raw", "output", "README.md")
 
         # A dataset whose `locations:` names a csv file is allowed to hold it,
         # as is one whose reference lists name a .yml or .bib file
-        declared <- yaml::read_yaml(files[2])
+        declared <- metadata
         if (util_locations_is_file(declared[["locations"]])) {
           vals <- c(vals, declared[["locations"]])
         }
@@ -113,22 +122,28 @@ dataset_test_worker <-
 
         ## `data.csv`
         f <- files[1]
-        testthat::expect_silent(
-          data <- read_csv(f, col_types = cols(), guess_max = 1e5, progress = FALSE) # Time columns get reformatted
+        # A row readr cannot parse gives a warning; the check below reports the
+        # problems themselves, naming each line
+        test_expect_no_error(
+          data <- suppressWarnings(
+            read_csv(f, col_types = cols(), guess_max = 1e5, progress = FALSE) # Time columns get reformatted
+          ),
+          info = paste0(red(f), "\treading the file")
         )
 
-        ## Check no issues flagged when parsing file
-        test_expect_no_error(
-          readr::stop_for_problems(data),
-          info = sprintf(red("`read_csv(%s)`"), f)
+        ## Check no issues flagged when parsing file. Every later check would
+        ## run on the misread rows, so stop here, as for a file that won't read
+        test_expect_true(
+          nrow(readr::problems(data)) == 0,
+          info = paste0(red(f), "\t", util_format_read_problems(readr::problems(data)))
         )
+        if (nrow(readr::problems(data)) > 0) test_stop_dataset()
 
         test_expect_dataframe_valid(data, info = paste0(red(f), "\tdata"), label = "column names")
 
         ## Metadata
         f <- files[2]
         test_expect_allowed_text(readLines(f, encoding = "UTF-8"), info = paste0(red(f), "\tmetadata"), label = "metadata")
-        testthat::expect_silent(metadata <- yaml::read_yaml(f))
 
         # Read here rather than via `read_metadata()`, because the checks below
         # need the yaml exactly as written. A `locations:` entry naming a csv
@@ -377,10 +392,11 @@ dataset_test_worker <-
         # is a list and `is.na()` on it returns one value per element
         if ("identifiers" %in% names(metadata) & !all(is.na(metadata[["identifiers"]]))) {
 
-          testthat::expect_silent(
+          test_expect_no_error(
             identifiers <-
               metadata$identifiers %>%
-              process_format_identifiers(dataset_id, schema)
+              process_format_identifiers(dataset_id, schema),
+            info = paste0(red(f), "\tidentifiers"), warnings_fail = TRUE
           )
 
           test_expect_list_elements_exact_names(
@@ -392,11 +408,12 @@ dataset_test_worker <-
 
         ## Locations
 
-        testthat::expect_silent(
+        test_expect_no_error(
           locations <-
             metadata$locations %>%
             process_format_locations(dataset_id, schema) %>%
-            process_add_all_columns(names(schema[["austraits"]][["elements"]][["locations"]][["elements"]]))
+            process_add_all_columns(names(schema[["austraits"]][["elements"]][["locations"]][["elements"]])),
+          info = paste0(red(f), "\tlocations"), warnings_fail = TRUE
           )
 
         if (nrow(locations) > 0) {
@@ -481,10 +498,11 @@ dataset_test_worker <-
         }
 
         ## Contexts
-        testthat::expect_silent(
+        test_expect_no_error(
           contexts <-
             metadata$contexts %>%
-            process_format_contexts(dataset_id, data, metadata$traits)
+            process_format_contexts(dataset_id, data, metadata$traits),
+          info = paste0(red(f), "\tcontexts"), warnings_fail = TRUE
         )
 
         # Check that there are no duplicate `var_in` or `context_property` fields
@@ -624,7 +642,10 @@ dataset_test_worker <-
           info = paste0(red(f), "\ttrait")
         )
 
-        expect_silent(traits <- util_traits_to_df(metadata[["traits"]]))
+        test_expect_no_error(
+          traits <- util_traits_to_df(metadata[["traits"]]),
+          info = paste0(red(f), "\ttraits"), warnings_fail = TRUE
+        )
 
         test_expect_true(
           is.data.frame(traits),

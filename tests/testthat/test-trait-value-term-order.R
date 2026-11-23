@@ -173,12 +173,15 @@ test_that("`dataset_test` builds with the database's setting", {
       reporter,
       dataset_test_worker("Test_2023_3", path_config = path_config, path_data = "examples")
     )
-    sum(as.data.frame(reporter$get_results())$failed)
+    dataset_test_failure_messages(reporter)
   }
 
-  # Test_2023_3 has blank dates, which fail whatever the setting, so compare
-  # with the default
-  expect_gt(failures_with("as_entered"), failures_with("alphabetical"))
+  # Test_2023_3 has blank dates, which fail whatever the setting, so look for
+  # the build's own failure. A failed build ends the dataset's checks, so the
+  # count of failures does not show it (#213)
+  setting_failure <- "`trait_value_term_order` in the `metadata` block of `config/metadata.yml` must be one of"
+  expect_match(failures_with("as_entered"), setting_failure, fixed = TRUE, all = FALSE)
+  expect_no_match(failures_with("alphabetical"), setting_failure, fixed = TRUE)
   expect_equal(failures_with("input_order"), failures_with("alphabetical"))
 })
 

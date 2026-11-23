@@ -15,3 +15,12 @@ library(crayon)
 invisible(
   file.copy("config/taxon_list-orig.csv", "config/taxon_list.csv", overwrite = TRUE)
 )
+
+
+# The messages of the failures a `testthat::ListReporter` recorded while running
+# `dataset_test_worker()`, colours removed
+dataset_test_failure_messages <- function(reporter) {
+  results <- unlist(lapply(reporter$get_results(), `[[`, "results"), recursive = FALSE)
+  failed <- Filter(function(x) inherits(x, "expectation_failure"), results)
+  gsub("\033\\[[0-9]+m", "", vapply(failed, conditionMessage, character(1)))
+}

@@ -583,3 +583,85 @@ test_that("`dataset_test` rejects a long-format `traits` entry whose trait is no
     fixed = TRUE, all = FALSE
   )
 })
+
+
+# Everything `dataset_test` prints for Test_2023_2 once `edit` has been applied
+# to a copy of its folder, colours removed, backtraces kept
+dataset_test_broken <- function(edit) {
+  path_data <- withr::local_tempdir()
+  file.copy("examples/Test_2023_2", path_data, recursive = TRUE)
+  unlink(file.path(path_data, "Test_2023_2", c("output", "README.md")), recursive = TRUE)
+  edit(file.path(path_data, "Test_2023_2"))
+
+  withr::local_options(
+    useFancyQuotes = FALSE, cli.unicode = FALSE, crayon.enabled = FALSE,
+    width = 120
+  )
+  out <- capture.output(
+    suppressMessages(dataset_test("Test_2023_2", path_data = path_data))
+  )
+  gsub("\033\\[[0-9]+m", "", out)
+}
+
+# A check that fails reports once, without a backtrace, and the dataset's other
+# checks stop, naming the dataset (#213)
+expect_reported_once <- function(out, failure) {
+  expect_equal(sum(grepl(failure, out, fixed = TRUE)), 1)
+  expect_false(any(grepl("^Backtrace:", out)))
+  expect_false(any(grepl("^-- Error", out)))
+  expect_false(any(grepl("restarting interrupted promise evaluation", out, fixed = TRUE)))
+  expect_true(any(grepl("Test_2023_2: the remaining checks were not run", out, fixed = TRUE)))
+}
+
+
+test_that("`dataset_test` reports a `metadata.yml` that won't read once, with its line (#213)", {
+  out <- dataset_test_broken(function(path) {
+    cat("dataset:\n  bad: [unclosed\n", file = file.path(path, "metadata.yml"), append = TRUE)
+  })
+  expect_reported_once(out, "metadata.yml\treading the file threw an error:")
+  expect_true(any(grepl("Parser error: while parsing a flow sequence at line", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` names the lines of `data.csv` it cannot parse (#213)", {
+  # readr counts the header as line 1, so a row added to the end is line n + 1
+  n <- length(readLines("examples/Test_2023_2/data.csv"))
+  out <- dataset_test_broken(function(path) {
+    cat("a,\"b\n", file = file.path(path, "data.csv"), append = TRUE)
+  })
+  expect_reported_once(out, "data.csv\t2 problem(s) reading the file:")
+  expect_true(any(grepl(
+    sprintf("line %d, column 2: expected closing quote, found end of file", n + 1),
+    out, fixed = TRUE
+  )))
+})
+
+
+test_that("`dataset_test` reports an error in `custom_R_code` once, without a backtrace (#213)", {
+  out <- dataset_test_broken(function(path) {
+    path_metadata <- file.path(path, "metadata.yml")
+    metadata <- read_metadata(path_metadata)
+    metadata$dataset$custom_R_code <- "data %>% mutate(x = no_such_function(y))"
+    write_metadata(metadata, path_metadata)
+  })
+  expect_reported_once(out, "`custom_R_code` threw an error:")
+  expect_true(any(grepl("could not find function \"no_such_function\"", out, fixed = TRUE)))
+})
+
+
+test_that("`dataset_test` stops checking a dataset with a missing file (#213)", {
+  out <- dataset_test_broken(function(path) unlink(file.path(path, "data.csv")))
+  expect_reported_once(out, "data.csv\tfile does not exist")
+})
+
+
+test_that("`util_format_read_problems` lists at most `n` problems", {
+  problems <- tibble::tibble(
+    row = 2:13, col = 1L, expected = "3 columns", actual = "2 columns", file = "x.csv"
+  )
+  msg <- util_format_read_problems(problems, n = 10)
+  expect_match(msg, "^12 problem\\(s\\) reading the file:")
+  expect_match(msg, "line 11, column 1: expected 3 columns, found 2 columns", fixed = TRUE)
+  expect_no_match(msg, "line 12,", fixed = TRUE)
+  expect_match(msg, "... and 2 more", fixed = TRUE)
+})
