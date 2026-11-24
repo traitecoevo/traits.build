@@ -51,6 +51,13 @@ reference:
     - '`util_get_SHA`'
     - '`util_get_version`'
 
+  - title: Depositing a release
+    desc: Functions that deposit a release of a database on Zenodo.
+    contents:
+    - '`zenodo_metadata`'
+    - '`zenodo_compare`'
+    - '`zenodo_deposit`'
+
   - title: Creating metadata files
     desc: Functions that help you create metadata files.
     contents:
