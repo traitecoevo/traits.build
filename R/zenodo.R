@@ -24,7 +24,8 @@
 #'      `ProjectMember` (the default), `DataManager` or `DataCurator`. Those
 #'      with role `DataCollector` are listed among the data collectors.
 #'   2. every data collector of every dataset (the database's `contributors`
-#'      table), as `DataCollector`, one entry per person;
+#'      table), as `DataCollector`, one entry per person, in alphabetical order
+#'      of surname then given names (with the assistants below);
 #'   3. every dataset's `assistants`, as `DataCollector`, unless already listed
 #'      as a data collector. These are free text in a dataset's `metadata.yml`,
 #'      so they carry a name only;
@@ -598,6 +599,15 @@ zenodo_merge_people <- function(people) {
   })
 }
 
+# Alphabetical by surname, then given names, ignoring case and accents, the
+# same on every machine (not by locale): "Smith, Benjamin" before
+# "Smith-Martin, Chris", "van der Merwe" under v
+zenodo_sort_people <- function(people) {
+  names <- vapply(people, \(p) p$name, character(1))
+  given <- vapply(zenodo_given(names), paste, character(1), collapse = " ")
+  people[order(zenodo_surname(names), given, method = "radix")]
+}
+
 # Free-text names ("Ann Smith, Bo van Dyke and R.J. Lee") to "Surname, Given"
 zenodo_split_names <- function(x) {
   x <- x[!is.na(x)]
@@ -655,7 +665,7 @@ zenodo_contributors <- function(database, metadata, creators) {
   is_collector <- vapply(project, \(p) identical(p$type, "DataCollector"), logical(1))
   data_collectors <- zenodo_merge_people(c(project[is_collector], collectors, assistants))
   project <- project[!is_collector]
-  data_collectors <- data_collectors[order(zenodo_fold(vapply(data_collectors, \(p) p$name, character(1))))]
+  data_collectors <- zenodo_sort_people(data_collectors)
 
   rights <- list()
   holder <- zenodo_scalar(metadata$license$rights_holder)

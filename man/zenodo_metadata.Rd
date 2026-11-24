@@ -52,7 +52,8 @@ the fields of a creator plus \code{role}, a DataCite contributor type such as
 \code{ProjectMember} (the default), \code{DataManager} or \code{DataCurator}. Those
 with role \code{DataCollector} are listed among the data collectors.
 \item every data collector of every dataset (the database's \code{contributors}
-table), as \code{DataCollector}, one entry per person;
+table), as \code{DataCollector}, one entry per person, in alphabetical order
+of surname then given names (with the assistants below);
 \item every dataset's \code{assistants}, as \code{DataCollector}, unless already listed
 as a data collector. These are free text in a dataset's \code{metadata.yml},
 so they carry a name only;

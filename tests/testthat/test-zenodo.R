@@ -581,3 +581,14 @@ test_that("zenodo_deposit() says so when nothing is dropped", {
   messages <- capture_messages(zenodo_deposit(new, record = 3568417, token = "x"))
   expect_true(any(grepl("nobody and nothing dropped", messages)))
 })
+
+test_that("data collectors are sorted by surname, then given names, the same in every locale", {
+  people <- lapply(c("Smith-Martin, Chris", "smith, Anna", "Ziemińska, Kasia", "Smith, Benjamin",
+                     "van der Merwe, Marlien", "Ábrego, Nerea"), \(n) list(name = n))
+  sorted <- vapply(traits.build:::zenodo_sort_people(people), \(p) p$name, character(1))
+  expect_equal(sorted, c("Ábrego, Nerea", "smith, Anna", "Smith, Benjamin", "Smith-Martin, Chris",
+                         "van der Merwe, Marlien", "Ziemińska, Kasia"))
+  withr::with_locale(c(LC_COLLATE = "C"), {
+    expect_equal(vapply(traits.build:::zenodo_sort_people(people), \(p) p$name, character(1)), sorted)
+  })
+})
