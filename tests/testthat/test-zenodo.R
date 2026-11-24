@@ -490,3 +490,94 @@ test_that("allow_removals can accept named losses and still stop on the rest", {
     allow_removals = c("Sauquet, Hervé", "Baxter, Caitlan", "10.1101/2021.01.04.425314", "DP720A")))
   expect_equal(out$id, 99L)
 })
+
+test_that("zenodo_metadata() stops on what it cannot deposit", {
+  db <- zenodo_test_database()
+  expect_error(zenodo_metadata(db, metadata = "x", description_file = NULL), "metadata` block")
+  md <- zenodo_test_metadata(); md$version <- NULL
+  expect_error(zenodo_metadata(zenodo_test_database(md), description_file = NULL), "no `version`")
+  md <- zenodo_test_metadata(); md$creators <- NA
+  expect_error(zenodo_metadata(zenodo_test_database(md), description_file = NULL), "no `creators`")
+  md <- zenodo_test_metadata(); md$creators[[1]]$last_name <- "unknown"
+  expect_error(zenodo_metadata(zenodo_test_database(md), description_file = NULL), "no `last_name`")
+  md <- zenodo_test_metadata(); md$publication_date <- "sometime soon"
+  expect_error(zenodo_metadata(zenodo_test_database(md), description_file = NULL), "Cannot read")
+  md <- zenodo_test_metadata(); md$description <- ".na"
+  expect_error(zenodo_metadata(zenodo_test_database(md), description_file = NULL), "no `description`")
+  expect_error(zenodo_metadata(db, description_file = "nowhere.md"), "not found")
+  md <- zenodo_test_metadata(); md$related_identifiers[[1]]$resource_type <- "toolbox"
+  expect_error(zenodo_metadata(zenodo_test_database(md), description_file = NULL), "resource_type 'toolbox'")
+})
+
+test_that("zenodo_metadata() reads single entries and leaves out empty fields", {
+  md <- zenodo_test_metadata()
+  md$creators <- md$creators[[1]]
+  md$related_identifiers <- list(identifier = "https://w3id.org/APD", relation_type = "isCompiledBy")
+  md$funding_reference <- list(award_number = "DE170100208", funder_identifier = "doi.org/10.13039/501100000923/")
+  md$language <- "fr"
+  md$license <- list(rights = "unknown")
+  md$geo_location <- list(geo_location_place = ".na")
+  md$project_contributors <- NULL
+  m <- zenodo_metadata(zenodo_test_database(md), description_file = NULL)
+  expect_equal(m$creators[[1]]$name, "Falster, Daniel")
+  expect_equal(m$related_identifiers, list(list(identifier = "https://w3id.org/APD", relation = "isCompiledBy")))
+  expect_equal(m$grants, list(list(id = "10.13039/501100000923::DE170100208")))
+  expect_equal(m$language, "fra")
+  expect_false(any(c("license", "locations") %in% names(m)))
+
+  # A single-word assistant is kept as written
+  expect_equal(traits.build:::zenodo_split_names("Bob"), "Bob")
+  expect_equal(traits.build:::zenodo_split_names(NA), character())
+})
+
+test_that("zenodo_deposit() checks its files before calling Zenodo", {
+  new <- list(title = "x")
+  dir <- withr::local_tempdir()
+  a <- file.path(dir, "a", "data.csv"); b <- file.path(dir, "b", "data.csv")
+  dir.create(dirname(a)); dir.create(dirname(b)); writeLines("1", a); writeLines("2", b)
+  expect_error(zenodo_deposit(new, record = NA, files = file.path(dir, "missing.csv"), token = "x"), "not found")
+  expect_error(zenodo_deposit(new, record = NA, files = c(a, b), token = "x"), "share a name: data.csv")
+})
+
+test_that("zenodo_deposit() reports Zenodo's errors, a missing upload link and a bad checksum", {
+  new <- zenodo_metadata(zenodo_test_database(), description_file = NULL)
+  dir <- withr::local_tempdir()
+  f <- file.path(dir, "austraits-8.0.0.rds")
+  writeLines("data", f)
+  json <- function(url, x, status = 200L) {
+    httr2::response(status_code = status, url = url, headers = list(`Content-Type` = "application/json"),
+                    body = charToRaw(jsonlite::toJSON(x, auto_unbox = TRUE)))
+  }
+  draft <- list(id = 99L, submitted = FALSE, metadata = list(), links = list(bucket = "https://z/api/files/b"))
+
+  # Zenodo's validation errors are shown
+  httr2::local_mocked_responses(function(req) {
+    if (grepl("depositions$", req$url)) return(json(req$url, draft, 201L))
+    json(req$url, list(message = "Validation error.", errors = list(list(field = "metadata.creators", messages = list("Missing data")))), 400L)
+  })
+  expect_error(suppressMessages(zenodo_deposit(new, record = NA, token = "x")), "metadata.creators: Missing data")
+
+  # No upload link
+  httr2::local_mocked_responses(function(req) {
+    if (grepl("/files$", req$url)) return(json(req$url, list()))
+    json(req$url, list(id = 99L, submitted = FALSE, metadata = list(), links = list()))
+  })
+  expect_error(suppressMessages(zenodo_deposit(new, record = NA, files = f, token = "x")), "upload link")
+
+  # The upload's checksum differs
+  httr2::local_mocked_responses(function(req) {
+    if (grepl("/files$", req$url)) return(json(req$url, list()))
+    if (grepl("/files/b/", req$url)) return(json(req$url, list(checksum = "md5:0000")))
+    json(req$url, draft)
+  })
+  expect_error(suppressMessages(zenodo_deposit(new, record = NA, files = f, token = "x")), "wrong checksum")
+})
+
+test_that("zenodo_deposit() says so when nothing is dropped", {
+  new <- zenodo_metadata(zenodo_test_database(), description_file = NULL)
+  previous <- list(version = "7.0.0", creators = new$creators, contributors = new$contributors)
+  fake <- zenodo_fake(previous)
+  httr2::local_mocked_responses(fake$handler)
+  messages <- capture_messages(zenodo_deposit(new, record = 3568417, token = "x"))
+  expect_true(any(grepl("nobody and nothing dropped", messages)))
+})
