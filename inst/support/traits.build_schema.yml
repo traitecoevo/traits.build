@@ -303,8 +303,10 @@ austraits:
             award_IRI: The URI leading to a page provided by the funder for more information about the award (grant).
             award_number: The funding provider's number of the award (grant).
             award_title: The title of the award (grant).
+            funder_identifier: Optional. The funder's ROR id (such as `038sjwq14`) or Crossref Funder DOI. Needed for `zenodo_metadata()` to send the award to Zenodo, which accepts only awards in its own vocabulary.
         creators: Dataset creators.
-        contributors: Dataset contributors, reflecting names included in the contributors table.
+        contributors: Dataset contributors, reflecting names included in the contributors table. Written by the build from every dataset's `data_collectors`, replacing any value set in `config/metadata.yml`.
+        project_contributors: Optional. People credited on the database's deposit (such as its Zenodo record) who are not data collectors of any dataset, such as project staff, curators and data managers. A list, each with `last_name`, `given_name`, `ORCID`, `affiliation` and `role`, a DataCite contributor type such as `ProjectMember` (the default), `DataManager` or `DataCurator`. Read by `zenodo_metadata()`.
         trait_value_term_order:
           description: Optional. The order in which the terms of a trait value holding several space-separated terms, such as `shrub tree`, are mapped into the database. Set in the `metadata` block of the database's `config/metadata.yml`; when absent, `alphabetical` is the default.
           type: categorical

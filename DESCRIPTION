@@ -48,6 +48,8 @@ Suggests:
     forcats,
     leaflet,
     bibtex,
+    commonmark,
+    httr2,
     knitr,
     bench,
     devtools,
