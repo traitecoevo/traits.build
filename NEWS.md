@@ -2,7 +2,7 @@
 
 ## New features
 
-- `zenodo_metadata()`, `zenodo_compare()` and `zenodo_deposit()` deposit a release on Zenodo from the `metadata` block of `config/metadata.yml`, instead of typing it into Zenodo's web form (#320). `zenodo_deposit()` creates a new version as a draft and never publishes it. It stops if a creator, contributor or related identifier on the previous version would be dropped. Contributors are the database's data collectors and the datasets' assistants, plus a new optional `project_contributors` list in `config/metadata.yml` for project staff who are not data collectors of any dataset. A funding reference reaches Zenodo only if it gives the new `funder_identifier`. `httr2` and `commonmark` are suggested packages, needed only for depositing.
+- `zenodo_metadata()`, `zenodo_compare()` and `zenodo_deposit()` deposit a release on Zenodo from the `metadata` block of `config/metadata.yml`, instead of typing it into Zenodo's web form (#320). `zenodo_deposit()` creates a new version as a draft and never publishes it. It stops if a creator, contributor, related identifier or reference on the previous version would be dropped, unless each is named in `allow_removals`, and keeps the ORCIDs and affiliations the previous version has for people the repository lists without them. Contributors are the database's data collectors and the datasets' assistants, plus a new optional `project_contributors` list in `config/metadata.yml` for project staff who are not data collectors of any dataset. A funding reference reaches Zenodo only if it gives the new `funder_identifier`. `httr2` and `commonmark` are suggested packages, needed only for depositing.
 
 # traits.build 3.0.0
 

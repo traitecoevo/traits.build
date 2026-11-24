@@ -34,8 +34,9 @@ Pass the result to \code{\link[=zenodo_deposit]{zenodo_deposit()}}.
 \section{Where each field comes from}{
 
 \itemize{
-\item \code{title}, \code{version}, \code{references}, \code{language} and the licence come from
-the fields of the same name. \code{publication_date} is converted to
+\item \code{title}, \code{version}, \code{language} and the licence come from the fields of
+the same name. \code{references} may hold one reference or a list; Markdown
+emphasis (\code{*}) is removed, as Zenodo shows it as typed. \code{publication_date} is converted to
 \code{YYYY-MM-DD}; it must parse, so set it before the release build.
 \item The description is \code{config/zenodo_description.md} when that file exists,
 otherwise the \code{description} field. It is Markdown, rendered to HTML, and
@@ -58,9 +59,17 @@ so they carry a name only;
 \item the licence's \code{rights_holder}, as \code{RightsHolder}.
 }
 
-A person is listed once per role: entries with the same ORCID, or the same
-surname and first given name, are merged, keeping the ORCID and
-affiliation where one entry lacks them.
+A person is listed once per role. Entries are merged if they have the
+same ORCID or, when one lacks it, the same surname and compatible given
+names (each equal, or an initial of the other: "Peter J." with "P." but
+not with "Paul"); never two different ORCIDs. The merged entry has the
+name written most often (then the longest), the ORCID and the most
+frequent affiliation. Placeholders such as \code{unknown}, \code{none} and \code{.na}
+count as empty, and an ORCID that is not valid is left out with a
+warning.
+
+\code{\link[=zenodo_deposit]{zenodo_deposit()}} then fills an ORCID or affiliation a person lacks from
+the previous version, where the same person has one there.
 \item \code{related_identifiers} come from \code{related_identifiers}. The relation (in
 \code{relation_type} or \code{relation}) must be one Zenodo accepts, such as
 \code{isCompiledBy} or \code{isDescribedBy}; case is corrected. An entry naming the

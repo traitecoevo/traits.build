@@ -183,7 +183,9 @@ test_that("zenodo_compare() lists who and what a new version would drop", {
   expect_equal(cmp$creators$name, "Sauquet, Hervé")
   # Baxter is gone; "Merwe, Marlien van der" matches "van der Merwe, Marlien"
   expect_equal(cmp$contributors$name, "Baxter, Caitlan")
-  expect_equal(nrow(cmp$renamed), 0)
+  # ... and is listed as renamed, as a contributor, which does not stop a deposit
+  expect_equal(cmp$renamed$name_new, "van der Merwe, Marlien")
+  expect_equal(cmp$renamed$role, "contributor")
   expect_equal(cmp$related_identifiers$identifier, "10.1101/2021.01.04.425314")
   expect_equal(cmp$grants$grant, "DP720A")
 })
@@ -193,8 +195,8 @@ test_that("zenodo_compare() flags a creator renamed under the same ORCID", {
   md$creators[[2]][c("last_name", "given_name")] <- list("Elizabeth", "Wenk")
   new <- zenodo_metadata(zenodo_test_database(md), description_file = NULL)
   cmp <- zenodo_compare(zenodo_test_previous(), new)
-  expect_equal(cmp$renamed$name_new, "Elizabeth, Wenk")
-  expect_equal(cmp$renamed$role, "creator")
+  creator <- cmp$renamed[cmp$renamed$role == "creator", ]
+  expect_equal(creator$name_new, "Elizabeth, Wenk")
   # The ORCID still matches, so she is not "dropped"
   expect_false("Wenk, Elizabeth" %in% cmp$creators$name)
 })
@@ -209,7 +211,7 @@ test_that("zenodo_compare() matches a mistyped URL scheme", {
 # ---- deposit, with Zenodo mocked -------------------------------------------
 
 # A fake Zenodo: records the requests and answers them
-zenodo_fake <- function(previous, draft_files = list(), submitted = FALSE) {
+zenodo_fake <- function(previous, draft_files = list(), submitted = FALSE, concept = "3568417") {
   env <- new.env()
   env$requests <- list()
   env$handler <- function(req) {
@@ -223,13 +225,13 @@ zenodo_fake <- function(previous, draft_files = list(), submitted = FALSE) {
                       headers = list(`Content-Type` = "application/json"),
                       body = charToRaw(jsonlite::toJSON(x, auto_unbox = TRUE, null = "null")))
     }
-    draft <- list(id = 99L, submitted = submitted, state = "unsubmitted",
+    draft <- list(id = 99L, conceptrecid = concept, submitted = submitted, state = "unsubmitted",
                   metadata = list(title = "old", keywords = list("plant", "trait"),
                                   doi = "10.5281/zenodo.99", creators = previous$creators),
                   links = list(html = "https://sandbox.zenodo.org/deposit/99",
                                bucket = "https://sandbox.zenodo.org/api/files/bucket-99"))
     if (grepl("/records/.*/versions/latest$", url)) {
-      json(list(id = 15L, metadata = previous))
+      json(list(id = 15L, conceptrecid = "3568417", metadata = previous))
     } else if (grepl("/actions/newversion$", url)) {
       json(list(id = 15L, links = list(latest_draft = "https://sandbox.zenodo.org/api/deposit/depositions/99")))
     } else if (grepl("/depositions/99/files$", url)) {
@@ -325,4 +327,161 @@ test_that("zenodo_metadata() sorts project contributors who collected data among
   expect_equal(collectors, sort(collectors))
   expect_true("Lu-Irving, Pat" %in% collectors)
   expect_equal(m$contributors[[3]]$type, "DataCollector")
+})
+
+# ---- review findings on PR #334 ----------------------------------------------
+
+test_that("people with the same surname and initial are not confused", {
+  people <- list(
+    list(name = "Cooper, Wendy", type = "DataCollector"),
+    list(name = "Cooper, William", type = "DataCollector"),
+    list(name = "Ladd, Phillip", orcid = "0000-0002-7730-9685", type = "DataCollector"),
+    list(name = "Ladd, P. G.", type = "DataCollector"),
+    list(name = "Wilson, J. Bastow", type = "DataCollector"),
+    list(name = "Wilson, J. M.", type = "DataCollector"),
+    list(name = "Smith, John A.", orcid = "0000-0001-0000-0001", type = "DataCollector"),
+    list(name = "Smith, John B.", type = "DataCollector"),
+    list(name = "Brodribb, Tim", orcid = "0000-0002-4964-6107", type = "DataCollector"),
+    list(name = "Brodribb, Timothy", orcid = "0000-0002-4964-6107", type = "DataCollector"),
+    list(name = "Brodribb, Timothy", type = "DataCollector")
+  )
+  merged <- traits.build:::zenodo_merge_people(people)
+  names <- vapply(merged, \(p) p$name, character(1))
+  expect_true(all(c("Cooper, Wendy", "Cooper, William", "Wilson, J. Bastow", "Wilson, J. M.",
+                    "Smith, John A.", "Smith, John B.") %in% names))
+  # Merged under one ORCID, with the name written most often
+  expect_equal(sum(grepl("^Ladd", names)), 1)
+  expect_equal(merged[[which(grepl("^Ladd", names))]]$orcid, "0000-0002-7730-9685")
+  expect_equal(names[grepl("^Brodribb", names)], "Brodribb, Timothy")
+
+  # One Cooper dropped, the other kept: still reported
+  previous <- list(contributors = people[1:2])
+  new <- list(contributors = people[2])
+  expect_equal(zenodo_compare(previous, new)$contributors$name, "Cooper, Wendy")
+
+  # A different ORCID is a different person, whatever the name
+  previous <- list(contributors = list(list(name = "Smith, Benjamin", orcid = "0000-0002-6987-5337")))
+  new <- list(contributors = list(list(name = "Smith, Benjamin", orcid = "0000-0001-1111-1111")))
+  expect_equal(nrow(zenodo_compare(previous, new)$contributors), 1)
+})
+
+test_that("a swapped name without an ORCID is reported as renamed", {
+  previous <- list(contributors = list(list(name = "Setterfield, Samantha", type = "DataCollector")))
+  new <- list(contributors = list(list(name = "Samantha, Setterfield", type = "DataCollector")))
+  cmp <- zenodo_compare(previous, new)
+  expect_equal(nrow(cmp$contributors), 0)
+  expect_equal(cmp$renamed$name_new, "Samantha, Setterfield")
+})
+
+test_that("assistants: placeholders, initials without spaces, and namesakes of data collectors", {
+  expect_equal(traits.build:::zenodo_split_names(c("none", "Waltraud Schulze, Inge Schulze, R.J.Williams", ".na.character")),
+               c("Schulze, Waltraud", "Schulze, Inge", "Williams, R. J."))
+  db <- zenodo_test_database()
+  db$methods$assistants[4] <- "Paul Clarke, none"
+  m <- zenodo_metadata(db, description_file = NULL)
+  names <- vapply(m$contributors, \(p) p$name, character(1))
+  expect_true("Clarke, Paul" %in% names)
+  expect_false("none" %in% names)
+})
+
+test_that("placeholders are empty, and ORCIDs are checked", {
+  db <- zenodo_test_database()
+  db$contributors$affiliation[5] <- ".na.character"
+  db$contributors$ORCID[5] <- "000-0002-6356-962X"
+  db$contributors$ORCID[1] <- "0000-0002-9120-472x"
+  expect_warning(m <- zenodo_metadata(db, description_file = NULL), "Andrew, Samuel \\(000-0002-6356-962X\\)")
+  andrew <- Filter(\(p) p$name == "Andrew, Samuel", m$contributors)[[1]]
+  expect_null(andrew$affiliation)
+  expect_null(andrew$orcid)
+  clarke <- Filter(\(p) grepl("^Clarke", p$name), m$contributors)[[1]]
+  expect_equal(clarke$orcid, "0000-0002-9120-472X")
+})
+
+test_that("references may be a list, and a dropped one is reported", {
+  md <- zenodo_test_metadata()
+  md$references <- list("Falster et al (2021) *AusTraits*. Scientific Data", "Wenk et al (2023) APD")
+  m <- zenodo_metadata(zenodo_test_database(md), description_file = NULL)
+  expect_equal(m$references, list("Falster et al (2021) AusTraits. Scientific Data", "Wenk et al (2023) APD"))
+  previous <- list(references = list("Falster et al (2021) AusTraits. Scientific Data", "Another (2020)"))
+  expect_equal(zenodo_compare(previous, m)$references$reference, "Another (2020)")
+})
+
+test_that("zenodo_carry_over() keeps ORCIDs and affiliations the repository lacks", {
+  previous <- list(contributors = list(
+    list(name = "Kealley, Ian", type = "DataCollector", orcid = "0000-0003-2747-3927", affiliation = "WA"),
+    list(name = "Cooper, Wendy", type = "DataCollector", orcid = "0000-0001-0000-0002")
+  ))
+  new <- list(contributors = list(
+    list(name = "Kealley, Ian", type = "DataCollector"),
+    list(name = "Cooper, William", type = "DataCollector")
+  ))
+  expect_message(out <- traits.build:::zenodo_carry_over(new, previous), "Kealley")
+  expect_equal(out$contributors[[1]]$orcid, "0000-0003-2747-3927")
+  expect_equal(out$contributors[[1]]$affiliation, "WA")
+  expect_null(out$contributors[[2]]$orcid)
+})
+
+test_that("zenodo_deposit() refuses directories and a draft of another record", {
+  new <- zenodo_metadata(zenodo_test_database(), description_file = NULL)
+  dir <- withr::local_tempdir()
+  expect_error(zenodo_deposit(new, record = NA, files = dir, token = "x"), "directories")
+
+  fake <- zenodo_fake(zenodo_test_previous(), concept = "424242")
+  httr2::local_mocked_responses(fake$handler)
+  expect_error(
+    suppressMessages(zenodo_deposit(new, record = 3568417, draft = 99, token = "x", allow_removals = TRUE)),
+    "not a version of record"
+  )
+  methods <- vapply(fake$requests, \(r) r$method, character(1))
+  expect_false("PUT" %in% methods)
+})
+
+test_that("zenodo_deposit() with record = NA creates a new deposition without comparing", {
+  new <- zenodo_metadata(zenodo_test_database(), description_file = NULL)
+  fake <- zenodo_fake(zenodo_test_previous())
+  handler <- function(req) {
+    if (grepl("/deposit/depositions$", req$url)) {
+      fake$requests[[length(fake$requests) + 1]] <- list(method = "POST", url = req$url, body = NULL)
+      return(httr2::response(status_code = 201L, url = req$url,
+        headers = list(`Content-Type` = "application/json"),
+        body = charToRaw('{"id": 99, "submitted": false, "metadata": {}, "links": {"bucket": "b"}}')))
+    }
+    fake$handler(req)
+  }
+  httr2::local_mocked_responses(handler)
+  out <- suppressMessages(zenodo_deposit(new, record = NA, token = "x"))
+  expect_null(out$comparison)
+  calls <- vapply(fake$requests, \(r) paste(r$method, sub("^.*/api/", "", r$url)), character(1))
+  expect_equal(calls, c("POST deposit/depositions", "PUT deposit/depositions/99"))
+})
+
+test_that("the metadata Zenodo receives has arrays where Zenodo needs them", {
+  m <- zenodo_metadata(zenodo_test_database(), description_file = NULL)
+  m$creators <- m$creators[1]
+  m$references <- m$references[1]
+  json <- jsonlite::fromJSON(
+    as.character(jsonlite::toJSON(list(metadata = m), auto_unbox = TRUE, null = "null")),
+    simplifyVector = FALSE
+  )$metadata
+  for (f in c("creators", "contributors", "related_identifiers", "references", "locations", "grants")) {
+    expect_type(json[[f]], "list")
+    expect_null(names(json[[f]]))
+  }
+  expect_type(json$title, "character")
+  expect_type(json$creators[[1]]$name, "character")
+})
+
+test_that("allow_removals can accept named losses and still stop on the rest", {
+  new <- zenodo_metadata(zenodo_test_database(), description_file = NULL)
+  fake <- zenodo_fake(zenodo_test_previous())
+  httr2::local_mocked_responses(fake$handler)
+  # Sauquet, Baxter, a preprint and a grant are dropped; accepting only two
+  expect_error(
+    suppressMessages(zenodo_deposit(new, record = 3568417, token = "x",
+                                    allow_removals = c("Sauquet, Hervé", "Baxter, Caitlan"))),
+    "Not yet accepted: 10.1101/2021.01.04.425314"
+  )
+  out <- suppressMessages(zenodo_deposit(new, record = 3568417, token = "x",
+    allow_removals = c("Sauquet, Hervé", "Baxter, Caitlan", "10.1101/2021.01.04.425314", "DP720A")))
+  expect_equal(out$id, 99L)
 })

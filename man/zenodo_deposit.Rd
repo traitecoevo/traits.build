@@ -37,8 +37,11 @@ trying a deposit; \code{FALSE} for \url{https://zenodo.org}.}
 Defaults to the environment variable \code{ZENODO_SANDBOX_TOKEN} for the
 sandbox and \code{ZENODO_TOKEN} otherwise; tokens work on one server only.}
 
-\item{allow_removals}{\code{TRUE} to deposit even though people or related
-identifiers on the previous version are missing from the new one.}
+\item{allow_removals}{What the new version may drop: \code{TRUE} for anything
+listed by the comparison, or the names, identifiers or references to
+accept as written in the comparison's message (such as
+\code{"Wilson, J. Barstow"}, a spelling the datasets have corrected). Anything
+else dropped still stops the deposit.}
 }
 \value{
 Invisibly, a list: \code{id} and \code{url} of the draft, the \code{comparison}
@@ -59,9 +62,13 @@ same ORCID, the deposit stops and lists them, unless \code{allow_removals} is
 identifiers to \code{related_identifiers}) in \code{config/metadata.yml} instead,
 where they will be kept for later versions.
 
-The new metadata replaces these fields of the draft and keeps the rest from
-the previous version (such as keywords, communities and notes, and the
-grants unless \code{\link[=zenodo_metadata]{zenodo_metadata()}} produced some).
+People who lack an ORCID or affiliation get those of the same person on
+the previous version, if any (listed in a message). The new metadata
+replaces these fields of the draft and keeps the rest from the previous
+version (such as keywords, communities and notes, and the
+grants unless \code{\link[=zenodo_metadata]{zenodo_metadata()}} produced some). So a field emptied in
+\code{config/metadata.yml} keeps the previous version's value; clear it in the
+draft on Zenodo.
 
 Files go up smallest first, and a file already in the draft with the same
 name and MD5 checksum is not uploaded again, so an interrupted upload can

@@ -14,22 +14,29 @@ zenodo_compare(previous, new)
 }
 \value{
 A list of tibbles: \code{creators} and \code{contributors} (columns \code{name},
-\code{orcid}, \code{type}) dropped from the deposit; \code{renamed}, people whose ORCID
-is on both but whose surname differs, with \code{role} \code{creator} (often a
-given name and surname swapped in \code{config/metadata.yml}) or \code{contributor}
-(often a spelling corrected in a dataset's \code{metadata.yml}); a fuller given
-name is not listed;
-\code{related_identifiers} and \code{grants} dropped. \code{grants} is empty when \code{new}
-has no grants, as the previous ones are then kept.
+\code{orcid}, \code{type}) dropped from the deposit; \code{renamed}, people found under
+the same ORCID or the same words but a different surname, with \code{role}
+\code{creator} (often a given name and surname swapped in
+\code{config/metadata.yml}) or \code{contributor} (often a spelling corrected, or
+swapped, in a dataset's \code{metadata.yml}); \code{related_identifiers},
+\code{references} and \code{grants} dropped. \code{grants} is empty when \code{new} has no
+grants, as the previous ones are then kept.
 }
 \description{
 Lists who and what the new version would lose: creators, contributors,
-related identifiers and grants on the previous version that are not on the
-new one. People are matched by ORCID, by surname and first initial, or by
-the words of their name in any order, so a change of affiliation, role or
-spelling of a given name is not a loss. A contributor who stays on the
-deposit in another role is not listed; a creator who is no longer a creator
-is, even if still a contributor.
+related identifiers, references and grants on the previous version that are
+not on the new one.
+}
+\details{
+Two entries are the same person if they have the same ORCID, or, when
+either lacks one, the same surname and compatible given names: each given
+name equal, or an initial of the other, as far as the shorter goes ("Peter
+J." matches "Peter" and "P. G." but not "Paul"). Entries with the words of
+their name in another order ("Wenk, Elizabeth" and "Elizabeth, Wenk") are
+also matched, and listed as renamed. So a change of affiliation, role or a
+fuller given name is not a loss. A contributor who stays on the deposit in
+another role is not listed; a creator who is no longer a creator is, even if
+still a contributor.
 }
 \seealso{
 \code{\link[=zenodo_metadata]{zenodo_metadata()}}, \code{\link[=zenodo_deposit]{zenodo_deposit()}}

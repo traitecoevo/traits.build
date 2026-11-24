@@ -7,8 +7,9 @@
 #'
 #' @section Where each field comes from:
 #'
-#' * `title`, `version`, `references`, `language` and the licence come from
-#'   the fields of the same name. `publication_date` is converted to
+#' * `title`, `version`, `language` and the licence come from the fields of
+#'   the same name. `references` may hold one reference or a list; Markdown
+#'   emphasis (`*`) is removed, as Zenodo shows it as typed. `publication_date` is converted to
 #'   `YYYY-MM-DD`; it must parse, so set it before the release build.
 #' * The description is `config/zenodo_description.md` when that file exists,
 #'   otherwise the `description` field. It is Markdown, rendered to HTML, and
@@ -29,9 +30,17 @@
 #'      so they carry a name only;
 #'   4. the licence's `rights_holder`, as `RightsHolder`.
 #'
-#'   A person is listed once per role: entries with the same ORCID, or the same
-#'   surname and first given name, are merged, keeping the ORCID and
-#'   affiliation where one entry lacks them.
+#'   A person is listed once per role. Entries are merged if they have the
+#'   same ORCID or, when one lacks it, the same surname and compatible given
+#'   names (each equal, or an initial of the other: "Peter J." with "P." but
+#'   not with "Paul"); never two different ORCIDs. The merged entry has the
+#'   name written most often (then the longest), the ORCID and the most
+#'   frequent affiliation. Placeholders such as `unknown`, `none` and `.na`
+#'   count as empty, and an ORCID that is not valid is left out with a
+#'   warning.
+#'
+#'   [zenodo_deposit()] then fills an ORCID or affiliation a person lacks from
+#'   the previous version, where the same person has one there.
 #' * `related_identifiers` come from `related_identifiers`. The relation (in
 #'   `relation_type` or `relation`) must be one Zenodo accepts, such as
 #'   `isCompiledBy` or `isDescribedBy`; case is corrected. An entry naming the
@@ -93,7 +102,7 @@ zenodo_metadata <- function(database,
     creators = creators,
     contributors = zenodo_contributors(database, metadata, creators),
     related_identifiers = zenodo_related_identifiers(metadata),
-    references = if (is.na(zenodo_scalar(metadata$references))) list() else list(zenodo_scalar(metadata$references)),
+    references = zenodo_references(metadata$references),
     language = zenodo_language(metadata$language),
     access_right = "open",
     license = zenodo_license(metadata$license),
@@ -107,67 +116,73 @@ zenodo_metadata <- function(database,
 #' Compare a Zenodo version's metadata with the previous version's
 #'
 #' Lists who and what the new version would lose: creators, contributors,
-#' related identifiers and grants on the previous version that are not on the
-#' new one. People are matched by ORCID, by surname and first initial, or by
-#' the words of their name in any order, so a change of affiliation, role or
-#' spelling of a given name is not a loss. A contributor who stays on the
-#' deposit in another role is not listed; a creator who is no longer a creator
-#' is, even if still a contributor.
+#' related identifiers, references and grants on the previous version that are
+#' not on the new one.
+#'
+#' Two entries are the same person if they have the same ORCID, or, when
+#' either lacks one, the same surname and compatible given names: each given
+#' name equal, or an initial of the other, as far as the shorter goes ("Peter
+#' J." matches "Peter" and "P. G." but not "Paul"). Entries with the words of
+#' their name in another order ("Wenk, Elizabeth" and "Elizabeth, Wenk") are
+#' also matched, and listed as renamed. So a change of affiliation, role or a
+#' fuller given name is not a loss. A contributor who stays on the deposit in
+#' another role is not listed; a creator who is no longer a creator is, even if
+#' still a contributor.
 #'
 #' @param previous Metadata of the previous version, as returned by Zenodo
 #'   (`metadata` of a record from its API).
 #' @param new Metadata of the new version, from [zenodo_metadata()].
 #'
 #' @return A list of tibbles: `creators` and `contributors` (columns `name`,
-#'   `orcid`, `type`) dropped from the deposit; `renamed`, people whose ORCID
-#'   is on both but whose surname differs, with `role` `creator` (often a
-#'   given name and surname swapped in `config/metadata.yml`) or `contributor`
-#'   (often a spelling corrected in a dataset's `metadata.yml`); a fuller given
-#'   name is not listed;
-#'   `related_identifiers` and `grants` dropped. `grants` is empty when `new`
-#'   has no grants, as the previous ones are then kept.
+#'   `orcid`, `type`) dropped from the deposit; `renamed`, people found under
+#'   the same ORCID or the same words but a different surname, with `role`
+#'   `creator` (often a given name and surname swapped in
+#'   `config/metadata.yml`) or `contributor` (often a spelling corrected, or
+#'   swapped, in a dataset's `metadata.yml`); `related_identifiers`,
+#'   `references` and `grants` dropped. `grants` is empty when `new` has no
+#'   grants, as the previous ones are then kept.
 #' @seealso [zenodo_metadata()], [zenodo_deposit()]
 #' @export
 zenodo_compare <- function(previous, new) {
-  people <- function(x, type = NA_character_) {
-    tibble::tibble(
-      name = vapply(x, \(p) zenodo_or(p$name, NA_character_), character(1)),
-      orcid = vapply(x, \(p) zenodo_or(p$orcid, NA_character_), character(1)),
-      type = vapply(x, \(p) zenodo_or(p$type, type), character(1))
-    )
-  }
-  prev_creators <- people(previous$creators, "creator")
-  prev_contributors <- people(previous$contributors)
-  new_creators <- people(new$creators, "creator")
-  new_people <- dplyr::bind_rows(new_creators, people(new$contributors))
+  prev_creators <- zenodo_people_table(previous$creators, "creator")
+  prev_contributors <- zenodo_people_table(previous$contributors)
+  new_creators <- zenodo_people_table(new$creators, "creator")
+  new_contributors <- zenodo_people_table(new$contributors)
+  new_people <- dplyr::bind_rows(new_creators, new_contributors)
 
   missing_from <- function(x, pool) {
-    found <- (!is.na(x$orcid) & x$orcid %in% pool$orcid) |
-      zenodo_initial_key(x$name) %in% zenodo_initial_key(pool$name) |
-      zenodo_word_key(x$name) %in% zenodo_word_key(pool$name)
+    found <- vapply(seq_len(nrow(x)), \(i) {
+      no_conflict <- is.na(x$orcid[i]) | is.na(pool$orcid) | pool$orcid == x$orcid[i]
+      any(zenodo_same_person(x$name[i], x$orcid[i], pool$name, pool$orcid)) ||
+        any(no_conflict & zenodo_word_key(pool$name) == zenodo_word_key(x$name[i]))
+    }, logical(1))
     x[!found, ]
   }
 
-  # Same ORCID, different surname, compared within creators and within
-  # contributors, so that a creator's swapped names are not hidden by a
-  # correct spelling among the data collectors
-  renamed_in <- function(before, after) {
-    with_orcid <- function(x) {
-      x %>% dplyr::filter(!is.na(.data$orcid)) %>% dplyr::distinct(.data$name, .data$orcid)
-    }
-    with_orcid(before) %>%
-      dplyr::inner_join(with_orcid(after), by = "orcid", suffix = c("_previous", "_new"),
-                        relationship = "many-to-many") %>%
-      dplyr::group_by(.data$orcid) %>%
-      dplyr::filter(!any(zenodo_surname(.data$name_previous) == zenodo_surname(.data$name_new))) %>%
-      dplyr::ungroup()
+  # Found under the same ORCID or the same words, but never with the same
+  # surname. Compared within creators and within contributors, so that a
+  # creator's swapped names are not hidden by a correct spelling among the
+  # data collectors.
+  renamed_in <- function(before, after, role) {
+    rows <- lapply(seq_len(nrow(before)), \(i) {
+      no_conflict <- is.na(before$orcid[i]) | is.na(after$orcid) | after$orcid == before$orcid[i]
+      hit <- (!is.na(before$orcid[i]) & !is.na(after$orcid) & after$orcid == before$orcid[i]) |
+        (no_conflict & zenodo_word_key(after$name) == zenodo_word_key(before$name[i]))
+      names_new <- unique(after$name[hit])
+      if (length(names_new) == 0 || any(zenodo_surname(names_new) == zenodo_surname(before$name[i]))) {
+        return(NULL)
+      }
+      tibble::tibble(name_previous = before$name[i], name_new = names_new,
+                     orcid = before$orcid[i], role = role)
+    })
+    dplyr::bind_rows(c(list(tibble::tibble(name_previous = character(), name_new = character(),
+                                           orcid = character(), role = character())), rows))
   }
   renamed <- dplyr::bind_rows(
-    renamed_in(prev_creators, new_creators) %>% dplyr::mutate(role = "creator"),
-    renamed_in(prev_contributors, people(new$contributors)) %>% dplyr::mutate(role = "contributor")
+    renamed_in(prev_creators, new_creators, "creator"),
+    renamed_in(prev_contributors, new_contributors, "contributor")
   ) %>%
-    dplyr::distinct() %>%
-    dplyr::select(dplyr::all_of(c("name_previous", "name_new", "orcid", "role")))
+    dplyr::distinct()
 
   identifiers <- function(x) {
     tibble::tibble(
@@ -179,6 +194,10 @@ zenodo_compare <- function(previous, new) {
   new_ids <- identifiers(new$related_identifiers)
   id_key <- function(x) paste(tolower(zenodo_bare_identifier(x$identifier)), tolower(x$relation))
   dropped_ids <- prev_ids[!id_key(prev_ids) %in% id_key(new_ids), ]
+
+  ref_key <- function(x) zenodo_fold(gsub("[*_]", "", unlist(x)))
+  prev_refs <- as.character(unlist(previous$references))
+  dropped_refs <- tibble::tibble(reference = prev_refs[!ref_key(prev_refs) %in% ref_key(new$references)])
 
   grant_code <- function(x) {
     vapply(x, \(g) sub("^.*::", "", zenodo_or(g$id, zenodo_or(g$internal_id, zenodo_or(g$code, NA_character_)))),
@@ -196,6 +215,7 @@ zenodo_compare <- function(previous, new) {
     contributors = missing_from(prev_contributors, new_people),
     renamed = renamed,
     related_identifiers = dropped_ids,
+    references = dropped_refs,
     grants = dropped_grants
   )
 }
@@ -214,9 +234,13 @@ zenodo_compare <- function(previous, new) {
 #' identifiers to `related_identifiers`) in `config/metadata.yml` instead,
 #' where they will be kept for later versions.
 #'
-#' The new metadata replaces these fields of the draft and keeps the rest from
-#' the previous version (such as keywords, communities and notes, and the
-#' grants unless [zenodo_metadata()] produced some).
+#' People who lack an ORCID or affiliation get those of the same person on
+#' the previous version, if any (listed in a message). The new metadata
+#' replaces these fields of the draft and keeps the rest from the previous
+#' version (such as keywords, communities and notes, and the
+#' grants unless [zenodo_metadata()] produced some). So a field emptied in
+#' `config/metadata.yml` keeps the previous version's value; clear it in the
+#' draft on Zenodo.
 #'
 #' Files go up smallest first, and a file already in the draft with the same
 #' name and MD5 checksum is not uploaded again, so an interrupted upload can
@@ -238,8 +262,11 @@ zenodo_compare <- function(previous, new) {
 #' @param token A Zenodo personal access token with scope `deposit:write`.
 #'   Defaults to the environment variable `ZENODO_SANDBOX_TOKEN` for the
 #'   sandbox and `ZENODO_TOKEN` otherwise; tokens work on one server only.
-#' @param allow_removals `TRUE` to deposit even though people or related
-#'   identifiers on the previous version are missing from the new one.
+#' @param allow_removals What the new version may drop: `TRUE` for anything
+#'   listed by the comparison, or the names, identifiers or references to
+#'   accept as written in the comparison's message (such as
+#'   `"Wilson, J. Barstow"`, a spelling the datasets have corrected). Anything
+#'   else dropped still stops the deposit.
 #'
 #' @return Invisibly, a list: `id` and `url` of the draft, the `comparison`
 #'   from [zenodo_compare()] (`NULL` for a new record), and `files`, the names
@@ -274,6 +301,9 @@ zenodo_deposit <- function(metadata, record, files = NULL, draft = NULL,
     if (!all(file.exists(files))) {
       stop("Files not found: ", paste(files[!file.exists(files)], collapse = ", "))
     }
+    if (any(dir.exists(files))) {
+      stop("These are directories, not files: ", paste(files[dir.exists(files)], collapse = ", "))
+    }
     if (anyDuplicated(basename(files))) {
       stop("Two files share a name: ", paste(unique(basename(files)[duplicated(basename(files))]), collapse = ", "))
     }
@@ -288,15 +318,20 @@ zenodo_deposit <- function(metadata, record, files = NULL, draft = NULL,
   latest <- NULL
   if (!is.na(record)) {
     latest <- api(paste0("records/", record, "/versions/latest")) %>% zenodo_perform()
+    metadata <- zenodo_carry_over(metadata, latest$metadata)
     comparison <- zenodo_compare(latest$metadata, metadata)
     zenodo_report_comparison(comparison, latest)
-    lost <- nrow(comparison$creators) + nrow(comparison$contributors) +
-      sum(comparison$renamed$role == "creator") + nrow(comparison$related_identifiers) +
-      nrow(comparison$grants)
-    if (lost > 0 && !isTRUE(allow_removals)) {
+    accepted <- if (is.character(allow_removals)) allow_removals else character()
+    lost <- c(comparison$creators$name, comparison$contributors$name,
+              comparison$renamed$name_previous[comparison$renamed$role == "creator"],
+              comparison$related_identifiers$identifier, comparison$references$reference,
+              comparison$grants$grant)
+    lost <- setdiff(lost, accepted)
+    if (length(lost) > 0 && !isTRUE(allow_removals)) {
       stop("The new version would drop or rename what is listed above. Add them to ",
            "`config/metadata.yml` (people to `project_contributors`) and rebuild, ",
-           "or pass `allow_removals = TRUE` if that is intended.", call. = FALSE)
+           "or name the ones to accept in `allow_removals`. Not yet accepted: ",
+           paste(lost, collapse = "; "), call. = FALSE)
     }
   }
 
@@ -319,6 +354,14 @@ zenodo_deposit <- function(metadata, record, files = NULL, draft = NULL,
   if (!identical(deposition$submitted, FALSE)) {
     stop("Deposition ", deposition$id, " is not an unpublished draft (state '",
          zenodo_or(deposition$state, "?"), "'), so it was left alone.")
+  }
+  # A resumed draft must be a version of the record compared with
+  if (!is.null(draft) && !is.null(latest)) {
+    concept <- as.character(zenodo_or(latest$conceptrecid, NA))
+    if (is.na(concept) || !identical(as.character(zenodo_or(deposition$conceptrecid, NA)), concept)) {
+      stop("Draft ", deposition$id, " is not a version of record ", record,
+           " (concept ", concept, "), so it was left alone.")
+    }
   }
 
   # Metadata: the new fields replace the draft's, the rest are kept
@@ -350,11 +393,17 @@ zenodo_default_description <- function() {
   if (file.exists("config/zenodo_description.md")) "config/zenodo_description.md" else NULL
 }
 
+# Placeholders traits.build databases use for "no value"
+zenodo_is_placeholder <- function(x) {
+  x <- tolower(trimws(x))
+  is.na(x) | x %in% c("", "na", "na_character_", "unknown", "none", "nil", "n/a", "-") | startsWith(x, ".na")
+}
+
 # One value of a yml field, NA when absent or a placeholder
 zenodo_scalar <- function(x) {
   if (is.null(x) || length(x) == 0) return(NA_character_)
   x <- as.character(x[[1]])
-  if (is.na(x) || trimws(x) %in% c("", ".na", "NA", "NA_character_", "unknown")) return(NA_character_)
+  if (zenodo_is_placeholder(x)) return(NA_character_)
   trimws(x)
 }
 
@@ -367,7 +416,7 @@ zenodo_date <- function(x) {
 }
 
 zenodo_valid_orcid <- function(x) {
-  x <- sub("^.*orcid\\.org/", "", trimws(as.character(x)))
+  x <- toupper(sub("^.*orcid\\.org/", "", trimws(as.character(x)), ignore.case = TRUE))
   ifelse(!is.na(x) & grepl("^\\d{4}-\\d{4}-\\d{4}-\\d{3}[0-9X]$", x), x, NA_character_)
 }
 
@@ -378,16 +427,6 @@ zenodo_fold <- function(x) {
   trimws(gsub("\\s+", " ", x))
 }
 
-# "Surname, Given Names" -> "surname given", the first given name only
-zenodo_name_key <- function(name) {
-  parts <- strsplit(zenodo_fold(name), ",", fixed = TRUE)
-  vapply(parts, \(p) {
-    surname <- trimws(p[1])
-    given <- if (length(p) > 1) strsplit(trimws(p[2]), " ")[[1]][1] else ""
-    trimws(paste(surname, zenodo_or(given, "")))
-  }, character(1))
-}
-
 # The words of a name in alphabetical order, so that "McC Overton, Jacob" and
 # "Overton, Jacob McC" match
 zenodo_word_key <- function(name) {
@@ -396,14 +435,84 @@ zenodo_word_key <- function(name) {
 
 zenodo_surname <- function(name) trimws(sub(",.*$", "", zenodo_fold(name)))
 
-# "Surname, Given Names" -> "surname g"
-zenodo_initial_key <- function(name) {
-  parts <- strsplit(zenodo_fold(name), ",", fixed = TRUE)
-  vapply(parts, \(p) {
-    if (length(p) == 0 || is.na(p[1])) return(NA_character_)
-    given <- if (length(p) > 1) trimws(p[2]) else ""
-    trimws(paste(trimws(p[1]), substr(given, 1, 1)))
-  }, character(1))
+zenodo_given <- function(name) {
+  lapply(zenodo_fold(name), \(n) {
+    if (is.na(n) || !grepl(",", n)) return(character())
+    w <- strsplit(trimws(sub("^[^,]*,", "", n)), "[ -]+")[[1]]
+    w[nzchar(w)]
+  })
+}
+
+# Given names agree as far as the shorter goes: each word equal, or an initial
+# of the other ("peter j" ~ "peter", "p g", but not "paul")
+zenodo_given_compatible <- function(a, b) {
+  n <- min(length(a), length(b))
+  if (n == 0) return(TRUE)
+  all(vapply(seq_len(n), \(i) {
+    x <- a[i]
+    y <- b[i]
+    x == y || (nchar(x) == 1 && startsWith(y, x)) || (nchar(y) == 1 && startsWith(x, y))
+  }, logical(1)))
+}
+
+# Is person (name, orcid) the same as each of (names, orcids)? Same ORCID; or,
+# when either lacks one, same surname and compatible given names.
+zenodo_same_person <- function(name, orcid, names, orcids) {
+  if (length(names) == 0) return(logical())
+  orcid <- zenodo_or(orcid, NA_character_)
+  surname <- zenodo_surname(name)
+  given <- zenodo_given(name)[[1]]
+  others <- zenodo_given(names)
+  surnames <- zenodo_surname(names)
+  vapply(seq_along(names), \(i) {
+    if (!is.na(orcid) && !is.na(orcids[i])) return(orcid == orcids[i])
+    !is.na(surnames[i]) && surname == surnames[i] && zenodo_given_compatible(given, others[[i]])
+  }, logical(1))
+}
+
+zenodo_people_table <- function(x, type = NA_character_) {
+  tibble::tibble(
+    name = vapply(x, \(p) zenodo_or(p$name, NA_character_), character(1)),
+    orcid = vapply(x, \(p) zenodo_or(p$orcid, NA_character_), character(1)),
+    type = vapply(x, \(p) zenodo_or(p$type, type), character(1))
+  )
+}
+
+# Fill the ORCID and affiliation of people who lack them from the previous
+# version, where the same person is there (in any role) with one. Free-text
+# assistants carry a name only, and their ORCIDs had been typed into Zenodo.
+zenodo_carry_over <- function(new, previous) {
+  prev <- c(previous$creators, previous$contributors)
+  if (length(prev) == 0) return(new)
+  prev_names <- vapply(prev, \(p) zenodo_or(p$name, NA_character_), character(1))
+  prev_orcids <- vapply(prev, \(p) zenodo_or(p$orcid, NA_character_), character(1))
+  filled <- character()
+  fill <- function(people) {
+    lapply(people, \(p) {
+      if (!is.null(p$orcid) && !is.null(p$affiliation)) return(p)
+      same <- which(zenodo_same_person(p$name, zenodo_or(p$orcid, NA_character_), prev_names, prev_orcids))
+      if (length(same) == 0) return(p)
+      orcids <- unique(stats::na.omit(prev_orcids[same]))
+      if (is.null(p$orcid) && length(orcids) == 1) {
+        p$orcid <- orcids
+        filled <<- c(filled, p$name)
+      }
+      affiliations <- unique(unlist(lapply(prev[same], \(q) q$affiliation)))
+      if (is.null(p$affiliation) && length(affiliations) == 1 && nzchar(affiliations)) {
+        p$affiliation <- affiliations
+        filled <<- c(filled, p$name)
+      }
+      p[intersect(c("name", "type", "affiliation", "orcid"), names(p))]
+    })
+  }
+  new$creators <- fill(new$creators)
+  new$contributors <- fill(new$contributors)
+  if (length(filled) > 0) {
+    message("Kept the ORCID or affiliation of ", length(unique(filled)),
+            " people from the previous version, which the repository lacks: ",
+            paste(unique(filled), collapse = "; "))
+  }
+  new
 }
 
 zenodo_bare_identifier <- function(x) {
@@ -421,13 +530,17 @@ zenodo_people <- function(x, default_role = NA_character_) {
     given <- zenodo_scalar(p$given_name)
     role <- zenodo_scalar(p$role)
     if (is.na(role)) role <- default_role
+    orcid_given <- zenodo_scalar(p$ORCID)
+    orcid <- zenodo_valid_orcid(orcid_given)
     person <- list(
       name = if (is.na(given)) last else paste0(last, ", ", given),
       affiliation = zenodo_scalar(p$affiliation),
-      orcid = zenodo_valid_orcid(zenodo_scalar(p$ORCID)),
+      orcid = orcid,
       type = role
     )
-    person[!vapply(person, is.na, logical(1))]
+    person <- person[!vapply(person, is.na, logical(1))]
+    if (!is.na(orcid_given) && is.na(orcid)) attr(person, "bad_orcid") <- orcid_given
+    person
   })
   out
 }
@@ -440,46 +553,60 @@ zenodo_contributor_types <- function() {
     "WorkPackageLeader", "Other")
 }
 
-# Merge people listed more than once within a role: same ORCID, or same
-# surname and first given name (and no conflicting ORCID). The first entry's
-# name is kept, and gains an ORCID or affiliation another entry has.
+# Merge people listed more than once within a role (see zenodo_same_person()),
+# never two different ORCIDs. The name kept is the one written most often,
+# then the longest; the ORCID and the most frequent affiliation are kept.
 zenodo_merge_people <- function(people) {
   if (length(people) == 0) return(people)
-  out <- list()
-  keys <- character()
-  orcids <- character()
-  types <- character()
-  for (p in people) {
-    key <- zenodo_name_key(p$name)
+  groups <- list()
+  for (k in seq_along(people)) {
+    p <- people[[k]]
     type <- zenodo_or(p$type, "")
     orcid <- zenodo_or(p$orcid, NA_character_)
-    same <- which(types == type & (
-      (!is.na(orcid) & orcids %in% orcid) |
-        (keys == key & (is.na(orcid) | is.na(orcids)))
-    ))
-    if (length(same) > 0) {
-      i <- same[1]
-      for (f in c("orcid", "affiliation")) {
-        if (is.null(out[[i]][[f]]) && !is.null(p[[f]])) out[[i]][[f]] <- p[[f]]
+    joined <- FALSE
+    for (g in seq_along(groups)) {
+      members <- people[groups[[g]]]
+      if (!identical(zenodo_or(members[[1]]$type, ""), type)) next
+      m_names <- vapply(members, \(m) m$name, character(1))
+      m_orcids <- vapply(members, \(m) zenodo_or(m$orcid, NA_character_), character(1))
+      if (!is.na(orcid) && any(!is.na(m_orcids) & m_orcids != orcid)) next
+      # Same ORCID, the same name written again, or compatible with every
+      # member (so "Cooper, W." cannot join Wendy and William together)
+      if (any(!is.na(orcid) & m_orcids %in% orcid) ||
+          zenodo_fold(p$name) %in% zenodo_fold(m_names) ||
+          all(zenodo_same_person(p$name, orcid, m_names, m_orcids))) {
+        groups[[g]] <- c(groups[[g]], k)
+        joined <- TRUE
+        break
       }
-      if (is.na(orcids[i]) && !is.na(orcid)) orcids[i] <- orcid
-    } else {
-      out[[length(out) + 1]] <- p
-      keys <- c(keys, key)
-      orcids <- c(orcids, orcid)
-      types <- c(types, type)
     }
+    if (!joined) groups[[length(groups) + 1]] <- k
   }
-  out
+  most_common <- function(x) {
+    x <- x[!is.na(x)]
+    if (length(x) == 0) return(NA_character_)
+    counts <- table(x)
+    top <- names(counts)[counts == max(counts)]
+    top[order(-nchar(top))][1]
+  }
+  lapply(groups, \(g) {
+    members <- people[g]
+    first <- members[[1]]
+    pick <- function(f) most_common(vapply(members, \(m) zenodo_or(m[[f]], NA_character_), character(1)))
+    out <- list(name = pick("name"), affiliation = pick("affiliation"), orcid = pick("orcid"), type = first$type)
+    out[!vapply(out, \(v) is.null(v) || (length(v) == 1 && is.na(v)), logical(1))]
+  })
 }
 
-# Free-text names ("Ann Smith, Bo van Dyke and C. Lee") to "Surname, Given"
+# Free-text names ("Ann Smith, Bo van Dyke and R.J. Lee") to "Surname, Given"
 zenodo_split_names <- function(x) {
   x <- x[!is.na(x)]
   if (length(x) == 0) return(character())
-  names <- unlist(strsplit(x, "\\s*(,|;|&|\\band\\b)\\s*"))
+  names <- trimws(unlist(strsplit(x, "\\s*(,|;|&|\\band\\b)\\s*")))
+  names <- names[nzchar(names) & !zenodo_is_placeholder(names)]
+  # "R.J.Williams" -> "R. J. Williams"
+  names <- gsub("\\.(?=[[:alpha:]])", ". ", names, perl = TRUE)
   names <- trimws(gsub("\\s+", " ", names))
-  names <- names[nzchar(names) & !tolower(names) %in% c("unknown", "na", ".na")]
   vapply(names, \(n) {
     words <- strsplit(n, " ")[[1]]
     if (length(words) == 1) return(words)
@@ -501,24 +628,28 @@ zenodo_contributors <- function(database, metadata, creators) {
   collectors <- list()
   if (!is.null(database$contributors) && nrow(database$contributors) > 0) {
     tbl <- database$contributors %>%
-      dplyr::select(dplyr::any_of(c("last_name", "given_name", "ORCID", "affiliation"))) %>%
-      dplyr::distinct()
+      dplyr::select(dplyr::any_of(c("last_name", "given_name", "ORCID", "affiliation")))
     collectors <- zenodo_people(
       lapply(seq_len(nrow(tbl)), \(i) as.list(tbl[i, ])), default_role = "DataCollector"
     )
-    collectors <- collectors[order(zenodo_fold(vapply(collectors, \(p) p$name, character(1))))]
+  }
+  bad_orcid <- Filter(\(p) !is.null(attr(p, "bad_orcid")), c(creators, project, collectors))
+  if (length(bad_orcid) > 0) {
+    warning("Not sent to Zenodo, as not valid ORCIDs: ",
+            paste(unique(vapply(bad_orcid, \(p) paste0(p$name, " (", attr(p, "bad_orcid"), ")"), character(1))),
+                  collapse = "; "), call. = FALSE)
   }
   collectors <- zenodo_merge_people(collectors)
+  collector_names <- vapply(collectors, \(p) p$name, character(1))
 
   assistant_names <- character()
   if (!is.null(database$methods) && "assistants" %in% names(database$methods)) {
     assistant_names <- zenodo_split_names(unique(database$methods$assistants))
   }
-  known <- c(zenodo_initial_key(vapply(collectors, \(p) p$name, character(1))),
-             zenodo_name_key(vapply(collectors, \(p) p$name, character(1))))
-  assistant_names <- assistant_names[!(zenodo_name_key(assistant_names) %in% known |
-                                         zenodo_initial_key(assistant_names) %in% known)]
-  assistants <- lapply(sort(assistant_names), \(n) list(name = n, type = "DataCollector"))
+  credited <- vapply(assistant_names, \(n) {
+    any(zenodo_same_person(n, NA_character_, collector_names, rep(NA_character_, length(collector_names))))
+  }, logical(1))
+  assistants <- lapply(assistant_names[!credited], \(n) list(name = n, type = "DataCollector"))
 
   # Project contributors who are data collectors are listed among them
   is_collector <- vapply(project, \(p) identical(p$type, "DataCollector"), logical(1))
@@ -529,14 +660,18 @@ zenodo_contributors <- function(database, metadata, creators) {
   rights <- list()
   holder <- zenodo_scalar(metadata$license$rights_holder)
   if (!is.na(holder)) {
-    match <- Filter(\(p) zenodo_name_key(p$name) == zenodo_name_key(holder), creators)
+    match <- Filter(\(p) zenodo_word_key(p$name) == zenodo_word_key(holder), creators)
     person <- if (length(match) > 0) match[[1]] else list(name = holder)
     person$type <- "RightsHolder"
     rights <- list(person)
   }
 
-  out <- zenodo_merge_people(c(project, data_collectors, rights))
-  lapply(out, \(p) p[intersect(c("name", "type", "affiliation", "orcid"), names(p))])
+  out <- c(zenodo_merge_people(project), data_collectors, rights)
+  lapply(out, \(p) {
+    p <- p[intersect(c("name", "type", "affiliation", "orcid"), names(p))]
+    attributes(p) <- list(names = names(p))
+    p
+  })
 }
 
 zenodo_relations <- function() {
@@ -591,9 +726,17 @@ zenodo_related_identifiers <- function(metadata) {
     entry
   })
   out <- Filter(Negate(is.null), out)
-  # The build adds traits.build's repository, which the config may also list
+  # The build appends https://github.com/traitecoevo/traits.build; drop it if
+  # the config lists that same URL too (a release-tag URL is a different
+  # identifier and is kept beside it)
   key <- vapply(out, \(i) paste(tolower(zenodo_bare_identifier(i$identifier)), i$relation), character(1))
   out[!duplicated(key)]
+}
+
+zenodo_references <- function(x) {
+  x <- unlist(x)
+  x <- trimws(gsub("[*]", "", x[!zenodo_is_placeholder(x)]))
+  as.list(x)
 }
 
 zenodo_language <- function(x) {
@@ -623,7 +766,7 @@ zenodo_grants <- function(x) {
     funder <- zenodo_scalar(g$funder_identifier)
     award <- zenodo_scalar(g$award_number)
     if (is.na(funder) || is.na(award)) return(NULL)
-    funder <- sub("^https?://(ror\\.org/|doi\\.org/)?", "", funder)
+    funder <- sub("/+$", "", sub("^(https?://)?(dx\\.)?(ror\\.org/|doi\\.org/)?", "", funder))
     list(id = paste0(funder, "::", award))
   })
   Filter(Negate(is.null), out)
@@ -662,6 +805,7 @@ zenodo_report_comparison <- function(comparison, latest) {
   show(comparison$renamed[comparison$renamed$role == "contributor", ],
        "contributor(s) renamed (same ORCID), as the datasets now spell them; not a reason to stop")
   show(comparison$related_identifiers, "related identifier(s) would be dropped")
+  show(comparison$references, "reference(s) would be dropped")
   show(comparison$grants, "grant(s) would be dropped")
   if (sum(vapply(comparison, nrow, integer(1))) == 0) message("  nobody and nothing dropped.")
 }
