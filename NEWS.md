@@ -6,7 +6,7 @@ This release changes how a dataset records its references, and the columns that 
 
 Work through these in a database repository, in order, then rebuild and compare the output with the last build.
 
-1. Install traits.build 3.0.0, which installs traits.use 0.1.1: `remotes::install_github("traitecoevo/traits.build@v3.0.0")`.
+1. Install traits.build 3.0.0, which installs traits.use 1.0.0: `remotes::install_github("traitecoevo/traits.build@v3.0.0")`.
 2. From the repository root, run `traits.build::metadata_convert_sources()`. It converts the `source:` block of every `data/*/metadata.yml` and lists what needs a person: a `dataset` reference whose key is not the `dataset_id`, and `source_id` values that name no reference. Fix those by hand.
 3. In `config/traits.yml`, set `type: monthly_presence` on every trait whose values are twelve `y`/`n` characters, one per month (in AusTraits, `flowering_time`, `fruiting_time`, `foliage_time` and `recruitment_time`). Every trait needs a `type` of `numeric`, `categorical`, `monthly_presence` or `text`.
 4. Regenerate the pipeline with `build_setup_pipeline()`, or change `austraits::bind_databases()` to `traits.use::bind_databases()` in `build.R`, `remake.yml` or `_targets.R`.
