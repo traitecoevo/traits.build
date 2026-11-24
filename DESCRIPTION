@@ -50,6 +50,7 @@ Suggests:
     bibtex,
     commonmark,
     httr2,
+    jsonlite,
     knitr,
     bench,
     devtools,

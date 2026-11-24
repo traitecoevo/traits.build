@@ -3,6 +3,11 @@
 
 `%or%` <- function(x, y) if (is.null(x)) y else x
 
+# Suggested packages, needed only for depositing
+skip_if_not_installed("commonmark")
+skip_if_not_installed("httr2")
+skip_if_not_installed("jsonlite")
+
 zenodo_test_metadata <- function() {
   list(
     title = "A test database",
