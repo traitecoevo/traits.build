@@ -6,7 +6,7 @@ This release changes how a dataset records its references, and the columns that 
 
 Work through these in a database repository, in order, then rebuild and compare the output with the last build.
 
-1. Install traits.build 3.0.0, which installs traits.use 0.1.1: `remotes::install_github("traitecoevo/traits.build@v3.0.0")`.
+1. Install traits.build 3.0.0, which installs traits.use 1.0.0: `remotes::install_github("traitecoevo/traits.build@v3.0.0")`.
 2. From the repository root, run `traits.build::metadata_convert_sources()`. It converts the `source:` block of every `data/*/metadata.yml` and lists what needs a person: a `dataset` reference whose key is not the `dataset_id`, and `source_id` values that name no reference. Fix those by hand.
 3. In `config/traits.yml`, set `type: monthly_presence` on every trait whose values are twelve `y`/`n` characters, one per month (in AusTraits, `flowering_time`, `fruiting_time`, `foliage_time` and `recruitment_time`). Every trait needs a `type` of `numeric`, `categorical`, `monthly_presence` or `text`.
 4. Regenerate the pipeline with `build_setup_pipeline()`, or change `austraits::bind_databases()` to `traits.use::bind_databases()` in `build.R`, `remake.yml` or `_targets.R`.
@@ -36,6 +36,7 @@ Work through these in a database repository, in order, then rebuild and compare 
 - Review tools for curators, which list values to look at rather than failing a test: `dataset_check_outlier_by_species()` and `dataset_check_outlier_by_genus()` for numeric values far from other datasets' (unit slips, misplaced decimal points), `dataset_check_duplicates_within_dataset()` for a species-level value repeated on every row, and `dataset_check_categorical_substitutions()` for a table of the substitutions a dataset still needs.
 - For `custom_R_code`: `util_parse_collection_date()` converts a column of raw dates to the `collection_date` format, and `move_values_to_new_trait()` and `move_values_to_new_trait_long()`, moved from `austraits.build`, move values recorded under the wrong trait (#162).
 - The dataset report shipped with the package describes any database, from its `config/metadata.yml`, rather than AusTraits. `dataset_report()` uses a database's own `config/report_dataset.qmd` when it has one (#140). The report lists references by type, and calls the rows of the `traits` table observations throughout.
+- `zenodo_metadata()`, `zenodo_compare()` and `zenodo_deposit()` deposit a release on Zenodo from the `metadata` block of `config/metadata.yml`, instead of typing it into Zenodo's web form (#320). `zenodo_deposit()` creates a new version as a draft and never publishes it. It stops if a creator, contributor, related identifier or reference on the previous version would be dropped, unless each is named in `allow_removals`, and keeps the ORCIDs and affiliations the previous version has for people the repository lists without them. Contributors are the database's data collectors and the datasets' assistants, plus a new optional `project_contributors` list in `config/metadata.yml` for project staff who are not data collectors of any dataset. A funding reference reaches Zenodo only if it gives the new `funder_identifier`. `httr2` and `commonmark` are suggested packages, needed only for depositing.
 
 ## `dataset_test()`
 
