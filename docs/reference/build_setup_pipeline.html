@@ -18,7 +18,7 @@ studies."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/ma
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traits.build</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.0</span>
       </span>
     </div>
 
@@ -38,7 +38,7 @@ studies."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/ma
   </a>
 </li>
 <li>
-  <a href="https://traitecoevo.github.io/traits.build-book/" class="external-link">
+  <a href="https://traitecoevo.github.io/traits.build-book/">
     <span class="fa fa-book"></span>
 
     Manual
@@ -98,7 +98,11 @@ studies.</p>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
-<dd><p>Approach to use in build</p></dd>
+<dd><p>Approach to use in build. <code>"base"</code> writes a plain <code>build.R</code>
+that rebuilds everything; <code>"furrr"</code> does the same in parallel; <code>"remake"</code>
+and <code>"targets"</code> write a pipeline that caches, so that editing one dataset
+rebuilds only that dataset. <code>"targets"</code> is the maintained, CRAN-available
+option of the two.</p></dd>
 
 
 <dt id="arg-database-name">database_name<a class="anchor" aria-label="anchor" href="#arg-database-name"></a></dt>
@@ -111,12 +115,67 @@ studies.</p>
 
 <dt id="arg-workers">workers<a class="anchor" aria-label="anchor" href="#arg-workers"></a></dt>
 <dd><p>Number of workers/parallel processes to use when using
-method = "furrr"</p></dd>
+method = "furrr" or method = "targets"</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Updated <code>remake.yml</code> file</p>
+    <p>Updated pipeline file: <code>build.R</code> for <code>"base"</code> and <code>"furrr"</code>,
+<code>remake.yml</code> for <code>"remake"</code>, <code>_targets.R</code> for <code>"targets"</code></p>
+    </div>
+    <div id="using-the-targets-pipeline">
+    <h2>Using the <code>targets</code> pipeline</h2>
+
+
+
+<p><code>method = "targets"</code> writes <code>_targets.R</code>, and building from it is three
+steps rather than one. The other three methods return the database from a
+single call, so the habits they teach do not carry over:</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">build_setup_pipeline</span>(<span class="at">method =</span> <span class="st">"targets"</span>, <span class="at">database_name =</span> <span class="st">"austraits"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>targets<span class="sc">::</span><span class="fu">tar_make</span>()                       <span class="co"># rebuild the compilation</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>austraits <span class="ot">&lt;-</span> targets<span class="sc">::</span><span class="fu">tar_read</span>(austraits) <span class="co"># load it into your session</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">build_export</span>(<span class="st">"austraits"</span>)                 <span class="co"># write export/data/curr</span></span></code></pre><p></p></div>
+<p><code><a href="https://docs.ropensci.org/targets/reference/tar_make.html" class="external-link">targets::tar_make()</a></code> returns nothing. It builds into the <code>_targets/</code> store
+and prints what it did, so the direct translation of
+<code>austraits &lt;- remake::make("austraits")</code> leaves you holding <code>NULL</code>. Use
+<code><a href="https://docs.ropensci.org/targets/reference/tar_read.html" class="external-link">targets::tar_read()</a></code> to read the built compilation back.</p>
+<p><code>tar_make()</code> also does not write <code>export/data/curr</code>. That write is around a
+third of a one-dataset rebuild and is a publishing step rather than part of
+checking a dataset, so <code><a href="build_export.html">build_export()</a></code> does it when it is wanted. Pass
+<code><a href="build_export.html">build_export()</a></code> the same <code>database_name</code> given here.</p>
+<p><code>tar_make()</code> prints two lines per target, several hundred on a large
+compilation, and in the order its scheduler reaches them rather than
+alphabetically. Neither is adjustable: <code>targets</code> collapses only dynamic
+branches into a progress bar, and it deprecated target priorities in 1.10.1
+when it moved to the current scheduler, so execution order is no longer
+controllable. <code>targets::tar_make(reporter = "silent")</code> builds quietly, and
+<code>targets::tar_config_set(reporter_make = "silent")</code> sets that for the
+repository.</p>
+    </div>
+    <div id="post-build-step">
+    <h2>Post-build step</h2>
+
+
+
+<p>Every pipeline calls <code><a href="build_post_process.html">build_post_process()</a></code> after <code><a href="build_add_version.html">build_add_version()</a></code> and
+before the database is saved. It runs <code>post_build()</code> from <code>R/post_build.R</code>
+if the repository has that file, and otherwise does nothing, so the call is
+written whether or not the file exists and adding one later needs no change
+to the pipeline. <code>targets</code> notices the file being added, edited or deleted.
+<code>remake</code> cannot depend on a file that may not exist, so it tracks
+<code>R/post_build.R</code> only if the file existed when the pipeline was set up:
+re-run <code>build_setup_pipeline()</code> after adding or removing it, as after adding
+a dataset.</p>
+<p>Because it runs on every rebuild of the combined database, <code>post_build()</code>
+should be quick. Outputs wanted only when the database is published, such as
+a flattened copy or parquet files, go in <code>post_export()</code> in
+<code>R/post_export.R</code>, which no pipeline runs: <code><a href="build_post_export.html">build_post_export()</a></code> runs it,
+from a repository's release script, and so does <code><a href="build_export.html">build_export()</a></code> after a
+<code>targets</code> build.</p>
+    </div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p><code><a href="build_export.html">build_export()</a></code>, <code><a href="build_post_process.html">build_post_process()</a></code>, <code><a href="build_post_export.html">build_post_export()</a></code></p></div>
     </div>
 
   </div>
@@ -131,7 +190,7 @@ method = "furrr"</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>
