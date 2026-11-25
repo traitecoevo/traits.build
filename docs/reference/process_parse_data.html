@@ -20,7 +20,7 @@ are added. parse data is used in the core workflow pipeline (i.e. in load study)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traits.build</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.0</span>
       </span>
     </div>
 
@@ -40,7 +40,7 @@ are added. parse data is used in the core workflow pipeline (i.e. in load study)
   </a>
 </li>
 <li>
-  <a href="https://traitecoevo.github.io/traits.build-book/" class="external-link">
+  <a href="https://traitecoevo.github.io/traits.build-book/">
     <span class="fa fa-book"></span>
 
     Manual
@@ -84,7 +84,16 @@ are added. <code>parse data</code> is used in the core workflow pipeline (i.e. i
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">process_parse_data</span><span class="op">(</span><span class="va">data</span>, <span class="va">dataset_id</span>, <span class="va">metadata</span>, <span class="va">contexts</span>, <span class="va">schema</span>, <span class="va">identifiers</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">process_parse_data</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">dataset_id</span>,</span>
+<span>  <span class="va">metadata</span>,</span>
+<span>  <span class="va">contexts</span>,</span>
+<span>  <span class="va">schema</span>,</span>
+<span>  <span class="va">identifiers</span>,</span>
+<span>  <span class="va">definitions</span>,</span>
+<span>  additional_fields <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -110,11 +119,37 @@ are added. <code>parse data</code> is used in the core workflow pipeline (i.e. i
 <dt id="arg-schema">schema<a class="anchor" aria-label="anchor" href="#arg-schema"></a></dt>
 <dd><p>Schema for traits.build</p></dd>
 
+
+<dt id="arg-identifiers">identifiers<a class="anchor" aria-label="anchor" href="#arg-identifiers"></a></dt>
+<dd><p>Dataframe of identifiers for this study, as returned by
+<code><a href="process_format_identifiers.html">process_format_identifiers()</a></code>. Its <code>var_in</code> column names the columns of
+<code>data</code> holding identifier values, which are carried through so they can be
+split into the identifiers table once <code>observation_id</code> is set.</p></dd>
+
+
+<dt id="arg-definitions">definitions<a class="anchor" aria-label="anchor" href="#arg-definitions"></a></dt>
+<dd><p>Trait definitions for this dataset – the <code>elements</code> of the
+<code>traits.yml</code> schema, keyed by <code>trait_name</code>, as returned by <code><a href="dataset_configure.html">dataset_configure()</a></code>.
+Used to apply database-wide trait value synonyms, and to keep the case of <code>text</code>
+traits' values, which unlike all others are not lower-cased.</p></dd>
+
+
+<dt id="arg-additional-fields">additional_fields<a class="anchor" aria-label="anchor" href="#arg-additional-fields"></a></dt>
+<dd><p>Names of the database's own columns of the traits
+table, from <code><a href="util_additional_traits_table_fields.html">util_additional_traits_table_fields()</a></code>. Each is read from the
+<code>dataset</code> block or a trait's entry in <code>metadata$traits</code>, as a fixed value or
+a column of <code>data</code>, as <code>measurement_remarks</code> is.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>Tibble in long format with AusTraits formatted trait names, trait
-substitutions and unique observation id added</p>
+substitutions and unique observation id added. For each location-level field
+(such as <code>life_stage</code>) that a trait's entry in <code>metadata$traits</code> sets, a
+temporary logical column <code>.trait_level_&lt;field&gt;</code> is <code>TRUE</code> on that trait's
+records, so that the location's value does not replace the trait's. It is
+dropped when location metadata is added, so a caller narrowing the columns
+before then must keep it.</p>
     </div>
 
   </div>
@@ -129,7 +164,7 @@ substitutions and unique observation id added</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

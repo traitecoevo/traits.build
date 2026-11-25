@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traits.build</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.0</span>
       </span>
     </div>
 
@@ -37,7 +37,7 @@
   </a>
 </li>
 <li>
-  <a href="https://traitecoevo.github.io/traits.build-book/" class="external-link">
+  <a href="https://traitecoevo.github.io/traits.build-book/">
     <span class="fa fa-book"></span>
 
     Manual
@@ -82,11 +82,27 @@
       </tr><tr><td>
           <p><code><a href="build_add_version.html">build_add_version()</a></code> </p>
         </td>
-        <td><p>Add version information to AusTraits</p></td>
+        <td><p>Add version information to a database</p></td>
+      </tr><tr><td>
+          <p><code><a href="build_post_process.html">build_post_process()</a></code> </p>
+        </td>
+        <td><p>Run a database repository's post-build step</p></td>
+      </tr><tr><td>
+          <p><code><a href="build_post_export.html">build_post_export()</a></code> </p>
+        </td>
+        <td><p>Run a database repository's export step</p></td>
+      </tr><tr><td>
+          <p><code><a href="build_export.html">build_export()</a></code> </p>
+        </td>
+        <td><p>Write a built database to <code>export/data/curr</code></p></td>
       </tr><tr><td>
           <p><code><a href="dataset_update_taxonomy.html">dataset_update_taxonomy()</a></code> </p>
         </td>
-        <td><p>Apply taxonomic updates to austraits_raw</p></td>
+        <td><p>Apply taxonomic updates to a processed dataset</p></td>
+      </tr><tr><td>
+          <p><code><a href="data_update_taxonomy.html">data_update_taxonomy()</a></code> </p>
+        </td>
+        <td><p>Apply taxonomic updates to a processed dataset</p></td>
       </tr><tr><td>
           <p><code><a href="dataset_build.html">dataset_build()</a></code> </p>
         </td>
@@ -120,6 +136,22 @@
         </td>
         <td><p>Retrieve version for compilation from definitions</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="depositing-a-release">Depositing a release <a href="#depositing-a-release" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions that deposit a release of a database on Zenodo.</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="zenodo_metadata.html">zenodo_metadata()</a></code> </p>
+        </td>
+        <td><p>Zenodo deposit metadata for a database release</p></td>
+      </tr><tr><td>
+          <p><code><a href="zenodo_compare.html">zenodo_compare()</a></code> </p>
+        </td>
+        <td><p>Compare a Zenodo version's metadata with the previous version's</p></td>
+      </tr><tr><td>
+          <p><code><a href="zenodo_deposit.html">zenodo_deposit()</a></code> </p>
+        </td>
+        <td><p>Deposit a database release on Zenodo as a draft</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="creating-metadata-files">Creating metadata files <a href="#creating-metadata-files" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions that help you create metadata files.</p>
         </th>
@@ -127,6 +159,10 @@
           <p><code><a href="dataset_test.html">dataset_test()</a></code> </p>
         </td>
         <td><p>Test whether specified <code>dataset_id</code> has the correct setup</p></td>
+      </tr><tr><td>
+          <p><code><a href="dataset_find_pivot_duplicates.html">dataset_find_pivot_duplicates()</a></code> </p>
+        </td>
+        <td><p>Find the rows that stop a dataset pivoting wider</p></td>
       </tr><tr><td>
           <p><code><a href="metadata_create_template.html">metadata_create_template()</a></code> </p>
         </td>
@@ -155,6 +191,10 @@
           <p><code><a href="metadata_add_source_doi.html">metadata_add_source_doi()</a></code> </p>
         </td>
         <td><p>Adds citation details from a doi to a metadata file for a <code>dataset_id</code></p></td>
+      </tr><tr><td>
+          <p><code><a href="metadata_convert_sources.html">metadata_convert_sources()</a></code> </p>
+        </td>
+        <td><p>Convert the <code>source:</code> blocks of <code>metadata.yml</code> files to the current shape</p></td>
       </tr><tr><td>
           <p><code><a href="metadata_add_substitution.html">metadata_add_substitution()</a></code> </p>
         </td>
@@ -192,6 +232,14 @@
         </td>
         <td><p>Exclude observations in a yaml file for a <code>dataset_id</code></p></td>
       </tr><tr><td>
+          <p><code><a href="metadata_dewrap_fields.html">metadata_dewrap_fields()</a></code> </p>
+        </td>
+        <td><p>Collapse hard-wrapped line breaks in a <code>metadata.yml</code> field</p></td>
+      </tr><tr><td>
+          <p><code><a href="dataset_replace_disallowed_chars.html">dataset_replace_disallowed_chars()</a></code> </p>
+        </td>
+        <td><p>Replace disallowed characters in a dataset's files</p></td>
+      </tr><tr><td>
           <p><code><a href="metadata_add_identifiers.html">metadata_add_identifiers()</a></code> </p>
         </td>
         <td><p>For specified <code>dataset_id</code> import database cross-referencing identifer data from a dataframe</p></td>
@@ -199,6 +247,26 @@
           <p><code><a href="dataset_find_taxon.html">dataset_find_taxon()</a></code> </p>
         </td>
         <td><p>Find list of unique datasets within compilation containing specified taxa</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="writing-custom-r-code">Writing custom R code <a href="#writing-custom-r-code" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions for a dataset’s <code>custom_R_code</code>, which reshapes <code>data.csv</code> before it is processed.</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="move_values_to_new_trait.html">move_values_to_new_trait()</a></code> </p>
+        </td>
+        <td><p>Move values of one trait into another trait's column</p></td>
+      </tr><tr><td>
+          <p><code><a href="move_values_to_new_trait_long.html">move_values_to_new_trait_long()</a></code> </p>
+        </td>
+        <td><p>Move values of one trait to another trait, for data in long format</p></td>
+      </tr><tr><td>
+          <p><code><a href="util_parse_collection_date.html">util_parse_collection_date()</a></code> </p>
+        </td>
+        <td><p>Standardise a messy <code>collection_date</code> (or raw date) column</p></td>
+      </tr><tr><td>
+          <p><code><a href="util_format_collection_date.html">util_format_collection_date()</a></code> </p>
+        </td>
+        <td><p>Convert <code>collection_date</code> values from a declared format to the standard one</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="reading-writing-files">Reading &amp; writing files <a href="#reading-writing-files" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Enable reading and writing of various file types.</p>
@@ -226,7 +294,7 @@
       </tr><tr><td>
           <p><code><a href="write_plaintext.html">write_plaintext()</a></code> </p>
         </td>
-        <td><p>Export AusTraits version as plain text</p></td>
+        <td><p>Export a database as plain text</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="working-with-outputs">Working with outputs <a href="#working-with-outputs" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions to work with compiled traits.build objects.</p>
@@ -236,9 +304,37 @@
         </td>
         <td><p>Identify duplicates preventing pivoting wider</p></td>
       </tr><tr><td>
+          <p><code><a href="dataset_check_duplicate_values.html">dataset_check_duplicate_values()</a></code> </p>
+        </td>
+        <td><p>Find values that may duplicate data already in another dataset</p></td>
+      </tr><tr><td>
+          <p><code><a href="dataset_check_outlier_by_species.html">dataset_check_outlier_by_species()</a></code> </p>
+        </td>
+        <td><p>Find numeric values far from what other datasets report for the same species</p></td>
+      </tr><tr><td>
+          <p><code><a href="dataset_check_outlier_by_genus.html">dataset_check_outlier_by_genus()</a></code> </p>
+        </td>
+        <td><p>Find numeric values far from what other datasets report for the same genus</p></td>
+      </tr><tr><td>
+          <p><code><a href="dataset_check_duplicates_within_dataset.html">dataset_check_duplicates_within_dataset()</a></code> </p>
+        </td>
+        <td><p>Find taxa whose values for a trait are all the same within a dataset</p></td>
+      </tr><tr><td>
+          <p><code><a href="dataset_check_categorical_substitutions.html">dataset_check_categorical_substitutions()</a></code> </p>
+        </td>
+        <td><p>List the categorical values a dataset needs substitutions for</p></td>
+      </tr><tr><td>
+          <p><code><a href="dataset_new_taxa_trait_combinations.html">dataset_new_taxa_trait_combinations()</a></code> </p>
+        </td>
+        <td><p>New taxa added by a dataset</p></td>
+      </tr><tr><td>
           <p><code><a href="check_pivot_wider.html">check_pivot_wider()</a></code> </p>
         </td>
         <td><p>Test whether a dataset can pivot wider</p></td>
+      </tr><tr><td>
+          <p><code><a href="database_create_combined_table.html">database_create_combined_table()</a></code> </p>
+        </td>
+        <td><p>Create a single combined table from a database</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="building-a-compilation-private-">Building a compilation (private) <a href="#building-a-compilation-private-" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Private functions that are called in the background when building individual datasets and entire compilation. These are only of interest to developers.</p>
@@ -290,7 +386,7 @@
       </tr><tr><td>
           <p><code><a href="process_format_locations.html">process_format_locations()</a></code> </p>
         </td>
-        <td><p>Format location data from list to tibble</p></td>
+        <td><p>Format location data as a tibble</p></td>
       </tr><tr><td>
           <p><code><a href="process_format_identifiers.html">process_format_identifiers()</a></code> </p>
         </td>
@@ -376,6 +472,14 @@
         </td>
         <td><p>Extract a trait element from the definitions$traits$elements</p></td>
       </tr><tr><td>
+          <p><code><a href="util_extract_synonyms.html">util_extract_synonyms()</a></code> </p>
+        </td>
+        <td><p>Extract the synonyms declared in a trait value's description</p></td>
+      </tr><tr><td>
+          <p><code><a href="util_flatten_sources.html">util_flatten_sources()</a></code> </p>
+        </td>
+        <td><p>Flatten the <code>source</code> block of a <code>metadata.yml</code> into one row per reference</p></td>
+      </tr><tr><td>
           <p><code><a href="util_kable_styling_html.html">util_kable_styling_html()</a></code> </p>
         </td>
         <td><p>Format table with kable and default styling for html</p></td>
@@ -390,7 +494,7 @@
       </tr><tr><td>
           <p><code><a href="util_separate_and_sort.html">util_separate_and_sort()</a></code> </p>
         </td>
-        <td><p>Split and sort cells with multiple values</p></td>
+        <td><p>Split and order cells with multiple values</p></td>
       </tr><tr><td>
           <p><code><a href="util_standardise_doi.html">util_standardise_doi()</a></code> </p>
         </td>
@@ -437,7 +541,7 @@
         <td><p>Create a string of random letters</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="deprecated-function-names">Deprecated function names <a href="#deprecated-function-names" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Functions that have been moved from traits.build to austraits and renamed. Deprecated names still work.</p>
+          <p class="section-desc"></p><p>Functions that have been moved from traits.build to traits.use (formerly austraits) and renamed. Deprecated names still work.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="build_combine.html">build_combine()</a></code> </p>
@@ -468,7 +572,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

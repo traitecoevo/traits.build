@@ -19,7 +19,7 @@ study in the remake.yml file."><!-- mathjax --><script src="https://cdnjs.cloudf
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traits.build</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.0</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@ study in the remake.yml file."><!-- mathjax --><script src="https://cdnjs.cloudf
   </a>
 </li>
 <li>
-  <a href="https://traitecoevo.github.io/traits.build-book/" class="external-link">
+  <a href="https://traitecoevo.github.io/traits.build-book/">
     <span class="fa fa-book"></span>
 
     Manual
@@ -109,7 +109,12 @@ study in the <code>remake.yml</code> file.</p>
 
 
 <dt id="arg-resource-metadata">resource_metadata<a class="anchor" aria-label="anchor" href="#arg-resource-metadata"></a></dt>
-<dd><p>Metadata about the traits compilation read in from the config folder</p></dd>
+<dd><p>Metadata about the traits compilation read in from the config folder.
+Its optional <code>trait_value_term_order</code> (<code>alphabetical</code>, the default, or <code>input_order</code>) sets
+whether the terms of a multi-term trait value are sorted or keep the source's order; see
+<code><a href="util_trait_value_term_order.html">util_trait_value_term_order()</a></code>. Its optional <code>additional_traits_table_fields</code> adds the
+database's own columns to the <code>traits</code> table, each set by a dataset like <code>measurement_remarks</code>;
+see <code><a href="util_additional_traits_table_fields.html">util_additional_traits_table_fields()</a></code>.</p></dd>
 
 
 <dt id="arg-unit-conversion-functions">unit_conversion_functions<a class="anchor" aria-label="anchor" href="#arg-unit-conversion-functions"></a></dt>
@@ -149,7 +154,7 @@ change to false to see the rows with missing values</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

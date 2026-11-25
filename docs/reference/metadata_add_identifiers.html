@@ -20,7 +20,7 @@ The output may require additional manual editing if the user selects a non-stand
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">traits.build</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">3.0.0</span>
       </span>
     </div>
 
@@ -40,7 +40,7 @@ The output may require additional manual editing if the user selects a non-stand
   </a>
 </li>
 <li>
-  <a href="https://traitecoevo.github.io/traits.build-book/" class="external-link">
+  <a href="https://traitecoevo.github.io/traits.build-book/">
     <span class="fa fa-book"></span>
 
     Manual
@@ -84,7 +84,7 @@ The output may require additional manual editing if the user selects a non-stand
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">metadata_add_identifiers</span><span class="op">(</span><span class="va">dataset_id</span>, overwrite <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">metadata_add_identifiers</span><span class="op">(</span><span class="va">dataset_id</span>, overwrite <span class="op">=</span> <span class="cn">FALSE</span>, user_responses <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -100,10 +100,16 @@ The output may require additional manual editing if the user selects a non-stand
 
 
 <dt id="arg-user-responses">user_responses<a class="anchor" aria-label="anchor" href="#arg-user-responses"></a></dt>
-<dd><p>Named list containing simulated user input for manual selection
-of variables, mainly for testing purposes</p></dd>
+<dd><p>Named list containing simulated user input, so the
+function can be driven without an interactive prompt. Expects <code>var_in</code>, a
+vector of column names, and <code>identifier_type</code>, one type per column.</p></dd>
 
 </dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    <p>Invisibly, the updated metadata list. Called for the side effect of
+writing <code>metadata.yml</code> for <code>dataset_id</code>.</p>
+    </div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -117,7 +123,7 @@ of variables, mainly for testing purposes</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>
