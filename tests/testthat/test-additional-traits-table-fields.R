@@ -91,21 +91,21 @@ test_that("the columns are added to the schema after its own, once however often
   added <- util_schema_add_traits_table_fields(schema, unlist(fields))
   expect_identical(util_schema_add_traits_table_fields(added, unlist(fields)), added)
 
-  traits_columns <- names(schema[["austraits"]][["elements"]][["traits"]][["elements"]])
+  traits_columns <- names(schema[["database"]][["elements"]][["traits"]][["elements"]])
   expect_equal(
-    names(added[["austraits"]][["elements"]][["traits"]][["elements"]]),
+    names(added[["database"]][["elements"]][["traits"]][["elements"]]),
     c(traits_columns, names(fields))
   )
   expect_equal(
-    names(added[["austraits"]][["elements"]][["excluded_data"]][["elements"]]),
-    c(names(schema[["austraits"]][["elements"]][["excluded_data"]][["elements"]]), names(fields))
+    names(added[["database"]][["elements"]][["excluded_data"]][["elements"]]),
+    c(names(schema[["database"]][["elements"]][["excluded_data"]][["elements"]]), names(fields))
   )
   expect_equal(added[["metadata"]][["elements"]][["dataset"]][["values"]][["specimen_type"]], fields$specimen_type)
   expect_equal(added[["metadata"]][["elements"]][["traits"]][["elements"]][["specimen_type"]], fields$specimen_type)
 
   # The schema documents the setting itself
   expect_true(
-    "additional_traits_table_fields" %in% names(schema[["austraits"]][["elements"]][["metadata"]][["elements"]])
+    "additional_traits_table_fields" %in% names(schema[["database"]][["elements"]][["metadata"]][["elements"]])
   )
 })
 
@@ -119,7 +119,7 @@ test_that("without the setting the build is unchanged, and with it a dataset set
     expect_identical(default$schema, schema, info = id)
     expect_equal(
       setdiff(names(default$traits), "taxonomic_resolution"),
-      names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
+      names(schema[["database"]][["elements"]][["traits"]][["elements"]]),
       info = id
     )
 
@@ -138,7 +138,7 @@ test_that("without the setting the build is unchanged, and with it a dataset set
       expect_equal(with_columns[[v]], default[[v]], info = paste(id, v))
     }
     expect_equal(
-      with_columns$schema[["austraits"]][["elements"]][["traits"]][["elements"]][["specimen_type"]],
+      with_columns$schema[["database"]][["elements"]][["traits"]][["elements"]][["specimen_type"]],
       fields$specimen_type,
       info = id
     )
@@ -180,7 +180,7 @@ test_that("a wide dataset sets the columns in its `dataset` block and per trait,
   updated <- dataset_update_taxonomy(built, read_csv_char("config/taxon_list.csv"))
   expect_equal(
     names(updated$traits),
-    c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]), names(fields))
+    c(names(schema[["database"]][["elements"]][["traits"]][["elements"]]), names(fields))
   )
 })
 

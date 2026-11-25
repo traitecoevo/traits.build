@@ -4,12 +4,12 @@
 \alias{dataset_find_taxon}
 \title{Find list of unique datasets within compilation containing specified taxa}
 \usage{
-dataset_find_taxon(taxa, austraits, original_name = FALSE)
+dataset_find_taxon(taxa, database, original_name = FALSE)
 }
 \arguments{
 \item{taxa}{A vector which contains species names}
 
-\item{austraits}{AusTraits compilation}
+\item{database}{A compiled database}
 
 \item{original_name}{Logical; if TRUE use column in compilation which contains original
 species names, default = FALSE}

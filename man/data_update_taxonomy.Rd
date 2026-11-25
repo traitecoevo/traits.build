@@ -2,17 +2,17 @@
 % Please edit documentation in R/process.R
 \name{data_update_taxonomy}
 \alias{data_update_taxonomy}
-\title{Apply taxonomic updates to austraits_raw}
+\title{Apply taxonomic updates to a processed dataset}
 \usage{
-data_update_taxonomy(austraits_raw, taxa)
+data_update_taxonomy(database_raw, taxa)
 }
 \arguments{
-\item{austraits_raw}{AusTraits compiled data as a large list without taxonomic updates applied}
+\item{database_raw}{A dataset processed by \code{\link[=dataset_process]{dataset_process()}}: a list of tables without taxonomic updates applied}
 
 \item{taxa}{Taxon list}
 }
 \value{
-List of AusTraits compiled data with taxonomic updates applied
+The same list of tables, with taxonomic updates applied
 }
 \description{
 Alias for \code{\link[=dataset_update_taxonomy]{dataset_update_taxonomy()}}.

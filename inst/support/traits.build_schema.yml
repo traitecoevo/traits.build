@@ -87,10 +87,10 @@ trait_type:
     text: Free text with no fixed list of allowed values, appropriate to use for traits whose values are taxon names. Values are kept as written, including their case and word order. The datatype is string (`xsd:string`).
 
 #-------------------------------------------------------------
-# A key describing the structure of the compiled `AusTraits` dataset
+# A key describing the structure of a compiled database
 
-austraits:
-  description: The compiled `AusTraits` dataset.
+database:
+  description: A compiled database.
   type: list
   elements:
     traits:

@@ -183,7 +183,7 @@ dataset_process <- function(filename_data_raw,
   traits <-
     traits$traits %>%
     process_add_all_columns(
-      c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
+      c(names(schema[["database"]][["elements"]][["traits"]][["elements"]]),
         "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in", identifiers$var_in,
         process_trait_level_column(location_metadata_fields))
     )
@@ -331,7 +331,7 @@ dataset_process <- function(filename_data_raw,
       tmp_bind
     ) %>%
     dplyr::select(
-      dplyr::all_of(c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
+      dplyr::all_of(c(names(schema[["database"]][["elements"]][["traits"]][["elements"]]),
       "error", "taxonomic_resolution", "unit_in"))
     )
 
@@ -1033,7 +1033,7 @@ process_create_context_ids <- function(data, contexts) {
 process_format_locations <- function(my_list, dataset_id, schema) {
 
   location_columns <-
-    names(schema[["austraits"]][["elements"]][["locations"]][["elements"]])
+    names(schema[["database"]][["elements"]][["locations"]][["elements"]])
 
   empty_locations <- function() {
     tibble::tibble() %>%
@@ -1977,7 +1977,7 @@ process_parse_data <- function(data, dataset_id, metadata, contexts, schema, ide
         link_vals = NA_character_
       )
 
-  # XXXX Why doesn't this work? process_add_all_columns(names(schema[["austraits"]][["elements"]][["contexts"]][["elements"]]))
+  # XXXX Why doesn't this work? process_add_all_columns(names(schema[["database"]][["elements"]][["contexts"]][["elements"]]))
   } else {
     context_ids <- process_create_context_ids(out, contexts)
 
@@ -2343,7 +2343,7 @@ process_format_contributors <- function(my_list, dataset_id, schema) {
     contributors <-
       contributors %>%
       process_add_all_columns(
-        names(schema[["austraits"]][["elements"]][["contributors"]][["elements"]]),
+        names(schema[["database"]][["elements"]][["contributors"]][["elements"]]),
         add_error_column = FALSE)
 
   contributors
@@ -2379,7 +2379,7 @@ process_format_identifiers <- function(my_list, dataset_id, schema) {
     identifiers <-
       identifiers %>%
       process_add_all_columns(
-        names(schema[["austraits"]][["elements"]][["identifiers"]][["elements"]]),
+        names(schema[["database"]][["elements"]][["identifiers"]][["elements"]]),
         add_error_column = FALSE)
 
   identifiers
@@ -2603,27 +2603,27 @@ util_name_to_match_to <- function(taxon_name, taxon_rank) {
 }
 
 
-#' Apply taxonomic updates to austraits_raw
+#' Apply taxonomic updates to a processed dataset
 #'
-#' Applies taxonomic updates to austraits_raw.
+#' Applies the taxon list to a dataset processed by [dataset_process()].
 #'
-#' @param austraits_raw AusTraits compiled data as a large list without taxonomic updates applied
+#' @param database_raw A dataset processed by [dataset_process()]: a list of tables without taxonomic updates applied
 #' @param taxa Taxon list
 #'
-#' @return List of AusTraits compiled data with taxonomic updates applied
+#' @return The same list of tables, with taxonomic updates applied
 #' @importFrom dplyr contains
 #' @importFrom rlang .data
 #'
 #' @export
-dataset_update_taxonomy <- function(austraits_raw, taxa) {
+dataset_update_taxonomy <- function(database_raw, taxa) {
 
   columns_in_taxon_list <- names(taxa)
 
-  # Incoming table from `austraits_raw` is a list of all taxa for the study
+  # Incoming table from `database_raw` is a list of all taxa for the study
   # `original_name` and `aligned_name` will be different if
   # there were taxonomic_updates specified in metadata file
-  austraits_raw$taxonomic_updates <-
-    austraits_raw$taxonomic_updates %>%
+  database_raw$taxonomic_updates <-
+    database_raw$taxonomic_updates %>%
     dplyr::left_join(
       by = "aligned_name",
       taxa %>% dplyr::select(
@@ -2632,8 +2632,8 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::distinct() %>%
     dplyr::arrange(.data$aligned_name)
 
-  austraits_raw$traits <-
-    austraits_raw$traits %>%
+  database_raw$traits <-
+    database_raw$traits %>%
     dplyr::rename(dplyr::all_of(c("aligned_name" = "taxon_name"))) %>%
     dplyr::left_join(by = "aligned_name",
               taxa %>% dplyr::select(dplyr::all_of(c("aligned_name", "taxon_name")))
@@ -2648,13 +2648,13 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
 
   # in the chunk above, if the traits table is empty (i.e. all values in excluded data)
   # the column `taxon_name` becomes logical and then datasets can't bind
-  if (nrow(austraits_raw$traits) == 0) {
-    austraits_raw$traits <- austraits_raw$traits %>%
+  if (nrow(database_raw$traits) == 0) {
+    database_raw$traits <- database_raw$traits %>%
       dplyr::mutate(taxon_name = as.character(.data$taxon_name))
   }
 
   species_tmp <-
-    austraits_raw$traits %>%
+    database_raw$traits %>%
     dplyr::select(dplyr::all_of(c("taxon_name", "taxonomic_resolution"))) %>%
     dplyr::distinct() %>%
     util_df_convert_character() %>%
@@ -2683,7 +2683,7 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::arrange(.data$taxon_name) %>%
     dplyr::select(-dplyr::any_of(c("name_to_match_to", "aligned_name")))
 
-  austraits_raw$taxa <-
+  database_raw$taxa <-
     species_tmp %>%
     dplyr::bind_rows() %>%
     dplyr::arrange(.data$taxon_name) %>%
@@ -2691,19 +2691,19 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
     dplyr::select(dplyr::any_of(columns_in_taxon_list))
 
   # Now `taxonomic_resolution` be removed from the traits table
-  austraits_raw$traits <-
-    austraits_raw$traits %>%
+  database_raw$traits <-
+    database_raw$traits %>%
       dplyr::select(-dplyr::all_of(c("taxonomic_resolution")))
 
-  austraits_raw$excluded_data <-
-    austraits_raw$excluded_data %>%
+  database_raw$excluded_data <-
+    database_raw$excluded_data %>%
       dplyr::select(-dplyr::all_of(c("taxonomic_resolution")))
 
-  austraits_raw
+  database_raw
 }
 
 
-#' Apply taxonomic updates to austraits_raw
+#' Apply taxonomic updates to a processed dataset
 #'
 #' Alias for [dataset_update_taxonomy()].
 #'
@@ -2715,30 +2715,30 @@ dataset_update_taxonomy <- function(austraits_raw, taxa) {
 #'
 #' @inheritParams dataset_update_taxonomy
 #'
-#' @return List of AusTraits compiled data with taxonomic updates applied
+#' @return The same list of tables, with taxonomic updates applied
 #' @export
-data_update_taxonomy <- function(austraits_raw, taxa) {
-  dataset_update_taxonomy(austraits_raw, taxa)
+data_update_taxonomy <- function(database_raw, taxa) {
+  dataset_update_taxonomy(database_raw, taxa)
 }
 
 
-#' Add version information to AusTraits
+#' Add version information to a database
 #'
-#' @param austraits AusTraits database object
+#' @param database A compiled database
 #' @param version Version number
 #' @param git_sha Git SHA
 #'
-#' @return AusTraits database object with version information added
+#' @return The database, with version information added
 #' @export
-build_add_version <- function(austraits, version, git_sha) {
+build_add_version <- function(database, version, git_sha) {
 
-  austraits$build_info <- list(
+  database$build_info <- list(
     version = version,
     git_SHA = git_sha,
-    session_info = austraits$build_info$session_info
+    session_info = database$build_info$session_info
   )
 
-  austraits
+  database
 }
 
 #' Run a database repository's post-build step
@@ -2976,37 +2976,37 @@ util_md5_text_file <- function(file) {
   unname(tools::md5sum(normalised))
 }
 
-#' Export AusTraits version as plain text
+#' Export a database as plain text
 #'
-#' @param austraits AusTraits database object
+#' @param database A compiled database
 #' @param path Pathway to save file
 #'
 #' @return csv files of tibbles containing traits, locations, contexts, methods, excluded_data,
 #' taxonomic updates, taxa, contributors
 #' @export
-write_plaintext <- function(austraits, path) {
+write_plaintext <- function(database, path) {
 
   unlink(path, TRUE)
   dir.create(path, FALSE, TRUE)
 
   # Capture information on build into text
-  build_info <- utils::capture.output(print(austraits$build_info))
+  build_info <- utils::capture.output(print(database$build_info))
   writeLines(build_info, sprintf("%s/build_info.md", path))
 
   # Save definitions
   for (v in c("definitions", "schema", "metadata")) {
-    yaml::write_yaml(austraits[[v]], sprintf("%s/%s.yml", path, v))
+    yaml::write_yaml(database[[v]], sprintf("%s/%s.yml", path, v))
   }
   # Save references
-  RefManageR::WriteBib(austraits$sources, sprintf("%s/sources", path))
+  RefManageR::WriteBib(database$sources, sprintf("%s/sources", path))
 
   # Save tables. Which tables exist is taken from the database itself rather
   # than hardcoded, so a table added to the structure is exported without
   # needing an edit here -- `identifiers` was missing from this list for the
   # whole of 2.1.0, so exports silently dropped it.
-  for (v in names(austraits)) {
-    if (is.data.frame(austraits[[v]])) {
-      readr::write_csv(austraits[[v]], sprintf("%s/%s.csv", path, v), na = "")
+  for (v in names(database)) {
+    if (is.data.frame(database[[v]])) {
+      readr::write_csv(database[[v]], sprintf("%s/%s.csv", path, v), na = "")
     }
   }
 }

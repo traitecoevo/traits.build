@@ -12,7 +12,9 @@ get_schema(
 \arguments{
 \item{path}{path to schema file. By default loads version included with the package}
 
-\item{subsection}{section to load}
+\item{subsection}{section to load. The structure of a compiled database is
+the \code{"database"} section, which was called \code{"austraits"} before 3.0.0;
+asking for \code{"austraits"} still works, with a deprecation warning.}
 }
 \value{
 a list
