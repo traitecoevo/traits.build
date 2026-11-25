@@ -1,5 +1,9 @@
 # traits.build (development version)
 
+## Bug fixes
+
+- **The `targets` and `remake` pipelines now rebuild a dataset when its reference file changes.** A `source:` or `secondary:` reference list kept in a .yml or .bib file beside `metadata.yml` was read by `dataset_configure()` but not declared as a dependency, so editing it rebuilt nothing and the built database kept the old references. `build_setup_pipeline()` now declares these files as it already declared a `locations:` csv. Re-run `build_setup_pipeline()` to pick this up.
+
 # traits.build 3.0.0
 
 This release changes how a dataset records its references, and the columns that hold them. Existing databases need their `metadata.yml` files converted, and their twelve-month traits retyped, before they build: follow the steps under "Upgrading a database to 3.0.0" below. Built databases follow data model 1.4.0 (<https://w3id.org/traits.build>), and are read with [`traits.use`](https://github.com/traitecoevo/traits.use).
