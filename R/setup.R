@@ -1858,10 +1858,14 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 #' @noRd
 pipeline_dataset_files <- function(path) {
   declared <- yaml::read_yaml(path)
+  # A `source:` that is not a mapping, such as `.na`, names no files, and
+  # indexing into it would stop the whole pipeline being written;
+  # `dataset_test()` is what reports it
+  source <- if (is.list(declared[["source"]])) declared[["source"]]
   candidates <- list(
     locations = declared[["locations"]],
-    sources = declared[["source"]][["source"]],
-    secondary_sources = declared[["source"]][["secondary"]]
+    sources = source[["source"]],
+    secondary_sources = source[["secondary"]]
   )
   is_file <- c(
     util_locations_is_file(candidates$locations),

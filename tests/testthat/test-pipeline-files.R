@@ -49,6 +49,13 @@ test_that("`pipeline_dataset_files` finds the files a dataset names", {
   none <- pipeline_dataset_files(file.path(dir, "data", "Test_2023_1", "metadata.yml"))
   expect_type(none, "character")
   expect_length(none, 0)
+
+  # A malformed `source:` names no files, rather than stopping the pipeline
+  path <- file.path(dir, "malformed.yml")
+  for (source in c(".na", "sources.yml")) {
+    writeLines(paste("source:", source), path)
+    expect_length(pipeline_dataset_files(path), 0)
+  }
 })
 
 
