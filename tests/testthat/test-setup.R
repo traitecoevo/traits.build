@@ -943,7 +943,7 @@ test_that("reports and plots are produced", {
   expect_no_warning(
     suppressMessages(
       built <- dataset_report(
-        dataset_id = "Test_2022", austraits = austraits,
+        dataset_id = "Test_2022", database = austraits,
         output_path = output_path, overwrite = TRUE
       )
     ))
@@ -973,7 +973,7 @@ test_that("reports and plots are produced", {
   final_path <- withr::local_tempdir()
   suppressMessages(
     dataset_report(
-      dataset_id = "Test_2022", austraits = austraits,
+      dataset_id = "Test_2022", database = austraits,
       output_path = final_path, overwrite = TRUE, show_questions = FALSE
     )
   )
@@ -1010,7 +1010,7 @@ test_that("`dataset_report` reports a failed render instead of swallowing it", {
   expect_warning(
     suppressMessages(
       built <- dataset_report(
-        dataset_id = "Test_2022", austraits = austraits,
+        dataset_id = "Test_2022", database = austraits,
         output_path = output_path, overwrite = TRUE, input_file = template
       )
     ),
@@ -1027,7 +1027,7 @@ test_that("`dataset_report` rejects a missing template clearly", {
   expect_silent(suppressMessages(austraits <- remake::make("test_name")))
   expect_error(
     dataset_report(
-      dataset_id = "Test_2022", austraits = austraits,
+      dataset_id = "Test_2022", database = austraits,
       output_path = withr::local_tempdir(), input_file = "no-such-template.Rmd"
     ),
     "Report template not found"
@@ -1062,14 +1062,14 @@ test_that("`dataset_report` picks up a database's own template (#140)", {
   skip_if_not_installed("quarto")
   expect_error(
     suppressMessages(
-      dataset_report("Test_2022", austraits = list(), output_path = "reports", overwrite = TRUE)
+      dataset_report("Test_2022", database = list(), output_path = "reports", overwrite = TRUE)
     ),
     paste("has no `title:` line in its YAML header:", local_template),
     fixed = TRUE
   )
   expect_error(
     dataset_report(
-      "Test_2022", austraits = list(), output_path = "reports", input_file = "no-such-template.qmd"
+      "Test_2022", database = list(), output_path = "reports", input_file = "no-such-template.qmd"
     ),
     "Report template not found: no-such-template.qmd",
     fixed = TRUE

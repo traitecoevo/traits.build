@@ -6,10 +6,13 @@ test_that("`get_schema` is working", {
   expect_equal(
     names(x),
     c("entity_type", "value_type", "basis_of_value", "basis_of_record", "identifier_type", "trait_type",
-      "austraits", "metadata", "allowed_characters")
+      "database", "metadata", "allowed_characters")
   )
-  expect_type(get_schema(subsection = "austraits"), "list")
-  expect_length(get_schema(subsection = "austraits"), 3)
+  expect_type(get_schema(subsection = "database"), "list")
+  expect_length(get_schema(subsection = "database"), 3)
+  # The section was called `austraits` before 3.0.0
+  lifecycle::expect_deprecated(old <- get_schema(subsection = "austraits"))
+  expect_identical(old, get_schema(subsection = "database"))
   expect_length(get_schema(subsection = "metadata"), 3)
   expect_length(get_schema(subsection = "value_type"), 3)
   expect_length(get_schema(subsection = "entity_type"), 3)

@@ -242,7 +242,7 @@ remaining <-
 y <- yaml::read_yaml(repo_path("inst", "support", "traits.build_schema.yml"))
 
 # create vector of table names from traits.build schema
-table_tmp <- names(y$austraits$elements) %>% as.vector()
+table_tmp <- names(y$database$elements) %>% as.vector()
 
 # create table of all tables within traits.build output, adding labels in various syntaxes and number tables as they appear in schema
 table_seq <- 
@@ -327,7 +327,7 @@ for (i in seq_along(1:length(database_columns_sub_0))) {
 
  # create vector of terms within each table from traits.build schema, to keep terms in order
   column_seq_vec <- 
-    y$austraits$elements[[table_label_alt]]$elements %>%
+    y$database$elements[[table_label_alt]]$elements %>%
     names() %>%
     as.vector()
   

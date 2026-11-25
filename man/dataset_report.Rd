@@ -6,7 +6,7 @@
 \usage{
 dataset_report(
   dataset_id,
-  austraits,
+  database,
   overwrite = FALSE,
   output_path = "export/reports",
   input_file = NULL,
@@ -18,7 +18,7 @@ dataset_report(
 \arguments{
 \item{dataset_id}{Name of specific study/dataset}
 
-\item{austraits}{Compiled austraits database}
+\item{database}{A compiled database}
 
 \item{overwrite}{Logical value to determine whether to overwrite existing report}
 

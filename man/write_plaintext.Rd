@@ -2,12 +2,12 @@
 % Please edit documentation in R/process.R
 \name{write_plaintext}
 \alias{write_plaintext}
-\title{Export AusTraits version as plain text}
+\title{Export a database as plain text}
 \usage{
-write_plaintext(austraits, path)
+write_plaintext(database, path)
 }
 \arguments{
-\item{austraits}{AusTraits database object}
+\item{database}{A compiled database}
 
 \item{path}{Pathway to save file}
 }
@@ -16,5 +16,5 @@ csv files of tibbles containing traits, locations, contexts, methods, excluded_d
 taxonomic updates, taxa, contributors
 }
 \description{
-Export AusTraits version as plain text
+Export a database as plain text
 }

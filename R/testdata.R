@@ -412,7 +412,7 @@ dataset_test_worker <-
           locations <-
             metadata$locations %>%
             process_format_locations(dataset_id, schema) %>%
-            process_add_all_columns(names(schema[["austraits"]][["elements"]][["locations"]][["elements"]])),
+            process_add_all_columns(names(schema[["database"]][["elements"]][["locations"]][["elements"]])),
           info = paste0(red(f), "\tlocations"), warnings_fail = TRUE
           )
 
@@ -1134,7 +1134,7 @@ dataset_test_worker <-
         parsed_data <-
           parsed_data$traits %>%
           process_add_all_columns(
-            c(names(schema[["austraits"]][["elements"]][["traits"]][["elements"]]),
+            c(names(schema[["database"]][["elements"]][["traits"]][["elements"]]),
               "parsing_id", "location_name", "taxonomic_resolution", "methods", "unit_in",
               process_trait_level_column(location_metadata_fields))
           )

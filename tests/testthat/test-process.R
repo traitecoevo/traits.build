@@ -21,7 +21,7 @@ test_that("`dataset_configure` is working", {
 
 
 test_that("`dataset_process` is working", {
-  expect_no_error(austraits_names <- schema$austraits$elements %>% names())
+  expect_no_error(austraits_names <- schema$database$elements %>% names())
   expect_no_error(x <- dataset_process(test_data, test_config, schema, resource_metadata, unit_conversions))
   expect_type(x, "list")
   expect_equal(class(x), c("list", "traits.build"))
@@ -60,7 +60,7 @@ test_that("`process_format_identifiers` is working", {
   # return no rows.
   identifiers <- read_metadata("examples/Test_2023_1/metadata.yml")$identifiers
   expected_cols <-
-    names(schema[["austraits"]][["elements"]][["identifiers"]][["elements"]])
+    names(schema[["database"]][["elements"]][["identifiers"]][["elements"]])
 
   out <- process_format_identifiers(identifiers, "Test_2023_1", schema)
 
