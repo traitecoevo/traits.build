@@ -1,9 +1,5 @@
 # traits.build (development version)
 
-## Bug fixes
-
-- **The `targets` and `remake` pipelines now rebuild a dataset when its reference file changes.** A `source:` or `secondary:` reference list kept in a .yml or .bib file beside `metadata.yml` was read by `dataset_configure()` but not declared as a dependency, so editing it rebuilt nothing and the built database kept the old references. `build_setup_pipeline()` now declares these files as it already declared a `locations:` csv. Re-run `build_setup_pipeline()` to pick this up.
-
 # traits.build 3.0.0
 
 This release changes how a dataset records its references, and the columns that hold them. Existing databases need their `metadata.yml` files converted, and their twelve-month traits retyped, before they build: follow the steps under "Upgrading a database to 3.0.0" below. Built databases follow data model 1.4.0 (<https://w3id.org/traits.build>), and are read with [`traits.use`](https://github.com/traitecoevo/traits.use).
@@ -61,6 +57,7 @@ Work through these in a database repository, in order, then rebuild and compare 
 - `metadata_add_source_bibtex()` and `metadata_add_source_doi()` key a `dataset` reference by the `dataset_id` exactly, rather than title-casing and truncating it (`Smith_2020_2` became `Smith_2020`).
 - The review copy of the dataset report no longer asks "Can you provide missing details for the variable NA?" of a dataset with no `unknown` field in its `dataset` block, which was most datasets (a bug from 2.2.0's `show_questions`).
 - The dataset report no longer fails on a dataset with a `foliage_time` trait. It left twelve-month traits out of its categorical section by a list of names that missed `foliage_time`; it now leaves out every `monthly_presence` and `text` trait.
+- The `targets` and `remake` pipelines rebuild a dataset when its reference file changes. A `source:` or `secondary:` reference list kept in a .yml or .bib file beside `metadata.yml` was read by `dataset_configure()` but not declared as a dependency, so editing it rebuilt nothing and the built database kept the old references. `build_setup_pipeline()` now declares these files as it already declared a `locations:` csv. Re-run `build_setup_pipeline()` to pick this up.
 
 # traits.build 2.2.0
 
