@@ -1750,31 +1750,22 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
 
   message(green(sprintf("Setting up build pipeline for %s studies, using `%s` method", length(dataset_ids), method)))
 
-  # A dataset whose `locations:` names a csv file has to declare it as a
-  # dependency, or edits to it would not trigger a rebuild
-  locations_files <- vapply(
-    dataset_ids,
-    function(id) {
-      declared <- yaml::read_yaml(
-        sprintf("%s/%s/metadata.yml", path, id)
-      )[["locations"]]
-      if (util_locations_is_file(declared)) declared else NA_character_
-    },
-    character(1)
-  )
-
+  # `dataset_configure()` reads some of a dataset's files for itself: a csv its
+  # `locations:` names, and a .yml or .bib file its `source:` or `secondary:`
+  # reference list names. The pipeline has to declare each as a dependency, or
+  # editing it would not trigger a rebuild
   vals <- list(
-    dataset_ids = unname(Map(
-      function(id, locations_file) {
-        # FALSE, not NA -- whisker renders a section for any non-false value,
-        # and `ifelse()` here would turn FALSE into the string "FALSE"
-        list(
-          dataset_id = id,
-          locations_file = if (is.na(locations_file)) FALSE else locations_file
-        )
-      },
-      dataset_ids, locations_files
-    )),
+    dataset_ids = unname(lapply(dataset_ids, function(id) {
+      files <- pipeline_dataset_files(sprintf("%s/%s/metadata.yml", path, id))
+      list(
+        dataset_id = id,
+        files = unname(Map(function(name, file) list(name = name, file = file),
+                           names(files), files)),
+        # FALSE, not an empty list -- whisker renders a section for any
+        # non-false value
+        has_files = length(files) > 0
+      )
+    })),
     dataset_ids_vector =
       sprintf("c(%s)", sprintf("'%s'", dataset_ids) %>% paste(collapse = ", ")),
     path = path,
@@ -1852,6 +1843,36 @@ build_setup_pipeline <- function(dataset_ids = dir("data"),
       scientific_name_id = character()
     ) %>% readr::write_csv(filename)
   }
+}
+
+
+#' Files a dataset's `metadata.yml` names, which a pipeline must depend on
+#'
+#' @param path Location of the metadata file
+#'
+#' @return A named character vector of file names relative to the dataset's
+#'   folder: `locations` for a csv `locations:` names, and `sources` and
+#'   `secondary_sources` for a .yml or .bib file the `source:` or `secondary:`
+#'   reference list names. The names become part of the pipeline's target
+#'   names, `file_<dataset_id>_<name>`.
+#' @noRd
+pipeline_dataset_files <- function(path) {
+  declared <- yaml::read_yaml(path)
+  # A `source:` that is not a mapping, such as `.na`, names no files, and
+  # indexing into it would stop the whole pipeline being written;
+  # `dataset_test()` is what reports it
+  source <- if (is.list(declared[["source"]])) declared[["source"]]
+  candidates <- list(
+    locations = declared[["locations"]],
+    sources = source[["source"]],
+    secondary_sources = source[["secondary"]]
+  )
+  is_file <- c(
+    util_locations_is_file(candidates$locations),
+    util_sources_is_file(candidates$sources),
+    util_sources_is_file(candidates$secondary_sources)
+  )
+  vapply(candidates[is_file], identity, character(1))
 }
 
 
