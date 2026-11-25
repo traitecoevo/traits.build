@@ -34,7 +34,7 @@
 #' leaves that copy, `tmp_<dataset_id>_report.qmd`, in the working directory.
 #'
 #' @param dataset_id Name of specific study/dataset
-#' @param austraits Compiled austraits database
+#' @param database A compiled database
 #' @param overwrite Logical value to determine whether to overwrite existing report
 #' @param output_path Location where rendered report will be saved
 #' @param input_file Report template (.qmd) to build the study report from. The
@@ -53,7 +53,7 @@
 #'   whose report fails to render warns and returns `FALSE` rather than aborting
 #'   the batch.
 #' @export
-dataset_report <- function(dataset_id, austraits, overwrite = FALSE,
+dataset_report <- function(dataset_id, database, overwrite = FALSE,
                            output_path = "export/reports",
                            input_file = NULL,
                            quiet = TRUE, keep = FALSE, show_questions = TRUE) {
@@ -65,7 +65,7 @@ dataset_report <- function(dataset_id, austraits, overwrite = FALSE,
     function(d)
       dataset_report_worker(
         dataset_id = d,
-        austraits = austraits,
+        database = database,
         overwrite = overwrite,
         output_path = output_path,
         input_file = input_file,
@@ -96,7 +96,7 @@ dataset_report_template <- function(input_file = NULL,
   system.file("support", "report_dataset.qmd", package = "traits.build")
 }
 
-dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
+dataset_report_worker <- function(dataset_id, database, overwrite = FALSE,
                                   output_path = "export/reports",
                                   input_file = dataset_report_template(),
                                   quiet = TRUE, keep = FALSE, show_questions = TRUE) {
@@ -135,8 +135,8 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
     # to YAML for the external `quarto render` process, and YAML cannot
     # represent the `NA`s that `austraits$traits` always contains. The template
     # reads it back with `readRDS(params$austraits_path)`.
-    austraits_rds <- tempfile(fileext = ".rds")
-    saveRDS(austraits, austraits_rds)
+    database_rds <- tempfile(fileext = ".rds")
+    saveRDS(database, database_rds)
 
     # The output is a single self-contained file; that comes from
     # `embed-resources: true` in the template's YAML.
@@ -169,14 +169,14 @@ dataset_report_worker <- function(dataset_id, austraits, overwrite = FALSE,
         quiet = quiet,
         execute_params = list(
           dataset_id = dataset_id,
-          austraits_path = austraits_rds,
+          austraits_path = database_rds,
           show_questions = show_questions
         )
       ),
       silent = TRUE
     )
 
-    unlink(austraits_rds)
+    unlink(database_rds)
 
     # quarto_render() writes its output beside the input (the current
     # directory, since `input_qmd` names no path), not into `output_path`.

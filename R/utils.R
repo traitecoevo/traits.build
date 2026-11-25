@@ -543,7 +543,7 @@ util_additional_traits_table_fields <- function(resource_metadata) {
   # joins such as `traits.use::join_taxa()` bring them into the traits table, a
   # field of a dataset's `metadata.yml`, or a working column of the build
   packaged <- get_schema()
-  tables <- purrr::keep(packaged[["austraits"]][["elements"]], ~ identical(.x[["type"]], "table"))
+  tables <- purrr::keep(packaged[["database"]][["elements"]], ~ identical(.x[["type"]], "table"))
   reserved <- c(
     unlist(lapply(tables, function(x) names(x[["elements"]])), use.names = FALSE),
     names(packaged[["metadata"]][["elements"]][["dataset"]][["values"]]),
@@ -577,8 +577,8 @@ util_additional_traits_table_fields <- function(resource_metadata) {
 util_schema_add_traits_table_fields <- function(schema, fields) {
 
   for (v in names(fields)) {
-    schema[["austraits"]][["elements"]][["traits"]][["elements"]][[v]] <- fields[[v]]
-    schema[["austraits"]][["elements"]][["excluded_data"]][["elements"]][[v]] <- fields[[v]]
+    schema[["database"]][["elements"]][["traits"]][["elements"]][[v]] <- fields[[v]]
+    schema[["database"]][["elements"]][["excluded_data"]][["elements"]][[v]] <- fields[[v]]
     schema[["metadata"]][["elements"]][["dataset"]][["values"]][[v]] <- fields[[v]]
     schema[["metadata"]][["elements"]][["traits"]][["elements"]][[v]] <- fields[[v]]
   }

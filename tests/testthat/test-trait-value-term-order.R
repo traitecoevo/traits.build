@@ -56,7 +56,7 @@ test_that("`util_trait_value_term_order` defaults to `alphabetical` and rejects 
 
 
 test_that("the schema documents exactly the settings the build accepts, default first", {
-  documented <- schema[["austraits"]][["elements"]][["metadata"]][["elements"]][["trait_value_term_order"]]
+  documented <- schema[["database"]][["elements"]][["metadata"]][["elements"]][["trait_value_term_order"]]
   expect_equal(names(documented[["values"]]), util_trait_value_term_orders())
   expect_equal(util_trait_value_term_orders()[1], util_trait_value_term_order(list()))
 })

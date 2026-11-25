@@ -2,20 +2,20 @@
 % Please edit documentation in R/process.R
 \name{build_add_version}
 \alias{build_add_version}
-\title{Add version information to AusTraits}
+\title{Add version information to a database}
 \usage{
-build_add_version(austraits, version, git_sha)
+build_add_version(database, version, git_sha)
 }
 \arguments{
-\item{austraits}{AusTraits database object}
+\item{database}{A compiled database}
 
 \item{version}{Version number}
 
 \item{git_sha}{Git SHA}
 }
 \value{
-AusTraits database object with version information added
+The database, with version information added
 }
 \description{
-Add version information to AusTraits
+Add version information to a database
 }

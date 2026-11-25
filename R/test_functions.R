@@ -551,22 +551,22 @@ test_build_dataset <- function(
 
 test_expect_structure <- function(data, info, schema, definitions, single_dataset = TRUE) {
 
-  vars_austraits <- schema$austraits$elements %>% names()
+  vars_database <- schema$database$elements %>% names()
 
   vars_tables <-
-    vars_austraits %>%
+    vars_database %>%
     subset(., !(. %in% c(
       "definitions", "schema", "sources", "metadata",
       "build_info", "taxonomic_updates", "taxa")))
 
   # Test lists have the right objects
-  comparison <- vars_austraits
+  comparison <- vars_database
 
   test_expect_list_names_exact(data, comparison, info, label = "output tables")
 
   # Test structure of tables
   for (v in vars_tables) {
-    comparison <- schema$austraits$elements[[v]]$elements %>% names()
+    comparison <- schema$database$elements[[v]]$elements %>% names()
     test_expect_dataframe_named(data[[v]], comparison, info = info, label = paste0(v, " table column names"))
   }
 

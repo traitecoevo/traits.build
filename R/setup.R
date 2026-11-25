@@ -1935,16 +1935,16 @@ select_pipeline_template <- function(method) {
 #' Find list of unique datasets within compilation containing specified taxa
 #'
 #' @param taxa A vector which contains species names
-#' @param austraits AusTraits compilation
+#' @param database A compiled database
 #' @param original_name Logical; if TRUE use column in compilation which contains original
 #' species names, default = FALSE
 #'
 #' @importFrom rlang .data
 #' @return List of unique datasets within compilation containing each taxon
 #' @export
-dataset_find_taxon <- function(taxa, austraits, original_name = FALSE) {
+dataset_find_taxon <- function(taxa, database, original_name = FALSE) {
 
-  data <- austraits$traits
+  data <- database$traits
 
   if (!original_name) {
     data <- data %>%
