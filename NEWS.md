@@ -1,5 +1,3 @@
-# traits.build (development version)
-
 # traits.build 3.0.0
 
 This release changes how a dataset records its references, and the columns that hold them. Existing databases need their `metadata.yml` files converted, and their twelve-month traits retyped, before they build: follow the steps under "Upgrading a database to 3.0.0" below. Built databases follow data model 1.4.0 (<https://w3id.org/traits.build>), and are read with [`traits.use`](https://github.com/traitecoevo/traits.use).
